@@ -71,7 +71,7 @@
     <string name="copied_to_clipboard">Skopírované do schránky</string>
     <string name="keep_cache_summary">Po dokončení sťahovania nevymaže dočasné súbory</string>
     <string name="dont_ask_again">Nepýtať sa znova</string>
-    <string name="video_recommendations_summary">Získate odporúčané YouTube videá na domovskej obrazovke pomocou NewPipe Extractora</string>
+    <string name="video_recommendations_summary">Zobrazíte odporúčané YouTube videá na domovskej obrazovke</string>
     <string name="codec">Kodek</string>
     <string name="select_backup_categories">Vybrať kategórie zálohovania</string>
     <string name="downloads_running_try_later">Worker na sťahovanie je spustený. Skúste to znova neskôr</string>
@@ -435,4 +435,10 @@
     <string name="thumbnail">Miniatúra</string>
     <string name="data_fetching_extra_command">Doplnkové príkazy na načítanie údajov</string>
     <string name="data_fetching_extra_command_summary">Povolí šablóny príkazov, ktoré budú použité na načítanie údajov ako doplnkové príkazy</string>
+    <string name="disable_write_info_json_summary">(Neodporúča sa) Pri každom reštarte/obnovení sťahovania bude yt-dlp znovu sťahovať údaje json zo serverov.</string>
+    <string name="disable_write_info_json">Vypnúť zápis údajov Json</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube pozerať neskôr (potrebuje súbory cookie)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube obľúbené videá (potrebuje cookies)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube doporučené (potrebuje cookies)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube história sledovania (potrebuje cookies)</string>
 </resources>
