@@ -4,7 +4,7 @@
     <string name="search">Tìm kiếm</string>
     <string name="couldnt_find_apk">Không tìm thấy APK phù hợp</string>
     <string name="remove_all">Loại bỏ tất cả</string>
-    <string name="remove_results">Xóa Kết quả</string>
+    <string name="remove_results">Xóa kết quả</string>
     <string name="download_all">Tải xuống tất cả</string>
     <string name="settings">Cài đặt</string>
     <string name="home">Trang chủ</string>
@@ -113,7 +113,7 @@
     <string name="format">Định dạng</string>
     <string name="select_format">Chọn định dạng</string>
     <string name="import_from_clipboard">Nhập từ bảng nhớ tạm</string>
-    <string name="remove_search_history">Dọn dẹp Lịch sử tìm kiếm</string>
+    <string name="remove_search_history">Xoá lịch sử tìm kiếm</string>
     <string name="download_queue">Hàng đợi tải xuống</string>
     <string name="command">Lệnh</string>
     <string name="save_dir">Lưu vào thư mục</string>
@@ -150,9 +150,9 @@
     <string name="all_items_selected">Tất cả các mục được chọn</string>
     <string name="access_all_directories_summary">Cho phép tải xuống ứng dụng trên các thư mục bị hạn chế theo mặc định</string>
     <string name="in_queue">Trong Hàng chờ</string>
-    <string name="clear_cancelled">Đã huỷ dọn dẹp</string>
+    <string name="clear_cancelled">Dọn dẹp các mục đã huỷ</string>
     <string name="access_all_directories">Cho phép truy cập vào mọi thư mục</string>
-    <string name="clear_errored">Dọn dẹp Bị lỗi</string>
+    <string name="clear_errored">Dọn dẹp các mục bị lỗi</string>
     <string name="split_by_chapters">Chia theo chương</string>
     <string name="update">Cập nhật</string>
     <string name="create_template">Tạo bản mẫu</string>
@@ -284,7 +284,7 @@
     <string name="embed_metadata_summary">Phân tích và nhúng siêu dữ liệu vào tệp âm thanh</string>
     <string name="use_cookies">Dùng Cookies</string>
     <string name="use_extra_commands">Thêm các lệnh bổ sung</string>
-    <string name="clear_saved">Dọn dẹp đã lưu</string>
+    <string name="clear_saved">Dọn dẹp các mục đã lưu</string>
     <string name="saved">Đã lưu</string>
     <string name="format_order">Thứ tự các định dạng</string>
     <string name="socks5_proxy">Dùng Socks5 Proxy URL</string>
@@ -387,7 +387,7 @@
     <string name="move_top">Chuyển lên trên</string>
     <string name="copy_url">Sao chép URL</string>
     <string name="disabled">Đã tắt</string>
-    <string name="clear_scheduled">Dọn dẹp Lịch trình</string>
+    <string name="clear_scheduled">Dọn dẹp lịch trình</string>
     <string name="minute">Phút</string>
     <string name="second">Giây</string>
     <string name="milliseconds">Mili-giây</string>

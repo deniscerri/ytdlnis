@@ -200,7 +200,7 @@
     <string name="subtitle_languages">لغات الترجمة</string>
     <string name="format_source">مصدر التنسيقات</string>
     <string name="video_recommendations">توصيات الفيديو</string>
-    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الشاشة الرئيسية من خلال مستخرج NewPipe</string>
+    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الشاشة الرئيسية</string>
     <string name="preferred_search_engine">محرك البحث عن الوسائط</string>
     <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
     <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
@@ -435,5 +435,10 @@
     <string name="pause_all">إيقاف الكل مؤقتًا</string>
     <string name="data_fetching_extra_command">أمر جلب البيانات الإضافي</string>
     <string name="data_fetching_extra_command_summary">فعّل قوالب الأوامر لاستخدامها في جلب البيانات كأوامر إضافية</string>
-    <string name="disable_write_info_json">Disable Write Info Json</string>
+    <string name="disable_write_info_json">تعطيل كتابة معلومات Json</string>
+    <string name="disable_write_info_json_summary">(غير مستحسن) في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم.</string>
+    <string name="ytdlp_watch_later">مشاهدة يوتيوب لاحقًا على YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة على YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_liked">مقاطع الفيديو المفضلة على اليوتيوب YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
 </resources>
