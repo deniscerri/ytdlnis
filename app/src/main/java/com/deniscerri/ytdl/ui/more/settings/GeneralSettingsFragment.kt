@@ -254,17 +254,25 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<MultiSelectListPreference>("hide_thumbnails")?.apply {
-            summary = values.joinToString(", ") { entries[entryValues.indexOf(it)] }
+            values.filter { it.isNotBlank() }.apply {
+                summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
+            }
             setOnPreferenceChangeListener { _, newValues ->
-                summary = (newValues as Set<*>).joinToString(", ") { entries[entryValues.indexOf(it)] }
+                (newValues as Set<String>).filter { it.isNotBlank() }.apply {
+                    summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
+                }
                 true
             }
         }
 
         findPreference<MultiSelectListPreference>("modify_download_card")?.apply {
-            summary = values.joinToString(", ") { entries[entryValues.indexOf(it)] }
+            values.filter { it.isNotBlank() }.apply {
+                summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
+            }
             setOnPreferenceChangeListener { _, newValues ->
-                summary = (newValues as Set<*>).joinToString(", ") { entries[entryValues.indexOf(it)] }
+                (newValues as Set<String>).filter { it.isNotBlank() }.apply {
+                    summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
+                }
                 true
             }
         }

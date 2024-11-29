@@ -231,7 +231,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<EditTextPreference>("buffer_size")?.apply {
-            val s = getString(R.string.limit_rate_summary)
+            val s = getString(R.string.buffer_size_summary)
             summary = if (text.isNullOrBlank()) {
                 s
             }else {
@@ -248,7 +248,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<EditTextPreference>("socket_timeout")?.apply {
-            val s = getString(R.string.limit_rate_summary)
+            val s = getString(R.string.socket_timeout_description)
             summary = if (text.isNullOrBlank()) {
                 s
             }else {

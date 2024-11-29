@@ -250,10 +250,10 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
     private fun changeSortIcon(item: TextView, order: SORTING){
         when(order){
             SORTING.DESC ->{
-                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
             }
             SORTING.ASC ->                 {
-                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_down, 0,0,0)
+                item.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_up, 0,0,0)
             }
         }
     }

@@ -1167,7 +1167,7 @@ class YTDLPUtil(private val context: Context) {
     }
 
     private fun getYoutubeExtractorArgs() : String {
-        val playerClient = sharedPreferences.getString("youtube_player_client", "default,mediaconnect")!!.split(",").filter { it.isNotBlank() }.toMutableList()
+        val playerClient = sharedPreferences.getString("youtube_player_client", "")!!.split(",").filter { it.isNotBlank() }.toMutableList()
         val extractorArgs = mutableListOf<String>()
 
         val poToken = sharedPreferences.getString("youtube_po_token", "")!!

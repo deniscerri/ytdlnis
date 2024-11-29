@@ -77,7 +77,8 @@ class MainActivity : BaseActivity() {
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var downloadViewModel: DownloadViewModel
-    private lateinit var navigationView: View
+    private var navigationView: NavigationView? = null
+    private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
 
@@ -106,38 +107,38 @@ class MainActivity : BaseActivity() {
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
-        navigationView = try {
-            findViewById(R.id.bottomNavigationView)
-        }catch (e: Exception){
-            findViewById<NavigationView>(R.id.navigationView)
+        kotlin.runCatching {
+            navigationView = findViewById(R.id.navigationView)
+        }
+        kotlin.runCatching {
+            navigationBarView = findViewById(R.id.bottomNavigationView)
         }
 
-        if (navigationView is NavigationBarView){
+        navigationBarView?.apply {
             window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
                 val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
                     windowInsets!!, view
                 )
                 val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
-                navigationView.visibility =
-                    if (isImeVisible) View.GONE else View.VISIBLE
+                visibility = if (isImeVisible) View.GONE else View.VISIBLE
                 view.onApplyWindowInsets(windowInsets)
             }
         }
 
         NavbarUtil.init(this)
 
-        if (navigationView is NavigationBarView){
+        navigationBarView?.apply {
             if (savedInstanceState == null){
                 val graph = navController.navInflater.inflate(R.navigation.nav_graph)
-                graph.setStartDestination(NavbarUtil.getStartFragmentId(this))
+                graph.setStartDestination(NavbarUtil.getStartFragmentId(this@MainActivity))
                 navController.graph = graph
             }
-            (navigationView as NavigationBarView).applyNavBarStyle()
+            applyNavBarStyle()
 
-            val showingDownloadQueue = NavbarUtil.getNavBarItems(this).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
+            val showingDownloadQueue = NavbarUtil.getNavBarItems(this@MainActivity).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
 
-            (navigationView as NavigationBarView).setupWithNavController(navController)
-            (navigationView as NavigationBarView).setOnItemReselectedListener {
+            setupWithNavController(navController)
+            setOnItemReselectedListener {
                 when (it.itemId) {
                     R.id.homeFragment -> {
                         kotlin.runCatching {
@@ -166,9 +167,9 @@ class MainActivity : BaseActivity() {
             }
 
             val activeDownloadsBadge = if (showingDownloadQueue) {
-                (navigationView as NavigationBarView).getOrCreateBadge(R.id.downloadQueueMainFragment)
+                getOrCreateBadge(R.id.downloadQueueMainFragment)
             }else{
-                (navigationView as NavigationBarView).getOrCreateBadge(R.id.historyFragment)
+                getOrCreateBadge(R.id.historyFragment)
             }
             lifecycleScope.launch {
                 downloadViewModel.activePausedDownloadsCount.collectLatest {
@@ -182,14 +183,34 @@ class MainActivity : BaseActivity() {
                     }
                 }
             }
+
+            val showingNavbarItems = NavbarUtil.getNavBarItems(this@MainActivity).filter { it.isVisible }.map { it.itemId }
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                Handler(Looper.getMainLooper()).post {
+                    if (showingNavbarItems.contains(destination.id)) {
+                        showBottomNavigation()
+                    }else{
+                        hideBottomNavigation()
+                    }
+                }
+
+            }
+
+            visibilityChanged {
+                if (it.isVisible){
+                    val curr = navController.currentDestination?.id
+                    if (!showingNavbarItems.contains(curr)) hideBottomNavigation()
+                }
+            }
         }
-        if (navigationView is NavigationView){
-            (navigationView as NavigationView).setupWithNavController(navController)
+
+        navigationView?.apply {
+            setupWithNavController(navController)
             //terminate button
-            (navigationView as NavigationView).menu.getItem(8).setOnMenuItemClickListener {
+            menu.getItem(8).setOnMenuItemClickListener {
                 if (preferences.getBoolean("ask_terminate_app", true)){
                     var doNotShowAgain = false
-                    val terminateDialog = MaterialAlertDialogBuilder(this)
+                    val terminateDialog = MaterialAlertDialogBuilder(this@MainActivity)
                     terminateDialog.setTitle(getString(R.string.confirm_delete_history))
                     val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
                     val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
@@ -227,36 +248,14 @@ class MainActivity : BaseActivity() {
                 true
             }
             //settings button
-            (navigationView as NavigationView).menu.getItem(9).setOnMenuItemClickListener {
+            menu.getItem(9).setOnMenuItemClickListener {
                 val intent = Intent(context, SettingsActivity::class.java)
                 startActivity(intent)
                 true
             }
 
-            (navigationView as NavigationView).getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this)
+            getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this@MainActivity)
         }
-
-        val showingNavbarItems = NavbarUtil.getNavBarItems(this).filter { it.isVisible }.map { it.itemId }
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            Handler(Looper.getMainLooper()).post {
-                if (navigationView is NavigationBarView){
-                    if (showingNavbarItems.contains(destination.id)) {
-                        showBottomNavigation()
-                    }else{
-                        hideBottomNavigation()
-                    }
-                }
-            }
-
-        }
-
-        navigationView.visibilityChanged {
-            if (it.isVisible){
-                val curr = navController.currentDestination?.id
-                if (!showingNavbarItems.contains(curr)) hideBottomNavigation()
-            }
-        }
-
 
         cookieViewModel.updateCookiesFile()
         val intent = intent
@@ -272,8 +271,8 @@ class MainActivity : BaseActivity() {
                                 this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
                                 Snackbar.LENGTH_LONG)
 
-                            if (navigationView is BottomNavigationView) {
-                                snack.setAnchorView(navigationView)
+                            navigationBarView?.apply {
+                                snack.setAnchorView(this)
                             }
                             snack.show()
                         }
@@ -305,64 +304,65 @@ class MainActivity : BaseActivity() {
 
 
     fun hideBottomNavigation(){
-        if (navigationView is BottomNavigationView){
-            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                bottomToTop = ConstraintLayout.LayoutParams.UNSET
-                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-            }
-            navigationView.animate()?.translationY(navigationView.height.toFloat())?.setDuration(300)?.withEndAction {
-                navigationView.visibility = View.GONE
-            }?.start()
-        }else if (navigationView is NavigationRailView){
-            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                this.width = LayoutParams.MATCH_PARENT
-            }
+        navigationBarView?.apply {
+            if (this is BottomNavigationView){
+                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+                this.animate()?.translationY(this.height.toFloat())?.setDuration(300)?.withEndAction {
+                    this.visibility = View.GONE
+                }?.start()
+            }else if (this is NavigationRailView){
+                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.width = LayoutParams.MATCH_PARENT
+                }
 
-            if (resources.getBoolean(R.bool.is_right_to_left)){
-                navigationView.animate()?.translationX(navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.GONE
-                }?.start()
-            }else{
-                navigationView.animate()?.translationX(-navigationView.width.toFloat())?.setDuration(300)?.withEndAction {
-                    navigationView.visibility = View.GONE
-                }?.start()
+                if (resources.getBoolean(R.bool.is_right_to_left)){
+                    this.animate()?.translationX(this.width.toFloat())?.setDuration(300)?.withEndAction {
+                        this.visibility = View.GONE
+                    }?.start()
+                }else{
+                    this.animate()?.translationX(-this.width.toFloat())?.setDuration(300)?.withEndAction {
+                        this.visibility = View.GONE
+                    }?.start()
+                }
             }
         }
+
+
     }
 
     fun showBottomNavigation(){
-        if (navigationView is BottomNavigationView){
-            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                bottomToTop = R.id.bottomNavigationView
-                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+        navigationBarView?.apply {
+            if (this is BottomNavigationView){
+                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
+                    bottomToTop = R.id.bottomNavigationView
+                    bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+                }
+                this.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
+                    this.visibility = View.VISIBLE
+                }?.start()
+            }else if (this is NavigationRailView){
+                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
+                    this.width = 0
+                }
+                this.animate()?.translationX(0F)?.setDuration(300)?.withEndAction {
+                    this.visibility = View.VISIBLE
+                }?.start()
             }
-            navigationView.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
-                navigationView.visibility = View.VISIBLE
-            }?.start()
-        }else if (navigationView is NavigationRailView){
-            findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams {
-                this.width = 0
-            }
-            navigationView.animate()?.translationX(0F)?.setDuration(300)?.withEndAction {
-                navigationView.visibility = View.VISIBLE
-            }?.start()
         }
+
     }
 
     fun disableBottomNavigation(){
-        if (navigationView is NavigationBarView){
-            (navigationView as NavigationBarView).menu.forEach { it.isEnabled = false }
-        }else{
-            (navigationView as NavigationView).menu.forEach { it.isEnabled = false }
-        }
+        navigationBarView?.menu?.forEach { it.isEnabled = false }
+        navigationView?.menu?.forEach { it.isEnabled = false }
     }
 
     fun enableBottomNavigation(){
-        if (navigationView is NavigationBarView){
-            (navigationView as NavigationBarView).menu.forEach { it.isEnabled = true }
-        }else{
-            (navigationView as NavigationView).menu.forEach { it.isEnabled = true }
-        }
+        navigationBarView?.menu?.forEach { it.isEnabled = true }
+        navigationView?.menu?.forEach { it.isEnabled = true }
     }
 
     override fun onResume() {

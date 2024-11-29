@@ -123,8 +123,9 @@ class FormatUtil(private var context: Context) {
                             videoFormatIDPreference.contains(b.format_id).compareTo(videoFormatIDPreference.contains(a.format_id))
                         }
                         "codec" -> {
-                           "^(${videoCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE).matches(b.vcodec.uppercase())
-                                .compareTo("^(${videoCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE).matches(a.vcodec.uppercase()))
+                            var first = "$videoCodecPreference".toRegex(RegexOption.IGNORE_CASE).containsMatchIn(b.vcodec.uppercase())
+                            var second = "$videoCodecPreference".toRegex(RegexOption.IGNORE_CASE).containsMatchIn(a.vcodec.uppercase())
+                            first.compareTo(second)
                         }
                         "resolution" -> {
                             when (videoQualityPreference) {
