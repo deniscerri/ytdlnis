@@ -6,7 +6,7 @@
         <EditTextPreference
             android:defaultValue=""
             android:icon="@drawable/ic_code"
-            android:key="youtube_player_client"
+            android:key="yt_player_client"
             app:useSimpleSummaryProvider="true"
             android:title="Player Client" />
 

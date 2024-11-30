@@ -145,9 +145,9 @@ dependencies {
 //    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
 
-    implementation "io.github.junkfood02.youtubedl-android:library:0.17.1"
-    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.1"
-    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.1"
+    implementation "io.github.junkfood02.youtubedl-android:library:0.17.2"
+    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
+    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
 
     implementation "androidx.appcompat:appcompat:$appCompatVer"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"

@@ -733,25 +733,23 @@ class YTDLPUtil(private val context: Context) {
             if (downloadItem.url.isYoutubeURL()) {
                 request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
             }
+
+            if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
+                val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+                val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
+
+                val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
+                //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
+                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
+                    request.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
+                }else {
+                    request.addOption("--load-info-json", infoJsonFile.absolutePath)
+                }
+            }
         }
 
         if (sharedPreferences.getString("prevent_duplicate_downloads", "")!! == "download_archive"){
             request.addOption("--download-archive", FileUtil.getDownloadArchivePath(context))
-        }
-
-        if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
-            val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-            val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
-
-            val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
-            //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
-            if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
-                request.addOption("--write-info-json")
-                request.addOption("--no-clean-info-json")
-                request.addOption("-o", "infojson:${cachePath}/${infoJsonName}")
-            }else {
-                request.addOption("--load-info-json", infoJsonFile.absolutePath)
-            }
         }
 
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
@@ -1167,7 +1165,7 @@ class YTDLPUtil(private val context: Context) {
     }
 
     private fun getYoutubeExtractorArgs() : String {
-        val playerClient = sharedPreferences.getString("youtube_player_client", "")!!.split(",").filter { it.isNotBlank() }.toMutableList()
+        val playerClient = sharedPreferences.getString("yt_player_client", "")!!.split(",").filter { it.isNotBlank() }.toMutableList()
         val extractorArgs = mutableListOf<String>()
 
         val poToken = sharedPreferences.getString("youtube_po_token", "")!!
@@ -1183,8 +1181,7 @@ class YTDLPUtil(private val context: Context) {
         val langTag = Locale.getDefault().toLanguageTag()
         if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
             extractorArgs.add("lang=$lang")
-        }
-        if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
+        }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
             extractorArgs.add("lang=$langTag")
         }
         if (poToken.isNotBlank()) {
