@@ -78,7 +78,8 @@ class YTDLPUtil(private val context: Context) {
 
         val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
         if (extraCommands.isNotBlank()){
-            addConfig(extraCommands)
+            addCommands(extraCommands.split(" ", "\t", "\n"))
+            //addConfig(extraCommands)
         }
     }
 
@@ -762,12 +763,9 @@ class YTDLPUtil(private val context: Context) {
                 var abrSort = ""
 
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "").contains(audioQualityId)){
+                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "", context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "ba/b"
-                }else if (listOf(context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
-                    audioQualityId = "wa/w"
                 }else if(audioQualityId.contains("kbps_ytdlnisgeneric")){
-
                     abrSort = audioQualityId.split("kbps")[0]
                     audioQualityId = ""
                 }else{
@@ -797,6 +795,10 @@ class YTDLPUtil(private val context: Context) {
                 request.addOption("-x")
 
                 val formatSorting = StringBuilder("hasaud")
+
+                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
+                    formatSorting.append(",+br,+res,+fps")
+                }
 
                 if (abrSort.isNotBlank()){
                     formatSorting.append(",abr:${abrSort}")
@@ -990,11 +992,8 @@ class YTDLPUtil(private val context: Context) {
                         }
                     }
                 }else{
-                    if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best") {
+                    if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best" || videoF == context.resources.getString(R.string.worst_quality) || videoF == "worst") {
                         videoF = "bv"
-                    }else if (videoF == context.resources.getString(R.string.worst_quality) || videoF == "worst") {
-                        videoF = "wv"
-                        if (audioF == "ba") audioF = "wa"
                     }else if (defaultFormats.contains(videoF)) {
                         hasGenericResulutionFormat = videoF.split("_")[0].dropLast(1)
                         videoF = "bv"
@@ -1067,7 +1066,9 @@ class YTDLPUtil(private val context: Context) {
                 val preferredLanguage = sharedPreferences.getString("audio_language","")!!
 
                 StringBuilder().apply {
-                    if (hasGenericResulutionFormat.isNotBlank()) {
+                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
+                        append(",+br,+res,+fps")
+                    }else if (hasGenericResulutionFormat.isNotBlank()) {
                         append(",res:${hasGenericResulutionFormat}")
                     }
                     if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) append(",+size")
@@ -1145,14 +1146,16 @@ class YTDLPUtil(private val context: Context) {
         }
 
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
-            val cache = File(FileUtil.getCachePath(context))
-            cache.mkdirs()
-            val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
-            conf.createNewFile()
-            conf.writeText(downloadItem.extraCommands)
-            val tmp = mutableListOf<String>()
-            tmp.addOption("--config-locations", conf.absolutePath)
-            request.addCommands(tmp)
+            request.addCommands(downloadItem.extraCommands.split(" ", "\t", "\n"))
+//
+//            val cache = File(FileUtil.getCachePath(context))
+//            cache.mkdirs()
+//            val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
+//            conf.createNewFile()
+//            conf.writeText(downloadItem.extraCommands)
+//            val tmp = mutableListOf<String>()
+//            tmp.addOption("--config-locations", conf.absolutePath)
+//            request.addCommands(tmp)
         }
 
         return request

@@ -364,7 +364,13 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                             val item = withContext(Dispatchers.IO){
                                 downloadViewModel.getItemByID(itemID)
                             }
-                            downloadViewModel.queueDownloads(listOf(item), true)
+
+                            findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                Pair("downloadItem", item),
+                                Pair("result", downloadViewModel.createResultItemFromDownload(item)),
+                                Pair("type", item.type)
+                            ))
+                            
                             adapter.notifyItemChanged(position)
                         }
                     }

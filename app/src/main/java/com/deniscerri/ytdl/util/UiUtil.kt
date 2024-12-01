@@ -629,12 +629,17 @@ object UiUtil {
                 download.setOnClickListener {
                     longClickDownloadButton(item)
                     bottomSheet.cancel()
-                    true
                 }
             }
             DownloadRepository.Status.Scheduled -> {
                 download!!.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_downloads, 0, 0, 0);
                 download.text = context.getString(R.string.download_now)
+            }
+            DownloadRepository.Status.Error -> {
+                download?.setOnClickListener {
+                    longClickDownloadButton(item)
+                    bottomSheet.cancel()
+                }
             }
             else -> {
                 download?.setOnLongClickListener {
@@ -645,7 +650,7 @@ object UiUtil {
             }
         }
 
-        if (status != DownloadRepository.Status.Queued){
+        if (status != DownloadRepository.Status.Queued && status != DownloadRepository.Status.Error){
             download?.setOnClickListener {
                 bottomSheet.dismiss()
                 downloadItem(item)

@@ -1,0 +1,8 @@
+# What's Changed
+
+- Fixed some preferences having wrong description
+- Fixed app not matching vp9 formats sometimes
+- Fixed app crashing when going landscape on large tablets
+- Player Client preference is now reset so its empty by default.
+- Made the re-download button always show the download card for error downloads
+- Used format sorting for selecting worst format instead of wv or wa

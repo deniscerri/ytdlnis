@@ -1,5 +1,18 @@
 # YTDLnis Changelog
 
+> # 1.8.1.1 (2024-12)
+
+# What's Changed
+
+- Fixed some preferences having wrong description
+- Fixed app not matching vp9 formats sometimes
+- Fixed command templates order icon 
+- Fixed app crashing when going landscape on large tablets
+- Player Client preference is now reset so its empty by default. If you had modified it, please set it again :)
+- Added ability for the app to also move the write info json files along with the video if the user requests it as extra command
+- Made the re-download button always show the download card for error downloads 
+- Used format sorting for selecting worst format instead of wv or wa
+
 > # 1.8.1 (2024-11)
 
 # What's Changed
@@ -15,7 +28,6 @@
 - #618, made all preferences with a description show their values
 - Fixed bug that prevented app from loading all urls from text file
 - Added ability to stop an observed source but not delete it
-- 
 
 ## Custom yt-dlp source
 
