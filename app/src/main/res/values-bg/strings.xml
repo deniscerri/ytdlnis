@@ -385,7 +385,7 @@
     <string name="clear_scheduled">Изчисти планираното</string>
     <string name="disabled">Забранено</string>
     <string name="prevent_duplicate_config">Предотврати дублираща конфигурация</string>
-    <string name="prevent_duplicate_url_type"><![CDATA[URL & Тип изтегляне]]></string>
+    <string name="prevent_duplicate_url_type">URL &amp; Тип изтегляне</string>
     <string name="subtitles">Субтитри</string>
     <string name="copy_url">Копиране URL</string>
     <string name="minute">Минута</string>
