@@ -139,7 +139,7 @@
     <string name="delete_all_cookies">Usuń wszystkie pliki cookie</string>
     <string name="confirm_delete_cookies_desc">Usuń wszystkie pliki cookie na stałe</string>
     <string name="format_source">Źródło formatów</string>
-    <string name="video_recommendations_summary">Uzyskaj polecane filmy z YouTube na ekranie głównym z NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Polecane filmy z YouTube na ekranie głównym</string>
     <string name="preferred_format_id">Preferowany identyfikator formatu</string>
     <string name="restrict_filenames">Ogranicz nazwy plików</string>
     <string name="metered_network_download_start_info">Pobieranie rozpocznie się, gdy połączysz się z siecią bez planu taryfowego</string>
@@ -430,4 +430,13 @@
     <string name="preferred_command_template">Preferowany szablon poleceń</string>
     <string name="deleted">Usunięto</string>
     <string name="websites">Strony internetowe</string>
+    <string name="disable_write_info_json">Wyłącz zapis informacji Json</string>
+    <string name="other_youtube_extractor_args">Inne argumenty ekstraktora YouTube</string>
+    <string name="socket_timeout">Limit czasu gniazda</string>
+    <string name="status">Status</string>
+    <string name="data_fetching_extra_command_summary">Włączenie szablonów poleceń, które mogą być używane do pobierania danych jako dodatkowe polecenia</string>
+    <string name="disable_write_info_json_summary">(Niezalecane) Za każdym razem, gdy ponownie uruchomisz / wznowisz pobieranie, yt-dlp ponownie pobierze dane json z serwerów.</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (wymaga plików cookie)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Rekomendacje YouTube (wymaga plików cookie)</string>
+    <string name="data_fetching_extractor_youtube">Ekstraktor pobierania danych (YouTube)</string>
 </resources>
