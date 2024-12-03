@@ -55,8 +55,8 @@
     <string name="api_key_summary">Các video được gợi ý từ Youtube API</string>
     <string name="update_app_summary">Thông báo các phiên bản mới của ứng dụng khi mở ứng dụng. Dữ liệu được trích xuất từ kho lưu trữ Github chính thức</string>
     <string name="downloads">Tải xuống</string>
-    <string name="remove_deleted">Loại bỏ Đã xóa</string>
-    <string name="remove_duplicates">Loại bỏ các trùng lặp</string>
+    <string name="remove_deleted">Loại bỏ các mục đã xoá</string>
+    <string name="remove_duplicates">Loại bỏ trùng lặp</string>
     <string name="sort_by">Sắp xếp</string>
     <string name="url">URL</string>
     <string name="Open_File">Mở tệp</string>
@@ -114,7 +114,7 @@
     <string name="select_format">Chọn định dạng</string>
     <string name="import_from_clipboard">Nhập từ bảng nhớ tạm</string>
     <string name="remove_search_history">Xoá lịch sử tìm kiếm</string>
-    <string name="download_queue">Hàng đợi tải xuống</string>
+    <string name="download_queue">Hàng chờ tải xuống</string>
     <string name="command">Lệnh</string>
     <string name="save_dir">Lưu vào thư mục</string>
     <string name="new_template">Bản mẫu mới</string>
@@ -317,7 +317,7 @@
     <string name="length">Độ dài</string>
     <string name="export_file">Xuất tệp</string>
     <string name="update_ytdl_master">Phiên bản Master của yt-dlp</string>
-    <string name="ytdl_source">Mã nguồn yt-dlp</string>
+    <string name="ytdl_source">Nguồn yt-dlp</string>
     <string name="changelog">Nhật ký thay đổi</string>
     <string name="cut_unavailable">Bạn cần cập nhật dữ liệu để có thể sử dụng tính năng cắt</string>
     <string name="app">Ứng dụng</string>
@@ -326,17 +326,17 @@
     <string name="errored_download_notification_channel_description">Thông báo khi tải xuống bị lỗi</string>
     <string name="buffer_size_summary">Kích thước của bộ đệm, ví dụ 1024 hoặc 16K (mặc định 1024)</string>
     <string name="buffer_size">Kích thước bộ đệm</string>
-    <string name="source">Mã nguồn</string>
+    <string name="source">Nguồn</string>
     <string name="update_ytdl_stable">Phiên bản ổn định của yt-dlp</string>
-    <string name="observe_sources">Quan sát nguồn</string>
-    <string name="new_source">Nguồn mới</string>
-    <string name="delete_all_sources">Xóa tất cả nguồn</string>
+    <string name="observe_sources">Giám sát nguồn</string>
+    <string name="new_source">Mới</string>
+    <string name="delete_all_sources">Xóa tất cả</string>
     <string name="confirm_delete_sources_desc">Xóa vĩnh viễn tất cả nguồn</string>
     <string name="force_ipv4">Buộc dùng IPv4</string>
     <string name="force_ipv4_desc">Thực hiện tất cả các kết nối qua IPv4</string>
     <string name="copy_urls">Sao chép URL</string>
     <string name="save_auto_subs">Lưu phụ đề tự động</string>
-    <string name="archive">Tải xuống lưu trữ [Sử dụng tải xuống tệp lưu trữ của yt-dlp để ngăn tải xuống trùng lặp thay vì chức năng tích hợp sẵn]</string>
+    <string name="archive">Kho lưu trữ tải xuống [Sử dụng tệp lưu trữ tải xuống của yt-dlp để ngăn tải lại các tác vụ đã có thay vì chức năng tích hợp sẵn]</string>
     <string name="dismiss">Bỏ qua</string>
     <string name="changed_path_for_everyone_to">Đã thay đổi đường dẫn tải xuống của mọi mục thành:</string>
     <string name="all">Tất cả</string>
@@ -361,7 +361,7 @@
     <string name="also_download_audio">Cũng tải xuống dưới dạng Âm thanh</string>
     <string name="wrap_text">Ngắt dòng văn bản</string>
     <string name="swipe_gestures_download_card">Sử dụng Cử chỉ Vuốt trong thẻ tải xuống</string>
-    <string name="show_download_count">Hiển thị số lượng trong bảng Hàng đợi tải xuống</string>
+    <string name="show_download_count">Hiển thị số lượng trong Hàng chờ tải xuống</string>
     <string name="thumbnail_format">Định dạng hình thu nhỏ</string>
     <string name="get_new_uploads">Chỉ nhận các tải lên mới</string>
     <string name="scroll_down">Cuộn xuống dưới</string>
@@ -401,8 +401,8 @@
     <string name="navigation_bar">Thanh điều hướng</string>
     <string name="label_visibility">Khả năng hiển thị tên tab</string>
     <string name="always">Luôn hiển thị</string>
-    <string name="sync_with_source">Đồng bộ với mã nguồn</string>
-    <string name="queue">Hàng đợi</string>
+    <string name="sync_with_source">Đồng bộ với nguồn</string>
+    <string name="queue">Hàng chờ</string>
     <string name="reset">Đặt lại</string>
     <string name="restore_info">Chọn \'Khôi phục\' để kết hợp dữ liệu đã lưu với dữ liệu hiện tại của bạn.
 \nChọn \'Đặt lại\' để xóa và chỉ sử dụng dữ liệu đã lưu trong tệp.</string>
@@ -414,7 +414,7 @@
     <string name="daily">Hằng ngày</string>
     <string name="cleanup_leftover_downloads">Xóa các bản tải xuống còn sót lại (đã hủy, bị lỗi)</string>
     <string name="use_alarm_manager">Sử dụng AlarmManager thay cho WorkManager trong phần Lên lịch để tải xuống</string>
-    <string name="use_alarm_manager_summary">Hãy bật nếu WorkManager bị hạn chế bởi Nhà cung cấp thiết bị hoặc các công việc không được lên lịch chính xác</string>
+    <string name="use_alarm_manager_summary">Bật tính năng này nếu WorkManager bị hạn chế bởi Hãng thiết bị hoặc các tác vụ lên lịch không chính xác</string>
     <string name="use_item_url_not_playlist">Dùng URL mục thay cho URL danh sách phát</string>
     <string name="use_item_url_not_playlist_summary">Khi bật tuỳ chọn này, metadata của danh sách phát sẽ không được tích hợp vào tệp</string>
     <string name="recode_video_summary">Mã hóa tệp video thành định dạng được chỉ định</string>
