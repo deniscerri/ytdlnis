@@ -89,7 +89,7 @@ jobs:
         echo "COMMIT_SHA_TAG=$(jq -r 'map(select(.prerelease)) | first | .tag_name' <<< $(curl -s https://api.github.com/repos/deniscerri/ytdlnis/releases))" >> $GITHUB_ENV
     
     - run: gh release delete ${{ env.COMMIT_SHA_TAG }} --cleanup-tag
-      if: (env.COMMIT_SHA_TAG != 'null' && contains("Auto-Release", env.COMMIT_SHA_TAG))
+      if: (env.COMMIT_SHA_TAG != 'null' && contains('Auto-Release', env.COMMIT_SHA_TAG))
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
