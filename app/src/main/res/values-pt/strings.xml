@@ -420,4 +420,24 @@
     <string name="use_item_url_not_playlist">Utilizar URL do item e não o URL da lista de reprodução</string>
     <string name="recode_video">Recodificar vídeo</string>
     <string name="recode_video_summary">Converte o ficheiro para o formato especificado</string>
+    <string name="disable_write_info_json">Não guardar informações JSON</string>
+    <string name="disable_write_info_json_summary">Sempre que reiniciar/retomar uma descarga, yt-dlp irá descarregar os dados JSON dos servidores (Não recomendado).</string>
+    <string name="other_youtube_extractor_args">Outros argumentos do extrator YouTube</string>
+    <string name="socket_timeout">Tempo limite para \'socket\'</string>
+    <string name="socket_timeout_description">Tempo a aguardar antes de desistir (segundos)</string>
+    <string name="advanced">Avançado</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="playlist_as_album_summary">Se o álbum não possuir meta-dados, utilizar nome da lista de reprodução para esse efeito</string>
+    <string name="playlist_as_album">Nome da lista de reprodução como meta-dados do álbum</string>
+    <string name="preferred_command_template">Modelo preferencial para comando</string>
+    <string name="data_fetching_extra_command">Comandos extra para obtenção de dados</string>
+    <string name="cleanup_leftover_downloads">Limpar descargas pendentes (canceladas, com erros...)</string>
+    <string name="format_importance_note">Ajusta a relevância dos formatos. Esta ordem será utilizada se a aplicação obtiver os formatos via cartões de descarga e os selecione automaticamente!</string>
+    <string name="download_archive_folder">Pasta para as descargas</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (requer cookies)</string>
+    <string name="ytdlp_recommnedations">Recomendações YT-DLP Youtube (requer cookies)</string>
+    <string name="ytdlp_liked">Vídeos com \"Gosto\" YT-DLP YouTube (requer cookies)</string>
+    <string name="ytdlp_watch_history">Histórico de visualização YT-DLP Youtube (requer cookies)</string>
+    <string name="data_fetching_extra_command_summary">Ativar modelo de comandos para obtenção de dados</string>
+    <string name="data_fetching_extractor_youtube">Extrator para obtenção de dados (YouTube)</string>
 </resources>
