@@ -189,7 +189,7 @@
     <string name="download_over_metered_networks">Unduh melalui Jaringan yang Terukur</string>
     <string name="confirm_delete_cookies_desc">Hapus semua kuki, secara permanen</string>
     <string name="get_cookies">Dapatkan Kuki</string>
-    <string name="add_template_first">Kamu perlu membuat setidaknya satu templat perintah!</string>
+    <string name="add_template_first">Anda perlu membuat setidaknya satu templat perintah!</string>
     <string name="invert_selected">Balikkan Pilihan</string>
     <string name="metered_network_download_start_info">Unduhan akan dimulai setelah Anda terhubung ke jaringan yang tidak terukur</string>
     <string name="download_over_metered_networks_summary">Unduhan menggunakan jenis jaringan apa pun. Jika tidak, menunggu jaringan yang tidak terukur</string>
