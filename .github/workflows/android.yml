@@ -75,61 +75,61 @@ jobs:
           Repository: ${{ github.repository }}
           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
-      # Start Creating Pre-Release
-    - name: Start Pre-Release
-      uses: actions/checkout@v4
-      with:
-        persist-credentials: false
-    # returns null if no pre-release exists
-    - name: Get Commit SHA of Latest Pre-release
-      run: |
-        # Install Required Packages
-        sudo apt-get updated
-        sudo apt-get install -y curl jq
-        echo "COMMIT_SHA_TAG=$(jq -r 'map(select(.prerelease)) | first | .tag_name' <<< $(curl -s https://api.github.com/repos/deniscerri/ytdlnis/releases))" >> $GITHUB_ENV
-    
-    - run: gh release delete ${{ env.COMMIT_SHA_TAG }} --cleanup-tag
-      if: (env.COMMIT_SHA_TAG != 'null' && contains('Auto-Release', env.COMMIT_SHA_TAG))
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    # Make sure that an old ci that still runs on main doesn't recreate a prerelease
-    - name: Check Pullable Commits
-      id: check_commits
-      run: |
-        git fetch
-        CHANGES=$(git rev-list HEAD..origin/main --count)
-        echo "CHANGES=$CHANGES" >> $GITHUB_ENV
-
-    - name: Get Release Name
-      id: get_last_release_tag
-      run: |
-        LASTRELEASE=$(curl "https://api.github.com/repos/deniscerri/ytdlnis/releases/latest")
-        ISPRERELEASE=$(echo $LASTRELEASE | jq -r '.prerelease')
-        NEWRELEASENAME=$(echo $LASTRELEASE | jq -r '.name')
-        if ! $ISPRERELEASE; then NEWRELEASENAME=$(echo $NEWRELEASENAME'.1'); else NEWRELEASENAME=$(echo $NEWRELEASENAME | sed -E 's/(.*\.)([0-9]+)$/echo "\1$((\2 + 1))"/e'); fi
-        echo "NEWRELEASENAME=$NEWRELEASENAME" >> $GITHUB_ENV
-
-    - name: Get last commit SHA
-      id: last_commit
-      run: echo "COMMIT_SHA=$(git rev-parse HEAD | cut -c 1-8)" >> $GITHUB_ENV
-
-    - name: Get commmit date
-      id: commit_date
-      run: echo "COMMIT_DATE=$(git show -s --date=format:'%Y%m%d' --format=%cd HEAD)" >> $GITHUB_ENV
-
-
-    # Create a new pre-release, the other upload_binaries.yml will upload the binaries
-    # to this pre-release.
-    - name: Create Prerelease
-      if: github.ref.name == 'main' && env.CHANGES == '0'
-      uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
-      with:
-        name: ${{ env.NEWRELEASENAME }} [Auto-Release] [${{ env.COMMIT_DATE }}-${{ env.COMMIT_SHA }}]
-        tag_name: v${{ env.NEWRELEASENAME }}-beta
-        body: ${{ github.event.commits[0].message }}
-        prerelease: true
-        files: |
-          ${{ env.main_project_module }}/build/outputs/apk/release/*
-          ${{ env.main_project_module }}/build/outputs/apk/debug/*
+#      # Start Creating Pre-Release
+#    - name: Start Pre-Release
+#      uses: actions/checkout@v4
+#      with:
+#        persist-credentials: false
+#    # returns null if no pre-release exists
+#    - name: Get Commit SHA of Latest Pre-release
+#      run: |
+#        # Install Required Packages
+#        sudo apt-get updated
+#        sudo apt-get install -y curl jq
+#        echo "COMMIT_SHA_TAG=$(jq -r 'map(select(.prerelease)) | first | .tag_name' <<< $(curl -s https://api.github.com/repos/deniscerri/ytdlnis/releases))" >> $GITHUB_ENV
+#
+#    - run: gh release delete ${{ env.COMMIT_SHA_TAG }} --cleanup-tag
+#      if: (env.COMMIT_SHA_TAG != 'null' && contains('Auto-Release', env.COMMIT_SHA_TAG))
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#    # Make sure that an old ci that still runs on main doesn't recreate a prerelease
+#    - name: Check Pullable Commits
+#      id: check_commits
+#      run: |
+#        git fetch
+#        CHANGES=$(git rev-list HEAD..origin/main --count)
+#        echo "CHANGES=$CHANGES" >> $GITHUB_ENV
+#
+#    - name: Get Release Name
+#      id: get_last_release_tag
+#      run: |
+#        LASTRELEASE=$(curl "https://api.github.com/repos/deniscerri/ytdlnis/releases/latest")
+#        ISPRERELEASE=$(echo $LASTRELEASE | jq -r '.prerelease')
+#        NEWRELEASENAME=$(echo $LASTRELEASE | jq -r '.name')
+#        if ! $ISPRERELEASE; then NEWRELEASENAME=$(echo $NEWRELEASENAME'.1'); else NEWRELEASENAME=$(echo $NEWRELEASENAME | sed -E 's/(.*\.)([0-9]+)$/echo "\1$((\2 + 1))"/e'); fi
+#        echo "NEWRELEASENAME=$NEWRELEASENAME" >> $GITHUB_ENV
+#
+#    - name: Get last commit SHA
+#      id: last_commit
+#      run: echo "COMMIT_SHA=$(git rev-parse HEAD | cut -c 1-8)" >> $GITHUB_ENV
+#
+#    - name: Get commmit date
+#      id: commit_date
+#      run: echo "COMMIT_DATE=$(git show -s --date=format:'%Y%m%d' --format=%cd HEAD)" >> $GITHUB_ENV
+#
+#
+#    # Create a new pre-release, the other upload_binaries.yml will upload the binaries
+#    # to this pre-release.
+#    - name: Create Prerelease
+#      if: github.ref.name == 'main' && env.CHANGES == '0'
+#      uses: softprops/action-gh-release@4634c16e79c963813287e889244c50009e7f0981
+#      with:
+#        name: ${{ env.NEWRELEASENAME }} [Auto-Release] [${{ env.COMMIT_DATE }}-${{ env.COMMIT_SHA }}]
+#        tag_name: v${{ env.NEWRELEASENAME }}-beta
+#        body: ${{ github.event.commits[0].message }}
+#        prerelease: true
+#        files: |
+#          ${{ env.main_project_module }}/build/outputs/apk/release/*
+#          ${{ env.main_project_module }}/build/outputs/apk/debug/*
 
