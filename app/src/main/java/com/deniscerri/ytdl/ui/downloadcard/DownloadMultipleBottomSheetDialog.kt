@@ -86,6 +86,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var parentActivity: BaseActivity
 
     private lateinit var currentDownloadIDs: List<Long>
+    private lateinit var currentHistoryIDs: List<Long>
     private var processingItemsCount : Int = 0
 
     private lateinit var containerBtn : MenuItem
@@ -100,6 +101,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
+        currentHistoryIDs = arguments?.getLongArray("currentHistoryIDs")?.toList() ?: listOf()
         processingItemsCount = currentDownloadIDs.size
     }
 
@@ -225,6 +227,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
                         downloadViewModel.deleteAllWithID(currentDownloadIDs)
+                        historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                         val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis)
                         if (result.message.isNotBlank()){
                             lifecycleScope.launch {
@@ -248,6 +251,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
                     downloadViewModel.deleteAllWithID(currentDownloadIDs)
+                    historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     val result = downloadViewModel.queueProcessingDownloads()
                     if (result.message.isNotBlank()){
                         lifecycleScope.launch {
@@ -274,6 +278,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     withContext(Dispatchers.IO){
                         downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         downloadViewModel.moveProcessingToSavedCategory()
+                        historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     }
 
                     downloadViewModel.processingItemsJob?.cancel(CancellationException())

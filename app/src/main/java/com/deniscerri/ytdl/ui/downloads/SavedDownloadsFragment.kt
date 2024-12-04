@@ -118,6 +118,14 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
             popup.menuInflater.inflate(R.menu.saved_header_menu, popup.menu)
             popup.setOnMenuItemClickListener { m ->
                 when(m.itemId){
+                    R.id.download_all -> {
+                        lifecycleScope.launch {
+                            val ids = withContext(Dispatchers.IO) {
+                                downloadViewModel.getIDsByStatus(listOf(DownloadRepository.Status.Saved))
+                            }
+                            downloadViewModel.reQueueDownloadItems(ids)
+                        }
+                    }
                     R.id.delete_all -> {
                         UiUtil.showGenericDeleteAllDialog(requireContext()) {
                             downloadViewModel.deleteSaved()

@@ -1236,6 +1236,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dao.getURLsByStatus(list.map { it.toString() })
     }
 
+    fun getIDsByStatus(list: List<DownloadRepository.Status>) : List<Long> {
+        return dao.getIDsByStatus(list.map { it.toString() })
+    }
+
     fun getURLsByIds(list: List<Long>) : List<String> {
         return dao.getURLsByID(list)
     }

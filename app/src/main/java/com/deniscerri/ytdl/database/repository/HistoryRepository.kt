@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.database.repository
 
+import androidx.compose.runtime.internal.isLiveLiteralsEnabled
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -13,6 +14,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
+import java.io.File
 
 class HistoryRepository(private val historyDao: HistoryDao) {
     val items : Flow<List<HistoryItem>> = historyDao.getAllHistory()
@@ -111,6 +113,19 @@ class HistoryRepository(private val historyDao: HistoryDao) {
             }
         }
         historyDao.deleteAllByIDs(ids)
+    }
+
+    suspend fun deleteAllWithIDsCheckFiles(ids: List<Long>){
+        val idsToDelete = mutableListOf<Long>()
+        historyDao.getAllHistoryByIDs(ids).forEach { item ->
+            val filesNotPresent = item.downloadPath.all { !File(it).exists() && it.isNotBlank()}
+            if (filesNotPresent) {
+                idsToDelete.add(item.id)
+            }
+        }
+        if (idsToDelete.isNotEmpty()) {
+            historyDao.deleteAllByIDs(idsToDelete)
+        }
     }
 
     data class HistoryItemDownloadPaths(

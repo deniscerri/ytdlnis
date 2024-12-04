@@ -78,8 +78,8 @@ class YTDLPUtil(private val context: Context) {
 
         val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
         if (extraCommands.isNotBlank()){
-            addCommands(extraCommands.split(" ", "\t", "\n"))
-            //addConfig(extraCommands)
+            //addCommands(extraCommands.split(" ", "\t", "\n"))
+            addConfig(extraCommands)
         }
     }
 
@@ -1146,16 +1146,16 @@ class YTDLPUtil(private val context: Context) {
         }
 
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
-            request.addCommands(downloadItem.extraCommands.split(" ", "\t", "\n"))
-//
-//            val cache = File(FileUtil.getCachePath(context))
-//            cache.mkdirs()
-//            val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
-//            conf.createNewFile()
-//            conf.writeText(downloadItem.extraCommands)
-//            val tmp = mutableListOf<String>()
-//            tmp.addOption("--config-locations", conf.absolutePath)
-//            request.addCommands(tmp)
+            //request.addCommands(downloadItem.extraCommands.replace("\"", "").split(" ", "\t", "\n"))
+
+            val cache = File(FileUtil.getCachePath(context))
+            cache.mkdirs()
+            val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
+            conf.createNewFile()
+            conf.writeText(downloadItem.extraCommands)
+            val tmp = mutableListOf<String>()
+            tmp.addOption("--config-locations", conf.absolutePath)
+            request.addCommands(tmp)
         }
 
         return request

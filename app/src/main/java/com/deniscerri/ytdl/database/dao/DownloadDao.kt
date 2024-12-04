@@ -270,6 +270,9 @@ interface DownloadDao {
     @Query("Select url from downloads where status in (:status)")
     fun getURLsByStatus(status: List<String>) : List<String>
 
+    @Query("Select id from downloads where status in (:status)")
+    fun getIDsByStatus(status: List<String>) : List<Long>
+
     @Query("Select url from downloads where id in (:ids)")
     fun getURLsByID(ids: List<Long>) : List<String>
 

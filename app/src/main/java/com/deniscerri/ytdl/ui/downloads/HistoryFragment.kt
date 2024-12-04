@@ -500,19 +500,22 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     }
 
 
-    override fun onCardClick(itemID: Long, isPresent: Boolean) {
+    override fun onCardClick(itemID: Long, filePresent: Boolean) {
         lifecycleScope.launch {
             val item = withContext(Dispatchers.IO){
                 historyViewModel.getByID(itemID)
             }
 
-            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), isPresent,
+            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent,
                 removeItem = { it, deleteFile ->
                     historyViewModel.delete(it, deleteFile)
                 },
                 redownloadItem = {
                     val downloadItem = downloadViewModel.createDownloadItemFromHistory(it)
                     runBlocking{
+                        if (!filePresent) {
+                            historyViewModel.delete(it, false)
+                        }
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
                     historyViewModel.delete(it, false)
@@ -651,7 +654,9 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                             downloadViewModel.turnHistoryItemsToProcessingDownloads(selectedObjects, downloadNow = !showDownloadCard)
                             actionMode?.finish()
                             if (showDownloadCard){
-                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                                val bundle = Bundle()
+                                bundle.putLongArray("currentHistoryIDs", selectedObjects.toLongArray())
+                                findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
                             }
                         }
                     }

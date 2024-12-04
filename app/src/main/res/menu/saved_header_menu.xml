@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/download_all"
+        android:title="@string/download_all"
+        app:showAsAction="never"
+    />
+    <item
         android:id="@+id/delete_all"
         android:title="@string/clear_saved"
         app:showAsAction="never" />

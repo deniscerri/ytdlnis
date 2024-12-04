@@ -44,6 +44,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import java.io.File
+import java.security.MessageDigest
 import java.util.Locale
 
 
@@ -51,6 +52,7 @@ class DownloadWorker(
     private val context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
+    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         if (isStopped) return Result.success()
@@ -320,10 +322,12 @@ class DownloadWorker(
                                 }
                             }
 
-                            notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
-                            notificationUtil.createDownloadFinished(
-                                downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.isEmpty()) null else finalPaths, resources
-                            )
+                            withContext(Dispatchers.Main) {
+                                notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+                                notificationUtil.createDownloadFinished(
+                                    downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.isEmpty()) null else finalPaths, resources
+                                )
+                            }
 
 //                            if (wasQuickDownloaded && createResultItem){
 //                                runCatching {
@@ -352,6 +356,11 @@ class DownloadWorker(
                         }
                         if (this@DownloadWorker.isStopped) return@onFailure
                         if (it is YoutubeDL.CanceledException) return@onFailure
+                        if (it.message?.contains("JSONDecodeError") == true) {
+                            val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+                            val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
+                            FileUtil.deleteFile("${cachePath}/${infoJsonName}.info.json")
+                        }
 
                         if(it.message != null){
                             if (logDownloads){

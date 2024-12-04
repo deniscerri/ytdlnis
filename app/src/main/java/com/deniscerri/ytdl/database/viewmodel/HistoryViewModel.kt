@@ -178,6 +178,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.deleteAllWithIDs(ids, deleteFile)
     }
 
+    fun deleteAllWithIDsCheckFiles(ids: List<Long>) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteAllWithIDsCheckFiles(ids)
+    }
+
     fun getDownloadPathsFromIDs(ids: List<Long>) : List<List<String>> {
         return repository.getDownloadPathsFromIDs(ids)
     }
