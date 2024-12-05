@@ -158,6 +158,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
 
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
+            actionMode?.finish()
             runCatching {
                 withContext(Dispatchers.IO){
                     downloadViewModel.resetScheduleTimeForItemsAndStartDownload(listOf(itemID))
@@ -265,6 +266,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.scheduled_downloads_menu_context, menu)
             mode.title = "${adapter.getSelectedObjectsCount(totalSize)} ${getString(R.string.selected)}"
+            headerMenuBtn.isEnabled = false
             return true
         }
 
@@ -351,6 +353,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             adapter.clearCheckedItems()
+            headerMenuBtn.isEnabled = true
         }
 
         suspend fun getSelectedIDs() : List<Long>{

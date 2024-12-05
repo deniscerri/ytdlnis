@@ -148,6 +148,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
+            actionMode?.finish()
             val item = withContext(Dispatchers.IO){
                 downloadViewModel.getItemByID(itemID)
             }
@@ -237,6 +238,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.cancelled_downloads_menu_context, menu)
             mode.title = "${adapter.getSelectedObjectsCount(totalSize)} ${getString(R.string.selected)}"
+            headerMenuBtn.isEnabled = false
             return true
         }
 
@@ -334,6 +336,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             adapter.clearCheckedItems()
+            headerMenuBtn.isEnabled = true
         }
 
         suspend fun getSelectedIDs() : List<Long>{
