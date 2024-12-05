@@ -75,8 +75,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         ytdlVersion = findPreference("ytdl-version")
         ytdlSource = findPreference("ytdlp_source_label")
         ytdlpUtil = YTDLPUtil(requireContext())
-        setYTDLPVersion()
-
         ytdlSource?.apply {
             summary = preferences.getString("ytdlp_source_label", "")
             setOnPreferenceClickListener {
@@ -90,6 +88,13 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             }
         }
 
+        ytdlVersion?.apply {
+            summary = preferences.getString("ytdl-version", "")
+            setOnPreferenceClickListener {
+                initYTDLUpdate()
+                true
+            }
+        }
         ytdlVersion!!.setOnPreferenceClickListener {
             initYTDLUpdate()
             true

@@ -38,6 +38,7 @@ import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
@@ -49,6 +50,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.afollestad.materialdialogs.utils.MDUtil.textChanged
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
@@ -1060,8 +1062,12 @@ object UiUtil {
             withContext(Dispatchers.Main){
                 view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
                 chips.forEach {
-                    it.isChecked = editText.text.contains(it.text)
+                    it.isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() }
                     chipGroup!!.addView(it)
+                }
+
+                editText.textChanged {
+                    chipGroup.children.forEach { (it as Chip).isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() } }
                 }
             }
         }

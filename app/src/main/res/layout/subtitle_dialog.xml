@@ -1,69 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/subtitle"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/subtitle"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/subtitle_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:maxLines="10"
+            android:inputType="textMultiLine" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/subtitle_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="10"
-                android:inputType="textMultiLine" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+        android:id="@+id/suggested"
+        android:layout_width="match_parent"
+        android:textColor="?attr/colorPrimary"
+        android:textStyle="bold"
+        android:paddingVertical="15dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subtitle"
+        android:text="@string/suggested" />
 
-        <TextView
-            android:id="@+id/suggested"
-            android:layout_width="match_parent"
-            android:padding="10dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/subtitle"
-            android:text="@string/suggested" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintHeight_max="200dp"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/suggested">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintHeight_max="200dp"
-            android:paddingHorizontal="10dp"
-            app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/suggested">
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/subtitle_suggested_chipgroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:chipSpacingVertical="-7dp"
+        app:chipSpacingHorizontal="5dp"
+        app:selectionRequired="false"
+        app:singleSelection="false">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/subtitle_suggested_chipgroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:chipSpacingVertical="-7dp"
-                app:chipSpacingHorizontal="5dp"
-                app:selectionRequired="false"
-                app:singleSelection="false">
+    </com.google.android.material.chip.ChipGroup>
 
-            </com.google.android.material.chip.ChipGroup>
-
-        </ScrollView>
+    </ScrollView>
 
 
 
-    </LinearLayout>
-
-</androidx.core.widget.NestedScrollView>
+</LinearLayout>

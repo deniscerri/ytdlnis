@@ -1,0 +1,9 @@
+# What's Changed
+
+- Extra Command bug fixes
+- Added ability to quickly download all saved items from the top menu
+- Made app delete bad info json file if it failed with JSONDecodeError
+- Sorted the subtitles in the subtitle selection dialog, and they show which ones are selected correctly
+- Prevented app from calling yt-dlp every time on updating settings to check version
+
+Hopefully this release is stable enough since there will be some few changes in the next version

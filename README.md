@@ -41,7 +41,7 @@
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 
 
-### The links above are the only trusted sources of YTDLnis. Everything else is not related to me.
+### Only the links above are the only trusted sources of YTDLnis. Everything else is not related to me. YTDLnis doesn't have a personal website. 
 
 </div>
 
