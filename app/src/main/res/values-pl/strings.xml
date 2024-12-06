@@ -439,4 +439,6 @@
     <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (wymaga plików cookie)</string>
     <string name="ytdlp_recommnedations">YT-DLP Rekomendacje YouTube (wymaga plików cookie)</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor pobierania danych (YouTube)</string>
+    <string name="ytdlp_liked">YT-DLP Polubione filmy w serwisie Youtube (wymaga plików cookie)</string>
+    <string name="ytdlp_watch_history">Historia oglądania w YouTube YT-DLP (wymaga plików cookie)</string>
 </resources>
