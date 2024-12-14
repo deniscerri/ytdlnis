@@ -36,7 +36,7 @@
     <string name="search_hint">Cerca o inserisci URL</string>
     <string name="failed_download">Impossibile scaricare il file</string>
     <string name="download_notification_channel_description">Notifica che mostra l\'avanzamento del download di file audio e video</string>
-    <string name="download_notification_channel_name">Download dei files</string>
+    <string name="download_notification_channel_name">Download dei file</string>
     <string name="you_are_in_latest_version">Stai utilizzando l\'ultima versione</string>
     <string name="ytld_update_success">Nuova versione installata</string>
     <string name="ytdl_already_updating">Installazione nuova versione</string>
@@ -56,9 +56,9 @@
     <string name="concurrent_fragments">Frammenti Concorrenti</string>
     <string name="downloading">Download in corso</string>
     <string name="limit_rate">Tasso limite</string>
-    <string name="embed_thumb">Copertine per miniature</string>
+    <string name="embed_thumb">Miniature per le copertine</string>
     <string name="embed_thumb_summary">Usa la miniatura come copertina</string>
-    <string name="add_chapters">Capitoli in video</string>
+    <string name="add_chapters">Capitoli nei video</string>
     <string name="save_thumb_summary">Salva la miniatura nella cartella di download</string>
     <string name="audio_format">Formato audio</string>
     <string name="video_format">Formato video</string>
@@ -240,7 +240,7 @@
     <string name="access_all_directories_summary">Consenti il download dell\'app nelle directory limitate per impostazione predefinita</string>
     <string name="in_queue">In coda</string>
     <string name="download_over_metered_networks_summary">Scarica utilizzando qualsiasi tipo di rete. Altrimenti attende rete illimitata</string>
-    <string name="video_recommendations_summary">Ottieni i video YouTube consigliati sulla schermata principale da NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Ottieni i video YouTube consigliati sulla schermata principale</string>
     <string name="light">Chiaro</string>
     <string name="quick_download">Download rapido</string>
     <string name="misc">Miscellanea</string>
@@ -419,5 +419,20 @@
     <string name="recode_video">Ricodifica Video</string>
     <string name="recode_video_summary">Ricodifica il file video nel formato video specificato</string>
     <string name="process_downloads_background">"I download sono ancora in fase di caricamento. Continuare a elaborarli in background e iniziare il download? "</string>
-    <string name="data_fetching_extractor_youtube">Estrattore del recupero dei dati (Youtube)</string>
+    <string name="data_fetching_extractor_youtube">Estrattore di recupero dei dati (Youtube)</string>
+    <string name="data_fetching_extra_command_summary">Abilita i modelli di comando da utilizzare per il recupero dei dati come comandi aggiuntivi</string>
+    <string name="other_youtube_extractor_args">Altri argomenti di YouTube Extractor</string>
+    <string name="items">elemento(i)</string>
+    <string name="socket_timeout">Timeout Socket</string>
+    <string name="socket_timeout_description">Tempo di attesa prima di arrendersi, in secondi</string>
+    <string name="advanced">Avanzate</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="resume_all">Riprendi tutto</string>
+    <string name="pause_all">Pausa Tutti</string>
+    <string name="package_name">Nome Pacchetto</string>
+    <string name="preferred_command_template">Modello di comando preferito</string>
+    <string name="status">Stato</string>
+    <string name="deleted">Eliminato</string>
+    <string name="websites">Siti web</string>
+    <string name="data_fetching_extra_command">Comando extra per il recupero dei dati</string>
 </resources>
