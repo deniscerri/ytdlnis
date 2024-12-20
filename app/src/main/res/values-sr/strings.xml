@@ -133,7 +133,7 @@
     <string name="start">Почетак</string>
     <string name="backup_restore">Резервна копија и враћање података</string>
     <string name="you_are_going_to_delete">Брисање</string>
-    <string name="ignore">Игнориши</string>
+    <string name="ignore">Занемари</string>
     <string name="request_permission_desc">Овој апликацији су потребне дозволе за фајлове да би сачувала преузимања на уређају</string>
     <string name="write_description">Сачувај опис</string>
     <string name="preferred_search_engine_summary">Претраживач који се користи за претраге у апликацији</string>
@@ -292,7 +292,7 @@
     <string name="remember_download_type_summary">Изаберите последњи отворени тип преузимања за тренутни предмет</string>
     <string name="items_imported">Увезени предмети</string>
     <string name="restore_complete">Враћање апликације је завршено. Следећи предмети су враћени:</string>
-    <string name="ignore_battery_optimization">Игнориши оптимизацију батерије</string>
+    <string name="ignore_battery_optimization">Занемари оптимизацију батерије</string>
     <string name="format">Формат</string>
     <string name="format_filtering_hint">Сви предмети морају бити истог типа да бисте користили ову опцију</string>
     <string name="kill_app">Сруши апликацију</string>
