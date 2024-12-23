@@ -204,7 +204,7 @@
     <string name="copied_to_clipboard">הועתק ללוח העתקה</string>
     <string name="keep_cache_summary">אל תמחק קבצים זמניים לאחר סיום ההורדה</string>
     <string name="dont_ask_again">אל תשאל שוב</string>
-    <string name="video_recommendations_summary">קבל סרטונים מומלצים לדף הבית מהשרת של PIPED</string>
+    <string name="video_recommendations_summary">קבל סרטונים מומלצים לדף הבית</string>
     <string name="codec">מקודד</string>
     <string name="select_backup_categories">בחר קטגוריות גיבוי</string>
     <string name="downloads_running_try_later">הורדה פועלת. נסה שוב מאוחר יותר</string>
