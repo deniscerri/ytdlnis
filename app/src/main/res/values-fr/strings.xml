@@ -196,7 +196,7 @@
     <string name="freespace">Espace libre</string>
     <string name="downloads_running_try_later">Le programme de téléchargement est en cours d\'exécution. Réessayez plus tard</string>
     <string name="copied_to_clipboard">Copié Dans le Presse-Papiers</string>
-    <string name="video_recommendations_summary">Activer les vidéos YouTube recommandées sur l\'écran d\'accueil depuis NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Activer les vidéos YouTube recommandées sur l\'écran d\'accueil</string>
     <string name="codec">Codec</string>
     <string name="high_contrast">Contraste Élevé</string>
     <string name="save_subs">Enregistrer les sous-titres</string>
@@ -421,4 +421,10 @@
     <string name="process_downloads_background">"Les téléchargements sont toujours en cours de chargement. Voulez-vous continuer à les charger en arrière-plan et commencer à télécharger ? "</string>
     <string name="use_item_url_not_playlist_summary">Les métadonnées de la liste de lecture ne seront pas intégrées quand ceci est activé</string>
     <string name="use_item_url_not_playlist">Utiliser l\'URL de l\'élément au lieu de celui de la liste de lecture</string>
+    <string name="advanced">Avancé</string>
+    <string name="thumbnail">Miniature</string>
+    <string name="pause_all">Tout mettre en pause</string>
+    <string name="status">État</string>
+    <string name="deleted">Supprimé</string>
+    <string name="websites">Sites Web</string>
 </resources>
