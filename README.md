@@ -28,6 +28,14 @@
 
 <div align="center">
 
+**YTDLnis Website**
+
+[**Official website**](ytdlnis.org)
+
+**Note**:
+
+**"ytdlnis.com" and other similar sites are not owned by us. Such sites may be dangerous and may contain malicious download packages. We are not responsible for any damage to the device!**
+
 [![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 [![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
 [![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
