@@ -202,7 +202,7 @@
     <string name="all">Всичко</string>
     <string name="format_filter">Филтър на формат</string>
     <string name="format_smallest">Най-малък формат (по разделителна способност)</string>
-    <string name="multiple_download_card">Едновременни изтегляния</string>
+    <string name="multiple_download_card">Карта за едновременни изтегляния</string>
     <string name="generic">Общ</string>
     <string name="observe_sources">Източници за изтегляне</string>
     <string name="delete_all_sources">Изтриване на всички източници</string>
