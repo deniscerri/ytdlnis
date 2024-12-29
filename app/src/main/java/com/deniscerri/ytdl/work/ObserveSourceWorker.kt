@@ -15,6 +15,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
+import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -22,6 +23,7 @@ import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
+import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
@@ -113,8 +115,6 @@ class ObserveSourceWorker(
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
             downloadItem.url = it.url
-            downloadItem.title = it.title
-            downloadItem.author = it.author
             downloadItem.thumb = it.thumb
             downloadItem.status = DownloadRepository.Status.Queued.toString()
             downloadItem.playlistTitle = it.playlistTitle
@@ -137,9 +137,6 @@ class ObserveSourceWorker(
 
             //if scheduler is on
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
-            if (useScheduler && !alarmScheduler.isDuringTheScheduledTime()){
-                alarmScheduler.schedule()
-            }
 
 //            if (items.any { it.playlistTitle.isEmpty() } && items.size > 1){
 //                items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
@@ -184,33 +181,17 @@ class ObserveSourceWorker(
                 }
             }
 
-            if (!useScheduler || alarmScheduler.isDuringTheScheduledTime() || queuedItems.any { it.downloadStartTime > 0L } ){
+            if (useScheduler && !alarmScheduler.isDuringTheScheduledTime() && alarmScheduler.canSchedule()){
+                alarmScheduler.schedule()
+            }else {
                 downloadRepo.startDownloadWorker(queuedItems, context)
-
-                if(!useScheduler){
-                    queuedItems.filter { it.downloadStartTime != 0L || (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
-                        runCatching {
-                            resultsRepo.updateDownloadItem(it)?.apply {
-                                downloadRepo.updateWithoutUpsert(this)
-                            }
-                        }
-                    }
-                }else{
-                    queuedItems.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
-                        runCatching {
-                            resultsRepo.updateDownloadItem(it)?.apply {
-                                downloadRepo.updateWithoutUpsert(this)
-                            }
-                        }
-                    }
-                }
             }
 
             item.alreadyProcessedLinks.removeAll(items.map { it.url })
             item.alreadyProcessedLinks.addAll(items.map { it.url })
         }
 
-        item.runCount = item.runCount + 1
+        item.runCount += 1
 
         if (item.runCount > item.endsAfterCount && item.endsAfterCount > 0){
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED

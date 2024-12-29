@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <com.facebook.shimmer.ShimmerFrameLayout
@@ -104,6 +104,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:outlineProvider="none"
                 app:icon="@drawable/ic_clock"
                 android:contentDescription="@string/schedule"
                 app:layout_constraintBottom_toBottomOf="@id/bottomsheet_download_button"
@@ -117,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:text="@string/download"
+                android:outlineProvider="none"
                 app:icon="@drawable/ic_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -129,7 +131,8 @@
             android:id="@+id/download_tablayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:backgroundTint="@android:color/transparent"
             app:tabGravity="start"
             app:tabMinWidth="0dp"

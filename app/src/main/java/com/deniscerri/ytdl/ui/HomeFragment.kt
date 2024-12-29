@@ -15,6 +15,7 @@ import android.view.*
 import android.view.View.*
 import android.widget.*
 import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -41,8 +42,10 @@ import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
+import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -64,6 +67,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.net.URL
 import kotlin.collections.ArrayList
 
 
@@ -263,25 +268,37 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     if (res.errorMessage != null){
                         val isSingleQueryAndURL = queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()
 
-                        kotlin.runCatching { UiUtil.handleNoResults(requireActivity(), res.errorMessage!!, continueAnyway = isSingleQueryAndURL, continued = {
-                            lifecycleScope.launch {
-                                if (sharedPreferences!!.getBoolean("download_card", true)) {
-                                    withContext(Dispatchers.Main){
-                                        showSingleDownloadSheet(
-                                            resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                            type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
-                                            disableUpdateData = true
+                        kotlin.runCatching {
+                            UiUtil.handleNoResults(requireActivity(), res.errorMessage!!,
+                                url = if (isSingleQueryAndURL) queryList.first() else null,
+                                continueAnyway = isSingleQueryAndURL,
+                                continued = {
+                                    lifecycleScope.launch {
+                                    if (sharedPreferences!!.getBoolean("download_card", true)) {
+                                        withContext(Dispatchers.Main){
+                                            showSingleDownloadSheet(
+                                                resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                                type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
+                                                disableUpdateData = true
+                                            )
+                                        }
+                                    } else {
+                                        val downloadItem = downloadViewModel.createDownloadItemFromResult(
+                                            result = downloadViewModel.createEmptyResultItem(queryList.first()),
+                                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                                         )
+                                        downloadViewModel.queueDownloads(listOf(downloadItem))
                                     }
-                                } else {
-                                    val downloadItem = downloadViewModel.createDownloadItemFromResult(
-                                        result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                        givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                                    )
-                                    downloadViewModel.queueDownloads(listOf(downloadItem))
                                 }
-                            }
-                        }, closed = {}) }
+                                },
+                                cookieFetch = {
+                                    val myIntent = Intent(requireContext(), WebViewActivity::class.java)
+                                    myIntent.putExtra("url", "https://${URL(queryList.first()).host}")
+                                    cookiesFetchedResultLauncher.launch(myIntent)
+                                },
+                                closed = {}
+                            )
+                        }
                         resultViewModel.uiState.update {it.copy(errorMessage  = null) }
                     }
 
@@ -322,6 +339,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
         }
 
+    }
+
+    private var cookiesFetchedResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            sharedPreferences?.edit()?.putBoolean("use_cookies", true)?.apply()
+            startSearch()
+        }
     }
 
     override fun onResume() {
@@ -653,6 +679,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 resultViewModel.addSearchQueryToHistory(q)
             }
         }
+        startSearch()
+    }
+
+    private fun startSearch() {
         lifecycleScope.launch(Dispatchers.IO){
             resultViewModel.deleteAll()
             if(sharedPreferences!!.getBoolean("quick_download", false) || sharedPreferences!!.getString("preferred_download_type", "video") == "command"){

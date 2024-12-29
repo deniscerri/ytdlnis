@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -33,6 +34,7 @@ import android.widget.PopupMenu
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DimenRes
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
@@ -62,6 +64,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
@@ -94,6 +97,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -1633,9 +1637,7 @@ object UiUtil {
         }
     }
 
-
-    fun handleNoResults(context: Activity, message: String, continueAnyway: Boolean = false, continued: () -> Unit, closed: () -> Unit) {
-
+    fun handleNoResults(context: Activity, message: String, url: String? = null, continueAnyway: Boolean = false, continued: () -> Unit, closed: () -> Unit, cookieFetch: () -> Unit) {
         val errDialog = MaterialAlertDialogBuilder(context)
             .setTitle(R.string.no_results)
             .setMessage(message)
@@ -1646,11 +1648,18 @@ object UiUtil {
             d?.dismiss()
         }
 
-        if (continueAnyway) {
+        val cookieRelated = message.contains("cookie", true) || message.contains("sign in", true)
+        if (cookieRelated && !url.isNullOrBlank()) {
+            errDialog.setNeutralButton(context.getString(R.string.get_cookies)) { d: DialogInterface?, _ : Int ->
+                cookieFetch()
+            }
+        }else if (continueAnyway) {
             errDialog.setNeutralButton(R.string.continue_anyway) {d: DialogInterface?, _:Int ->
                 continued()
             }
         }
+
+
 
         errDialog.setOnCancelListener {
             closed()

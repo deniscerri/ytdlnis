@@ -39,12 +39,14 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
+import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
+import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
@@ -215,6 +217,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         repository.update(item)
+    }
+
+    suspend fun putToSaved(item: DownloadItem) {
+        item.status = DownloadRepository.Status.Saved.toString()
+        val id = repository.update(item)
+        if (item.needsDataUpdating()) {
+            continueUpdatingDataInBackground(listOf(id))
+        }
     }
 
     fun getItemByID(id: Long) : DownloadItem {
@@ -641,7 +651,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         //repository.insert(downloadItem)
                     }
                 }
-                repository.insertAll(toInsert)
+                toInsert.chunked(500).forEach { chunked ->
+                    repository.insertAll(chunked)
+                }
+
                 processingItems.emit(false)
             } catch (e: Exception) {
                 deleteProcessing()
@@ -678,7 +691,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         //repository.insert(downloadItem)
                     }
                 }
-                repository.insertAll(toInsert)
+                toInsert.chunked(500).forEach { chunked ->
+                    repository.insertAll(chunked)
+                }
                 processingItems.emit(false)
             }catch (e: Exception) {
                 deleteProcessing()
@@ -1031,27 +1046,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
             result.message = repository.startDownloadWorker(queued, context).getOrElse { "" }
 
-            if(!useScheduler){
-                CoroutineScope(Dispatchers.IO).launch {
-                    queued.filter { it.downloadStartTime != 0L && (it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty()) }.forEach {
-                        kotlin.runCatching {
-                            resultRepository.updateDownloadItem(it)?.apply {
-                                repository.updateWithoutUpsert(this)
-                            }
-                        }
-                    }
-                }
-            }else{
-                CoroutineScope(Dispatchers.IO).launch {
-                    queued.filter { it.title.isEmpty() || it.author.isEmpty() || it.thumb.isEmpty() }.forEach {
-                        kotlin.runCatching {
-                            resultRepository.updateDownloadItem(it)?.apply {
-                                repository.updateWithoutUpsert(this)
-                            }
-                        }
-                    }
-                }
-            }
+            val ids = queued.filter { it.needsDataUpdating() }.map { it.id }
+            continueUpdatingDataInBackground(ids)
         }
 
 
@@ -1178,6 +1174,25 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     .putInt("id", id)
                     .build())
             .addTag("updateFormats")
+            .build()
+        val context = App.instance
+        WorkManager.getInstance(context).enqueueUniqueWork(
+            id.toString(),
+            ExistingWorkPolicy.REPLACE,
+            workRequest
+        )
+
+    }
+
+    private fun continueUpdatingDataInBackground(ids: List<Long>){
+        val id = System.currentTimeMillis().toInt()
+        val workRequest = OneTimeWorkRequestBuilder<UpdateMultipleDownloadsDataWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putLongArray("ids", ids.toLongArray())
+                    .putInt("id", id)
+                    .build())
+            .addTag("updateData")
             .build()
         val context = App.instance
         WorkManager.getInstance(context).enqueueUniqueWork(

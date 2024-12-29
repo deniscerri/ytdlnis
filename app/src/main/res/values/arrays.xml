@@ -1462,6 +1462,7 @@
         <item>@string/language</item>
         <item>@string/codec</item>
         <item>@string/container</item>
+        <item>@string/file_size</item>
     </string-array>
 
     <string-array name="format_importance_audio_values">
@@ -1469,6 +1470,7 @@
         <item>language</item>
         <item>codec</item>
         <item>container</item>
+        <item>file_size</item>
     </string-array>
 
     <string-array name="format_importance_video">
@@ -1477,6 +1479,7 @@
         <item>@string/codec</item>
         <item>@string/no_audio</item>
         <item>@string/container</item>
+        <item>@string/file_size</item>
     </string-array>
 
     <string-array name="format_importance_video_values">
@@ -1485,6 +1488,7 @@
         <item>codec</item>
         <item>no_audio</item>
         <item>container</item>
+        <item>file_size</item>
     </string-array>
 
     <string-array name="label_visibility">

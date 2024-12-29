@@ -106,25 +106,37 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     suspend fun deleteAllWithIDs(ids: List<Long>, deleteFile: Boolean = false){
         if (deleteFile){
-            historyDao.getAllHistoryByIDs(ids).forEach { item ->
-                item.downloadPath.forEach {
-                    FileUtil.deleteFile(it)
+            ids.chunked(500).forEach { chunks ->
+                historyDao.getAllHistoryByIDs(chunks).forEach { item ->
+                    item.downloadPath.forEach {
+                        FileUtil.deleteFile(it)
+                    }
                 }
             }
+
         }
-        historyDao.deleteAllByIDs(ids)
+        ids.chunked(500).forEach { chunks ->
+            historyDao.deleteAllByIDs(chunks)
+        }
+
     }
 
     suspend fun deleteAllWithIDsCheckFiles(ids: List<Long>){
         val idsToDelete = mutableListOf<Long>()
-        historyDao.getAllHistoryByIDs(ids).forEach { item ->
-            val filesNotPresent = item.downloadPath.all { !File(it).exists() && it.isNotBlank()}
-            if (filesNotPresent) {
-                idsToDelete.add(item.id)
+        ids.chunked(500).forEach { chunks ->
+            historyDao.getAllHistoryByIDs(chunks).forEach { item ->
+                val filesNotPresent = item.downloadPath.all { !File(it).exists() && it.isNotBlank()}
+                if (filesNotPresent) {
+                    idsToDelete.add(item.id)
+                }
             }
         }
+
         if (idsToDelete.isNotEmpty()) {
-            historyDao.deleteAllByIDs(idsToDelete)
+            idsToDelete.chunked(500).forEach { chunked ->
+                historyDao.deleteAllByIDs(chunked)
+            }
+
         }
     }
 
@@ -133,8 +145,12 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     )
 
     fun getDownloadPathsFromIDs(ids: List<Long>) : List<List<String>> {
-        val res = historyDao.getDownloadPathsFromIDs(ids)
-        return res.map { it.downloadPath }
+        val res : MutableList<List<String>> = mutableListOf()
+        ids.chunked(500).forEach { chunks ->
+            val tmp = historyDao.getDownloadPathsFromIDs(chunks)
+            res.addAll(tmp.map { it.downloadPath })
+        }
+        return res
     }
 
     suspend fun deleteDuplicates(){

@@ -558,4 +558,9 @@ object Extensions {
             t4.second
         )
     }
+
+
+    fun DownloadItem.needsDataUpdating() : Boolean {
+        return this.title.isBlank() || this.author.isBlank() || this.thumb.isBlank()
+    }
 }

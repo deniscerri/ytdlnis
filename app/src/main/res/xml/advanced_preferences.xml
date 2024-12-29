@@ -33,7 +33,7 @@
             android:title="@string/data_fetching_extra_command" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/downloading">
+    <PreferenceCategory android:title="@string/downloading" android:enabled="false">
         <SwitchPreferenceCompat
             android:icon="@drawable/if_file_rename"
             android:key="disable_write_info_json"

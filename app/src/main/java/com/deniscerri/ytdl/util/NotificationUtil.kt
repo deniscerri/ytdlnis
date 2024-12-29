@@ -621,6 +621,63 @@ class NotificationUtil(var context: Context) {
     }
 
 
+    fun createDataUpdateNotification(): Notification {
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+        return notificationBuilder
+            .setContentTitle(resources.getString(R.string.updating_download_data))
+            .setOngoing(true)
+            .setCategory(Notification.CATEGORY_PROGRESS)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentText("")
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
+            .clearActions()
+            .build()
+    }
+
+    @SuppressLint("MissingPermission")
+    fun updateDataUpdateNotification(
+        workID: Int,
+        workTag: String,
+        progress: Int,
+        queue: Int,
+    ) {
+
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+        val contentText = """${queue - progress} ${resources.getString(R.string.items_left)}"""
+
+
+        val cancelIntent = Intent(context, CancelWorkReceiver::class.java)
+        cancelIntent.putExtra("workTag", workTag)
+        val cancelNotificationPendingIntent = PendingIntent.getBroadcast(
+            context,
+            workID,
+            cancelIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+
+        try {
+            notificationBuilder.setProgress(queue, progress, progress == 0)
+                .setContentTitle(resources.getString(R.string.updating_download_data))
+                .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+                .clearActions()
+                .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
+            notificationManager.notify(workID, notificationBuilder.build())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+
     @SuppressLint("MissingPermission")
     fun showFormatsUpdatedNotification(downloadIds: List<Long>) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)

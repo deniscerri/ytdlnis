@@ -19,7 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:paddingHorizontal="20dp"
             android:orientation="horizontal"
             android:paddingTop="20dp">
 
@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:text="@string/ok"
+                android:outlineProvider="none"
                 app:icon="@drawable/ic_check"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

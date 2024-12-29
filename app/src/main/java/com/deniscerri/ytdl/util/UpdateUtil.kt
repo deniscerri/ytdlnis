@@ -228,7 +228,7 @@ class UpdateUtil(var context: Context) {
 
             updatingYTDL = true
 
-            val channel = if (c.isNullOrBlank()) sharedPreferences.getString("ytdlp_source", "nightly") else c
+            val channel = if (c.isNullOrBlank()) sharedPreferences.getString("ytdlp_source", "stable") else c
             val request = YoutubeDLRequest(emptyList())
             request.addOption("--update-to", "${channel}@latest")
 

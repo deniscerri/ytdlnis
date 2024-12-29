@@ -98,7 +98,8 @@ class WebViewActivity : BaseActivity() {
                         }
                         cookieManager.removeAllCookies(null)
                         withContext(Dispatchers.Main) {
-                            onBackPressedDispatcher.onBackPressed()
+                            this@WebViewActivity.setResult(RESULT_OK)
+                            this@WebViewActivity.finish()
                         }
                     }
                 }

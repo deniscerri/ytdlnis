@@ -35,6 +35,7 @@ class FormatUtil(private var context: Context) {
         val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableSet()
         if (preferSmallerFormats) {
             orderPreferences.add("smallsize")
+            orderPreferences.remove("file_size")
         }
 
         return orderPreferences
@@ -46,6 +47,7 @@ class FormatUtil(private var context: Context) {
         val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableSet()
         if (preferSmallerFormats) {
             orderPreferences.add("smallsize")
+            orderPreferences.remove("file_size")
         }
 
         return orderPreferences
@@ -63,7 +65,10 @@ class FormatUtil(private var context: Context) {
                         "smallsize" -> {
                             (a.filesize).compareTo(b.filesize)
                         }
-
+                        "file_size" -> {
+                            val result = b.filesize.compareTo(a.filesize)
+                            result
+                        }
                         "id" -> {
                             (audioFormatIDPreference.contains(b.format_id)).compareTo(
                                 audioFormatIDPreference.contains(a.format_id)
@@ -117,6 +122,10 @@ class FormatUtil(private var context: Context) {
                     val comparison = when (order) {
                         "smallsize" -> {
                             val result = a.filesize.compareTo(b.filesize)
+                            result
+                        }
+                        "file_size" -> {
+                            val result = b.filesize.compareTo(a.filesize)
                             result
                         }
                         "id" -> {

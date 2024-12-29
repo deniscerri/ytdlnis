@@ -110,7 +110,7 @@ class YTDLPUtil(private val context: Context) {
             }
         }
         if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
-            request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+            request.setYoutubeExtractorArgs()
         }
 
         request.addOption("--flat-playlist")
@@ -250,7 +250,7 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeWatchLater() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.setYoutubeExtractorArgs()
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData()
@@ -269,7 +269,7 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeRecommendations() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.setYoutubeExtractorArgs()
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData()
@@ -288,7 +288,7 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeLikedVideos() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.setYoutubeExtractorArgs()
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData()
@@ -307,7 +307,7 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeWatchHistory() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+        request.setYoutubeExtractorArgs()
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData()
@@ -574,8 +574,11 @@ class YTDLPUtil(private val context: Context) {
                 }else{
                     addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }
+                addOption("-i")
             }
         }
+
+        request.addOption("--newline")
 
         val metadataCommands = mutableListOf<String>()
 
@@ -732,21 +735,22 @@ class YTDLPUtil(private val context: Context) {
             }
 
             if (downloadItem.url.isYoutubeURL()) {
-                request.addOption("--extractor-args", "youtube:${getYoutubeExtractorArgs()}")
+                request.setYoutubeExtractorArgs()
             }
 
-            if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
-                val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-                val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
-
-                val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
-                //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
-                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
-                    request.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
-                }else {
-                    request.addOption("--load-info-json", infoJsonFile.absolutePath)
-                }
-            }
+            //TODO REVIEW TO ADD THIS AGAIN LATER?
+//            if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
+//                val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+//                val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
+//
+//                val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
+//                //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
+//                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
+//                    request.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
+//                }else {
+//                    request.addOption("--load-info-json", infoJsonFile.absolutePath)
+//                }
+//            }
         }
 
         if (sharedPreferences.getString("prevent_duplicate_downloads", "")!! == "download_archive"){
@@ -856,7 +860,7 @@ class YTDLPUtil(private val context: Context) {
 
 
                         metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
-                        metadataCommands.addOption("--parse-metadata", "description:(?:Released on: )(?P<dscrptn_year>\\d{4})")
+                        metadataCommands.addOption("--parse-metadata", "description:(?:.+?Released\\ on\\s*(?P<dscrptn_year>\\d{4}))?")
                         metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (isPlaylistItem) {
@@ -1167,7 +1171,7 @@ class YTDLPUtil(private val context: Context) {
         return YoutubeDL.getInstance().execute(req).out.trim()
     }
 
-    private fun getYoutubeExtractorArgs() : String {
+    private fun YoutubeDLRequest.setYoutubeExtractorArgs() {
         val playerClient = sharedPreferences.getString("yt_player_client", "")!!.split(",").filter { it.isNotBlank() }.toMutableList()
         val extractorArgs = mutableListOf<String>()
 
@@ -1196,7 +1200,10 @@ class YTDLPUtil(private val context: Context) {
             extractorArgs.add(otherArgs)
         }
 
-        return extractorArgs.joinToString(";")
+        val extArgs = extractorArgs.joinToString(";")
+        if (extractorArgs.isNotEmpty()) {
+            this.addOption("--extractor-args", "youtube:${extArgs}")
+        }
     }
 
     private fun YoutubeDLRequest.addConfig(commandString: String) {

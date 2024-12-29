@@ -161,7 +161,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
             true
         }
         card.setOnClickListener {
-            if (checkedItems.size > 0) {
+            if (checkedItems.size > 0 || inverted) {
                 checkCard(card, item.id, position)
             } else {
                 onItemClickListener.onCardClick(item.id, finalFilePresent)

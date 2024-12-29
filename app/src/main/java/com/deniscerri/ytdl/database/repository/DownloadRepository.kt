@@ -106,8 +106,8 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         }
     }
 
-    suspend fun update(item: DownloadItem){
-        downloadDao.update(item)
+    suspend fun update(item: DownloadItem) : Long {
+        return downloadDao.update(item)
     }
 
     suspend fun updateAll(list: List<DownloadItem>) : List<DownloadItem> {

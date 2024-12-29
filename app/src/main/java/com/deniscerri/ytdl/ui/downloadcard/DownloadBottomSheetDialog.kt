@@ -1,8 +1,10 @@
 package com.deniscerri.ytdl.ui.downloadcard
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
@@ -16,6 +18,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -39,6 +42,7 @@ import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
 import com.deniscerri.ytdl.ui.BaseActivity
+import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -58,6 +62,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.net.URL
 
 
 class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
@@ -397,9 +402,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 lifecycleScope.launch(Dispatchers.IO){
-                    val item = getDownloadItem()
-                    item.status = DownloadRepository.Status.Saved.toString()
-                    downloadViewModel.updateDownload(item)
+                    downloadViewModel.putToSaved(getDownloadItem())
                     dismiss()
                 }
             }
@@ -468,16 +471,25 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-
-
-
-
         lifecycleScope.launch {
             resultViewModel.uiState.collectLatest { res ->
                 if (res.errorMessage != null){
-                    kotlin.runCatching { UiUtil.handleNoResults(requireActivity(), res.errorMessage!!, true, continued = {}, closed = {
-                        dismiss()
-                    }) }
+                    kotlin.runCatching {
+                        UiUtil.handleNoResults(requireActivity(), res.errorMessage!!,
+                            url = result.url,
+                            continueAnyway =  true,
+                            continued = {},
+                            cookieFetch = {
+                                val myIntent = Intent(requireContext(), WebViewActivity::class.java)
+                                myIntent.putExtra("url", "https://${URL(result.url).host}")
+                                cookiesFetchedResultLauncher.launch(myIntent)
+                            },
+                            closed = {
+                                dismiss()
+                            }
+                        )
+                    }
+
                     resultViewModel.uiState.update {it.copy(errorMessage  = null) }
                 }
             }
@@ -654,6 +666,16 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     }
                 }
             }
+        }
+    }
+
+    private var cookiesFetchedResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            sharedPreferences.edit().putBoolean("use_cookies", true).apply()
+            updateItem.isVisible = true
+            initUpdateData()
         }
     }
 

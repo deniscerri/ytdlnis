@@ -59,7 +59,8 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
             setOnPreferenceClickListener {
                 val pref = prefs.getString("format_importance_audio", itemValues.joinToString(","))!!
-                val itms = pref.split(",").map {
+                val prefArr = pref.split(",")
+                val itms = itemValues.sortedBy { prefArr.indexOf(it) }.map {
                     Pair(it, items[itemValues.indexOf(it)])
                 }.toMutableList()
 
@@ -80,7 +81,8 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
             setOnPreferenceClickListener {
                 val pref = prefs.getString("format_importance_video", itemValues.joinToString(","))!!
-                val itms = pref.split(",").map {
+                val prefArr = pref.split(",")
+                val itms = itemValues.sortedBy { prefArr.indexOf(it) }.map {
                     Pair(it, items[itemValues.indexOf(it)])
                 }.toMutableList()
 

@@ -236,7 +236,7 @@ class FormatSelectionBottomSheetDialog(
                                }
                            }.onFailure { err ->
                                withContext(Dispatchers.Main){
-                                   UiUtil.handleNoResults(requireActivity(), err.message.toString(), false, continued = {}, closed = {})
+                                   UiUtil.handleNoResults(requireActivity(), err.message.toString(), null, false, continued = {}, closed = {}, cookieFetch = {})
                                }
                            }
 

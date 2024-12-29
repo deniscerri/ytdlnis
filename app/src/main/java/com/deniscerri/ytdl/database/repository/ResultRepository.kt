@@ -12,6 +12,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
+import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
@@ -414,7 +415,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     suspend fun updateDownloadItem(
         downloadItem: DownloadItem
     ) : DownloadItem? {
-        if (downloadItem.title.isEmpty() || downloadItem.author.isEmpty() || downloadItem.thumb.isEmpty()){
+        if (downloadItem.needsDataUpdating()){
             runCatching {
                 val info = getResultsFromSource(downloadItem.url, resetResults = false, addToResults = false, singleItem = true).first()
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title
