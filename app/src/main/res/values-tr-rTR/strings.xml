@@ -10,7 +10,7 @@
     <string name="music_directory"> Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
     <string name="updating">Güncellemeler</string>
-    <string name="ytdl_update_hint">İndirirken sorun yaşıyorsanız faydalıdır</string>
+    <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız yararlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
     <string name="source_code">Kaynak Kodu</string>
     <string name="search_hint">Ara veya URL Ekle</string>
@@ -68,7 +68,7 @@
     <string name="api_key_summary">Youtube API\'sinden Video Önerileri</string>
     <string name="update_app_summary">Uygulama açıldığında yeni sürümleri duyur. Veriler resmi Github Deposundan alınır</string>
     <string name="downloads">İndirmeler</string>
-    <string name="remove_deleted">Silinmişleri Kaldır</string>
+    <string name="remove_deleted">Silinenleri Kaldır</string>
     <string name="remove_duplicates">Kopyaları Kaldır</string>
     <string name="sort_by">Sıralama</string>
     <item type="id" name="cancelDownload"/>
@@ -203,7 +203,7 @@
     <string name="ignore_battery_optimization">Pil Optimizasyonunu Yoksay</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">NewPipe Extractor\'dan önerilen YouTube videolarını ana ekranda al</string>
+    <string name="video_recommendations_summary">Ana ekranda önerilen YouTube videolarını alın</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanmak için tüm öğelerin aynı türde olması gerekir</string>
@@ -423,4 +423,25 @@
     <string name="playlist_as_album">Çalma Listesi Adını Albüm Meta Verisi Olarak Kullanma</string>
     <string name="playlist_as_album_summary">Albüm Meta Verileri mevcut değilse, bunun yerine çalma listesi adını kullanın</string>
     <string name="data_fetching_extractor_youtube">Veri Alma Çıkarıcı (YouTube)</string>
+    <string name="disable_write_info_json">Bilgi Yazma Json\'unu Devre Dışı Bırak</string>
+    <string name="disable_write_info_json_summary">(Önerilmez) Her indirmeyi yeniden başlattığınızda/devam ettirdiğinizde yt-dlp sunuculardan json verilerini yeniden indirecektir.</string>
+    <string name="other_youtube_extractor_args">Diğer YouTube Extractor Argümanları</string>
+    <string name="items">öğeler</string>
+    <string name="socket_timeout">Soket Zaman Aşımı</string>
+    <string name="advanced">Gelişmiş</string>
+    <string name="thumbnail">Küçük Resim</string>
+    <string name="pause_all">Tümünü Duraklat</string>
+    <string name="resume_all">Tümünü Devam Ettir</string>
+    <string name="package_name">Paket Adı</string>
+    <string name="preferred_command_template">Tercih Edilen Komut Şablonu</string>
+    <string name="status">Durum</string>
+    <string name="deleted">Silindi</string>
+    <string name="websites">Web Siteleri</string>
+    <string name="data_fetching_extra_command">Veri Alma Ek Komutu</string>
+    <string name="ytdlp_watch_later">YT-DLP YouTube Daha Sonra İzle ( çerezlere ihtiyaç duyar )</string>
+    <string name="ytdlp_recommnedations">YT-DLP YouTube Önerileri ( çerezlere ihtiyaç duyar )</string>
+    <string name="ytdlp_liked">YT-DLP YouTube Beğenilen Videolar ( çerezlere ihtiyaç duyar )</string>
+    <string name="ytdlp_watch_history">YT-DLP YouTube İzleme Geçmişi ( çerezlere ihtiyaç duyar )</string>
+    <string name="data_fetching_extra_command_summary">Veri alma için ek komutlar olarak kullanılacak Komut şablonları nı etkinleştirin</string>
+    <string name="socket_timeout_description">Vazgeçmeden önce bekleme zamanı, saniyeler</string>
 </resources>

@@ -105,8 +105,8 @@
     <string name="create_template">Създаване на шаблон</string>
     <string name="edit">Редактиране</string>
     <string name="shortcuts_desc">Използвайте често използвани команди за създаване на шаблони</string>
-    <string name="cancelled">Отменен</string>
-    <string name="errored">Грешка</string>
+    <string name="cancelled">Отменени</string>
+    <string name="errored">С грешки</string>
     <string name="copy_log">Копиране на log</string>
     <string name="error_restarting_download">Грешка при опит за рестартиране на изтеглянето</string>
     <string name="update_template">Актуализиране на шаблон</string>
@@ -171,8 +171,8 @@
     <string name="use_extra_commands">Добавяне на допълнителни команди</string>
     <string name="subtitle_format">Формат на субтитрите</string>
     <string name="hide_thumbnails">Скрити миниатюри</string>
-    <string name="saved">Запазено</string>
-    <string name="clear_saved">Изчистване на запазеното</string>
+    <string name="saved">Запазени</string>
+    <string name="clear_saved">Изчистване на запазени</string>
     <string name="save_for_later">Запазване на изтеглянето за по-късно?</string>
     <string name="write_description">Запазване на описанието</string>
     <string name="write_description_summary">Запазете описанието във файл</string>
@@ -202,7 +202,7 @@
     <string name="all">Всичко</string>
     <string name="format_filter">Филтър на формат</string>
     <string name="format_smallest">Най-малък формат (по разделителна способност)</string>
-    <string name="multiple_download_card">Multiple Download</string>
+    <string name="multiple_download_card">Карта за едновременни изтегляния</string>
     <string name="generic">Общ</string>
     <string name="observe_sources">Източници за изтегляне</string>
     <string name="delete_all_sources">Изтриване на всички източници</string>
@@ -381,8 +381,8 @@
     <string name="prevent_duplicate_downloads">Предотвратяване дублиране на изтегляния</string>
     <string name="move_bottom">Премести най-долу</string>
     <string name="move_top">Премести най-горе</string>
-    <string name="scheduled">Планирано</string>
-    <string name="clear_scheduled">Изчисти планираното</string>
+    <string name="scheduled">Планирани</string>
+    <string name="clear_scheduled">Изчисти планирани</string>
     <string name="disabled">Забранено</string>
     <string name="prevent_duplicate_config">Предотврати дублираща конфигурация</string>
     <string name="prevent_duplicate_url_type">URL &amp; Тип изтегляне</string>
@@ -418,7 +418,7 @@
     <string name="recode_video">Прекодиране на видео</string>
     <string name="recode_video_summary">Перекодира видео файлът в указания видеоформат</string>
     <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
-    <string name="use_item_url_not_playlist_summary">Метаданните на плейлиста няма да бъдат вградени, ако функция та е включена</string>
+    <string name="use_item_url_not_playlist_summary">Метаданните на плейлиста няма да бъдат вградени, ако функцията е включена</string>
     <string name="data_fetching_extractor_youtube">Екстрактор за извличане на данни (YouTube)</string>
     <string name="disable_write_info_json_summary">(Не се препоръчва) Всеки път, когато рестартирате/възобновите изтеглянето, yt-dlp ще изтегли отново json данни от сървърите.</string>
     <string name="disable_write_info_json">Деактивиране на запис на информация Json</string>

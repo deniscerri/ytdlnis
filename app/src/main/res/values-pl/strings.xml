@@ -93,7 +93,7 @@
     <string name="select_sponsorblock_filtering">Wybierz filtrowanie SponsorBlock</string>
     <string name="sponsorblock_nonmusic">Części niezwiązane z muzyką i nie na temat</string>
     <string name="sponsorblock_sponsors">Sponsorzy</string>
-    <string name="sponsorblock_outro">Wyjście</string>
+    <string name="sponsorblock_outro">Zakończenie</string>
     <string name="sponsorblock_promos">Promocje własne</string>
     <string name="sponsorblock_previews">Podglądy</string>
     <string name="sponsorblock_fillers">Wypełniacze</string>
@@ -341,7 +341,7 @@
     <string name="force_ipv4">Wymuś IPv4</string>
     <string name="copy_urls">Skopiuj adres URL</string>
     <string name="every">Każdy</string>
-    <string name="ends">Zakończenie</string>
+    <string name="ends">Kończy się</string>
     <string name="never">Nigdy</string>
     <string name="after">Po</string>
     <string name="occurrences">występowanie</string>
@@ -352,7 +352,7 @@
     <string name="delete_all_sources">Usuń wszystkie źródła</string>
     <string name="force_ipv4_desc">Nawiąż wszystkie połączenia za pomocą protokołu IPv4</string>
     <string name="set_time">Ustaw czas</string>
-    <string name="starts">Uruchom</string>
+    <string name="starts">Zaczyna się</string>
     <string name="retry_missing_downloads">Spróbuj pobrać ponownie</string>
     <string name="archive">Pobierz archiwum [Użyj pliku archiwum pobierania yt-dlp, aby zapobiec duplikatom pobierania zamiast wbudowanej funkcjonalności]</string>
     <string name="month">Miesiąc</string>
@@ -439,4 +439,6 @@
     <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (wymaga plików cookie)</string>
     <string name="ytdlp_recommnedations">YT-DLP Rekomendacje YouTube (wymaga plików cookie)</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor pobierania danych (YouTube)</string>
+    <string name="ytdlp_liked">YT-DLP Polubione filmy w serwisie Youtube (wymaga plików cookie)</string>
+    <string name="ytdlp_watch_history">Historia oglądania w YouTube YT-DLP (wymaga plików cookie)</string>
 </resources>
