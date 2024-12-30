@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="worst_quality">最差的品質</string>
-    <string name="best_quality">最佳的品質</string>
+    <string name="best_quality">最高品質</string>
     <string name="home">首頁</string>
     <string name="directories">資料夾</string>
     <string name="music_directory">音樂資料夾</string>
     <string name="video_directory">影片資料夾</string>
-    <string name="ytdl_update_hint">如果下載出現問題，可使用此功能</string>
+    <string name="ytdl_update_hint">如果下載時出現問題，可使用此功能</string>
     <string name="update_ytdl">安裝新版的 yt-dlp</string>
     <string name="about">關於</string>
     <string name="source_code">原始碼</string>
@@ -18,9 +18,9 @@
     <string name="Remove">移除</string>
     <string name="ok">確定</string>
     <string name="cancel">取消</string>
-    <string name="confirm_delete_history_desc">刪除完整的歷史紀錄，永久清除</string>
+    <string name="confirm_delete_history_desc">永久刪除全部歷史紀錄</string>
     <string name="confirm_delete_history">確認</string>
-    <string name="search_history_hint">從歷史記錄中搜尋</string>
+    <string name="search_history_hint">搜尋歷史記錄</string>
     <string name="no_results">沒有結果</string>
     <string name="downloading_update">正在下載新版本</string>
     <string name="audio">音訊</string>
@@ -207,7 +207,7 @@
     <string name="select_format">選擇格式</string>
     <string name="remove_search_history">清除搜尋紀錄</string>
     <string name="enable_mtime">啟用 mtime</string>
-    <string name="command_templates">命令範本</string>
+    <string name="command_templates">指令範本</string>
     <string name="terminal">終端機</string>
     <string name="format">格式</string>
     <string name="log_downloads_summary">為每個下載建立一個日誌檔案</string>
@@ -228,7 +228,7 @@
     <string name="split_by_chapters">依章節分割</string>
     <string name="confirm_delete_cookies_desc">永久刪除所有 Cookies</string>
     <string name="save_subs">儲存字幕</string>
-    <string name="video_recommendations_summary">從 NewPipe 提取器中在主畫面上獲取推薦的 YouTube 影片</string>
+    <string name="video_recommendations_summary">在主畫面中推薦YouTube影片</string>
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
     <string name="restart">重新啟動</string>
@@ -250,7 +250,7 @@
     <string name="format_filtering_hint">所有項目必須是相同類型才能使用此選項</string>
     <string name="light">亮色</string>
     <string name="pure_theme_summary">純黑/白主題</string>
-    <string name="accents">強調色</string>
+    <string name="accents">強調色（色彩主題）</string>
     <string name="monochrome">單色</string>
     <string name="red">紅色</string>
     <string name="incognito">隱身模式</string>
@@ -424,4 +424,21 @@
     <string name="thumbnail">縮圖</string>
     <string name="pause_all">暫停全部</string>
     <string name="websites">網站</string>
+    <string name="disable_write_info_json_summary">（不建議）每次重新啟動/恢復下載時，yt-dlp都會從伺服器重新下載 json 資料。</string>
+    <string name="disable_write_info_json">停用寫入資訊Json</string>
+    <string name="socket_timeout">Socket暫停</string>
+    <string name="resume_all">復原所有</string>
+    <string name="preferred_command_template">偏好指令範本</string>
+    <string name="package_name">封包名稱</string>
+    <string name="status">狀態</string>
+    <string name="deleted">刪除</string>
+    <string name="data_fetching_extra_command">額外數據抓取指令</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube 推薦（需要 cookie）</string>
+    <string name="ytdlp_liked">YT-DLP YouTube 喜歡的影片（需要cookie）</string>
+    <string name="other_youtube_extractor_args">其他YouTube擷取器變數</string>
+    <string name="items">項目</string>
+    <string name="socket_timeout_description">再等一下，不要放棄</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube 稍後觀看（需要 cookie）</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube 觀看歷史記錄（需要 cookie）</string>
+    <string name="data_fetching_extra_command_summary">啟用指令範本作為額外指令用於資料抓取</string>
 </resources>

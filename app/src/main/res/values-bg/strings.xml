@@ -33,7 +33,7 @@
     <string name="confirm_delete_history_desc">Изтрийте цялата история за постоянно</string>
     <string name="confirm_delete_history">Потвърдете</string>
     <string name="search_history_hint">Търсене в историята</string>
-    <string name="no_results">Без резултат</string>
+    <string name="no_results">Няма резултат</string>
     <string name="audio">Аудио</string>
     <string name="more">Още</string>
     <string name="command_directory">Папка с персонализирани команди</string>
@@ -326,7 +326,7 @@
     <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните взети от хранилището на Github</string>
     <string name="downloads">Изтегляния</string>
     <string name="remove_deleted">Премахване на изтритите</string>
-    <string name="remove_downloading">Отказ от изтеглянията</string>
+    <string name="remove_downloading">Отмяна на изтеглянията</string>
     <string name="remove_duplicates">Премахване на дубликати</string>
     <string name="incognito_summary">Изтегляне без добавяне към историята</string>
     <string name="configure_download">Настройка изтегляне</string>
