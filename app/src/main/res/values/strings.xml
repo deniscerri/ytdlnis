@@ -443,4 +443,5 @@
     <string name="ytdlp_recommnedations">YT-DLP Youtube Recommendations (needs cookies)</string>
     <string name="ytdlp_liked">YT-DLP Youtube Liked Videos (needs cookies)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube Watch History (needs cookies)</string>
+    <string name="no_check_certificates">Suppress HTTPS certificate validation</string>
 </resources>

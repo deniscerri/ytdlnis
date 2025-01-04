@@ -67,6 +67,13 @@
             android:key="use_cookies"
             app:title="@string/use_cookies" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/baseline_note_24"
+            android:key="no_check_certificates"
+            app:title="@string/no_check_certificates" />
+
         <EditTextPreference
             android:icon="@drawable/baseline_network_locked_24"
             app:key="proxy"

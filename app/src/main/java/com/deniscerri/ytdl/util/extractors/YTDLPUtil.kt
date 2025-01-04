@@ -76,6 +76,10 @@ class YTDLPUtil(private val context: Context) {
         }
         addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
+        if (sharedPreferences.getBoolean("no_check_certificates", true)) {
+            addOption("--no-check-certificates")
+        }
+
         val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
         if (extraCommands.isNotBlank()){
             //addCommands(extraCommands.split(" ", "\t", "\n"))
@@ -642,6 +646,10 @@ class YTDLPUtil(private val context: Context) {
             FileUtil.getCookieFile(context){
                 request.addOption("--cookies", it)
             }
+        }
+
+        if (sharedPreferences.getBoolean("no_check_certificates", true)) {
+            request.addOption("--no-check-certificates")
         }
 
         val proxy = sharedPreferences.getString("proxy", "")
