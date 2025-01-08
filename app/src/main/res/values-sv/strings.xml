@@ -440,4 +440,5 @@
     <string name="recode_video">Omkoda video</string>
     <string name="recode_video_summary">Kodar om videofilen till det angivna videoformatet</string>
     <string name="data_fetching_extractor_youtube">Datahämtningsextraktor (YouTube)</string>
+    <string name="no_check_certificates">Undertryck validering av HTTPS-certifikat</string>
 </resources>
