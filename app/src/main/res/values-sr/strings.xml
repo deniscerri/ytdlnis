@@ -441,4 +441,5 @@
     <string name="ytdlp_watch_history">YT-DLP YouTube „Историја гледања“ (потребни су колачићи)</string>
     <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни су колачићи)</string>
     <string name="ytdlp_watch_later">YT-DLP YouTube „За касније“ (потребни су колачићи)</string>
+    <string name="no_check_certificates">Поништи проверу HTTPS сертификата</string>
 </resources>

@@ -441,4 +441,5 @@
     <string name="ytdlp_liked">YT-DLP Youtube obľúbené videá (potrebuje cookies)</string>
     <string name="ytdlp_recommnedations">YT-DLP Youtube doporučené (potrebuje cookies)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube história sledovania (potrebuje cookies)</string>
+    <string name="no_check_certificates">Zakázať overovanie certifikátu HTTPS</string>
 </resources>
