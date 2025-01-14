@@ -15,5 +15,7 @@ data class VideoPreferences (
     var audioFormatIDs : ArrayList<String> = arrayListOf(),
     var removeAudio: Boolean = false,
     var alsoDownloadAsAudio: Boolean = false,
-    var recodeVideo: Boolean = false
+    var recodeVideo: Boolean = false,
+    var liveFromStart: Boolean = false,
+    var waitForVideoMinutes: Int = 0
 ) : Parcelable

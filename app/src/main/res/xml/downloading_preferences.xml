@@ -69,7 +69,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
+            app:defaultValue="false"
             android:icon="@drawable/baseline_note_24"
             android:key="no_check_certificates"
             app:title="@string/no_check_certificates" />

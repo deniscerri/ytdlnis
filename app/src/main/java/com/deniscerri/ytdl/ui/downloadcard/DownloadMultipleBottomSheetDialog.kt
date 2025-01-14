@@ -692,7 +692,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                                             val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
                                             bottomSheetDialog.show(parentFragmentManager, "extraCommands")
-                                        }
+                                        },
+                                        waitForVideo = {b, i -> },
+                                        liveFromStart = {}
                                     )
 
                                     bottomSheet.show()

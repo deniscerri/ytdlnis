@@ -38,6 +38,11 @@ class FormatUtil(private var context: Context) {
             orderPreferences.remove("file_size")
         }
 
+        val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
+        if(preferContainerOverCodec) {
+            orderPreferences.remove("codec")
+        }
+
         return orderPreferences
     }
 

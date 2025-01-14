@@ -444,4 +444,11 @@
     <string name="ytdlp_liked">YT-DLP Youtube Liked Videos (needs cookies)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube Watch History (needs cookies)</string>
     <string name="no_check_certificates">Suppress HTTPS certificate validation</string>
+    <string name="live_stream">Live Stream</string>
+    <string name="live_from_start">Live From Start</string>
+    <string name="wait_for_video">Wait For Video</string>
+    <string name="retry_every">Retry Every</string>
+    <string name="minutes">Minutes</string>
+    <string name="prefer_container_over_codec_audio">Prefer Container over Codec For Audio Downloads</string>
+    <string name="prefer_container_over_codec_audio_summary">With this enabled, the preferred audio codec preference will be ignored and only container will change</string>
 </resources>

@@ -563,4 +563,13 @@ object Extensions {
     fun DownloadItem.needsDataUpdating() : Boolean {
         return this.title.isBlank() || this.author.isBlank() || this.thumb.isBlank()
     }
+
+    fun String.applyFilenameTemplateForCuts() : String {
+        return if(this.isBlank()) {
+            "%(section_title&{} - |)s%(title).170B"
+        }else {
+            if(this.startsWith("%(section_title&{} - |)s")) this
+            else "%(section_title&{} - |)s$this"
+        }
+    }
 }

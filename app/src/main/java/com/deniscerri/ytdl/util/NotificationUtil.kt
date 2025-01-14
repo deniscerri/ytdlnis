@@ -627,7 +627,7 @@ class NotificationUtil(var context: Context) {
             .setContentTitle(resources.getString(R.string.updating_download_data))
             .setOngoing(true)
             .setCategory(Notification.CATEGORY_PROGRESS)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,

@@ -98,6 +98,65 @@
             app:summary="@string/playlist_as_album_summary"
             app:title="@string/playlist_as_album" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_music"
+            app:key="use_audio_quality"
+            app:title="@string/custom_audio_quality" />
+
+        <SeekBarPreference
+            android:defaultValue="0"
+            android:max="10"
+            android:dependency="use_audio_quality"
+            app:key="audio_quality"
+            app:min="0"
+            app:showSeekBarValue="true"
+            app:summary="@string/audio_quality_summary"
+            app:title="@string/audio_quality" />
+
+        <ListPreference
+            app:icon="@drawable/ic_language"
+            app:dialogTitle="@string/preferred_audio_language"
+            app:entries="@array/language_names"
+            app:entryValues="@array/language_codes"
+            app:key="audio_language"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/preferred_audio_language" />
+
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/audio_codec"
+            android:entryValues="@array/audio_codec_values"
+            android:icon="@drawable/ic_code"
+            app:useSimpleSummaryProvider="true"
+            app:key="audio_codec"
+            app:title="@string/preferred_audio_codec" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_format"
+            app:key="prefer_container_over_codec_audio"
+            android:summary="@string/prefer_container_over_codec_audio_summary"
+            app:title="@string/prefer_container_over_codec_audio" />
+
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/audio_containers"
+            android:entryValues="@array/audio_containers_values"
+            android:icon="@drawable/ic_code"
+            app:key="audio_format"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/audio_format" />
+
+        <EditTextPreference
+            app:key="format_id_audio"
+            app:defaultValue=""
+            app:icon="@drawable/ic_format_id"
+            app:summary="@string/preferred_format_id_summary"
+            app:title="@string/preferred_format_id" />
+
     </PreferenceCategory>
 
 
@@ -167,17 +226,8 @@
             app:key="add_chapters"
             app:summary="@string/add_chapters_summary"
             app:title="@string/add_chapters" />
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/format">
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/audio_containers"
-            android:entryValues="@array/audio_containers_values"
-            android:icon="@drawable/ic_code"
-            app:key="audio_format"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/audio_format" />
+
 
         <ListPreference
             android:defaultValue=""
@@ -206,41 +256,7 @@
             app:key="video_codec"
             app:title="@string/preferred_video_codec" />
 
-        <ListPreference
-            android:defaultValue=""
-            android:entries="@array/audio_codec"
-            android:entryValues="@array/audio_codec_values"
-            android:icon="@drawable/ic_code"
-            app:useSimpleSummaryProvider="true"
-            app:key="audio_codec"
-            app:title="@string/preferred_audio_codec" />
 
-        <ListPreference
-            app:icon="@drawable/ic_language"
-            app:dialogTitle="@string/preferred_audio_language"
-            app:entries="@array/language_names"
-            app:entryValues="@array/language_codes"
-            app:key="audio_language"
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/preferred_audio_language" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_music"
-            app:key="use_audio_quality"
-            app:title="@string/custom_audio_quality" />
-
-
-        <SeekBarPreference
-            android:defaultValue="0"
-            android:max="10"
-            android:dependency="use_audio_quality"
-            app:key="audio_quality"
-            app:min="0"
-            app:showSeekBarValue="true"
-            app:summary="@string/audio_quality_summary"
-            app:title="@string/audio_quality" />
 
         <ListPreference
             android:defaultValue="best"
@@ -258,12 +274,9 @@
             app:summary="@string/preferred_format_id_summary"
             app:title="@string/preferred_format_id" />
 
-        <EditTextPreference
-            app:key="format_id_audio"
-            app:defaultValue=""
-            app:icon="@drawable/ic_format_id"
-            app:summary="@string/preferred_format_id_summary"
-            app:title="@string/preferred_format_id" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/format">
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
@@ -274,12 +287,12 @@
 
         <Preference
             android:icon="@drawable/ic_format"
-            android:key="format_importance_audio"
+            android:key="format_importance_video"
             app:title="@string/format_importance" />
 
         <Preference
             android:icon="@drawable/ic_format"
-            android:key="format_importance_video"
+            android:key="format_importance_audio"
             app:title="@string/format_importance" />
 
     </PreferenceCategory>

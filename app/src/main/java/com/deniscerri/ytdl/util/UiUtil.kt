@@ -1205,7 +1205,9 @@ object UiUtil {
         removeAudioClicked: (Boolean) -> Unit,
         recodeVideoClicked: (Boolean) -> Unit,
         alsoDownloadAsAudioClicked: (Boolean) -> Unit,
-        extraCommandsClicked: () -> Unit
+        extraCommandsClicked: () -> Unit,
+        liveFromStart: (Boolean) -> Unit,
+        waitForVideo: (Boolean, Int) -> Unit,
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -1341,6 +1343,64 @@ object UiUtil {
             removeAudio.setOnCheckedChangeListener { _, _ ->
                 removeAudioClicked(removeAudio.isChecked)
             }
+        }
+
+        val adjustLiveStream = view.findViewById<Chip>(R.id.adjust_live_stream)
+        if (items.size == 1) {
+            adjustLiveStream.setOnClickListener {
+                val adjustLiveStreamView = context.layoutInflater.inflate(R.layout.livestream_download_preferences_dialog, null)
+                val liveFromStartSwitch = adjustLiveStreamView.findViewById<MaterialSwitch>(R.id.live_from_start)
+                val waitForVideoSwitch = adjustLiveStreamView.findViewById<MaterialSwitch>(R.id.wait_for_video)
+                val waitForVideoSettings = adjustLiveStreamView.findViewById<View>(R.id.wait_for_video_settings)
+
+                val waitEveryNr = adjustLiveStreamView.findViewById<TextInputLayout>(R.id.every_nr).editText!!
+
+                val item = items.first()
+
+                item.videoPreferences.waitForVideoMinutes.apply {
+                    if(this > 0) {
+                        waitEveryNr.setText(this.toString())
+                    }
+                }
+
+                waitEveryNr.doOnTextChanged { text, start, before, count ->
+                    var number = 1
+                    kotlin.runCatching {
+                        number = Integer.parseInt(waitEveryNr.text.toString())
+                    }
+
+                    waitForVideo(true, number)
+                }
+
+                liveFromStartSwitch.setOnCheckedChangeListener { compoundButton, b ->
+                    liveFromStart(b)
+                }
+
+                waitForVideoSwitch.setOnCheckedChangeListener { compoundButton, b ->
+                    waitForVideoSettings.isVisible = b
+
+                    var number = 1
+                    kotlin.runCatching {
+                        number = Integer.parseInt(waitEveryNr.text.toString())
+                    }
+
+                    waitForVideo(b, number)
+                }
+
+                liveFromStartSwitch.isChecked = item.videoPreferences.liveFromStart
+                waitForVideoSwitch.isChecked = item.videoPreferences.waitForVideoMinutes > 0
+                waitForVideoSettings.isVisible = waitForVideoSwitch.isChecked
+
+                val adjustLiveStreamDialog = MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.live_stream))
+                    .setView(adjustLiveStreamView)
+                    .setIcon(R.drawable.baseline_live_tv_24)
+                    .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+                adjustLiveStreamDialog.show()
+            }
+        }else {
+            adjustLiveStream.isVisible = false
         }
 
         val recodeVideo = view.findViewById<Chip>(R.id.recode_video)

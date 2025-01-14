@@ -76,7 +76,7 @@ class YTDLPUtil(private val context: Context) {
         }
         addOption("-P", FileUtil.getCachePath(context) + "/tmp")
 
-        if (sharedPreferences.getBoolean("no_check_certificates", true)) {
+        if (sharedPreferences.getBoolean("no_check_certificates", false)) {
             addOption("--no-check-certificates")
         }
 
@@ -594,7 +594,9 @@ class YTDLPUtil(private val context: Context) {
 
         val downDir : File
         val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
-        if (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite){
+        val writtenPath = type == DownloadViewModel.Type.command && downloadItem.format.format_note.contains("-P ")
+
+        if (writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite)){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
             request.addOption("--no-quiet")
             request.addOption("--no-simulate")
@@ -648,7 +650,7 @@ class YTDLPUtil(private val context: Context) {
             }
         }
 
-        if (sharedPreferences.getBoolean("no_check_certificates", true)) {
+        if (sharedPreferences.getBoolean("no_check_certificates", false)) {
             request.addOption("--no-check-certificates")
         }
 
@@ -671,7 +673,7 @@ class YTDLPUtil(private val context: Context) {
                 request.addOption("--no-part")
             }
 
-            request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
+            request.addOption("--trim-filenames",  254/* - downDir.absolutePath.length*/)
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -705,13 +707,13 @@ class YTDLPUtil(private val context: Context) {
             }
 
             if(downloadItem.title.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "title", ".+", downloadItem.title.take(180))
+                metadataCommands.addOption("--replace-in-metadata", "title", ".+", downloadItem.title)
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
 
             if (downloadItem.author.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "uploader", ".+", downloadItem.author.take(30))
+                metadataCommands.addOption("--replace-in-metadata", "uploader", ".+", downloadItem.author)
                 metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
@@ -724,11 +726,7 @@ class YTDLPUtil(private val context: Context) {
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
-                filenameTemplate = if (filenameTemplate.isBlank()){
-                    "%(section_title&{} |)s%(title).170B"
-                }else{
-                    "%(section_title&{} |)s $filenameTemplate"
-                }
+
                 if (downloadItem.downloadSections.split(";").size > 1){
                     filenameTemplate = "%(autonumber)d. $filenameTemplate [%(section_start>%H∶%M∶%S)s]"
                 }
@@ -806,35 +804,53 @@ class YTDLPUtil(private val context: Context) {
                 }
                 request.addOption("-x")
 
-                val formatSorting = StringBuilder("hasaud")
-
-                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
-                    formatSorting.append(",+br,+res,+fps")
-                }
-
-                if (abrSort.isNotBlank()){
-                    formatSorting.append(",abr:${abrSort}")
-                }
-
-                formatSorting.append(",size")
-
-                if (aCodecPref.isNotBlank()){
-                    formatSorting.append(",acodec:$aCodecPref")
-                }
-
-                if(ext.isNotBlank()){
-                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
-                        request.addOption("--audio-format", ext)
-                        formatSorting.append(",aext:$ext")
+                val formatSorting = mutableListOf("hasaud")
+                val formatImportance = formatUtil.getAudioFormatImportance()
+                for(order in formatImportance) {
+                    when(order) {
+                        "file_size" -> {
+                            formatSorting.add("size")
+                        }
+                        "language" -> {
+                            if (preferredLanguage.isNotBlank()) {
+                                formatSorting.add("lang:${preferredLanguage}")
+                            }
+                        }
+                        "codec" -> {
+                            if (aCodecPref.isNotBlank()){
+                                formatSorting.add("acodec:$aCodecPref")
+                            }
+                        }
+                        "container" -> {
+                            if(ext.isNotBlank()){
+                                if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
+                                    request.addOption("--audio-format", ext)
+                                    formatSorting.add("aext:$ext")
+                                }
+                            }
+                        }
                     }
                 }
 
-                if (preferredLanguage.isNotBlank()) {
-                    formatSorting.append(",lang:${preferredLanguage}")
+
+                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
+                    if(formatSorting.contains("size")) {
+                        formatSorting.remove("size")
+                    }
+                    formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
                 }
 
+                if (abrSort.isNotBlank()){
+                    formatSorting.add(0, "abr:${abrSort}")
+                }
+
+                if(formatSorting.isNotEmpty()) {
+                    request.addOption("-S", formatSorting.joinToString(","))
+                }
+
+
                 request.addOption("-P", downDir.absolutePath)
-                request.addOption("-S", formatSorting.toString())
+
 
                 val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
                 if (downloadItem.author.isBlank()) {
@@ -868,7 +884,7 @@ class YTDLPUtil(private val context: Context) {
 
 
                         metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
-                        metadataCommands.addOption("--parse-metadata", "description:(?:.+?Released\\ on\\s*(?P<dscrptn_year>\\d{4}))?")
+                        metadataCommands.addOption("--parse-metadata", "description:(?:.+?Released\\ on\\s*:\\s*(?P<dscrptn_year>\\d{4}))?")
                         metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (isPlaylistItem) {
@@ -1077,24 +1093,52 @@ class YTDLPUtil(private val context: Context) {
 
                 val preferredLanguage = sharedPreferences.getString("audio_language","")!!
 
-                StringBuilder().apply {
-                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
-                        append(",+br,+res,+fps")
-                    }else if (hasGenericResulutionFormat.isNotBlank()) {
-                        append(",res:${hasGenericResulutionFormat}")
-                    }
-                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) append(",+size")
-                    if (vCodecPref.isNotBlank()) append(",vcodec:$vCodecPref")
-                    if (aCodecPref.isNotBlank()) append(",acodec:$aCodecPref")
-                    if (cont.isNotBlank()) append(",vext:$cont")
-                    if (acont.isNotBlank()) append(",aext:$acont")
-                    if (abrSort.isNotBlank()) append(",abr~${abrSort}")
-                    if (preferredLanguage.isNotBlank()) append(",lang:${preferredLanguage}")
-                    if (this.isNotBlank()){
-                        request.addOption("-S", "+hasaud$this")
+                val formatImportance = formatUtil.getVideoFormatImportance()
+                val formatSorting = mutableListOf<String>()
+
+                for(order in formatImportance) {
+                    when(order) {
+                        "no_audio" -> {
+                            formatSorting.add("+hasaud")
+                        }
+                        "codec" -> {
+                            if (vCodecPref.isNotBlank()) formatSorting.add("vcodec:$vCodecPref")
+                            if (aCodecPref.isNotBlank()) formatSorting.add("acodec:$aCodecPref")
+                        }
+                        "resolution" -> {
+                            if (hasGenericResulutionFormat.isNotBlank()) {
+                                formatSorting.add("res:${hasGenericResulutionFormat}")
+                            }
+                        }
+                        "container" -> {
+                            if (cont.isNotBlank()) formatSorting.add("vext:$cont")
+                            if (acont.isNotBlank()) formatSorting.add("aext:$acont")
+                        }
                     }
                 }
 
+                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
+                    formatSorting.addAll(0, listOf("+br","+res","+fps"))
+                }else {
+                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                        formatSorting.add(0, "+size")
+                    }else {
+                        formatSorting.add(0, "size")
+                    }
+                }
+
+
+                if (abrSort.isNotBlank()) {
+                    formatSorting.add("abr~${abrSort}")
+                }
+
+                if (preferredLanguage.isNotBlank()) {
+                    formatSorting.add("lang:${preferredLanguage}")
+                }
+
+                if (formatSorting.isNotEmpty()) {
+                    request.addOption("-S", formatSorting.joinToString(","))
+                }
 
                 request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
 
@@ -1138,9 +1182,22 @@ class YTDLPUtil(private val context: Context) {
                     }
                 }
 
+                if (downloadItem.videoPreferences.liveFromStart) {
+                    request.addOption("--live-from-start")
+                }
+
+                downloadItem.videoPreferences.waitForVideoMinutes.apply {
+                    if (this > 0) {
+                        request.addOption("--wait-for-video", this * 60)
+                    }
+                }
+
             }
             DownloadViewModel.Type.command -> {
-                request.addOption("-P", downDir.absolutePath)
+                if (!writtenPath) {
+                    request.addOption("-P", downDir.absolutePath)
+                }
+
                 request.addOption(
                     "--config-locations",
                     File(context.cacheDir.absolutePath + "/config[${downloadItem.id}].txt").apply {

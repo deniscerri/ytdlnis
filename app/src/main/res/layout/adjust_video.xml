@@ -110,12 +110,19 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/recode_video"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:id="@+id/adjust_live_stream"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/recode_video" />
+                android:gravity="center"
+                android:text="@string/live_stream"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/baseline_live_tv_24"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </com.google.android.material.chip.ChipGroup>
@@ -161,6 +168,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/recode_video"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/recode_video" />
 
         </com.google.android.material.chip.ChipGroup>
 

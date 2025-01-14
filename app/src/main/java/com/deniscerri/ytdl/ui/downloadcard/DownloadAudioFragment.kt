@@ -31,6 +31,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -335,6 +336,13 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                             cutValueChanged = {
                                 downloadItem.downloadSections = it
                                 UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, showSize = downloadItem.downloadSections.isEmpty())
+
+                                if (it.isNotBlank()){
+                                    downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.applyFilenameTemplateForCuts()
+                                }else{
+                                    downloadItem.customFileNameTemplate = sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")!!
+                                }
+
                             },
                             extraCommandsClicked = {
                                 val callback = object : ExtraCommandsListener {

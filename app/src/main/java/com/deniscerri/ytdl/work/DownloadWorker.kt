@@ -156,7 +156,8 @@ class DownloadWorker(
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 CoroutineScope(Dispatchers.IO).launch {
-                    val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
+                    val writtenPath = downloadItem.format.format_note.contains("-P ")
+                    val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
                     val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
                     downloadItem.status = DownloadRepository.Status.Active.toString()

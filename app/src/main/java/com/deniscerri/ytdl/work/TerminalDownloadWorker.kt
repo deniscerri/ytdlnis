@@ -82,13 +82,20 @@ class TerminalDownloadWorker(
         }
 
         val commandPath = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
-        val noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
+        var noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
 
-        if (!noCache){
-            request.addOption("-P", FileUtil.getCachePath(context) + "TERMINAL/" + itemId)
-        }else if (!request.hasOption("-P")){
-            request.addOption("-P", FileUtil.formatPath(commandPath))
+        if (command.contains("-P ")) {
+            noCache = true
+        }else {
+            if (!noCache){
+                request.addOption("-P", FileUtil.getCachePath(context) + "TERMINAL/" + itemId)
+            }else if (!request.hasOption("-P")){
+                request.addOption("-P", FileUtil.formatPath(commandPath))
+            }
         }
+
+
+
 
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)

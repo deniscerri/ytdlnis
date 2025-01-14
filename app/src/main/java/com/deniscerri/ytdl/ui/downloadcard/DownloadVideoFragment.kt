@@ -31,6 +31,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -382,6 +383,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     else downloadItem.allFormats.filter { f -> downloadItem.videoPreferences.audioFormatIDs.contains(f.format_id) },
                                     showSize = downloadItem.downloadSections.isEmpty()
                                 )
+
+                                if (it.isNotBlank()){
+                                    downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.applyFilenameTemplateForCuts()
+                                }else{
+                                    downloadItem.customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!
+                                }
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
@@ -420,6 +427,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
                                 val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
                                 bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                            },
+                            liveFromStart = {
+                                downloadItem.videoPreferences.liveFromStart = it
+                            },
+                            waitForVideo = { wait, value ->
+                                downloadItem.videoPreferences.waitForVideoMinutes = if (wait) value else 0
                             }
                         )
                     }
