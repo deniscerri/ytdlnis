@@ -441,4 +441,5 @@
     <string name="ytdlp_recommnedations">YT-DLP Youtube Tövsiyələri (məlumata ehtiyac var)</string>
     <string name="ytdlp_liked">YT-DLP Youtube Bəyənilən Videolar (məlumata ehtiyac var)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube Baxış Tarixçəsi (məlumata ehtiyac var)</string>
+    <string name="no_check_certificates">HTTPS sertifikatının təsdiqini dayandır</string>
 </resources>

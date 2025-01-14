@@ -441,4 +441,5 @@
     <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة على YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_liked">مقاطع الفيديو المفضلة على اليوتيوب YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="no_check_certificates">قمع التحقق من صحة شهادة HTTPS</string>
 </resources>

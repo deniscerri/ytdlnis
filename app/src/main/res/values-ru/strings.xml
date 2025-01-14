@@ -441,4 +441,5 @@
     <string name="ytdlp_liked">YT-DLP Видео с лайками на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_history">YT-DLP История просмотра на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_later">YT-DLP Посмотреть позже на YouTube (требуются файлы cookie)</string>
+    <string name="no_check_certificates">Подавить проверку сертификата HTTPS</string>
 </resources>
