@@ -440,4 +440,5 @@
     <string name="ytdlp_liked">YT-DLP Video Yang Disukai di YouTube (perlu cookie)</string>
     <string name="data_fetching_extra_command_summary">Aktifkan templat perintah yang digunakan untuk pengambilan data sebagai perintah tambahan</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor Pengambilan Data (YouTube)</string>
+    <string name="no_check_certificates">Menekan validasi sertifikat HTTPS</string>
 </resources>
