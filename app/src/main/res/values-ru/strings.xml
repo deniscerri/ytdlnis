@@ -442,4 +442,11 @@
     <string name="ytdlp_watch_history">YT-DLP История просмотра на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_later">YT-DLP Посмотреть позже на YouTube (требуются файлы cookie)</string>
     <string name="no_check_certificates">Подавить проверку сертификата HTTPS</string>
+    <string name="live_stream">Прямая трансляция</string>
+    <string name="wait_for_video">Подождите видео</string>
+    <string name="live_from_start">Вживую с начала</string>
+    <string name="minutes">Минуты</string>
+    <string name="retry_every">Повторять каждые</string>
+    <string name="prefer_container_over_codec_audio">Предпочитайте контейнер кодеку для загрузки аудио</string>
+    <string name="prefer_container_over_codec_audio_summary">Если этот параметр включен, предпочтительный аудиокодек будет игнорироваться, и изменится только контейнер</string>
 </resources>
