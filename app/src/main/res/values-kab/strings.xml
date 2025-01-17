@@ -1,2 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="shortcuts">Inegzumen</string>
+    <string name="defaultValue">Amezwer</string>
+    <string name="search">Nadi</string>
+    <string name="settings">Iɣewwaṛen</string>
+    <string name="home">Agejdan</string>
+    <string name="directories">Ikaramen</string>
+    <string name="updating">Aleqqem</string>
+    <string name="about">Ɣef</string>
+    <string name="Remove">Kkes</string>
+    <string name="ok">Ih</string>
+    <string name="cancel">Semmet</string>
+    <string name="confirm_delete_history">Sentem</string>
+    <string name="more">Ugar</string>
+    <string name="version">Lqem</string>
+    <string name="audio">Imesli</string>
+    <string name="video">Tavidyutt</string>
+    <string name="downloading">Azdam</string>
+    <string name="processing">Asesfer</string>
+    <string name="you_are_going_to_delete">Tukksa</string>
+    <string name="url">URL</string>
+    <string name="sort_by">Asmizzwer</string>
+    <string name="title">Azwel</string>
+    <string name="author">Ameskar</string>
+    <string name="download">Zdem</string>
+    <string name="language">Tutlayt</string>
+    <string name="edit">Ẓreg</string>
+    <string name="create">Snulfu-d</string>
+</resources>
