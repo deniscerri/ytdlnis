@@ -442,4 +442,11 @@
     <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни су колачићи)</string>
     <string name="ytdlp_watch_later">YT-DLP YouTube „За касније“ (потребни су колачићи)</string>
     <string name="no_check_certificates">Поништи проверу HTTPS сертификата</string>
+    <string name="live_stream">Стрим уживо</string>
+    <string name="wait_for_video">Чекај за видео снимак</string>
+    <string name="retry_every">Поново покушај сваки</string>
+    <string name="prefer_container_over_codec_audio">Преферирај контејнер уместо кодека за преузимања аудио снимака</string>
+    <string name="live_from_start">Уживо од почетка</string>
+    <string name="minutes">Минути</string>
+    <string name="prefer_container_over_codec_audio_summary">Када је ово омогућено, преферирани аудио кодек ће бити занемарен и само ће се контејнер променити</string>
 </resources>
