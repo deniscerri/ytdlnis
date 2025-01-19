@@ -417,7 +417,7 @@
     <string name="recode_video">Kodekan Ulang Video</string>
     <string name="other_youtube_extractor_args">Argumen Lain Ekstraktor YouTube</string>
     <string name="items">butir</string>
-    <string name="socket_timeout">Waktu Habis Soket</string>
+    <string name="socket_timeout">Batas Waktu Soket</string>
     <string name="socket_timeout_description">Waktu tunggu sebelum menyerah, dalam detik</string>
     <string name="advanced">Tingkat lanjut</string>
     <string name="thumbnail">Gambar mini</string>
@@ -441,4 +441,11 @@
     <string name="data_fetching_extra_command_summary">Aktifkan templat perintah yang digunakan untuk pengambilan data sebagai perintah tambahan</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor Pengambilan Data (YouTube)</string>
     <string name="no_check_certificates">Menekan validasi sertifikat HTTPS</string>
+    <string name="live_stream">Siaran Langsung</string>
+    <string name="retry_every">Ulangi Setiap</string>
+    <string name="minutes">Menit</string>
+    <string name="prefer_container_over_codec_audio">Mengutamakan Kontainer daripada Codec Untuk Unduhan Audio</string>
+    <string name="prefer_container_over_codec_audio_summary">Jika ini diaktifkan, preferensi codec audio yang dipilih akan diabaikan dan hanya kontainer yang akan berubah</string>
+    <string name="wait_for_video">Tunggu Video</string>
+    <string name="live_from_start">Langsung Dari Awal</string>
 </resources>

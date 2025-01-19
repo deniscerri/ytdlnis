@@ -442,4 +442,9 @@
     <string name="ytdlp_watch_later">YT-DLP Youtube sledovat později (vyžaduje soubory cookie)</string>
     <string name="ytdlp_liked">YT-DLP Youtube oblíbená videa (potřebuje soubory cookie)</string>
     <string name="no_check_certificates">Zakázat ověřování certifikátu HTTPS</string>
+    <string name="live_stream">Živě</string>
+    <string name="live_from_start">Živě od začátku</string>
+    <string name="prefer_container_over_codec_audio">Upřednostnit kontejner před kodekem pro stahování audia</string>
+    <string name="wait_for_video">Čekejte na video</string>
+    <string name="prefer_container_over_codec_audio_summary">Pokud je tato volba povolena, předvolba preferovaného zvukového kodeku bude ignorována a změní se pouze kontejner</string>
 </resources>

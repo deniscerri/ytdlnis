@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">最差的品質</string>
+    <string name="worst_quality">最低品質</string>
     <string name="best_quality">最高品質</string>
     <string name="home">首頁</string>
     <string name="directories">資料夾</string>

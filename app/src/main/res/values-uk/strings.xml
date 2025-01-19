@@ -441,4 +441,12 @@
     <string name="ytdlp_liked">YT-DLP Відео з лайками на YouTube (потрібні файли cookie)</string>
     <string name="ytdlp_watch_later">YT-DLP Переглянути пізніше на YouTube (потрібні файли cookie)</string>
     <string name="ytdlp_watch_history">YT-DLP Історія перегляду на YouTube (потрібні файли cookie)</string>
+    <string name="live_stream">Пряма трансляція</string>
+    <string name="live_from_start">Наживо з початку</string>
+    <string name="retry_every">Повторювати кожні</string>
+    <string name="prefer_container_over_codec_audio">Віддавайте перевагу контейнеру над кодеком для завантаження аудіо</string>
+    <string name="no_check_certificates">Придушити перевірку сертифіката HTTPS</string>
+    <string name="wait_for_video">Зачекайте на відео</string>
+    <string name="minutes">Хвилини</string>
+    <string name="prefer_container_over_codec_audio_summary">Якщо це ввімкнено, бажані параметри аудіокодека ігноруватимуться, а змінюватиметься лише контейнер</string>
 </resources>

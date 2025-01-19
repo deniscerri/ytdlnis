@@ -440,4 +440,12 @@
     <string name="ytdlp_recommnedations">YT-DLP Youtube 推荐（需要 cookies）</string>
     <string name="ytdlp_liked">YT-DLP Youtube 点赞的视频 （需要 cookies）</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube 观看历史（需要 cookies）</string>
+    <string name="no_check_certificates">不验证 HTTPS 证书</string>
+    <string name="live_stream">直播</string>
+    <string name="live_from_start">从头直播</string>
+    <string name="wait_for_video">等待视频</string>
+    <string name="retry_every">重试间隔</string>
+    <string name="prefer_container_over_codec_audio">音频下载时容器（格式）优先级高于编解码器</string>
+    <string name="prefer_container_over_codec_audio_summary">启用本选项后将忽略首选的音频编解码设置，仅容器（格式）会更改</string>
+    <string name="minutes">分钟</string>
 </resources>
