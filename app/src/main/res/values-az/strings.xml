@@ -442,4 +442,11 @@
     <string name="ytdlp_liked">YT-DLP Youtube Bəyənilən Videolar (məlumata ehtiyac var)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube Baxış Tarixçəsi (məlumata ehtiyac var)</string>
     <string name="no_check_certificates">HTTPS sertifikatının təsdiqini dayandır</string>
+    <string name="live_stream">Canlı Yayım</string>
+    <string name="live_from_start">Başlanğıcdan Canlı</string>
+    <string name="wait_for_video">Videonu Gözləyin</string>
+    <string name="retry_every">Hər təkrar cəhd</string>
+    <string name="minutes">Dəqiqə</string>
+    <string name="prefer_container_over_codec_audio">Səs Yükləmələr üçün Kodlama əvəzinə Konteynerə üstünlük ver</string>
+    <string name="prefer_container_over_codec_audio_summary">Bu aktivləşdikdə, üstünlük verilən səs kodlayıcı seçiminə məhəl qoyulmayacaq və yalnız konteyner dəyişdiriləcək</string>
 </resources>
