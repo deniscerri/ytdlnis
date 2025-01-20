@@ -442,4 +442,11 @@
     <string name="ytdlp_liked">مقاطع الفيديو المفضلة على اليوتيوب YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="no_check_certificates">قمع التحقق من صحة شهادة HTTPS</string>
+    <string name="live_from_start">مباشر من البداية</string>
+    <string name="wait_for_video">انتظر الفيديو</string>
+    <string name="live_stream">بث مباشر</string>
+    <string name="retry_every">أعد المحاولة كل</string>
+    <string name="minutes">دقائق</string>
+    <string name="prefer_container_over_codec_audio">تفضيل الحاوية على الترميز لتنزيلات الصوت</string>
+    <string name="prefer_container_over_codec_audio_summary">عند تمكين هذا، سيتم تجاهل تفضيلات ترميز الصوت المفضلة وسيتم تغيير الحاوية فقط</string>
 </resources>
