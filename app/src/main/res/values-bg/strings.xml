@@ -435,7 +435,7 @@
     <string name="status">Статус</string>
     <string name="deleted">Изтрит</string>
     <string name="websites">Уебсайт</string>
-    <string name="data_fetching_extra_command">Дополнительна команда за получаване на данни</string>
+    <string name="data_fetching_extra_command">Дополнителна команда за получаване на данни</string>
     <string name="ytdlp_liked">YT-DLP Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube История на гледане (необходими са бисквитки)</string>
     <string name="data_fetching_extra_command_summary">Разрешете командни шаблони, които да се използват за извличане на данни, като допълнителни команди</string>
@@ -445,4 +445,8 @@
     <string name="live_stream">Излъчване на живо</string>
     <string name="wait_for_video">Изчакване на видео</string>
     <string name="minutes">Минути</string>
+    <string name="no_check_certificates">Без проверка на HTTPS сертификата</string>
+    <string name="live_from_start">На живо от начало</string>
+    <string name="retry_every">Повтаряне всичко</string>
+    <string name="prefer_container_over_codec_audio">Предпочитане на контейнер пред кодек за аудио изтегляния</string>
 </resources>
