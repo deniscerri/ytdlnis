@@ -433,4 +433,15 @@
     <string name="live_stream">ライブ配信</string>
     <string name="retry_every">すべて再試行</string>
     <string name="minutes">分</string>
+    <string name="disable_write_info_json_summary">(非推奨) ダウンロードを再開するたび、yt-dlpがサーバからjsonデータを再ダウンロードします。</string>
+    <string name="disable_write_info_json">情報用の json を書き込まない</string>
+    <string name="no_check_certificates">HTTPS証明書を検証しない</string>
+    <string name="data_fetching_extra_command">データ取得用の追加コマンド</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube 後で見る (要クッキー)</string>
+    <string name="ytdlp_recommnedations">YT-DLP Youtube おすすめ (要クッキー)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube 視聴履歴 (要クッキー)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube 高評価した動画 (要クッキー)</string>
+    <string name="data_fetching_extra_command_summary">コマンドテンプレートを追加コマンドとしてデータ取得に用いる</string>
+    <string name="prefer_container_over_codec_audio">音声をダウンロードする際にコーデックよりコンテナを優先</string>
+    <string name="prefer_container_over_codec_audio_summary">有効にすると、優先する音声コーデックの設定を無視し、コンテナのみを変更します</string>
 </resources>
