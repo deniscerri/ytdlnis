@@ -214,7 +214,7 @@
     <string name="subtitle_languages">字幕の言語</string>
     <string name="format_source">形式一覧の取得元</string>
     <string name="video_recommendations">おすすめの動画</string>
-    <string name="video_recommendations_summary">おすすめの動画を Piped API 経由でホームに表示</string>
+    <string name="video_recommendations_summary">おすすめの動画をホームに表示</string>
     <string name="preferred_search_engine">優先する検索エンジン</string>
     <string name="preferred_search_engine_summary">検索に使う検索エンジン</string>
     <string name="format_filtering_hint">このオプションを使うには、すべてのメディアを同じ種類にしてください</string>
@@ -420,4 +420,17 @@
     <string name="playlist_as_album">再生リスト名をアルバムのメタデータに使用</string>
     <string name="sync_with_source">監視先と同期</string>
     <string name="data_fetching_extractor_youtube">データ取得抽出ツール (YouTube)</string>
+    <string name="socket_timeout">ソケットタイムアウト</string>
+    <string name="socket_timeout_description">タイムアウトまでの時間</string>
+    <string name="advanced">詳細</string>
+    <string name="thumbnail">サムネイル</string>
+    <string name="pause_all">すべて一時停止</string>
+    <string name="resume_all">すべて再開</string>
+    <string name="package_name">パッケージ名</string>
+    <string name="status">状態</string>
+    <string name="deleted">削除済み</string>
+    <string name="websites">ウェブサイト</string>
+    <string name="live_stream">ライブ配信</string>
+    <string name="retry_every">すべて再試行</string>
+    <string name="minutes">分</string>
 </resources>
