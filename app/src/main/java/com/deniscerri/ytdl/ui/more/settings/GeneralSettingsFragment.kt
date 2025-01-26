@@ -334,7 +334,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<MultiSelectListPreference>("swipe_gesture")?.apply {
-            val s = getString(R.string.preferred_search_engine_summary)
+            val s = getString(R.string.swipe_gestures_summary)
             if (values.size == entries.size) {
                 summary = "${s}\n[${getString(R.string.all)}]"
             }else if (values.size > 0) {

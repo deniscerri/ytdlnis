@@ -110,8 +110,9 @@
                     app:layout_constraintBottom_toTopOf="@+id/output"
                     app:layout_constraintEnd_toStartOf="@+id/active_pause_cancel_btns"
                     app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearlayout2_horizontalscrollview">
+                    app:layout_constraintTop_toTopOf="@+id/active_pause_cancel_btns">
 
                     <TextView
                         android:id="@+id/title"
@@ -120,7 +121,6 @@
                         android:ellipsize="end"
                         android:maxLines="1"
                         android:paddingStart="10dp"
-                        android:paddingTop="10dp"
                         android:paddingEnd="10dp"
                         android:shadowColor="@color/black"
                         android:shadowDx="2"
@@ -200,8 +200,6 @@
 
                 </LinearLayout>
 
-
-
                 <TextView
                     android:id="@+id/output"
                     android:layout_width="match_parent"
@@ -221,7 +219,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

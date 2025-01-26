@@ -1527,4 +1527,18 @@
         <item>NEWPIPE</item>
     </string-array>
 
+    <string-array name="youtube_player_clients">
+        <item>android</item>
+        <item>ios</item>
+        <item>web</item>
+        <item>mweb</item>
+        <item>android_vr</item>
+        <item>web_safari</item>
+        <item>web_embedded</item>
+        <item>tv</item>
+        <item>tv_embedded</item>
+        <item>default</item>
+        <item>all</item>
+    </string-array>
+
 </resources>

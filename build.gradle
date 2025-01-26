@@ -25,7 +25,7 @@ buildscript {
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
         navVer = "2.8.3"
-        media3_version = "1.4.1"
+        media3_version = "1.5.1"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
         roomVer = '2.5.2'

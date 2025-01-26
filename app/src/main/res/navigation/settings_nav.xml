@@ -47,6 +47,14 @@
     </fragment>
     <fragment
         android:id="@+id/advancedSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.AdvancedSettingsFragment"
-        android:label="AdvancedSettingsFragment" />
+        android:name="com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsFragment"
+        android:label="AdvancedSettingsFragment" >
+        <action
+            android:id="@+id/action_advancedSettingsFragment_to_youtubePlayerClientFragment"
+            app:destination="@id/youtubePlayerClientFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/youtubePlayerClientFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.advanced.YoutubePlayerClientFragment"
+        android:label="YoutubePlayerClientFragment" />
 </navigation>

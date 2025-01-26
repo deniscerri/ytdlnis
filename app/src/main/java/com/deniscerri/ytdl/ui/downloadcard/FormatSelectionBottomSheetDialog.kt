@@ -2,13 +2,18 @@ package com.deniscerri.ytdl.ui.downloadcard
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.*
+import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
-import android.widget.*
+import android.widget.Button
+import android.widget.GridLayout
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -52,8 +57,8 @@ class FormatSelectionBottomSheetDialog(
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var videoFormatList : LinearLayout
-    private lateinit var audioFormatList : LinearLayout
+    private lateinit var videoFormatList : GridLayout
+    private lateinit var audioFormatList : GridLayout
     private lateinit var okBtn : Button
     private lateinit var refreshBtn: Button
     private lateinit var videoTitle : TextView
@@ -79,6 +84,8 @@ class FormatSelectionBottomSheetDialog(
 
     private lateinit var genericAudioFormats : List<Format>
     private lateinit var genericVideoFormats : List<Format>
+
+    private var usingGrid: Boolean = false
 
     enum class FormatSorting {
         filesize, container, codec, id
@@ -135,6 +142,7 @@ class FormatSelectionBottomSheetDialog(
         sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
         filterBy = FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!)
         filterBtn = view.findViewById(R.id.format_filter)
+        usingGrid = sharedPreferences.getBoolean("format_list_grid", false)
 
         dialog.setOnShowListener {
             behavior = BottomSheetBehavior.from(view.parent as View)
@@ -438,7 +446,32 @@ class FormatSelectionBottomSheetDialog(
             }
 
 
+            //format layout
+            val listLayout = filterSheet.findViewById<TextView>(R.id.layout_list)!!
+            val gridLayout = filterSheet.findViewById<TextView>(R.id.layout_grid)!!
 
+            if (usingGrid) {
+                listLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty, 0,0,0)
+                gridLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0,0,0)
+            }else{
+                gridLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty, 0,0,0)
+                listLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0,0,0)
+            }
+
+            listLayout.setOnClickListener {
+                usingGrid = false
+                gridLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty, 0,0,0)
+                listLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0,0,0)
+                addFormatsToView()
+                filterSheet.dismiss()
+            }
+            gridLayout.setOnClickListener {
+                usingGrid = true
+                listLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty, 0,0,0)
+                gridLayout.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0,0,0)
+                addFormatsToView()
+                filterSheet.dismiss()
+            }
 
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -535,8 +568,6 @@ class FormatSelectionBottomSheetDialog(
 
 
         val canMultiSelectAudio = items.first()?.type == Type.video && finalFormats.find { it.vcodec.isBlank() || it.vcodec == "none" } != null
-        videoFormatList.removeAllViews()
-        audioFormatList.removeAllViews()
 
         if (!canMultiSelectAudio) {
             audioFormatList.visibility = View.GONE
@@ -561,6 +592,14 @@ class FormatSelectionBottomSheetDialog(
         videoFormatList.removeAllViews()
         audioFormatList.removeAllViews()
 
+        if (usingGrid) {
+            videoFormatList.columnCount = 2
+            audioFormatList.columnCount = 2
+        }else{
+            videoFormatList.columnCount = 1
+            audioFormatList.columnCount = 1
+        }
+
         if (finalFormats.isEmpty()){
             finalFormats = if (items.first()?.type == Type.audio){
                 genericAudioFormats
@@ -571,7 +610,23 @@ class FormatSelectionBottomSheetDialog(
 
         for (i in 0.. finalFormats.lastIndex){
             val format = finalFormats[i]
-            val formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
+            lateinit var formatItem: View
+
+            if (usingGrid){
+                formatItem = LayoutInflater.from(context).inflate(R.layout.format_item_grid, null)
+                formatItem.layoutParams = GridLayout.LayoutParams(
+                    GridLayout.spec(GridLayout.UNDEFINED, 1f),
+                    GridLayout.spec(GridLayout.UNDEFINED, 1f)).apply {
+                    width = 0
+                }
+            }else{
+                formatItem = LayoutInflater.from(context).inflate(R.layout.format_item, null)
+                formatItem.layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    1.0f
+                )
+            }
             formatItem.tag = "${format.format_id}${format.format_note}"
             UiUtil.populateFormatCard(requireContext(), formatItem as MaterialCardView, format, null)
             if (selectedVideo == format) formatItem.isChecked = true

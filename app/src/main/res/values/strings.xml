@@ -451,4 +451,10 @@
     <string name="minutes">Minutes</string>
     <string name="prefer_container_over_codec_audio">Prefer Container over Codec For Audio Downloads</string>
     <string name="prefer_container_over_codec_audio_summary">With this enabled, the preferred audio codec preference will be ignored and only container will change</string>
+    <string name="player_client">Player Client</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_app_language_for_metadata">Use App Language for Metadata</string>
+    <string name="layout">Layout</string>
+    <string name="list">List</string>
+    <string name="grid">Grid</string>
 </resources>

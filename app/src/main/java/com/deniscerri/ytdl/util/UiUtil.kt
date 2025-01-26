@@ -15,6 +15,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
@@ -46,6 +47,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.view.marginBottom
+import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
@@ -60,6 +63,8 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
+import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
+import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -86,10 +91,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -2283,6 +2291,103 @@ object UiUtil {
 
             parentView.addView(child)
         }
+
+        bottomSheet.show()
+        bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheet.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+    }
+
+    fun showYoutubePlayerClientSheet(context: Activity, preferences: SharedPreferences, currentValue: YoutubePlayerClientItem?, newValue: (item: YoutubePlayerClientItem) -> Unit, deleted: () -> Unit){
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.youtube_player_clients)
+
+        val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
+        val chipGroup : ChipGroup = bottomSheet.findViewById(R.id.chipGroup)!!
+        val suggestedLabel : View = bottomSheet.findViewById(R.id.suggestedLabel)!!
+        val okBtn : Button = bottomSheet.findViewById(R.id.client_create)!!
+        val deleteBtn : Button = bottomSheet.findViewById(R.id.client_delete)!!
+        deleteBtn.isVisible = currentValue != null
+
+        val contentLinear : LinearLayout = bottomSheet.findViewById(R.id.contentLinear)!!
+
+        val defaultChips = context.getStringArray(R.array.youtube_player_clients).toMutableSet()
+
+        title.isEndIconVisible = false
+        title.editText!!.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun afterTextChanged(p0: Editable?) {
+                chipGroup.children.forEach { (it as Chip).isChecked = false }
+                chipGroup.children.firstOrNull { (it as Chip).text == p0.toString() }?.apply {
+                    (this as Chip).isChecked = true
+                }
+            }
+        })
+
+        val existingConfigsRaw = preferences.getString("youtube_player_clients", "[]")
+        val itemType = object : com.google.common.reflect.TypeToken<List<YoutubePlayerClientItem>>() {}.type
+        val existingConfigs = Gson().fromJson<List<YoutubePlayerClientItem>>(existingConfigsRaw, itemType).toMutableList()
+
+        defaultChips.filter { it.isNotBlank() }.forEach {
+            if (!existingConfigs.any { it2 -> it2.playerClient == it }) {
+                val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
+                tmp.text = it
+                tmp.setOnClickListener {
+                    title.editText!!.setText(tmp.text.toString())
+                }
+                chipGroup.addView(tmp)
+            }
+        }
+
+        if (chipGroup.children.count() == 0) {
+            suggestedLabel.isVisible = false
+        }
+
+        val poTokenInputs = contentLinear.children.filter { it is TextInputLayout }.map { it as TextInputLayout }.toList()
+        for(p in poTokenInputs) {
+            p.setEndIconOnClickListener {
+                val clipboard: ClipboardManager = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                p.editText!!.setText(clipboard.primaryClip?.getItemAt(0)?.text)
+            }
+        }
+
+        currentValue?.apply {
+            title.editText!!.setText(this.playerClient)
+            for (t in this.poTokens) {
+                poTokenInputs.firstOrNull { it.tag == "potoken_${t.context}" }?.editText?.setText(t.token)
+            }
+            okBtn.text = context.getString(R.string.edit)
+        }
+
+        okBtn.setOnClickListener {
+            val titleVal = title.editText!!.text.toString()
+            if (titleVal.isBlank()) {
+                title.error = "Player Client tag shouldn't be empty"
+                return@setOnClickListener
+            }
+
+            if(existingConfigs.any { it2 -> it2.playerClient == titleVal } && ( currentValue == null || currentValue.playerClient != titleVal )) {
+                title.error = "Player Client is already created"
+                return@setOnClickListener
+            }
+
+            val obj = YoutubePlayerClientItem(titleVal, mutableListOf())
+            poTokenInputs.filter { it.editText!!.text.isNotBlank() && it.tag.toString().startsWith("potoken") }.forEach {
+                obj.poTokens.add(YoutubePoTokenItem(it.tag.toString().split("potoken_")[1], it.editText!!.text.toString()))
+            }
+            bottomSheet.cancel()
+            newValue(obj)
+        }
+
+        deleteBtn.setOnClickListener {
+            bottomSheet.cancel()
+            deleted()
+        }
+
 
         bottomSheet.show()
         bottomSheet.behavior.state = BottomSheetBehavior.STATE_EXPANDED

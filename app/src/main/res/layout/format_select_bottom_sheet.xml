@@ -134,11 +134,12 @@
                         android:paddingVertical="20dp"
                         android:text="@string/video" />
 
-                    <LinearLayout
+                    <GridLayout
                         android:id="@+id/video_linear_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
+                        android:columnCount="1"
+                        android:alignmentMode="alignBounds"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -160,11 +161,12 @@
                         android:paddingVertical="20dp"
                         android:text="@string/audio" />
 
-                    <LinearLayout
+                    <GridLayout
                         android:id="@+id/audio_linear_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical" />
+                        android:columnCount="1"
+                        android:alignmentMode="alignBounds"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
             </LinearLayout>

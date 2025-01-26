@@ -16,6 +16,7 @@ import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
+import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
@@ -1237,27 +1238,40 @@ class YTDLPUtil(private val context: Context) {
     }
 
     private fun YoutubeDLRequest.setYoutubeExtractorArgs() {
-        val playerClient = sharedPreferences.getString("yt_player_client", "")!!.split(",").filter { it.isNotBlank() }.toMutableList()
         val extractorArgs = mutableListOf<String>()
+        val playerClients = mutableListOf<String>()
+        val poTokens = mutableListOf<String>()
 
-        val poToken = sharedPreferences.getString("youtube_po_token", "")!!
-        if (poToken.isNotBlank() && !playerClient.contains("web")) {
-            playerClient.add("web")
+        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!
+        val itemType = object : com.google.common.reflect.TypeToken<List<YoutubePlayerClientItem>>() {}.type
+        val configuredPlayerClients = Gson().fromJson<List<YoutubePlayerClientItem>>(configuredPlayerClientsRaw, itemType).toMutableList()
+
+        for (value in configuredPlayerClients) {
+            if (value.enabled) {
+                playerClients.add(value.playerClient)
+                value.poTokens.forEach { pt ->
+                    poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                }
+            }
         }
 
-        if (playerClient.isNotEmpty()){
-            extractorArgs.add("player_client=${playerClient.joinToString(",")}")
+        if (playerClients.isNotEmpty()){
+            extractorArgs.add("player_client=${playerClients.joinToString(",")}")
         }
 
-        val lang = Locale.getDefault().language
-        val langTag = Locale.getDefault().toLanguageTag()
-        if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-            extractorArgs.add("lang=$lang")
-        }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
-            extractorArgs.add("lang=$langTag")
+        if (poTokens.isNotEmpty()) {
+            extractorArgs.add("po_token=${poTokens.joinToString(",")}")
         }
-        if (poToken.isNotBlank()) {
-            extractorArgs.add("po_token=web+$poToken")
+
+        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
+        if (useLanguageForMetadata) {
+            val lang = Locale.getDefault().language
+            val langTag = Locale.getDefault().toLanguageTag()
+            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+                extractorArgs.add("lang=$lang")
+            }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
+                extractorArgs.add("lang=$langTag")
+            }
         }
 
         val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!

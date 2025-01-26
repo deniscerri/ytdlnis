@@ -22,11 +22,12 @@
         <TextView
             android:id="@+id/container"
             android:layout_width="60dp"
+            android:layout_height="0dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="?attr/colorPrimaryInverse"
             android:textColor="@color/white"
             android:clickable="false"
-            android:layout_height="55dp"
+            app:layout_constraintDimensionRatio="H,1:1"
             android:gravity="center"
             android:minWidth="30dp"
             app:cornerRadius="10dp"

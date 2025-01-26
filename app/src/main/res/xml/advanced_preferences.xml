@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="YouTube">
-        <EditTextPreference
+        <Preference
             android:defaultValue=""
-            android:icon="@drawable/ic_code"
+            android:icon="@drawable/baseline_person_24"
             android:key="yt_player_client"
-            app:useSimpleSummaryProvider="true"
-            android:title="Player Client" />
+            android:summary="@string/player_client_summary"
+            android:title="@string/player_client" />
 
-        <EditTextPreference
-            android:defaultValue=""
-            android:icon="@drawable/ic_code"
-            android:key="youtube_po_token"
-            app:useSimpleSummaryProvider="true"
-            android:title="PO Token [Web]" />
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            android:icon="@drawable/ic_language"
+            android:defaultValue="true"
+            android:key="use_app_language_for_metadata"
+            android:title="@string/use_app_language_for_metadata" />
 
         <EditTextPreference
             android:defaultValue=""
@@ -27,6 +27,7 @@
 
     <PreferenceCategory android:title="@string/command_templates">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/ic_terminal"
             android:key="enable_data_fetching_extra_commands"
             android:summary="@string/data_fetching_extra_command_summary"
@@ -35,6 +36,7 @@
 
     <PreferenceCategory android:title="@string/downloading" android:enabled="false">
         <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/if_file_rename"
             android:key="disable_write_info_json"
             android:summary="@string/disable_write_info_json_summary"
