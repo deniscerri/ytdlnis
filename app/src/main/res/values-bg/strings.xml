@@ -323,7 +323,7 @@
     <string name="retries">Брой повторения</string>
     <string name="prefer_smaller_formats">Предпочитан формати с по-малък размер</string>
     <string name="display_over_apps">Показване върху приложения</string>
-    <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните взети от хранилището на Github</string>
+    <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните се извличат от официалното хранилище на Github</string>
     <string name="downloads">Изтегляния</string>
     <string name="remove_deleted">Премахване на изтритите</string>
     <string name="remove_downloading">Отмяна на изтеглянията</string>
@@ -435,10 +435,18 @@
     <string name="status">Статус</string>
     <string name="deleted">Изтрит</string>
     <string name="websites">Уебсайт</string>
-    <string name="data_fetching_extra_command">Дополнительна команда за получаване на данни</string>
+    <string name="data_fetching_extra_command">Дополнителна команда за получаване на данни</string>
     <string name="ytdlp_liked">YT-DLP Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube История на гледане (необходими са бисквитки)</string>
     <string name="data_fetching_extra_command_summary">Разрешете командни шаблони, които да се използват за извличане на данни, като допълнителни команди</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Гледайте по-късно (необходими са бисквитки)</string>
     <string name="ytdlp_recommnedations">YT-DLP Youtube препоръки (необходими са бисквитки)</string>
+    <string name="prefer_container_over_codec_audio_summary">Когато това е активирано, предпочитанието за аудио кодек ще бъде игнорирано и само контейнерът ще се промени</string>
+    <string name="live_stream">Излъчване на живо</string>
+    <string name="wait_for_video">Изчакване на видео</string>
+    <string name="minutes">Минути</string>
+    <string name="no_check_certificates">Без проверка на HTTPS сертификата</string>
+    <string name="live_from_start">На живо от начало</string>
+    <string name="retry_every">Повтаряне всичко</string>
+    <string name="prefer_container_over_codec_audio">Предпочитане на контейнер пред кодек за аудио изтегляния</string>
 </resources>
