@@ -37,8 +37,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
-import java.net.URLEncoder
-import java.security.MessageDigest
 import java.util.ArrayList
 import java.util.Locale
 import java.util.UUID
@@ -1243,8 +1241,7 @@ class YTDLPUtil(private val context: Context) {
         val poTokens = mutableListOf<String>()
 
         val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!
-        val itemType = object : com.google.common.reflect.TypeToken<List<YoutubePlayerClientItem>>() {}.type
-        val configuredPlayerClients = Gson().fromJson<List<YoutubePlayerClientItem>>(configuredPlayerClientsRaw, itemType).toMutableList()
+        val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
 
         for (value in configuredPlayerClients) {
             if (value.enabled) {

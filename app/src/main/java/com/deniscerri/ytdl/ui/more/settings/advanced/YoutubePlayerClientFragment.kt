@@ -17,14 +17,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.ui.adapter.YoutubePlayerClientAdapter
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
-import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 
 
@@ -61,8 +59,7 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
         recyclerView.adapter = listAdapter
         itemTouchHelper.attachToRecyclerView(recyclerView)
         currentListRaw = preferences.getString("youtube_player_clients", "[]")!!
-        val itemType = object : TypeToken<List<YoutubePlayerClientItem>>() {}.type
-        currentList = Gson().fromJson<List<YoutubePlayerClientItem>>(currentListRaw, itemType).toMutableList()
+        currentList = Gson().fromJson(currentListRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
         listAdapter.submitList(currentList.toList())
 
         val newClient = view.findViewById<Chip>(R.id.newClient)
@@ -96,7 +93,7 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
         val hasNoResults = currentList.isEmpty()
         noResults.isVisible = hasNoResults
         recyclerView.isVisible = !hasNoResults
-        dragHandle.isVisible = !hasNoResults
+        dragHandle.isVisible = currentList.size > 1
     }
 
 

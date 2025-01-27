@@ -2329,8 +2329,7 @@ object UiUtil {
         })
 
         val existingConfigsRaw = preferences.getString("youtube_player_clients", "[]")
-        val itemType = object : com.google.common.reflect.TypeToken<List<YoutubePlayerClientItem>>() {}.type
-        val existingConfigs = Gson().fromJson<List<YoutubePlayerClientItem>>(existingConfigsRaw, itemType).toMutableList()
+        val existingConfigs = Gson().fromJson(existingConfigsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
 
         defaultChips.filter { it.isNotBlank() }.forEach {
             if (!existingConfigs.any { it2 -> it2.playerClient == it }) {
