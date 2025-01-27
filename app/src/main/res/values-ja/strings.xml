@@ -444,4 +444,15 @@
     <string name="data_fetching_extra_command_summary">コマンドテンプレートを追加コマンドとしてデータ取得に用いる</string>
     <string name="prefer_container_over_codec_audio">音声をダウンロードする際にコーデックよりコンテナを優先</string>
     <string name="prefer_container_over_codec_audio_summary">有効にすると、優先する音声コーデックの設定を無視し、コンテナのみを変更します</string>
+    <string name="player_client_summary"><![CDATA[YouTubeプレイヤークライアントとPOトークン]]></string>
+    <string name="use_app_language_for_metadata">メタデータにこのアプリの言語を使用</string>
+    <string name="layout">表示</string>
+    <string name="list">一覧</string>
+    <string name="grid">格子</string>
+    <string name="player_client">プレイヤークライアント</string>
+    <string name="other_youtube_extractor_args">YouTube抽出ツール用のほかの引数</string>
+    <string name="items">項目</string>
+    <string name="preferred_command_template">優先するコマンドテンプレート</string>
+    <string name="live_from_start">ライブの最初から</string>
+    <string name="wait_for_video">配信開始を待機</string>
 </resources>
