@@ -448,4 +448,10 @@
     <string name="prefer_container_over_codec_audio">音频下载时容器（格式）优先级高于编解码器</string>
     <string name="prefer_container_over_codec_audio_summary">启用本选项后将忽略首选的音频编解码设置，仅容器（格式）会更改</string>
     <string name="minutes">分钟</string>
+    <string name="use_app_language_for_metadata">元数据使用程序界面显示语言</string>
+    <string name="layout">布局</string>
+    <string name="list">列表</string>
+    <string name="grid">网格</string>
+    <string name="player_client">播放器客户端</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
 </resources>
