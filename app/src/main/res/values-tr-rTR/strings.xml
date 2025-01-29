@@ -444,4 +444,18 @@
     <string name="ytdlp_watch_history">YT-DLP YouTube İzleme Geçmişi ( çerezlere ihtiyaç duyar )</string>
     <string name="data_fetching_extra_command_summary">Veri alma için ek komutlar olarak kullanılacak Komut şablonları nı etkinleştirin</string>
     <string name="socket_timeout_description">Vazgeçmeden önce bekleme zamanı, saniyeler</string>
+    <string name="player_client">Oynatıcı İstemcisi</string>
+    <string name="use_app_language_for_metadata">Meta Veriler için Uygulama Dilini Kullan</string>
+    <string name="layout">Düzen</string>
+    <string name="list">Liste</string>
+    <string name="grid">Izgara</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="no_check_certificates">HTTPS sertifika doğrulamasını bastır</string>
+    <string name="live_stream">Canlı Yayın</string>
+    <string name="live_from_start">Baştan Canlı Yayın</string>
+    <string name="wait_for_video">Videoyu Bekle</string>
+    <string name="retry_every">Her Defasında Tekrar Dene</string>
+    <string name="minutes">Dakikalar</string>
+    <string name="prefer_container_over_codec_audio">Ses İndirmeleri İçin Codec Yerine Konteyneri Tercih Edin</string>
+    <string name="prefer_container_over_codec_audio_summary">Bu etkinleştirildiğinde, tercih edilen ses kodeği tercihi göz ardı edilecek ve yalnızca kapsayıcı değişecektir</string>
 </resources>
