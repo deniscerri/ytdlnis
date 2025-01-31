@@ -449,4 +449,10 @@
     <string name="retry_every">Повторять каждые</string>
     <string name="prefer_container_over_codec_audio">Предпочитайте контейнер кодеку для загрузки аудио</string>
     <string name="prefer_container_over_codec_audio_summary">Если этот параметр включен, предпочтительный аудиокодек будет игнорироваться, и изменится только контейнер</string>
+    <string name="player_client">Клиент Плеера</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_app_language_for_metadata">Используйте язык приложений для метаданных</string>
+    <string name="layout">Макет</string>
+    <string name="list">Список</string>
+    <string name="grid">Сетка</string>
 </resources>

@@ -447,4 +447,12 @@
     <string name="prefer_container_over_codec_audio">Uprednostniť kontajner pred kodekom pre sťahovanie zvuku</string>
     <string name="prefer_container_over_codec_audio_summary">Po zapnutí tejto funkcie sa budú ignorovať preferencie preferovaného zvukového kodeku a zmení sa iba kontajner</string>
     <string name="live_stream">Naživo</string>
+    <string name="player_client">Prehrávač klient</string>
+    <string name="player_client_summary"><![CDATA[Klienti prehrávača YouTube a token PO]]></string>
+    <string name="use_app_language_for_metadata">Použiť jazyk aplikácie pre metaúdaje</string>
+    <string name="layout">Usporiadanie</string>
+    <string name="list">Zoznam</string>
+    <string name="grid">Mriežka</string>
+    <string name="retry_every">Opakovať každých</string>
+    <string name="minutes">minút</string>
 </resources>
