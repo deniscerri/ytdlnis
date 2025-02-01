@@ -441,4 +441,18 @@
     <string name="ytdlp_liked">YT-DLP - Vídeos curtidos do YouTube (precisa de cookies)</string>
     <string name="ytdlp_watch_later">YT-DLP - Assistir mais tarde no YouTube (precisa de cookies)</string>
     <string name="ytdlp_watch_history">YT-DLP - Histórico de exibição do YouTube (precisa de cookies)</string>
+    <string name="use_app_language_for_metadata">Usar o idioma do aplicativo para metadados</string>
+    <string name="layout">Layout</string>
+    <string name="player_client">Player Client</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="list">Lista</string>
+    <string name="grid">Grade</string>
+    <string name="prefer_container_over_codec_audio">Preferir o contêiner em vez do codec para downloads de áudio</string>
+    <string name="live_stream">Transmissão ao vivo</string>
+    <string name="live_from_start">Ao vivo desde o início</string>
+    <string name="wait_for_video">Aguardar o vídeo</string>
+    <string name="retry_every">Repetir a cada</string>
+    <string name="minutes">Minutos</string>
+    <string name="prefer_container_over_codec_audio_summary">Com essa opção ativada, a preferência do codec de áudio será ignorada e somente o contêiner será alterado</string>
+    <string name="no_check_certificates">Ignorar validação de certificado HTTPS</string>
 </resources>
