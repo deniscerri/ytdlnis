@@ -449,4 +449,10 @@
     <string name="minutes">Dəqiqə</string>
     <string name="prefer_container_over_codec_audio">Səs Yükləmələr üçün Kodlama əvəzinə Konteynerə üstünlük ver</string>
     <string name="prefer_container_over_codec_audio_summary">Bu aktivləşdikdə, üstünlük verilən səs kodlayıcı seçiminə məhəl qoyulmayacaq və yalnız konteyner dəyişdiriləcək</string>
+    <string name="player_client">Oynadıcı Qəbuledici</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_app_language_for_metadata">Üst məlumat üçün Tətbiq Dili istifadə et</string>
+    <string name="layout">Düzülüş</string>
+    <string name="list">Siyahı</string>
+    <string name="grid">Şəbəkə</string>
 </resources>
