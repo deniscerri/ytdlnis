@@ -21,6 +21,12 @@
         app:title="@string/command_directory" />
 
     <Preference
+        android:defaultValue=""
+        app:icon="@drawable/baseline_folder_24"
+        app:key="cache_path"
+        app:title="@string/cache_directory" />
+
+    <Preference
         app:icon="@drawable/ic_access_folder"
         app:key="access_all_files"
         android:summary="@string/access_all_directories_summary"

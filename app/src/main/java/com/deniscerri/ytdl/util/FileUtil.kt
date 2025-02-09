@@ -22,6 +22,7 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
+import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.callback.FileCallback
 import com.anggrayudi.storage.callback.FolderCallback
@@ -39,6 +40,7 @@ import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
+import okhttp3.internal.format
 import okhttp3.internal.lowercase
 import java.io.File
 import java.net.URLDecoder
@@ -283,11 +285,16 @@ object FileUtil {
     }
 
     fun getCachePath(context: Context) : String {
-        val externalPath = context.getExternalFilesDir(null)
-        return if (externalPath == null){
-            context.cacheDir.absolutePath + "/downloads/"
-        }else{
-            externalPath.absolutePath + "/downloads/"
+        val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("cache_path", "")!!
+        if (preference.isEmpty() || !File(formatPath(preference)).canWrite()) {
+            val externalPath = context.getExternalFilesDir(null)
+            return if (externalPath == null){
+                context.cacheDir.absolutePath + "/downloads/"
+            }else{
+                externalPath.absolutePath + "/downloads/"
+            }
+        }else {
+            return formatPath(preference)
         }
     }
 

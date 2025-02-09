@@ -3,7 +3,8 @@ package com.deniscerri.ytdl.database.models
 data class YoutubePlayerClientItem(
     var playerClient: String,
     var poTokens: MutableList<YoutubePoTokenItem>,
-    var enabled: Boolean = true
+    var enabled: Boolean = true,
+    var useOnlyPoToken: Boolean = false
 )
 
 data class YoutubePoTokenItem(

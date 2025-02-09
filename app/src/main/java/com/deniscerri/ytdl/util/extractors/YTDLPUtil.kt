@@ -344,6 +344,9 @@ class YTDLPUtil(private val context: Context) {
             request.addOption("--print", "formats")
             request.addOption("-a", urlsFile.absolutePath)
             request.applyDefaultOptionsForFetchingData()
+            if (urls.all { it.isYoutubeURL() }) {
+                request.setYoutubeExtractorArgs()
+            }
 
             val txt = parseYTDLRequestString(request)
             println(txt)
@@ -413,6 +416,9 @@ class YTDLPUtil(private val context: Context) {
         request.addOption("--print", "%(formats)s")
         request.addOption("--print", "%(duration)s")
         request.applyDefaultOptionsForFetchingData()
+        if (url.isYoutubeURL()) {
+            request.setYoutubeExtractorArgs()
+        }
 
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
@@ -495,6 +501,9 @@ class YTDLPUtil(private val context: Context) {
             request.addOption("--get-url")
             request.addOption("--print", "%(.{urls,chapters})s")
             request.applyDefaultOptionsForFetchingData()
+            if (url.isYoutubeURL()) {
+                request.setYoutubeExtractorArgs()
+            }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
             val json = JSONObject(youtubeDLResponse.out)
@@ -1245,7 +1254,10 @@ class YTDLPUtil(private val context: Context) {
 
         for (value in configuredPlayerClients) {
             if (value.enabled) {
-                playerClients.add(value.playerClient)
+                if (!value.useOnlyPoToken) {
+                    playerClients.add(value.playerClient)
+                }
+
                 value.poTokens.forEach { pt ->
                     poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
                 }

@@ -38,6 +38,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     private var musicPath: Preference? = null
     private var videoPath: Preference? = null
     private var commandPath: Preference? = null
+    private var cachePath: Preference? = null
     private var accessAllFiles : Preference? = null
     private var noFragments: SwitchPreferenceCompat? = null
     private var keepFragments: SwitchPreferenceCompat? = null
@@ -62,6 +63,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
+        cachePath = findPreference("cache_path")
         accessAllFiles = findPreference("access_all_files")
         noFragments = findPreference("no_part")
         keepFragments = findPreference("keep_cache")
@@ -79,6 +81,9 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         }
         if (preferences.getString("command_path", "")!!.isEmpty()) {
             editor.putString("command_path", FileUtil.getDefaultCommandPath())
+        }
+        if (preferences.getString("cache_path", "")!!.isEmpty()) {
+            editor.putString("cache_path", FileUtil.getCachePath(requireContext()))
         }
 
         if (FileUtil.hasAllFilesAccess()) {
@@ -119,6 +124,20 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 commandPathResultLauncher.launch(intent)
                 true
             }
+
+        cachePath!!.summary = FileUtil.formatPath(preferences.getString("cache_path", "")!!)
+        cachePath!!.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.cache_directory), getString(R.string.cache_directory_warning)) {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    cachePathResultLauncher.launch(intent)
+                }
+                true
+            }
+
         if(VERSION.SDK_INT >= 30){
             accessAllFiles!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
@@ -271,6 +290,20 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             changePath(commandPath, result.data, COMMAND_PATH_CODE)
         }
     }
+    private var cachePathResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                activity?.contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+            changePath(cachePath, result.data, CACHE_PATH_CODE)
+        }
+    }
 
     private fun changePath(p: Preference?, data: Intent?, requestCode: Int) {
         val path = data!!.data.toString()
@@ -281,6 +314,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             MUSIC_PATH_CODE -> editor.putString("music_path", path)
             VIDEO_PATH_CODE -> editor.putString("video_path", path)
             COMMAND_PATH_CODE -> editor.putString("command_path", path)
+            CACHE_PATH_CODE -> editor.putString("cache_path", path)
         }
         editor.apply()
     }
@@ -289,5 +323,6 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         const val MUSIC_PATH_CODE = 33333
         const val VIDEO_PATH_CODE = 55555
         const val COMMAND_PATH_CODE = 77777
+        const val CACHE_PATH_CODE = 99999
     }
 }

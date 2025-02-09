@@ -170,6 +170,12 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/use_only_po_token"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/use_only_po_token"/>
+
             </LinearLayout>
         </LinearLayout>
 

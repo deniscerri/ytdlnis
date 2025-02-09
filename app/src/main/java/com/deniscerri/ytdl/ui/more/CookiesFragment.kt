@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
@@ -36,6 +37,9 @@ import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -45,7 +49,6 @@ import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -118,7 +121,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private fun initChips() {
         val new = view?.findViewById<Chip>(R.id.newCookie)
         new?.setOnClickListener {
-            showDialog(null)
+            showBottomSheet(null)
         }
     }
 
@@ -172,17 +175,17 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         }
     }
 
-    private fun showDialog(item: CookieItem?){
+    private fun showBottomSheet(item: CookieItem?){
         lifecycleScope.launch {
-            val builder = MaterialAlertDialogBuilder(requireContext())
-            builder.setTitle(getString(R.string.cookies))
-            val layout = layoutInflater.inflate(R.layout.cookie_details, null)
-            val editText = layout.findViewById<EditText>(R.id.url_edittext)
-            layout.findViewById<TextInputLayout>(R.id.url_textinput).hint = "URL"
+            val layout = BottomSheetDialog(requireContext())
+            layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            layout.setContentView(R.layout.cookie_bottom_sheet)
+
+            val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
             val text = item?.url ?: "https://"
             editText.setText(text)
             editText.setSelection(editText.text.length)
-            val current = layout.findViewById<MaterialCardView>(R.id.current)
+            val current = layout.findViewById<MaterialCardView>(R.id.current)!!
             current.isVisible = item != null
             item?.apply {
                 current.findViewById<TextView>(R.id.currentText).apply {
@@ -190,45 +193,51 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     enableTextHighlight()
                 }
             }
-            builder.setView(layout)
 
-            item?.apply {
-                builder.setNeutralButton(
-                    getString(android.R.string.copy)
-                ) { dialog: DialogInterface?, which: Int ->
-                    UiUtil.copyToClipboard(cookiesViewModel.cookieHeader + "\n" + item.content, requireActivity())
-                }
-            }
+            val clipboard = layout.findViewById<MaterialButton>(R.id.clipboard)!!
+            clipboard.isVisible = item != null
 
-            builder.setPositiveButton(
-                if (item == null) getString(R.string.get_cookies) else getString(R.string.update)
-            ) { dialog: DialogInterface?, which: Int ->
+            val getCookies = layout.findViewById<MaterialButton>(R.id.getCookiesBtn)!!
+            getCookies.setOnClickListener {
                 val myIntent = Intent(requireContext(), WebViewActivity::class.java)
                 myIntent.putExtra("url", editText.text.toString())
+                layout.dismiss()
                 startActivity(myIntent)
             }
 
-            // handle the negative button of the alert dialog
-            builder.setNegativeButton(
-                getString(R.string.cancel)
-            ) { dialog: DialogInterface?, which: Int -> }
-            val dialog = builder.create()
-            editText.doOnTextChanged { text, start, before, count ->
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+            item?.apply {
+                clipboard.setOnClickListener {
+                    UiUtil.copyToClipboard(cookiesViewModel.cookieHeader + "\n" + item.content, requireActivity())
+                    layout.dismiss()
+                }
+
+                getCookies.text = getString(R.string.update)
             }
-            dialog.show()
+
+            editText.doOnTextChanged { text, start, before, count ->
+                getCookies.isEnabled = editText.text.isNotEmpty()
+            }
+
             val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            editText!!.postDelayed({
+            editText.postDelayed({
                 editText.requestFocus()
                 imm.showSoftInput(editText, 0)
             }, 300)
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = editText.text.isNotEmpty()
+
+            layout.show()
+            layout.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            layout.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            getCookies.isEnabled = editText.text.isNotEmpty()
         }
 
     }
 
     override fun onItemClick(cookie: CookieItem) {
-        showDialog(cookie)
+        showBottomSheet(cookie)
     }
 
     override fun onSelected(cookie: CookieItem) {

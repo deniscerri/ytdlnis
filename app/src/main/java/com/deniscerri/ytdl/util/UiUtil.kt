@@ -1761,6 +1761,17 @@ object UiUtil {
         deleteDialog.show()
     }
 
+    fun showGenericConfirmDialog(context: Context, title: String, content:String, accepted: () -> Unit){
+        val deleteDialog = MaterialAlertDialogBuilder(context)
+        deleteDialog.setTitle(title)
+        deleteDialog.setMessage(content)
+        deleteDialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+        deleteDialog.setPositiveButton(context.getString(R.string.continue_anyway)) { _: DialogInterface?, _: Int ->
+            accepted()
+        }
+        deleteDialog.show()
+    }
+
     fun showGenericDeleteAllDialog(context: Context, accepted: () -> Unit){
         val deleteDialog = MaterialAlertDialogBuilder(context)
         deleteDialog.setTitle(context.getString(R.string.you_are_going_to_delete_multiple_items))
@@ -2312,6 +2323,9 @@ object UiUtil {
         val deleteBtn : Button = bottomSheet.findViewById(R.id.client_delete)!!
         deleteBtn.isVisible = currentValue != null
 
+        val useOnlyPOToken : MaterialSwitch = bottomSheet.findViewById(R.id.use_only_po_token)!!
+        useOnlyPOToken.isChecked = currentValue?.useOnlyPoToken ?: false
+
         val contentLinear : LinearLayout = bottomSheet.findViewById(R.id.contentLinear)!!
 
         val defaultChips = context.getStringArray(R.array.youtube_player_clients).toMutableSet()
@@ -2374,7 +2388,12 @@ object UiUtil {
                 return@setOnClickListener
             }
 
-            val obj = YoutubePlayerClientItem(titleVal, mutableListOf())
+            if (useOnlyPOToken.isChecked && (poTokenInputs.filter { it.tag.toString().startsWith("potoken") }.all { it.editText!!.text.isBlank() })) {
+                poTokenInputs.first().error = "You need to write at least one PO Token"
+                return@setOnClickListener
+            }
+
+            val obj = YoutubePlayerClientItem(titleVal, mutableListOf(), true, useOnlyPOToken.isChecked)
             poTokenInputs.filter { it.editText!!.text.isNotBlank() && it.tag.toString().startsWith("potoken") }.forEach {
                 obj.poTokens.add(YoutubePoTokenItem(it.tag.toString().split("potoken_")[1], it.editText!!.text.toString()))
             }
