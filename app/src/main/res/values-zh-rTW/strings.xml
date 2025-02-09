@@ -441,4 +441,15 @@
     <string name="ytdlp_watch_later">YT-DLP Youtube 稍後觀看（需要 cookie）</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube 觀看歷史記錄（需要 cookie）</string>
     <string name="data_fetching_extra_command_summary">啟用指令範本作為額外指令用於資料抓取</string>
+    <string name="player_client">播放用戶端</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_app_language_for_metadata">使用應用程式語言取得後設資料</string>
+    <string name="no_check_certificates">禁止 HTTPS 憑證驗證</string>
+    <string name="live_stream">直播</string>
+    <string name="live_from_start">從頭開始直播</string>
+    <string name="wait_for_video">等待影片</string>
+    <string name="retry_every">重試間隔</string>
+    <string name="minutes">分鐘</string>
+    <string name="prefer_container_over_codec_audio">音訊下載時優先使用容器而非編解碼器</string>
+    <string name="prefer_container_over_codec_audio_summary">啟用此功能後，首選的音訊編解碼器首選項將被忽略，並且只有容器會更改</string>
 </resources>
