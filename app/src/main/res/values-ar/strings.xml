@@ -449,4 +449,9 @@
     <string name="minutes">دقائق</string>
     <string name="prefer_container_over_codec_audio">تفضيل الحاوية على الترميز لتنزيلات الصوت</string>
     <string name="prefer_container_over_codec_audio_summary">عند تمكين هذا، سيتم تجاهل تفضيلات ترميز الصوت المفضلة وسيتم تغيير الحاوية فقط</string>
+    <string name="use_app_language_for_metadata">استخدم لغة التطبيق للبيانات الوصفية</string>
+    <string name="layout">التخطيط</string>
+    <string name="grid">شبكة</string>
+    <string name="player_client">عميل اللاعب</string>
+    <string name="list">قائمة</string>
 </resources>

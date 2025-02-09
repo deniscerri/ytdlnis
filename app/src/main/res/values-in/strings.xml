@@ -448,4 +448,9 @@
     <string name="prefer_container_over_codec_audio_summary">Jika ini diaktifkan, preferensi codec audio yang dipilih akan diabaikan dan hanya kontainer yang akan berubah</string>
     <string name="wait_for_video">Tunggu Video</string>
     <string name="live_from_start">Langsung Dari Awal</string>
+    <string name="player_client">Klien Pemutar</string>
+    <string name="layout">Tata Letak</string>
+    <string name="list">Daftar</string>
+    <string name="grid">Kisi</string>
+    <string name="use_app_language_for_metadata">Gunakan Bahasa Aplikasi untuk Metadata</string>
 </resources>

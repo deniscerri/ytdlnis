@@ -449,4 +449,10 @@
     <string name="wait_for_video">Зачекайте на відео</string>
     <string name="minutes">Хвилини</string>
     <string name="prefer_container_over_codec_audio_summary">Якщо це ввімкнено, бажані параметри аудіокодека ігноруватимуться, а змінюватиметься лише контейнер</string>
+    <string name="player_client">Клієнт програвача</string>
+    <string name="use_app_language_for_metadata">Використовуйте мову додатків для метаданих</string>
+    <string name="layout">Макет</string>
+    <string name="list">Список</string>
+    <string name="grid">Сітка</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
 </resources>

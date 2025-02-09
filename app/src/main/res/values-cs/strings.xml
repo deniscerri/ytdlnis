@@ -447,4 +447,12 @@
     <string name="prefer_container_over_codec_audio">Upřednostnit kontejner před kodekem pro stahování audia</string>
     <string name="wait_for_video">Čekejte na video</string>
     <string name="prefer_container_over_codec_audio_summary">Pokud je tato volba povolena, předvolba preferovaného zvukového kodeku bude ignorována a změní se pouze kontejner</string>
+    <string name="player_client">Přehrávač klient</string>
+    <string name="player_client_summary"><![CDATA[Klienti přehrávače YouTube a token PO]]></string>
+    <string name="use_app_language_for_metadata">Použít jazyk aplikace pro metadata</string>
+    <string name="layout">Uspořádání</string>
+    <string name="list">Seznam</string>
+    <string name="grid">Mřížka</string>
+    <string name="retry_every">Opakovat každých</string>
+    <string name="minutes">minut</string>
 </resources>
