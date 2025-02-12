@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
-    <string name="video_recommendations_summary">Merrni videot e rekomanduara të YouTube në ekranin bazë nga NewPipe Extractor</string>
+    <string name="video_recommendations_summary">Merrni videot e rekomanduara të YouTube në ekranin bazë</string>
     <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
     <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
     <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
@@ -434,4 +434,27 @@
     <string name="data_fetching_extra_command">Komandat Ekstra per marrjen e të dhënave</string>
     <string name="preferred_command_template">Modeli i komandës së preferuar</string>
     <string name="data_fetching_extra_command_summary">Aktivizo shabllonet e komandave që të përdoren për marrjen e të dhënave si komanda shtesë</string>
+    <string name="disable_write_info_json">Çaktivizo Write Info Json</string>
+    <string name="disable_write_info_json_summary">(Nuk është e rekomanduar) Çdo herë që bën restart / rifillim të shkarkimit, yt-dlp do të rishkarkojë json data nga serverat.</string>
+    <string name="player_client">Klienti i Luajtjes</string>
+    <string name="player_client_summary"><![CDATA[Klientët e Luajtjes në YouTube & PO Token]]></string>
+    <string name="use_app_language_for_metadata">Për gjuhën e aplikacionit për metadata</string>
+    <string name="layout">Paraqitja</string>
+    <string name="list">Lista</string>
+    <string name="grid">Rrjetë</string>
+    <string name="ytdlp_watch_later">YT-DLP Youtube Shiko më vonë (do biskota)</string>
+    <string name="ytdlp_recommnedations">YT-DLP YouTube Rekomandimet (do biskota)</string>
+    <string name="ytdlp_liked">YT-DLP Youtube Videot e Pëlqyera (do biskota)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube Historiku i shikimit (do biskota)</string>
+    <string name="use_only_po_token">Përdor vetëm PO Token (Injoro Klientin e Luajtjes)</string>
+    <string name="cache_directory">Skedari i Përkohshëm</string>
+    <string name="wait_for_video">Prit për videon</string>
+    <string name="retry_every">Riprovo Çdo</string>
+    <string name="prefer_container_over_codec_audio">Prefero Container nga Kodeku për Shkarkimet Audio</string>
+    <string name="prefer_container_over_codec_audio_summary">Me këtë të aktivizuar, preferenca e kodekut të preferurar do të injorohet dhe vetëm kontenjeri do ndryshojë</string>
+    <string name="live_stream">Live Stream</string>
+    <string name="live_from_start">Live Nga Fillimi</string>
+    <string name="minutes">Minuta</string>
+    <string name="cache_directory_warning">Ndryshimi i skedarit të përkohshëm mund të shkaktojë ndryshime të paparashikueshme. Nëse aplikacioni nuk mund të shkruajë dot në vendin e konfiguruar, do të përdori skedarin e vetë të brendshëm</string>
+    <string name="no_check_certificates">Mos kontrollo certifikatën HTTPS</string>
 </resources>

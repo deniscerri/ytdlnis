@@ -454,4 +454,7 @@
     <string name="grid">网格</string>
     <string name="player_client">播放器客户端</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="use_only_po_token">只使用 PO 令牌（忽略播放器客户端）</string>
+    <string name="cache_directory">缓存文件夹</string>
+    <string name="cache_directory_warning">更爱缓存文件夹可能导致意料不到的问题。如果应用无法写入配置的路径，它将使用默认的内部缓存目录</string>
 </resources>
