@@ -455,4 +455,7 @@
     <string name="list">Список</string>
     <string name="grid">Сітка</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="cache_directory">Тека кешу</string>
+    <string name="cache_directory_warning">Зміна теки кешу може спричинити несподівані проблеми. Якщо застосунок не зможе записати за вказаним шляхом, він звернеться до типового каталогу внутрішнього кешу</string>
+    <string name="use_only_po_token">Використовувати лише PO-токен (ігнорувати клієнт програвача)</string>
 </resources>
