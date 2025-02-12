@@ -141,7 +141,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         lifecycleScope.launch {
             ytdlVersion!!.summary = getString(R.string.loading)
             val version = withContext(Dispatchers.IO){
-                ytdlpUtil.getVersion()
+                ytdlpUtil.getVersion(requireContext(), preferences.getString("ytdlp_source", "stable")!!)
             }
             preferences.edit().apply {
                 putString("ytdl-version", version)

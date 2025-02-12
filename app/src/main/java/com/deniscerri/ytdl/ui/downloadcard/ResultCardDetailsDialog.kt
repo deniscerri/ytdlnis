@@ -253,9 +253,17 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         downloadMusic.setOnClickListener {
             onButtonClick(DownloadViewModel.Type.audio)
         }
+        downloadMusic.setOnLongClickListener {
+            onButtonClick(DownloadViewModel.Type.audio)
+            true
+        }
 
         downloadVideo.setOnClickListener {
             onButtonClick(DownloadViewModel.Type.video)
+        }
+        downloadVideo.setOnLongClickListener {
+            onButtonClick(DownloadViewModel.Type.video)
+            true
         }
 
 

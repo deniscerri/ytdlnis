@@ -39,6 +39,7 @@ import java.io.File
 import java.lang.reflect.Type
 import java.util.ArrayList
 import java.util.Locale
+import java.util.StringJoiner
 import java.util.UUID
 
 class YTDLPUtil(private val context: Context) {
@@ -571,9 +572,11 @@ class YTDLPUtil(private val context: Context) {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
         var isPlaylistItem = false
 
-        val request = if (downloadItem.url.endsWith(".txt")) {
+        val request = StringJoiner(" ")
+
+        val ytDlRequest = if (downloadItem.url.endsWith(".txt")) {
             YoutubeDLRequest(listOf()).apply {
-                addOption("-a", downloadItem.url)
+                request.addOption("-a", downloadItem.url)
             }
         }else if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
             YoutubeDLRequest(downloadItem.url)
@@ -582,17 +585,17 @@ class YTDLPUtil(private val context: Context) {
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
                 if(downloadItem.playlistIndex == null){
                     val matchPortion = downloadItem.url.split("/").last().split("=").last().split("&").first()
-                    addOption("--match-filter", "id~='${matchPortion}'")
+                    request.addOption("--match-filter", "id~='${matchPortion}'")
                 }else{
-                    addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
+                    request.addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }
-                addOption("-i")
+                request.addOption("-i")
             }
         }
 
         request.addOption("--newline")
 
-        val metadataCommands = mutableListOf<String>()
+        val metadataCommands = StringJoiner(" ")
 
         if (downloadItem.playlistIndex != null && useItemURL) {
             metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
@@ -681,7 +684,7 @@ class YTDLPUtil(private val context: Context) {
                 request.addOption("--no-part")
             }
 
-            request.addOption("--trim-filenames",  254/* - downDir.absolutePath.length*/)
+            request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")
@@ -730,7 +733,7 @@ class YTDLPUtil(private val context: Context) {
                     if (it.isBlank()) return@forEach
                     request.addOption("--download-sections", "*${it.split(" ")[0]}")
 
-                    if (sharedPreferences.getBoolean("force_keyframes", false) && !request.hasOption("--force-keyframes-at-cuts")){
+                    if (sharedPreferences.getBoolean("force_keyframes", false) && !request.toString().contains("--force-keyframes-at-cuts")){
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
@@ -749,7 +752,7 @@ class YTDLPUtil(private val context: Context) {
             }
 
             if (downloadItem.url.isYoutubeURL()) {
-                request.setYoutubeExtractorArgs()
+                ytDlRequest.setYoutubeExtractorArgs()
             }
 
             //TODO REVIEW TO ADD THIS AGAIN LATER?
@@ -903,7 +906,7 @@ class YTDLPUtil(private val context: Context) {
                     val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
                     if (downloadItem.audioPreferences.embedThumb){
                         metadataCommands.addOption("--embed-thumbnail")
-                        if (!request.hasOption("--convert-thumbnails")) metadataCommands.addOption("--convert-thumbnails", thumbnailFormat!!)
+                        if (!request.toString().contains("--convert-thumbnails")) metadataCommands.addOption("--convert-thumbnails", thumbnailFormat!!)
 
                         val thumbnailConfig = StringBuilder("")
                         val cropConfig = """-vf crop=\"'if(gt(ih,iw),iw,ih)':'if(gt(iw,ih),ih,iw)'\"""""
@@ -917,11 +920,7 @@ class YTDLPUtil(private val context: Context) {
                         }
 
                         if (thumbnailConfig.isNotBlank()){
-                            runCatching {
-                                val config = File(context.cacheDir.absolutePath + "/config" + downloadItem.id + "##ffmpegCrop.txt")
-                                config.writeText(thumbnailConfig.toString())
-                                metadataCommands.addOption("--config", config.absolutePath)
-                            }
+                            request.addOption(thumbnailConfig.toString())
                         }
 
                     }
@@ -969,7 +968,7 @@ class YTDLPUtil(private val context: Context) {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             metadataCommands.addOption("--embed-thumbnail")
-                            if (!request.hasOption("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
+                            if (!request.toString().contains("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
                         }
                     }
                 }
@@ -1021,7 +1020,11 @@ class YTDLPUtil(private val context: Context) {
                         if (altAudioF.isNotBlank()){
                             f.append("$videoF+$altAudioF/")
                         }
-                        f.append("$videoF+ba/$videoF/b")
+                        if (!f.contains("$videoF+ba")) {
+                            f.append("$videoF+ba/")
+                        }
+                        f.append("$videoF/b")
+
 
                         if (audioF.count("+") > 0){
                             request.addOption("--audio-multistreams")
@@ -1206,39 +1209,34 @@ class YTDLPUtil(private val context: Context) {
                     request.addOption("-P", downDir.absolutePath)
                 }
 
-                request.addOption(
-                    "--config-locations",
-                    File(context.cacheDir.absolutePath + "/config[${downloadItem.id}].txt").apply {
-                        writeText(downloadItem.format.format_note)
-                    }.absolutePath
-                )
-
+                request.addOption(downloadItem.format.format_note)
             }
 
             else -> {}
         }
 
-        if (metadataCommands.isNotEmpty()){
-            request.addCommands(metadataCommands)
-        }
+        request.merge(metadataCommands)
 
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
-            //request.addCommands(downloadItem.extraCommands.replace("\"", "").split(" ", "\t", "\n"))
-
-            val cache = File(FileUtil.getCachePath(context))
-            cache.mkdirs()
-            val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
-            conf.createNewFile()
-            conf.writeText(downloadItem.extraCommands)
-            val tmp = mutableListOf<String>()
-            tmp.addOption("--config-locations", conf.absolutePath)
-            request.addCommands(tmp)
+            request.addOption(downloadItem.extraCommands)
         }
 
-        return request
+        val cache = File(FileUtil.getCachePath(context))
+        cache.mkdirs()
+        val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
+        conf.createNewFile()
+        conf.writeText(request.toString())
+        val tmp = mutableListOf<String>()
+        tmp.addOption("--config-locations", conf.absolutePath)
+        ytDlRequest.addCommands(tmp)
+        return ytDlRequest
     }
 
-    fun getVersion() : String {
+    fun getVersion(context: Context, channel: String) : String {
+        if (listOf("stable", "nightly", "master").contains(channel)) {
+            return YoutubeDL.version(context) ?: ""
+        }
+
         val req = YoutubeDLRequest(emptyList())
         req.addOption("--version")
         return YoutubeDL.getInstance().execute(req).out.trim()
@@ -1301,5 +1299,14 @@ class YTDLPUtil(private val context: Context) {
                 writeText(commandString)
             }.absolutePath
         )
+    }
+
+    private fun StringJoiner.addOption(vararg elements: Any) {
+        this.add(elements.first().toString())
+        if (elements.size > 1) {
+            for (el in elements.drop(1)) {
+                this.add(""""$el"""")
+            }
+        }
     }
 }

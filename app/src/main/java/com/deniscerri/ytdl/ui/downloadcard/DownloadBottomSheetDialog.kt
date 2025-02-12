@@ -329,7 +329,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     val itemsToQueue = mutableListOf<DownloadItem>()
                     itemsToQueue.add(item)
 
-                    getAlsoAudioDownloadItem{ audioDownloadItem ->
+                    getAlsoAudioDownloadItem(finished = { audioDownloadItem ->
                         audioDownloadItem.downloadStartTime = it.timeInMillis
                         audioDownloadItem.status = DownloadRepository.Status.Scheduled.toString()
                         itemsToQueue.add(audioDownloadItem)
@@ -347,7 +347,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                                 handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
                             }
                         }
-                    }
+                    })
                 }else{
                     lifecycleScope.launch {
                         val result = withContext(Dispatchers.IO){
@@ -377,16 +377,18 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     val itemsToQueue = mutableListOf<DownloadItem>()
                     itemsToQueue.add(item)
 
-                    getAlsoAudioDownloadItem {
+                    getAlsoAudioDownloadItem(finished = {
                         itemsToQueue.add(it)
 
-                        runBlocking {
-                            val result = downloadViewModel.queueDownloads(itemsToQueue)
+                        lifecycleScope.launch {
+                            val result = withContext(Dispatchers.IO) {
+                                downloadViewModel.queueDownloads(itemsToQueue)
+                            }
                             withContext(Dispatchers.Main){
                                 handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
                             }
                         }
-                    }
+                    })
                 }else{
                     val result = withContext(Dispatchers.IO) {
                         downloadViewModel.queueDownloads(listOf(item))
@@ -686,7 +688,11 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private fun getAlsoAudioDownloadItem(finished: (it: DownloadItem) -> Unit) {
         try {
             val ff = fragmentAdapter.fragments[0] as DownloadAudioFragment
-            ff.updateSelectedAudioFormat(getDownloadItem(1).videoPreferences.audioFormatIDs.first())
+            getDownloadItem(1).videoPreferences.audioFormatIDs.apply {
+                if (this.isNotEmpty()) {
+                    ff.updateSelectedAudioFormat(this.first())
+                }
+            }
             finished(ff.downloadItem)
         }catch (e: Exception){
             val fragmentLifecycleCallback = object:

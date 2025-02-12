@@ -9,7 +9,7 @@
     <string name="settings">Settings</string>
     <string name="home">Home</string>
     <string name="directories">Folders</string>
-    <string name="music_directory">Music Folder</string>
+    <string name="music_directory">Audio Folder</string>
     <string name="video_directory">Video Folder</string>
     <string name="updating">Updating</string>
     <string name="ytdl_update_hint">Useful if you have problems downloading</string>
