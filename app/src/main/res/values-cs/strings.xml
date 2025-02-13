@@ -455,4 +455,7 @@
     <string name="grid">Mřížka</string>
     <string name="retry_every">Opakovat každých</string>
     <string name="minutes">minut</string>
+    <string name="cache_directory">Složka mezipaměti</string>
+    <string name="cache_directory_warning">Změna složky mezipaměti může způsobit neočekávané problémy. Pokud aplikace nemůže zapisovat do nakonfigurované cesty, uchýlí se do výchozího interního adresáře mezipaměti</string>
+    <string name="use_only_po_token">Použít pouze PO Token (ignorovat klienta přehrávače)</string>
 </resources>
