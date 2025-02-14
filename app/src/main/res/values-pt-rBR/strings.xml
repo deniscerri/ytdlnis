@@ -65,7 +65,7 @@
     <string name="sponsorblock_fillers">Enchimentos</string>
     <string name="sponsorblock_reminders">Lembrete de inscrição</string>
     <string name="worst_quality">Menor qualidade</string>
-    <string name="music_directory">Pasta de músicas</string>
+    <string name="music_directory">Pasta de áudio</string>
     <string name="download_notification_channel_description">Mostrar notificações do progresso de download dos arquivos</string>
     <string name="update_ytdl">Instalar nova versão do yt-dlp</string>
     <string name="update_app">Buscar atualizações</string>
@@ -455,4 +455,7 @@
     <string name="minutes">Minutos</string>
     <string name="prefer_container_over_codec_audio_summary">Com essa opção ativada, a preferência do codec de áudio será ignorada e somente o contêiner será alterado</string>
     <string name="no_check_certificates">Ignorar validação de certificado HTTPS</string>
+    <string name="cache_directory">Pasta de cache</string>
+    <string name="cache_directory_warning">Alterar a pasta de cache pode causar problemas inesperados. Se o aplicativo não puder salvar no caminho configurado, ele recorrerá ao diretório de cache interno padrão</string>
+    <string name="use_only_po_token">Use apenas token PO (ignorar cliente de reprodução)</string>
 </resources>

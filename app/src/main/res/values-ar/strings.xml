@@ -454,4 +454,8 @@
     <string name="grid">شبكة</string>
     <string name="player_client">عميل اللاعب</string>
     <string name="list">قائمة</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player العملاء و المشتريات Token]]></string>
+    <string name="cache_directory">مجلد ذاكرة الكاش</string>
+    <string name="cache_directory_warning">قد يؤدي تغيير مجلد ذاكرة الكاش إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى دليل ذاكرة الكاش الداخلي الافتراضي</string>
+    <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل عميل المشغل)</string>
 </resources>

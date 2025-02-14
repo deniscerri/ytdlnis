@@ -455,4 +455,7 @@
     <string name="grid">Mriežka</string>
     <string name="retry_every">Opakovať každých</string>
     <string name="minutes">minút</string>
+    <string name="cache_directory">Priečinok medzipamäte</string>
+    <string name="use_only_po_token">Použiť iba PO Token (ignorovať klienta prehrávača)</string>
+    <string name="cache_directory_warning">Zmena priečinka nedzipamäte môže spôsobiť neočakávané problémy. Ak aplikácia nemôže zapisovať do nakonfigurovanej cesty, uchýli sa k predvolenému internému adresáru vyrovnávacej pamäte</string>
 </resources>
