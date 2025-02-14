@@ -5,7 +5,7 @@
     <string name="download_all">Pobierz wszystko</string>
     <string name="settings">Ustawienia</string>
     <string name="home">Główna</string>
-    <string name="music_directory">Folder muzyki</string>
+    <string name="music_directory">Folder Audio</string>
     <string name="video_directory">Folder filmów</string>
     <string name="updating">Aktualizowanie</string>
     <string name="update_ytdl">Zainstaluj nowszą wersję yt-dlp</string>
@@ -441,4 +441,17 @@
     <string name="data_fetching_extractor_youtube">Ekstraktor pobierania danych (YouTube)</string>
     <string name="ytdlp_liked">YT-DLP Polubione filmy w serwisie Youtube (wymaga plików cookie)</string>
     <string name="ytdlp_watch_history">Historia oglądania w YouTube YT-DLP (wymaga plików cookie)</string>
+    <string name="player_client">Klient odtwarzacza</string>
+    <string name="list">Lista</string>
+    <string name="grid">Siatka</string>
+    <string name="use_app_language_for_metadata">Użyj języka aplikacji dla metadanych</string>
+    <string name="layout">Rozmieszczenie</string>
+    <string name="live_stream">Transmisja na żywo</string>
+    <string name="live_from_start">Na żywo od początku</string>
+    <string name="wait_for_video">Poczekaj na wideo</string>
+    <string name="retry_every">Ponawiaj każdą próbę</string>
+    <string name="prefer_container_over_codec_audio_summary">Po włączeniu tej opcji preferowany kodek audio będzie ignorowany i zmieni się tylko kontener</string>
+    <string name="cache_directory_warning">Zmiana folderu pamięci podręcznej może spowodować nieoczekiwane problemy. Jeśli aplikacja nie może zapisać danych w skonfigurowanej ścieżce, skorzysta z domyślnego wewnętrznego katalogu pamięci podręcznej</string>
+    <string name="cache_directory">Folder podręczny</string>
+    <string name="no_check_certificates">Wyłączenie sprawdzania poprawności certyfikatu HTTPS</string>
 </resources>
