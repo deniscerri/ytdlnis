@@ -42,6 +42,15 @@ object Migrations {
                     database.execSQL("UPDATE history SET filesize = ${parsed.filesize} WHERE id = $id")
                 }
             }
+        },
+
+        //add preferred command template and url regexes
+        Migration(21, 22) { database ->
+            // Add the `preferredCommandTemplate` column as INTEGER (since SQLite does not support BOOLEAN)
+            database.execSQL("ALTER TABLE commandTemplates ADD COLUMN preferredCommandTemplate INTEGER NOT NULL DEFAULT 0")
+
+            // Add `urlRegex` as a JSON string (since lists are not supported in SQLite)
+            database.execSQL("ALTER TABLE commandTemplates ADD COLUMN urlRegex TEXT NOT NULL DEFAULT '[]'")
         }
     )
 

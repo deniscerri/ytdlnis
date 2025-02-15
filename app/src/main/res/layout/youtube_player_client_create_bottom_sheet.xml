@@ -170,6 +170,34 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/url_regex"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="url_regex"
+                    android:hint="PO Token URL Regex"
+                    app:endIconDrawable="@drawable/ic_plus"
+                    app:endIconMode="custom"
+                    android:paddingBottom="10dp"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/urlRegexChipGroup"
+                    android:layout_width="wrap_content"
+                    app:chipSpacingVertical="-10dp"
+                    app:singleSelection="true"
+                    app:chipSpacing="0dp"
+                    android:layout_height="wrap_content"
+                    app:singleLine="false" />
+
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/use_only_po_token"
                     android:layout_width="match_parent"

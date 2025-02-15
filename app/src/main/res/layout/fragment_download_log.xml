@@ -82,6 +82,13 @@
 
     </FrameLayout>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/coordinatorLayout3"
+        android:layout_height="wrap_content"/>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout3"
         android:layout_width="0dp"

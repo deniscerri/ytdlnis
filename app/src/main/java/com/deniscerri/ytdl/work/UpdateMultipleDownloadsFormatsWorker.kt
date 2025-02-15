@@ -22,7 +22,8 @@ class UpdateMultipleDownloadsFormatsWorker(
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao
-        val resultRepo = ResultRepository(resDao, context)
+        val commandTemplateDao = dbManager.commandTemplateDao
+        val resultRepo = ResultRepository(resDao, commandTemplateDao, context)
         val vm = DownloadViewModel(App.instance)
         val notificationUtil = NotificationUtil(context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()

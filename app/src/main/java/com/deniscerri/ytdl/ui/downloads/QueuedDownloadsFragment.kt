@@ -36,6 +36,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.QueuedDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
@@ -61,6 +62,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var ytdlpViewModel : YTDLPViewModel
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var adapter : QueuedDownloadAdapter
     private lateinit var noResults : RelativeLayout
@@ -80,6 +82,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
         return fragmentView
     }
 
@@ -450,6 +453,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                 item,
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
+                ytdlpViewModel,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     sheet.hide()
                     removeItem(it.id)

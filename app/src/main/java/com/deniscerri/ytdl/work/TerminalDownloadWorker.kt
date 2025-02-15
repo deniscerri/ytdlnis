@@ -101,7 +101,7 @@ class TerminalDownloadWorker(
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
 
         val initialLogDetails = "Terminal Task\n" +
-                "Command: \n ${command}\n\n"
+                "Command:\n${command.trim()}\n\n"
         val logItem = LogItem(
             0,
             "Terminal Task",
@@ -122,7 +122,7 @@ class TerminalDownloadWorker(
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
                 runBlocking {
-                    eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong()))
+                    eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }
 
                 val title: String = command.take(65)
@@ -142,7 +142,7 @@ class TerminalDownloadWorker(
                     //move file from internal to set download directory
                     try {
                         FileUtil.moveFile(File(FileUtil.getCachePath(context) + "/TERMINAL/" + itemId),context, downloadLocation!!, false){ p ->
-                            eventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong()))
+                            eventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong(), logItem.id))
                         }
                     }catch (e: Exception){
                         e.printStackTrace()

@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -15,11 +14,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.text.format.DateFormat
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -35,20 +32,14 @@ import android.widget.PopupMenu
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DimenRes
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.text.HtmlCompat
-import androidx.core.text.parseAsHtml
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import androidx.core.view.marginBottom
-import androidx.core.view.updateLayoutParams
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
@@ -56,7 +47,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
-import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -68,8 +58,8 @@ import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
-import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
@@ -91,21 +81,17 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.gson.Gson
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -214,6 +200,8 @@ object UiUtil {
         val extraCommandsDataFetchingSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandDataFetching)!!
         val shortcutsChipGroup : ChipGroup = bottomSheet.findViewById(R.id.shortcutsChipGroup)!!
         val editShortcuts : Button = bottomSheet.findViewById(R.id.edit_shortcuts)!!
+        val urlRegex : TextInputLayout = bottomSheet.findViewById(R.id.url_regex)!!
+        val urlRegexChips : ChipGroup = bottomSheet.findViewById(R.id.urlRegexChipGroup)!!
 
         extraCommandsDataFetchingSwitch.isVisible = sharedPreferences.getBoolean("enable_data_fetching_extra_commands", false)
 
@@ -274,7 +262,7 @@ object UiUtil {
         }
 
         if (item != null){
-            preferredCommandSwitch.isChecked = item.content == sharedPreferences.getString("preferred_command_template", "")
+            preferredCommandSwitch.isChecked = item.preferredCommandTemplate
             extraCommandsDataFetchingSwitch.isChecked = item.useAsExtraCommandDataFetching && extraCommandsDataFetchingSwitch.isVisible
 
             extraCommandsSwitch.isChecked = item.useAsExtraCommand
@@ -289,14 +277,39 @@ object UiUtil {
                 extraCommandsVideo.isVisible = false
                 extraCommandsVideo.isChecked = false
             }
+
+            val canUseURLRegex = item.useAsExtraCommand || item.useAsExtraCommandDataFetching || item.preferredCommandTemplate
+            urlRegex.isVisible = canUseURLRegex
+            urlRegexChips.isVisible = canUseURLRegex
+
+            for(chip in item.urlRegex) {
+                val tmp = context.layoutInflater.inflate(R.layout.input_chip, urlRegexChips, false) as Chip
+                tmp.text = chip
+                tmp.setOnClickListener {
+                    urlRegexChips.removeView(tmp)
+                }
+                urlRegexChips.addView(tmp)
+            }
         }
+
+         preferredCommandSwitch.setOnCheckedChangeListener { compoundButton, b ->
+             val canUseURLRegex = extraCommandsSwitch.isChecked || extraCommandsDataFetchingSwitch.isChecked || preferredCommandSwitch.isChecked
+             urlRegex.isVisible = canUseURLRegex
+             urlRegexChips.isVisible = canUseURLRegex
+         }
 
          extraCommandsSwitch.setOnCheckedChangeListener { compoundButton, b ->
              extraCommandsAudio.isVisible = extraCommandsSwitch.isChecked
              extraCommandsAudio.isChecked = true
              extraCommandsVideo.isVisible = extraCommandsSwitch.isChecked
              extraCommandsVideo.isChecked = true
+
+             val canUseURLRegex = extraCommandsSwitch.isChecked || extraCommandsDataFetchingSwitch.isChecked || preferredCommandSwitch.isChecked
+             urlRegex.isVisible = canUseURLRegex
+             urlRegexChips.isVisible = canUseURLRegex
          }
+
+
 
          extraCommandsAudio.setOnCheckedChangeListener { compoundButton, b ->
              ok.isEnabled = (extraCommandsAudio.isChecked || extraCommandsVideo.isChecked) && title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty()
@@ -304,6 +317,28 @@ object UiUtil {
 
          extraCommandsVideo.setOnCheckedChangeListener { compoundButton, b ->
              ok.isEnabled = (extraCommandsAudio.isChecked || extraCommandsVideo.isChecked) && title.editText!!.text.isNotEmpty() && content.editText!!.text.isNotEmpty()
+         }
+
+         extraCommandsDataFetchingSwitch.setOnCheckedChangeListener { compoundButton, b ->
+             val canUseURLRegex = extraCommandsSwitch.isChecked || extraCommandsDataFetchingSwitch.isChecked || preferredCommandSwitch.isChecked
+             urlRegex.isVisible = canUseURLRegex
+             urlRegexChips.isVisible = canUseURLRegex
+         }
+
+         urlRegex.isEndIconVisible = false
+         urlRegex.editText!!.doOnTextChanged { text, start, before, count ->
+             urlRegex.isEndIconVisible = urlRegex.editText!!.text.isNotBlank()
+         }
+
+         urlRegex.setEndIconOnClickListener {
+             val text = urlRegex.editText!!.text
+             urlRegex.editText!!.setText("")
+             val tmp = context.layoutInflater.inflate(R.layout.input_chip, urlRegexChips, false) as Chip
+             tmp.text = text
+             tmp.setOnClickListener {
+                 urlRegexChips.removeView(tmp)
+             }
+             urlRegexChips.addView(tmp)
          }
 
         commandTemplateViewModel.shortcuts.observe(lifeCycle){
@@ -323,15 +358,20 @@ object UiUtil {
         }
 
         ok.setOnClickListener {
-            if (preferredCommandSwitch.isChecked) {
-                sharedPreferences.edit().putString("preferred_command_template", content.editText!!.text.toString()).apply()
-            }else if (sharedPreferences.getString("preferred_command_template", "") == item?.content){
-                sharedPreferences.edit().putString("preferred_command_template", "").apply()
-            }
-
-
+            val urlRegexes = urlRegexChips.children.map { (it as Chip).text.toString() }.toMutableList()
             if (item == null){
-                val t = CommandTemplate(0, title.editText!!.text.toString(), content.editText!!.text.toString(), extraCommandsSwitch.isChecked, extraCommandsAudio.isChecked, extraCommandsVideo.isChecked, extraCommandsDataFetchingSwitch.isChecked)
+
+                val t = CommandTemplate(
+                    0,
+                    title.editText!!.text.toString(),
+                    content.editText!!.text.toString(),
+                    extraCommandsSwitch.isChecked,
+                    extraCommandsAudio.isChecked,
+                    extraCommandsVideo.isChecked,
+                    extraCommandsDataFetchingSwitch.isChecked,
+                    preferredCommandSwitch.isChecked,
+                    urlRegexes
+                )
                 commandTemplateViewModel.insert(t)
                 newTemplate(t)
             }else{
@@ -341,6 +381,8 @@ object UiUtil {
                 item.useAsExtraCommandAudio = extraCommandsAudio.isChecked
                 item.useAsExtraCommandVideo = extraCommandsVideo.isChecked
                 item.useAsExtraCommandDataFetching = extraCommandsDataFetchingSwitch.isChecked
+                item.preferredCommandTemplate = preferredCommandSwitch.isChecked
+                item.urlRegex = urlRegexes
                 commandTemplateViewModel.update(item)
                 newTemplate(item)
             }
@@ -490,6 +532,7 @@ object UiUtil {
         item: DownloadItem,
         context: Activity,
         status: DownloadRepository.Status,
+        ytdlpViewModel: YTDLPViewModel,
         removeItem : (DownloadItem, BottomSheetDialog) -> Unit,
         downloadItem: (DownloadItem) -> Unit,
         longClickDownloadButton: (DownloadItem) -> Unit,
@@ -598,10 +641,8 @@ object UiUtil {
         if (fileSizeReadable == "?") fileSize!!.visibility = View.GONE
         else fileSize!!.text = fileSizeReadable
 
-        val ytdlpUtil = YTDLPUtil(context)
-
         command?.setOnClickListener {
-            showGeneratedCommand(context, ytdlpUtil.parseYTDLRequestString(ytdlpUtil.buildYoutubeDLRequest(item)))
+            showGeneratedCommand(context, ytdlpViewModel.parseYTDLRequestString(item))
         }
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
@@ -2314,7 +2355,7 @@ object UiUtil {
     fun showYoutubePlayerClientSheet(context: Activity, preferences: SharedPreferences, currentValue: YoutubePlayerClientItem?, newValue: (item: YoutubePlayerClientItem) -> Unit, deleted: () -> Unit){
         val bottomSheet = BottomSheetDialog(context)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        bottomSheet.setContentView(R.layout.youtube_player_clients)
+        bottomSheet.setContentView(R.layout.youtube_player_client_create_bottom_sheet)
 
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val chipGroup : ChipGroup = bottomSheet.findViewById(R.id.chipGroup)!!
@@ -2376,6 +2417,35 @@ object UiUtil {
             okBtn.text = context.getString(R.string.edit)
         }
 
+        val urlRegexInput = contentLinear.findViewById<TextInputLayout>(R.id.url_regex)
+        urlRegexInput.isEndIconVisible = false
+        urlRegexInput.editText!!.doOnTextChanged { text, start, before, count ->
+            urlRegexInput.isEndIconVisible = urlRegexInput.editText!!.text.isNotBlank()
+        }
+
+        val urlRegexChips = contentLinear.findViewById<ChipGroup>(R.id.urlRegexChipGroup)
+        currentValue?.apply {
+            for(chip in this.urlRegex) {
+                val tmp = context.layoutInflater.inflate(R.layout.input_chip, urlRegexChips, false) as Chip
+                tmp.text = chip
+                tmp.setOnClickListener {
+                    urlRegexChips.removeView(tmp)
+                }
+                urlRegexChips.addView(tmp)
+            }
+        }
+
+        urlRegexInput.setEndIconOnClickListener {
+            val text = urlRegexInput.editText!!.text
+            urlRegexInput.editText!!.setText("")
+            val tmp = context.layoutInflater.inflate(R.layout.input_chip, urlRegexChips, false) as Chip
+            tmp.text = text
+            tmp.setOnClickListener {
+                urlRegexChips.removeView(tmp)
+            }
+            urlRegexChips.addView(tmp)
+        }
+
         okBtn.setOnClickListener {
             val titleVal = title.editText!!.text.toString()
             if (titleVal.isBlank()) {
@@ -2397,6 +2467,10 @@ object UiUtil {
             poTokenInputs.filter { it.editText!!.text.isNotBlank() && it.tag.toString().startsWith("potoken") }.forEach {
                 obj.poTokens.add(YoutubePoTokenItem(it.tag.toString().split("potoken_")[1], it.editText!!.text.toString()))
             }
+
+            val urlRegexes = urlRegexChips.children.map { (it as Chip).text.toString() }
+            obj.urlRegex.addAll(urlRegexes)
+
             bottomSheet.cancel()
             newValue(obj)
         }

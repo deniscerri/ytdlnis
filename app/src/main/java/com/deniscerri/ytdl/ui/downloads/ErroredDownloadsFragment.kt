@@ -35,6 +35,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
@@ -58,6 +59,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private var fragmentView: View? = null
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var ytdlpViewModel : YTDLPViewModel
     private lateinit var erroredRecyclerView : RecyclerView
     private lateinit var preferences : SharedPreferences
     private lateinit var noResults : RelativeLayout
@@ -77,6 +79,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         fragmentView = inflater.inflate(R.layout.generic_list, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
@@ -174,6 +177,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                item,
                requireActivity(),
                DownloadRepository.Status.valueOf(item.status),
+               ytdlpViewModel,
                removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                    removeItem(it, sheet)
 

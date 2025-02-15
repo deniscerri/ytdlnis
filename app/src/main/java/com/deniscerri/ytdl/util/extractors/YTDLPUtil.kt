@@ -12,6 +12,7 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.anggrayudi.storage.extension.count
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -21,6 +22,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
+import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
@@ -42,12 +44,12 @@ import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
 
-class YTDLPUtil(private val context: Context) {
+class YTDLPUtil(private val context: Context, private val commandTemplateDao: CommandTemplateDao) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val formatUtil = FormatUtil(context)
     private val handler = Handler(Looper.getMainLooper())
 
-    private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData() {
+    private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData(url: String?) {
         addOption("--skip-download")
         addOption("-R", "1")
         addOption("--compat-options", "manifest-filesize-approx")
@@ -80,10 +82,17 @@ class YTDLPUtil(private val context: Context) {
             addOption("--no-check-certificates")
         }
 
-        val extraCommands = sharedPreferences.getString("data_fetching_extra_commands", "")!!
-        if (extraCommands.isNotBlank()){
+        var extraCommands = commandTemplateDao.getAllTemplatesAsDataFetchingExtraCommands()
+
+        if (url != null) {
+            extraCommands = extraCommands.filter { it.urlRegex.any { u -> Regex(u).containsMatchIn(url) } }
+        }else{
+            extraCommands = extraCommands.filter { it.urlRegex.isEmpty() }
+        }
+
+        if (extraCommands.isNotEmpty()){
             //addCommands(extraCommands.split(" ", "\t", "\n"))
-            addConfig(extraCommands)
+            addConfig(extraCommands.joinToString(" ") { it.content })
         }
     }
 
@@ -114,12 +123,12 @@ class YTDLPUtil(private val context: Context) {
             }
         }
         if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
-            request.setYoutubeExtractorArgs()
+            request.setYoutubeExtractorArgs(query)
         }
 
         request.addOption("--flat-playlist")
         request.addOption(if (singleItem) "-J" else "-j")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(if (query.isURL()) query else null)
 
         println(parseYTDLRequestString(request))
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -249,15 +258,15 @@ class YTDLPUtil(private val context: Context) {
             items.add(res)
         }
 
-        return items;
+        return items
     }
 
     fun getYoutubeWatchLater() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.setYoutubeExtractorArgs()
+        request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytwatchlater")
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val results: List<String?> = try {
@@ -273,10 +282,10 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeRecommendations() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.setYoutubeExtractorArgs()
+        request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytrec")
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val results: List<String?> = try {
@@ -292,10 +301,10 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeLikedVideos() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.setYoutubeExtractorArgs()
+        request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytfav")
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val results: List<String?> = try {
@@ -311,10 +320,10 @@ class YTDLPUtil(private val context: Context) {
 
     fun getYoutubeWatchHistory() : ArrayList<ResultItem> {
         val request = YoutubeDLRequest(listOf())
-        request.setYoutubeExtractorArgs()
+        request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ythis")
         val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
         val results: List<String?> = try {
@@ -344,9 +353,9 @@ class YTDLPUtil(private val context: Context) {
             val request = YoutubeDLRequest(emptyList())
             request.addOption("--print", "formats")
             request.addOption("-a", urlsFile.absolutePath)
-            request.applyDefaultOptionsForFetchingData()
+            request.applyDefaultOptionsForFetchingData(urls.firstOrNull { it.isURL() })
             if (urls.all { it.isYoutubeURL() }) {
-                request.setYoutubeExtractorArgs()
+                request.setYoutubeExtractorArgs(urls[0])
             }
 
             val txt = parseYTDLRequestString(request)
@@ -416,9 +425,9 @@ class YTDLPUtil(private val context: Context) {
         val request = YoutubeDLRequest(url)
         request.addOption("--print", "%(formats)s")
         request.addOption("--print", "%(duration)s")
-        request.applyDefaultOptionsForFetchingData()
+        request.applyDefaultOptionsForFetchingData(url)
         if (url.isYoutubeURL()) {
-            request.setYoutubeExtractorArgs()
+            request.setYoutubeExtractorArgs(url)
         }
 
         val res = YoutubeDL.getInstance().execute(request)
@@ -501,9 +510,9 @@ class YTDLPUtil(private val context: Context) {
             val request = YoutubeDLRequest(url)
             request.addOption("--get-url")
             request.addOption("--print", "%(.{urls,chapters})s")
-            request.applyDefaultOptionsForFetchingData()
+            request.applyDefaultOptionsForFetchingData(url)
             if (url.isYoutubeURL()) {
-                request.setYoutubeExtractorArgs()
+                request.setYoutubeExtractorArgs(url)
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -752,7 +761,7 @@ class YTDLPUtil(private val context: Context) {
             }
 
             if (downloadItem.url.isYoutubeURL()) {
-                ytDlRequest.setYoutubeExtractorArgs()
+                ytDlRequest.setYoutubeExtractorArgs(downloadItem.url)
             }
 
             //TODO REVIEW TO ADD THIS AGAIN LATER?
@@ -1242,7 +1251,7 @@ class YTDLPUtil(private val context: Context) {
         return YoutubeDL.getInstance().execute(req).out.trim()
     }
 
-    private fun YoutubeDLRequest.setYoutubeExtractorArgs() {
+    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
         val extractorArgs = mutableListOf<String>()
         val playerClients = mutableListOf<String>()
         val poTokens = mutableListOf<String>()
@@ -1256,8 +1265,15 @@ class YTDLPUtil(private val context: Context) {
                     playerClients.add(value.playerClient)
                 }
 
-                value.poTokens.forEach { pt ->
-                    poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                var canUsePoToken = true
+                if (value.urlRegex.isNotEmpty() && url != null) {
+                    canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
+                }
+
+                if (canUsePoToken) {
+                    value.poTokens.forEach { pt ->
+                        poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                    }
                 }
             }
         }

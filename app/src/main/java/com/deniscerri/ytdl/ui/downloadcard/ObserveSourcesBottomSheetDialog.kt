@@ -549,15 +549,15 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         val url = url.editText?.text?.isNotBlank() == true
         val category = ObserveSourcesRepository.EveryCategory.values()[categoryAdapter.getPosition(everyCat.text.toString())]
 
-        val everyNr = everyNr.editText?.text?.isNotBlank() == true
+        val everyNrBool = everyNr.editText!!.text.isNotBlank() && everyNr.editText!!.text.toString() != "0"
         val everyTime = everyTime.editText?.text?.isNotBlank() == true
 
         val every = when(category){
             ObserveSourcesRepository.EveryCategory.HOUR -> {
-                everyNr
+                everyNrBool
             }
             else -> {
-                everyNr && everyTime
+                everyNrBool && everyTime
             }
         }
 

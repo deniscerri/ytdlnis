@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.database.repository
 import android.content.Context
 import android.util.Patterns
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
-class ResultRepository(private val resultDao: ResultDao, private val context: Context) {
+class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
     val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
     val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)
@@ -31,7 +32,7 @@ class ResultRepository(private val resultDao: ResultDao, private val context: Co
     }
 
     private val youtubeApiUtil = YoutubeApiUtil(context)
-    private val ytdlpUtil = YTDLPUtil(context)
+    private val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
     private var newPipeUtil = NewPipeUtil(context)
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 

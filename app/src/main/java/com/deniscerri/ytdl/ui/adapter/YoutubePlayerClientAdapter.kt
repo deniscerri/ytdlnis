@@ -115,11 +115,10 @@ class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activ
             }
 
             override fun areContentsTheSame(oldItem: YoutubePlayerClientItem, newItem: YoutubePlayerClientItem): Boolean {
-                return oldItem.playerClient == newItem.playerClient && oldItem.enabled == newItem.enabled && oldItem.poTokens.joinToString(
-                    "\n"
-                ) { it.token } == newItem.poTokens.joinToString(
-                    "\n"
-                ) { it.token }
+                return oldItem.playerClient == newItem.playerClient &&
+                        oldItem.enabled == newItem.enabled &&
+                        oldItem.poTokens.joinToString("\n") { it.token } == newItem.poTokens.joinToString("\n") { it.token } &&
+                        oldItem.urlRegex.joinToString("\n") == newItem.urlRegex.joinToString("\n")
             }
         }
     }

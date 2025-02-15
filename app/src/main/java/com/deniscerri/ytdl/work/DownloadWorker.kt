@@ -65,12 +65,13 @@ class DownloadWorker(
         }
 
         val notificationUtil = NotificationUtil(App.instance)
-        val ytdlpUtil = YTDLPUtil(context)
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val historyDao = dbManager.historyDao
+        val commandTemplateDao = dbManager.commandTemplateDao
         val logRepo = LogRepository(dbManager.logDao)
-        val resultRepo = ResultRepository(dbManager.resultDao, context)
+        val resultRepo = ResultRepository(dbManager.resultDao, commandTemplateDao, context)
+        val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
         val handler = Handler(Looper.getMainLooper())
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -187,7 +188,7 @@ class DownloadWorker(
                             "Title: ${downloadItem.title}\n" +
                             "URL: ${downloadItem.url}\n" +
                             "Type: ${downloadItem.type}\n" +
-                            "Command: \n $commandString \n\n"
+                            "Command:\n$commandString \n\n"
                     val logString = StringBuilder(initialLogDetails)
                     val logItem = LogItem(
                         0,
@@ -210,7 +211,7 @@ class DownloadWorker(
                     runCatching {
                         YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
                         YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                            eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id))
+                            eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
@@ -233,7 +234,7 @@ class DownloadWorker(
                             var finalPaths = mutableListOf<String>()
 
                             if (noCache){
-                                eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id))
+                                eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
                                 val outputSequence = it.out.split("\n")
                                 finalPaths =
                                     outputSequence.asSequence()
@@ -255,16 +256,16 @@ class DownloadWorker(
                                 FileUtil.scanMedia(finalPaths, context)
                             }else{
                                 //move file from internal to set download directory
-                                eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
+                                eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                 try {
                                     finalPaths = withContext(Dispatchers.IO){
                                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                                            eventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
+                                            eventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                         }
                                     }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }.toMutableList()
 
                                     if (finalPaths.isNotEmpty()){
-                                        eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id))
+                                        eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                     }
                                 }catch (e: Exception){
                                     e.printStackTrace()
@@ -346,7 +347,7 @@ class DownloadWorker(
                             dao.delete(downloadItem.id)
 
                             if (logDownloads){
-                                logRepo.update(initialLogDetails + "\n" + it.out, logItem.id, true)
+                                logRepo.update(initialLogDetails + it.out, logItem.id, true)
                             }
                         }
 
@@ -395,7 +396,7 @@ class DownloadWorker(
                             resources
                         )
 
-                        eventBus.post(WorkerProgress(100, it.toString(), downloadItem.id))
+                        eventBus.post(WorkerProgress(100, it.toString(), downloadItem.id, downloadItem.logID))
                     }
                 }
             }
@@ -423,7 +424,8 @@ class DownloadWorker(
     class WorkerProgress(
         val progress: Int,
         val output: String,
-        val downloadItemID: Long
+        val downloadItemID: Long,
+        val logItemID: Long?
     )
 
 }

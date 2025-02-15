@@ -44,6 +44,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.ActiveDownloadMinifiedAdapter
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.setFullScreen
@@ -79,6 +80,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
     private lateinit var videoView: PlayerView
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var ytdlpViewModel: YTDLPViewModel
 
     private lateinit var activeAdapter: ActiveDownloadMinifiedAdapter
     private lateinit var queuedAdapter: GenericDownloadAdapter
@@ -94,6 +96,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         notificationUtil = NotificationUtil(requireActivity())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
         downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
@@ -446,6 +449,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 item,
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
+                ytdlpViewModel,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     sheet.hide()
                     removeQueuedItem(itemID)

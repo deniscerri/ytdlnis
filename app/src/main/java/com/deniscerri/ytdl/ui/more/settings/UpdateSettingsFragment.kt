@@ -29,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.get
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -36,6 +37,8 @@ import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UiUtil.showShortcutsSheet
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -64,7 +67,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
     private var updateUtil: UpdateUtil? = null
     private var version: Preference? = null
     private lateinit var preferences: SharedPreferences
-    private lateinit var ytdlpUtil: YTDLPUtil
+    private lateinit var ytdlpViewModel: YTDLPViewModel
 
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -74,7 +77,9 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         updateYTDL = findPreference("update_ytdl")
         ytdlVersion = findPreference("ytdl-version")
         ytdlSource = findPreference("ytdlp_source_label")
-        ytdlpUtil = YTDLPUtil(requireContext())
+
+        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+
         ytdlSource?.apply {
             summary = preferences.getString("ytdlp_source_label", "")
             setOnPreferenceClickListener {
@@ -141,7 +146,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         lifecycleScope.launch {
             ytdlVersion!!.summary = getString(R.string.loading)
             val version = withContext(Dispatchers.IO){
-                ytdlpUtil.getVersion(requireContext(), preferences.getString("ytdlp_source", "stable")!!)
+                ytdlpViewModel.getVersion(preferences.getString("ytdlp_source", "stable")!!)
             }
             preferences.edit().apply {
                 putString("ytdl-version", version)

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
 
@@ -170,6 +171,35 @@
                     android:text="@string/data_fetching_extra_command"
                     android:textSize="15sp"
                     app:layout_constraintEnd_toEndOf="parent" />
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/url_regex"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="url_regex"
+                    android:hint="URL Regex"
+                    android:visibility="gone"
+                    app:endIconDrawable="@drawable/ic_plus"
+                    app:endIconMode="custom"
+                    android:paddingBottom="10dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/urlRegexChipGroup"
+                    android:layout_width="wrap_content"
+                    app:chipSpacingVertical="-10dp"
+                    app:singleSelection="true"
+                    app:chipSpacing="0dp"
+                    android:layout_height="wrap_content"
+                    app:singleLine="false" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout

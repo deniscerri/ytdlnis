@@ -19,6 +19,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
@@ -31,15 +32,15 @@ import kotlinx.coroutines.withContext
 
 
 class AddExtraCommandsDialog(private val item: DownloadItem? = null, private val callback: ExtraCommandsListener? = null) : BottomSheetDialogFragment() {
-    private lateinit var ytdlpUtil: YTDLPUtil
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
+    private lateinit var ytdlpViewModel: YTDLPViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ytdlpUtil = YTDLPUtil(requireActivity().applicationContext)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -86,7 +87,7 @@ class AddExtraCommandsDialog(private val item: DownloadItem? = null, private val
         val currentText =  view.findViewById<TextView>(R.id.currentText)
 
         if (item != null){
-            val currentCommand = ytdlpUtil.parseYTDLRequestString(ytdlpUtil.buildYoutubeDLRequest(item))
+            val currentCommand = ytdlpViewModel.parseYTDLRequestString(item)
             currentText?.text = currentCommand
         }else{
             view.findViewById<View>(R.id.current).visibility = View.GONE

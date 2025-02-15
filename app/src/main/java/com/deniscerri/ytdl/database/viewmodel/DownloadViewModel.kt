@@ -13,6 +13,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.media3.common.Player.Command
 import androidx.paging.PagingData
 import androidx.paging.filter
 import androidx.paging.map
@@ -76,7 +77,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     private val commandTemplateDao: CommandTemplateDao
     private val formatUtil = FormatUtil(application)
     private val notificationUtil = NotificationUtil(application)
-    private val ytdlpUtil = YTDLPUtil(application)
+    private val ytdlpUtil: YTDLPUtil
     private val resources : Resources
 
     val allDownloads : Flow<PagingData<DownloadItem>>
@@ -115,8 +116,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         mutableListOf()
     )
 
-    private var extraCommandsForAudio: String = ""
-    private var extraCommandsForVideo: String = ""
+    private var extraCommandsForAudio: List<CommandTemplate> = listOf()
+    private var extraCommandsForVideo: List<CommandTemplate> = listOf()
 
     private val dao: DownloadDao
     private val historyRepository: HistoryRepository
@@ -138,11 +139,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     init {
         dbManager =  DBManager.getInstance(application)
         dao = dbManager.downloadDao
+        commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
         repository = DownloadRepository(dao)
         historyRepository = HistoryRepository(dbManager.historyDao)
-        resultRepository = ResultRepository(dbManager.resultDao, application)
+        resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-        commandTemplateDao = DBManager.getInstance(application).commandTemplateDao
+        ytdlpUtil = YTDLPUtil(application, commandTemplateDao)
 
         activeDownloadsCount = repository.activeDownloadsCount
         activePausedDownloadsCount = repository.activePausedDownloadsCount
@@ -164,8 +166,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         erroredDownloads = repository.erroredDownloads.flow
         viewModelScope.launch(Dispatchers.IO){
             if (sharedPreferences.getBoolean("use_extra_commands", false)){
-                extraCommandsForAudio = commandTemplateDao.getAllTemplatesAsExtraCommandsForAudio().joinToString(" ")
-                extraCommandsForVideo = commandTemplateDao.getAllTemplatesAsExtraCommandsForVideo().joinToString(" ")
+                extraCommandsForAudio = commandTemplateDao.getAllTemplatesAsExtraCommandsForAudio()
+                extraCommandsForVideo = commandTemplateDao.getAllTemplatesAsExtraCommandsForVideo()
             }
         }
 
@@ -320,8 +322,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val extraCommands = when(type){
             Type.audio -> extraCommandsForAudio
             Type.video -> extraCommandsForVideo
-            else -> ""
-        }
+            else -> listOf()
+        }.filter {
+            it.urlRegex.isEmpty() || it.urlRegex.any { u ->
+                Regex(u).containsMatchIn(resultItem.url)
+            }
+        }.joinToString(" ") { it.content }
 
         return DownloadItem(0,
             resultItem.url,
@@ -330,7 +336,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             resultItem.thumb,
             resultItem.duration,
             type,
-            getFormat(resultItem.formats, type),
+            getFormat(resultItem.formats, type, resultItem.url),
             container!!,
             "",
             resultItem.formats,
@@ -412,7 +418,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     fun switchDownloadType(list: List<DownloadItem>, type: Type) : List<DownloadItem>{
 
         list.forEach {
-            val format = getFormat(it.allFormats, type)
+            val format = getFormat(it.allFormats, type, it.url)
             it.format = format
 
             var updatedDownloadPath = ""
@@ -475,11 +481,15 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
 
-        val extraCommands = when(historyItem.type){
+        val extraCommands = when (historyItem.type) {
             Type.audio -> extraCommandsForAudio
             Type.video -> extraCommandsForVideo
-            else -> ""
-        }
+            else -> listOf()
+        }.filter {
+            it.urlRegex.isEmpty() || it.urlRegex.any { u ->
+                Regex(u).containsMatchIn(historyItem.url)
+            }
+        }.joinToString(" ") { it.content }
 
         val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, subsLanguages, recodeVideo = recodeVideo)
@@ -521,7 +531,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    fun getFormat(formats: List<Format>, type: Type) : Format {
+    fun getFormat(formats: List<Format>, type: Type, url: String? = null) : Format {
         when(type) {
             Type.audio -> {
                 return cloneFormat (
@@ -550,19 +560,27 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 )
             }
             else -> {
-                val preferredTemplateContent =
-                    sharedPreferences.getString("preferred_command_template", "")!!.ifEmpty {
-                        sharedPreferences.getString("lastCommandTemplateUsed", "")!!
-                    }
-
-                val c = if (preferredTemplateContent.isNotBlank()) {
-                    commandTemplateDao.getTemplateByContent(preferredTemplateContent)
-                }else {
-                    commandTemplateDao.getFirst()
+                val preferredCommandTemplates = commandTemplateDao.getPreferredCommandTemplates()
+                var template : CommandTemplate? = null
+                if (url != null) {
+                    template = preferredCommandTemplates.firstOrNull { it.urlRegex.isEmpty() || it.urlRegex.any { u ->
+                        Regex(u).containsMatchIn(url)
+                    } }
                 }
 
+                if (template == null) {
+                    template = commandTemplateDao.getFirst()
+                }
                 return generateCommandFormat(
-                    c ?: CommandTemplate(0, "", preferredTemplateContent, useAsExtraCommand = false, useAsExtraCommandAudio = false, useAsExtraCommandVideo = false, useAsExtraCommandDataFetching = false)
+                    template ?: CommandTemplate(
+                        0,
+                        "",
+                        sharedPreferences.getString("lastCommandTemplateUsed", "") ?: "",
+                        useAsExtraCommand = false,
+                        useAsExtraCommandAudio = false,
+                        useAsExtraCommandVideo = false,
+                        useAsExtraCommandDataFetching = false
+                    )
                 )
             }
         }
@@ -1128,7 +1146,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val item = repository.getItemByID(id)
         item.allFormats.clear()
         item.allFormats.addAll(list)
-        item.format = getFormat(list, item.type)
+        item.format = getFormat(list, item.type, item.url)
 
         runCatching {
             resultRepository.getAllByURL(item.url).forEach {
@@ -1144,7 +1162,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         items.forEach { item ->
             item.allFormats.clear()
             item.allFormats.addAll(list)
-            item.format = getFormat(list, item.type)
+            item.format = getFormat(list, item.type, item.url)
             repository.update(item)
         }
 

@@ -38,11 +38,14 @@ interface CommandTemplateDao {
     @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1")
     fun getAllTemplatesAsExtraCommands() : List<String>
 
-    @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandAudio = 1")
-    fun getAllTemplatesAsExtraCommandsForAudio() : List<String>
+    @Query("SELECT * FROM commandTemplates WHERE useAsExtraCommandDataFetching is 1")
+    fun getAllTemplatesAsDataFetchingExtraCommands() : List<CommandTemplate>
 
-    @Query("SELECT content FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandVideo = 1")
-    fun getAllTemplatesAsExtraCommandsForVideo() : List<String>
+    @Query("SELECT * FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandAudio = 1")
+    fun getAllTemplatesAsExtraCommandsForAudio() : List<CommandTemplate>
+
+    @Query("SELECT * FROM commandTemplates WHERE useAsExtraCommand is 1 AND useAsExtraCommandVideo = 1")
+    fun getAllTemplatesAsExtraCommandsForVideo() : List<CommandTemplate>
 
     @Query("SELECT * FROM templateShortcuts ORDER BY id DESC")
     fun getAllShortcutsFlow() : Flow<List<TemplateShortcut>>
@@ -64,6 +67,9 @@ interface CommandTemplateDao {
 
     @Query("SELECT * FROM commandTemplates ORDER BY id DESC LIMIT 1")
     fun getFirst() : CommandTemplate?
+
+    @Query("SELECT * FROM commandTemplates WHERE preferredCommandTemplate is 1")
+    fun getPreferredCommandTemplates() : List<CommandTemplate>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: CommandTemplate)

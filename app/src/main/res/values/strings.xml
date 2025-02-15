@@ -357,6 +357,7 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="retry_missing_downloads">Retry Missing Downloads</string>
+    <string name="retry_missing_downloads_desc">Re-download items not present in the download history</string>
     <string name="bitrate">Bitrate</string>
     <string name="save_auto_subs">Save Automatic Subtitles</string>
     <string name="not_deleted">Not Deleted</string>
@@ -365,7 +366,7 @@
     <string name="swipe_gestures_download_card">Swipe Gestures in download card</string>
     <string name="show_download_count">Show counts in the download queue screen</string>
     <string name="thumbnail_format">Thumbnail Format</string>
-    <string name="get_new_uploads">Get New Uploads Only</string>
+    <string name="get_new_uploads">Get Future Uploads Only (Ignore Existing Items)</string>
     <string name="also_download_audio">Also Download as Audio</string>
     <string name="wrap_text">Wrap Text</string>
     <string name="scroll_down">Scroll to the Bottom</string>
@@ -375,6 +376,7 @@
     <string name="all_queries_finished">All Queries have been processed</string>
     <string name="select_between">Select Items Between</string>
     <string name="reset_processed_links">Reset Already Processed Links</string>
+    <string name="reset_processed_links_desc">Re-download all items again</string>
     <string name="no_download_fragments">Don\'t download as Fragments</string>
     <string name="no_download_fragments_summary">Don\'t use .part files and write directly into output file</string>
     <string name="my_filename_templates">My Filename Templates</string>
@@ -405,6 +407,7 @@
     <string name="label_visibility">Label Visibility</string>
     <string name="always">Always</string>
     <string name="sync_with_source">Sync With Source</string>
+    <string name="sync_with_source_desc">Delete downloaded items if they are missing in the source</string>
     <string name="queue">Queue</string>
     <string name="reset">Reset</string>
     <string name="restore_info">Press \'Restore\' to merge the saved data with your current data.\nPress \'Reset\' to erase and only use the saved data in the file.</string>

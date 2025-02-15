@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 21,
-    "identityHash": "60367016912c1948d70c556647e93114",
+    "version": 22,
+    "identityHash": "a7ed801eeaef776e0fb063303b9892df",
     "entities": [
       {
         "tableName": "results",
@@ -384,7 +384,7 @@
       },
       {
         "tableName": "commandTemplates",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `useAsExtraCommand` INTEGER NOT NULL DEFAULT 0, `useAsExtraCommandAudio` INTEGER NOT NULL DEFAULT 1, `useAsExtraCommandVideo` INTEGER NOT NULL DEFAULT 1, `useAsExtraCommandDataFetching` INTEGER NOT NULL DEFAULT 0, `preferredCommandTemplate` INTEGER NOT NULL DEFAULT 0, `urlRegex` TEXT NOT NULL DEFAULT '[]')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `useAsExtraCommand` INTEGER NOT NULL DEFAULT 0, `useAsExtraCommandAudio` INTEGER NOT NULL DEFAULT 1, `useAsExtraCommandVideo` INTEGER NOT NULL DEFAULT 1, `useAsExtraCommandDataFetching` INTEGER NOT NULL DEFAULT 0, `preferredCommandTemplate` INTEGER NOT NULL DEFAULT 0, `urlRegex` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -443,8 +443,7 @@
             "fieldPath": "urlRegex",
             "columnName": "urlRegex",
             "affinity": "TEXT",
-            "notNull": true,
-            "defaultValue": "'[]'"
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -761,7 +760,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '60367016912c1948d70c556647e93114')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a7ed801eeaef776e0fb063303b9892df')"
     ]
   }
 }

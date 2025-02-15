@@ -71,8 +71,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     private val sharedPreferences: SharedPreferences
 
     init {
-        dao = DBManager.getInstance(application).resultDao
-        repository = ResultRepository(dao, getApplication<Application>().applicationContext)
+        val dbManager = DBManager.getInstance(application)
+        dao = dbManager.resultDao
+        val commandTemplateDao = dbManager.commandTemplateDao
+        repository = ResultRepository(dao, commandTemplateDao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
 
         items = repository.allResults.asLiveData()

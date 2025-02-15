@@ -76,8 +76,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
         }
 
         card.findViewById<TextView>(R.id.preferredTemplate).apply {
-            val preferred = sharedPreferences.getString("preferred_command_template", "")
-            isVisible = preferred == item.content
+            isVisible = item.preferredCommandTemplate
         }
 
         if (checkedItems.contains(item.id)) {
@@ -170,7 +169,9 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
                         oldItem.useAsExtraCommand == newItem.useAsExtraCommand &&
                         oldItem.useAsExtraCommandAudio == newItem.useAsExtraCommandAudio &&
                         oldItem.useAsExtraCommandVideo == newItem.useAsExtraCommandVideo &&
-                        oldItem.useAsExtraCommandDataFetching == newItem.useAsExtraCommandDataFetching
+                        oldItem.useAsExtraCommandDataFetching == newItem.useAsExtraCommandDataFetching &&
+                        oldItem.preferredCommandTemplate == newItem.preferredCommandTemplate &&
+                        oldItem.urlRegex.joinToString("") == newItem.urlRegex.joinToString("")
             }
         }
     }

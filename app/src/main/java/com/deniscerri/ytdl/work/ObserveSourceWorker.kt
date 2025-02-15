@@ -43,10 +43,10 @@ class ObserveSourceWorker(
         if (sourceID == 0L) return Result.failure()
         val dbManager = DBManager.getInstance(context)
         val repo = ObserveSourcesRepository(dbManager.observeSourcesDao)
-        val resultsRepo = ResultRepository(dbManager.resultDao, App.instance)
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
-        val ytdlpUtil = YTDLPUtil(context)
+        val commandTemplateDao = dbManager.commandTemplateDao
+        val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         val item = repo.getByID(sourceID)
@@ -193,16 +193,9 @@ class ObserveSourceWorker(
 
         item.runCount += 1
 
-        if (item.runCount > item.endsAfterCount && item.endsAfterCount > 0){
-            item.status = ObserveSourcesRepository.SourceStatus.STOPPED
-            withContext(Dispatchers.IO){
-                repo.update(item)
-            }
-            return Result.failure()
-        }
-
         val currentTime = System.currentTimeMillis()
-        if (item.endsDate >= currentTime || item.endsAfterCount == item.runCount){
+        val isFinished = (item.endsAfterCount > 0 && item.runCount >= item.endsAfterCount) || item.endsDate >= currentTime
+        if (isFinished) {
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED
             withContext(Dispatchers.IO){
                 repo.update(item)
