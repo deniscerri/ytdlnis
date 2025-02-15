@@ -13,8 +13,8 @@
     <string name="home">Головна</string>
     <string name="download_all">Завантажити все</string>
     <string name="settings">Налаштування</string>
-    <string name="music_directory">Тека «Аудіо»</string>
-    <string name="video_directory">Тека «Відео»</string>
+    <string name="music_directory">Аудіо папка</string>
+    <string name="video_directory">Відео папка</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
     <string name="updating">Оновлення</string>
     <string name="ytdl_already_updating">Встановлення нової версії</string>
@@ -37,7 +37,7 @@
     <string name="Remove">Видалити</string>
     <string name="cancel">Скасувати</string>
     <string name="no_results">Немає результатів</string>
-    <string name="command_directory">Тека користувацьких команд</string>
+    <string name="command_directory">Папка команд користувача</string>
     <string name="confirm_delete_history_desc">Видалити всю історію назавжди</string>
     <string name="confirm_delete_history">Підтвердити</string>
     <string name="search_history_hint">Пошук в історії</string>
@@ -455,7 +455,7 @@
     <string name="list">Список</string>
     <string name="grid">Сітка</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
-    <string name="cache_directory">Тека кешу</string>
+    <string name="cache_directory">Папка кешу</string>
     <string name="cache_directory_warning">Зміна теки кешу може спричинити несподівані проблеми. Якщо застосунок не зможе записати за вказаним шляхом, він звернеться до типового каталогу внутрішнього кешу</string>
     <string name="use_only_po_token">Використовувати лише PO-токен (ігнорувати клієнт програвача)</string>
 </resources>
