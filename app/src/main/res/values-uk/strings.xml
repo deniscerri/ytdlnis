@@ -13,8 +13,8 @@
     <string name="home">Головна</string>
     <string name="download_all">Завантажити все</string>
     <string name="settings">Налаштування</string>
-    <string name="music_directory">Папка Музика</string>
-    <string name="video_directory">Папка Відео</string>
+    <string name="music_directory">Тека «Аудіо»</string>
+    <string name="video_directory">Тека «Відео»</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
     <string name="updating">Оновлення</string>
     <string name="ytdl_already_updating">Встановлення нової версії</string>
@@ -37,7 +37,7 @@
     <string name="Remove">Видалити</string>
     <string name="cancel">Скасувати</string>
     <string name="no_results">Немає результатів</string>
-    <string name="command_directory">Папка користувацьких команд</string>
+    <string name="command_directory">Тека користувацьких команд</string>
     <string name="confirm_delete_history_desc">Видалити всю історію назавжди</string>
     <string name="confirm_delete_history">Підтвердити</string>
     <string name="search_history_hint">Пошук в історії</string>

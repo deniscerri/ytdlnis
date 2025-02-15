@@ -7,7 +7,7 @@
     <string name="settings"> Ayarlar</string>
     <string name="home">Ana Sayfa</string>
     <string name="directories"> Klasörler</string>
-    <string name="music_directory"> Müzik Klasörü</string>
+    <string name="music_directory">Müzik Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
     <string name="updating">Güncellemeler</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız yararlıdır</string>

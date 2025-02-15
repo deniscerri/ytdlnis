@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="music_directory">Hudební složka</string>
+    <string name="music_directory">Audio složka</string>
     <string name="update_ytdl">Nainstalovat novou verzi yt-dlp</string>
     <string name="directories">Složky</string>
     <string name="search_hint">Hledat nebo vložit URL adresu</string>
@@ -455,4 +455,7 @@
     <string name="grid">Mřížka</string>
     <string name="retry_every">Opakovat každých</string>
     <string name="minutes">minut</string>
+    <string name="cache_directory">Složka mezipaměti</string>
+    <string name="cache_directory_warning">Změna složky mezipaměti může způsobit neočekávané problémy. Pokud aplikace nemůže zapisovat do nakonfigurované cesty, uchýlí se do výchozího interního adresáře mezipaměti</string>
+    <string name="use_only_po_token">Použít pouze PO Token (ignorovat klienta přehrávače)</string>
 </resources>
