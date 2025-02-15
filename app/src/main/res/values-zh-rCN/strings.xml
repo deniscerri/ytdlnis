@@ -5,7 +5,7 @@
     <string name="settings">设置</string>
     <string name="home">首页</string>
     <string name="directories">文件夹</string>
-    <string name="music_directory">音乐文件夹</string>
+    <string name="music_directory">音频文件夹</string>
     <string name="failed_download">无法下载文件</string>
     <string name="download_notification_channel_name">文件下载</string>
     <string name="you_are_in_latest_version">使用最新版本</string>
