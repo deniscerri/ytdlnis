@@ -463,4 +463,5 @@
     <string name="use_only_po_token">Use only PO Token (Ignore Player Client)</string>
     <string name="cache_directory">Cache Folder</string>
     <string name="cache_directory_warning">Changing the Cache Folder might cause unexpected issues. If the app cannot write to the configured path, it will resort to the default internal cache directory</string>
+    <string name="app_icon_change">Icon could change and Application will close</string>
 </resources>

@@ -15,7 +15,6 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
-import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -23,7 +22,6 @@ import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
-import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
@@ -47,6 +45,7 @@ class ObserveSourceWorker(
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
         val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
+        val resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         val item = repo.getByID(sourceID)
@@ -63,7 +62,7 @@ class ObserveSourceWorker(
         }
 
         val list = kotlin.runCatching {
-            ytdlpUtil.getFromYTDL(item.url)
+            resultRepository.getResultsFromSource(item.url, resetResults = false, addToResults = false, singleItem = false)
         }.onFailure {
             Log.e("observe", it.toString())
         }.getOrElse { listOf() }
@@ -114,6 +113,10 @@ class ObserveSourceWorker(
         res.forEach {
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
+            downloadItem.title = it.title
+            downloadItem.author = it.author
+            downloadItem.duration = it.duration
+            downloadItem.website = it.website
             downloadItem.url = it.url
             downloadItem.thumb = it.thumb
             downloadItem.status = DownloadRepository.Status.Queued.toString()

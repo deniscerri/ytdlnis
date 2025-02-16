@@ -598,7 +598,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }else{
                     request.addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }
-                request.addOption("-i")
             }
         }
 
@@ -861,7 +860,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (abrSort.isNotBlank()){
-                    formatSorting.add(0, "abr:${abrSort}")
+                    formatSorting.add(0, "abr~${abrSort}")
                 }
 
                 if(formatSorting.isNotEmpty()) {
@@ -900,6 +899,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             }else{
                                 metadataCommands.addOption("--parse-metadata", "%(artist|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
                             }
+                        }
+
+                        if (usePlaylistMetadata) {
+                            metadataCommands.addOption("--parse-metadata", "%(album,playlist_title,playlist|)s:%(album)s")
                         }
 
 

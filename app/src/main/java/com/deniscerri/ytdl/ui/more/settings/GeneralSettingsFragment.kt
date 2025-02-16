@@ -169,21 +169,31 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         findPreference<ListPreference>("ytdlnis_theme")?.apply {
             summary = entry
             setOnPreferenceChangeListener { _, newValue ->
-                summary = when(newValue){
-                    "System" -> {
-                        getString(R.string.system)
-                    }
+                val dialog = MaterialAlertDialogBuilder(context)
+                dialog.setTitle(context.getString(R.string.app_icon_change))
+                dialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
+                dialog.setPositiveButton(context.getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                    summary = when(newValue){
+                        "System" -> {
+                            getString(R.string.system)
+                        }
 
-                    "Dark" -> {
-                        getString(R.string.dark)
-                    }
+                        "Dark" -> {
+                            getString(R.string.dark)
+                        }
 
-                    else -> {
-                        getString(R.string.light)
+                        else -> {
+                            getString(R.string.light)
+                        }
                     }
+                    editor.putString("ytdlnis_theme", newValue.toString()).apply()
+                    ThemeUtil.updateThemes()
                 }
-                ThemeUtil.updateThemes()
-                true
+                dialog.show()
+
+
+
+                false
             }
         }
 
