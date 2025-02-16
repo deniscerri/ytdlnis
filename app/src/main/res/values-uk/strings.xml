@@ -361,7 +361,7 @@
     <string name="swipe_gestures_download_card">Жести пальцем у картці завантаження</string>
     <string name="show_download_count">Показати підрахунки на екрані черги завантаження</string>
     <string name="thumbnail_format">Формат мініатюр</string>
-    <string name="get_new_uploads">Отримуйте лише нові завантаження</string>
+    <string name="get_new_uploads">Отримувати лише майбутні завантаження (ігнорувати наявні елементи)</string>
     <string name="also_download_audio">Також завантажити як аудіо</string>
     <string name="wrap_text">Перенесення тексту</string>
     <string name="scroll_down">Прокрутіть униз</string>
@@ -458,4 +458,7 @@
     <string name="cache_directory">Папка кешу</string>
     <string name="cache_directory_warning">Зміна теки кешу може спричинити несподівані проблеми. Якщо застосунок не зможе записати за вказаним шляхом, він звернеться до типового каталогу внутрішнього кешу</string>
     <string name="use_only_po_token">Використовувати лише PO-токен (ігнорувати клієнт програвача)</string>
+    <string name="retry_missing_downloads_desc">Повторно завантажити елементи, яких немає в історії завантажень</string>
+    <string name="reset_processed_links_desc">Повторно завантажити всі елементи</string>
+    <string name="sync_with_source_desc">Видалити завантажені елементи, якщо вони відсутні у джерелі</string>
 </resources>
