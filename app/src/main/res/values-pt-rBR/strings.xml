@@ -359,7 +359,7 @@
     <string name="retry_missing_downloads">Repetir downloads ausentes</string>
     <string name="force_ipv4_desc">Efetuar todas as conexões com IPv4</string>
     <string name="thumbnail_format">Formato da miniatura</string>
-    <string name="get_new_uploads">Obter apenas novos envios</string>
+    <string name="get_new_uploads">Obter apenas uploads futuros (ignorar itens existentes)</string>
     <string name="also_download_audio">Baixar também como áudio</string>
     <string name="wrap_text">Quebra de linha</string>
     <string name="scroll_down">Ir para o final</string>
@@ -458,4 +458,7 @@
     <string name="cache_directory">Pasta de cache</string>
     <string name="cache_directory_warning">Alterar a pasta de cache pode causar problemas inesperados. Se o aplicativo não puder salvar no caminho configurado, ele recorrerá ao diretório de cache interno padrão</string>
     <string name="use_only_po_token">Use apenas token PO (ignorar cliente de reprodução)</string>
+    <string name="reset_processed_links_desc">Baixar todos os itens novamente</string>
+    <string name="sync_with_source_desc">Excluir itens baixados se eles estiverem faltando na fonte</string>
+    <string name="retry_missing_downloads_desc">Baixar novamente itens que não estão presentes no histórico de downloads</string>
 </resources>
