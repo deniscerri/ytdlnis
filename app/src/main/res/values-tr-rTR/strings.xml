@@ -7,7 +7,7 @@
     <string name="settings"> Ayarlar</string>
     <string name="home">Ana Sayfa</string>
     <string name="directories"> Klasörler</string>
-    <string name="music_directory">Müzik Klasörü</string>
+    <string name="music_directory">Ses Klasörü</string>
     <string name="video_directory"> Video Klasörü</string>
     <string name="updating">Güncellemeler</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız yararlıdır</string>
@@ -458,4 +458,7 @@
     <string name="minutes">Dakikalar</string>
     <string name="prefer_container_over_codec_audio">Ses İndirmeleri İçin Codec Yerine Konteyneri Tercih Edin</string>
     <string name="prefer_container_over_codec_audio_summary">Bu etkinleştirildiğinde, tercih edilen ses kodeği tercihi göz ardı edilecek ve yalnızca kapsayıcı değişecektir</string>
+    <string name="use_only_po_token">Yalnızca PO Token\'ı kullan (Oynatıcı İstemcisini Yoksay)</string>
+    <string name="cache_directory">Önbellek Klasörü</string>
+    <string name="cache_directory_warning">Önbellek Klasörünü değiştirmek beklenmeyen sorunlara neden olabilir. Uygulama yapılandırılan yola yazamıyorsa, varsayılan dahili önbellek dizinine başvuracaktır</string>
 </resources>
