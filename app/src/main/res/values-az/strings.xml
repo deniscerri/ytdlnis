@@ -363,7 +363,7 @@
     <string name="swipe_gestures_download_card">Yükləmə Kartında Sürüşdürmə Jestləri</string>
     <string name="show_download_count">Yükləmə növbəsi ekranında sayı göstər</string>
     <string name="thumbnail_format">Miniatür Formatı</string>
-    <string name="get_new_uploads">Yalnız Yeni Yükləmələri Əldə Et</string>
+    <string name="get_new_uploads">Yalnız Sonrakı Yükləmələri Al (Mövcud Elementləri İstəmə)</string>
     <string name="also_download_audio">Həmçinin Səs kimi Yüklə</string>
     <string name="wrap_text">Mətni Bük</string>
     <string name="scroll_down">Aşağıya sürüşdür</string>
@@ -458,4 +458,7 @@
     <string name="use_only_po_token">Yalnız PO Token istifadə et (Oynadıcı Client-ə məhəl qoyma)</string>
     <string name="cache_directory">Qalıq Qovluğu</string>
     <string name="cache_directory_warning">Qalıq Qovluğun dəyişdirmək gözlənilməz problemlərə səbəb ola bilər. Tətbiq qurulan yola yaza bilmirsə, o, standart daxili qalıq qovluğuna girəcəkdir</string>
+    <string name="retry_missing_downloads_desc">Yükləmə tarixçəsində olmayan elementləri təkrar yüklə</string>
+    <string name="reset_processed_links_desc">Bütün elementləri təkrar yüklə</string>
+    <string name="sync_with_source_desc">Mənbədə yoxdurlarsa, yüklənilən elementləri sil</string>
 </resources>
