@@ -62,11 +62,15 @@ class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activ
         title.text = item.playerClient
 
         val content = card.findViewById<TextView>(R.id.content)
+        content.isVisible = item.poTokens.isNotEmpty()
         if (item.poTokens.isNotEmpty()) {
             val text = item.poTokens.joinToString("\n") { "PO Token (${it.context}): ${it.token}" }
             content.text = text
-        }else {
-            content.isVisible = false
+        }
+
+        if (item.urlRegex.isNotEmpty()) {
+            val text = content.text.toString() + "\nURL Regex: " + item.urlRegex.joinToString(", ")
+            content.text = text
         }
 
         val switch = card.findViewById<MaterialSwitch>(R.id.materialSwitch)
