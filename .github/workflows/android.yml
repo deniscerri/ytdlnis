@@ -80,7 +80,7 @@ jobs:
         path: ${{ env.APK_PATH }}
 
     - name: Find Debug x86
-      run: echo "APK_PATH=$(find ${{ env.main_project_module }}/build/outputs/apk/debug/ -type f -name '*x86*.apk')" >> $GITHUB_ENV
+      run: echo "APK_PATH=$(find ${{ env.main_project_module }}/build/outputs/apk/debug/ -type f -name '*x86-*.apk')" >> $GITHUB_ENV
 
     - name: Upload APK Debug x86
       uses: actions/upload-artifact@v4
@@ -126,7 +126,7 @@ jobs:
         path: ${{ env.APK_PATH }}
 
     - name: Find Release x86
-      run: echo "APK_PATH=$(find ${{ env.main_project_module }}/build/outputs/apk/release/ -type f -name '*x86*.apk')" >> $GITHUB_ENV
+      run: echo "APK_PATH=$(find ${{ env.main_project_module }}/build/outputs/apk/release/ -type f -name '*x86-*.apk')" >> $GITHUB_ENV
 
     - name: Upload APK Release x86
       uses: actions/upload-artifact@v4
