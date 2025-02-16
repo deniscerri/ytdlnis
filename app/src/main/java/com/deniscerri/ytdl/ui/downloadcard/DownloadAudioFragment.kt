@@ -36,6 +36,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
@@ -279,6 +280,15 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.container = containers[index]
                         if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
+                        if (downloadItem.container == "wav") {
+                            downloadItem.audioPreferences.embedThumb = false
+                            view.findViewById<Chip>(R.id.embed_thumb).apply {
+                                isEnabled = false
+                                isChecked = false
+                            }
+                        }else {
+                            view.findViewById<Chip>(R.id.embed_thumb).isEnabled = true
+                        }
                     }
 
 

@@ -860,7 +860,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (abrSort.isNotBlank()){
-                    formatSorting.add(0, "abr~${abrSort}")
+                    formatSorting.add(0, "abr:${abrSort}")
                 }
 
                 if(formatSorting.isNotEmpty()) {
