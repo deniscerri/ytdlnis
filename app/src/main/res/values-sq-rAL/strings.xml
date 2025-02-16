@@ -9,7 +9,7 @@
     <string name="settings">Cilësime</string>
     <string name="home">Kryesore</string>
     <string name="directories">Direktoritë</string>
-    <string name="music_directory">Direktoria e Muzikës</string>
+    <string name="music_directory">Direktoria e Audios</string>
     <string name="video_directory">Direktoria e Videos</string>
     <string name="updating">Përditësim</string>
     <string name="ytdl_update_hint">Nëse ke probleme me shkarkimin</string>
@@ -371,7 +371,7 @@
     <string name="select_between">Zgjidh Elementet Midis</string>
     <string name="reset_processed_links">Pastro Linket e Proçesuara Deri Tani</string>
     <string name="thumbnail_format">Formati i Thumbnailit</string>
-    <string name="get_new_uploads">Merr Vetëm Ngarkimet e Reja</string>
+    <string name="get_new_uploads">Merr Vetëm Ngarkimet e Reja (Injoro Artikujt Ekzistues)</string>
     <string name="my_filename_templates">Modelet e emrave të mia të skedarit</string>
     <string name="prefer_smaller_formats">Prefero formate me përmasa më të vogla</string>
     <string name="display_over_apps">Shfaq mbi aplikacionet</string>
@@ -457,4 +457,7 @@
     <string name="minutes">Minuta</string>
     <string name="cache_directory_warning">Ndryshimi i skedarit të përkohshëm mund të shkaktojë ndryshime të paparashikueshme. Nëse aplikacioni nuk mund të shkruajë dot në vendin e konfiguruar, do të përdori skedarin e vetë të brendshëm</string>
     <string name="no_check_certificates">Mos kontrollo certifikatën HTTPS</string>
+    <string name="retry_missing_downloads_desc">Ri-shkarko artikujt që nuk janë në historinë e shkarkimeve</string>
+    <string name="reset_processed_links_desc">Ri-shkarko të gjithë artikujt përsëri</string>
+    <string name="sync_with_source_desc">Fshi artikujt e shkarkuar nëse mungojnë në burim</string>
 </resources>
