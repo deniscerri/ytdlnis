@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
+import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
@@ -9,8 +10,11 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
+import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 
 class LogViewModel(private val application: Application) : AndroidViewModel(application) {
     private val repository: LogRepository
@@ -54,5 +58,25 @@ class LogViewModel(private val application: Application) : AndroidViewModel(appl
         repository.update(newLine, id)
     }
 
+
+    fun exportToFile(id: Long, exported: (File?) -> Unit) = viewModelScope.launch(Dispatchers.IO) {
+        try{
+            val log = repository.getLogByID(id)
+            val dir = File("${FileUtil.getCachePath(application)}/Logs/")
+            dir.mkdirs()
+            val tmp = File("${dir.absolutePath}/[YTDLnis Log] ${log!!.title}.txt")
+            tmp.delete()
+            tmp.createNewFile()
+            tmp.writeText(log.content)
+            val res = withContext(Dispatchers.IO) {
+                FileUtil.moveFile(tmp.parentFile!!, application, FileUtil.getDefaultApplicationPath() + "/Exported Logs", false) {}
+            }
+
+            exported(File(res[0]))
+        }catch (e: Exception){
+            e.printStackTrace()
+            exported(null)
+        }
+    }
 
 }

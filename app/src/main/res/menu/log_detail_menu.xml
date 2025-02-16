@@ -21,5 +21,11 @@
         android:icon="@drawable/ic_textformat"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/export_file"
+        android:title="@string/export_file"
+        android:icon="@drawable/baseline_save_24"
+        app:showAsAction="always" />
+
 </menu>
 

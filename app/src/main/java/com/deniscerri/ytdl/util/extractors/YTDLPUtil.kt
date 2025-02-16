@@ -475,7 +475,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         formatProper.format_note = format.getString("format_note")
                     }else{
                         if (!formatProper.format_note.endsWith("audio", true)){
-                            formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO") + " AUDIO"
+                            formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO").trim() + " AUDIO"
                         }
                     }
 
@@ -902,7 +902,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         }
 
                         if (usePlaylistMetadata) {
-                            metadataCommands.addOption("--parse-metadata", "%(album,playlist_title,playlist|)s:%(album)s")
+                            metadataCommands.addOption("--parse-metadata", "%(album,playlist_title,playlist|)s:%(meta_album)s")
                         }
 
 

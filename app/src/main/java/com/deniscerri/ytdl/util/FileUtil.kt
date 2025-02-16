@@ -324,6 +324,10 @@ object FileUtil {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Command"
     }
 
+    fun getDefaultApplicationPath() : String {
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis"
+    }
+
     fun getDownloadArchivePath(context: Context) : String {
         var folder = PreferenceManager.getDefaultSharedPreferences(context).getString("download_archive_path", "")!!
         if (folder == "") {

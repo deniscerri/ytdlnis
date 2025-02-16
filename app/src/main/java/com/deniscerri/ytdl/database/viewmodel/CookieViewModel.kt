@@ -19,9 +19,13 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.FileUtil
+import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Calendar
 import java.util.Date
 
 
@@ -188,15 +192,25 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
 
-    fun exportToFile(exported: (File?) -> Unit) {
+    fun exportToFile(exported: (File?) -> Unit) = viewModelScope.launch(Dispatchers.IO) {
         try{
             FileUtil.getCookieFile(application, true){ c ->
                 val cookieFile = File(c)
                 if (!cookieFile.exists()) updateCookiesFile()
 
-                val downloads = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis_Cookies.txt")
-                val file = cookieFile.copyTo(downloads, true)
-                exported(file)
+                val dir = File("${FileUtil.getCachePath(application)}/Cookie Backups")
+                dir.mkdirs()
+                val saveFile = File("${dir.absolutePath}/YTDLnis_Cookies.txt")
+
+                saveFile.delete()
+                saveFile.createNewFile()
+                cookieFile.copyTo(saveFile, true)
+
+                val res = runBlocking {
+                    FileUtil.moveFile(saveFile.parentFile!!, application, FileUtil.getDefaultApplicationPath(), false) {}
+                }
+
+                exported(File(res[0]))
             }
         }catch (e: Exception){
             e.printStackTrace()

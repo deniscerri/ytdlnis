@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.database.viewmodel.LogViewModel
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -176,6 +177,23 @@ class DownloadLogFragment : Fragment() {
                 R.id.text_size -> {
                     slider!!.isVisible = !slider.isVisible
                 }
+
+                R.id.export_file -> {
+                    logViewModel.exportToFile(logID!!) {f ->
+                        if (f == null){
+                            Snackbar.make(bottomAppBar, getString(R.string.couldnt_parse_file), Snackbar.LENGTH_LONG)
+                                .setAnchorView(bottomAppBar)
+                                .show()
+                        }else{
+                            val snack = Snackbar.make(bottomAppBar, getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
+                            snack.setAnchorView(bottomAppBar)
+                            snack.setAction(R.string.share) {
+                                FileUtil.shareFileIntent(requireContext(), listOf(f.absolutePath))
+                            }
+                            snack.show()
+                        }
+                    }
+                }
             }
             true
         }
@@ -248,8 +266,9 @@ class DownloadLogFragment : Fragment() {
     fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
         val progressBar = requireView().findViewById<LinearProgressIndicator>(R.id.progress)
         if (event.logItemID == logID) {
-            progressBar.isVisible = true
+            progressBar.isVisible = event.progress < 100
             progressBar.setProgress(event.progress, true)
+            progressBar.isIndeterminate = event.progress == 0
         }
     }
 

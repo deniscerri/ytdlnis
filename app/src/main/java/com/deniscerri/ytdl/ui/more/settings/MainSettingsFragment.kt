@@ -217,17 +217,24 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                         }
 
                         val currentTime = Calendar.getInstance()
-                        val saveFile = File(
-                            Environment.getExternalStoragePublicDirectory(
-                                Environment.DIRECTORY_DOWNLOADS), "YTDLnis_${BuildConfig.VERSION_NAME}_${currentTime.get(
-                                Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
-                                Calendar.DAY_OF_MONTH)} [${currentTime.get(Calendar.MILLISECOND)}.json")
+                        val dir = File("${FileUtil.getCachePath(requireContext())}/Backups")
+                        dir.mkdirs()
+
+                        val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
+                            Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
+                            Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR_OF_DAY)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json")
+
                         saveFile.delete()
                         saveFile.createNewFile()
                         saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
+
+                        val res = withContext(Dispatchers.IO) {
+                            FileUtil.moveFile(saveFile.parentFile!!, requireContext(), FileUtil.getDefaultApplicationPath() + "/Backups", false) {}
+                        }
+
                         val s = Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
                         s.setAction(R.string.Open_File){
-                            FileUtil.openFileIntent(requireActivity(), saveFile.absolutePath)
+                            FileUtil.openFileIntent(requireActivity(), res[0])
                         }
                         s.show()
                     }

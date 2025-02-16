@@ -79,6 +79,12 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
             isVisible = item.preferredCommandTemplate
         }
 
+        card.findViewById<TextView>(R.id.urlRegex).apply {
+            isVisible = item.urlRegex.isNotEmpty()
+            val txt = "URL Regex: ${item.urlRegex.joinToString(", ")}"
+            text = txt
+        }
+
         if (checkedItems.contains(item.id)) {
             card.isChecked = true
             card.strokeWidth = 5

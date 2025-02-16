@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/command_card"
     android:layout_width="match_parent"
     android:checkable="true"
@@ -46,6 +47,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/content"
             app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/chipGroup"
+            app:chipSpacing="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -91,7 +94,7 @@
 
             <TextView
                 android:id="@+id/dataFetchingExtraCommands"
-                style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Secondary"
                 android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +112,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/urlRegex"
+                style="@style/Widget.Material3.FloatingActionButton.Large.Tertiary"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:text="URL Regex"
+                android:background="@drawable/rounded_corner"
+                android:backgroundTint="?attr/colorTertiaryContainer"
+                android:clickable="false"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:paddingHorizontal="5dp"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:layout_constraintTop_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:ignore="HardcodedText" />
+
         </com.google.android.material.chip.ChipGroup>
+
+
 
 
 
