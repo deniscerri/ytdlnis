@@ -3,7 +3,7 @@
     <string name="remove_results">Очистить результаты</string>
     <string name="search">Поиск</string>
     <string name="remove_all">Удалить всё</string>
-    <string name="music_directory">Папка аудио</string>
+    <string name="music_directory">Аудио папка</string>
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Введите запрос или вставьте URL</string>
@@ -66,7 +66,7 @@
     <string name="sponsorblock_fillers">Заполнители (филлеры)</string>
     <string name="sponsorblock_nonmusic">Немузыкальные фрагменты</string>
     <string name="settings">Настройки</string>
-    <string name="video_directory">Папка видео</string>
+    <string name="video_directory">Видео папка</string>
     <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
@@ -455,4 +455,7 @@
     <string name="layout">Макет</string>
     <string name="list">Список</string>
     <string name="grid">Сетка</string>
+    <string name="cache_directory">Папка кэша</string>
+    <string name="use_only_po_token">Используйте только PO токен (игнорировать клиент плеера)</string>
+    <string name="cache_directory_warning">Изменение папки кеша может вызвать неожиданные проблемы. Если приложение не может записать на настроенный путь, оно прибегает к каталогу внутреннего кэша по умолчанию</string>
 </resources>

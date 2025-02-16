@@ -7,7 +7,7 @@
     <string name="settings">Tənzimləmələr</string>
     <string name="home">Ev</string>
     <string name="directories">Qovluqlar</string>
-    <string name="music_directory">Musiqi Qovluğu</string>
+    <string name="music_directory">Səs Qovluğu</string>
     <string name="video_directory">Video Qovluq</string>
     <string name="updating">Yenilənmə</string>
     <string name="ytdl_update_hint">Yükləyərkən probleminiz varsa faydalıdır</string>
@@ -455,4 +455,7 @@
     <string name="layout">Düzülüş</string>
     <string name="list">Siyahı</string>
     <string name="grid">Şəbəkə</string>
+    <string name="use_only_po_token">Yalnız PO Token istifadə et (Oynadıcı Client-ə məhəl qoyma)</string>
+    <string name="cache_directory">Qalıq Qovluğu</string>
+    <string name="cache_directory_warning">Qalıq Qovluğun dəyişdirmək gözlənilməz problemlərə səbəb ola bilər. Tətbiq qurulan yola yaza bilmirsə, o, standart daxili qalıq qovluğuna girəcəkdir</string>
 </resources>
