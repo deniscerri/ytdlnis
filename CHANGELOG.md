@@ -1,5 +1,64 @@
 # YTDLnis Changelog
 
+> # 1.8.2 (2025-02)
+
+## Note
+This version has database updates. It's very unlikely you will face issues but make sure to make a backup of the app's data before updating to this version.
+
+# What's Changed
+
+- Added File Size in Format Importance Order Preference
+- Made Format Importance Order applicable to format sorting in the command building process
+- Fixed The app doesn't update yt-dlp past to 2024.11.18 #659
+- Fixed Starting redownload of thousands of songs at once crashed the app. #661
+- Fixed app not deselecting when selecting all in download history
+- Added ability to customize the filename template when cutting an item.
+- Since WAV cant embed thumbnails and crashes the download, made it disabled when you select that container
+- Fixed app freezing when selecting "Also Download as Audio"
+- Added a progressbar to the download log when the download is running
+- Added more descriptions to the Observe Sources configuration card to clear up confusion
+- Added long press to audio,video buttons in the result item details card
+- Added a custom cache directory preference
+- Removed the -P command in command/terminal downloads if the user has written it himself
+- Added preference to skip checking certificates
+- #680 removed the hardcoded trimming of author and title
+- Added ability to quickly fetch cookies after a failed data fetch in the home screen, through the error dialog and then try again to fetch data
+- Fixed app sometimes putting empty extractor arguments for youtube downloads
+- Added livestream settings for video downloads, Wait for Video and ability to download the live from the start. Also set up how often to retry the download if the live is not available
+- Added option to prefer container instead of codec for audio downloads. this will ignore codec preference in format sorting and only apply container preference
+- made add cookies dialog a bottom sheet to make the cookie text more visible
+- added ability to set playlist name as album name when enabling "Use Playlist name as Album Metadata" in the settings
+- added ability to backup logs as .txt file
+- organized backups to their respective folders inside the YTDLnis folder. This includes logs, settings backups, and cookie exports
+
+# Po Tokens & Player Clients
+
+Now you can set up configurations for many youtube player clients and their respective GVS & Player PO Tokens.
+Also if you want certain PO Tokens to apply only for a certain youtube url, like youtube music you can do that with URL Regex. 
+These configurations will always be used, both in data fetching and in the download process
+
+# Preferred Command Templates & URL Matching
+
+Now command templates are more powerful than ever. The preferred command template is now reset but now you can set limitless preferred command templates. 
+Along with that, you can now set URL Matching with a regex. You can set a preferred template for youtube downloads and one for reddit etc etc.
+The same logic applies to command templates that are set as extra commands and as data fetching extra commands.
+
+If you have multiple preferred command templates that dont have url regex setup, then one of them will be selected for command downloads.
+If you have multiple command templates as extra commands without url regex, they will be added to any download.
+
+
+> # 1.8.1.2 (2024-12)
+
+# What's Changed
+
+- Extra Command bug fixes
+- Added ability to quickly download all saved items from the top menu
+- Made app delete bad info json file if it failed with JSONDecodeError
+- Sorted the subtitles in the subtitle selection dialog, and they show which ones are selected correctly
+- Prevented app from calling yt-dlp every time on updating settings to check version
+
+Hopefully this release is stable enough since there will be some few changes in the next version
+
 > # 1.8.1.1 (2024-12)
 
 # What's Changed

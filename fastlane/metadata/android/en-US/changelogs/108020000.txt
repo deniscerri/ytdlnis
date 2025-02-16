@@ -1,0 +1,6 @@
+# What's Changed
+
+- Full PO Token & Player Client support for youtube downloads
+- Custom Commands configured for certain urls
+- Added Live Stream preferences for video downloads
+- Many other bug fixes. Read the full changelog in the github repository.
