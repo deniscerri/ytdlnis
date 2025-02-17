@@ -449,4 +449,6 @@
     <string name="live_from_start">На живо от начало</string>
     <string name="retry_every">Повтаряне всичко</string>
     <string name="prefer_container_over_codec_audio">Предпочитане на контейнер пред кодек за аудио изтегляния</string>
+    <string name="reset_processed_links_desc">Повторно изтеглете всички елементи</string>
+    <string name="sync_with_source_desc">Премахнете изтеглените елементи, ако липсват от източника</string>
 </resources>
