@@ -461,4 +461,5 @@
     <string name="retry_missing_downloads_desc">Поново преузмите предмете који нису присутни у историји преузимања</string>
     <string name="reset_processed_links_desc">Поново преузмите све предмете</string>
     <string name="sync_with_source_desc">Избришите преузете предмете ако недостају у извору</string>
+    <string name="app_icon_change">Иконица ће се можда променити и апликација ће се затворити</string>
 </resources>
