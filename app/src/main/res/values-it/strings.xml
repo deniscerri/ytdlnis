@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="music_directory">Cartella musica</string>
+    <string name="music_directory">Cartella audio</string>
     <string name="search">Cerca</string>
     <string name="remove_all">Rimuovi tutto</string>
     <string name="remove_results">Cancella risultati</string>
@@ -367,7 +367,7 @@
     <string name="copy_urls">Copia URLs</string>
     <string name="never">Mai</string>
     <string name="swipe_gestures_download_card">Gestualità di Scorrimento nella scheda download</string>
-    <string name="get_new_uploads">Ricevi Solo Nuovi Upload</string>
+    <string name="get_new_uploads">Ricevi Solo Upload Futuri (Ignora Elementi Esistenti)</string>
     <string name="also_download_audio">Scarica Anche come Audio</string>
     <string name="text_size">Dimensione del Testo</string>
     <string name="add">Aggiungi</string>
@@ -435,4 +435,8 @@
     <string name="deleted">Eliminato</string>
     <string name="websites">Siti web</string>
     <string name="data_fetching_extra_command">Comando extra per il recupero dei dati</string>
+    <string name="retry_missing_downloads_desc">Scarica nuovamente gli elementi non presenti nella cronologia dei download</string>
+    <string name="reset_processed_links_desc">Scarica nuovamente tutti gli elementi di nuovo</string>
+    <string name="sync_with_source_desc">Elimina elementi scaricati se non sono presenti nella sorgente</string>
+    <string name="disable_write_info_json_summary">(Sconsigliato) Ogni volta che riavvii / riprendi il download, yt-dlp scaricherà nuovamente i dati JSON dai server.</string>
 </resources>
