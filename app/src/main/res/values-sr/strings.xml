@@ -359,7 +359,7 @@
     <string name="not_deleted">Није избрисано</string>
     <string name="archive">Архива преузимања [Користите yt-dlp архиву преузимања да бисте спречили дупла преузимања, уместо уграђене функционалности]</string>
     <string name="show_download_count">Прикажи бројеве на екрану редоследа за преузимање</string>
-    <string name="get_new_uploads">Добијај само нова отпремања</string>
+    <string name="get_new_uploads">Добијај само будућа отпремања (занемарује постојеће предмете)</string>
     <string name="also_download_audio">Такође преузми као аудио снимак</string>
     <string name="wrap_text">Преломи текст</string>
     <string name="reset_processed_links">Ресетуј већ обрађене линкове</string>
@@ -458,4 +458,7 @@
     <string name="use_only_po_token">Коришћење само PO токена (занемаривање клијента плејера)</string>
     <string name="cache_directory">Фолдер кеш меморије</string>
     <string name="cache_directory_warning">Промена фолдера кеша може изазвати неочекиване проблеме. Ако апликација не може да пише на конфигурисану путању, прибећи ће подразумеваном интерном директоријуму кеша</string>
+    <string name="retry_missing_downloads_desc">Поново преузмите предмете који нису присутни у историји преузимања</string>
+    <string name="reset_processed_links_desc">Поново преузмите све предмете</string>
+    <string name="sync_with_source_desc">Избришите преузете предмете ако недостају у извору</string>
 </resources>
