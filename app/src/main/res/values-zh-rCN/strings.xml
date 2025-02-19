@@ -460,4 +460,5 @@
     <string name="sync_with_source_desc">如果来源缺少已经下载的项目就删除这些项目</string>
     <string name="retry_missing_downloads_desc">重新下载不存在于下载库中的项目</string>
     <string name="reset_processed_links_desc">重新下载所有项目</string>
+    <string name="app_icon_change">图标可能更改，应用将关闭</string>
 </resources>
