@@ -361,7 +361,7 @@
     <string name="swipe_gestures_download_card">إيماءات السحب في بطاقة التنزيل</string>
     <string name="show_download_count">إظهار شارة العدد في جدول التنزيلات</string>
     <string name="thumbnail_format">صيغة الصورة المصغرة</string>
-    <string name="get_new_uploads">الحصول على التحميلات الجديدة فقط</string>
+    <string name="get_new_uploads">احصل على التحميلات المستقبلية فقط (تجاهل العناصر الموجودة)</string>
     <string name="also_download_audio">التنزيل كصوت أيضًا</string>
     <string name="text_size">حجم النص</string>
     <string name="add">إضافة</string>
@@ -458,4 +458,7 @@
     <string name="cache_directory">مجلد ذاكرة الكاش</string>
     <string name="cache_directory_warning">قد يؤدي تغيير مجلد ذاكرة الكاش إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى دليل ذاكرة الكاش الداخلي الافتراضي</string>
     <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل عميل المشغل)</string>
+    <string name="retry_missing_downloads_desc">أعد تنزيل العناصر الغير موجودة في تاريخ التنزيل</string>
+    <string name="reset_processed_links_desc">أعد تنزيل جميع العناصر مرة أخرى</string>
+    <string name="sync_with_source_desc">احذف العناصر التي تم تنزيلها إذا كانت مفقودة في المصدر</string>
 </resources>

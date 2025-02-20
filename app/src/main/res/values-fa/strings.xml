@@ -7,7 +7,7 @@
     <string name="settings">تنظیمات</string>
     <string name="home">خانه</string>
     <string name="directories">پوشه ها</string>
-    <string name="music_directory">پوشه موسیقی</string>
+    <string name="music_directory">پوشه صدا</string>
     <string name="video_directory">پوشه ویدیو</string>
     <string name="updating">در حال بروز رسانی</string>
     <string name="update_ytdl">نسخه جدید yt-dlp را نصب کنید</string>
@@ -279,4 +279,5 @@
     <string name="download_already_exists">دانلود از قبل هست</string>
     <string name="move_temporary_files_summary">انتقال فایل‌های نهان به پوشه‌ی دانلودها</string>
     <string name="piped_instance_summary">یک سرور PIPED API بنویسید، این برنامه می‌تواند از آن برای جستارها و فرمتهای یوتیوب استفاده کند</string>
+    <string name="use_extra_commands_summary">برای دانلودهای صوتی/تصویری، دستورات اضافی را همراه با پیکربندی رابط کاربری گرافیکی (GUI) اضافه کنید.</string>
 </resources>

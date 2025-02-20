@@ -6,8 +6,8 @@
     <string name="settings">設定</string>
     <string name="home">ホーム</string>
     <string name="directories">フォルダ</string>
-    <string name="music_directory">音楽のフォルダ</string>
-    <string name="video_directory">動画のフォルダ</string>
+    <string name="music_directory">音声用フォルダ</string>
+    <string name="video_directory">動画用フォルダ</string>
     <string name="update_ytdl">最新の yt-dlp をインストール</string>
     <string name="failed_download">ファイルをダウンロードできませんでした</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
@@ -455,4 +455,11 @@
     <string name="preferred_command_template">優先するコマンドテンプレート</string>
     <string name="live_from_start">ライブの最初から</string>
     <string name="wait_for_video">配信開始を待機</string>
+    <string name="retry_missing_downloads_desc">ダウンロード履歴にない項目を再ダウンロード</string>
+    <string name="cache_directory_warning">キャッシュ用フォルダー変更すると、予期しない問題が起きることがあります。設定したパスに書き込めない場合、標準の内部キャッシュ用ディレクトリを使います</string>
+    <string name="app_icon_change">アイコンを変更し、アプリを終了します</string>
+    <string name="reset_processed_links_desc">すべての項目を再ダウロード</string>
+    <string name="sync_with_source_desc">ダウンロードした項目が監視先から消えたら削除</string>
+    <string name="cache_directory">キャッシュ用フォルダ</string>
+    <string name="use_only_po_token">POトークンのみ使用 (プレイヤークライアントを無視)</string>
 </resources>
