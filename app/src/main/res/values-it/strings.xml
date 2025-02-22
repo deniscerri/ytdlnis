@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="music_directory">Cartella musica</string>
+    <string name="music_directory">Cartella audio</string>
     <string name="search">Cerca</string>
     <string name="remove_all">Rimuovi tutto</string>
     <string name="remove_results">Cancella risultati</string>
@@ -367,7 +367,7 @@
     <string name="copy_urls">Copia URLs</string>
     <string name="never">Mai</string>
     <string name="swipe_gestures_download_card">Gestualità di Scorrimento nella scheda download</string>
-    <string name="get_new_uploads">Ricevi Solo Nuovi Upload</string>
+    <string name="get_new_uploads">Ricevi Solo Upload Futuri (Ignora Elementi Esistenti)</string>
     <string name="also_download_audio">Scarica Anche come Audio</string>
     <string name="text_size">Dimensione del Testo</string>
     <string name="add">Aggiungi</string>
@@ -419,7 +419,7 @@
     <string name="recode_video">Ricodifica Video</string>
     <string name="recode_video_summary">Ricodifica il file video nel formato video specificato</string>
     <string name="process_downloads_background">"I download sono ancora in fase di caricamento. Continuare a elaborarli in background e iniziare il download? "</string>
-    <string name="data_fetching_extractor_youtube">Estrattore di recupero dei dati (Youtube)</string>
+    <string name="data_fetching_extractor_youtube">Estrattore di Recupero Dati (Youtube)</string>
     <string name="data_fetching_extra_command_summary">Abilita i modelli di comando da utilizzare per il recupero dei dati come comandi aggiuntivi</string>
     <string name="other_youtube_extractor_args">Altri argomenti di YouTube Extractor</string>
     <string name="items">elemento(i)</string>
@@ -435,4 +435,25 @@
     <string name="deleted">Eliminato</string>
     <string name="websites">Siti web</string>
     <string name="data_fetching_extra_command">Comando extra per il recupero dei dati</string>
+    <string name="retry_missing_downloads_desc">Scarica nuovamente gli elementi non presenti nella cronologia dei download</string>
+    <string name="reset_processed_links_desc">Scarica nuovamente tutti gli elementi di nuovo</string>
+    <string name="sync_with_source_desc">Elimina elementi scaricati se non sono presenti nella sorgente</string>
+    <string name="disable_write_info_json_summary">(Sconsigliato) Ogni volta che riavvii / riprendi il download, yt-dlp scaricherà nuovamente i dati JSON dai server.</string>
+    <string name="grid">Griglia</string>
+    <string name="cache_directory_warning">Cambiare la cartella della cache potrebbe provocare malfunzionamenti. Se l\'app non può scrivere nel percorso configurato, utilizzerà il percorso della cartella della cache predefinito</string>
+    <string name="no_check_certificates">Sopprimi la validazione del certificato HTTPS</string>
+    <string name="disable_write_info_json">Disabilita Scrittura Info Json</string>
+    <string name="ytdlp_watch_later">Guarda più tardi di YouTube YT-DLP (richiede cookie)</string>
+    <string name="ytdlp_recommnedations">Consigliati di Youtube YT-DLP (richiede cookie)</string>
+    <string name="ytdlp_watch_history">Cronologia di Youtube YT-DLP (richiede cookie)</string>
+    <string name="ytdlp_liked">Video piaciuti di Youtube YT-DLP (richiede cookie)</string>
+    <string name="live_stream">Diretta Streaming</string>
+    <string name="wait_for_video">Attendi il video</string>
+    <string name="live_from_start">Diretta dall\'inizio</string>
+    <string name="minutes">Minuti</string>
+    <string name="prefer_container_over_codec_audio_summary">Con questo abilitato, la preferenza del codec audio selezionata verrà ignorata e solo il contenitore cambierà</string>
+    <string name="layout">Layout</string>
+    <string name="list">Elenco</string>
+    <string name="cache_directory">Cartella cache</string>
+    <string name="app_icon_change">L\'icona potrebbe cambiare e l\'Applicazione si chiuderà</string>
 </resources>
