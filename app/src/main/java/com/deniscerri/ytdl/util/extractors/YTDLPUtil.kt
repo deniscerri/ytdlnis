@@ -823,40 +823,49 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
                 request.addOption("-x")
 
-                val formatSorting = mutableListOf("hasaud")
-                val formatImportance = formatUtil.getAudioFormatImportance()
-                for(order in formatImportance) {
-                    when(order) {
-                        "file_size" -> {
-                            formatSorting.add("size")
-                        }
-                        "language" -> {
-                            if (preferredLanguage.isNotBlank()) {
-                                formatSorting.add("lang:${preferredLanguage}")
+                val formatSorting = mutableListOf<String>()
+                if (sharedPreferences.getBoolean("use_format_sorting", false)) {
+                    formatSorting.add("hasaud")
+                    val formatImportance = formatUtil.getAudioFormatImportance()
+                    for(order in formatImportance) {
+                        when(order) {
+                            "file_size" -> {
+                                formatSorting.add("size")
                             }
-                        }
-                        "codec" -> {
-                            if (aCodecPref.isNotBlank()){
-                                formatSorting.add("acodec:$aCodecPref")
+                            "language" -> {
+                                if (preferredLanguage.isNotBlank()) {
+                                    formatSorting.add("lang:${preferredLanguage}")
+                                }
                             }
-                        }
-                        "container" -> {
-                            if(ext.isNotBlank()){
-                                if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
-                                    request.addOption("--audio-format", ext)
-                                    formatSorting.add("aext:$ext")
+                            "codec" -> {
+                                if (aCodecPref.isNotBlank()){
+                                    formatSorting.add("acodec:$aCodecPref")
+                                }
+                            }
+                            "container" -> {
+                                if(ext.isNotBlank()){
+                                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
+                                        request.addOption("--audio-format", ext)
+                                        formatSorting.add("aext:$ext")
+                                    }
                                 }
                             }
                         }
                     }
+
+                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
+                        if(formatSorting.contains("size")) {
+                            formatSorting.remove("size")
+                        }
+                        formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
+                    }
+                }else if (preferredLanguage.isNotBlank()) {
+                    formatSorting.add("lang:${preferredLanguage}")
                 }
 
-
-                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
-                    if(formatSorting.contains("size")) {
-                        formatSorting.remove("size")
-                    }
-                    formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
+                if (sharedPreferences.getBoolean("prefer_smaller_formats", false) && !formatSorting.contains("+size")) {
+                    formatSorting.remove("size")
+                    formatSorting.add(0, "+size")
                 }
 
                 if (abrSort.isNotBlank()){
@@ -866,7 +875,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if(formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))
                 }
-
 
                 request.addOption("-P", downDir.absolutePath)
 
@@ -1119,37 +1127,40 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 val formatImportance = formatUtil.getVideoFormatImportance()
                 val formatSorting = mutableListOf<String>()
 
-                for(order in formatImportance) {
-                    when(order) {
-                        "no_audio" -> {
-                            formatSorting.add("+hasaud")
-                        }
-                        "codec" -> {
-                            if (vCodecPref.isNotBlank()) formatSorting.add("vcodec:$vCodecPref")
-                            if (aCodecPref.isNotBlank()) formatSorting.add("acodec:$aCodecPref")
-                        }
-                        "resolution" -> {
-                            if (hasGenericResulutionFormat.isNotBlank()) {
-                                formatSorting.add("res:${hasGenericResulutionFormat}")
+                if (sharedPreferences.getBoolean("use_format_sorting", false)) {
+                    for(order in formatImportance) {
+                        when(order) {
+                            "no_audio" -> {
+                                formatSorting.add("+hasaud")
+                            }
+                            "codec" -> {
+                                if (vCodecPref.isNotBlank()) formatSorting.add("vcodec:$vCodecPref")
+                                if (aCodecPref.isNotBlank()) formatSorting.add("acodec:$aCodecPref")
+                            }
+                            "resolution" -> {
+                                if (hasGenericResulutionFormat.isNotBlank()) {
+                                    formatSorting.add("res:${hasGenericResulutionFormat}")
+                                }
+                            }
+                            "container" -> {
+                                if (cont.isNotBlank()) formatSorting.add("vext:$cont")
+                                if (acont.isNotBlank()) formatSorting.add("aext:$acont")
                             }
                         }
-                        "container" -> {
-                            if (cont.isNotBlank()) formatSorting.add("vext:$cont")
-                            if (acont.isNotBlank()) formatSorting.add("aext:$acont")
+                    }
+
+                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
+                        formatSorting.addAll(0, listOf("+br","+res","+fps"))
+                    }else {
+                        if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                            formatSorting.add(0, "+size")
                         }
                     }
                 }
 
-                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
-                    formatSorting.addAll(0, listOf("+br","+res","+fps"))
-                }else {
-                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                        formatSorting.add(0, "+size")
-                    }else {
-                        formatSorting.add(0, "size")
-                    }
+                if (sharedPreferences.getBoolean("prefer_smaller_formats", false) && !formatSorting.contains("+br")) {
+                    formatSorting.add(0, "+size")
                 }
-
 
                 if (abrSort.isNotBlank()) {
                     formatSorting.add("abr~${abrSort}")
@@ -1324,7 +1335,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         this.add(elements.first().toString())
         if (elements.size > 1) {
             for (el in elements.drop(1)) {
-                this.add(""""$el"""")
+                val arg = el.toString()
+                    .replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+
+                this.add("\"$arg\"")
             }
         }
     }

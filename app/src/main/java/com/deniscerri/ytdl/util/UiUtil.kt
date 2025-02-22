@@ -1500,6 +1500,7 @@ object UiUtil {
         val cut = view.findViewById<Chip>(R.id.cut)
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
+            cut.setOnClickListener(null)
             val invalidDuration = items[0].duration == "-1"
             if(items[0].duration.isNotEmpty() && !invalidDuration){
                 val downloadItem = items[0]
@@ -1664,6 +1665,7 @@ object UiUtil {
         val cut = view.findViewById<Chip>(R.id.cut)
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
+            cut.setOnClickListener(null)
             val downloadItem = items[0]
             val invalidDuration = downloadItem.duration == "-1"
             if (downloadItem.duration.isNotEmpty() && !invalidDuration){

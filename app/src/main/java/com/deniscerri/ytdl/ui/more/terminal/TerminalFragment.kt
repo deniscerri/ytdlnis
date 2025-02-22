@@ -364,8 +364,8 @@ class TerminalFragment : Fragment() {
             .observe(viewLifecycleOwner, workerObserver)
     }
 
-    private val workerObserver = object: Observer<MutableList<WorkInfo>> {
-        override fun onChanged(value: MutableList<WorkInfo>) {
+    private val workerObserver = object: Observer<List<WorkInfo>> {
+        override fun onChanged(value: List<WorkInfo>) {
             value.forEach { work ->
                 if (listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED, WorkInfo.State.CANCELLED).contains(work.state)) {
                     requireActivity().runOnUiThread {

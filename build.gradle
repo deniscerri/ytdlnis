@@ -18,7 +18,7 @@ buildscript {
         youtubedlAndroidVerNoPyCrypto   = "97bee6c0e8"
         youtubedlAndroidVerMine         = "8831745ea3"
         oldytdlAndroidVer = "0.14.0"
-        workVer = "2.9.1"
+        workVer = "2.10.0"
         composeVer = '1.4.2'
         kotlinVer = "1.7.21"
         coroutineVer = '1.7.3'

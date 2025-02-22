@@ -34,7 +34,29 @@
             android:title="@string/data_fetching_extra_command" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/downloading" android:enabled="false">
+    <PreferenceCategory android:title="@string/format">
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_arrow_upward_24"
+            app:key="use_format_sorting"
+            app:title="@string/use_format_sorting" />
+
+        <Preference
+            android:icon="@drawable/ic_format"
+            android:key="format_importance_video"
+            android:dependency="use_format_sorting"
+            app:title="@string/format_importance" />
+
+        <Preference
+            android:icon="@drawable/ic_format"
+            android:key="format_importance_audio"
+            android:dependency="use_format_sorting"
+            app:title="@string/format_importance" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/downloading" android:enabled="false" app:isPreferenceVisible="false">
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/if_file_rename"

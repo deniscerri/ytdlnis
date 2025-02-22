@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -23,6 +24,8 @@ import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activity: Activity, private var itemTouchHelper: ItemTouchHelper) : ListAdapter<YoutubePlayerClientItem?, YoutubePlayerClientAdapter.ViewHolder>(AsyncDifferConfig.Builder(
@@ -61,21 +64,38 @@ class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activ
         val title = card.findViewById<TextView>(R.id.title)
         title.text = item.playerClient
 
-        val content = card.findViewById<TextView>(R.id.content)
-        content.isVisible = item.poTokens.isNotEmpty()
-        if (item.poTokens.isNotEmpty()) {
-            val text = item.poTokens.joinToString("\n") { "PO Token (${it.context}): ${it.token}" }
-            content.text = text
+        val content = card.findViewById<ChipGroup>(R.id.content)
+        val chips = mutableListOf<TextView>()
+        item.poTokens.forEach {
+            val tmp =  activity.layoutInflater.inflate(R.layout.textview_chip, content, false) as TextView
+            tmp.maxWidth = 500
+            tmp.maxLines = 1
+            tmp.ellipsize = TextUtils.TruncateAt.END
+            val text = "PO Token (${it.context}): ${it.token}"
+            tmp.text = text
+            chips.add(tmp)
+        }
+
+        for (chip in chips.reversed()) {
+            content.addView(chip, 0)
         }
 
         if (item.urlRegex.isNotEmpty()) {
-            val text = content.text.toString() + "\nURL Regex: " + item.urlRegex.joinToString(", ")
-            content.text = text
+            val text = "URL Regex: " + item.urlRegex.joinToString(", ")
+            content.findViewById<TextView>(R.id.urlRegex).apply {
+                isVisible = true
+                setText(text)
+            }
         }
+
+        title.alpha = if (item.enabled) 1f else 0.3f
+        content.alpha = if (item.enabled) 1f else 0.3f
 
         val switch = card.findViewById<MaterialSwitch>(R.id.materialSwitch)
         switch.isChecked = item.enabled
         switch.setOnClickListener {
+            title.alpha = if (switch.isChecked) 1f else 0.3f
+            content.alpha = if (switch.isChecked) 1f else 0.3f
             onItemClickListener.onStatusToggle(item, switch.isChecked, position)
         }
 

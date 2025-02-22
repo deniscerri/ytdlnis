@@ -285,15 +285,6 @@
             app:key="prefer_smaller_formats"
             app:title="@string/prefer_smaller_formats" />
 
-        <Preference
-            android:icon="@drawable/ic_format"
-            android:key="format_importance_video"
-            app:title="@string/format_importance" />
-
-        <Preference
-            android:icon="@drawable/ic_format"
-            android:key="format_importance_audio"
-            app:title="@string/format_importance" />
 
     </PreferenceCategory>
 
