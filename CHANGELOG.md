@@ -1,5 +1,23 @@
 # YTDLnis Changelog
 
+> # 1.8.2.1 (2025-02)
+
+# What's Changed
+
+- Fixed downloads crashing on items with titles that have quotes in them
+- Removed custom format sorting by default to avoid common issues with format selection, and moved the preferences to advanced settings. Most of users don't need to customize sorting formats anyway :)
+- Fixed app sometimes building -f as bv/bv+ba/b instead of bv+ba/bv/b
+- Update WorkManager library, hopefully fixing #720
+- Looks like adding preferred language in -S is useless so i added it as part of ba[lang^=...]
+- Other small things
+
+## Note
+
+The alternate downloader Aria2c is broken, so turn it off for the time being until something is found out how to fix it/
+
+Hopefully this build is stable for the time being!
+
+
 > # 1.8.2 (2025-02)
 
 ## Note

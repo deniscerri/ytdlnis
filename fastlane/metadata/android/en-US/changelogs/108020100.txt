@@ -7,4 +7,8 @@
 - Looks like adding preferred language in -S is useless so i added it as part of ba[lang^=...]
 - Other small things
 
+## Note
+
+The alternate downloader Aria2c is broken, so turn it off for the time being until something is found out how to fix it/
+
 Hopefully this build is stable for the time being!
