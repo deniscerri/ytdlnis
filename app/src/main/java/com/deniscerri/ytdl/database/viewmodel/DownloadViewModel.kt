@@ -532,19 +532,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
     fun getFormat(formats: List<Format>, type: Type, url: String? = null) : Format {
-        val sortFormats = sharedPreferences.getBoolean("use_format_sorting", false)
-
         when(type) {
             Type.audio -> {
                 return cloneFormat (
                     try {
                         val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }
-
-                        if (sortFormats) {
-                            FormatUtil(application).sortAudioFormats(theFormats).first()
-                        }else {
-                            theFormats.first()
-                        }
+                        FormatUtil(application).sortAudioFormats(theFormats).first()
                     }catch (e: Exception){
                         formatUtil.getGenericAudioFormats(resources).first()
                     }
@@ -558,11 +551,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                             formatUtil.getGenericVideoFormats(resources).sortedByDescending { it.filesize }
                         }
 
-                        if (sortFormats) {
-                            FormatUtil(application).sortVideoFormats(theFormats).first()
-                        }else {
-                            theFormats.first()
-                        }
+                        FormatUtil(application).sortVideoFormats(theFormats).first()
                     }catch (e: Exception){
                         formatUtil.getGenericVideoFormats(resources).first()
                     }

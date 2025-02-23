@@ -30,31 +30,49 @@ class FormatUtil(private var context: Context) {
 
     @SuppressLint("RestrictedApi")
     fun getAudioFormatImportance() : List<String> {
-        val itemValues = context.getStringArray(R.array.format_importance_audio_values).toMutableList()
-        val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableList()
-        if (preferSmallerFormats) {
-            orderPreferences.remove("file_size")
-            orderPreferences.add(0,"smallsize")
-        }
+        if (sharedPreferences.getBoolean("use_format_sorting", false)) {
+            val itemValues = context.getStringArray(R.array.format_importance_audio_values).toMutableList()
+            val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableList()
+            if (preferSmallerFormats) {
+                orderPreferences.remove("file_size")
+                orderPreferences.add(0,"smallsize")
+            }
 
-        val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
-        if(preferContainerOverCodec) {
-            orderPreferences.remove("codec")
-        }
+            val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
+            if(preferContainerOverCodec) {
+                orderPreferences.remove("codec")
+            }
 
-        return orderPreferences
+            return orderPreferences
+        }else {
+            val formatImportance = mutableListOf("codec", "container", "language")
+            if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                formatImportance.add(0, "smallsize")
+            }
+
+            return formatImportance
+        }
     }
 
     @SuppressLint("RestrictedApi")
     fun getVideoFormatImportance() : List<String> {
-        val itemValues = context.getStringArray(R.array.format_importance_video_values).toList()
-        val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableList()
-        if (preferSmallerFormats) {
-            orderPreferences.remove("file_size")
-            orderPreferences.add(0, "smallsize")
-        }
+        if (sharedPreferences.getBoolean("use_format_sorting", false)) {
+            val itemValues = context.getStringArray(R.array.format_importance_video_values).toList()
+            val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableList()
+            if (preferSmallerFormats) {
+                orderPreferences.remove("file_size")
+                orderPreferences.add(0, "smallsize")
+            }
 
-        return orderPreferences
+            return orderPreferences
+        }else {
+            val formatImportance = mutableListOf("resolution", "codec", "container")
+            if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                formatImportance.add(0, "smallsize")
+            }
+
+            return formatImportance
+        }
     }
 
 

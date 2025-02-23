@@ -822,16 +822,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 val ext = downloadItem.container
 
                 val formatSorting = mutableListOf<String>()
-                val formatImportance: MutableList<String>
+                val formatImportance = formatUtil.getAudioFormatImportance()
                 val useCustomFormatSorting = sharedPreferences.getBoolean("use_format_sorting", false)
                 if (useCustomFormatSorting) {
                     formatSorting.add("hasaud")
-                    formatImportance = formatUtil.getAudioFormatImportance().toMutableList()
-                }else{
-                    formatImportance = mutableListOf("codec", "container", "language")
-                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                        formatImportance.add(0, "smallsize")
-                    }
                 }
 
                 for(order in formatImportance) {
@@ -1126,19 +1120,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 }
 
-                val preferredLanguage = sharedPreferences.getString("audio_language","")!!
-
-                val formatImportance : MutableList<String>
+                val formatImportance = formatUtil.getVideoFormatImportance().toMutableList()
                 val formatSorting = mutableListOf<String>()
-                val useCustomFormatSorting = sharedPreferences.getBoolean("use_format_sorting", false)
-                if (useCustomFormatSorting) {
-                    formatImportance = formatUtil.getVideoFormatImportance().toMutableList()
-                }else {
-                    formatImportance = mutableListOf("resolution", "codec", "container")
-                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                        formatImportance.add(0, "smallsize")
-                    }
-                }
 
                 for(order in formatImportance) {
                     when(order) {
