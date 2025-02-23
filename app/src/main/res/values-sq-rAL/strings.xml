@@ -460,4 +460,6 @@
     <string name="retry_missing_downloads_desc">Ri-shkarko artikujt që nuk janë në historinë e shkarkimeve</string>
     <string name="reset_processed_links_desc">Ri-shkarko të gjithë artikujt përsëri</string>
     <string name="sync_with_source_desc">Fshi artikujt e shkarkuar nëse mungojnë në burim</string>
+    <string name="use_format_sorting">Përdor renditjen e formateve të personalizuar</string>
+    <string name="app_icon_change">Ikona mund të ndryshojë dhe Aplikacioni do të mbyllet</string>
 </resources>
