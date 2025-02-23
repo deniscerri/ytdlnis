@@ -1,0 +1,4 @@
+# What's Changed
+
+- Hot fixes with format sorting in GUI
+- Got those leftover translations

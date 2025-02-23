@@ -1,5 +1,12 @@
 # YTDLnis Changelog
 
+> # 1.8.2.2 (2025-02)
+
+# What's Changed
+
+- Hot fixes with format sorting in GUI
+- Got those leftover translations
+
 > # 1.8.2.1 (2025-02)
 
 # What's Changed
