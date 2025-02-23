@@ -824,48 +824,51 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 request.addOption("-x")
 
                 val formatSorting = mutableListOf<String>()
-                if (sharedPreferences.getBoolean("use_format_sorting", false)) {
+                val formatImportance: MutableList<String>
+                val useCustomFormatSorting = sharedPreferences.getBoolean("use_format_sorting", false)
+                if (useCustomFormatSorting) {
                     formatSorting.add("hasaud")
-                    val formatImportance = formatUtil.getAudioFormatImportance()
-                    for(order in formatImportance) {
-                        when(order) {
-                            "file_size" -> {
-                                formatSorting.add("size")
-                            }
-                            "language" -> {
-                                if (preferredLanguage.isNotBlank()) {
-                                    formatSorting.add("lang:${preferredLanguage}")
-                                }
-                            }
-                            "codec" -> {
-                                if (aCodecPref.isNotBlank()){
-                                    formatSorting.add("acodec:$aCodecPref")
-                                }
-                            }
-                            "container" -> {
-                                if(ext.isNotBlank()){
-                                    if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
-                                        request.addOption("--audio-format", ext)
-                                        formatSorting.add("aext:$ext")
-                                    }
-                                }
-                            }
-                        }
+                    formatImportance = formatUtil.getAudioFormatImportance().toMutableList()
+                }else{
+                    formatImportance = mutableListOf("codec", "container", "language")
+                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                        formatImportance.add(0, "smallsize")
                     }
-
-                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
-                        if(formatSorting.contains("size")) {
-                            formatSorting.remove("size")
-                        }
-                        formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
-                    }
-                }else if (preferredLanguage.isNotBlank()) {
-                    formatSorting.add("lang:${preferredLanguage}")
                 }
 
-                if (sharedPreferences.getBoolean("prefer_smaller_formats", false) && !formatSorting.contains("+size")) {
+                for(order in formatImportance) {
+                    when(order) {
+                        "smallsize" -> {
+                            formatSorting.add("+size")
+                        }
+                        "file_size" -> {
+                            formatSorting.add("size")
+                        }
+                        "language" -> {
+                            if (preferredLanguage.isNotBlank()) {
+                                formatSorting.add("lang:${preferredLanguage}")
+                            }
+                        }
+                        "codec" -> {
+                            if (aCodecPref.isNotBlank()){
+                                formatSorting.add("acodec:$aCodecPref")
+                            }
+                        }
+                        "container" -> {
+                            if(ext.isNotBlank()){
+                                if(!ext.matches("(webm)|(Default)|(${context.getString(R.string.defaultValue)})".toRegex()) && supportedContainers.contains(ext)){
+                                    request.addOption("--audio-format", ext)
+                                    formatSorting.add("aext:$ext")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
                     formatSorting.remove("size")
-                    formatSorting.add(0, "+size")
+                    formatSorting.remove("+size")
+                    formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
                 }
 
                 if (abrSort.isNotBlank()){
@@ -1089,9 +1092,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
 
                     preferredFormatIDs.forEach { v ->
-                        preferredAudioFormatIDs.forEach { a ->
-                            val aa = if (a.isNotBlank()) "+$a" else ""
-                            f.append("$v$aa/")
+                        preferredAudioFormatIDs.filter { it.isNotBlank() }.forEach { a ->
+                            f.append("$v+$a/")
                         }
                         //build format with just videoformatid and audio if remove audio is not checked
                         if (!downloadItem.videoPreferences.removeAudio){
@@ -1124,46 +1126,53 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val preferredLanguage = sharedPreferences.getString("audio_language","")!!
 
-                val formatImportance = formatUtil.getVideoFormatImportance()
+                val formatImportance : MutableList<String>
                 val formatSorting = mutableListOf<String>()
+                val useCustomFormatSorting = sharedPreferences.getBoolean("use_format_sorting", false)
+                if (useCustomFormatSorting) {
+                    formatImportance = formatUtil.getVideoFormatImportance().toMutableList()
+                }else {
+                    formatImportance = mutableListOf("resolution", "codec", "container")
+                    if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+                        formatImportance.add(0, "smallsize")
+                    }
+                }
 
-                if (sharedPreferences.getBoolean("use_format_sorting", false)) {
-                    for(order in formatImportance) {
-                        when(order) {
-                            "no_audio" -> {
-                                formatSorting.add("+hasaud")
-                            }
-                            "codec" -> {
-                                if (vCodecPref.isNotBlank()) formatSorting.add("vcodec:$vCodecPref")
-                                if (aCodecPref.isNotBlank()) formatSorting.add("acodec:$aCodecPref")
-                            }
-                            "resolution" -> {
-                                if (hasGenericResulutionFormat.isNotBlank()) {
-                                    formatSorting.add("res:${hasGenericResulutionFormat}")
-                                }
-                            }
-                            "container" -> {
-                                if (cont.isNotBlank()) formatSorting.add("vext:$cont")
-                                if (acont.isNotBlank()) formatSorting.add("aext:$acont")
+                for(order in formatImportance) {
+                    when(order) {
+                        "smallsize" -> {
+                            formatSorting.add("+size")
+                        }
+                        "filesize" -> {
+                            formatSorting.add("size")
+                        }
+                        "no_audio" -> {
+                            formatSorting.add("+hasaud")
+                        }
+                        "codec" -> {
+                            if (vCodecPref.isNotBlank()) formatSorting.add("vcodec:$vCodecPref")
+                            if (aCodecPref.isNotBlank()) formatSorting.add("acodec:$aCodecPref")
+                        }
+                        "resolution" -> {
+                            if (hasGenericResulutionFormat.isNotBlank()) {
+                                formatSorting.add("res:${hasGenericResulutionFormat}")
                             }
                         }
-                    }
-
-                    if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
-                        formatSorting.addAll(0, listOf("+br","+res","+fps"))
-                    }else {
-                        if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                            formatSorting.add(0, "+size")
+                        "container" -> {
+                            if (cont.isNotBlank()) formatSorting.add("vext:$cont")
+                            if (acont.isNotBlank()) formatSorting.add("aext:$acont")
                         }
                     }
                 }
 
-                if (sharedPreferences.getBoolean("prefer_smaller_formats", false) && !formatSorting.contains("+br")) {
-                    formatSorting.add(0, "+size")
+                if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "worst") {
+                    formatSorting.remove("+size")
+                    formatSorting.remove("size")
+                    formatSorting.addAll(0, listOf("+br","+res","+fps"))
                 }
 
                 if (abrSort.isNotBlank()) {
-                    formatSorting.add("abr~${abrSort}")
+                    formatSorting.add("abr:${abrSort}")
                 }
 
                 if (preferredLanguage.isNotBlank()) {

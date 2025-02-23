@@ -8,7 +8,6 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
-import java.util.Collections
 
 class FormatUtil(private var context: Context) {
     private val sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -30,12 +29,12 @@ class FormatUtil(private var context: Context) {
     private val preferSmallerFormats = sharedPreferences.getBoolean("prefer_smaller_formats", false)
 
     @SuppressLint("RestrictedApi")
-    fun getAudioFormatImportance() : Set<String> {
-        val itemValues = context.getStringArray(R.array.format_importance_audio_values).toSet()
-        val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableSet()
+    fun getAudioFormatImportance() : List<String> {
+        val itemValues = context.getStringArray(R.array.format_importance_audio_values).toMutableList()
+        val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableList()
         if (preferSmallerFormats) {
-            orderPreferences.add("smallsize")
             orderPreferences.remove("file_size")
+            orderPreferences.add(0,"smallsize")
         }
 
         val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
@@ -47,12 +46,12 @@ class FormatUtil(private var context: Context) {
     }
 
     @SuppressLint("RestrictedApi")
-    fun getVideoFormatImportance() : Set<String> {
-        val itemValues = context.getStringArray(R.array.format_importance_video_values).toSet()
-        val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableSet()
+    fun getVideoFormatImportance() : List<String> {
+        val itemValues = context.getStringArray(R.array.format_importance_video_values).toList()
+        val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableList()
         if (preferSmallerFormats) {
-            orderPreferences.add("smallsize")
             orderPreferences.remove("file_size")
+            orderPreferences.add(0, "smallsize")
         }
 
         return orderPreferences
@@ -137,8 +136,8 @@ class FormatUtil(private var context: Context) {
                             videoFormatIDPreference.contains(b.format_id).compareTo(videoFormatIDPreference.contains(a.format_id))
                         }
                         "codec" -> {
-                            var first = "$videoCodecPreference".toRegex(RegexOption.IGNORE_CASE).containsMatchIn(b.vcodec.uppercase())
-                            var second = "$videoCodecPreference".toRegex(RegexOption.IGNORE_CASE).containsMatchIn(a.vcodec.uppercase())
+                            val first = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(b.vcodec.uppercase())
+                            val second = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(a.vcodec.uppercase())
                             first.compareTo(second)
                         }
                         "resolution" -> {

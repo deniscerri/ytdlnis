@@ -267,8 +267,7 @@ class DownloadLogFragment : Fragment() {
         val progressBar = requireView().findViewById<LinearProgressIndicator>(R.id.progress)
         if (event.logItemID == logID) {
             progressBar.isVisible = event.progress < 100
-            progressBar.setProgress(event.progress, true)
-            progressBar.isIndeterminate = event.progress == 0
+            progressBar.setProgressCompat(event.progress, true)
         }
     }
 

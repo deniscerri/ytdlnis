@@ -86,6 +86,7 @@
         android:id="@+id/progress"
         android:layout_width="match_parent"
         android:visibility="gone"
+        android:indeterminate="true"
         app:layout_constraintBottom_toTopOf="@id/coordinatorLayout3"
         android:layout_height="wrap_content"/>
 
