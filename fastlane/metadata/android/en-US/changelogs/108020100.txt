@@ -1,0 +1,9 @@
+# What's Changed
+
+- Fixed downloads crashing on items with titles that have quotes in them
+- Removed custom format sorting by default to avoid common issues with format selection, and moved the preferences to advanced settings. Most of users don't need to customize sorting formats anyway :)
+- Fixed app sometimes building -f as bv/bv+ba/b instead of bv+ba/bv/b
+- Update WorkManager library, hopefully fixing #720
+- Other small things
+
+Hopefully this build is stable for the time being!

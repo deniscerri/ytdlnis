@@ -152,7 +152,7 @@ class TerminalDownloadWorker(
                     }
                 }
             }
-            if (logDownloads) logRepo.update(initialLogDetails + "\n" + it.out, logItem.id, true)
+            if (logDownloads) logRepo.update(initialLogDetails + it.out, logItem.id, true)
             dao.updateLog(it.out, itemId.toLong())
             notificationUtil.cancelDownloadNotification(itemId)
             delay(1000)
