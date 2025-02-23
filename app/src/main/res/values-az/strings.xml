@@ -210,14 +210,14 @@
     <string name="undo">Ləğv et</string>
     <string name="codec">Kodlaşdırıcı</string>
     <string name="format_id">Format ID</string>
-    <string name="Theme">Tema</string>
+    <string name="Theme">Kolorit</string>
     <string name="dark">Qaranlıq</string>
     <string name="light">İşıqlı</string>
     <string name="quality">Keyfiyyət</string>
     <string name="system">Sistem</string>
     <string name="accents">Çalarlar</string>
     <string name="high_contrast">Yüksək Ziddiyyət</string>
-    <string name="pure_theme_summary">Təmiz Qara / Ağ Tema</string>
+    <string name="pure_theme_summary">Təmiz Qara / Ağ Kolorit</string>
     <string name="material_you">Material You</string>
     <string name="blue">Mavi</string>
     <string name="red">Qırmızı</string>
