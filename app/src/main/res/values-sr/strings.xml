@@ -357,7 +357,7 @@
     <string name="every">Сваки</string>
     <string name="after">Након</string>
     <string name="not_deleted">Није избрисано</string>
-    <string name="archive">Архива преузимања [Користите yt-dlp архиву преузимања да бисте спречили дупла преузимања, уместо уграђене функционалности]</string>
+    <string name="archive">Архива преузимања [Коришћење yt-dlp архиве преузимања, како би се спречила дупла преузимања, уместо уграђене функционалности]</string>
     <string name="show_download_count">Прикажи бројеве на екрану редоследа за преузимање</string>
     <string name="get_new_uploads">Добијај само будућа отпремања (занемарује постојеће предмете)</string>
     <string name="also_download_audio">Такође преузми као аудио снимак</string>
@@ -406,7 +406,7 @@
     <string name="always">Увек</string>
     <string name="restore_info">Притисните „Врати“ да спојите сачуване податке с вашим тренутним подацима.
 \nПритисните „Ресетуј“ да избришете и користите само сачуване податке у фајлу.</string>
-    <string name="use_alarm_manager">Користите AlarmManager уместо WorkManager за планирање</string>
+    <string name="use_alarm_manager">Користи AlarmManager уместо WorkManager за планирање</string>
     <string name="use_alarm_manager_summary">Омогућите ово ако је WorkManager ограничен од стране продавца уређаја или заказани послови нису превише прецизни</string>
     <string name="use_item_url_not_playlist">Користи URL адресу предмета уместо URL адресе плејлисте</string>
     <string name="use_item_url_not_playlist_summary">Метаподаци плејлисте неће бити уграђени, ако је ово омогућено</string>
@@ -455,11 +455,12 @@
     <string name="layout">Изглед</string>
     <string name="list">Листа</string>
     <string name="grid">Мрежа</string>
-    <string name="use_only_po_token">Коришћење само PO токена (занемаривање клијента плејера)</string>
+    <string name="use_only_po_token">Користи само PO токен (занемаривање клијента плејера)</string>
     <string name="cache_directory">Фолдер кеш меморије</string>
     <string name="cache_directory_warning">Промена фолдера кеша може изазвати неочекиване проблеме. Ако апликација не може да пише на конфигурисану путању, прибећи ће подразумеваном интерном директоријуму кеша</string>
     <string name="retry_missing_downloads_desc">Поново преузмите предмете који нису присутни у историји преузимања</string>
     <string name="reset_processed_links_desc">Поново преузмите све предмете</string>
     <string name="sync_with_source_desc">Избришите преузете предмете ако недостају у извору</string>
     <string name="app_icon_change">Иконица ће се можда променити и апликација ће се затворити</string>
+    <string name="use_format_sorting">Користи сортирање по важности формата</string>
 </resources>
