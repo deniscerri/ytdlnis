@@ -630,7 +630,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
-            request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+            //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
         }
 
         val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
@@ -789,6 +789,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         when(type){
             DownloadViewModel.Type.audio -> {
                 val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
+                val preferredLanguage = sharedPreferences.getString("audio_language","")!!
                 var abrSort = ""
 
                 var audioQualityId : String = downloadItem.format.format_id
@@ -801,10 +802,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     audioQualityId += "/ba/b"
                 }
 
+                if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && preferredLanguage.isNotBlank()) {
+                    audioQualityId = "ba[language^=$preferredLanguage]/ba/b"
+                }
 
-                val ext = downloadItem.container
-                val preferredLanguage = sharedPreferences.getString("audio_language","")!!
-                println(audioQualityId)
                 if (audioQualityId.isNotBlank()) {
                     if (audioQualityId.matches(".*-[0-9]+.*".toRegex())) {
                         audioQualityId = if(!downloadItem.format.lang.isNullOrBlank() && downloadItem.format.lang != "None"){
@@ -815,13 +816,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     }
 
                     request.addOption("-f", audioQualityId)
-                }else{
-                    //enters here if generic or quick downloaded with ba format
-                    if (preferredLanguage.isNotBlank()){
-                        request.addOption("-f", "ba[language^=$preferredLanguage]/ba/b")
-                    }
                 }
+
                 request.addOption("-x")
+                val ext = downloadItem.container
 
                 val formatSorting = mutableListOf<String>()
                 val formatImportance: MutableList<String>
@@ -844,11 +842,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         "file_size" -> {
                             formatSorting.add("size")
                         }
-                        "language" -> {
-                            if (preferredLanguage.isNotBlank()) {
-                                formatSorting.add("lang:${preferredLanguage}")
-                            }
-                        }
+//                        "language" -> {
+//                            if (preferredLanguage.isNotBlank()) {
+//                                formatSorting.add("lang:${preferredLanguage}")
+//                            }
+//                        }
                         "codec" -> {
                             if (aCodecPref.isNotBlank()){
                                 formatSorting.add("acodec:$aCodecPref")
@@ -1044,7 +1042,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             f.append("$videoF+$altAudioF/")
                         }
                         if (!f.contains("$videoF+ba")) {
-                            f.append("$videoF+ba/")
+                            if (preferredAudioLanguage.isNotEmpty()) {
+                                f.append("$videoF+ba[language^=$preferredAudioLanguage]/")
+                            }else {
+                                f.append("$videoF+ba/")
+                            }
                         }
                         f.append("$videoF/b")
 
@@ -1175,9 +1177,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     formatSorting.add("abr:${abrSort}")
                 }
 
-                if (preferredLanguage.isNotBlank()) {
-                    formatSorting.add("lang:${preferredLanguage}")
-                }
+//                if (preferredLanguage.isNotBlank()) {
+//                    formatSorting.add("lang:${preferredLanguage}")
+//                }
 
                 if (formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))
