@@ -454,11 +454,13 @@
     <string name="grid">شبكة</string>
     <string name="player_client">عميل اللاعب</string>
     <string name="list">قائمة</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player العملاء و المشتريات Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
     <string name="cache_directory">مجلد ذاكرة الكاش</string>
     <string name="cache_directory_warning">قد يؤدي تغيير مجلد ذاكرة الكاش إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى دليل ذاكرة الكاش الداخلي الافتراضي</string>
     <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل عميل المشغل)</string>
     <string name="retry_missing_downloads_desc">أعد تنزيل العناصر الغير موجودة في تاريخ التنزيل</string>
     <string name="reset_processed_links_desc">أعد تنزيل جميع العناصر مرة أخرى</string>
     <string name="sync_with_source_desc">احذف العناصر التي تم تنزيلها إذا كانت مفقودة في المصدر</string>
+    <string name="app_icon_change">قد تتغير الأيقونة ويغلق التطبيق</string>
+    <string name="use_format_sorting">استخدم ترتيب أهمية التنسيق</string>
 </resources>
