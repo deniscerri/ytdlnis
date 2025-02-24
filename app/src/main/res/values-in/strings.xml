@@ -16,7 +16,7 @@
     <string name="download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan berkas audio dan video</string>
     <string name="home">Beranda</string>
     <string name="directories">Folder</string>
-    <string name="music_directory">Folder Musik</string>
+    <string name="music_directory">Folder Audio</string>
     <string name="ytdl_update_hint">Berguna apabila kamu mengalami masalah saat mengunduh</string>
     <string name="video_directory">Folder Video</string>
     <string name="update_ytdl">Pasang yt-dlp versi yang baru</string>
@@ -363,7 +363,7 @@
     <string name="swipe_gestures_download_card">Gestur Usap di kartu unduhan</string>
     <string name="show_download_count">Perlihatkan jumlah butir di layar Antrean Unduhan</string>
     <string name="thumbnail_format">Format Keluku (Thumbnail)</string>
-    <string name="get_new_uploads">Dapatkan Unggahan Baru Saja</string>
+    <string name="get_new_uploads">Dapatkan Unggahan Mendatang Saja (Abaikan Item yang Sudah Ada)</string>
     <string name="also_download_audio">Unduh Juga sebagai Audio</string>
     <string name="scroll_down">Gulir Hingga ke Paling Bawah</string>
     <string name="text_size">Ukuran Teks</string>
@@ -453,4 +453,13 @@
     <string name="list">Daftar</string>
     <string name="grid">Kisi</string>
     <string name="use_app_language_for_metadata">Gunakan Bahasa Aplikasi untuk Metadata</string>
+    <string name="player_client_summary"><![CDATA[Klien Pemutar YouTube & PO Token]]></string>
+    <string name="cache_directory_warning">Mengubah Folder Cache dapat menyebabkan masalah yang tidak terduga. Jika aplikasi tidak dapat menulis ke jalur yang dikonfigurasi, aplikasi akan menggunakan direktori cache internal default</string>
+    <string name="use_format_sorting">Gunakan Urutan Kepentingan Format</string>
+    <string name="retry_missing_downloads_desc">Item yang diunduh ulang tidak terrsedia dalam riwayat unduhan</string>
+    <string name="reset_processed_links_desc">Unduh ulang lagi semua item</string>
+    <string name="sync_with_source_desc">Hapus item yang diunduh jika tidak ada di sumbernya</string>
+    <string name="use_only_po_token">Gunakan hanya PO Token (Abaikan Klien Pemutar)</string>
+    <string name="cache_directory">Folder Cache</string>
+    <string name="app_icon_change">Ikon dapat berubah dan Aplikasi akan ditutup</string>
 </resources>

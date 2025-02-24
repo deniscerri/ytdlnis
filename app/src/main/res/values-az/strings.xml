@@ -462,4 +462,5 @@
     <string name="reset_processed_links_desc">Bütün elementləri təkrar yüklə</string>
     <string name="sync_with_source_desc">Mənbədə yoxdurlarsa, yüklənilən elementləri sil</string>
     <string name="app_icon_change">Simvol dəyişə bilər və Tətbiq bağlanacaq</string>
+    <string name="use_format_sorting">Format Əhəmiyyəti Sırası İstifadə Et</string>
 </resources>

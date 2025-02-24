@@ -462,4 +462,5 @@
     <string name="reset_processed_links_desc">Повторно завантажити всі елементи</string>
     <string name="sync_with_source_desc">Видалити завантажені елементи, якщо вони відсутні у джерелі</string>
     <string name="app_icon_change">Значок може змінитися, а застосунок закриється</string>
+    <string name="use_format_sorting">Використовувати сортування за важливістю формату</string>
 </resources>

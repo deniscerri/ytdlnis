@@ -115,7 +115,7 @@
     <string name="ignore">Ignorera</string>
     <string name="buffer_size_summary">Storlek på nerladdningsbuffert, t.ex. 1024 eller 16K (standard är 1024)</string>
     <string name="best_quality">Bästa kvalitet</string>
-    <string name="music_directory">Musikmappar</string>
+    <string name="music_directory">Ljudmapp</string>
     <string name="updating">Uppdaterar</string>
     <string name="ytdl_update_hint">Användbart om du har problem med att ladda ner</string>
     <string name="update_ytdl">Installera ny version av yt-dlp</string>
@@ -299,7 +299,7 @@
     <string name="swipe_gestures_download_card">Sveprörelser på nerladdningskort</string>
     <string name="show_download_count">Visa antalet i nerladdningsköskärmen</string>
     <string name="thumbnail_format">Miniatyrbildsformat</string>
-    <string name="get_new_uploads">Visa endast nya uppladdningar</string>
+    <string name="get_new_uploads">Hämta endast framtida uppladdningar (ignorera befintliga objekt)</string>
     <string name="also_download_audio">Ladda även ner som ljud</string>
     <string name="all_queries_finished">Alla frågor har behandlats</string>
     <string name="my_filename_templates">Min filnamnsmallar</string>
@@ -441,4 +441,25 @@
     <string name="recode_video_summary">Kodar om videofilen till det angivna videoformatet</string>
     <string name="data_fetching_extractor_youtube">Datahämtningsextraktor (YouTube)</string>
     <string name="no_check_certificates">Undertryck validering av HTTPS-certifikat</string>
+    <string name="layout">Layout</string>
+    <string name="use_format_sorting">Använd formatviktsordning</string>
+    <string name="cache_directory_warning">Att ändra cachemappen kan orsaka oväntade problem. Om appen inte kan skriva till den konfigurerade sökvägen kommer den att tillgripa den interna standardcachekatalogen</string>
+    <string name="live_stream">Live-ström</string>
+    <string name="live_from_start">Live från början</string>
+    <string name="wait_for_video">Vänta på video</string>
+    <string name="retry_every">Försök varje igen</string>
+    <string name="prefer_container_over_codec_audio_summary">Med detta aktiverat ignoreras den föredragna audiocodec-inställningen och endast behållaren kommer att ändras</string>
+    <string name="minutes">Minuter</string>
+    <string name="prefer_container_over_codec_audio">Föredrar behållare framför codec för ljudnerladdningar</string>
+    <string name="retry_missing_downloads_desc">Ladda ner objekten igen som inte finns i nerladdningshistoriken</string>
+    <string name="reset_processed_links_desc">Ladda ner alla objekt igen</string>
+    <string name="sync_with_source_desc">Ta bort nerladdade objekt om de saknas i källan</string>
+    <string name="player_client">Spelarklient</string>
+    <string name="player_client_summary"><![CDATA[YouTube spelarklient & PO-token]]></string>
+    <string name="use_app_language_for_metadata">Använd appspråk för metadata</string>
+    <string name="list">Lista</string>
+    <string name="grid">Rutnät</string>
+    <string name="use_only_po_token">Använd endast PO-token (ignorera spelarklienten)</string>
+    <string name="cache_directory">Cache-mapp</string>
+    <string name="app_icon_change">Ikonen kan ändras och applikationen kommer att stängas</string>
 </resources>
