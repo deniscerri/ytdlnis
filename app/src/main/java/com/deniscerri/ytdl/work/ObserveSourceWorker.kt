@@ -114,7 +114,7 @@ class ObserveSourceWorker(
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
             downloadItem.title = it.title
-            downloadItem.author = it.author
+//            downloadItem.author = it.author DONT ADD IT, can conflict with playlist uploader album artist etc etc
             downloadItem.duration = it.duration
             downloadItem.website = it.website
             downloadItem.url = it.url
