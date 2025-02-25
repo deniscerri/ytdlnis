@@ -50,6 +50,11 @@ class FormatUtil(private var context: Context) {
                 formatImportance.add(0, "smallsize")
             }
 
+            val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
+            if(preferContainerOverCodec) {
+                formatImportance.remove("codec")
+            }
+
             return formatImportance
         }
     }

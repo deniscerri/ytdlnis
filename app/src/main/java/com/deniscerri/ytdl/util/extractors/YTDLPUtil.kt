@@ -1330,7 +1330,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (elements.size > 1) {
             for (el in elements.drop(1)) {
                 val arg = el.toString()
-                    .replace("\\", "\\\\")
+                    //.replace("\\", "\\\\")
                     .replace("\"", "\\\"")
 
                 this.add("\"$arg\"")

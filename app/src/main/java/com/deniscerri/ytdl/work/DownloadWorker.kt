@@ -76,9 +76,13 @@ class DownloadWorker(
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val time = System.currentTimeMillis() + 6000
-        val queuedItems = dao.getQueuedScheduledDownloadsUntil(time)
         val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
         val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
+        val queuedItems = if (priorityItemIDs.isEmpty()) {
+            dao.getQueuedScheduledDownloadsUntil(time)
+        }else {
+            dao.getQueuedScheduledDownloadsUntilWithPriority(time, priorityItemIDs)
+        }
 
         // this is needed for observe sources call, so it wont create result items
         // [removed]
@@ -116,8 +120,8 @@ class DownloadWorker(
             setForegroundAsync(ForegroundInfo(notificationID, workNotif))
         }
 
-        queuedItems.collect { items ->
-            if (this@DownloadWorker.isStopped) return@collect
+        queuedItems.collectLatest { items ->
+            if (this@DownloadWorker.isStopped) return@collectLatest
 
             runningYTDLInstances.clear()
             val activeDownloads = dao.getActiveDownloadsList()
@@ -129,19 +133,19 @@ class DownloadWorker(
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
                 WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                return@collect
+                return@collectLatest
             }
 
             if (useScheduler){
                 if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
                     WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                    return@collect
+                    return@collectLatest
                 }
             }
 
             if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
                 WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
-                return@collect
+                return@collectLatest
             }
 
             val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
