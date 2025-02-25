@@ -462,4 +462,5 @@
     <string name="sync_with_source_desc">Excluir itens baixados se eles estiverem faltando na fonte</string>
     <string name="retry_missing_downloads_desc">Baixar novamente itens que não estão presentes no histórico de downloads</string>
     <string name="app_icon_change">O ícone pode mudar e o aplicativo será fechado</string>
+    <string name="use_format_sorting">Usar ordem preferencial do formato</string>
 </resources>
