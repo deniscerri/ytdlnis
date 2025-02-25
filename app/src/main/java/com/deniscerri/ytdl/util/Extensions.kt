@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.PorterDuff
@@ -65,6 +64,11 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
 
 
 object Extensions {
@@ -346,45 +350,44 @@ object Extensions {
         )
     }
 
-    fun Long.toStringTimeStamp() : String {
-        var tmp = this
-        val millis = ((tmp % 1000) / 100).toInt()
-        tmp /= 1000
-        val hours = (tmp / 3600).toInt()
-        tmp %= 3600
-        val minutes = (tmp / 60).toInt()
-        tmp %= 60
-        val seconds = tmp.toInt()
+    fun Long.toStringTimeStamp(forceMillis: Boolean = false, showMillisIfNonZero : Boolean = false): String {
+        return this.milliseconds.toComponents { hours, minutes, seconds, nanoseconds ->
+            buildString {
+                if (hours > 0) {
+                    append(hours)
+                    append(':')
+                }
+                append(minutes.toString().padStart(if (hours > 0) 2 else 1, '0'))
+                append(':')
+                append(seconds.toString().padStart(2, '0'))
 
-        var res = "${minutes.toString().padStart(if (hours > 0) 2 else 1, '0')}:${seconds.toString().padStart(2, '0')}"
-        if (hours > 0){
-            res = "${hours}:" + res
+                val millis = nanoseconds / 1_000_000
+                if (forceMillis || showMillisIfNonZero && millis > 0) {
+                    append('.')
+                    var millisString = millis.toString().padStart(3, '0')
+                    if (showMillisIfNonZero) millisString = millisString.trimEnd('0')
+                    append(millisString)
+                }
+            }
         }
-        if (millis > 0){
-            res += ".${millis}"
-        }
-
-        return res
     }
 
-    fun String.convertToTimestamp() : Long {
-        return try {
-            val timeArray = this.split(":")
-            val secondsMillis = timeArray[timeArray.lastIndex]
-            var timeSeconds = secondsMillis.split(".")[0].toLong()
-            val millis = kotlin.runCatching { secondsMillis.split(".")[1].toInt() }.getOrElse { 0 }
+    fun String.convertToTimestamp(): Long =
+        kotlin.runCatching { tryConvertToTimestamp() }.getOrNull() ?: 0L
 
-            var times = 60
-            for (i in timeArray.lastIndex - 1 downTo 0) {
-                timeSeconds += timeArray[i].toInt() * times
-                times *= 60
-            }
+    private val timeRegex =
+        Regex("""^(?:(?:(?<hours>\d+):)?(?<minutes>\d{1,2}):)?(?<seconds>\d+)(?:\.(?<decimals>\d+))?$""")
 
-            (timeSeconds * 1000) + millis * 100
-        }catch (e: Exception){
-            e.printStackTrace()
-            0L
-        }
+    fun String.tryConvertToTimestamp(): Long? {
+        val match = timeRegex.matchEntire(this.trim()) ?: return null
+
+        val hours = match.groups["hours"]?.value?.toInt() ?: 0
+        val minutes = match.groups["minutes"]?.value?.toInt() ?: 0
+        val seconds = match.groups["seconds"]!!.value.toInt()
+        val millis = match.groups["decimals"]?.value
+            ?.take(3)?.padEnd(3,'0')?.toInt() ?: 0
+
+        return (hours.hours + minutes.minutes + seconds.seconds + millis.milliseconds).inWholeMilliseconds
     }
 
     fun String.convertNetscapeToSetCookie(): String {
