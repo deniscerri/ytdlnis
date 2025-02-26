@@ -208,7 +208,7 @@
     <string name="undo">Deshacer</string>
     <string name="format_id">ID del formato</string>
     <string name="codec">códec</string>
-    <string name="audio_samplerate">Velocidad del muestreo del audio</string>
+    <string name="audio_samplerate">Velocidad de muestreo del audio</string>
     <string name="copied_to_clipboard">Copiado al portapapeles</string>
     <string name="dark">Oscuro</string>
     <string name="light">Claro</string>
@@ -232,11 +232,11 @@
     <string name="yellow">Amarillo</string>
     <string name="monochrome">Monocromático</string>
     <string name="downloaded">"Descargado: "</string>
-    <string name="finished_download_notification_channel_name">Descargas terminadas</string>
+    <string name="finished_download_notification_channel_name">Descargas finalizadas</string>
     <string name="finished_download_notification_channel_description">Notificación de descargas finalizadas</string>
     <string name="preferred_locale">Ubicación preferida</string>
     <string name="pause">Pausa</string>
-    <string name="resume">Resumen</string>
+    <string name="resume">Reanudar</string>
     <string name="updating_download_data">Actualizando los datos de los elementos de la descarga</string>
     <string name="keep_cache">Conservar los fragmentos</string>
     <string name="keep_cache_summary">No eliminar los archivos temporales una vez finalizada la descarga</string>
@@ -251,9 +251,9 @@
     <string name="network_error">Error de red</string>
     <string name="backup_created_successfully">Archivo de la copia de seguridad guardado en la carpeta de descargas</string>
     <string name="appearance">Apariencia</string>
-    <string name="backup_restore">Copia de seguridad y restaurar</string>
+    <string name="backup_restore">Copia de seguridad y restauración</string>
     <string name="socks5_proxy_summary">Utilice el proxy HTTP/HTTPS/SOCKS especificado</string>
-    <string name="socks5_proxy">URL del proxy de calcetines5</string>
+    <string name="socks5_proxy">URL del proxy de Socks5</string>
     <string name="search_suggestions">Sugerencias de búsqueda</string>
     <string name="search_suggestions_summary">Obtener sugerencias de búsqueda de Google</string>
     <string name="preferred_format_id_summary">Seleccione el formato con este ID en la tarjeta de descarga</string>
@@ -282,7 +282,7 @@
     <string name="saved">Guardado</string>
     <string name="show_terminal">Mostrar el terminal en el menú Compartir</string>
     <string name="save_for_later">¿Guardar la descarga para más tarde\?</string>
-    <string name="clear_saved">Borrar lo Guardado</string>
+    <string name="clear_saved">Borrar lo guardado</string>
     <string name="orange">Naranja</string>
     <string name="extra_command">Comando adicional</string>
     <string name="use_cookies">Uso de cookies</string>
@@ -317,7 +317,7 @@
     <string name="length">Longitud</string>
     <string name="export_file">Exportar el archivo</string>
     <string name="update_ytdl_master">Versión maestra de yt-dlp</string>
-    <string name="errored_downloads">Descargas erróneas</string>
+    <string name="errored_downloads">Descargas fallidas</string>
     <string name="errored_download_notification_channel_description">Notificación de descargas defectuosas</string>
     <string name="ytdl_source">Fuente yt-dlp</string>
     <string name="buffer_size_summary">Tamaño del búfer de descarga, por ejemplo 1024 o 16K (por defecto es 1024)</string>
