@@ -462,4 +462,5 @@
     <string name="reset_processed_links_desc">重新下載所有項目</string>
     <string name="cache_directory">快取資料夾</string>
     <string name="app_icon_change">圖示可能會變更，且應用程式將會關閉</string>
+    <string name="use_format_sorting">使用格式重要性排序</string>
 </resources>

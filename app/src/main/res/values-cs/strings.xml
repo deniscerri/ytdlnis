@@ -145,7 +145,7 @@
     <string name="fragment_retries">Opakování fragmentů</string>
     <string name="cut_unavailable">Abyste mohli použít funkci střihu, musíte aktualizovat údaje o položce</string>
     <string name="copy_log">Kopírovat protokol</string>
-    <string name="socks5_proxy">Socks5 Proxy URL</string>
+    <string name="socks5_proxy">Adresa Socks5 Proxy</string>
     <string name="edit">Editovat</string>
     <string name="restore">Obnovit</string>
     <string name="update">Aktualizace</string>
@@ -254,7 +254,7 @@
     <string name="Theme">Motiv</string>
     <string name="cancelled">Zrušené</string>
     <string name="edit_selected">Upravit vybranou</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">Adresa Sponsorblock API</string>
     <string name="log_downloads_summary">Vytvoří soubor protokolu pro každé stahování</string>
     <string name="hide_thumbnails">Skrýt náhledy</string>
     <string name="all_items_selected">Všechny položky vybrané</string>
@@ -360,7 +360,7 @@
     <string name="bitrate">Rychlost přenosu</string>
     <string name="show_download_count">Zobrazení počtů na obrazovce stahovací fronty</string>
     <string name="thumbnail_format">Formát miniatur</string>
-    <string name="get_new_uploads">Získat pouze nové nahrávky</string>
+    <string name="get_new_uploads">Získat pouze budoucí nahrávky (Ignorovat stávajíci položky)</string>
     <string name="scroll_down">Posun dolů</string>
     <string name="text_size">Velikost textu</string>
     <string name="add">Přidat</string>
@@ -458,4 +458,9 @@
     <string name="cache_directory">Složka mezipaměti</string>
     <string name="cache_directory_warning">Změna složky mezipaměti může způsobit neočekávané problémy. Pokud aplikace nemůže zapisovat do nakonfigurované cesty, uchýlí se do výchozího interního adresáře mezipaměti</string>
     <string name="use_only_po_token">Použít pouze PO Token (ignorovat klienta přehrávače)</string>
+    <string name="sync_with_source_desc">Smazat stažené položky pokud chybí ve zdroji</string>
+    <string name="use_format_sorting">Použít Formát Řazení dle Důležitosti</string>
+    <string name="retry_missing_downloads_desc">Znovu stáhnout položky nepřítomné v historii stahování</string>
+    <string name="reset_processed_links_desc">Znovu stáhnout všechny položky</string>
+    <string name="app_icon_change">Ikona se může změnit a aplikace se zavře</string>
 </resources>
