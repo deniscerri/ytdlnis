@@ -168,7 +168,7 @@ class DownloadsAlreadyExistDialog : BottomSheetDialogFragment(), AlreadyExistsAd
             val historyItem = withContext(Dispatchers.IO){
                 downloadViewModel.getHistoryItemById(historyItemID)
             }
-            UiUtil.showHistoryItemDetailsCard(historyItem, requireActivity(), isPresent = true,
+            UiUtil.showHistoryItemDetailsCard(historyItem, requireActivity(), isPresent = true, preferences,
                 removeItem = { item, deleteFile ->
                     historyViewModel.delete(item, deleteFile)
                 },

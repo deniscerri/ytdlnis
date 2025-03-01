@@ -465,4 +465,5 @@
     <string name="cache_directory_warning">Changing the Cache Folder might cause unexpected issues. If the app cannot write to the configured path, it will resort to the default internal cache directory</string>
     <string name="app_icon_change">Icon could change and Application will close</string>
     <string name="use_format_sorting">Use Format Importance Ordering</string>
+    <string name="use_code_highlighter">Use Code Color Highlighter</string>
 </resources>

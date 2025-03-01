@@ -93,8 +93,12 @@ class AddExtraCommandsDialog(private val item: DownloadItem? = null, private val
             view.findViewById<View>(R.id.current).visibility = View.GONE
         }
 
-        text.enableTextHighlight()
-        currentText.enableTextHighlight()
+        if (sharedPreferences.getBoolean("use_code_color_highlighter", true)) {
+            text.enableTextHighlight()
+            currentText.enableTextHighlight()
+        }
+
+
 
         text?.setText(item?.extraCommands)
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

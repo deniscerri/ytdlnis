@@ -227,7 +227,11 @@ class TerminalFragment : Fragment() {
         notificationUtil = NotificationUtil(requireContext())
         initMenu()
 
-        input?.enableTextHighlight()
+        lifecycleScope.launch(Dispatchers.IO) {
+            if (sharedPreferences.getBoolean("use_code_color_highlighter", true)) {
+                input?.enableTextHighlight()
+            }
+        }
 
         input?.append(bundle?.getString("input") ?: "")
         input!!.requestFocus()

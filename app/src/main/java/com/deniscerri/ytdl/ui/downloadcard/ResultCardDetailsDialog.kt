@@ -450,6 +450,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
                 ytdlpViewModel,
+                sharedPreferences,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     sheet.hide()
                     removeQueuedItem(itemID)

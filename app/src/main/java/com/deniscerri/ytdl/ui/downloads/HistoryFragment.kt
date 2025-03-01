@@ -506,7 +506,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                 historyViewModel.getByID(itemID)
             }
 
-            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent,
+            UiUtil.showHistoryItemDetailsCard(item, requireActivity(), filePresent, sharedPreferences,
                 removeItem = { it, deleteFile ->
                     historyViewModel.delete(it, deleteFile)
                 },

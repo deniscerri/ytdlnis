@@ -126,7 +126,9 @@ class DownloadLogFragment : Fragment() {
 
         lifecycleScope.launch(Dispatchers.IO){
             content.isFocusable = true
-            content.enableTextHighlight()
+            if (sharedPreferences.getBoolean("use_code_color_highlighter", true)) {
+                content.enableTextHighlight()
+            }
         }
 
         contentScrollView.enableFastScroll()

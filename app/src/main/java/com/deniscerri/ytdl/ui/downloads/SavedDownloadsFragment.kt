@@ -187,6 +187,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
                 ytdlpViewModel,
+                preferences,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     removeItem(it, sheet)
                 },

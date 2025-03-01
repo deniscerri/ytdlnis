@@ -454,6 +454,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
                 ytdlpViewModel,
+                sharedPreferences,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     sheet.hide()
                     removeItem(it.id)

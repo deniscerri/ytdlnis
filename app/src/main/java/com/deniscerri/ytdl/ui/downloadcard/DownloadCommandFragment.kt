@@ -104,7 +104,9 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
 
                 val chosenCommandView = view.findViewById<TextInputLayout>(R.id.content)
                 chosenCommandView.editText?.setText(downloadItem.format.format_note)
-                chosenCommandView.editText?.enableTextHighlight()
+                if (preferences.getBoolean("use_code_color_highlighter", true)) {
+                    chosenCommandView.editText?.enableTextHighlight()
+                }
                 chosenCommandView.endIconDrawable = AppCompatResources.getDrawable(requireContext(), R.drawable.ic_delete_all)
                 chosenCommandView.editText!!.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}

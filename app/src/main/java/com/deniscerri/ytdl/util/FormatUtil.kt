@@ -66,14 +66,14 @@ class FormatUtil(private var context: Context) {
             val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableList()
             if (preferSmallerFormats) {
                 orderPreferences.remove("file_size")
-                orderPreferences.add(0, "smallsize")
+                orderPreferences.add("smallsize")
             }
 
             return orderPreferences
         }else {
             val formatImportance = mutableListOf("resolution", "codec", "container")
             if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                formatImportance.add(0, "smallsize")
+                formatImportance.add("smallsize")
             }
 
             return formatImportance

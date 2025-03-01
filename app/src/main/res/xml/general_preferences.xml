@@ -192,6 +192,13 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/baseline_color_lens_24"
+            android:key="use_code_color_highlighter"
+            app:title="@string/use_code_highlighter" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/baseline_share2_24"
             android:key="show_terminal"

@@ -183,6 +183,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                 requireActivity(),
                 DownloadRepository.Status.valueOf(item.status),
                 ytdlpViewModel,
+                preferences,
                 removeItem = { it: DownloadItem, sheet: BottomSheetDialog ->
                     sheet.hide()
                     removeItem(it, sheet)

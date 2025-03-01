@@ -533,6 +533,7 @@ object UiUtil {
         context: Activity,
         status: DownloadRepository.Status,
         ytdlpViewModel: YTDLPViewModel,
+        preferences: SharedPreferences,
         removeItem : (DownloadItem, BottomSheetDialog) -> Unit,
         downloadItem: (DownloadItem) -> Unit,
         longClickDownloadButton: (DownloadItem) -> Unit,
@@ -642,7 +643,7 @@ object UiUtil {
         else fileSize!!.text = fileSizeReadable
 
         command?.setOnClickListener {
-            showGeneratedCommand(context, ytdlpViewModel.parseYTDLRequestString(item))
+            showGeneratedCommand(context, preferences, ytdlpViewModel.parseYTDLRequestString(item))
         }
 
         val link = bottomSheet.findViewById<Button>(R.id.bottom_sheet_link)
@@ -736,6 +737,7 @@ object UiUtil {
         item: HistoryItem?,
         context: Activity,
         isPresent: Boolean,
+        preferences: SharedPreferences,
         removeItem: (item:HistoryItem, removeFiles: Boolean) -> Unit,
         redownloadItem: (HistoryItem) -> Unit,
         redownloadShowDownloadCard: (HistoryItem) -> Unit,
@@ -861,7 +863,7 @@ object UiUtil {
         else fileSize!!.text = fileSizeReadable
 
         command?.setOnClickListener {
-            showGeneratedCommand(context, item.command)
+            showGeneratedCommand(context, preferences, item.command)
         }
 
         val availableFiles = item.downloadPath.filter { FileUtil.exists(it) }
@@ -2094,7 +2096,7 @@ object UiUtil {
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
-    private fun showGeneratedCommand(context: Activity, command: String){
+    private fun showGeneratedCommand(context: Activity, preferences: SharedPreferences, command: String) {
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.command))
         val view = context.layoutInflater.inflate(R.layout.command_dialog, null)
@@ -2102,7 +2104,9 @@ object UiUtil {
             text = command
             isLongClickable = true
             setTextIsSelectable(true)
-            enableTextHighlight()
+            if (preferences.getBoolean("use_code_color_highlighter", true)) {
+                enableTextHighlight()
+            }
             setPadding(20, 0, 20, 0)
         }
 
