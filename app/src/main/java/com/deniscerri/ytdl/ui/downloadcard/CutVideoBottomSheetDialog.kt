@@ -476,7 +476,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             return
         }
 
-        setStartTimestamp(timestamp, updateTextInput = false)
+        setStartTimestamp(timestamp, updateTextInput = true) // also update text input to normalize
         player.seekTo(timestamp)
         player.play()
     }
@@ -488,7 +488,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             return
         }
 
-        setEndTimestamp(timestamp, updateTextInput = false)
+        setEndTimestamp(timestamp, updateTextInput = true) // also update text input to normalize
         player.seekTo(timestamp - 1500)
         player.play()
 
