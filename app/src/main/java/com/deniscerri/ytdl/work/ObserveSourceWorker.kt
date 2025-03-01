@@ -40,13 +40,14 @@ class ObserveSourceWorker(
         val sourceID = inputData.getLong("id", 0)
         if (sourceID == 0L) return Result.failure()
         val dbManager = DBManager.getInstance(context)
-        val repo = ObserveSourcesRepository(dbManager.observeSourcesDao)
+        val workManager = WorkManager.getInstance(context)
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val repo = ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, sharedPreferences)
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
         val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
         val resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, context)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         val item = repo.getByID(sourceID)
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){

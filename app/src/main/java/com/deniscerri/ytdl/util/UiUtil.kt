@@ -5,17 +5,22 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -51,6 +56,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
+import com.deniscerri.ytdl.database.models.GithubRelease
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
@@ -86,6 +92,9 @@ import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.google.gson.Gson
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -2493,5 +2502,87 @@ object UiUtil {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+    }
+
+    @SuppressLint("UnspecifiedRegisterReceiverFlag")
+    fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, preferences: SharedPreferences) {
+        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val skippedVersions = preferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
+
+        val updateDialog = MaterialAlertDialogBuilder(context)
+            .setTitle(v.tag_name)
+            .setMessage(v.body)
+            .setIcon(R.drawable.ic_update_app)
+            .setNeutralButton(R.string.ignore){ d: DialogInterface?, _:Int ->
+                skippedVersions.add(v.tag_name)
+                preferences.edit().putString("skip_updates", skippedVersions.joinToString(",")).apply()
+                d?.dismiss()
+            }
+            .setNegativeButton(context.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
+            .setPositiveButton(context.getString(R.string.update)) { d: DialogInterface?, _: Int ->
+                runCatching {
+                    val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
+                    if (releaseVersion == null){
+                        Toast.makeText(context, R.string.couldnt_find_apk, Toast.LENGTH_SHORT).show()
+                        return@runCatching
+                    }
+
+
+                    val uri = Uri.parse(releaseVersion.browser_download_url)
+                    Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                        .mkdirs()
+                    val downloadID = downloadManager.enqueue(
+                        DownloadManager.Request(uri)
+                            .setAllowedNetworkTypes(
+                                DownloadManager.Request.NETWORK_WIFI or
+                                        DownloadManager.Request.NETWORK_MOBILE
+                            )
+                            .setAllowedOverRoaming(true)
+                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                            .setTitle(releaseVersion.name)
+                            .setDescription(context.getString(R.string.downloading_update))
+                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
+                    )
+
+                    val onDownloadComplete: BroadcastReceiver =
+                        object : BroadcastReceiver() {
+                            override fun onReceive(context: Context?, intent: Intent) {
+                                context?.unregisterReceiver(this)
+                                FileUtil.openFileIntent(context!!,
+                                    Environment.getExternalStoragePublicDirectory(
+                                        Environment.DIRECTORY_DOWNLOADS)?.absolutePath +
+                                            File.separator + releaseVersion.name)
+                            }
+                        }
+
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        if (Build.VERSION.SDK_INT >= 33) {
+                            context.registerReceiver(onDownloadComplete, IntentFilter(
+                                DownloadManager.ACTION_DOWNLOAD_COMPLETE),
+                                Context.RECEIVER_NOT_EXPORTED
+                            )
+                        }else{
+                            context.registerReceiver(onDownloadComplete, IntentFilter(
+                                DownloadManager.ACTION_DOWNLOAD_COMPLETE)
+                            )
+                        }
+                    }
+                    d?.dismiss()
+                }
+            }
+        val view = updateDialog.show()
+        val textView = view.findViewById<TextView>(android.R.id.message)
+        textView!!.movementMethod = LinkMovementMethod.getInstance()
+        val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
+
+            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                builder.linkResolver { view, link ->
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                    context.startActivity(browserIntent)
+                }
+            }
+        }).build()
+        mw.setMarkdown(textView, v.body)
     }
 }

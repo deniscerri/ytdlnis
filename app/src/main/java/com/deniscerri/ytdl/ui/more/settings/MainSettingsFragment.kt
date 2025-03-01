@@ -25,6 +25,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.BuildConfig
@@ -44,6 +45,8 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
+import com.deniscerri.ytdl.ui.more.settings.FolderSettingsFragment.Companion.COMMAND_PATH_CODE
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -67,22 +70,22 @@ import java.util.Locale
 class MainSettingsFragment : PreferenceFragmentCompat() {
     private var backup : Preference? = null
     private var restore : Preference? = null
+    private var backupPath : Preference? = null
 
     private var updateUtil: UpdateUtil? = null
     private var activeDownloadCount = 0
 
-    private lateinit var resultViewModel: ResultViewModel
-    private lateinit var historyViewModel: HistoryViewModel
-    private lateinit var downloadViewModel: DownloadViewModel
-    private lateinit var cookieViewModel: CookieViewModel
-    private lateinit var commandTemplateViewModel: CommandTemplateViewModel
-    private lateinit var observeSourcesViewModel: ObserveSourcesViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
+
+    private lateinit var editor: SharedPreferences.Editor
 
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
         val navController = findNavController()
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        editor = preferences.edit()
+
         val appearance = findPreference<Preference>("appearance")
         val separator = if (Locale(preferences.getString("app_language", "en")!!).layoutDirection == LayoutDirection.RTL) "،" else ","
         appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + "$separator " else ""}${getString(R.string.Theme)}$separator ${getString(R.string.accents)}$separator ${getString(R.string.preferred_search_engine)}"
@@ -135,16 +138,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 if (w.state == WorkInfo.State.RUNNING) activeDownloadCount++
             }
         }
-
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
-        downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
-        commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        observeSourcesViewModel = ViewModelProvider(this)[ObserveSourcesViewModel::class.java]
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         backup = findPreference("backup")
         restore = findPreference("restore")
+        backupPath = findPreference("backup_path")
 
         findPreference<Preference>("package_name")?.apply {
             summary = BuildConfig.APPLICATION_ID
@@ -175,68 +173,38 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 builder.setPositiveButton(
                     getString(R.string.ok)
                 ) { _: DialogInterface?, _: Int ->
-                    lifecycleScope.launch(Dispatchers.IO) {
+                    lifecycleScope.launch {
                         if (checkedItems.all { !it }){
-                            withContext(Dispatchers.Main){
-                                Snackbar.make(requireView(), R.string.select_backup_categories, Snackbar.LENGTH_SHORT).show()
-                            }
+                            Snackbar.make(requireView(), R.string.select_backup_categories, Snackbar.LENGTH_SHORT).show()
                             return@launch
                         }
-                        val json = JsonObject()
-                        json.addProperty("app", "YTDLnis_backup")
-                        for (i in 0 until checkedItems.size) {
-                            if (checkedItems[i]) {
-                                runCatching {
-                                    when(values[i]){
-                                        "settings" -> json.add("settings", backupSettings(preferences))
-                                        "downloads" -> json.add("downloads", backupHistory())
-                                        "queued" -> json.add("queued", backupQueuedDownloads() )
-                                        "scheduled" -> json.add("scheduled", backupScheduledDownloads() )
-                                        "cancelled" -> json.add("cancelled", backupCancelledDownloads() )
-                                        "errored" -> json.add("errored", backupErroredDownloads() )
-                                        "saved" -> json.add("saved", backupSavedDownloads() )
-                                        "cookies" -> json.add("cookies", backupCookies() )
-                                        "templates" -> json.add("templates", backupCommandTemplates() )
-                                        "shortcuts" -> json.add("shortcuts", backupShortcuts() )
-                                        "searchHistory" -> json.add("search_history", backupSearchHistory() )
-                                        "observeSources" -> json.add("observe_sources", backupObserveSources() )
-                                    }
-                                }.onFailure {err ->
-                                    withContext(Dispatchers.Main){
-                                        val snack = Snackbar.make(requireView(), err.message ?: requireContext().getString(R.string.errored), Snackbar.LENGTH_LONG)
-                                        val snackbarView: View = snack.view
-                                        val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-                                        snackTextView.maxLines = 9999999
-                                        snack.setAction(android.R.string.copy){
-                                            UiUtil.copyToClipboard(err.message ?: requireContext().getString(R.string.errored), requireActivity())
-                                        }
-                                        snack.show()
-                                    }
-                                }
+
+                        val selectedItems = values.mapIndexed { idx, it -> Pair<String, Boolean>(it, checkedItems[idx]) }.filter { it.second }.map { it.first }
+                        val pathResult = withContext(Dispatchers.IO){
+                            settingsViewModel.backup(selectedItems)
+                        }
+
+                        if (pathResult.isFailure) {
+                            val errorMessage = pathResult.exceptionOrNull()?.message ?: requireContext().getString(R.string.errored)
+                            val snack = Snackbar.make(requireView(), errorMessage, Snackbar.LENGTH_LONG)
+                            val snackbarView: View = snack.view
+                            val snackTextView = snackbarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+                            snackTextView.maxLines = 9999999
+                            snack.setAction(android.R.string.copy){
+                                UiUtil.copyToClipboard(errorMessage ?: requireContext().getString(R.string.errored), requireActivity())
                             }
+                            snack.show()
+                        }else {
+                            val s = Snackbar.make(
+                                requireView(),
+                                getString(R.string.backup_created_successfully),
+                                Snackbar.LENGTH_LONG
+                            )
+                            s.setAction(R.string.Open_File) {
+                                FileUtil.openFileIntent(requireActivity(), pathResult.getOrNull()!!)
+                            }
+                            s.show()
                         }
-
-                        val currentTime = Calendar.getInstance()
-                        val dir = File("${FileUtil.getCachePath(requireContext())}/Backups")
-                        dir.mkdirs()
-
-                        val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
-                            Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
-                            Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR_OF_DAY)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json")
-
-                        saveFile.delete()
-                        saveFile.createNewFile()
-                        saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
-
-                        val res = withContext(Dispatchers.IO) {
-                            FileUtil.moveFile(saveFile.parentFile!!, requireContext(), FileUtil.getDefaultApplicationPath() + "/Backups", false) {}
-                        }
-
-                        val s = Snackbar.make(requireView(), getString(R.string.backup_created_successfully), Snackbar.LENGTH_LONG)
-                        s.setAction(R.string.Open_File){
-                            FileUtil.openFileIntent(requireActivity(), res[0])
-                        }
-                        s.show()
                     }
                 }
 
@@ -260,179 +228,39 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                 true
             }
 
+        backupPath?.apply {
+            summary = FileUtil.formatPath(FileUtil.getBackupPath(requireContext()))
+            setOnPreferenceClickListener {
+                val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                backupPathResultLauncher.launch(intent)
+                true
+            }
+        }
     }
 
-    private fun backupSettings(preferences: SharedPreferences) : JsonArray {
-        runCatching {
-            val prefs = preferences.all
-            prefs.remove("app_language")
-            val arr = JsonArray()
-            prefs.forEach {
-                val obj = JsonObject()
-                obj.addProperty("key", it.key)
-                obj.addProperty("value", it.value.toString())
-                obj.addProperty("type", it.value!!::class.simpleName)
-                arr.add(obj)
+    private var backupPathResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            result.data?.data?.let {
+                activity?.contentResolver?.takePersistableUriPermission(
+                    it,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
             }
-            return arr
+
+            val path = result.data!!.data.toString()
+            backupPath!!.summary = FileUtil.formatPath(path)
+            editor.putString("backup_path", path)
+            editor.apply()
         }
-        return JsonArray()
     }
 
-    private suspend fun backupHistory() : JsonArray {
-        runCatching {
-            val historyItems = withContext(Dispatchers.IO) {
-                historyViewModel.getAll()
-            }
-            val arr = JsonArray()
-            historyItems.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
 
-    private suspend fun backupQueuedDownloads() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                downloadViewModel.getQueued()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupScheduledDownloads() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                downloadViewModel.getScheduled()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupCancelledDownloads() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                downloadViewModel.getCancelled()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupErroredDownloads() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                downloadViewModel.getErrored()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupSavedDownloads() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                downloadViewModel.getSaved()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupCookies() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                cookieViewModel.getAll()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupCommandTemplates() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                commandTemplateViewModel.getAll()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                it.useAsExtraCommand = false
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupShortcuts() : JsonArray {
-        runCatching {
-            val items = withContext(Dispatchers.IO) {
-                commandTemplateViewModel.getAllShortcuts()
-            }
-            val arr = JsonArray()
-            items.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupSearchHistory() : JsonArray {
-        runCatching {
-            val historyItems = withContext(Dispatchers.IO) {
-                resultViewModel.getSearchHistory()
-            }
-            val arr = JsonArray()
-            historyItems.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
-
-    private suspend fun backupObserveSources() : JsonArray {
-        runCatching {
-            val observeSourcesItems = withContext(Dispatchers.IO) {
-                observeSourcesViewModel.getAll()
-            }
-            val arr = JsonArray()
-            observeSourcesItems.forEach {
-                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
-            }
-            return arr
-        }
-        return JsonArray()
-    }
 
     private var appRestoreResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -590,10 +418,28 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
                     showAppRestoreInfoDialog(
                         onMerge = {
-                            restoreData(restoreData,parsedDataMessage.toString())
+                            lifecycleScope.launch {
+                                val res = withContext(Dispatchers.IO){
+                                    settingsViewModel.restoreData(restoreData, requireContext())
+                                }
+                                if (res) {
+                                    showRestoreFinishedDialog(restoreData, parsedDataMessage.toString())
+                                }else{
+                                    throw Error()
+                                }
+                            }
                         },
                         onReset =  {
-                            restoreData(restoreData,parsedDataMessage.toString(), true)
+                            lifecycleScope.launch {
+                                val res = withContext(Dispatchers.IO){
+                                    settingsViewModel.restoreData(restoreData, requireContext(),true)
+                                }
+                                if (res) {
+                                    showRestoreFinishedDialog(restoreData, parsedDataMessage.toString())
+                                }else{
+                                    throw Error()
+                                }
+                            }
                         }
                     )
 
@@ -634,128 +480,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
-    private fun restoreData(data: RestoreAppDataItem, restoreDataMessage: String, resetData: Boolean = false) = lifecycleScope.launch {
-        data.settings?.apply {
-            val prefs = this
-            PreferenceManager.getDefaultSharedPreferences(requireContext()).edit(commit = true){
-                clear()
-                prefs.forEach {
-                    val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
-                    when(it.asJsonObject.get("type").toString().replace("\"", "")){
-                        "String" -> {
-                            val value = it.asJsonObject.get("value").toString().replace("\"", "")
-                            putString(key, value)
-                        }
-                        "Boolean" -> {
-                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
-                            Log.e("REST", value.toString())
-                            Log.e("REST", key)
-                            putBoolean(key, value)
-                        }
-                        "Int" -> {
-                            val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
-                            putInt(key, value)
-                        }
-                        "HashSet" -> {
-                            val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
-                            putStringSet(key, value.toHashSet())
-                        }
-                    }
-                }
-            }
-        }
-
-
-        data.downloads?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) historyViewModel.deleteAll(false)
-                data.downloads!!.forEach {
-                    historyViewModel.insert(it)
-                }
-            }
-        }
-
-        data.queued?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) downloadViewModel.deleteQueued()
-                data.queued!!.forEach {
-                    downloadViewModel.insert(it)
-                }
-                downloadViewModel.queueDownloads(listOf())
-            }
-        }
-
-        data.cancelled?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) downloadViewModel.deleteCancelled()
-                data.cancelled!!.forEach {
-                    downloadViewModel.insert(it)
-                }
-            }
-        }
-
-        data.errored?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) downloadViewModel.deleteErrored()
-                data.errored!!.forEach {
-                    downloadViewModel.insert(it)
-                }
-            }
-        }
-
-        data.saved?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) downloadViewModel.deleteSaved()
-                data.saved!!.forEach {
-                    downloadViewModel.insert(it)
-                }
-            }
-        }
-
-        data.cookies?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) cookieViewModel.deleteAll()
-                data.cookies!!.forEach {
-                    cookieViewModel.insert(it)
-                }
-            }
-        }
-
-        data.templates?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) commandTemplateViewModel.deleteAll()
-                data.templates!!.forEach {
-                    commandTemplateViewModel.insert(it)
-                }
-            }
-        }
-
-        data.shortcuts?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) commandTemplateViewModel.deleteAllShortcuts()
-                data.shortcuts!!.forEach {
-                    commandTemplateViewModel.insertShortcut(it)
-                }
-            }
-        }
-
-        data.searchHistory?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) resultViewModel.deleteAllSearchQueryHistory()
-                data.searchHistory!!.forEach {
-                    resultViewModel.addSearchQueryToHistory(it.query)
-                }
-            }
-        }
-
-        data.observeSources?.apply {
-            withContext(Dispatchers.IO){
-                if (resetData) observeSourcesViewModel.deleteAll()
-                data.observeSources!!.forEach {
-                    observeSourcesViewModel.insertUpdate(it)
-                }
-            }
-        }
+    private fun showRestoreFinishedDialog(data: RestoreAppDataItem, restoreDataMessage: String) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         val builder = MaterialAlertDialogBuilder(requireContext())

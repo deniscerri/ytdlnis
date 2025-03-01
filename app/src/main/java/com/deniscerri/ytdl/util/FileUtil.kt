@@ -284,9 +284,18 @@ object FileUtil {
         return listOf()
     }
 
+    fun getBackupPath(context: Context) : String {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("backup_path", "")
+        return if (preference.isNullOrBlank() || !File(formatPath(preference)).canWrite()) {
+            getDefaultApplicationPath() + "/Backups"
+        }else {
+            formatPath(preference)
+        }
+    }
+
     fun getCachePath(context: Context) : String {
-        val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("cache_path", "")!!
-        if (preference.isEmpty() || !File(formatPath(preference)).canWrite()) {
+        val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("cache_path", "")
+        if (preference.isNullOrBlank() || !File(formatPath(preference)).canWrite()) {
             val externalPath = context.getExternalFilesDir(null)
             return if (externalPath == null){
                 context.cacheDir.absolutePath + "/downloads/"

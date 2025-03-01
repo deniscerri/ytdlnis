@@ -467,4 +467,7 @@
     <string name="use_format_sorting">Use Format Importance Ordering</string>
     <string name="use_code_highlighter">Use Code Color Highlighter</string>
     <string name="reset_preferences_in_screen">Reset all preferences in this screen</string>
+    <string name="automatic_backup">Automatic backup</string>
+    <string name="backup_path">Backup Path</string>
+    <string name="automatic_backup_summary">Automatically make a backup of everything when a new version the application is found</string>
 </resources>

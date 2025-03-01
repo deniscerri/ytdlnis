@@ -47,7 +47,6 @@ import java.net.URL
 class UpdateUtil(var context: Context) {
     private val tag = "UpdateUtil"
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val downloadManager: DownloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     private val channelMap = mapOf(
         Pair<String, YoutubeDL.UpdateChannel>("stable", YoutubeDL.UpdateChannel.STABLE),
@@ -56,21 +55,20 @@ class UpdateUtil(var context: Context) {
     )
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    fun updateApp(result: (result: String) -> Unit) {
+    fun tryGetNewVersion() : Result<GithubRelease> {
         try {
             val skippedVersions = sharedPreferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
             val res = getGithubReleases()
 
             if (res.isEmpty()){
-                result(context.getString(R.string.network_error))
-                return
+                return Result.failure(Error(context.getString(R.string.network_error)))
             }
 
             val useBeta = sharedPreferences.getBoolean("update_beta", false)
-            var v: GithubRelease?
+            val v: GithubRelease
             if (useBeta){
-                v = res.firstOrNull { it.tag_name.contains("beta", true) && res.indexOf(it) == 0 }
-                if (v == null) v = res.first()
+                val tmp = res.firstOrNull { it.tag_name.contains("beta", true) && res.indexOf(it) == 0 }
+                v = tmp ?: res.first()
             }else{
                 v = res.first { !it.tag_name.contains("beta", true) }
             }
@@ -88,80 +86,13 @@ class UpdateUtil(var context: Context) {
             if (skippedVersions.contains(v.tag_name)) isInLatest = true
 
             if (isInLatest){
-                result(context.getString(R.string.you_are_in_latest_version))
-                return
+                return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
             }
 
-            Handler(Looper.getMainLooper()).post {
-                val updateDialog = MaterialAlertDialogBuilder(context)
-                    .setTitle(v.tag_name)
-                    .setMessage(v.body)
-                    .setIcon(R.drawable.ic_update_app)
-                    .setNeutralButton(R.string.ignore){ d: DialogInterface?, _:Int ->
-                        skippedVersions.add(v.tag_name)
-                        sharedPreferences.edit().putString("skip_updates", skippedVersions.joinToString(",")).apply()
-                        d?.dismiss()
-                    }
-                    .setNegativeButton(context.resources.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
-                    .setPositiveButton(context.resources.getString(R.string.update)) { d: DialogInterface?, _: Int ->
-                        runCatching {
-                            val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
-                            if (releaseVersion == null){
-                                Toast.makeText(context, R.string.couldnt_find_apk, Toast.LENGTH_SHORT).show()
-                                return@runCatching
-                            }
-
-
-                            val uri = Uri.parse(releaseVersion.browser_download_url)
-                            Environment
-                                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                                .mkdirs()
-                            val downloadID = downloadManager.enqueue(
-                                DownloadManager.Request(uri)
-                                    .setAllowedNetworkTypes(
-                                        DownloadManager.Request.NETWORK_WIFI or
-                                                DownloadManager.Request.NETWORK_MOBILE
-                                    )
-                                    .setAllowedOverRoaming(true)
-                                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                    .setTitle(releaseVersion.name)
-                                    .setDescription(context.getString(R.string.downloading_update))
-                                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
-                            )
-
-                            val onDownloadComplete: BroadcastReceiver =
-                                object : BroadcastReceiver() {
-                                    override fun onReceive(context: Context?, intent: Intent) {
-                                        context?.unregisterReceiver(this)
-                                        FileUtil.openFileIntent(context!!,
-                                            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath +
-                                                    File.separator + releaseVersion.name)
-                                    }
-                                }
-
-                            context.registerReceiver(onDownloadComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-                            d?.dismiss()
-                        }
-                    }
-                val view = updateDialog.show()
-                val textView = view.findViewById<TextView>(android.R.id.message)
-                textView!!.movementMethod = LinkMovementMethod.getInstance()
-                val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
-
-                    override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
-                        builder.linkResolver { view, link ->
-                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                            startActivity(context, browserIntent, Bundle())
-                        }
-                    }
-                }).build()
-                mw.setMarkdown(textView, v.body)
-            }
-            return
+            return Result.success(v)
         }catch (e: Exception){
             e.printStackTrace()
-            result(e.message.toString())
-            return
+            return Result.failure(e)
         }
     }
 

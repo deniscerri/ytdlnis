@@ -175,6 +175,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getErroredDownloadsList()
     }
 
+    fun getSavedDownloads() : List<DownloadItem> {
+        return downloadDao.getSavedDownloadsList()
+    }
+
     fun getScheduledDownloadIDs() : List<Long> {
         return downloadDao.getScheduledDownloadIDs()
     }

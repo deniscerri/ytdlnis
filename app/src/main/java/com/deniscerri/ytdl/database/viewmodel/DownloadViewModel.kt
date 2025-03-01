@@ -792,7 +792,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun getSaved() : List<DownloadItem> {
-        return dao.getSavedDownloadsList()
+        return repository.getSavedDownloads()
     }
 
     fun getActiveDownloads() : List<DownloadItem>{

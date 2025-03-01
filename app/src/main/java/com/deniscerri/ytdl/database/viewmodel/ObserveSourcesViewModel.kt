@@ -30,10 +30,10 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
 
     init {
         val dao = DBManager.getInstance(application).observeSourcesDao
-        repository = ObserveSourcesRepository(dao)
-        items = repository.items.asLiveData()
         workManager = WorkManager.getInstance(application)
         preferences = PreferenceManager.getDefaultSharedPreferences(application)
+        repository = ObserveSourcesRepository(dao, workManager, preferences)
+        items = repository.items.asLiveData()
     }
 
     fun getAll(): List<ObserveSourcesItem> {
@@ -51,30 +51,30 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
     suspend fun insertUpdate(item: ObserveSourcesItem) : Long {
         if (item.id > 0) {
             repository.update(item)
-            observeTask(item)
+            repository.observeTask(item)
             return item.id
         }
 
         val id = repository.insert(item)
         item.id = id
-        if (id > 0) observeTask(item)
+        if (id > 0) repository.observeTask(item)
         return id
     }
 
     suspend fun stopObserving(item: ObserveSourcesItem) {
         item.status = ObserveSourcesRepository.SourceStatus.STOPPED
         repository.update(item)
-        cancelObservationTaskByID(item.id)
+        repository.cancelObservationTaskByID(item.id)
     }
 
     fun delete(item: ObserveSourcesItem) = viewModelScope.launch(Dispatchers.IO) {
-        runCatching { cancelObservationTaskByID(item.id) }
+        runCatching { repository.cancelObservationTaskByID(item.id) }
         repository.delete(item)
     }
 
     fun deleteAll() = viewModelScope.launch(Dispatchers.IO) {
         getAll().forEach {
-            runCatching { cancelObservationTaskByID(it.id) }
+            runCatching { repository.cancelObservationTaskByID(it.id) }
         }
 
         repository.deleteAll()
@@ -83,76 +83,4 @@ class ObserveSourcesViewModel(private val application: Application) : AndroidVie
     suspend fun update(item: ObserveSourcesItem) {
         repository.update(item)
     }
-
-    private fun cancelObservationTaskByID(id: Long){
-        workManager.cancelAllWorkByTag("observation_$id")
-    }
-
-
-
-    private fun observeTask(it: ObserveSourcesItem){
-        cancelObservationTaskByID(it.id)
-
-        Calendar.getInstance().apply {
-            timeInMillis = it.startsTime
-
-            if (it.everyCategory != ObserveSourcesRepository.EveryCategory.HOUR){
-                val hourMin = Calendar.getInstance()
-                hourMin.timeInMillis = it.everyTime
-                set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
-                set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
-            }
-
-            when(it.everyCategory){
-                ObserveSourcesRepository.EveryCategory.HOUR -> {}
-                ObserveSourcesRepository.EveryCategory.DAY -> {}
-                ObserveSourcesRepository.EveryCategory.WEEK -> {
-                    var weekDayNr = get(Calendar.DAY_OF_WEEK) - 1
-                    if (weekDayNr == 0) weekDayNr = 7
-                    val followingWeekDay = it.weeklyConfig?.weekDays?.firstOrNull { it >= weekDayNr }
-                    if (followingWeekDay == null){
-                        add(Calendar.DAY_OF_MONTH,
-                            it.weeklyConfig?.weekDays?.minBy { it }?.plus((7 - weekDayNr)) ?: 0)
-                    }else{
-                        add(Calendar.DAY_OF_MONTH, followingWeekDay - weekDayNr)
-                    }
-                }
-                ObserveSourcesRepository.EveryCategory.MONTH -> {
-                    val currentMonthIndex = get(Calendar.MONTH)
-                    if (it.monthlyConfig?.startsMonth != currentMonthIndex){
-                        set(Calendar.MONTH, it.monthlyConfig?.startsMonth ?: 0)
-                        if (timeInMillis < Calendar.getInstance().timeInMillis){
-                            add(Calendar.YEAR, 1)
-                        }
-                    }
-                }
-            }
-
-            //schedule for next time
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-            val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
-
-            val workConstraints = Constraints.Builder()
-            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
-            else {
-                workConstraints.setRequiredNetworkType(NetworkType.CONNECTED)
-            }
-
-            val workRequest = OneTimeWorkRequestBuilder<ObserveSourceWorker>()
-                .addTag("observeSources")
-                .addTag("observation_${it.id}")
-                .setConstraints(workConstraints.build())
-                .setInitialDelay(timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-                .setInputData(Data.Builder().putLong("id", it.id).build())
-
-            workManager.enqueueUniqueWork(
-                "OBSERVE${it.id}",
-                ExistingWorkPolicy.REPLACE,
-                workRequest.build()
-            )
-        }
-
-    }
-
-
 }

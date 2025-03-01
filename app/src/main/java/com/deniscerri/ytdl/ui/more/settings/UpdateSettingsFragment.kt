@@ -1,16 +1,24 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,9 +32,11 @@ import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -38,7 +48,9 @@ import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UiUtil.showShortcutsSheet
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -52,10 +64,14 @@ import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.yausername.youtubedl_android.YoutubeDL
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.Locale
 
 
@@ -67,8 +83,9 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
     private var updateUtil: UpdateUtil? = null
     private var version: Preference? = null
     private lateinit var preferences: SharedPreferences
-    private lateinit var ytdlpViewModel: YTDLPViewModel
 
+    private lateinit var ytdlpViewModel: YTDLPViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.updating_preferences, rootKey)
@@ -79,6 +96,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         ytdlSource = findPreference("ytdlp_source_label")
 
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
 
         ytdlSource?.apply {
             summary = preferences.getString("ytdlp_source_label", "")!!.ifEmpty { getString(R.string.update_ytdl_stable) }
@@ -125,16 +143,19 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 lifecycleScope.launch{
-                    withContext(Dispatchers.IO){
-                        updateUtil!!.updateApp{ msg ->
-                            lifecycleScope.launch(Dispatchers.Main){
-                                view?.apply {
-                                    Snackbar.make(requireView(), msg, Snackbar.LENGTH_LONG).show()
-                                }
+                    val res = withContext(Dispatchers.IO){
+                        updateUtil!!.tryGetNewVersion()
+                    }
+                    if (res.isFailure) {
+                        Snackbar.make(requireView(), res.exceptionOrNull()?.message ?: getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
+                    }else{
+                        if (preferences.getBoolean("automatic_backup", false)) {
+                            withContext(Dispatchers.IO){
+                                settingsViewModel.backup()
                             }
                         }
+                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, requireActivity(), preferences)
                     }
-
                 }
                 true
             }

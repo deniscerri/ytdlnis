@@ -37,6 +37,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
@@ -46,6 +47,7 @@ import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
+import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,6 +64,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
@@ -77,6 +80,7 @@ class MainActivity : BaseActivity() {
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
     private var navigationView: NavigationView? = null
     private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
@@ -92,6 +96,7 @@ class MainActivity : BaseActivity() {
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         if (preferences.getBoolean("incognito", false)) {
@@ -479,8 +484,17 @@ class MainActivity : BaseActivity() {
     private fun checkUpdate() {
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
-            CoroutineScope(Dispatchers.IO).launch{
-                updateUtil.updateApp{}
+            CoroutineScope(Dispatchers.IO).launch {
+                val res = updateUtil.tryGetNewVersion()
+                if (res.isSuccess) {
+                    if (preferences.getBoolean("automatic_backup", false)) {
+                        settingsViewModel.backup()
+                    }
+                    withContext(Dispatchers.Main) {
+                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, this@MainActivity, preferences)
+                    }
+                }
+
             }
         }
     }
