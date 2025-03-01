@@ -91,6 +91,9 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private lateinit var suggestedLabel : View
     private lateinit var item: DownloadItem
 
+    /**
+     * The duration of the video in milliseconds.
+     */
     private var itemDurationTimestamp = 0L
     private lateinit var selectedCuts: MutableList<String>
 
@@ -297,39 +300,6 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
     }
 
-    private fun setStartTimestamp(
-        millis: Long,
-        updateTextInput: Boolean = true,
-        updateSlider: Boolean = true
-    ) {
-        startTimestamp = millis
-        if (updateSlider) rangeSlider.setValues(millis.toFloat(), endTimestamp.toFloat())
-        if (updateTextInput) {
-            startTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
-        }
-        okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
-    }
-
-    private fun setEndTimestamp(
-        millis: Long,
-        updateTextInput: Boolean = true,
-        updateSlider: Boolean = true
-    ) {
-        endTimestamp = millis
-        if (updateSlider) rangeSlider.setValues(startTimestamp.toFloat(), millis.toFloat())
-        if (updateTextInput) {
-            endTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
-        }
-        okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
-    }
-
-    private fun setCutTimestamps(startTimestamp: Long, endTimestamp: Long) {
-        setStartTimestamp(startTimestamp)
-        setEndTimestamp(endTimestamp)
-    }
-
-    private fun resetCutTimestamps() = setCutTimestamps(0L, itemDurationTimestamp)
-
     @SuppressLint("SetTextI18n", "ClickableViewAccessibility")
     private fun initCutSection() {
         rangeSlider.valueFrom = 0F
@@ -456,26 +426,72 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         populateSuggestedChapters()
     }
 
+    private fun setStartTimestamp(
+        millis: Long,
+        updateTextInput: Boolean = true,
+        updateSlider: Boolean = true
+    ) {
+        startTimestamp = millis
+        if (updateSlider) rangeSlider.setValues(millis.toFloat(), endTimestamp.toFloat())
+        if (updateTextInput) {
+            startTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
+        }
+        okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
+    }
+
+    private fun setEndTimestamp(
+        millis: Long,
+        updateTextInput: Boolean = true,
+        updateSlider: Boolean = true
+    ) {
+        endTimestamp = millis
+        if (updateSlider) rangeSlider.setValues(startTimestamp.toFloat(), millis.toFloat())
+        if (updateTextInput) {
+            endTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
+        }
+        okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
+    }
+
+    private fun setCutTimestamps(startTimestamp: Long, endTimestamp: Long) {
+        setStartTimestamp(startTimestamp)
+        setEndTimestamp(endTimestamp)
+    }
+
+    private fun resetCutTimestamps() = setCutTimestamps(0L, itemDurationTimestamp)
+
+
+    private fun isValidTimestamp(millis: Long): Boolean =
+        0L <= millis && millis <= itemDurationTimestamp
+
+    private fun isValidStartTimeStamp(millis: Long):Boolean =
+        isValidTimestamp(millis) && millis < endTimestamp
+
+    private fun isValidEndTimeStamp(millis: Long):Boolean =
+        isValidTimestamp(millis) && millis > startTimestamp
+
     private fun updateFromStartTextInput(text: String) {
         val timestamp = text.tryConvertToTimestamp()
-        if (timestamp == null) {
+        if (timestamp == null || timestamp == startTimestamp || !isValidStartTimeStamp(timestamp)) {
             startTextInput.setTextAndRecalculateWidth(startTimestamp.toStringTimeStamp(forceMillis = true))
-        } else if (timestamp != startTimestamp) {
-            setStartTimestamp(timestamp, updateTextInput = false)
-            player.seekTo(timestamp)
-            player.play()
+            return
         }
+
+        setStartTimestamp(timestamp, updateTextInput = false)
+        player.seekTo(timestamp)
+        player.play()
     }
 
     private fun updateFromEndTextInput(text: String) {
         val timestamp = text.tryConvertToTimestamp()
-        if (timestamp == null) {
+        if (timestamp == null || timestamp == endTimestamp || !isValidEndTimeStamp(timestamp)) {
             endTextInput.setTextAndRecalculateWidth(endTimestamp.toStringTimeStamp(forceMillis = true))
-        } else if (timestamp != endTimestamp) {
-            setEndTimestamp(timestamp, updateTextInput = false)
-            player.seekTo(timestamp-1500)
-            player.play()
+            return
         }
+
+        setEndTimestamp(timestamp, updateTextInput = false)
+        player.seekTo(timestamp - 1500)
+        player.play()
+
     }
 
     private fun updateFromSlider() {
