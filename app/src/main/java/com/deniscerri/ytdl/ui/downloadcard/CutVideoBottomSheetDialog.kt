@@ -376,7 +376,8 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 event.keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 updateFromStartTextInput(startTextInput.text.toString())
-                true
+                startTextInput.clearFocus()
+                false // close keyboard
             } else {
                 false
             }
@@ -394,7 +395,8 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 event.keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 updateFromEndTextInput(endTextInput.text.toString())
-                true
+                endTextInput.clearFocus()
+                false // close keyboard
             } else {
                 false
             }
