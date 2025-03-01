@@ -225,7 +225,7 @@
     <string name="swipe_gestures_download_card">Жестове в картата за изтегляне</string>
     <string name="show_download_count">Показване на броя за изтегляне на опашката</string>
     <string name="thumbnail_format">Формат на миниатюри</string>
-    <string name="get_new_uploads">Получавайте само нови изтегляния</string>
+    <string name="get_new_uploads">Получавайте само бъдещи качвания (игнорира съществуващите елементи)</string>
     <string name="also_download_audio">Също така изтегляне като аудио</string>
     <string name="text_size">Размер на текста</string>
     <string name="scroll_down">Превъртане до края</string>
@@ -435,7 +435,7 @@
     <string name="status">Статус</string>
     <string name="deleted">Изтрит</string>
     <string name="websites">Уебсайт</string>
-    <string name="data_fetching_extra_command">Дополнителна команда за получаване на данни</string>
+    <string name="data_fetching_extra_command">Допълнителна команда за получаване на данни</string>
     <string name="ytdlp_liked">YT-DLP Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube История на гледане (необходими са бисквитки)</string>
     <string name="data_fetching_extra_command_summary">Разрешете командни шаблони, които да се използват за извличане на данни, като допълнителни команди</string>
@@ -451,4 +451,12 @@
     <string name="prefer_container_over_codec_audio">Предпочитане на контейнер пред кодек за аудио изтегляния</string>
     <string name="reset_processed_links_desc">Повторно изтеглете всички елементи</string>
     <string name="sync_with_source_desc">Премахнете изтеглените елементи, ако липсват от източника</string>
+    <string name="use_app_language_for_metadata">Да се използва езика на приложението за Метаданни</string>
+    <string name="player_client_summary"><![CDATA[YouTube Player клиенти & PO Token]]></string>
+    <string name="player_client">Плеър Клиент</string>
+    <string name="retry_missing_downloads_desc">Изтеглете повторно елементите, които не са в хронологията на изтегляния</string>
+    <string name="use_format_sorting">Използванен на формат подреждане по важност</string>
+    <string name="cache_directory_warning">Промяната на папката на кеша може да причини неочаквани проблеми. Ако приложението не може да пише в конфигурирания път, то ще прибегне до директорията на вътрешния кеш по подразбиране</string>
+    <string name="cache_directory">Папка кеш</string>
+    <string name="app_icon_change">Иконата може да се промени и приложението ще се затвори</string>
 </resources>

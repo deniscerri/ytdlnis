@@ -456,4 +456,11 @@
     <string name="list">Elenco</string>
     <string name="cache_directory">Cartella cache</string>
     <string name="app_icon_change">L\'icona potrebbe cambiare e l\'Applicazione si chiuderà</string>
+    <string name="player_client">Client del Lettore</string>
+    <string name="use_app_language_for_metadata">Usa Lingua App per i Metadata</string>
+    <string name="player_client_summary"><![CDATA[Cliente del Lettore YouTube & Token PO]]></string>
+    <string name="use_format_sorting">Usa Ordinamento per Importanza del Formato</string>
+    <string name="retry_every">Riprova ogni</string>
+    <string name="prefer_container_over_codec_audio">Preferisci il Container al Codec per i Download Audio</string>
+    <string name="use_only_po_token">Usa solo Token PO (Ignora Client del Lettore)</string>
 </resources>
