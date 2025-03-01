@@ -56,6 +56,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import kotlin.math.max
 
 
 class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private val urls : String? = null, private var chapters: List<ChapterItem>? = null, private val listener: VideoCutListener? = null) : BottomSheetDialogFragment() {
@@ -453,10 +454,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         val startTimestampString = startTimestamp.toStringTimeStamp()
         val endTimestampString = endTimestamp.toStringTimeStamp()
 
-        var draggedFromBeginning = true
-        if (toTextInput.text.toString() != endTimestampString){
-            draggedFromBeginning = false
-        }
+        val draggedFromBeginning = rangeSlider.focusedThumbIndex != 1
 
         fromTextInput.setTextAndRecalculateWidth(startTimestampString)
         toTextInput.setTextAndRecalculateWidth(endTimestampString)
@@ -464,14 +462,11 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
         okBtn.isEnabled = values[0] != 0F || values[1] != (itemDurationTimestamp / 1000).toFloat()
 
-        val startpos = startTimestamp * 1000
         try {
             if (draggedFromBeginning){
-                player.seekTo(startpos)
+                player.seekTo(startTimestamp)
             }else{
-                var endpos = (endTimestamp * 1000) - 1500
-                if (endpos < (startTimestamp * 1000)) endpos = startpos
-                player.seekTo(endpos)
+                player.seekTo(max(startTimestamp, endTimestamp - 1500))
             }
             player.play()
         }catch (ignored: Exception) {}
