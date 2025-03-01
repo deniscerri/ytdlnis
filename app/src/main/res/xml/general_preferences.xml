@@ -9,7 +9,6 @@
             android:defaultValue=""
             android:icon="@drawable/baseline_translate_24"
             app:key="app_language"
-            app:useSimpleSummaryProvider="true"
             app:summary=""
             app:title="@string/language" />
 
@@ -216,6 +215,13 @@
             app:icon="@drawable/ic_battery"
             app:key="ignore_battery"
             app:title="@string/ignore_battery_optimization" />
+
+        <Preference
+            app:icon="@drawable/baseline_reset_tv_24"
+            app:key="reset_preferences"
+            android:summary="@string/reset_preferences_in_screen"
+            app:title="@string/reset" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

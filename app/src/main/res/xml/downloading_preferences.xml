@@ -228,5 +228,11 @@
         android:key="useragent_header"
         app:isPreferenceVisible="false" />
 
+    <Preference
+        app:icon="@drawable/baseline_reset_tv_24"
+        app:key="reset_preferences"
+        android:summary="@string/reset_preferences_in_screen"
+        app:title="@string/reset" />
+
 
 </PreferenceScreen>

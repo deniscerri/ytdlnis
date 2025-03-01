@@ -1,20 +1,22 @@
 package com.deniscerri.ytdl.ui.more.settings
 
 import android.app.Activity
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -74,16 +76,16 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         moveCache = findPreference("move_cache")
 
         if (preferences.getString("music_path", "")!!.isEmpty()) {
-            editor.putString("music_path", FileUtil.getDefaultAudioPath())
+            editor.putString("music_path", FileUtil.getDefaultAudioPath()).apply()
         }
         if (preferences.getString("video_path", "")!!.isEmpty()) {
-            editor.putString("video_path", FileUtil.getDefaultVideoPath())
+            editor.putString("video_path", FileUtil.getDefaultVideoPath()).apply()
         }
         if (preferences.getString("command_path", "")!!.isEmpty()) {
-            editor.putString("command_path", FileUtil.getDefaultCommandPath())
+            editor.putString("command_path", FileUtil.getDefaultCommandPath()).apply()
         }
         if (preferences.getString("cache_path", "")!!.isEmpty()) {
-            editor.putString("cache_path", FileUtil.getCachePath(requireContext()))
+            editor.putString("cache_path", FileUtil.getCachePath(requireContext())).apply()
         }
 
         if (FileUtil.hasAllFilesAccess()) {
@@ -125,7 +127,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        cachePath!!.summary = FileUtil.formatPath(preferences.getString("cache_path", "")!!)
+        cachePath!!.summary = FileUtil.formatPath(preferences.getString("cache_path", FileUtil.getCachePath(requireContext()))!!)
         cachePath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.cache_directory), getString(R.string.cache_directory_warning)) {
@@ -233,6 +235,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+
+        findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
+            UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
+                resetPreferences(editor, R.xml.folders_preference)
+                requireActivity().recreate()
+            }
+            true
+        }
 
     }
 

@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources.Theme
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -68,12 +69,13 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<ListPreference>("app_language")?.apply {
-            if (value == null) {
+            if (value.isNullOrBlank()) {
                 value = Locale.getDefault().language
-                summary = Locale.getDefault().displayLanguage
             }
+            summary = Locale.getDefault().displayLanguage
             setOnPreferenceChangeListener { _, newValue ->
                 AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                summary = Locale.getDefault().displayLanguage
                 true
             }
         }
@@ -365,6 +367,14 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+        }
+
+        findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
+            UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
+                resetPreferences(editor, R.xml.general_preferences)
+                ThemeUtil.updateThemes()
+            }
+            true
         }
     }
 

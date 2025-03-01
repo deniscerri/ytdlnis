@@ -263,6 +263,14 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
                 true
             }
         }
+
+        findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
+            UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
+                resetPreferences(preferences.edit(), R.xml.downloading_preferences)
+                requireActivity().recreate()
+            }
+            true
+        }
     }
 
     private var archivePathResultLauncher = registerForActivityResult(

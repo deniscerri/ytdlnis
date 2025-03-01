@@ -80,6 +80,14 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
             }
         }
 
+        findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
+            UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
+                resetPreferences(editor, R.xml.downloading_preferences)
+                requireActivity().recreate()
+            }
+            true
+        }
+
     }
 
 

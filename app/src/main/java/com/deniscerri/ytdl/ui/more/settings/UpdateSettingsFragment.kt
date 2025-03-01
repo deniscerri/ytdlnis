@@ -81,7 +81,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
 
         ytdlSource?.apply {
-            summary = preferences.getString("ytdlp_source_label", "")
+            summary = preferences.getString("ytdlp_source_label", "")!!.ifEmpty { getString(R.string.update_ytdl_stable) }
             setOnPreferenceClickListener {
                 UiUtil.showYTDLSourceBottomSheet(requireActivity(), preferences) { t, r ->
                     summary = t
@@ -95,14 +95,13 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
         ytdlVersion?.apply {
             summary = preferences.getString("ytdl-version", "")
+            if (summary?.isBlank() == true) {
+                setYTDLPVersion()
+            }
             setOnPreferenceClickListener {
                 initYTDLUpdate()
                 true
             }
-        }
-        ytdlVersion!!.setOnPreferenceClickListener {
-            initYTDLUpdate()
-            true
         }
         
         updateYTDL!!.onPreferenceClickListener =
@@ -122,7 +121,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
         version = findPreference("version")
         val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
-        version!!.summary = "${BuildConfig.VERSION_NAME} [${nativeLibraryDir?.split("/lib/")?.get(1)}]"
+        version!!.summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)})"
         version!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 lifecycleScope.launch{
@@ -140,6 +139,14 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+
+        findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
+            UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
+                resetPreferences(preferences.edit(), R.xml.updating_preferences)
+                requireActivity().recreate()
+            }
+            true
+        }
     }
 
     private fun setYTDLPVersion() {

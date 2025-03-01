@@ -1,12 +1,17 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.content.SharedPreferences
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroup
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceScreen
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.databinding.TextinputBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -19,6 +24,27 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
     override fun onStart() {
         super.onStart()
         (activity as? SettingsActivity)?.changeTopAppbarTitle(getString(title))
+    }
+
+    fun getPreferences(p: Preference, list: MutableList<Preference>) : List<Preference> {
+        if (p is PreferenceCategory || p is PreferenceScreen) {
+            val pGroup: PreferenceGroup = p as PreferenceGroup
+            val pCount: Int = pGroup.preferenceCount
+            for (i in 0 until pCount) {
+                getPreferences(pGroup.getPreference(i), list) // recursive call
+            }
+        } else {
+            list.add(p)
+        }
+        return list
+    }
+
+    fun resetPreferences(editor: SharedPreferences.Editor, key: Int) {
+        getPreferences(preferenceScreen, mutableListOf()).forEach {
+            editor.remove(it.key)
+        }
+        editor.apply()
+        PreferenceManager.setDefaultValues(requireActivity().applicationContext, key, true)
     }
 
     //Thanks libretube
