@@ -136,7 +136,7 @@
                             android:backgroundTint="?attr/colorSecondary"
                             android:clickable="false"
                             android:gravity="center"
-                            android:maxWidth="80dp"
+                            android:maxWidth="90dp"
                             android:maxLines="1"
                             android:minWidth="30dp"
                             android:paddingHorizontal="5dp"

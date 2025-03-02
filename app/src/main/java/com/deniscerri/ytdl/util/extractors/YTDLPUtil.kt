@@ -588,7 +588,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 request.addOption("-a", downloadItem.url)
             }
         }else if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
-            YoutubeDLRequest(downloadItem.url)
+            if (downloadItem.url.isBlank()) {
+                YoutubeDLRequest(listOf())
+            }else{
+                YoutubeDLRequest(downloadItem.url)
+            }
         }else{
             isPlaylistItem = true
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
