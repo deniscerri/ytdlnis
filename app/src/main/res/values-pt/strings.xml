@@ -24,7 +24,7 @@
     <string name="remove_results">Limpar resultados</string>
     <string name="settings">Definições</string>
     <string name="home">Início</string>
-    <string name="music_directory">Pasta de música</string>
+    <string name="music_directory">Pasta de áudio</string>
     <string name="video_directory">Pasta de vídeo</string>
     <string name="updating">Atualizações</string>
     <string name="ytdl_update_hint">Útil se ocorrerem erros durante as descargas</string>
