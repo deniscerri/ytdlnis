@@ -470,4 +470,6 @@
     <string name="automatic_backup">Automatic backup</string>
     <string name="backup_path">Backup Path</string>
     <string name="automatic_backup_summary">Automatically make a backup of everything when a new version the application is found</string>
+    <string name="write_subs_when_embed_subs">Write subtitles when embedding</string>
+    <string name="write_subs_when_embed_subs_summary">This will apply Save Subtitles and Save Automatic Subtitles to download the sub files and then delete them after embedding</string>
 </resources>

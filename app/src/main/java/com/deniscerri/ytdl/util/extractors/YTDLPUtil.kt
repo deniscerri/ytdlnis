@@ -1174,12 +1174,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--write-subs")
                 }
 
-                if (downloadItem.videoPreferences.embedSubs) {
-                    request.addOption("--embed-subs")
-                }
-
                 if(downloadItem.videoPreferences.writeAutoSubs){
                     request.addOption("--write-auto-subs")
+                }
+
+                if (downloadItem.videoPreferences.embedSubs) {
+                    if (sharedPreferences.getBoolean("write_subs_when_embed_subs", false) && !downloadItem.videoPreferences.writeSubs && !downloadItem.videoPreferences.writeAutoSubs) {
+                        request.addOption("--write-subs")
+                        request.addOption("--write-auto-subs")
+                        request.addOption("--compat-options", "no-keep-subs")
+                    }
+
+                    request.addOption("--embed-subs")
                 }
 
                 if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
