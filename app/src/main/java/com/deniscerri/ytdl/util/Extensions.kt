@@ -376,15 +376,15 @@ object Extensions {
         kotlin.runCatching { tryConvertToTimestamp() }.getOrNull() ?: 0L
 
     private val timeRegex =
-        Regex("""^(?:(?:(?<hours>\d+):)?(?<minutes>\d{1,2}):)?(?<seconds>\d+)(?:\.(?<decimals>\d+))?$""")
+        Regex("""^(?:(?:(\d+):)?(\d{1,2}):)?(\d+)(?:\.(\d+))?$""")
 
     fun String.tryConvertToTimestamp(): Long? {
         val match = timeRegex.matchEntire(this.trim()) ?: return null
 
-        val hours = match.groups["hours"]?.value?.toInt() ?: 0
-        val minutes = match.groups["minutes"]?.value?.toInt() ?: 0
-        val seconds = match.groups["seconds"]!!.value.toInt()
-        val millis = match.groups["decimals"]?.value
+        val hours = match.groups[1]?.value?.toInt() ?: 0
+        val minutes = match.groups[2]?.value?.toInt() ?: 0
+        val seconds = match.groups[3]!!.value.toInt()
+        val millis = match.groups[4]?.value
             ?.take(3)?.padEnd(3,'0')?.toInt() ?: 0
 
         return (hours.hours + minutes.minutes + seconds.seconds + millis.milliseconds).inWholeMilliseconds
