@@ -80,7 +80,7 @@ class ChangelogAdapter(activity: Activity) : ListAdapter<GithubRelease?, Changel
         val assetGroup = card.findViewById<ChipGroup>(R.id.assets)
         assetGroup.removeAllViews()
         it.assets.forEachIndexed { idx, c ->
-            val tmp = activity.layoutInflater.inflate(R.layout.filter_chip, assetGroup, false) as Chip
+            val tmp = activity.layoutInflater.inflate(R.layout.suggestion_chip, assetGroup, false) as Chip
             tmp.isCheckable = false
             tmp.layoutParams = layoutParams
             tmp.text = c.name

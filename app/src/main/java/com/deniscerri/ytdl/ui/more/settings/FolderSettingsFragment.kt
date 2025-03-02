@@ -12,6 +12,7 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceGroup
@@ -240,6 +241,9 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, R.xml.folders_preference)
                 requireActivity().recreate()
+                val fragmentId = findNavController().currentDestination?.id
+                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().navigate(fragmentId)
             }
             true
         }

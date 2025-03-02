@@ -84,6 +84,9 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, R.xml.downloading_preferences)
                 requireActivity().recreate()
+                val fragmentId = findNavController().currentDestination?.id
+                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().navigate(fragmentId)
             }
             true
         }

@@ -137,7 +137,7 @@
             android:label="DownloadSettingsFragment" />
         <fragment
             android:id="@+id/updateSettingsFragment"
-            android:name="com.deniscerri.ytdl.ui.more.settings.UpdateSettingsFragment"
+            android:name="com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsFragment"
             android:label="UpdateSettingsFragment" />
         <fragment
             android:id="@+id/mainSettingsFragment"

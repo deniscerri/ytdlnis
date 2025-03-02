@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.ui.more.settings
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -77,6 +78,9 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, R.xml.processing_preferences)
                 requireActivity().recreate()
+                val fragmentId = findNavController().currentDestination?.id
+                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().navigate(fragmentId)
             }
             true
         }

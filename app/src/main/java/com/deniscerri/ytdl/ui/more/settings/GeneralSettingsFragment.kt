@@ -373,6 +373,9 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, R.xml.general_preferences)
                 ThemeUtil.updateThemes()
+                val fragmentId = findNavController().currentDestination?.id
+                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().navigate(fragmentId)
             }
             true
         }

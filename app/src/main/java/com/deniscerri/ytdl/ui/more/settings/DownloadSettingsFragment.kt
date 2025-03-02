@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.core.content.edit
+import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -268,6 +269,9 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(preferences.edit(), R.xml.downloading_preferences)
                 requireActivity().recreate()
+                val fragmentId = findNavController().currentDestination?.id
+                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().navigate(fragmentId)
             }
             true
         }

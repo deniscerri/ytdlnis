@@ -126,7 +126,7 @@ class UpdateUtil(var context: Context) {
         }
     }
 
-    private fun getGithubReleases(): List<GithubRelease> {
+    fun getGithubReleases(): List<GithubRelease> {
         val url = "https://api.github.com/repos/deniscerri/ytdlnis/releases"
         val conn: HttpURLConnection
         var json = listOf<GithubRelease>()

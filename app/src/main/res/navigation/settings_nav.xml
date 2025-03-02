@@ -16,8 +16,12 @@
         android:label="FolderSettingsFragment" />
     <fragment
         android:id="@+id/updateSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.UpdateSettingsFragment"
-        android:label="UpdateSettingsFragment" />
+        android:name="com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsFragment"
+        android:label="UpdateSettingsFragment" >
+        <action
+            android:id="@+id/action_updateSettingsFragment_to_changeLogFragment"
+            app:destination="@id/changeLogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/downloadSettingsFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.DownloadSettingsFragment"
@@ -57,4 +61,8 @@
         android:id="@+id/youtubePlayerClientFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.advanced.YoutubePlayerClientFragment"
         android:label="YoutubePlayerClientFragment" />
+    <fragment
+        android:id="@+id/changeLogFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.updating.ChangeLogFragment"
+        android:label="ChangeLogFragment" />
 </navigation>
