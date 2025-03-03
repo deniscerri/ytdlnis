@@ -463,4 +463,11 @@
     <string name="sync_with_source_desc">Видалити завантажені елементи, якщо вони відсутні у джерелі</string>
     <string name="app_icon_change">Значок може змінитися, а застосунок закриється</string>
     <string name="use_format_sorting">Використовувати сортування за важливістю формату</string>
+    <string name="write_subs_when_embed_subs_summary">Буде застосовано «Зберегти субтитри» та «Зберегти автоматичні субтитри» для завантаження субтитрів, а потім видалено їх після вкладення</string>
+    <string name="automatic_backup_summary">Автоматично створювати резервну копію всього, коли буде знайдено нову версію застосунку</string>
+    <string name="reset_preferences_in_screen">Скинути всі налаштування на цьому екрані</string>
+    <string name="automatic_backup">Автоматичне резервне копіювання</string>
+    <string name="write_subs_when_embed_subs">Вписувати субтитри під час вкладання</string>
+    <string name="use_code_highlighter">Використовувати колірний маркер коду</string>
+    <string name="backup_path">Шлях до резервної копії</string>
 </resources>
