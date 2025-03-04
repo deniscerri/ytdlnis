@@ -268,7 +268,7 @@
     <string name="auto">Auto</string>
     <string name="configure_download">Upravit stahování</string>
     <string name="shortcuts">Zkratky</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">BlokSponsorů</string>
     <string name="video_recommendations">Doporučená videa</string>
     <string name="accents">Akcenty</string>
     <string name="extra_command">Extra příkaz</string>
@@ -463,4 +463,11 @@
     <string name="retry_missing_downloads_desc">Znovu stáhnout položky nepřítomné v historii stahování</string>
     <string name="reset_processed_links_desc">Znovu stáhnout všechny položky</string>
     <string name="app_icon_change">Ikona se může změnit a aplikace se zavře</string>
+    <string name="write_subs_when_embed_subs_summary">Použije se funkce Uložit titulky a Uložit automatické titulky, která stáhne soubory s titulky a po vložení je odstraní</string>
+    <string name="reset_preferences_in_screen">Obnovte všechny předvolby v této obrazovce</string>
+    <string name="use_code_highlighter">Použijte na kód zvýrazňovač barev</string>
+    <string name="write_subs_when_embed_subs">Napsat titulky při vkládání</string>
+    <string name="automatic_backup">Automatické zálohování</string>
+    <string name="backup_path">Cesta zálohy</string>
+    <string name="automatic_backup_summary">Automaticky provést zálohu všeho, když je nalezena nová verze aplikace</string>
 </resources>

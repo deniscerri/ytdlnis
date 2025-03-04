@@ -463,4 +463,11 @@
     <string name="sync_with_source_desc">Mənbədə yoxdurlarsa, yüklənilən elementləri sil</string>
     <string name="app_icon_change">Simvol dəyişə bilər və Tətbiq bağlanacaq</string>
     <string name="use_format_sorting">Format Əhəmiyyəti Sırası İstifadə Et</string>
+    <string name="write_subs_when_embed_subs_summary">Bu, yarım faylları endirmək və daxil etdikdən sonra onları silmək üçün Titrləri Saxla və Avtomatik Titrləri Saxla funksiyalarını tətbiq edəcək</string>
+    <string name="use_code_highlighter">Code Color Highlighter, istifadə et</string>
+    <string name="automatic_backup">Avtomatik nüsxələmə</string>
+    <string name="reset_preferences_in_screen">Bu ekrandakı bütün seçimləri sıfırla</string>
+    <string name="backup_path">Nüsxələmə Yolu</string>
+    <string name="write_subs_when_embed_subs">Yerləşdirərkən titr yaz</string>
+    <string name="automatic_backup_summary">Tətbiqin yeni versiyası tapıldıqda, birbaşa hər şeyi nüsxələ</string>
 </resources>

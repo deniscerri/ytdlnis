@@ -462,4 +462,11 @@
     <string name="reset_processed_links_desc">重新下载所有项目</string>
     <string name="app_icon_change">图标可能更改，应用将关闭</string>
     <string name="use_format_sorting">使用格式重要性排序</string>
+    <string name="use_code_highlighter">使用代码颜色高亮器</string>
+    <string name="automatic_backup_summary">当找到本应用的新版本时自动备份一切</string>
+    <string name="write_subs_when_embed_subs_summary">这会应用“保存字幕“和”保存自动字幕”来下载字幕文件，并在嵌入后删除它们</string>
+    <string name="reset_preferences_in_screen">重置此屏幕所有选项</string>
+    <string name="automatic_backup">自动备份</string>
+    <string name="backup_path">备份路径</string>
+    <string name="write_subs_when_embed_subs">嵌入时写入字幕</string>
 </resources>
