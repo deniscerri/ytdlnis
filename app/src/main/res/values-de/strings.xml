@@ -461,4 +461,8 @@
     <string name="ytdlp_liked">YT-DLP gelikte Youtube Videos (benötigt Cookies)</string>
     <string name="ytdlp_watch_history">YT-DLP Youtube-Wiedergabeverlauf (benötigt Cookies)</string>
     <string name="live_stream">Live Stream</string>
+    <string name="automatic_backup_summary">Automatisches Backup von allem wenn eine neue Version der Anwendung gefunden wird</string>
+    <string name="live_from_start">Live vom Anfang</string>
+    <string name="wait_for_video">Auf Video warten</string>
+    <string name="retry_every">Erneut versuchen alle</string>
 </resources>
