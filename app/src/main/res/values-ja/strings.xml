@@ -462,4 +462,12 @@
     <string name="sync_with_source_desc">ダウンロードした項目が監視先から消えたら削除</string>
     <string name="cache_directory">キャッシュ用フォルダ</string>
     <string name="use_only_po_token">POトークンのみ使用 (プレイヤークライアントを無視)</string>
+    <string name="write_subs_when_embed_subs">埋め込み時に字幕を書き込む</string>
+    <string name="reset_preferences_in_screen">この画面のすべての設定を初期化</string>
+    <string name="write_subs_when_embed_subs_summary">「字幕を保存」と「自動字幕を保存」を適用して字幕ファイルをダウンロードし、埋め込み後に削除する</string>
+    <string name="automatic_backup_summary">アプリの最新版があれば、すべてのバックアップを自動的に作成</string>
+    <string name="backup_path">バックアップ先のパス</string>
+    <string name="automatic_backup">自動バックアップ</string>
+    <string name="use_code_highlighter">コードの色による強調表示を使用</string>
+    <string name="use_format_sorting">形式の重要度による並び替えを使用</string>
 </resources>
