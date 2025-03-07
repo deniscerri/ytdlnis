@@ -457,4 +457,8 @@
     <string name="use_only_po_token">Nutze nur PO Token (Ignoriert Abspiel Client)</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Später ansehen (benötigt Cookies)</string>
     <string name="ytdlp_recommnedations">YT-DLP Youtube Vorschläge (benötigt Cookies)</string>
+    <string name="no_check_certificates">Unterdrücke HTTPS Zertifikats Validierung</string>
+    <string name="ytdlp_liked">YT-DLP gelikte Youtube Videos (benötigt Cookies)</string>
+    <string name="ytdlp_watch_history">YT-DLP Youtube-Wiedergabeverlauf (benötigt Cookies)</string>
+    <string name="live_stream">Live Stream</string>
 </resources>
