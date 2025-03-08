@@ -463,4 +463,11 @@
     <string name="sync_with_source_desc">احذف العناصر التي تم تنزيلها إذا كانت مفقودة في المصدر</string>
     <string name="app_icon_change">قد تتغير الأيقونة ويغلق التطبيق</string>
     <string name="use_format_sorting">استخدم ترتيب أهمية التنسيق</string>
+    <string name="reset_preferences_in_screen">أعد ضبط جميع التفضيلات في هذه الشاشة</string>
+    <string name="write_subs_when_embed_subs">اكتب ترجمات عند التضمين</string>
+    <string name="backup_path">مسار النسخ الاحتياطي</string>
+    <string name="write_subs_when_embed_subs_summary">سيطبق هذا حفظ الترجمات وحفظ الترجمات التلقائية لتنزيل الملفات الفرعية ثم حذفها بعد التضمين</string>
+    <string name="use_code_highlighter">استخدم رمز اللون المضيق</string>
+    <string name="automatic_backup">النسخ الاحتياطي التلقائي</string>
+    <string name="automatic_backup_summary">قم بعمل نسخة احتياطية لكل شيء تلقائيًا عند العثور على إصدار جديد</string>
 </resources>
