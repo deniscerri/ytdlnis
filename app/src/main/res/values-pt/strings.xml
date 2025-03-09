@@ -431,7 +431,7 @@
     <string name="playlist_as_album">Nome da lista de reprodução como meta-dados do álbum</string>
     <string name="preferred_command_template">Modelo preferencial para comando</string>
     <string name="data_fetching_extra_command">Comandos extra para obtenção de dados</string>
-    <string name="cleanup_leftover_downloads">Limpar descargas pendentes (canceladas, com erros...)</string>
+    <string name="cleanup_leftover_downloads">Limpar descargas pendentes (canceladas, com erros…)</string>
     <string name="format_importance_note">Ajusta a relevância dos formatos. Esta ordem será utilizada se a aplicação obtiver os formatos via cartões de descarga e os selecione automaticamente!</string>
     <string name="download_archive_folder">Pasta para as descargas</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (requer cookies)</string>
