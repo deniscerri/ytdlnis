@@ -463,4 +463,11 @@
     <string name="sync_with_source_desc">Избришите преузете предмете ако недостају у извору</string>
     <string name="app_icon_change">Иконица ће се можда променити и апликација ће се затворити</string>
     <string name="use_format_sorting">Користи сортирање по важности формата</string>
+    <string name="reset_preferences_in_screen">Ресетуј сва подешавања на овом екрану</string>
+    <string name="automatic_backup">Аутоматска резервна копија</string>
+    <string name="use_code_highlighter">Користи код текст маркера</string>
+    <string name="backup_path">Путања резервне копије</string>
+    <string name="automatic_backup_summary">Аутоматско прављење резервне копије свега, када се пронађе нова верзија апликације</string>
+    <string name="write_subs_when_embed_subs">Писање титлова приликом уграђивања</string>
+    <string name="write_subs_when_embed_subs_summary">Ово ће применити „Сачувај титлове“ и „Сачувај аутоматске титлове“ за преузимање потфајлова, а затим их избрисати након уграђивања</string>
 </resources>
