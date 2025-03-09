@@ -44,7 +44,7 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+            app:defaultValue="true"
             app:icon="@drawable/ic_clock"
             app:key="automatic_backup"
             android:summary="@string/automatic_backup_summary"

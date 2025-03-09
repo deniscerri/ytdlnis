@@ -50,9 +50,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:labelVisibilityMode="selected"
+            android:paddingTop="8dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:headerLayout="@layout/app_logo_fab"
             app:menu="@menu/bottom_nav_menu" />
 
 

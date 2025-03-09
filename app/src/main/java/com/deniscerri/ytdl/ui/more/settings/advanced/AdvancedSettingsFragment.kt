@@ -6,9 +6,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,11 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.adapter.SortableTextItemAdapter
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
 import com.deniscerri.ytdl.util.UiUtil
+import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class AdvancedSettingsFragment : BaseSettingsFragment() {
@@ -31,6 +37,53 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
         findPreference<Preference>("yt_player_client")?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.youtubePlayerClientFragment)
             false
+        }
+
+        val newPipeUtil = NewPipeUtil(requireContext())
+
+        findPreference<SwitchPreferenceCompat>("use_newpipe_potoken")?.apply {
+            fun getValues() : Triple<String, String, String> {
+                val gvs = prefs.getString("newpipe_gvs_potoken", "")!!
+                val player = prefs.getString("newpipe_player_potoken", "")!!
+                val visitorData = prefs.getString("newpipe_visitordata", "")!!
+
+                return Triple(gvs, player, visitorData)
+            }
+
+            fun updateSummary() : String {
+                val values = getValues()
+                val gvs = values.first
+                val player = values.second
+                val visitorData = values.third
+
+                return if (visitorData.isNotBlank()) {
+                    "PO Token (GVS): ${gvs.take(10)}...\nPO Token (Player): ${player.take(10)}...\nVisitor Data: ${visitorData.take(10)}..."
+                }else {
+                    ""
+                }
+            }
+
+            summary = updateSummary()
+
+            setOnPreferenceClickListener {
+                if (this.isChecked) {
+                    this.isChecked = false
+                    UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.use_newpipe_potoken), getString(R.string.use_newpipe_potoken_warning)) {
+                        editor.putBoolean("use_cookies", false)
+                        editor.putBoolean("use_newpipe_token", true)
+                        editor.apply()
+                        this.isChecked = true
+                        lifecycleScope.launch {
+                            summary = getString(R.string.loading)
+                            withContext(Dispatchers.IO) {
+                                newPipeUtil.testRun()
+                            }
+                            summary = updateSummary()
+                        }
+                    }
+                }
+                false
+            }
         }
 
         val formatImportanceAudio: Preference? = findPreference("format_importance_audio")

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.floatingactionbutton.FloatingActionButton android:layout_width="wrap_content"
+    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:contentDescription="@string/more"
+    android:src="@drawable/ic_app_icon"
+    app:maxImageSize="70dp"
+    app:tint="@color/icon_fg"
+    android:backgroundTint="#00000000"
+    app:borderWidth="0dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

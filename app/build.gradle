@@ -11,8 +11,8 @@ plugins {
 def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 8
-def versionPatch = 2
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
+def versionPatch = 3
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 def isBeta = false
 
 def versionExt = ""
@@ -215,5 +215,5 @@ dependencies {
     implementation 'androidx.compose.material3:material3-android:1.3.1'
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
-    implementation("com.github.teamnewpipe:newpipeextractor:0.24.4")
+    implementation("com.github.teamnewpipe:newpipeextractor:0.24.5")
 }

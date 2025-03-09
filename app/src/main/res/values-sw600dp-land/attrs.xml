@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="grid_size">3</integer>
-    <bool name="uses_side_nav">true</bool>
+    <integer name="grid_size">2</integer>
+    <bool name="isTablet">true</bool>
 </resources>

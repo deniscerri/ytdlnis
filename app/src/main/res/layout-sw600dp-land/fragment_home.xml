@@ -91,9 +91,18 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_gravity="end"
+            android:layout_width="match_parent"
+            app:layout_scrollFlags="scroll"
             android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/home_toolbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="@string/app_name" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/progress"
@@ -117,7 +126,6 @@
 
             </com.facebook.shimmer.ShimmerFrameLayout>
 
-
             <com.google.android.material.search.SearchBar
                 android:id="@+id/search_bar"
                 android:layout_width="wrap_content"
@@ -127,7 +135,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="60dp"
+                app:layout_constraintStart_toEndOf="@+id/home_toolbar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:menu="@menu/main_menu">
 
@@ -147,6 +156,7 @@
             android:layout_width="wrap_content"
             android:scrollbars="none"
             android:visibility="gone"
+            app:layout_scrollFlags="scroll|enterAlways"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -191,14 +201,14 @@
             android:layout_below="@id/playlist_selection_chips_scrollview"
             android:clipToPadding="false"
             android:paddingBottom="200dp"
-            app:spanCount="3"
+            app:spanCount="2"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:layout_width="match_parent"
-            android:layout_below="@id/recyclerViewHome"
             android:layout_height="match_parent"
+            android:layout_below="@id/recyclerViewHome"
             android:id="@+id/shimmer_results_framelayout"
             android:orientation="vertical">
 
@@ -210,7 +220,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:weightSum="3"
+                    android:weightSum="2"
                     android:layout_height="wrap_content">
 
                     <include
@@ -233,7 +243,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:weightSum="3"
+                    android:weightSum="2"
                     android:layout_height="wrap_content">
 
                     <include
@@ -256,30 +266,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:weightSum="3"
-                    android:layout_height="wrap_content">
-
-                    <include
-                        android:layout_weight="1"
-                        layout="@layout/result_card_shimmer"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp" />
-                    <include
-                        android:layout_weight="1"
-                        layout="@layout/result_card_shimmer"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp" />
-                    <include
-                        android:layout_weight="1"
-                        layout="@layout/result_card_shimmer"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:weightSum="3"
+                    android:weightSum="2"
                     android:layout_height="wrap_content">
 
                     <include
@@ -303,9 +290,7 @@
 
             </LinearLayout>
 
-
         </com.facebook.shimmer.ShimmerFrameLayout>
-
 
 
     </RelativeLayout>
@@ -324,8 +309,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:text="@string/link_you_copied"
-            android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginHorizontal="16dp"
             android:contentDescription="@string/link_you_copied"
             app:icon="@drawable/ic_clipboard"
             app:useCompatPadding="true" />

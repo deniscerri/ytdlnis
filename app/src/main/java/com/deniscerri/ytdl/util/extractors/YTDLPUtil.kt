@@ -1271,7 +1271,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
         val extractorArgs = mutableListOf<String>()
-        val playerClients = mutableListOf<String>()
+        val playerClients = mutableSetOf<String>()
         val poTokens = mutableListOf<String>()
 
         val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!
@@ -1293,6 +1293,21 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
                     }
                 }
+            }
+        }
+
+        if (sharedPreferences.getBoolean("use_newpipe_potoken", false)) {
+            val visitorData = sharedPreferences.getString("newpipe_visitordata", "")!!
+            if (visitorData.isNotBlank()) {
+                playerClients.add("web")
+                sharedPreferences.getString("newpipe_gvs_potoken", "")?.apply {
+                    if (this.isNotBlank()) poTokens.add("web.gvs+$this")
+                }
+                sharedPreferences.getString("newpipe_player_potoken", "")?.apply {
+                    if (this.isNotBlank()) poTokens.add("web.player+$this")
+                }
+                extractorArgs.add("player-skip=webpage,configs")
+                extractorArgs.add("visitor_data=$visitorData")
             }
         }
 

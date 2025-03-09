@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.ui.more
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.WebView
@@ -132,6 +133,9 @@ class WebViewActivity : BaseActivity() {
                             javaScriptEnabled = true
                             domStorageEnabled = true
                             javaScriptCanOpenWindowsAutomatically = true
+                            if (Build.VERSION.SDK_INT >= 26) {
+                                safeBrowsingEnabled = true
+                            }
                             preferences.edit().putString("useragent_header", userAgentString).apply()
                         }
                         cookieManager.setAcceptThirdPartyCookies(this, true)

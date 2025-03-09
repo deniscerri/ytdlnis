@@ -9,6 +9,7 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONException
@@ -22,6 +23,8 @@ import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler
 import org.schabi.newpipe.extractor.localization.Localization
 import org.schabi.newpipe.extractor.playlist.PlaylistInfo
 import org.schabi.newpipe.extractor.search.SearchInfo
+import org.schabi.newpipe.extractor.services.youtube.PoTokenResult
+import org.schabi.newpipe.extractor.services.youtube.extractors.YoutubeStreamExtractor
 import org.schabi.newpipe.extractor.services.youtube.linkHandler.YoutubeSearchQueryHandlerFactory
 import org.schabi.newpipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.extractor.stream.StreamInfoItem
@@ -32,13 +35,21 @@ class NewPipeUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
+    private val testURL = "https://www.youtube.com/watch?v=aqz-KE-bpKQ" //bbb
+
     init {
         NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
+        YoutubeStreamExtractor.setPoTokenProvider(NewPipePoTokenGenerator())
+    }
+
+    fun testRun() {
+        getVideoData(testURL)
+        return
     }
 
     fun getVideoData(url : String) : Result<List<ResultItem>> {
         try {
-            val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
+            val streamInfo = StreamInfo.getInfo(url)
             val vid = createVideoFromStream(streamInfo, url) ?: return Result.failure(Throwable())
             return Result.success(listOf(vid))
         }catch (e: Exception) {
@@ -48,7 +59,7 @@ class NewPipeUtil(context: Context) {
 
     fun getFormats(url: String) : Result<List<Format> > {
         try {
-            val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
+            val streamInfo = StreamInfo.getInfo(url)
             val vid = createVideoFromStream(streamInfo, url, true)
             return Result.success(vid!!.formats)
         }catch(e: Exception) {
@@ -62,7 +73,7 @@ class NewPipeUtil(context: Context) {
         return kotlin.runCatching {
             val formatCollection = mutableListOf<MutableList<Format>>()
             urls.forEach { url ->
-                val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
+                val streamInfo = StreamInfo.getInfo(url)
                 createVideoFromStream(streamInfo, url, true).apply {
                     if (this!!.formats.isEmpty()) return Result.failure(Throwable())
                     formatCollection.add(this.formats)
@@ -128,7 +139,7 @@ class NewPipeUtil(context: Context) {
 
     fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
-            val streamInfo = StreamInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), url)
+            val streamInfo = StreamInfo.getInfo(url)
             val item = createVideoFromStream(streamInfo, url)
             if (item!!.urls.isBlank()) return Result.failure(Throwable())
             val urls = item.urls.split(",")
@@ -425,5 +436,11 @@ class NewPipeUtil(context: Context) {
             .toTypedArray()
         query = el[0]
         return query!!
+    }
+
+    private fun generatePoToken(url: String) : PoTokenResult? {
+        val generator = NewPipePoTokenGenerator()
+        val id = getIDFromYoutubeURL(url)
+        return generator.getWebClientPoToken(id)
     }
 }
