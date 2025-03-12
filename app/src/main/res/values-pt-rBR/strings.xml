@@ -470,4 +470,6 @@
     <string name="use_code_highlighter">Usar marcador para code de cores</string>
     <string name="write_subs_when_embed_subs">Salvar legendas ao incorporar</string>
     <string name="write_subs_when_embed_subs_summary">Isso aplicará \"Salvar legendas\" e \"Salvar legendas automáticas\" para baixar os subarquivos e excluí-los após a incorporação</string>
+    <string name="use_newpipe_potoken">Usar chave de acesso PO gerados automaticamente por NewPipe Extractor</string>
+    <string name="use_newpipe_potoken_warning">Ao ativar essa opção, o aplicativo desativará os cookies e usará as chaves de acesso PO gerados e os dados do visitante como argumentos do YouTube Extractor</string>
 </resources>
