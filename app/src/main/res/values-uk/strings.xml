@@ -470,4 +470,6 @@
     <string name="write_subs_when_embed_subs">Вписувати субтитри під час вкладання</string>
     <string name="use_code_highlighter">Використовувати колірний маркер коду</string>
     <string name="backup_path">Шлях до резервної копії</string>
+    <string name="use_newpipe_potoken">Використовувати автозгенеровані токени PO з NewPipe Extractor</string>
+    <string name="use_newpipe_potoken_warning">Увімкнувши це, застосунок вимкне файли cookie і використовуватиме згенеровані токени PO та дані відвідувачів як аргументи для YouTube Extractor</string>
 </resources>
