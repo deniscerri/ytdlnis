@@ -1529,16 +1529,18 @@
 
     <string-array name="youtube_player_clients">
         <item>android</item>
-        <item>ios</item>
-        <item>web</item>
-        <item>mweb</item>
         <item>android_vr</item>
-        <item>web_safari</item>
-        <item>web_embedded</item>
+        <item>ios</item>
+        <item>mweb</item>
         <item>tv</item>
         <item>tv_embedded</item>
-        <item>default</item>
+        <item>web</item>
+        <item>web_creator</item>
+        <item>web_embedded</item>
+        <item>web_music</item>
+        <item>web_safari</item>
         <item>all</item>
+        <item>default</item>
     </string-array>
 
     <string-array name="web_player_clients">
