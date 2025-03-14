@@ -469,4 +469,6 @@
     <string name="automatic_backup">自动备份</string>
     <string name="backup_path">备份路径</string>
     <string name="write_subs_when_embed_subs">嵌入时写入字幕</string>
+    <string name="use_newpipe_potoken">使用来自 NewPipe 提取器自动生成的 PO 令牌</string>
+    <string name="use_newpipe_potoken_warning">启用本选项后，应用会禁用 cookies 并把生成的 po 令牌和访问者数据用作 YouTube 提取器变量</string>
 </resources>

@@ -463,4 +463,8 @@
     <string name="retry_every">Riprova ogni</string>
     <string name="prefer_container_over_codec_audio">Preferisci il Container al Codec per i Download Audio</string>
     <string name="use_only_po_token">Usa solo Token PO (Ignora Client del Lettore)</string>
+    <string name="reset_preferences_in_screen">Ripristina tutte le preferenze in questa schermata</string>
+    <string name="automatic_backup">Backup automatico</string>
+    <string name="backup_path">Percorso Backup</string>
+    <string name="automatic_backup_summary">Esegui un backup automatico di tutti i contenuti quando viene trovata una nuova versione dell\'applicazione</string>
 </resources>
