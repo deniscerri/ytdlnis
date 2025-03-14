@@ -8,8 +8,9 @@ import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
+import com.deniscerri.ytdl.util.extractors.potoken.PoTokenGenerator
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONException
@@ -35,16 +36,10 @@ class NewPipeUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
-    private val testURL = "https://www.youtube.com/watch?v=aqz-KE-bpKQ" //bbb
 
     init {
         NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
-        YoutubeStreamExtractor.setPoTokenProvider(NewPipePoTokenGenerator())
-    }
-
-    fun testRun() {
-        getVideoData(testURL)
-        return
+        YoutubeStreamExtractor.setPoTokenProvider(PoTokenGenerator())
     }
 
     fun getVideoData(url : String) : Result<List<ResultItem>> {
@@ -288,7 +283,7 @@ class NewPipeUtil(context: Context) {
     private fun createVideoFromStreamInfoItem(stream: StreamInfoItem, url: String) : ResultItem? {
         var video: ResultItem? = null
         try {
-            val id = getIDFromYoutubeURL(url)
+            val id = url.getIDFromYoutubeURL()
             val title = stream.name
             val author = stream.uploaderName.removeSuffix(" - Topic")
             val duration = stream.duration.toInt().toStringDuration(Locale.US)
@@ -316,7 +311,7 @@ class NewPipeUtil(context: Context) {
     private fun createVideoFromStream(stream: StreamInfo, url: String, ignoreFormatPreference : Boolean = false): ResultItem? {
         var video: ResultItem? = null
         try {
-            val id = getIDFromYoutubeURL(url)
+            val id = url.getIDFromYoutubeURL()
             val title = stream.name
             val author = stream.uploaderName.removeSuffix(" - Topic")
             val duration = stream.duration.toInt().toStringDuration(Locale.US)
@@ -419,28 +414,5 @@ class NewPipeUtil(context: Context) {
             Log.e("NewPipeUtil", e.toString())
         }
         return video
-    }
-
-    private fun getIDFromYoutubeURL(inputQuery: String) : String {
-        var el: Array<String?> =
-            inputQuery.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
-        var query = el[el.size - 1]
-        if (query!!.contains("watch?v=")) {
-            query = query.substring(8)
-        }
-        el = query.split("&".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
-        el = query!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
-        return query!!
-    }
-
-    private fun generatePoToken(url: String) : PoTokenResult? {
-        val generator = NewPipePoTokenGenerator()
-        val id = getIDFromYoutubeURL(url)
-        return generator.getWebClientPoToken(id)
     }
 }

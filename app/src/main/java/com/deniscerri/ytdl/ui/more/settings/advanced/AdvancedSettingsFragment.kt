@@ -39,51 +39,9 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
             false
         }
 
-        val newPipeUtil = NewPipeUtil(requireContext())
-
-        findPreference<SwitchPreferenceCompat>("use_newpipe_potoken")?.apply {
-            fun getValues() : Triple<String, String, String> {
-                val gvs = prefs.getString("newpipe_gvs_potoken", "")!!
-                val player = prefs.getString("newpipe_player_potoken", "")!!
-                val visitorData = prefs.getString("newpipe_visitordata", "")!!
-
-                return Triple(gvs, player, visitorData)
-            }
-
-            fun updateSummary() : String {
-                val values = getValues()
-                val gvs = values.first
-                val player = values.second
-                val visitorData = values.third
-
-                return if (visitorData.isNotBlank()) {
-                    "PO Token (GVS): ${gvs.take(10)}...\nPO Token (Player): ${player.take(10)}...\nVisitor Data: ${visitorData.take(10)}..."
-                }else {
-                    ""
-                }
-            }
-
-            summary = updateSummary()
-
-            setOnPreferenceClickListener {
-                if (this.isChecked) {
-                    this.isChecked = false
-                    UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.use_newpipe_potoken), getString(R.string.use_newpipe_potoken_warning)) {
-                        editor.putBoolean("use_cookies", false)
-                        editor.putBoolean("use_newpipe_token", true)
-                        editor.apply()
-                        this.isChecked = true
-                        lifecycleScope.launch {
-                            summary = getString(R.string.loading)
-                            withContext(Dispatchers.IO) {
-                                newPipeUtil.testRun()
-                            }
-                            summary = updateSummary()
-                        }
-                    }
-                }
-                false
-            }
+        findPreference<Preference>("generate_po_tokens")?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.generateYoutubePoTokensFragment)
+            false
         }
 
         val formatImportanceAudio: Preference? = findPreference("format_importance_audio")

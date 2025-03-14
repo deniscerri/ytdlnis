@@ -102,15 +102,6 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/format_source" />
 
-        <Preference
-            android:icon="@drawable/ic_dns"
-            app:key="piped_instance"
-            app:defaultValue=""
-            app:isPreferenceVisible="false"
-            android:summary="@string/piped_instance_summary"
-            app:title="@string/piped_instance" />
-
-
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

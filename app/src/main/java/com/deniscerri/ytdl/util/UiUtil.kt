@@ -69,7 +69,6 @@ import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.util.extractors.PipedApiUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -2028,81 +2027,6 @@ object UiUtil {
 
         return tmp
 
-    }
-
-    fun showPipedInstancesDialog(context: Activity, currentInstance: String, instanceSelected: (f: String) -> Unit){
-        val builder = MaterialAlertDialogBuilder(context)
-        builder.setTitle(context.getString(R.string.piped_instance))
-        val view = context.layoutInflater.inflate(R.layout.filename_template_dialog, null)
-        val editText = view.findViewById<EditText>(R.id.filename_edittext)
-        view.findViewById<TextInputLayout>(R.id.filename).apply {
-            hint = context.getString(R.string.piped_instance)
-            endIconMode = END_ICON_NONE
-        }
-        editText.setText(currentInstance)
-        editText.setSelection(editText.text.length)
-        builder.setView(view)
-        builder.setPositiveButton(
-            context.getString(R.string.ok)
-        ) { _: DialogInterface?, _: Int ->
-            instanceSelected(editText.text.toString())
-        }
-
-        // handle the negative button of the alert dialog
-        builder.setNegativeButton(
-            context.getString(R.string.cancel)
-        ) { _: DialogInterface?, _: Int -> }
-
-        builder.setNeutralButton("?")  { _: DialogInterface?, _: Int ->
-            val browserIntent =
-                Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TeamPiped/Piped/wiki/Instances"))
-            context.startActivity(browserIntent)
-        }
-
-        view.findViewById<View>(R.id.suggested).visibility = View.GONE
-
-        val dialog = builder.create()
-        dialog.show()
-        val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        editText!!.postDelayed({
-            editText.requestFocus()
-            imm.showSoftInput(editText, 0)
-        }, 300)
-
-        //handle suggestion chips
-        CoroutineScope(Dispatchers.IO).launch {
-            val chipGroup = view.findViewById<ChipGroup>(R.id.filename_suggested_chipgroup)
-            val chips = mutableListOf<Chip>()
-            val instances = PipedApiUtil(context).getPipedInstances().ifEmpty { return@launch }
-            instances.forEach { s ->
-                val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
-                tmp.text = s
-
-                tmp.setOnClickListener {
-                    val c = it as Chip
-                    c.toggle()
-                    editText.setText(c.text.toString())
-                    editText.setSelection(c.text.length)
-                }
-
-                chips.add(tmp)
-            }
-            withContext(Dispatchers.Main){
-                view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
-                chips.forEach {
-                    it.isChecked = editText.text == it.text
-                    chipGroup!!.addView(it)
-                }
-
-                editText.doOnTextChanged { text, start, before, count ->
-                    chips.forEach {
-                        it.isChecked = editText.text == it.text
-                    }
-                }
-            }
-        }
-
-        dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
     private fun showGeneratedCommand(context: Activity, preferences: SharedPreferences, command: String) {

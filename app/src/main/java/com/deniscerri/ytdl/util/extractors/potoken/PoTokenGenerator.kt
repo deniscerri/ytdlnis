@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors.newpipe.potoken
+package com.deniscerri.ytdl.util.extractors.potoken
 
 import android.os.Handler
 import android.os.Looper
@@ -7,22 +7,16 @@ import android.webkit.CookieManager
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
-import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
-import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
+import com.deniscerri.ytdl.util.extractors.potoken.webview.PoTokenWebView
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.services.youtube.InnertubeClientRequestInfo
 import org.schabi.newpipe.extractor.services.youtube.PoTokenProvider
 import org.schabi.newpipe.extractor.services.youtube.PoTokenResult
 import org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper
 
-class NewPipePoTokenGenerator : PoTokenProvider {
-    val TAG = NewPipePoTokenGenerator::class.simpleName
+class PoTokenGenerator : PoTokenProvider {
+    val TAG = PoTokenGenerator::class.simpleName
     private val supportsWebView by lazy { runCatching { CookieManager.getInstance() }.isSuccess }
 
     private object WebPoTokenGenLock
@@ -38,15 +32,6 @@ class NewPipePoTokenGenerator : PoTokenProvider {
 
         val result = kotlin.runCatching {
             getWebClientPoToken(videoId, false)
-        }
-
-        result.getOrNull()?.apply {
-            val preferences = PreferenceManager.getDefaultSharedPreferences(App.instance)
-            val editor = preferences.edit()
-            editor.putString("newpipe_gvs_potoken", this.streamingDataPoToken ?: "")
-            editor.putString("newpipe_player_potoken", this.playerRequestPoToken)
-            editor.putString("newpipe_visitordata", this.visitorData)
-            editor.apply()
         }
         return result.getOrNull()
     }
@@ -84,8 +69,7 @@ class NewPipePoTokenGenerator : PoTokenProvider {
                         webPoTokenGenerator?.let { Handler(Looper.getMainLooper()).post { it.close() } }
 
                         // create a new webPoTokenGenerator
-                        webPoTokenGenerator = PoTokenWebView
-                            .getNewPoTokenGenerator(App.instance)
+                        webPoTokenGenerator = PoTokenWebView.getNewPoTokenGenerator(App.instance)
 
                         // The streaming poToken needs to be generated exactly once before generating
                         // any other (player) tokens.

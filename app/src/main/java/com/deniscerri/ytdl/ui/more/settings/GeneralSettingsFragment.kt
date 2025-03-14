@@ -1,27 +1,19 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Resources.Theme
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
-import android.view.MenuInflater
-import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.PopupMenu
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.LocaleListCompat
-import androidx.core.text.HtmlCompat
-import androidx.core.text.parseAsHtml
-import androidx.core.view.forEach
 import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -34,13 +26,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.databinding.NavOptionsItemBinding
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.ThemeUtil
-import com.deniscerri.ytdl.util.ThemeUtil.getThemeColor
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -54,6 +44,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     private var updateUtil: UpdateUtil? = null
     private var activeDownloadCount = 0
 
+    @SuppressLint("BatteryLife")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
         NavbarUtil.init(requireContext())
@@ -82,7 +73,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
 
         findPreference<Preference>("label_visibility")?.apply {
             isVisible = !resources.getBoolean(R.bool.uses_side_nav)
-            setOnPreferenceChangeListener { preference, newValue ->
+            setOnPreferenceChangeListener { _, _ ->
                 ThemeUtil.recreateMain()
                 true
             }
@@ -98,9 +89,9 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 val options = NavbarUtil.getNavBarItems(requireContext())
 
                 val optionsRecycler = binding.findViewById<RecyclerView>(R.id.options_recycler)
-                var adapter : NavBarOptionsAdapter? = null;
+                val adapter : NavBarOptionsAdapter?
 
-                val onitemClick = object: NavBarOptionsAdapter.OnItemClickListener {
+                val onItemClick = object: NavBarOptionsAdapter.OnItemClickListener {
                     override fun onNavBarOptionDeselected(item: NavOptionsItemBinding) {
                         optionsRecycler.findViewHolderForLayoutPosition(0)?.apply {
                             (this as NavBarOptionsAdapter.NavBarOptionsViewHolder).apply {
@@ -113,7 +104,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 adapter = NavBarOptionsAdapter(
                     options.toMutableList(),
                     NavbarUtil.getStartFragmentId(requireContext()),
-                    onitemClick
+                    onItemClick
                 )
 
                 val itemTouchCallback = object : ItemTouchHelper.Callback() {
@@ -257,20 +248,12 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
-        findPreference<Preference>("piped_instance")?.setOnPreferenceClickListener {
-            UiUtil.showPipedInstancesDialog(requireActivity(), preferences.getString("piped_instance", "")!!){
-                editor.putString("piped_instance", it)
-                editor.apply()
-            }
-            true
-        }
-
         findPreference<MultiSelectListPreference>("hide_thumbnails")?.apply {
             values.filter { it.isNotBlank() }.apply {
                 summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
             }
             setOnPreferenceChangeListener { _, newValues ->
-                (newValues as Set<String>).filter { it.isNotBlank() }.apply {
+                (newValues as Set<*>).map { it as String }.filter { it.isNotBlank() }.apply {
                     summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
                 }
                 true
@@ -282,7 +265,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
             }
             setOnPreferenceChangeListener { _, newValues ->
-                (newValues as Set<String>).filter { it.isNotBlank() }.apply {
+                (newValues as Set<*>).map { it as String }.filter { it.isNotBlank() }.apply {
                     summary = joinToString(", ") { entries[entryValues.indexOf(it)] }
                 }
                 true
@@ -360,7 +343,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 if (newValues.size == entries.size) {
                     summary = "${s}\n[${getString(R.string.all)}]"
                 }else if (newValues.isNotEmpty()) {
-                    val indexes = newValues.mapIndexed { index, _ -> index }
+                    val indexes = List(newValues.size) { index -> index }
                     summary = "${s}\n[${entries.filterIndexed { index, _ -> indexes.contains(index) }.joinToString(", ")}]"
                 }else{
                     summary = s
@@ -390,18 +373,9 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         super.onResume()
     }
 
-    private fun restartApp() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-        requireActivity().finishAffinity()
-        activity?.finishAffinity()
-    }
-
     private var displayOverAppsResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { result ->
+    ) { _ ->
         findNavController().popBackStack(R.id.appearanceSettingsFragment, false)
     }
 

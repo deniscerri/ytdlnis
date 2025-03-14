@@ -1,5 +1,6 @@
-package com.deniscerri.ytdl.util.extractors.newpipe.potoken
+package com.deniscerri.ytdl.util.extractors.potoken.webview
 
+import com.deniscerri.ytdl.util.extractors.potoken.PoTokenException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject

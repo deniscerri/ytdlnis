@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:scrollbars="none"
     android:orientation="vertical"
     android:layout_height="wrap_content"
@@ -200,7 +201,8 @@
                     android:paddingHorizontal="10dp"
                     android:text="-"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
 
 
                 <com.google.android.material.textfield.TextInputLayout

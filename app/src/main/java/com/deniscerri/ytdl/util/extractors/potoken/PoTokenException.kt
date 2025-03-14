@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors.newpipe.potoken
+package com.deniscerri.ytdl.util.extractors.potoken
 
 class PoTokenException(message: String) : Exception(message)
 

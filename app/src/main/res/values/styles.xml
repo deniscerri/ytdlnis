@@ -38,6 +38,12 @@
         <item name="cornerSize">7dp</item>
     </style>
 
+    <style name="ShapeAppearanceOverlay.RightCorner" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomRight">10dp</item>
+        <item name="backgroundTint">#80000000</item>
+    </style>
+
     <style name="ShapeAppearanceOverlay.Chip.Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">12dp</item>

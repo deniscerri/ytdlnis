@@ -1541,4 +1541,13 @@
         <item>all</item>
     </string-array>
 
+    <string-array name="web_player_clients">
+        <item>web</item>
+        <item>mweb</item>
+        <item>web_safari</item>
+        <item>web_embedded</item>
+        <item>web_creator</item>
+        <item>web_music</item>
+    </string-array>
+
 </resources>

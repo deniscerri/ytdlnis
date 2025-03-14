@@ -67,6 +67,7 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         card.findViewById<TextView>(R.id.title).text = item!!.title
         card.findViewById<TextView>(R.id.author).text = item.author
         card.findViewById<TextView>(R.id.duration).text = item.duration
+        card.findViewById<TextView>(R.id.index).text = ((item.playlistIndex ?: (position + 1))).toString()
 
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)

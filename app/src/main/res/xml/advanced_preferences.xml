@@ -10,12 +10,12 @@
             android:summary="@string/player_client_summary"
             android:title="@string/player_client" />
 
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            android:icon="@drawable/ic_language"
-            android:defaultValue="false"
-            android:key="use_newpipe_potoken"
-            android:title="@string/use_newpipe_potoken" />
+        <Preference
+            android:defaultValue=""
+            android:icon="@drawable/baseline_stars_24"
+            android:key="generate_po_tokens"
+            android:summary="Web Client PO Token"
+            android:title="@string/generate_potokens" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

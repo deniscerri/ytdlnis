@@ -17,6 +17,7 @@ import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
+import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -635,6 +636,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
             //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
+            request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
         val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
@@ -1296,18 +1298,23 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
-        if (sharedPreferences.getBoolean("use_newpipe_potoken", false)) {
-            val visitorData = sharedPreferences.getString("newpipe_visitordata", "")!!
-            if (visitorData.isNotBlank()) {
-                playerClients.add("web")
-                sharedPreferences.getString("newpipe_gvs_potoken", "")?.apply {
-                    if (this.isNotBlank()) poTokens.add("web.gvs+$this")
+        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")
+        val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
+        if (generatedPoTokens.isNotEmpty()) {
+            for (value in generatedPoTokens) {
+                if (value.enabled) {
+                    for (cl in value.clients) {
+                        playerClients.add(cl)
+                        for (pt in value.poTokens) {
+                            if (pt.token.isNotBlank()) {
+                                poTokens.add("${cl}.${pt.context}+${pt.token}")
+                            }
+                        }
+                    }
+
+                    extractorArgs.add("player-skip=webpage,configs")
+                    extractorArgs.add("visitor_data=${value.visitorData}")
                 }
-                sharedPreferences.getString("newpipe_player_potoken", "")?.apply {
-                    if (this.isNotBlank()) poTokens.add("web.player+$this")
-                }
-                extractorArgs.add("player-skip=webpage,configs")
-                extractorArgs.add("visitor_data=$visitorData")
             }
         }
 

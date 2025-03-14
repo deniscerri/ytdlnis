@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors.newpipe.potoken
+package com.deniscerri.ytdl.util.extractors.potoken.webview
 
 import android.content.Context
 import android.os.Build
@@ -18,10 +18,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.parseChallengeData
-import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.parseIntegrityTokenData
-import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.stringToU8
-import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.u8ToBase64
+import com.deniscerri.ytdl.util.extractors.potoken.BadWebViewException
+import com.deniscerri.ytdl.util.extractors.potoken.PoTokenException
+import com.deniscerri.ytdl.util.extractors.potoken.buildExceptionForJsError
+import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.parseChallengeData
+import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.parseIntegrityTokenData
+import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.stringToU8
+import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.u8ToBase64
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -39,8 +42,7 @@ class PoTokenWebView private constructor(
 ) {
     private val webView = WebView(context)
     private val scope = MainScope()
-    private val poTokenContinuations =
-        Collections.synchronizedMap(ArrayMap<String, Continuation<String>>())
+    private val poTokenContinuations = Collections.synchronizedMap(ArrayMap<String, Continuation<String>>())
     private val exceptionHandler = CoroutineExceptionHandler { _, t ->
         onInitializationErrorCloseAndCancel(t)
     }
@@ -59,13 +61,6 @@ class PoTokenWebView private constructor(
 
         // so that we can run async functions and get back the result
         webView.addJavascriptInterface(this, JS_INTERFACE)
-
-        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        preferences.getString("api_key", "")?.apply {
-            if (this.isNotBlank()) {
-                GOOGLE_API_KEY = this
-            }
-        }
 
         webView.webChromeClient = object : WebChromeClient() {
             override fun onConsoleMessage(m: ConsoleMessage): Boolean {
@@ -330,7 +325,7 @@ class PoTokenWebView private constructor(
 
     companion object {
         private const val TAG = "PoTokenWebView"
-        //libretube api key, if user has his own api key his will be used
+        //libretube api key
         private var GOOGLE_API_KEY = "AIzaSyDyT5W0Jh49F30Pqqtyfdf7pDLFKLJoAnw"
         private const val REQUEST_KEY = "O43z0dpjhgX20SCx4KAo"
         private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +

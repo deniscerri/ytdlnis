@@ -575,4 +575,21 @@ object Extensions {
             else "%(section_title&{} - |)s$this"
         }
     }
+
+    fun String.getIDFromYoutubeURL() : String {
+        var el: Array<String?> =
+            this.split("/".toRegex()).dropLastWhile { it.isEmpty() }
+                .toTypedArray()
+        var query = el[el.size - 1]
+        if (query!!.contains("watch?v=")) {
+            query = query.substring(8)
+        }
+        el = query.split("&".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        query = el[0]
+        el = query!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
+            .toTypedArray()
+        query = el[0]
+        return query!!
+    }
 }

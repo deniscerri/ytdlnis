@@ -56,6 +56,9 @@
         <action
             android:id="@+id/action_advancedSettingsFragment_to_youtubePlayerClientFragment"
             app:destination="@id/youtubePlayerClientFragment" />
+        <action
+            android:id="@+id/action_advancedSettingsFragment_to_generateYoutubePoTokensFragment"
+            app:destination="@id/generateYoutubePoTokensFragment" />
     </fragment>
     <fragment
         android:id="@+id/youtubePlayerClientFragment"
@@ -65,4 +68,8 @@
         android:id="@+id/changeLogFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.updating.ChangeLogFragment"
         android:label="ChangeLogFragment" />
+    <fragment
+        android:id="@+id/generateYoutubePoTokensFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.advanced.GenerateYoutubePoTokensFragment"
+        android:label="GenerateYoutubePoTokensFragment" />
 </navigation>
