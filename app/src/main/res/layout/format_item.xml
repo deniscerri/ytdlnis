@@ -164,6 +164,24 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+                        <TextView
+                            android:id="@+id/bitrate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/rounded_corner"
+                            android:backgroundTint="?attr/colorPrimaryInverse"
+                            android:textColor="@color/white"
+                            android:clickable="false"
+                            android:gravity="center"
+                            android:minWidth="30dp"
+                            android:paddingHorizontal="5dp"
+                            android:textStyle="bold"
+                            app:cornerRadius="10dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </LinearLayout>
 
                 </HorizontalScrollView>

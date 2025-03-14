@@ -52,6 +52,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData(url: String?) {
         addOption("--skip-download")
+        addOption("--quiet")
+        addOption("--ignore-errors")
+        addOption("--no-warnings")
         addOption("-R", "1")
         addOption("--compat-options", "manifest-filesize-approx")
         val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }

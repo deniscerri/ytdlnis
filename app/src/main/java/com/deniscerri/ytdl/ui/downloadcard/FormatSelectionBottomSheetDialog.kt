@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.ui.adapter.FormatAdapter
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil

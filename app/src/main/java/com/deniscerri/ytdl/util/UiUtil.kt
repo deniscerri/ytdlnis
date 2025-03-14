@@ -175,6 +175,14 @@ object UiUtil {
             }
         }
 
+        formatCard.findViewById<TextView>(R.id.bitrate).apply {
+            if (chosenFormat.tbr.isNullOrBlank() || (chosenFormat.vcodec.isNotBlank() && chosenFormat.vcodec != "none")) {
+                isVisible = false
+            }else{
+                text = chosenFormat.tbr
+            }
+        }
+
     }
 
     fun populateCommandCard(card: MaterialCardView, item: CommandTemplate){
