@@ -1303,7 +1303,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
         if (dataSyncID.isNotBlank()) {
-            extractorArgs.add("player-skip=webpage,configs")
+            extractorArgs.add("player_skip=webpage,configs")
             extractorArgs.add("data_sync_id=${dataSyncID}")
         }
 
@@ -1322,7 +1322,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     }
 
                     if (dataSyncID.isBlank()) {
-                        extractorArgs.add("player-skip=webpage,configs")
+                        extractorArgs.add("player_skip=webpage,configs")
                         extractorArgs.add("visitor_data=${value.visitorData}")
                     }
 

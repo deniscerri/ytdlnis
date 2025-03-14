@@ -35,7 +35,6 @@
             android:defaultValue=""
             android:icon="@drawable/ic_code"
             android:key="youtube_other_extractor_args"
-            app:useSimpleSummaryProvider="true"
             android:title="@string/other_youtube_extractor_args" />
     </PreferenceCategory>
 

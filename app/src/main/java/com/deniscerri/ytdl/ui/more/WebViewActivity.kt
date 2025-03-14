@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.Toast
@@ -14,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -21,6 +23,8 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
+import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
+import com.deniscerri.ytdl.util.UiUtil
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
@@ -35,7 +39,7 @@ import kotlinx.coroutines.withContext
 
 class WebViewActivity : BaseActivity() {
     private lateinit var cookiesViewModel: CookieViewModel
-    private lateinit var webView: WebView
+    private var webView: WebView? = null
     private lateinit var webViewCompose: ComposeView
     private lateinit var toolbar: MaterialToolbar
     private lateinit var generateBtn: MaterialButton
@@ -53,6 +57,23 @@ class WebViewActivity : BaseActivity() {
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
+            if (!url.isYoutubeURL()) {
+                toolbar.menu.forEach { it.isVisible = false }
+            }else {
+                toolbar.setOnMenuItemClickListener { m : MenuItem ->
+                    when(m.itemId) {
+                        R.id.get_data_sync_id -> {
+                            webView?.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
+                                UiUtil.copyToClipboard(id.replace("\"", ""), this@WebViewActivity)
+                            }
+                        }
+                        else -> {}
+                    }
+                    true
+                }
+            }
+
+
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
             cookieManager = CookieManager.getInstance()
@@ -61,6 +82,7 @@ class WebViewActivity : BaseActivity() {
 
             webViewClient = object : AccompanistWebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
+                    webView = view
                     super.onPageFinished(view, url)
                     kotlin.runCatching {
                         toolbar.title = view?.title ?: ""
