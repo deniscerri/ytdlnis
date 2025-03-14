@@ -108,12 +108,14 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                         .filterIndexed { index, _ -> selectedItems[index] }
                         .toMutableSet()
 
-                    configuration.remove(conf)
-                    conf.clients.clear()
-                    conf.clients.addAll(newValues)
-                    configuration.add(conf)
-                    preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
-                    setValues(conf)
+                    if (newValues.isNotEmpty()) {
+                        configuration.remove(conf)
+                        conf.clients.clear()
+                        conf.clients.addAll(newValues)
+                        configuration.add(conf)
+                        preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+                        setValues(conf)
+                    }
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .show()
@@ -143,10 +145,12 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
         switch.setOnClickListener {
             configuration.remove(conf)
-            conf.enabled = switch.isEnabled
+            conf.enabled = switch.isChecked
             configuration.add(conf)
             preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
-            regenerate.performClick()
+            if (conf.poTokens.isEmpty()) {
+                regenerate.performClick()
+            }
         }
     }
 }

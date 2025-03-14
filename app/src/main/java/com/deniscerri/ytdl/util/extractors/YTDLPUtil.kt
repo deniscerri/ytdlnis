@@ -1301,6 +1301,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
+        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
+        if (dataSyncID.isNotBlank()) {
+            extractorArgs.add("player-skip=webpage,configs")
+            extractorArgs.add("data_sync_id=${dataSyncID}")
+        }
+
         val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")
         val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
         if (generatedPoTokens.isNotEmpty()) {
@@ -1315,8 +1321,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         }
                     }
 
-                    extractorArgs.add("player-skip=webpage,configs")
-                    extractorArgs.add("visitor_data=${value.visitorData}")
+                    if (dataSyncID.isBlank()) {
+                        extractorArgs.add("player-skip=webpage,configs")
+                        extractorArgs.add("visitor_data=${value.visitorData}")
+                    }
+
                 }
             }
         }

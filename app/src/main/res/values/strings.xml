@@ -474,4 +474,5 @@
     <string name="write_subs_when_embed_subs_summary">This will apply Save Subtitles and Save Automatic Subtitles to download the sub files and then delete them after embedding</string>
     <string name="generate_potokens">Generate PO Tokens</string>
     <string name="regenerate">Re-generate</string>
+    <string name="generate_potokens_warning">* By enabling this, you need to disable cookies. If you want to keep using cookies, fill in the Data Sync ID Extractor Argument</string>
 </resources>

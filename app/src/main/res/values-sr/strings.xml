@@ -470,6 +470,5 @@
     <string name="automatic_backup_summary">Аутоматско прављење резервне копије свега, када се пронађе нова верзија апликације</string>
     <string name="write_subs_when_embed_subs">Писање титлова приликом уграђивања</string>
     <string name="write_subs_when_embed_subs_summary">Ово ће применити „Сачувај титлове“ и „Сачувај аутоматске титлове“ за преузимање потфајлова, а затим их избрисати након уграђивања</string>
-    <string name="use_newpipe_potoken">Користи аутоматски генерисане PO токене из NewPipe Extractor-а</string>
     <string name="use_newpipe_potoken_warning">Ако ово омогућите, апликација ће онемогућити колачиће и користити генерисане PO токене и податке о посетиоцима као аргументе YouTube Extractor-а</string>
 </resources>

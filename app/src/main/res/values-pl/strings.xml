@@ -467,7 +467,6 @@
     <string name="automatic_backup">Automatyczna kopia zapasowa</string>
     <string name="backup_path">Ścieżka kopii zapasowej</string>
     <string name="write_subs_when_embed_subs">Tworzenie napisów podczas osadzania</string>
-    <string name="use_newpipe_potoken">Używanie automatycznie wygenerowanych tokenów PO z narzędzia NewPipe Extractor</string>
     <string name="automatic_backup_summary">Automatyczne tworzenie kopii zapasowej wszystkiego po znalezieniu nowej wersji aplikacji</string>
     <string name="use_newpipe_potoken_warning">Po włączeniu tej opcji aplikacja wyłączy pliki cookie i użyje wygenerowanych tokenów po i danych odwiedzających jako argumentów ekstraktora YouTube</string>
     <string name="write_subs_when_embed_subs_summary">Spowoduje to zastosowanie opcji Zapisz napisy i Zapisz automatyczne napisy w celu pobrania plików napisów, a następnie usunięcia ich po osadzeniu</string>
