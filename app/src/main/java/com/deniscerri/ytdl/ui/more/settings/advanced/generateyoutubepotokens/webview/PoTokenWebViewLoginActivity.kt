@@ -111,6 +111,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                                     )
                                 )
                                 cookiesViewModel.updateCookiesFile()
+                                preferences.edit().putBoolean("use_cookies", true).apply()
                             }.onFailure {
                                 withContext(Dispatchers.Main) {
                                     Toast.makeText(
@@ -123,7 +124,6 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         }
                     }
 
-                    preferences.edit().putBoolean("use_cookies", true).apply()
 
 
                     webView.clearCache(true)
