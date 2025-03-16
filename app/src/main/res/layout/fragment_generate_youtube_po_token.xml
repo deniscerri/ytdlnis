@@ -222,6 +222,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/use_visitor_data"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="20dp"
+            android:layout_height="70dp"
+            android:checked="true"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Use Visitor Data"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="wrap_content"

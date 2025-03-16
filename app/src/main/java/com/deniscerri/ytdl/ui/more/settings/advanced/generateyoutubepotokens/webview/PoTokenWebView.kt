@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors.potoken.webview
+package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview
 
 import android.content.Context
 import android.os.Build
@@ -9,7 +9,6 @@ import android.webkit.WebChromeClient
 import android.webkit.WebView
 import androidx.annotation.MainThread
 import androidx.collection.ArrayMap
-import androidx.preference.PreferenceManager
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -18,13 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.util.extractors.potoken.BadWebViewException
-import com.deniscerri.ytdl.util.extractors.potoken.PoTokenException
-import com.deniscerri.ytdl.util.extractors.potoken.buildExceptionForJsError
-import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.parseChallengeData
-import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.parseIntegrityTokenData
-import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.stringToU8
-import com.deniscerri.ytdl.util.extractors.potoken.webview.JavascriptUtil.u8ToBase64
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.parseChallengeData
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.parseIntegrityTokenData
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.stringToU8
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.u8ToBase64
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody

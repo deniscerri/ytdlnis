@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors.potoken
+package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview
 
 class PoTokenException(message: String) : Exception(message)
 

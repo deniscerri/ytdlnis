@@ -45,8 +45,7 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<Preference>("youtube_other_extractor_args")?.apply {
-            fun setValue() {
-                val pf = prefs.getString("youtube_other_extractor_args", "")!!
+            fun setValue(pf: String) {
                 if (pf.length > 50) {
                     this.summary = pf.take(50) + "..."
                 }else {
@@ -54,14 +53,11 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
                 }
             }
 
-            setOnPreferenceChangeListener { preference, newValue ->
-                setValue()
+            setOnPreferenceChangeListener { _, newValue ->
+                setValue(newValue as String)
                 true
             }
-
-            setValue()
-
-
+            setValue(prefs.getString("youtube_other_extractor_args", "")!!)
         }
 
         val formatImportanceAudio: Preference? = findPreference("format_importance_audio")

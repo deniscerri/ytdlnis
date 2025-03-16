@@ -449,6 +449,20 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity"
+            android:configChanges="locale"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:parentActivityName=".ui.more.settings.SettingsActivity"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="ytdlnis.PoTokenWebViewLoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <receiver android:name=".receiver.CancelDownloadNotificationReceiver" />
         <receiver android:name=".receiver.CancelWorkReceiver" />
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />

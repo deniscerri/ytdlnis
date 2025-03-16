@@ -1,13 +1,12 @@
-package com.deniscerri.ytdl.util.extractors.potoken
+package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
 
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.webkit.CookieManager
-import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.util.extractors.potoken.webview.PoTokenWebView
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebView
 import kotlinx.coroutines.runBlocking
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.services.youtube.InnertubeClientRequestInfo

@@ -70,6 +70,6 @@
         android:label="ChangeLogFragment" />
     <fragment
         android:id="@+id/generateYoutubePoTokensFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.advanced.GenerateYoutubePoTokensFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.GenerateYoutubePoTokensFragment"
         android:label="GenerateYoutubePoTokensFragment" />
 </navigation>

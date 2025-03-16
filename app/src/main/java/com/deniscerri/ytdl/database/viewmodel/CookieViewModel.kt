@@ -6,7 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
-import android.os.Environment
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.lifecycle.AndroidViewModel
@@ -19,13 +18,10 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.FileUtil
-import com.google.gson.GsonBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.util.Calendar
 import java.util.Date
 
 

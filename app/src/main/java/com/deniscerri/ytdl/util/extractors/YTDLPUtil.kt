@@ -1321,7 +1321,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         }
                     }
 
-                    if (dataSyncID.isBlank()) {
+                    if (dataSyncID.isBlank() && value.useVisitorData) {
                         extractorArgs.add("player_skip=webpage,configs")
                         extractorArgs.add("visitor_data=${value.visitorData}")
                     }

@@ -77,6 +77,7 @@ class WebViewActivity : BaseActivity() {
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
             cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookies(null)
 
             preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
@@ -92,7 +93,6 @@ class WebViewActivity : BaseActivity() {
             }
 
             toolbar.setNavigationOnClickListener {
-                cookieManager.flush()
                 onBackPressedDispatcher.onBackPressed()
             }
 
@@ -119,7 +119,6 @@ class WebViewActivity : BaseActivity() {
                                 }
                             }
                         }
-                        cookieManager.removeAllCookies(null)
                         withContext(Dispatchers.Main) {
                             this@WebViewActivity.setResult(RESULT_OK)
                             this@WebViewActivity.finish()

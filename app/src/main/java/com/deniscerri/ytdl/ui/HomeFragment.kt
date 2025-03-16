@@ -45,7 +45,6 @@ import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
-import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -67,7 +66,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.net.URL
 import kotlin.collections.ArrayList
 

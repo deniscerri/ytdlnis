@@ -1,36 +1,37 @@
-package com.deniscerri.ytdl.ui.more.settings.advanced
+package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
 
+import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import androidx.work.WorkManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
-import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
+import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.util.extractors.potoken.PoTokenGenerator
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class GenerateYoutubePoTokensFragment : Fragment() {
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var preferences: SharedPreferences
     private lateinit var configuration : MutableList<YoutubeGeneratePoTokenItem>
+    private lateinit var workManager : WorkManager
     private lateinit var poTokenGenerator: PoTokenGenerator
 
     private val sampleURL = "https://www.youtube.com/watch?v=aqz-KE-bpKQ" // Big Buck Bunny
@@ -44,6 +45,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         settingsActivity.changeTopAppbarTitle(getString(R.string.generate_potokens))
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         poTokenGenerator = PoTokenGenerator()
+        workManager = WorkManager.getInstance(requireContext())
         return inflater.inflate(R.layout.fragment_generate_youtube_po_token, container, false)
     }
 
@@ -59,7 +61,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
     private fun initWeb() {
         val conf = configuration.find { it.clients.any { it2 -> it2.contains("web") } }
-            ?: YoutubeGeneratePoTokenItem(false, mutableListOf("mweb"), mutableListOf(), "")
+            ?: YoutubeGeneratePoTokenItem(false, mutableListOf("mweb"), mutableListOf(), "", false)
 
 
         val switch = requireView().findViewById<MaterialSwitch>(R.id.web_client_switch)
@@ -71,8 +73,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         val playerClientText = requireView().findViewById<TextView>(R.id.content_playerclient)
 
         val regenerate = requireView().findViewById<MaterialButton>(R.id.regenerate_webview_potokens)
+        val useVisitorData = requireView().findViewById<MaterialSwitch>(R.id.use_visitor_data)
 
         switch.isChecked = conf.enabled
+        useVisitorData.isEnabled = conf.enabled
 
         fun setValues(conf: YoutubeGeneratePoTokenItem) {
             gvs.text = conf.poTokens.find { it.context == "gvs" }?.token ?: ""
@@ -121,36 +125,53 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 .show()
         }
 
-        regenerate.setOnClickListener {
-            lifecycleScope.launch {
-                val res = withContext(Dispatchers.IO) {
-                    poTokenGenerator.getWebClientPoToken(sampleURL.getIDFromYoutubeURL())
-                }
+        val webPoTokenResultLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val streamingDataPoTokenResult = result.data!!.getStringExtra("streaming_potoken") ?: ""
+                val playerRequestPoTokenResult = result.data!!.getStringExtra("player_potoken") ?: ""
+                val visitorDataResult = result.data!!.getStringExtra("visitor_data") ?: ""
 
-                if (res == null) {
-                    Snackbar.make(requireView(), getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
-                }else{
-                    configuration.remove(conf)
-                    conf.poTokens.clear()
-                    conf.poTokens.add(YoutubePoTokenItem("gvs", res.streamingDataPoToken ?: ""))
-                    conf.poTokens.add(YoutubePoTokenItem("player", res.playerRequestPoToken))
-                    conf.visitorData = res.visitorData
 
-                    configuration.add(conf)
-                    setValues(conf)
-                    preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
-                }
+                configuration.remove(conf)
+                conf.poTokens.clear()
+                conf.poTokens.add(YoutubePoTokenItem("gvs", streamingDataPoTokenResult))
+                conf.poTokens.add(YoutubePoTokenItem("player", playerRequestPoTokenResult))
+                conf.visitorData = visitorDataResult
+
+                configuration.add(conf)
+                setValues(conf)
+                preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+            }else {
+                Snackbar.make(requireView(), R.string.network_error, Snackbar.LENGTH_SHORT).show()
             }
+        }
+
+        regenerate.setOnClickListener {
+            webPoTokenResultLauncher.launch(Intent(requireContext(), PoTokenWebViewLoginActivity::class.java))
         }
 
         switch.setOnClickListener {
             configuration.remove(conf)
             conf.enabled = switch.isChecked
+            useVisitorData.isEnabled = switch.isChecked
             configuration.add(conf)
             preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
             if (conf.poTokens.isEmpty()) {
                 regenerate.performClick()
             }
         }
+
+        useVisitorData?.apply {
+            this.isChecked = conf.useVisitorData
+            setOnCheckedChangeListener { _, b ->
+                configuration.remove(conf)
+                conf.useVisitorData = b
+                configuration.add(conf)
+                preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+            }
+        }
+
     }
 }
