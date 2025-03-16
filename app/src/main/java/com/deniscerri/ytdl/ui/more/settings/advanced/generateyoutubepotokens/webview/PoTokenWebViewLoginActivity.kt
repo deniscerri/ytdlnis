@@ -2,10 +2,12 @@ package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.we
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.webkit.CookieManager
 import android.webkit.WebView
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -14,8 +16,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.forEach
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.CookieItem
+import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.PoTokenGenerator
 import com.google.accompanist.web.AccompanistWebChromeClient
@@ -37,6 +43,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
     private lateinit var generateBtn: MaterialButton
     private lateinit var cookieManager: CookieManager
     private lateinit var webViewClient: AccompanistWebViewClient
+    private lateinit var cookiesViewModel: CookieViewModel
+    private lateinit var preferences: SharedPreferences
 
     private val sampleVideoID = "aqz-KE-bpKQ" //Big Buck Bunny
 
@@ -44,6 +52,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
+
+        cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
@@ -52,6 +62,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
             cookieManager = CookieManager.getInstance()
+
+            preferences = PreferenceManager.getDefaultSharedPreferences(this@PoTokenWebViewLoginActivity)
 
             webViewClient = object : AccompanistWebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
@@ -84,6 +96,35 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         intent.putExtra("streaming_potoken", res.streamingDataPoToken)
                         setResult(RESULT_OK, intent)
                     }
+
+
+                    //update cookies
+                    withContext(Dispatchers.IO) {
+                        val url = "https://youtube.com"
+                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+                            kotlin.runCatching {
+                                cookiesViewModel.insert(
+                                    CookieItem(
+                                        0,
+                                        url,
+                                        it
+                                    )
+                                )
+                                cookiesViewModel.updateCookiesFile()
+                            }.onFailure {
+                                withContext(Dispatchers.Main) {
+                                    Toast.makeText(
+                                        this@PoTokenWebViewLoginActivity,
+                                        "Tokens were generated but cookies were not updated",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    }
+
+                    preferences.edit().putBoolean("use_cookies", true).apply()
+
 
                     webView.clearCache(true)
                     // ensures that the WebView isn't doing anything when destroying it

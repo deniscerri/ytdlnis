@@ -15,12 +15,8 @@ class CookieRepository(private val cookieDao: CookieDao) {
         return cookieDao.getByURL(url)
     }
 
-
-    suspend fun insert(item: CookieItem) : Long{
-        if (! cookieDao.checkIfExistsWithSameURL(item.url)){
-            return cookieDao.insert(item)
-        }
-        return -1
+    suspend fun insert(item: CookieItem) : Long {
+        return cookieDao.insert(item)
     }
 
     suspend fun delete(item: CookieItem){

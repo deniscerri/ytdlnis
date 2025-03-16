@@ -53,11 +53,18 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getAll()
     }
 
-    fun getByURL(url: String) : CookieItem? {
+    private fun getByURL(url: String) : CookieItem? {
         return repository.getByURL(url)
     }
 
     suspend fun insert(item: CookieItem) : Long {
+        val exists = getByURL(item.url)
+        if (exists != null) {
+            exists.content = item.content
+            repository.update(exists)
+            return exists.id
+        }
+
         return repository.insert(item)
     }
 

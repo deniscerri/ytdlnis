@@ -4,25 +4,32 @@
 
 # What's Changed
 
-## Automatically generate PO Tokens & Visitor Data with NewPipe Extractor
+## Automatically generate WEB PO Tokens & Visitor Data inside the app
 
-Thanks to NewPipe Extractor for allowing the use of Po Token Generators, and some references from LibreTube, the app now has a po token generator using webview. Now all NewPipe actions like data fetching and format fetching will work.
-Also at the same time these records are stored in the apps preferences. In advanced settings now there is a toggle to enable the use of the tokens in yt-dlp. 
-These tokens need visitor data to work and since visitor data and cookies cant be used at the same time, cookies will be disabled if you enable this function.
-With it, the app will apply these settings as youtube extractor arguments
+Since youtube is enforcing a policy that sessions need po tokens, you might need them to appear more legitimate and not get errors like 403, or even unlock formats that need po tokens.
+
+With some references from LibreTube and OuterTune, the app now has a po token generator using it's WebView.
+These records are stored in the apps preferences. In advanced settings now there is a toggle to enable the use of the tokens in yt-dlp.
+
+Some formats need PO Token to show up like HIGH AUDIO, you will need to log in with cookies and then generate the tokens. There is also the option to use visitor data but you need to disable cookies. 
+yt-dlp doesn't recommend using it but the option is there if u need it.
+
+The app will apply these settings as youtube extractor arguments
 youtube:player_client=web;po_token=web.gvs+GVS_TOKEN,web.player+PLAYER_TOKEN;player-skip=webpage,configs;visitor_data=VISITOR_DATA
 If you have po tokens set up with web client with po token, there might be duplication happening, so check that out.
-
+Also since these tokens work for any web client, there is also an option to select which web clients to include as extractor arguments.
 
 Other stuff
 - Cut Section has been reworked,thanks to madmini. Now you can cut down to milliseconds.
 - Added safeBrowsingEnabled in WebView for generating cookies for devices of API 26 and above. Thought to generate incognito cookies that last longer
 - Added feature to reset all settings belonging to a certain preference page
 - Added option to turn off the code color highlighter
-- Fixed app not applying prefer small formats. It shouldve been last in format sorting not first.
+- Fixed app not applying prefer small sized formats. It should've been last in format sorting not first.
 - Added ability to enable automatic backup when the app checks for new update and finds one
 - Added write-subs and write-auto-subs and --compat-options no-keep-subs when the user embeds subs but doesnt want to save them so he can get more subtitles to embed
 - Turned the changelog dialog to a separate screen for better visibility
+- Added --external-downloader-args aria2c:"--check-certificate=false" to fix aria2 not working
+- Added bitrate info for audio formats card in the download card
 - Some small bug fix here and there
 
 > # 1.8.2.2 (2025-02)
