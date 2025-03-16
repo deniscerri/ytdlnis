@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:backgroundTint="?android:colorAccent"
+        style="@style/Divider.Horizontal" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_marginHorizontal="10dp"
@@ -62,11 +68,5 @@
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:backgroundTint="?android:colorAccent"
-        style="@style/Divider.Horizontal" />
 
 </LinearLayout>
