@@ -6,11 +6,9 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreferenceCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,11 +17,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.adapter.SortableTextItemAdapter
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class AdvancedSettingsFragment : BaseSettingsFragment() {
@@ -42,22 +36,6 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
         findPreference<Preference>("generate_po_tokens")?.setOnPreferenceClickListener {
             findNavController().navigate(R.id.generateYoutubePoTokensFragment)
             false
-        }
-
-        findPreference<Preference>("youtube_other_extractor_args")?.apply {
-            fun setValue(pf: String) {
-                if (pf.length > 50) {
-                    this.summary = pf.take(50) + "..."
-                }else {
-                    this.summary = pf
-                }
-            }
-
-            setOnPreferenceChangeListener { _, newValue ->
-                setValue(newValue as String)
-                true
-            }
-            setValue(prefs.getString("youtube_other_extractor_args", "")!!)
         }
 
         val formatImportanceAudio: Preference? = findPreference("format_importance_audio")
