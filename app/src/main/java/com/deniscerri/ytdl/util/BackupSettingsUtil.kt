@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.util
 
 import android.content.SharedPreferences
+import com.deniscerri.ytdl.database.models.BackupSettingsItem
 import com.deniscerri.ytdl.database.repository.CommandTemplateRepository
 import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -19,13 +20,16 @@ object BackupSettingsUtil {
         runCatching {
             val prefs = preferences.all
             prefs.remove("app_language")
+
+            val res = prefs.map { BackupSettingsItem(
+                key = it.key,
+                value = it.value.toString(),
+                type = it.value!!::class.simpleName
+            ) }
+
             val arr = JsonArray()
-            prefs.forEach {
-                val obj = JsonObject()
-                obj.addProperty("key", it.key)
-                obj.addProperty("value", it.value.toString())
-                obj.addProperty("type", it.value!!::class.simpleName)
-                arr.add(obj)
+            res.forEach {
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
         }

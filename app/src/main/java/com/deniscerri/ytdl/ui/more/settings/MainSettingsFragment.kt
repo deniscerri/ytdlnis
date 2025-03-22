@@ -31,6 +31,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.BackupSettingsItem
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -289,8 +290,10 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     val parsedDataMessage = StringBuilder()
 
                     if (json.has("settings")) {
-                        restoreData.settings = json.getAsJsonArray("settings")
-                        parsedDataMessage.appendLine("${getString(R.string.settings)}: ${restoreData.settings!!.size()}")
+                        restoreData.settings = json.getAsJsonArray("settings").map {
+                            Gson().fromJson(it.toString().replace("^\"|\"$", ""), BackupSettingsItem::class.java)
+                        }
+                        parsedDataMessage.appendLine("${getString(R.string.settings)}: ${restoreData.settings!!.size}")
                     }
 
                     if (json.has("downloads")) {

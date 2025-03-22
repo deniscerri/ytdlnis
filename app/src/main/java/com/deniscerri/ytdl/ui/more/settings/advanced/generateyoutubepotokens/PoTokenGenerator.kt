@@ -14,6 +14,7 @@ import org.schabi.newpipe.extractor.services.youtube.PoTokenProvider
 import org.schabi.newpipe.extractor.services.youtube.PoTokenResult
 import org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper
 
+//for newpipe
 class PoTokenGenerator : PoTokenProvider {
     val TAG = PoTokenGenerator::class.simpleName
     private val supportsWebView by lazy { runCatching { CookieManager.getInstance() }.isSuccess }

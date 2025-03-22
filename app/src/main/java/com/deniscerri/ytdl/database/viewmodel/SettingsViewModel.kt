@@ -23,6 +23,7 @@ import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.BackupSettingsUtil
 import com.deniscerri.ytdl.util.FileUtil
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
@@ -110,24 +111,19 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
                 PreferenceManager.getDefaultSharedPreferences(context).edit(commit = true){
                     clear()
                     prefs.forEach {
-                        val key : String = it.asJsonObject.get("key").toString().replace("\"", "")
-                        when(it.asJsonObject.get("type").toString().replace("\"", "")){
+                        val key = it.key
+                        when(it.type){
                             "String" -> {
-                                val value = it.asJsonObject.get("value").toString().replace("\"", "")
-                                putString(key, value)
+                                putString(key, it.value)
                             }
                             "Boolean" -> {
-                                val value = it.asJsonObject.get("value").toString().replace("\"", "").toBoolean()
-                                Log.e("REST", value.toString())
-                                Log.e("REST", key)
-                                putBoolean(key, value)
+                                putBoolean(key, it.value.toBoolean())
                             }
                             "Int" -> {
-                                val value = it.asJsonObject.get("value").toString().replace("\"", "").toInt()
-                                putInt(key, value)
+                                putInt(key, it.value.toInt())
                             }
                             "HashSet" -> {
-                                val value = it.asJsonObject.get("value").toString().replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
+                                val value = it.value.replace("(\")|(\\[)|(])|([ \\t])".toRegex(), "").split(",")
                                 putStringSet(key, value.toHashSet())
                             }
                         }

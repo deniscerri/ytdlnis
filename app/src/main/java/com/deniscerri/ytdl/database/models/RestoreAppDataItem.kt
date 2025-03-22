@@ -4,7 +4,7 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.google.gson.JsonArray
 
 data class RestoreAppDataItem(
-    var settings : JsonArray? = null,
+    var settings : List<BackupSettingsItem>? = null,
     var downloads: List<HistoryItem>? = null,
     var queued: List<DownloadItem>? = null,
     var scheduled: List<DownloadItem>? = null,
@@ -16,4 +16,10 @@ data class RestoreAppDataItem(
     var shortcuts: List<TemplateShortcut>? = null,
     var searchHistory: List<SearchHistoryItem>? = null,
     var observeSources: List<ObserveSourcesItem>? = null,
+)
+
+data class BackupSettingsItem(
+    var key: String,
+    var value: String,
+    var type: String?
 )
