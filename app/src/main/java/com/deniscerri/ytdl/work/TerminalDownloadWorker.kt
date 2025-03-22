@@ -3,7 +3,7 @@ package com.deniscerri.ytdl.work
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -53,7 +53,7 @@ class TerminalDownloadWorker(
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notification = notificationUtil.createDownloadServiceNotification(pendingIntent, command.take(65), NotificationUtil.DOWNLOAD_TERMINAL_RUNNING_NOTIFICATION_ID)
         if (Build.VERSION.SDK_INT > 33) {
-            setForegroundAsync(ForegroundInfo(itemId, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+            setForegroundAsync(ForegroundInfo(itemId, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(itemId, notification))
         }

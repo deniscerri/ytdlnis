@@ -107,19 +107,24 @@ interface DownloadDao {
 
     @Query("""
         SELECT * FROM downloads 
-        WHERE status in ('Queued', 'Scheduled') AND downloadStartTime <= :currentTime 
+        WHERE status in ('Active', 'Queued', 'Scheduled') AND downloadStartTime <= :currentTime 
         ORDER BY downloadStartTime, id
-        LIMIT 20
+        LIMIT 10
     """)
-    fun getQueuedScheduledDownloadsUntil(currentTime: Long) : Flow<List<DownloadItem>>
+    fun getActiveQueuedScheduledDownloadsUntil(currentTime: Long) : Flow<List<DownloadItem>>
 
     @Query("""
         SELECT * FROM downloads 
-        WHERE id in (:priorityItems) AND status in ('Queued', 'Scheduled') AND downloadStartTime <= :currentTime 
-        ORDER BY downloadStartTime, id
-        LIMIT 20
+        WHERE status in ('Active','Queued', 'Scheduled') AND downloadStartTime <= :currentTime 
+        ORDER BY 
+            CASE
+                WHEN id in (:priorityItems) THEN 0
+                ELSE 1
+            END,
+            downloadStartTime, id
+        LIMIT 10
     """)
-    fun getQueuedScheduledDownloadsUntilWithPriority(currentTime: Long, priorityItems: List<Long>) : Flow<List<DownloadItem>>
+    fun getActiveQueuedScheduledDownloadsUntilWithPriority(currentTime: Long, priorityItems: List<Long>) : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
     fun getQueuedDownloadsList() : List<DownloadItem>

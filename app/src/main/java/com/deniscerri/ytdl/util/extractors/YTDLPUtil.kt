@@ -1280,22 +1280,24 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val poTokens = mutableListOf<String>()
 
         val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!
-        val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+        kotlin.runCatching {
+            val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
 
-        for (value in configuredPlayerClients) {
-            if (value.enabled) {
-                if (!value.useOnlyPoToken) {
-                    playerClients.add(value.playerClient)
-                }
+            for (value in configuredPlayerClients) {
+                if (value.enabled) {
+                    if (!value.useOnlyPoToken) {
+                        playerClients.add(value.playerClient)
+                    }
 
-                var canUsePoToken = true
-                if (value.urlRegex.isNotEmpty() && url != null) {
-                    canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
-                }
+                    var canUsePoToken = true
+                    if (value.urlRegex.isNotEmpty() && url != null) {
+                        canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
+                    }
 
-                if (canUsePoToken) {
-                    value.poTokens.forEach { pt ->
-                        poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                    if (canUsePoToken) {
+                        value.poTokens.forEach { pt ->
+                            poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                        }
                     }
                 }
             }
@@ -1308,24 +1310,26 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")
-        val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
-        if (generatedPoTokens.isNotEmpty()) {
-            for (value in generatedPoTokens) {
-                if (value.enabled) {
-                    for (cl in value.clients) {
-                        playerClients.add(cl)
-                        for (pt in value.poTokens) {
-                            if (pt.token.isNotBlank()) {
-                                poTokens.add("${cl}.${pt.context}+${pt.token}")
+        kotlin.runCatching {
+            val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
+            if (generatedPoTokens.isNotEmpty()) {
+                for (value in generatedPoTokens) {
+                    if (value.enabled) {
+                        for (cl in value.clients) {
+                            playerClients.add(cl)
+                            for (pt in value.poTokens) {
+                                if (pt.token.isNotBlank()) {
+                                    poTokens.add("${cl}.${pt.context}+${pt.token}")
+                                }
                             }
                         }
-                    }
 
-                    if (dataSyncID.isBlank() && value.useVisitorData) {
-                        extractorArgs.add("player_skip=webpage,configs")
-                        extractorArgs.add("visitor_data=${value.visitorData}")
-                    }
+                        if (dataSyncID.isBlank() && value.useVisitorData) {
+                            extractorArgs.add("player_skip=webpage,configs")
+                            extractorArgs.add("visitor_data=${value.visitorData}")
+                        }
 
+                    }
                 }
             }
         }

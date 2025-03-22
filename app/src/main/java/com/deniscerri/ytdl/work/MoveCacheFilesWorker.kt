@@ -3,7 +3,7 @@ package com.deniscerri.ytdl.work
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import android.os.Environment
 import android.os.Handler
@@ -42,7 +42,7 @@ class MoveCacheFilesWorker(
         val notification = notificationUtil.createMoveCacheFilesNotification(pendingIntent, NotificationUtil.DOWNLOAD_MISC_CHANNEL_ID)
 
         if (Build.VERSION.SDK_INT > 33) {
-            setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+            setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(id, notification))
         }

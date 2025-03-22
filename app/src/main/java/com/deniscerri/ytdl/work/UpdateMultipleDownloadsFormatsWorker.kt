@@ -1,7 +1,7 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
@@ -33,7 +33,7 @@ class UpdateMultipleDownloadsFormatsWorker(
         val notification = notificationUtil.createFormatsUpdateNotification()
 
         if (Build.VERSION.SDK_INT > 33) {
-            setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+            setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(workID, notification))
         }

@@ -1,7 +1,7 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
@@ -57,7 +57,7 @@ class ObserveSourceWorker(
         val workerID = System.currentTimeMillis().toInt()
         val notification = notificationUtil.createObserveSourcesNotification(item.name)
         if (Build.VERSION.SDK_INT > 33) {
-            setForegroundAsync(ForegroundInfo(workerID, notification, FOREGROUND_SERVICE_TYPE_SPECIAL_USE))
+            setForegroundAsync(ForegroundInfo(workerID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(workerID, notification))
         }

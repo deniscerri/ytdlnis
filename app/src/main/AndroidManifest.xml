@@ -503,7 +503,7 @@
 
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
-            android:foregroundServiceType="specialUse"/>
+            android:foregroundServiceType="dataSync"/>
     </application>
 
 </manifest>

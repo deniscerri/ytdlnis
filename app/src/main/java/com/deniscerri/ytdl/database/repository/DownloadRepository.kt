@@ -3,11 +3,7 @@ package com.deniscerri.ytdl.database.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
-import android.os.Handler
-import android.os.Looper
 import android.text.format.DateFormat
-import android.widget.Toast
-import androidx.core.os.postDelayed
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.preference.PreferenceManager
@@ -16,9 +12,7 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.await
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.dao.DownloadDao
@@ -31,7 +25,6 @@ import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
