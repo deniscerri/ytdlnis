@@ -1,8 +1,10 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.content.pm.ServiceInfo
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
+import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -14,37 +16,37 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.runBlocking
 
 
-class UpdateMultipleDownloadsDataWorker(
-    private val context: Context,
-    workerParams: WorkerParameters
-) : Worker(context, workerParams) {
-    override fun doWork(): Result {
+class UpdateMultipleDownloadsDataWorker(private val context: Context,workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
+
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        val workNotif = NotificationUtil(App.instance).createDataUpdateNotification()
+
+        return ForegroundInfo(
+            2000000000,
+            workNotif,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                FOREGROUND_SERVICE_TYPE_DATA_SYNC
+            } else {
+                0
+            },
+        )
+    }
+
+
+    override suspend fun doWork(): Result {
         val dbManager = DBManager.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao
         val commandTemplateDao = dbManager.commandTemplateDao
         val resultRepo = ResultRepository(resDao,commandTemplateDao, context)
-        val notificationUtil = NotificationUtil(context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()
-        val workID = inputData.getInt("id", 0)
-        if (workID == 0) return Result.failure()
 
-        val notification = notificationUtil.createDataUpdateNotification()
-
-        if (Build.VERSION.SDK_INT > 33) {
-            setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
-        }else{
-            setForegroundAsync(ForegroundInfo(workID, notification))
-        }
-
-        var count = 0
-
-        return try{
+        setForegroundSafely()
+        try{
             ids.forEach {
                 if (!isStopped){
                     val d = dao.getDownloadById(it)
                     if (d.title.isNotBlank() && d.author.isNotBlank() && d.thumb.isNotBlank()) {
-                        count++
                         return@forEach
                     }
 
@@ -59,20 +61,18 @@ class UpdateMultipleDownloadsDataWorker(
                             }
                         }
                     }
-
-                    count++
-                    notificationUtil.updateDataUpdateNotification(workID, UpdateMultipleDownloadsDataWorker::class.java.name, count, ids.size)
                 }else{
                     throw Exception()
                 }
             }
 
-            Result.success()
+
         }catch (e: Exception){
-            notificationUtil.cancelDownloadNotification(workID)
             ids.clear()
-            Result.failure()
+            return Result.failure()
         }
+
+        return Result.success()
     }
 
 }

@@ -43,17 +43,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.flow.transformLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
@@ -80,6 +75,8 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
     private lateinit var eventBus: EventBus
 
     private lateinit var queueState : Flow<List<DownloadItem>>
+    lateinit var observeJob : Job
+
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -106,11 +103,6 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
             },
         )
     }
-
-    private fun cancelSelf() {
-        workManager.cancelWorkById(this@DownloadWorker.id)
-    }
-
 
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
@@ -157,75 +149,75 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
 
         val downloadJobs = mutableMapOf<Long, Job>()
 
-        queueState.collectLatest { queue ->
-            val runningCount = queue.asSequence()
-                .filter { it.status == DownloadRepository.Status.Active.toString() }
-                .count()
+        observeJob = CoroutineScope(SupervisorJob()).launch {
+            queueState.collectLatest { queue ->
+                val runningCount = queue.asSequence()
+                    .filter { it.status == DownloadRepository.Status.Active.toString() }
+                    .count()
 
-            val queueItems = queue.asSequence()
-                .filter { it.status != DownloadRepository.Status.Active.toString() }
+                val queueItems = queue.asSequence()
+                    .filter { it.status != DownloadRepository.Status.Active.toString() }
 
-            val queueCount = queueItems.count()
-            if (queueCount == 0 && runningCount == 0) {
-                cancelSelf()
-                return@collectLatest
-            }
-
-            val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
-            if (useScheduler){
-                if (queueItems.none{ it.downloadStartTime > 0L } && runningCount == 0 && !alarmScheduler.isDuringTheScheduledTime()) {
-                    cancelSelf()
+                val queueCount = queueItems.count()
+                if (queueCount == 0 && runningCount == 0) {
+                    observeJob.cancel()
                     return@collectLatest
                 }
-            }
 
-            val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - runningCount
-            if (concurrentDownloads > 0) {
-                //free spots are open
-                if (priorityItemIDs.isNotEmpty()) {
-                    if (!continueAfterPriorityIds && queueItems.none { priorityItemIDs.contains(it.id) }) {
-                        //dont queue any more items if only required priority items
-                        cancelSelf()
+                val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
+                if (useScheduler){
+                    if (queueItems.none{ it.downloadStartTime > 0L } && runningCount == 0 && !alarmScheduler.isDuringTheScheduledTime()) {
+                        observeJob.cancel()
                         return@collectLatest
                     }
                 }
 
-                // Use supervisorScope to cancel child jobs when the downloader job is cancelled
-                supervisorScope {
-                    val queuedDownloads = queueItems
-                        .toList()
-                        .take(concurrentDownloads)
-
-                    val queuedIDs = queuedDownloads.map { it.id }
-                    val downloadJobsToStop = downloadJobs.filter { it.key !in queuedIDs }
-                    downloadJobsToStop.forEach { (download, job) ->
-                        job.cancel()
-                        downloadJobs.remove(download)
+                val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - runningCount
+                if (concurrentDownloads > 0) {
+                    //free spots are open
+                    if (priorityItemIDs.isNotEmpty()) {
+                        if (!continueAfterPriorityIds && queueItems.none { priorityItemIDs.contains(it.id) }) {
+                            //dont queue any more items if only required priority items
+                            observeJob.cancel()
+                            return@collectLatest
+                        }
                     }
 
-                    val downloadsToStart = queuedDownloads.filter { it.id !in downloadJobs }
-                    downloadsToStart.forEach { download ->
-                        downloadJobs[download.id] = launchDownloadJob(download)
+                    // Use supervisorScope to cancel child jobs when the downloader job is cancelled
+                    supervisorScope {
+                        val queuedDownloads = queueItems
+                            .toList()
+                            .take(concurrentDownloads)
+
+                        val queuedIDs = queuedDownloads.map { it.id }
+                        val downloadJobsToStop = downloadJobs.filter { it.key !in queuedIDs }
+                        downloadJobsToStop.forEach { (download, job) ->
+                            job.cancel()
+                            downloadJobs.remove(download)
+                        }
+
+                        val downloadsToStart = queuedDownloads.filter { it.id !in downloadJobs }
+                        downloadsToStart.forEach { downloadItem ->
+                            val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
+                            notificationUtil.notify(downloadItem.id.toInt(), notification)
+                            downloadJobs[downloadItem.id] = launchDownloadJob(downloadItem)
+                        }
                     }
                 }
-            }
 
+            }
+        }
+
+        while (observeJob.isActive) {
+            //keep alive
         }
 
         return Result.Success()
     }
 
 
-
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun launchIO(block: suspend CoroutineScope.() -> Unit): Job =
-        GlobalScope.launch(Dispatchers.IO, CoroutineStart.DEFAULT, block)
-
     @OptIn(ExperimentalStdlibApi::class)
-    private fun launchDownloadJob(downloadItem: DownloadItem) = launchIO {
-        val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
-        notificationUtil.notify(downloadItem.id.toInt(), notification)
-
+    private fun launchDownloadJob(downloadItem: DownloadItem) = CoroutineScope(Dispatchers.IO).launch {
         val writtenPath = downloadItem.format.format_note.contains("-P ")
         val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 

@@ -626,7 +626,7 @@ class NotificationUtil(var context: Context) {
         return notificationBuilder
             .setContentTitle(resources.getString(R.string.updating_download_data))
             .setOngoing(true)
-            .setCategory(Notification.CATEGORY_PROGRESS)
+            .setCategory(Notification.CATEGORY_MESSAGE)
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
@@ -637,7 +637,6 @@ class NotificationUtil(var context: Context) {
             .setContentText("")
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setProgress(PROGRESS_MAX, PROGRESS_CURR, false)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .clearActions()
             .build()

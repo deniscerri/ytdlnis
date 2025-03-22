@@ -1062,8 +1062,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
             result.message = repository.startDownloadWorker(queued, context).getOrElse { "" }
 
-            val ids = queued.filter { it.needsDataUpdating() }.map { it.id }
-            continueUpdatingDataInBackground(ids)
+            val idsToUpdateDataInBackground = queued.filter { it.needsDataUpdating() && it.downloadStartTime > 0 }.map { it.id }
+            if (idsToUpdateDataInBackground.isNotEmpty()) {
+                continueUpdatingDataInBackground(idsToUpdateDataInBackground)
+            }
         }
 
 
@@ -1201,18 +1203,16 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     private fun continueUpdatingDataInBackground(ids: List<Long>){
-        val id = System.currentTimeMillis().toInt()
         val workRequest = OneTimeWorkRequestBuilder<UpdateMultipleDownloadsDataWorker>()
             .setInputData(
                 Data.Builder()
                     .putLongArray("ids", ids.toLongArray())
-                    .putInt("id", id)
                     .build())
             .addTag("updateData")
             .build()
         val context = App.instance
         WorkManager.getInstance(context).enqueueUniqueWork(
-            id.toString(),
+            System.currentTimeMillis().toString(),
             ExistingWorkPolicy.REPLACE,
             workRequest
         )
