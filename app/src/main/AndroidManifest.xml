@@ -23,7 +23,7 @@
 <!--    queueing processing downloads in the background-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <!--    foreground service permission for android 14 and up-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
 
     <application
