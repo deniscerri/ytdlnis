@@ -20,7 +20,8 @@ import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdl.ui.adapter.TerminalDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.downloader.DownloadManager
+import com.deniscerri.ytdl.work.downloader.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.flow.collectLatest
@@ -84,7 +85,7 @@ class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnIte
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+    fun onDownloadProgressEvent(event: DownloadManager.DownloadProgress) {
         val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
         val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 

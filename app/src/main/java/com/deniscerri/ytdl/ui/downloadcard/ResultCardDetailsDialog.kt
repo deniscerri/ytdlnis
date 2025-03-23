@@ -48,7 +48,7 @@ import com.deniscerri.ytdl.util.Extensions.setFullScreen
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.downloader.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -474,25 +474,16 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
     override fun onCancelClick(itemID: Long) {
         lifecycleScope.launch {
-            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
-            notificationUtil.cancelDownloadNotification(itemID.toInt())
-
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }
-            item.status = DownloadRepository.Status.Cancelled.toString()
             withContext(Dispatchers.IO){
-                downloadViewModel.updateDownload(item)
+                downloadViewModel.cancelDownload(itemID)
             }
         }
     }
 
     override fun onPauseClick(itemID: Long, position: Int) {
         lifecycleScope.launch {
-            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
-            notificationUtil.cancelDownloadNotification(itemID.toInt())
             withContext(Dispatchers.IO){
-                downloadViewModel.updateToStatus(itemID, DownloadRepository.Status.Paused)
+                downloadViewModel.pauseDownload(itemID)
             }
             activeAdapter.notifyItemChanged(position)
         }
@@ -511,7 +502,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
 
     //dont remove
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+    fun onDownloadProgressEvent(event: com.deniscerri.ytdl.work.downloader.DownloadManager.DownloadProgress) {
         val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
         val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 

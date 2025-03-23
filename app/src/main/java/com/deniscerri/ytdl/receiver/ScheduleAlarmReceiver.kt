@@ -9,7 +9,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.downloader.DownloadWorker
 import java.util.concurrent.TimeUnit
 
 class ScheduleAlarmReceiver : BroadcastReceiver() {

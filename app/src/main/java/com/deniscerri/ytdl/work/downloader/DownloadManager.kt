@@ -1,11 +1,9 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.downloader
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.ServiceInfo
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
@@ -15,10 +13,6 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
-import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
-import androidx.work.WorkManager
-import androidx.work.WorkerParameters
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.MainActivity
@@ -38,17 +32,17 @@ import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
+import com.deniscerri.ytdl.work.AlarmScheduler
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.supervisorScope
@@ -58,56 +52,72 @@ import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
 
+class DownloadManager private constructor() {
+    private var notificationUtil: NotificationUtil = NotificationUtil(App.instance)
+    private var sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.instance)
 
-class DownloadWorker(private val context: Context,workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
-    private lateinit var dao : DownloadDao
-    private lateinit var notificationUtil: NotificationUtil
     private lateinit var dbManager: DBManager
+    private lateinit var dao : DownloadDao
     private lateinit var historyDao: HistoryDao
     private lateinit var commandTemplateDao: CommandTemplateDao
     private lateinit var logRepo: LogRepository
     private lateinit var resultRepo: ResultRepository
     private lateinit var ytdlpUtil: YTDLPUtil
     private lateinit var alarmScheduler : AlarmScheduler
-    private lateinit var sharedPreferences : SharedPreferences
-    private lateinit var resources: Resources
-    private lateinit var workManager: WorkManager
     private lateinit var eventBus: EventBus
+    private lateinit var resources: Resources
+
+    private lateinit var openDownloadQueue: PendingIntent
 
     private lateinit var queueState : Flow<List<DownloadItem>>
-    lateinit var observeJob : Job
-
-
+    private var observeJob : Job? = null
     private val handler = Handler(Looper.getMainLooper())
 
-    private val openDownloadQueue: PendingIntent = PendingIntent.getActivity(
-        context,
-        1000000000,
-        Intent(context, MainActivity::class.java).run {
-            action = Intent.ACTION_VIEW
-            putExtra("destination", "Queue")
-        },
-        PendingIntent.FLAG_IMMUTABLE
-    )
+    val isRunning get() = observeJob?.isActive == true
 
-    override suspend fun getForegroundInfo(): ForegroundInfo {
-        val workNotif = NotificationUtil(App.instance).createDefaultWorkerNotification()
-
-        return ForegroundInfo(
-            1000000000,
-            workNotif,
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
-            } else {
-                0
-            },
-        )
+    private fun getActiveDownloadsStore() : Set<String> {
+        return sharedPreferences.getStringSet("ytdlp_active_downloads", setOf())!!
     }
 
-    @SuppressLint("RestrictedApi")
-    override suspend fun doWork(): Result {
+    private fun addIDToActiveDownloadsStore(id: Long) {
+        val new = mutableSetOf<String>()
+        new.addAll(getActiveDownloadsStore())
+        new.add(id.toString())
+
+        sharedPreferences.edit().putStringSet("ytdlp_active_downloads", new).apply()
+    }
+
+    private fun removeIDFromActiveDownloadsStore(id: Long) {
+        val new = mutableSetOf<String>()
+        new.addAll(getActiveDownloadsStore())
+        new.remove(id.toString())
+
+        sharedPreferences.edit().putStringSet("ytdlp_active_downloads", new).apply()
+    }
+
+    fun cancelDownload(id: Long) {
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        notificationUtil.cancelDownloadNotification(id.toInt())
+        removeIDFromActiveDownloadsStore(id)
+    }
+
+    fun cancelAll() {
+        getActiveDownloadsStore().map { it.toLong() }.forEach {
+            cancelDownload(it)
+        }
+        observeJob?.cancel()
+    }
+
+    //only call from download worker
+    fun startDownload(
+        context: Context, //worker context
+        priorityItems: List<Long> = listOf(),
+        continueAfterPriorityIds : Boolean = true
+    ) {
+        val priorityItemIDs = priorityItems.toMutableList()
+
         //init
-        notificationUtil = NotificationUtil(App.instance)
+        notificationUtil = NotificationUtil(context)
         dbManager = DBManager.getInstance(context)
         dao = dbManager.downloadDao
         historyDao = dbManager.historyDao
@@ -118,6 +128,8 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
         alarmScheduler = AlarmScheduler(context)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         eventBus = EventBus.getDefault()
+
+        sharedPreferences.edit().putStringSet("ytdlp_active_downloads", setOf()).apply()
 
         val confTmp = Configuration(context.resources.configuration)
         val locale = if (Build.VERSION.SDK_INT < 33) {
@@ -133,13 +145,16 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
         val metrics = DisplayMetrics()
         resources = Resources(context.assets, metrics, confTmp)
 
-        workManager = WorkManager.getInstance(context)
-        if (workManager.isRunning("download")) return Result.Failure()
+        openDownloadQueue = PendingIntent.getActivity(
+            context,
+            1000000000,
+            Intent(context, MainActivity::class.java).run {
+                action = Intent.ACTION_VIEW
+                putExtra("destination", "Queue")
+            },
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
-        setForegroundSafely()
-
-        val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
-        val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
         val time = System.currentTimeMillis() + 6000
         queueState = if (priorityItemIDs.isEmpty()) {
             dao.getActiveQueuedScheduledDownloadsUntil(time)
@@ -147,10 +162,8 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
             dao.getActiveQueuedScheduledDownloadsUntilWithPriority(time, priorityItemIDs)
         }
 
-        val downloadJobs = mutableMapOf<Long, Job>()
-
-        observeJob = CoroutineScope(SupervisorJob()).launch {
-            queueState.collectLatest { queue ->
+        observeJob = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            queueState.distinctUntilChanged().collectLatest { queue ->
                 val runningCount = queue.asSequence()
                     .filter { it.status == DownloadRepository.Status.Active.toString() }
                     .count()
@@ -160,66 +173,53 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
 
                 val queueCount = queueItems.count()
                 if (queueCount == 0 && runningCount == 0) {
-                    observeJob.cancel()
+                    observeJob?.cancel()
                     return@collectLatest
                 }
 
                 val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
                 if (useScheduler){
                     if (queueItems.none{ it.downloadStartTime > 0L } && runningCount == 0 && !alarmScheduler.isDuringTheScheduledTime()) {
-                        observeJob.cancel()
+                        observeJob?.cancel()
                         return@collectLatest
                     }
+                }
+
+                if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
+                    observeJob?.cancel()
+                    return@collectLatest
                 }
 
                 val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - runningCount
                 if (concurrentDownloads > 0) {
                     //free spots are open
-                    if (priorityItemIDs.isNotEmpty()) {
-                        if (!continueAfterPriorityIds && queueItems.none { priorityItemIDs.contains(it.id) }) {
-                            //dont queue any more items if only required priority items
-                            observeJob.cancel()
-                            return@collectLatest
-                        }
-                    }
-
                     // Use supervisorScope to cancel child jobs when the downloader job is cancelled
                     supervisorScope {
                         val queuedDownloads = queueItems
                             .toList()
                             .take(concurrentDownloads)
 
-                        val queuedIDs = queuedDownloads.map { it.id }
-                        val downloadJobsToStop = downloadJobs.filter { it.key !in queuedIDs }
-                        downloadJobsToStop.forEach { (download, job) ->
-                            job.cancel()
-                            downloadJobs.remove(download)
-                        }
-
-                        val downloadsToStart = queuedDownloads.filter { it.id !in downloadJobs }
+                        priorityItemIDs.removeAll(queuedDownloads.map { it.id })
+                        val downloadsToStart = queuedDownloads.filter { it.id.toString() !in getActiveDownloadsStore() }
                         downloadsToStart.forEach { downloadItem ->
                             val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
                             notificationUtil.notify(downloadItem.id.toInt(), notification)
-                            downloadJobs[downloadItem.id] = launchDownloadJob(downloadItem)
+                            launchDownloadJob(context, downloadItem)
+                            addIDToActiveDownloadsStore(downloadItem.id)
                         }
                     }
                 }
 
             }
         }
-
-        while (observeJob.isActive) {
-            //keep alive
-        }
-
-        return Result.Success()
     }
 
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun launchDownloadJob(downloadItem: DownloadItem) = CoroutineScope(Dispatchers.IO).launch {
+    private fun launchDownloadJob(context: Context, downloadItem: DownloadItem) = CoroutineScope(Dispatchers.IO).launch {
         val writtenPath = downloadItem.format.format_note.contains("-P ")
-        val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
+        val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(
+            FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
         val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
 
@@ -270,7 +270,7 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
         runCatching {
             YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
             YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
-                eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
+                eventBus.post(DownloadProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
                 val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                 notificationUtil.updateDownloadNotification(
                     downloadItem.id.toInt(),
@@ -288,12 +288,13 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
             resultRepo.updateDownloadItem(downloadItem)?.apply {
                 dao.updateWithoutUpsert(this)
             }
+            removeIDFromActiveDownloadsStore(downloadItem.id)
             //val wasQuickDownloaded = resultDao.getCountInt() == 0
             runBlocking {
                 var finalPaths = mutableListOf<String>()
 
                 if (noCache){
-                    eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
+                    eventBus.post(DownloadProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
                     val outputSequence = it.out.split("\n")
                     finalPaths =
                         outputSequence.asSequence()
@@ -315,17 +316,17 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
                     FileUtil.scanMedia(finalPaths, context)
                 }else{
                     //move file from internal to set download directory
-                    eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                    eventBus.post(DownloadProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                     try {
                         finalPaths = withContext(Dispatchers.IO){
                             FileUtil.moveFile(tempFileDir.absoluteFile,
                                 context, downloadLocation, keepCache){ p ->
-                                eventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                                eventBus.post(DownloadProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                             }
                         }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }.toMutableList()
 
                         if (finalPaths.isNotEmpty()){
-                            eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                            eventBus.post(DownloadProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                         }
                     }catch (e: Exception){
                         e.printStackTrace()
@@ -413,10 +414,11 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
 
         }.onFailure {
             FileUtil.deleteConfigFiles(request)
+            removeIDFromActiveDownloadsStore(downloadItem.id)
             withContext(Dispatchers.Main){
                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
             }
-            if (isStopped) return@onFailure
+            if (!this.isActive) return@onFailure
             if (it is YoutubeDL.CanceledException) return@onFailure
             if (it.message?.contains("JSONDecodeError") == true) {
                 val cachePath = "${FileUtil.getCachePath(context)}infojsons"
@@ -456,19 +458,28 @@ class DownloadWorker(private val context: Context,workerParams: WorkerParameters
                 resources
             )
 
-            eventBus.post(WorkerProgress(100, it.toString(), downloadItem.id, downloadItem.logID))
+            eventBus.post(DownloadProgress(100, it.toString(), downloadItem.id, downloadItem.logID))
         }
     }
 
     companion object {
-        const val TAG = "DownloadWorker"
+        const val TAG = "DownloadManager"
+        @Volatile
+        private var instance: DownloadManager? = null
+
+        fun getInstance() : DownloadManager {
+            return instance ?: synchronized(this) {
+                instance ?: DownloadManager().also {
+                    instance = it
+                }
+            }
+        }
     }
 
-    class WorkerProgress(
+    class DownloadProgress(
         val progress: Int,
         val output: String,
         val downloadItemID: Long,
         val logItemID: Long?
     )
-
 }

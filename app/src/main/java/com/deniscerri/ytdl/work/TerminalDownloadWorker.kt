@@ -22,6 +22,8 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.work.downloader.DownloadManager
+import com.deniscerri.ytdl.work.downloader.DownloadWorker
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.CoroutineScope
@@ -122,7 +124,7 @@ class TerminalDownloadWorker(
 
             YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
                 runBlocking {
-                    eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
+                    eventBus.post(DownloadManager.DownloadProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }
 
                 val title: String = command.take(65)
@@ -142,7 +144,7 @@ class TerminalDownloadWorker(
                     //move file from internal to set download directory
                     try {
                         FileUtil.moveFile(File(FileUtil.getCachePath(context) + "/TERMINAL/" + itemId),context, downloadLocation!!, false){ p ->
-                            eventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong(), logItem.id))
+                            eventBus.post(DownloadManager.DownloadProgress(p, "", itemId.toLong(), logItem.id))
                         }
                     }catch (e: Exception){
                         e.printStackTrace()

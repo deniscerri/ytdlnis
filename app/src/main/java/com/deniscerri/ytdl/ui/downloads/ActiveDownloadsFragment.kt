@@ -24,16 +24,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.downloader.DownloadManager
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -151,7 +149,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     //dont remove
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+    fun onDownloadProgressEvent(event: DownloadManager.DownloadProgress) {
         val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
         val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 
@@ -176,15 +174,8 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     override fun onCancelClick(itemID: Long) {
         lifecycleScope.launch {
-            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
-            notificationUtil.cancelDownloadNotification(itemID.toInt())
-
-            val item = withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }
-            item.status = DownloadRepository.Status.Cancelled.toString()
             withContext(Dispatchers.IO){
-                downloadViewModel.updateDownload(item)
+                downloadViewModel.cancelDownload(itemID)
             }
         }
     }
@@ -202,10 +193,8 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     override fun onPauseClick(itemID: Long) {
         lifecycleScope.launch {
-            YoutubeDL.getInstance().destroyProcessById(itemID.toString())
-            notificationUtil.cancelDownloadNotification(itemID.toInt())
             withContext(Dispatchers.IO){
-                downloadViewModel.updateToStatus(itemID, DownloadRepository.Status.Paused)
+                downloadViewModel.pauseDownload(itemID)
             }
         }
     }

@@ -30,7 +30,8 @@ import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
 import com.deniscerri.ytdl.util.FileUtil
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.downloader.DownloadManager
+import com.deniscerri.ytdl.work.downloader.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -265,7 +266,7 @@ class DownloadLogFragment : Fragment() {
 
     //dont remove
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
+    fun onDownloadProgressEvent(event: DownloadManager.DownloadProgress) {
         val progressBar = requireView().findViewById<LinearProgressIndicator>(R.id.progress)
         if (event.logItemID == logID) {
             progressBar.isVisible = event.progress < 100

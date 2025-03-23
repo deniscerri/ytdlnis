@@ -26,7 +26,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloads() : Flow<List<DownloadItem>>
 
-    @Query("SELECT * FROM downloads WHERE status='Active' or status = 'Paused' ORDER BY CASE WHEN status = 'Active' THEN 0 ELSE 1 END")
+    @Query("SELECT * FROM downloads WHERE status='Active' or status = 'Paused' ORDER BY id")
     fun getActiveAndPausedDownloads() : Flow<List<DownloadItem>>
 
     @Query("SELECT * FROM downloads WHERE status='Paused'")

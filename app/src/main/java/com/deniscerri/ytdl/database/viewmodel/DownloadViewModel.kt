@@ -49,6 +49,7 @@ import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
+import com.deniscerri.ytdl.work.downloader.DownloadManager
 import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CancellationException
@@ -99,6 +100,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val savedDownloadsCount : Flow<Int>
     val scheduledDownloadsCount : Flow<Int>
 
+    val downloadManager: DownloadManager
+
     val pausedAllDownloads = MediatorLiveData(PausedAllDownloadsState.HIDDEN)
     private val pausedAllDownloadsFlow : Flow<PausedAllDownloadsState>
     private var isPausingResuming = false
@@ -145,6 +148,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         ytdlpUtil = YTDLPUtil(application, commandTemplateDao)
+        downloadManager = DownloadManager.getInstance()
 
         activeDownloadsCount = repository.activeDownloadsCount
         activePausedDownloadsCount = repository.activePausedDownloadsCount
@@ -1291,28 +1295,45 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dao.getProcessingAsIncognitoCount() > 0
     }
 
+    fun cancelDownloadOnly(id : Long) {
+        downloadManager.cancelDownload(id)
+    }
 
-    fun pauseAllDownloads() = viewModelScope.launch {
+    suspend fun cancelDownload(id: Long) {
+        downloadManager.cancelDownload(id)
+        val item = getItemByID(id)
+        item.status = DownloadRepository.Status.Cancelled.toString()
+        updateDownload(item)
+    }
+
+    suspend fun pauseDownload(id: Long)  {
+        downloadManager.cancelDownload(id)
+        updateToStatus(id, DownloadRepository.Status.Paused)
+    }
+
+    suspend fun pauseAllDownloads() {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
+        downloadManager.cancelAll()
         val activeDownloadsList = withContext(Dispatchers.IO){
             getActiveDownloads()
         }
-        activeDownloadsList.forEach {
-            YoutubeDL.getInstance().destroyProcessById(it.id.toString())
-            notificationUtil.cancelDownloadNotification(it.id.toInt())
-        }
         delay(1000)
         isPausingResuming = false
-        repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
-        pausedAllDownloads.value = PausedAllDownloadsState.RESUME
+        withContext(Dispatchers.IO) {
+            repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
+        }
+        withContext(Dispatchers.Main) {
+            pausedAllDownloads.value = PausedAllDownloadsState.RESUME
+        }
     }
 
-    fun resumeAllDownloads() = viewModelScope.launch {
+    suspend fun resumeAllDownloads() {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
+        downloadManager.cancelAll()
         val paused = withContext(Dispatchers.IO) {
             dao.getPausedDownloadsList()
         }

@@ -123,36 +123,14 @@ class MoreFragment : Fragment() {
                 val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
                 terminateDialog.setView(dialogView)
 
-
-
                 checkbox.setOnCheckedChangeListener { compoundButton, b ->
                     doNotShowAgain = compoundButton.isChecked
                 }
 
-                val workManager = WorkManager.getInstance(requireContext())
-                val notificationUtil = NotificationUtil(requireContext())
-
                 terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                 terminateDialog.setPositiveButton(getString(R.string.ok)) { diag: DialogInterface?, _: Int ->
                     lifecycleScope.launch {
-                        val activeDownloads = withContext(Dispatchers.IO){
-                            downloadViewModel.getActiveDownloadsCount()
-                        }
-                        if (activeDownloads > 0) {
-                            workManager.cancelAllWorkByTag("download")
-                            val activeDownloadsList = withContext(Dispatchers.IO){
-                                downloadViewModel.getActiveDownloads()
-                            }
-
-                            activeDownloadsList.forEach {
-                                YoutubeDL.getInstance().destroyProcessById(it.id.toString())
-                                notificationUtil.cancelDownloadNotification(it.id.toInt())
-                                it.status = DownloadRepository.Status.Paused.toString()
-                                withContext(Dispatchers.IO) {
-                                    downloadViewModel.updateDownload(it)
-                                }
-                            }
-                        }
+                        downloadViewModel.pauseAllDownloads()
 
                         if (doNotShowAgain){
                             mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false).apply()

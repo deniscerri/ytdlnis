@@ -216,8 +216,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                             val selectedObjects = getSelectedIDs()
                             adapter.clearCheckedItems()
                             for (id in selectedObjects){
-                                YoutubeDL.getInstance().destroyProcessById(id.toInt().toString())
-                                notificationUtil.cancelDownloadNotification(id.toInt())
+                                downloadViewModel.cancelDownloadOnly(id)
                             }
                             downloadViewModel.deleteAllWithID(selectedObjects)
                             actionMode?.finish()
@@ -524,20 +523,10 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
 
     private fun cancelDownload(itemID: Long){
         lifecycleScope.launch {
-            cancelItem(itemID.toInt())
             withContext(Dispatchers.IO){
-                downloadViewModel.getItemByID(itemID)
-            }.let {
-                it.status = DownloadRepository.Status.Cancelled.toString()
-                withContext(Dispatchers.IO){
-                    downloadViewModel.updateDownload(it)
-                }
+                downloadViewModel.cancelDownload(itemID)
             }
         }
     }
 
-    private fun cancelItem(id: Int){
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
-        notificationUtil.cancelDownloadNotification(id)
-    }
 }
