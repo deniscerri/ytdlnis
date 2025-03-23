@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:clipToPadding="false"
+        android:paddingBottom="100dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

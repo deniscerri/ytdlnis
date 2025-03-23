@@ -55,9 +55,9 @@ import java.util.Locale
 class DownloadManager private constructor() {
     private var notificationUtil: NotificationUtil = NotificationUtil(App.instance)
     private var sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.instance)
+    private var dbManager: DBManager = DBManager.getInstance(App.instance)
+    private var dao : DownloadDao = dbManager.downloadDao
 
-    private lateinit var dbManager: DBManager
-    private lateinit var dao : DownloadDao
     private lateinit var historyDao: HistoryDao
     private lateinit var commandTemplateDao: CommandTemplateDao
     private lateinit var logRepo: LogRepository
@@ -75,37 +75,18 @@ class DownloadManager private constructor() {
 
     val isRunning get() = observeJob?.isActive == true
 
-    private fun getActiveDownloadsStore() : Set<String> {
-        return sharedPreferences.getStringSet("ytdlp_active_downloads", setOf())!!
-    }
-
-    private fun addIDToActiveDownloadsStore(id: Long) {
-        val new = mutableSetOf<String>()
-        new.addAll(getActiveDownloadsStore())
-        new.add(id.toString())
-
-        sharedPreferences.edit().putStringSet("ytdlp_active_downloads", new).apply()
-    }
-
-    private fun removeIDFromActiveDownloadsStore(id: Long) {
-        val new = mutableSetOf<String>()
-        new.addAll(getActiveDownloadsStore())
-        new.remove(id.toString())
-
-        sharedPreferences.edit().putStringSet("ytdlp_active_downloads", new).apply()
-    }
-
     fun cancelDownload(id: Long) {
         YoutubeDL.getInstance().destroyProcessById(id.toString())
         notificationUtil.cancelDownloadNotification(id.toInt())
-        removeIDFromActiveDownloadsStore(id)
     }
 
     fun cancelAll() {
-        getActiveDownloadsStore().map { it.toLong() }.forEach {
-            cancelDownload(it)
-        }
         observeJob?.cancel()
+        observeJob = null
+        val activeDownloads = dao.getActiveDownloadsList()
+        activeDownloads.forEach {
+            cancelDownload(it.id)
+        }
     }
 
     //only call from download worker
@@ -163,53 +144,68 @@ class DownloadManager private constructor() {
         }
 
         observeJob = CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            queueState.distinctUntilChanged().collectLatest { queue ->
-                val runningCount = queue.asSequence()
-                    .filter { it.status == DownloadRepository.Status.Active.toString() }
-                    .count()
+            supervisorScope {
+                queueState.distinctUntilChanged().collectLatest { queue ->
+                    val activeDownloads = queue
+                        .asSequence()
+                        .filter { it.status == DownloadRepository.Status.Active.toString() }
+                        .map { it.id }
 
-                val queueItems = queue.asSequence()
-                    .filter { it.status != DownloadRepository.Status.Active.toString() }
+                    val activeDownloadsCount = activeDownloads.count()
 
-                val queueCount = queueItems.count()
-                if (queueCount == 0 && runningCount == 0) {
-                    observeJob?.cancel()
-                    return@collectLatest
-                }
+                    val queueItems = queue
+                        .asSequence()
+                        .filter { it.status != DownloadRepository.Status.Active.toString() }
 
-                val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
-                if (useScheduler){
-                    if (queueItems.none{ it.downloadStartTime > 0L } && runningCount == 0 && !alarmScheduler.isDuringTheScheduledTime()) {
+                    val queueCount = queueItems.count()
+                    if (queueCount == 0 && activeDownloadsCount == 0) {
                         observeJob?.cancel()
                         return@collectLatest
                     }
-                }
 
-                if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
-                    observeJob?.cancel()
-                    return@collectLatest
-                }
+                    if (!isRunning) {
+                        observeJob?.cancel()
+                        return@collectLatest
+                    }
 
-                val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - runningCount
-                if (concurrentDownloads > 0) {
-                    //free spots are open
-                    // Use supervisorScope to cancel child jobs when the downloader job is cancelled
-                    supervisorScope {
-                        val queuedDownloads = queueItems
-                            .toList()
-                            .take(concurrentDownloads)
-
-                        priorityItemIDs.removeAll(queuedDownloads.map { it.id })
-                        val downloadsToStart = queuedDownloads.filter { it.id.toString() !in getActiveDownloadsStore() }
-                        downloadsToStart.forEach { downloadItem ->
-                            val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
-                            notificationUtil.notify(downloadItem.id.toInt(), notification)
-                            launchDownloadJob(context, downloadItem)
-                            addIDToActiveDownloadsStore(downloadItem.id)
+                    val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
+                    if (useScheduler){
+                        if (queueItems.none{ it.downloadStartTime > 0L } && activeDownloadsCount == 0 && !alarmScheduler.isDuringTheScheduledTime()) {
+                            observeJob?.cancel()
+                            return@collectLatest
                         }
                     }
-                }
 
+                    val concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - activeDownloadsCount
+                    if (concurrentDownloads > 0) {
+
+                        supervisorScope {
+                            //free spots are open
+                            val queuedDownloads = if (priorityItemIDs.isNotEmpty() && !continueAfterPriorityIds) {
+                                queueItems
+                                    .filter { priorityItemIDs.contains(it.id) }
+                                    .toList()
+                            }else{
+                                queueItems.toList()
+                            }.take(concurrentDownloads)
+
+
+                            priorityItemIDs.removeAll(queuedDownloads.map { it.id })
+                            val downloadsToStart = queuedDownloads.filter { it.id !in activeDownloads }
+                            downloadsToStart.forEach { downloadItem ->
+                                val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
+                                notificationUtil.notify(downloadItem.id.toInt(), notification)
+                                launchDownloadJob(context, downloadItem)
+                            }
+                        }
+                    }
+
+                    if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
+                        observeJob?.cancel()
+                        return@collectLatest
+                    }
+
+                }
             }
         }
     }
@@ -288,7 +284,6 @@ class DownloadManager private constructor() {
             resultRepo.updateDownloadItem(downloadItem)?.apply {
                 dao.updateWithoutUpsert(this)
             }
-            removeIDFromActiveDownloadsStore(downloadItem.id)
             //val wasQuickDownloaded = resultDao.getCountInt() == 0
             runBlocking {
                 var finalPaths = mutableListOf<String>()
@@ -414,7 +409,6 @@ class DownloadManager private constructor() {
 
         }.onFailure {
             FileUtil.deleteConfigFiles(request)
-            removeIDFromActiveDownloadsStore(downloadItem.id)
             withContext(Dispatchers.Main){
                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
             }

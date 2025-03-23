@@ -201,6 +201,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     override fun onResumeClick(itemID: Long) {
         downloadViewModel.resumeDownload(itemID)
+        //activeRecyclerView.smoothScrollToPosition(0)
     }
 
 }
