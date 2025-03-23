@@ -10,13 +10,9 @@ import android.util.DisplayMetrics
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.media3.common.Player.Command
 import androidx.paging.PagingData
-import androidx.paging.filter
-import androidx.paging.map
 import androidx.preference.PreferenceManager
 import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
@@ -49,7 +45,6 @@ import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
-import com.deniscerri.ytdl.work.downloader.DownloadManager
 import com.google.gson.Gson
 import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CancellationException
@@ -58,11 +53,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -99,9 +91,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val erroredDownloadsCount : Flow<Int>
     val savedDownloadsCount : Flow<Int>
     val scheduledDownloadsCount : Flow<Int>
-
-    val downloadManager: DownloadManager
-
     val pausedAllDownloads = MediatorLiveData(PausedAllDownloadsState.HIDDEN)
     private val pausedAllDownloadsFlow : Flow<PausedAllDownloadsState>
     private var isPausingResuming = false
@@ -148,7 +137,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, application)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         ytdlpUtil = YTDLPUtil(application, commandTemplateDao)
-        downloadManager = DownloadManager.getInstance()
 
         activeDownloadsCount = repository.activeDownloadsCount
         activePausedDownloadsCount = repository.activePausedDownloadsCount
@@ -1296,38 +1284,39 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelDownloadOnly(id : Long) {
-        downloadManager.cancelDownload(id)
+        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        notificationUtil.cancelDownloadNotification(id.toInt())
     }
 
     suspend fun cancelDownload(id: Long) {
-        downloadManager.cancelDownload(id)
-        val item = getItemByID(id)
-        item.status = DownloadRepository.Status.Cancelled.toString()
-        updateDownload(item)
+        cancelDownloadOnly(id)
+        updateToStatus(id, DownloadRepository.Status.Cancelled)
     }
 
     suspend fun pauseDownload(id: Long)  {
-        downloadManager.cancelDownload(id)
+        cancelDownloadOnly(id)
         updateToStatus(id, DownloadRepository.Status.Paused)
     }
 
     suspend fun pauseAllDownloads() {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
-
-        withContext(Dispatchers.IO){
-            downloadManager.cancelAll()
-        }
-
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
         val activeDownloadsList = withContext(Dispatchers.IO){
             getActiveDownloads()
         }
-        delay(1000)
-        isPausingResuming = false
+
+        activeDownloadsList.forEach {
+            cancelDownloadOnly(it.id)
+        }
+
         withContext(Dispatchers.IO) {
             repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
         }
+        delay(1500)
+        isPausingResuming = false
+
+
         withContext(Dispatchers.Main) {
             pausedAllDownloads.value = PausedAllDownloadsState.RESUME
         }
@@ -1336,12 +1325,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     suspend fun resumeAllDownloads() {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
-        WorkManager.getInstance(application).cancelAllWorkByTag("download")
-
-        withContext(Dispatchers.IO){
-            downloadManager.cancelAll()
-        }
-
         val paused = withContext(Dispatchers.IO) {
             dao.getPausedDownloadsList()
         }
@@ -1350,7 +1333,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             dbManager.downloadDao.resetPausedToQueued()
             repository.startDownloadWorker(paused, application)
         }
-        delay(1000)
+        delay(1500)
         isPausingResuming = false
         withContext(Dispatchers.Main) {
             pausedAllDownloads.value = PausedAllDownloadsState.PAUSE
@@ -1366,12 +1349,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         cancelAllDownloadsImpl()
     }
 
-    private suspend fun cancelAllDownloadsImpl() {
-        cancelActiveQueued()
-        withContext(Dispatchers.IO) {
-            downloadManager.cancelAll()
-        }
+    private fun cancelAllDownloadsImpl() {
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
+        cancelActiveQueued()
     }
 
     fun resumeDownload(itemID: Long) = viewModelScope.launch {

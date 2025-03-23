@@ -28,7 +28,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.work.downloader.DownloadManager
+import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -149,7 +149,7 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
 
     //dont remove
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadManager.DownloadProgress) {
+    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
         val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
         val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 
