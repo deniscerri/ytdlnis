@@ -1,8 +1,6 @@
 package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
 
 import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -32,9 +30,6 @@ class GenerateYoutubePoTokensFragment : Fragment() {
     private lateinit var preferences: SharedPreferences
     private lateinit var configuration : MutableList<YoutubeGeneratePoTokenItem>
     private lateinit var workManager : WorkManager
-    private lateinit var poTokenGenerator: PoTokenGenerator
-
-    private val sampleURL = "https://www.youtube.com/watch?v=aqz-KE-bpKQ" // Big Buck Bunny
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,7 +39,6 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         settingsActivity = activity as SettingsActivity
         settingsActivity.changeTopAppbarTitle(getString(R.string.generate_potokens))
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        poTokenGenerator = PoTokenGenerator()
         workManager = WorkManager.getInstance(requireContext())
         return inflater.inflate(R.layout.fragment_generate_youtube_po_token, container, false)
     }

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
+package com.deniscerri.ytdl.util.extractors.newpipe.potoken
 
 import android.os.Handler
 import android.os.Looper
@@ -6,7 +6,6 @@ import android.util.Log
 import android.webkit.CookieManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebView
 import kotlinx.coroutines.runBlocking
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.services.youtube.InnertubeClientRequestInfo
@@ -14,9 +13,8 @@ import org.schabi.newpipe.extractor.services.youtube.PoTokenProvider
 import org.schabi.newpipe.extractor.services.youtube.PoTokenResult
 import org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper
 
-//for newpipe
-class PoTokenGenerator : PoTokenProvider {
-    val TAG = PoTokenGenerator::class.simpleName
+class NewPipePoTokenGenerator : PoTokenProvider {
+    val TAG = NewPipePoTokenGenerator::class.simpleName
     private val supportsWebView by lazy { runCatching { CookieManager.getInstance() }.isSuccess }
 
     private object WebPoTokenGenLock
@@ -39,7 +37,7 @@ class PoTokenGenerator : PoTokenProvider {
     /**
      * @param forceRecreate whether to force the recreation of [webPoTokenGenerator], to be used in
      * case the current [webPoTokenGenerator] threw an error last time
-     * [PoTokenGenerator.generatePoToken] was called
+     * [NewPipePoTokenGenerator.generatePoToken] was called
      */
     private fun getWebClientPoToken(videoId: String, forceRecreate: Boolean): PoTokenResult {
         // just a helper class since Kotlin does not have builtin support for 4-tuples

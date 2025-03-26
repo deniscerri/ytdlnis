@@ -1298,33 +1298,28 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         updateToStatus(id, DownloadRepository.Status.Paused)
     }
 
-    suspend fun pauseAllDownloads() {
+    fun pauseAllDownloads() = viewModelScope.launch {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
         val activeDownloadsList = withContext(Dispatchers.IO){
             getActiveDownloads()
         }
-
         activeDownloadsList.forEach {
             cancelDownloadOnly(it.id)
         }
-
-        withContext(Dispatchers.IO) {
+        delay(1000)
+        isPausingResuming = false
+        withContext(Dispatchers.IO){
             repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
         }
-        delay(1500)
-        isPausingResuming = false
-
-
-        withContext(Dispatchers.Main) {
-            pausedAllDownloads.value = PausedAllDownloadsState.RESUME
-        }
+        pausedAllDownloads.value = PausedAllDownloadsState.RESUME
     }
 
-    suspend fun resumeAllDownloads() {
+    fun resumeAllDownloads() = viewModelScope.launch {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
+        WorkManager.getInstance(application).cancelAllWorkByTag("download")
         val paused = withContext(Dispatchers.IO) {
             dao.getPausedDownloadsList()
         }
@@ -1333,11 +1328,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             dbManager.downloadDao.resetPausedToQueued()
             repository.startDownloadWorker(paused, application)
         }
-        delay(1500)
+        delay(1000)
         isPausingResuming = false
-        withContext(Dispatchers.Main) {
-            pausedAllDownloads.value = PausedAllDownloadsState.PAUSE
-        }
+        pausedAllDownloads.value = PausedAllDownloadsState.PAUSE
     }
 
     fun deleteAll() = viewModelScope.launch {

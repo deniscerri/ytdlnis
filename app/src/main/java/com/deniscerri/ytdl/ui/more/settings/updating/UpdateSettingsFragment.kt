@@ -59,13 +59,18 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         }
 
         ytdlVersion?.apply {
-            summary = preferences.getString("ytdl-version", "")
-            if (summary?.isBlank() == true) {
-                setYTDLPVersion()
-            }
-            setOnPreferenceClickListener {
-                initYTDLUpdate()
-                true
+            lifecycleScope.launch {
+                summary = getString(R.string.loading)
+                summary = withContext(Dispatchers.IO){
+                    ytdlpViewModel.getVersion(preferences.getString("ytdlp_source", "stable")!!)
+                }
+                if (summary?.isBlank() == true) {
+                    setYTDLPVersion()
+                }
+                setOnPreferenceClickListener {
+                    initYTDLUpdate()
+                    true
+                }
             }
         }
         

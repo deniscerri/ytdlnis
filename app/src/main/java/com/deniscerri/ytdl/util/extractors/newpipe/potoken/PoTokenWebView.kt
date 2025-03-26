@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview
+package com.deniscerri.ytdl.util.extractors.newpipe.potoken
 
 import android.content.Context
 import android.os.Build
@@ -17,10 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.parseChallengeData
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.parseIntegrityTokenData
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.stringToU8
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.JavascriptUtil.u8ToBase64
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.parseChallengeData
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.parseIntegrityTokenData
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.stringToU8
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.JavascriptUtil.u8ToBase64
 import okhttp3.Headers.Companion.toHeaders
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -67,7 +67,7 @@ class PoTokenWebView private constructor(
                     // supports a really old version of JS.
 
                     val fmt = "\"${m.message()}\", source: ${m.sourceId()} (${m.lineNumber()})"
-                    val exception = BadWebViewException(fmt)
+                    val exception = Exception(fmt)
                     Log.e(TAG, "This WebView implementation is broken: $fmt")
 
                     onInitializationErrorCloseAndCancel(exception)
@@ -136,7 +136,7 @@ class PoTokenWebView private constructor(
         if (BuildConfig.DEBUG) {
             Log.e(TAG, "Initialization error from JavaScript: $error")
         }
-        onInitializationErrorCloseAndCancel(buildExceptionForJsError(error))
+        onInitializationErrorCloseAndCancel(Exception(error))
     }
 
     /**
@@ -195,7 +195,7 @@ class PoTokenWebView private constructor(
         if (BuildConfig.DEBUG) {
             Log.e(TAG, "obtainPoToken error from JavaScript: $error")
         }
-        popPoTokenContinuation(identifier)?.resumeWithException(buildExceptionForJsError(error))
+        popPoTokenContinuation(identifier)?.resumeWithException(Exception(error))
     }
 
     /**
@@ -280,10 +280,10 @@ class PoTokenWebView private constructor(
             }
             val httpCode = response.code
             if (httpCode != 200) {
-                onInitializationErrorCloseAndCancel(PoTokenException("Invalid response code: $httpCode"))
+                onInitializationErrorCloseAndCancel(Exception("Invalid response code: $httpCode"))
             } else {
                 val body = withContext(Dispatchers.IO) {
-                    response.body!!.string()
+                    response.body.string()
                 }
                 handleResponseBody(body)
             }

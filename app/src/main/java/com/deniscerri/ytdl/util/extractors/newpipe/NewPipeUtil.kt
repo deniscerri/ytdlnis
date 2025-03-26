@@ -10,7 +10,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.PoTokenGenerator
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import org.json.JSONException
@@ -38,7 +38,7 @@ class NewPipeUtil(context: Context) {
 
     init {
         NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
-        YoutubeStreamExtractor.setPoTokenProvider(PoTokenGenerator())
+        YoutubeStreamExtractor.setPoTokenProvider(NewPipePoTokenGenerator())
     }
 
     fun getVideoData(url : String) : Result<List<ResultItem>> {

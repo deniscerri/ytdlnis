@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview
+package com.deniscerri.ytdl.util.extractors.newpipe.potoken
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonNull
@@ -125,7 +125,7 @@ object JavascriptUtil  {
             .replace('_', '/')
             .replace('.', '=')
 
-        return (base64Mod.decodeBase64() ?: throw PoTokenException("Cannot base64 decode"))
+        return (base64Mod.decodeBase64() ?: throw Exception("Cannot base64 decode"))
             .toByteArray()
     }
 }

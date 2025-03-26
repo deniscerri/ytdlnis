@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebView
 import android.widget.Toast
@@ -23,7 +24,8 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
-import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.PoTokenGenerator
+import com.deniscerri.ytdl.util.UiUtil
+import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
@@ -57,7 +59,18 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
-            toolbar.menu.forEach { it.isVisible = false }
+
+            toolbar.setOnMenuItemClickListener { m : MenuItem ->
+                when(m.itemId) {
+                    R.id.get_data_sync_id -> {
+                        webView.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
+                            UiUtil.copyToClipboard(id.replace("\"", ""), this@PoTokenWebViewLoginActivity)
+                        }
+                    }
+                    else -> {}
+                }
+                true
+            }
 
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
@@ -82,7 +95,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                 generateBtn.isEnabled = false
 
                 lifecycleScope.launch {
-                    val generator = PoTokenGenerator()
+                    val generator = NewPipePoTokenGenerator()
                     val res = withContext(Dispatchers.IO) {
                         generator.getWebClientPoToken(sampleVideoID)
                     }
@@ -100,7 +113,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
                     //update cookies
                     withContext(Dispatchers.IO) {
-                        val url = "https://youtube.com"
+                        val url = "Po Token Generated Cookies"
                         cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
                             kotlin.runCatching {
                                 cookiesViewModel.insert(
