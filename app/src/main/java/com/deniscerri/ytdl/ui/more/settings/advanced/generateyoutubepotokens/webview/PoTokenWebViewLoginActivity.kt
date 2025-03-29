@@ -55,6 +55,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
 
+        val url = intent.getStringExtra("url")!!
+
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
@@ -77,6 +79,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             cookieManager = CookieManager.getInstance()
 
             preferences = PreferenceManager.getDefaultSharedPreferences(this@PoTokenWebViewLoginActivity)
+            preferences.edit().putString("genenerate_youtube_po_token_preferred_url", url).apply()
 
             webViewClient = object : AccompanistWebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
@@ -113,13 +116,13 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
                     //update cookies
                     withContext(Dispatchers.IO) {
-                        val url = "Po Token Generated Cookies"
-                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+                        val cookieURL = "Po Token Generated Cookies"
+                        cookiesViewModel.getCookiesFromDB(cookieURL).getOrNull()?.let {
                             kotlin.runCatching {
                                 cookiesViewModel.insert(
                                     CookieItem(
                                         0,
-                                        url,
+                                        cookieURL,
                                         it
                                     )
                                 )
@@ -137,8 +140,6 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         }
                     }
 
-
-
                     webView.clearCache(true)
                     // ensures that the WebView isn't doing anything when destroying it
                     webView.loadUrl("about:blank")
@@ -150,7 +151,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             }
 
             webViewCompose.apply {
-                setContent { WebViewView() }
+                setContent { WebViewView(url) }
             }
         }
 
@@ -158,7 +159,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     @Composable
-    fun WebViewView() {
+    fun WebViewView(url: String) {
         val webViewChromeClient = remember {
             object : AccompanistWebChromeClient() {
             }
@@ -166,7 +167,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
         Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
             WebView(
-                state = rememberWebViewState("https://youtube.com/account"), client = webViewClient, chromeClient = webViewChromeClient,
+                state = rememberWebViewState(url), client = webViewClient, chromeClient = webViewChromeClient,
                 modifier = Modifier
                     .padding(paddingValues)
                     .fillMaxSize(),

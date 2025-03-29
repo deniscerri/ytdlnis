@@ -71,12 +71,17 @@
     <PreferenceCategory android:title="YouTube">
         <ListPreference
             android:icon="@drawable/baseline_recommend_24"
-            android:key="youtube_home_recommendations"
+            android:key="home_recommendations"
             android:defaultValue="newpipe"
             android:entries="@array/video_recommendations"
             android:entryValues="@array/video_recommnedations_values"
             app:summary="@string/video_recommendations_summary"
             app:title="@string/video_recommendations" />
+
+        <EditTextPreference
+            android:icon="@drawable/baseline_recommend_24"
+            app:key="custom_home_recommendation_url"
+            app:useSimpleSummaryProvider="true" />
 
         <EditTextPreference
             android:icon="@drawable/ic_key"
@@ -120,7 +125,7 @@
             android:entryValues="@array/countries_values"
             app:icon="@drawable/ic_language"
             app:useSimpleSummaryProvider="true"
-            app:dependency="youtube_home_recommendations"
+            app:dependency="home_recommendations"
             app:key="locale"
             app:title="@string/preferred_locale" />
 

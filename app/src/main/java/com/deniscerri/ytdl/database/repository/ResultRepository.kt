@@ -57,7 +57,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
 
     suspend fun getHomeRecommendations(){
         deleteAll()
-        val category = sharedPreferences.getString("youtube_home_recommendations", "")
+        val category = sharedPreferences.getString("home_recommendations", "")
         val items = when(category) {
             "newpipe" -> newPipeUtil.getTrending()
             "yt_api" -> youtubeApiUtil.getTrending()
@@ -65,6 +65,11 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             "yt_dlp_recommendations" -> ytdlpUtil.getYoutubeRecommendations()
             "yt_dlp_liked" -> ytdlpUtil.getYoutubeLikedVideos()
             "yt_dlp_watch_history" -> ytdlpUtil.getYoutubeWatchHistory()
+            "custom" -> {
+                val customURL = sharedPreferences.getString("custom_home_recommendation_url", "")
+                if (customURL.isNullOrBlank()) arrayListOf()
+                else ytdlpUtil.getFromYTDL(customURL)
+            }
             else -> arrayListOf()
         }
 

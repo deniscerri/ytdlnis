@@ -1,35 +1,53 @@
 package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
 
 import android.app.Activity
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
+import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity
+import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.UiUtil
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 
 class GenerateYoutubePoTokensFragment : Fragment() {
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var preferences: SharedPreferences
     private lateinit var configuration : MutableList<YoutubeGeneratePoTokenItem>
     private lateinit var workManager : WorkManager
+
+    private lateinit var webPoTokenResultLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -119,7 +137,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 .show()
         }
 
-        val webPoTokenResultLauncher = registerForActivityResult(
+        webPoTokenResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -137,13 +155,11 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 configuration.add(conf)
                 setValues(conf)
                 preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
-            }else {
-                Snackbar.make(requireView(), R.string.network_error, Snackbar.LENGTH_SHORT).show()
             }
         }
 
         regenerate.setOnClickListener {
-            webPoTokenResultLauncher.launch(Intent(requireContext(), PoTokenWebViewLoginActivity::class.java))
+            showBottomSheet()
         }
 
         switch.setOnClickListener {
@@ -165,6 +181,46 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 configuration.add(conf)
                 preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
             }
+        }
+
+    }
+
+    private fun showBottomSheet(){
+        lifecycleScope.launch {
+            val layout = BottomSheetDialog(requireContext())
+            layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            layout.setContentView(R.layout.generate_po_token_url_bottom_sheet)
+
+            val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
+            val text = preferences.getString("genenerate_youtube_po_token_preferred_url", "https://youtube.com/account")
+            editText.setText(text)
+            editText.setSelection(editText.text.length)
+
+            val regenerateBtn = layout.findViewById<MaterialButton>(R.id.getPoTokenBtn)!!
+
+            editText.doOnTextChanged { text, start, before, count ->
+                regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
+            }
+
+            regenerateBtn.setOnClickListener {
+                val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
+                intent.putExtra("url", editText.text.toString())
+                webPoTokenResultLauncher.launch(intent)
+            }
+
+
+            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            editText.postDelayed({
+                editText.requestFocus()
+                imm.showSoftInput(editText, 0)
+            }, 300)
+
+            layout.show()
+            layout.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            layout.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
         }
 
     }

@@ -1099,8 +1099,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
 
             if (it.type == Type.video) {
+                it.videoPreferences.audioFormatIDs.clear()
                 ft.audioFormats?.map { a -> a.format_id }?.let { list ->
-                    it.videoPreferences.audioFormatIDs.clear()
                     it.videoPreferences.audioFormatIDs.addAll(list)
                 }
             }
@@ -1342,8 +1342,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         cancelAllDownloadsImpl()
     }
 
-    private fun cancelAllDownloadsImpl() {
+    private suspend fun cancelAllDownloadsImpl() {
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
+        val activeDownloadsList = withContext(Dispatchers.IO){
+            getActiveDownloads()
+        }
+        activeDownloadsList.forEach {
+            cancelDownloadOnly(it.id)
+        }
         cancelActiveQueued()
     }
 

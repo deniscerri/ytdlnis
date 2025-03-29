@@ -102,7 +102,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             } else {
                 item.format.acodec.uppercase()
             }
-        if (codecText == "" || codecText == "none"){
+        if (codecText == "" || codecText == "none" || codecText == "DEFAULT"){
             codec.visibility = View.GONE
         }else{
             codec.visibility = View.VISIBLE

@@ -37,6 +37,7 @@ import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
@@ -70,6 +71,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var historyViewModel: HistoryViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var formatViewModel: FormatViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
@@ -97,6 +99,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+        formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
@@ -506,7 +509,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                 val items = withContext(Dispatchers.IO){
                                     downloadViewModel.getProcessingDownloads()
                                 }
-                                val bottomSheet = FormatSelectionBottomSheetDialog(items, _multipleFormatsListener = formatListener)
+                                formatViewModel.setItems(items)
+                                val bottomSheet = FormatSelectionBottomSheetDialog( _multipleFormatsListener = formatListener)
                                 bottomSheet.show(parentFragmentManager, "formatSheet")
                             }
                         }

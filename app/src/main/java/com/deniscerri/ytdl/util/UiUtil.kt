@@ -179,6 +179,7 @@ object UiUtil {
             if (chosenFormat.tbr.isNullOrBlank() || (chosenFormat.vcodec.isNotBlank() && chosenFormat.vcodec != "none")) {
                 isVisible = false
             }else{
+                isVisible = true
                 text = chosenFormat.tbr
             }
         }

@@ -24,7 +24,7 @@
 
     <item
         android:id="@+id/redownload"
-        android:icon="@drawable/baseline_share_24"
+        android:icon="@drawable/baseline_download_24"
         app:showAsAction="ifRoom"
         android:title="@string/redownload" />
 

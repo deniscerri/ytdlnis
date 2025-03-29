@@ -172,7 +172,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:background="@drawable/rounded_corner"
-                        android:backgroundTint="?attr/colorSecondary"
+                        android:backgroundTint="?attr/colorPrimaryInverse"
                         android:clickable="false"
                         android:ellipsize="end"
                         android:gravity="center"

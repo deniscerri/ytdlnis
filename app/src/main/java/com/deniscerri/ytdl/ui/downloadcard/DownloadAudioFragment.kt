@@ -30,6 +30,7 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.FileUtil
@@ -54,6 +55,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
+    private lateinit var formatViewModel : FormatViewModel
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var genericAudioFormats: MutableList<Format>
@@ -73,6 +75,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         genericAudioFormats = FormatUtil(requireContext()).getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
@@ -252,7 +255,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
-                        val bottomSheet = FormatSelectionBottomSheetDialog(listOf(downloadItem), listener, canUpdate = !nonSpecific)
+                        formatViewModel.setItem(downloadItem, !nonSpecific)
+                        val bottomSheet = FormatSelectionBottomSheetDialog(listener)
                         bottomSheet.show(parentFragmentManager, "formatSheet")
                     }
                 }

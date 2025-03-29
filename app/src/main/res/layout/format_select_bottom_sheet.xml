@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="wrap_content">
 
@@ -103,81 +104,18 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:paddingTop="10dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/format_list_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/video_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="20dp"
-                        android:clickable="false"
-                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                        android:gravity="start"
-                        app:cornerRadius="0dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:paddingVertical="20dp"
-                        android:text="@string/video" />
-
-                    <GridLayout
-                        android:id="@+id/video_linear_layout"
-                        android:layout_width="match_parent"
-                        android:columnCount="1"
-                        android:alignmentMode="alignBounds"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/audio_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="20dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:clickable="false"
-                        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                        android:gravity="start"
-                        app:cornerRadius="0dp"
-                        android:paddingVertical="20dp"
-                        android:text="@string/audio" />
-
-                    <GridLayout
-                        android:id="@+id/audio_linear_layout"
-                        android:layout_width="match_parent"
-                        android:columnCount="1"
-                        android:alignmentMode="alignBounds"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/format_item" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
             android:id="@+id/format_list_shimmer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:orientation="vertical"
             android:paddingHorizontal="10dp"
             android:paddingTop="10dp">

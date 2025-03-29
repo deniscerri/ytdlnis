@@ -124,7 +124,11 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
     fun getHomeRecommendations() = viewModelScope.launch(Dispatchers.IO){
-        if (!sharedPreferences.getString("youtube_home_recommendations", "").isNullOrBlank()){
+        val homeRecommendations = sharedPreferences.getString("home_recommendations", "")
+        val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
+        val emptyCustomRecommendations = customHomeRecommendations.isNullOrBlank() && homeRecommendations == "custom"
+
+        if (!homeRecommendations.isNullOrBlank() && !emptyCustomRecommendations){
             kotlin.runCatching {
                 uiState.update {it.copy(processing = true)}
                 repository.getHomeRecommendations()

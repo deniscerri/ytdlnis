@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Button android:id="@+id/title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="20dp"
+    android:clickable="false"
+    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+    android:gravity="start"
+    app:cornerRadius="0dp"
+    android:textStyle="bold"
+    android:textSize="16sp"
+    android:paddingVertical="20dp"
+    android:text="@string/video"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />
