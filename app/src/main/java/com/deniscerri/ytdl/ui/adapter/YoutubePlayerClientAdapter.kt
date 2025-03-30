@@ -65,6 +65,7 @@ class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activ
         title.text = item.playerClient
 
         val content = card.findViewById<ChipGroup>(R.id.content)
+        content.removeAllViews()
         val chips = mutableListOf<TextView>()
         item.poTokens.forEach {
             val tmp =  activity.layoutInflater.inflate(R.layout.textview_chip, content, false) as TextView

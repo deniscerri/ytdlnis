@@ -512,8 +512,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
             val request = YoutubeDLRequest(url)
-            request.addOption("--get-url")
+            //request.addOption("--get-url")
             request.addOption("--print", "%(.{urls,chapters})s")
+            request.addOption("-S", "res:720,+proto:m3u8")
             request.applyDefaultOptionsForFetchingData(url)
             if (url.isYoutubeURL()) {
                 request.setYoutubeExtractorArgs(url)
@@ -709,6 +710,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
             if (!sharedPreferences.getBoolean("mtime", false)){
                 request.addOption("--no-mtime")
+            }else{
+                request.addOption("--mtime")
             }
 
             val sponsorBlockFilters : ArrayList<String> = when(downloadItem.type) {

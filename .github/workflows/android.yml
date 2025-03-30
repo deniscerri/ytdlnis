@@ -28,7 +28,7 @@ jobs:
 
     - uses: gradle/gradle-build-action@v3
       with:
-        gradle-version: 7.5
+        gradle-version: 8.9
     - name: Create base64 jks file
       run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
     - name: Create jks file

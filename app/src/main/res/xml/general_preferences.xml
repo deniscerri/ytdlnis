@@ -71,7 +71,7 @@
     <PreferenceCategory android:title="YouTube">
         <ListPreference
             android:icon="@drawable/baseline_recommend_24"
-            android:key="home_recommendations"
+            android:key="recommendations_home"
             android:defaultValue="newpipe"
             android:entries="@array/video_recommendations"
             android:entryValues="@array/video_recommnedations_values"
@@ -125,7 +125,7 @@
             android:entryValues="@array/countries_values"
             app:icon="@drawable/ic_language"
             app:useSimpleSummaryProvider="true"
-            app:dependency="home_recommendations"
+            app:dependency="recommendations_home"
             app:key="locale"
             app:title="@string/preferred_locale" />
 

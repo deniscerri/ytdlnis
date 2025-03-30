@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -271,6 +272,8 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         val player = VideoPlayerUtil.buildPlayer(requireContext())
         videoView.player = player
 
+        val loading = view.findViewById<ProgressBar>(R.id.loading)
+
         lifecycleScope.launch {
             try {
                 val data = withContext(Dispatchers.IO) {
@@ -282,6 +285,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 }
 
                 if (data.first.isEmpty()) throw Exception("No Data found!")
+                loading.isVisible = false
 
                 val urls = data.first
                 if (urls.size == 2){
@@ -299,6 +303,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 player.prepare()
                 player.play()
             }catch (e: Exception){
+                loading.isVisible = false
                 e.printStackTrace()
             }
         }

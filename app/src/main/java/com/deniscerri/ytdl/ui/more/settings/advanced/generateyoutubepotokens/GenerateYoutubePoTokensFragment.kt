@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -88,6 +89,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         val useVisitorData = requireView().findViewById<MaterialSwitch>(R.id.use_visitor_data)
 
         switch.isChecked = conf.enabled
+        switch.jumpDrawablesToCurrentState()
         useVisitorData.isEnabled = conf.enabled
 
         fun setValues(conf: YoutubeGeneratePoTokenItem) {
@@ -175,6 +177,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
         useVisitorData?.apply {
             this.isChecked = conf.useVisitorData
+            useVisitorData.jumpDrawablesToCurrentState()
             setOnCheckedChangeListener { _, b ->
                 configuration.remove(conf)
                 conf.useVisitorData = b
@@ -203,6 +206,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             }
 
             regenerateBtn.setOnClickListener {
+                layout.dismiss()
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                 intent.putExtra("url", editText.text.toString())
                 webPoTokenResultLauncher.launch(intent)

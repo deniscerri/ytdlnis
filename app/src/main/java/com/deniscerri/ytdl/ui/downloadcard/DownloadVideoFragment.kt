@@ -312,7 +312,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         containers
                     )
                 )
-                if (currentDownloadItem == null || !containers.contains(downloadItem.container)){
+                if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
                 containerAutoCompleteTextView!!.setText(

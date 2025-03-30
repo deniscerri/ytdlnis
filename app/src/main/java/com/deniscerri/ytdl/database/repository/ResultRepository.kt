@@ -57,7 +57,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
 
     suspend fun getHomeRecommendations(){
         deleteAll()
-        val category = sharedPreferences.getString("home_recommendations", "")
+        val category = sharedPreferences.getString("recommendations_home", "")
         val items = when(category) {
             "newpipe" -> newPipeUtil.getTrending()
             "yt_api" -> youtubeApiUtil.getTrending()
@@ -82,17 +82,18 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     }
 
     fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
-        val newPipeTrial = if (isUsingNewPipeExtractorDataFetching()) {
-            newPipeUtil.getStreamingUrlAndChapters(url)
-        }else {
-            Result.failure(Throwable())
-        }
-        if (newPipeTrial.isFailure){
-            val res = ytdlpUtil.getStreamingUrlAndChapters(url)
-            return res.getOrDefault(Pair(listOf(""), null))
-        }
+//        val newPipeTrial = if (isUsingNewPipeExtractorDataFetching()) {
+//            newPipeUtil.getStreamingUrlAndChapters(url)
+//        }else {
+//            Result.failure(Throwable())
+//        }
+//        if (newPipeTrial.isFailure){
+//            val res = ytdlpUtil.getStreamingUrlAndChapters(url)
+//            return res.getOrDefault(Pair(listOf(""), null))
+//        }
 
-        return newPipeTrial.getOrNull()!!
+        return ytdlpUtil.getStreamingUrlAndChapters(url)
+            .getOrDefault(Pair(listOf(""), null))
     }
 
     suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : ArrayList<ResultItem>{

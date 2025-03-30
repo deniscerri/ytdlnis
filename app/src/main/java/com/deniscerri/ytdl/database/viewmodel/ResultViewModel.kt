@@ -124,7 +124,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
     }
     fun getHomeRecommendations() = viewModelScope.launch(Dispatchers.IO){
-        val homeRecommendations = sharedPreferences.getString("home_recommendations", "")
+        val homeRecommendations = sharedPreferences.getString("recommendations_home", "")
         val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
         val emptyCustomRecommendations = customHomeRecommendations.isNullOrBlank() && homeRecommendations == "custom"
 

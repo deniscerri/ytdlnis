@@ -275,7 +275,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     )
                 )
 
-                if (currentDownloadItem == null || !containers.contains(downloadItem.container)){
+                if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
                 containerAutoCompleteTextView.setText(downloadItem.container.ifEmpty { getString(R.string.defaultValue) }, false)

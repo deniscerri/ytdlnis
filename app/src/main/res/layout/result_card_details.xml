@@ -45,6 +45,22 @@
             app:layout_constraintEnd_toEndOf="@+id/frame_layout" />
 
 
+        <ProgressBar
+            android:id="@+id/loading"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/save_thumb"
+            app:icon="@drawable/ic_image"
+            app:iconSize="30dp"
+            android:indeterminate="true"
+            app:iconTint="?android:colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+            app:layout_constraintEnd_toEndOf="@+id/frame_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/frame_layout" />
+
+
         <androidx.core.widget.NestedScrollView
             android:orientation="vertical"
             android:layout_width="match_parent"

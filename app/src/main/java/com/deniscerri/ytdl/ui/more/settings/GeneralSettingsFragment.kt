@@ -272,7 +272,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
-        findPreference<ListPreference>("home_recommendations")?.apply {
+        findPreference<ListPreference>("recommendations_home")?.apply {
             val s = getString(R.string.video_recommendations_summary)
             summary = if (value.isNullOrBlank()) {
                 s
@@ -297,11 +297,11 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
 
         findPreference<EditTextPreference>("custom_home_recommendation_url")?.apply {
             title = "[${getString(R.string.video_recommendations)}] ${getString(R.string.custom)}"
-            isVisible = preferences.getString("home_recommendations", "") == "custom"
+            isVisible = preferences.getString("recommendations_home", "") == "custom"
         }
 
         findPreference<EditTextPreference>("api_key")?.apply {
-            isVisible = preferences.getString("home_recommendations", "") == "yt_api"
+            isVisible = preferences.getString("recommendations_home", "") == "yt_api"
             val s = getString(R.string.api_key_summary)
             summary = if (text.isNullOrBlank()) {
                 s
