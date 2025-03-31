@@ -128,7 +128,7 @@
     <string name="subtitle_languages">வசன மொழிகள்</string>
     <string name="format_source">வடிவங்கள் மூலம்</string>
     <string name="video_recommendations">காணொளி பரிந்துரைகள்</string>
-    <string name="video_recommendations_summary">புதியகுழாய் பிரித்தெடுத்தலில் இருந்து முகப்புத் திரையில் பரிந்துரைக்கப்பட்ட யூடியூப் காணொளிக்களைப் பெறுங்கள்</string>
+    <string name="video_recommendations_summary">முகப்புத் திரையில் பரிந்துரைக்கப்பட்ட காணொளிக்களைப் பெறு</string>
     <string name="preferred_search_engine">விருப்பமான தேடுபொறி</string>
     <string name="format_filtering_hint">இந்த விருப்பத்தைப் பயன்படுத்த அனைத்து உருப்படிகளும் ஒரே வகையாக இருக்க வேண்டும்</string>
     <string name="preferred_home_screen">விருப்பமான முகப்புத் திரை</string>
