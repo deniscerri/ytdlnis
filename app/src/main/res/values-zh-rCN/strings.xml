@@ -229,7 +229,7 @@
     <string name="download_over_metered_networks_summary">不等待，使用任何网络下载</string>
     <string name="suggested">建议</string>
     <string name="share">分享</string>
-    <string name="video_recommendations_summary">在主屏幕上获得推荐的 YouTube 视频</string>
+    <string name="video_recommendations_summary">在主屏幕上获得推荐的视频</string>
     <string name="copied_to_clipboard">复制到剪贴板</string>
     <string name="light">浅色</string>
     <string name="dark">深色</string>
@@ -469,4 +469,8 @@
     <string name="automatic_backup">自动备份</string>
     <string name="backup_path">备份路径</string>
     <string name="write_subs_when_embed_subs">嵌入时写入字幕</string>
+    <string name="generate_potokens">生成 PO 令牌</string>
+    <string name="regenerate">重新生成</string>
+    <string name="generate_potokens_warning">* 启用此选项，你需要禁用 cookies</string>
+    <string name="custom">自定义</string>
 </resources>
