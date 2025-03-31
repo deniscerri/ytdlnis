@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="best_quality">Melhor qualidade</string>
-    <string name="search">Pesquisar</string>
+    <string name="search">Buscar</string>
     <string name="remove_all">Remover todos</string>
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
@@ -13,7 +13,7 @@
     <string name="video_directory">Pasta de vídeos</string>
     <string name="about">Sobre</string>
     <string name="source_code">Código fonte</string>
-    <string name="search_hint">Pesquisar ou digitar URL</string>
+    <string name="search_hint">Buscar ou digitar URL</string>
     <string name="failed_download">Não foi possível baixar o arquivo</string>
     <string name="download_notification_channel_name">Arquivos baixados</string>
     <string name="you_are_in_latest_version">Você já possui a atualização mais recente</string>
@@ -23,7 +23,7 @@
     <string name="ok">OK</string>
     <string name="confirm_delete_history_desc">Todo o histórico será excluído</string>
     <string name="confirm_delete_history">Confirmar</string>
-    <string name="search_history_hint">Pesquisar no histórico</string>
+    <string name="search_history_hint">Buscar no histórico</string>
     <string name="no_results">Nenhum resultado</string>
     <string name="command_directory">Pasta de comandos personalizados</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado</string>
@@ -111,7 +111,7 @@
     <string name="format">Formato</string>
     <string name="select_format">Selecionar formato</string>
     <string name="please_wait">Aguarde</string>
-    <string name="remove_search_history">Limpar histórico de pesquisa</string>
+    <string name="remove_search_history">Limpar histórico de busca</string>
     <string name="enable_mtime">Habilitar \'mtime\'</string>
     <string name="update_formats">Atualizar formatos</string>
     <string name="log_downloads">Registros de downloads</string>
@@ -182,9 +182,9 @@
     <string name="undo">Desfazer</string>
     <string name="preferred_home_screen">Tela inicial preferida</string>
     <string name="format_filtering_hint">Todos os itens devem ser do mesmo tipo para usar esta opção</string>
-    <string name="preferred_search_engine_summary">O mecanismo de pesquisa a ser usado para pesquisas no aplicativo</string>
-    <string name="preferred_search_engine">Mecanismo de pesquisa preferido</string>
-    <string name="video_recommendations_summary">Obter vídeos recomendados do YouTube na tela inicial</string>
+    <string name="preferred_search_engine_summary">O mecanismo de busca a ser usado para buscas no aplicativo</string>
+    <string name="preferred_search_engine">Mecanismo de busca preferido</string>
+    <string name="video_recommendations_summary">Obter vídeos recomendados na tela inicial</string>
     <string name="video_recommendations">Recomendações de vídeo</string>
     <string name="format_source">Origem dos formatos</string>
     <string name="subtitle_languages">Idiomas das legendas</string>
@@ -256,8 +256,8 @@
     <string name="custom_audio_quality">Usar qualidade de áudio personalizada</string>
     <string name="move_temporary_files">Mover arquivos temporários</string>
     <string name="move_temporary_files_summary">Mover arquivos em cache para a pasta de downloads</string>
-    <string name="search_suggestions">Sugestões de pesquisa</string>
-    <string name="search_suggestions_summary">Obter sugestões de pesquisa a partir do Google</string>
+    <string name="search_suggestions">Sugestões de busca</string>
+    <string name="search_suggestions_summary">Obter sugestões de busca a partir do Google</string>
     <string name="preferred_format_id_summary">Selecionar formato com este ID no cartão de download</string>
     <string name="misc">Diversos</string>
     <string name="general">Geral</string>
@@ -308,7 +308,7 @@
     <string name="remember_download_type">Lembrar tipo de download</string>
     <string name="remember_download_type_summary">Selecione o último tipo de download aberto para o item atual</string>
     <string name="schedule">Agendar</string>
-    <string name="search_command_hint">Pesquisar a partir dos comandos</string>
+    <string name="search_command_hint">Buscar a partir dos comandos</string>
     <string name="ignore">Ignorar</string>
     <string name="license">Licença</string>
     <string name="download_already_exists_summary">Você ainda quer fazer o download\?</string>
@@ -334,14 +334,14 @@
     <string name="all">Todos</string>
     <string name="generic">Genérico</string>
     <string name="multiple_download_card">Cartão de download múltiplo</string>
-    <string name="format_filter">Filtro de formato</string>
+    <string name="format_filter">Filtrar formato</string>
     <string name="new_source">Nova fonte</string>
     <string name="force_ipv4">Forçar IPv4</string>
     <string name="set_time">Definir horário</string>
     <string name="every">A cada</string>
     <string name="ends">Termina</string>
     <string name="never">Nunca</string>
-    <string name="after">Depois</string>
+    <string name="after">Após</string>
     <string name="on_time">Em</string>
     <string name="week">Semana(s)</string>
     <string name="month">Mês(es)</string>
@@ -409,7 +409,7 @@
     <string name="use_alarm_manager">Usar \'AlarmManager\' em vez de \'WorkManager\' para agendamento</string>
     <string name="use_alarm_manager_summary">Habilite isto se o \"WorkManager\" for restrito pelo fornecedor do seu dispositivo ou se as tarefas agendadas não forem muito precisas</string>
     <string name="use_item_url_not_playlist">Usar URL do item em vez do URL da playlist</string>
-    <string name="use_item_url_not_playlist_summary">Os metadados da playlist não serão adicionados com esta opção ativada</string>
+    <string name="use_item_url_not_playlist_summary">Os metadados da playlist não serão adicionados com esta opção habilitada</string>
     <string name="recode_video_summary">Recodifica o arquivo de vídeo para o formato especificado</string>
     <string name="recode_video">Recodificar vídeo</string>
     <string name="daily">Diariamente</string>
@@ -435,7 +435,7 @@
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados para busca de dados a partir de comandos extras</string>
-    <string name="disable_write_info_json">Desativar salvamento de informações Json</string>
+    <string name="disable_write_info_json">Desabilitar salvamento de informações Json</string>
     <string name="disable_write_info_json_summary">(Não recomendado) Cada vez que você reiniciar/continuar o download, o yt-dlp baixará novamente os dados json dos servidores.</string>
     <string name="ytdlp_recommnedations">YT-DLP: Recomendações do YouTube (precisa de cookies)</string>
     <string name="ytdlp_liked">YT-DLP: Vídeos curtidos do YouTube (precisa de cookies)</string>
@@ -453,7 +453,7 @@
     <string name="wait_for_video">Aguarde o vídeo</string>
     <string name="retry_every">Repetir a cada</string>
     <string name="minutes">Minutos</string>
-    <string name="prefer_container_over_codec_audio_summary">Com essa opção ativada, a preferência do codec de áudio será ignorada e somente o contêiner será alterado</string>
+    <string name="prefer_container_over_codec_audio_summary">Com essa opção habilitada, a preferência do codec de áudio será ignorada e somente o contêiner será alterado</string>
     <string name="no_check_certificates">Ignorar validação de certificado HTTPS</string>
     <string name="cache_directory">Pasta de cache</string>
     <string name="cache_directory_warning">Alterar a pasta de cache pode causar problemas inesperados. Se o aplicativo não puder salvar no caminho configurado, ele recorrerá ao diretório de cache interno padrão</string>
@@ -467,7 +467,11 @@
     <string name="automatic_backup">Backup automático</string>
     <string name="backup_path">Caminho do backup</string>
     <string name="automatic_backup_summary">Fazer backup de tudo automaticamente quando uma nova versão do aplicativo for encontrada</string>
-    <string name="use_code_highlighter">Usar marcador para code de cores</string>
+    <string name="use_code_highlighter">Usar marcador para código de cores</string>
     <string name="write_subs_when_embed_subs">Salvar legendas ao incorporar</string>
     <string name="write_subs_when_embed_subs_summary">Isso aplicará \"Salvar legendas\" e \"Salvar legendas automáticas\" para baixar os subarquivos e excluí-los após a incorporação</string>
+    <string name="generate_potokens">Gerar chave de acesso PO</string>
+    <string name="regenerate">Gerar novamente</string>
+    <string name="generate_potokens_warning">* Ao habilitar essa opção, você precisa desabilitar os cookies</string>
+    <string name="custom">Personalizado</string>
 </resources>
