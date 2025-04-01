@@ -35,7 +35,7 @@
     <string name="music_directory">Фолдер за аудио снимке</string>
     <string name="warning">Упозорење</string>
     <string name="couldnt_find_apk">Није могуће пронаћи одговарајући APK</string>
-    <string name="video_recommendations_summary">Добијте препоручене YouTube видео снимке на почетном екрану</string>
+    <string name="video_recommendations_summary">Добијте препоручене видео снимке на почетном екрану</string>
     <string name="codec">Кодек</string>
     <string name="select_backup_categories">Изаберите категорије резервне копије</string>
     <string name="ytdl_updating_started">Преузимање нове верзије</string>
@@ -470,4 +470,8 @@
     <string name="automatic_backup_summary">Аутоматско прављење резервне копије свега, када се пронађе нова верзија апликације</string>
     <string name="write_subs_when_embed_subs">Писање титлова приликом уграђивања</string>
     <string name="write_subs_when_embed_subs_summary">Ово ће применити „Сачувај титлове“ и „Сачувај аутоматске титлове“ за преузимање потфајлова, а затим их избрисати након уграђивања</string>
+    <string name="regenerate">Поново генериши</string>
+    <string name="generate_potokens">Генериши PO токене</string>
+    <string name="generate_potokens_warning">* Ако ово омогућите, морате да онемогућите колачиће</string>
+    <string name="custom">Прилагођено</string>
 </resources>
