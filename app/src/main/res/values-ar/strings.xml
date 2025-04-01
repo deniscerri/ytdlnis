@@ -200,7 +200,7 @@
     <string name="subtitle_languages">لغات الترجمة</string>
     <string name="format_source">مصدر التنسيقات</string>
     <string name="video_recommendations">توصيات الفيديو</string>
-    <string name="video_recommendations_summary">الحصول على فيديوهات يوتيوب الموصى بها على الشاشة الرئيسية</string>
+    <string name="video_recommendations_summary">احصل على فيديوهات الموصى بها على الشاشة الرئيسية</string>
     <string name="preferred_search_engine">محرك البحث عن الوسائط</string>
     <string name="preferred_search_engine_summary">المحرك المراد استخدامه بعمليات البحث من داخل التطبيق</string>
     <string name="format_filtering_hint">يجب أن تكون كل العناصر من نفس النوع حتى تعمل هذا الميزة</string>
@@ -470,4 +470,8 @@
     <string name="use_code_highlighter">استخدم رمز اللون المضيق</string>
     <string name="automatic_backup">النسخ الاحتياطي التلقائي</string>
     <string name="automatic_backup_summary">قم بعمل نسخة احتياطية لكل شيء تلقائيًا عند العثور على إصدار جديد</string>
+    <string name="generate_potokens">ولّد رموز PO</string>
+    <string name="regenerate">أعد التوليد</string>
+    <string name="generate_potokens_warning">* من خلال تفعيل هذا، تحتاج إلى تعطيل ملفات تعريف الارتباط</string>
+    <string name="custom">مخصّص</string>
 </resources>
