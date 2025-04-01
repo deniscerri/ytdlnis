@@ -26,9 +26,6 @@ jobs:
         distribution: 'corretto'
         cache: 'gradle'
 
-    - uses: gradle/gradle-build-action@v3
-      with:
-        gradle-version: 8.9
     - name: Create base64 jks file
       run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
     - name: Create jks file
@@ -37,10 +34,7 @@ jobs:
       run: touch local.properties
     - name: Create Keystore Properties File
       run: echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+
     - name: Set current date as env variable
       run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
      # Create APK Debug
