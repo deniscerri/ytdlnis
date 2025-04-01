@@ -16,9 +16,8 @@
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
-            style="@style/Widget.Material3.BottomAppBar"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/download_multiple_menu" />
 
@@ -127,6 +126,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 android:text="@string/download"
                 app:icon="@drawable/ic_down"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -176,7 +177,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="10dp"
-            android:paddingBottom="70dp"
+            android:paddingBottom="85dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

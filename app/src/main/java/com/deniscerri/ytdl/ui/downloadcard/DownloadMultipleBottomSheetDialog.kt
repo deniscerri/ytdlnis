@@ -21,8 +21,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -537,7 +541,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_audio)
                                     val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
-                                    sheetView.findViewById<View>(R.id.adjust).setPadding(10,padding,10,padding)
+                                    sheetView.findViewById<View>(R.id.adjust).setPadding(padding)
 
                                     val items = withContext(Dispatchers.IO){
                                         downloadViewModel.getProcessingDownloads()
@@ -619,7 +623,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_video)
                                     val sheetView = bottomSheet.findViewById<View>(android.R.id.content)!!
-                                    sheetView.findViewById<View>(R.id.adjust).setPadding(10,padding,10,padding)
+                                    sheetView.findViewById<View>(R.id.adjust).setPadding(padding)
 
                                     val items = withContext(Dispatchers.IO){
                                         downloadViewModel.getProcessingDownloads()
@@ -759,6 +763,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ViewCompat.setOnApplyWindowInsetsListener(bottomAppBar) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Prevent extra bottom padding
+            view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, 0)
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     private fun toggleLoading(loading: Boolean){

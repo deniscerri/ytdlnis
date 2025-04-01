@@ -12,6 +12,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.core.os.bundleOf
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -53,6 +55,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     private lateinit var toTextInput: TextInputLayout
     private lateinit var count: TextView
     private lateinit var selectBetween: MenuItem
+    private lateinit var bottomAppBar: BottomAppBar
 
     private lateinit var resultItemIDs: List<Long>
     private var items = listOf<ResultItem>()
@@ -83,8 +86,10 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            behavior.peekHeight = displayMetrics.heightPixels
+            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                behavior.peekHeight = displayMetrics.heightPixels
+            }
         }
 
         val progress = view.findViewById<LinearProgressIndicator>(R.id.loadingItemsProgress)
@@ -198,7 +203,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             true
         }
 
-        val bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
+        bottomAppBar = view.findViewById<BottomAppBar>(R.id.bottomAppBar)
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId) {
                 R.id.invert_selected -> {
@@ -250,6 +255,16 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        ViewCompat.setOnApplyWindowInsetsListener(bottomAppBar) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            // Prevent extra bottom padding
+            view.setPadding(view.paddingLeft, view.paddingTop, view.paddingRight, 0)
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
 

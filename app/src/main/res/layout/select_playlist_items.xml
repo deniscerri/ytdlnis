@@ -150,7 +150,7 @@
             android:paddingTop="10dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingBottom="80dp"
+            android:paddingBottom="85dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 

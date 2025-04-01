@@ -119,6 +119,7 @@
                 android:autoLink="all"
                 android:text="@string/download"
                 android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 app:icon="@drawable/ic_down"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
