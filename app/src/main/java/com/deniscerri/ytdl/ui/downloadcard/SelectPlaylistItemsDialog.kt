@@ -83,10 +83,8 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
             behavior = BottomSheetBehavior.from(view.parent as View)
             val displayMetrics = DisplayMetrics()
             requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
-            if(resources.getBoolean(R.bool.isTablet) || resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
-                behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                behavior.peekHeight = displayMetrics.heightPixels
-            }
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            behavior.peekHeight = displayMetrics.heightPixels
         }
 
         val progress = view.findViewById<LinearProgressIndicator>(R.id.loadingItemsProgress)
