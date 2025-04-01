@@ -34,6 +34,8 @@ jobs:
       run: touch local.properties
     - name: Create Keystore Properties File
       run: echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
 
     - name: Set current date as env variable
       run: echo "date_today=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
