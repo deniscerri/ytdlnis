@@ -263,7 +263,7 @@
     <string name="general">Geral</string>
     <string name="swipe_gestures_summary">Deslize os itens para determinadas ações</string>
     <string name="crop_thumb">Cortar miniatura</string>
-    <string name="crop_thumb_summary">Recortar miniatura em um quadrado para downloads de áudio</string>
+    <string name="crop_thumb_summary">Recortar miniatura em formato quadrado para downloads de áudio</string>
     <string name="fragment_retries">Novas tentativas de fragmento</string>
     <string name="format_order">Ordem do formato</string>
     <string name="swipe_gestures">Gestos deslizantes</string>
