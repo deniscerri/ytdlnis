@@ -225,6 +225,9 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                     addCategory(Intent.CATEGORY_OPENABLE)
                     type = "*/*"
                 }
+                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                 appRestoreResultLauncher.launch(intent)
                 true
             }
@@ -448,7 +451,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
                 }.onFailure {
                     it.printStackTrace()
-                    Snackbar.make(requireView(), getString(R.string.couldnt_parse_file), Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(requireView(), it.message.toString(), Snackbar.LENGTH_INDEFINITE).show()
                 }
             }
 

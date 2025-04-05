@@ -286,11 +286,8 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                     "${s}\n[${entries[entryValues.indexOf(newValue)]}]"
                 }
 
-                if (newValue == "yt_api") {
-                    findPreference<EditTextPreference>("api_key")?.isVisible = true
-                }else if (newValue == "custom") {
-                    findPreference<EditTextPreference>("custom_home_recommendation_url")?.isVisible = true
-                }
+                findPreference<EditTextPreference>("api_key")?.isVisible = newValue == "yt_api"
+                findPreference<EditTextPreference>("custom_home_recommendation_url")?.isVisible = newValue == "custom"
                 true
             }
         }

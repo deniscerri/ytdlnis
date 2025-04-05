@@ -76,8 +76,10 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = listAdapter
         itemTouchHelper.attachToRecyclerView(recyclerView)
-        currentListRaw = preferences.getString("youtube_player_clients", "[]")!!
-        currentList = Gson().fromJson(currentListRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+        currentListRaw = preferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
+        currentList = kotlin.runCatching {
+            Gson().fromJson(currentListRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+        }.getOrElse { mutableListOf() }
         listAdapter.submitList(currentList.toList())
 
         val newClient = view.findViewById<Chip>(R.id.newClient)
@@ -146,8 +148,10 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
             }
         })
 
-        val existingConfigsRaw = preferences.getString("youtube_player_clients", "[]")
-        val existingConfigs = Gson().fromJson(existingConfigsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+        val existingConfigsRaw = preferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
+        val existingConfigs = kotlin.runCatching {
+            Gson().fromJson(existingConfigsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+        }.getOrElse { mutableListOf() }
 
         defaultChips.filter { it.isNotBlank() }.forEach {
             if (!existingConfigs.any { it2 -> it2.playerClient == it }) {

@@ -1282,7 +1282,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val playerClients = mutableSetOf<String>()
         val poTokens = mutableListOf<String>()
 
-        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!
+        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
         kotlin.runCatching {
             val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
 
@@ -1312,7 +1312,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             extractorArgs.add("data_sync_id=${dataSyncID}")
         }
 
-        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")
+        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
         kotlin.runCatching {
             val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
             if (generatedPoTokens.isNotEmpty()) {

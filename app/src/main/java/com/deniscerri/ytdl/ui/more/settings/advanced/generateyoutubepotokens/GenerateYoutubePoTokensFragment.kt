@@ -64,10 +64,12 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        configuration = Gson().fromJson(
-            preferences.getString("youtube_generated_po_tokens", "[]"),
-            Array<YoutubeGeneratePoTokenItem>::class.java
-        ).toMutableList()
+        configuration = kotlin.runCatching {
+            Gson().fromJson(
+                preferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" },
+                Array<YoutubeGeneratePoTokenItem>::class.java
+            ).toMutableList()
+        }.getOrDefault(mutableListOf())
 
         initWeb()
     }
