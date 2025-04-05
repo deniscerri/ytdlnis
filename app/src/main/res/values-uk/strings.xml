@@ -200,7 +200,7 @@
     <string name="download_over_metered_networks">Завантажувати через мережі з обмеженнями</string>
     <string name="format_source">Джерело форматів</string>
     <string name="video_recommendations">Відеорекомендації</string>
-    <string name="video_recommendations_summary">Отримуйте рекомендовані відео YouTube на головному екрані</string>
+    <string name="video_recommendations_summary">Отримуйте рекомендовані відео на головному екрані</string>
     <string name="preferred_search_engine">Бажана пошукова система</string>
     <string name="preferred_search_engine_summary">Пошукова система в застосунку</string>
     <string name="format_filtering_hint">Для використання цієї опції всі елементи повинні бути одного типу</string>
@@ -470,4 +470,8 @@
     <string name="write_subs_when_embed_subs">Вписувати субтитри під час вкладання</string>
     <string name="use_code_highlighter">Використовувати колірний маркер коду</string>
     <string name="backup_path">Шлях до резервної копії</string>
+    <string name="generate_potokens">Згенерувати токени PO</string>
+    <string name="regenerate">Перегенерувати</string>
+    <string name="generate_potokens_warning">* Увімкнувши цей параметр, вам потрібно вимкнути файли cookie</string>
+    <string name="custom">Власний</string>
 </resources>

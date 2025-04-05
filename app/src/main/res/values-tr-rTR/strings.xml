@@ -203,7 +203,7 @@
     <string name="ignore_battery_optimization">Pil Optimizasyonunu Yoksay</string>
     <string name="format_source">Format Kaynağı</string>
     <string name="video_recommendations">Video Önerileri</string>
-    <string name="video_recommendations_summary">Ana ekranda önerilen YouTube videolarını alın</string>
+    <string name="video_recommendations_summary">Ana ekranda önerilen videoları alın</string>
     <string name="preferred_search_engine">Tercih Edilen Arama Motoru</string>
     <string name="preferred_search_engine_summary">Uygulama içi aramalar için kullanılacak arama motoru</string>
     <string name="format_filtering_hint">Bu seçeneği kullanmak için tüm öğelerin aynı türde olması gerekir</string>
@@ -362,7 +362,7 @@
     <string name="day">Gün</string>
     <string name="archive">İndirme Arşivi [Yerleşik işlevsellik yerine yinelenen indirmeleri önlemek için yt-dlp\'nin indirme arşivi dosyasını kullan]</string>
     <string name="thumbnail_format">Küçük Resim Formatı</string>
-    <string name="get_new_uploads">Yalnızca Yeni Yüklemeleri Al</string>
+    <string name="get_new_uploads">Yalnızca Gelecekteki Yüklemeleri Al (Mevcut Ögeleri Yoksay)</string>
     <string name="also_download_audio">Ayrıca Ses Olarak İndir</string>
     <string name="wrap_text">Metni Sar</string>
     <string name="back">Geri</string>
@@ -461,4 +461,20 @@
     <string name="use_only_po_token">Yalnızca PO Token\'ı kullan (Oynatıcı İstemcisini Yoksay)</string>
     <string name="cache_directory">Önbellek Klasörü</string>
     <string name="cache_directory_warning">Önbellek Klasörünü değiştirmek beklenmeyen sorunlara neden olabilir. Uygulama yapılandırılan yola yazamıyorsa, varsayılan dahili önbellek dizinine başvuracaktır</string>
+    <string name="use_code_highlighter">Kod Renk Vurgulayıcıyı Kullan</string>
+    <string name="reset_preferences_in_screen">Bu ekrandaki tüm tercihleri sıfırla</string>
+    <string name="backup_path">Yedekleme Yolu</string>
+    <string name="write_subs_when_embed_subs">Gömme sırasında altyazı yaz</string>
+    <string name="generate_potokens">PO Tokenleri Oluştur</string>
+    <string name="regenerate">Yeniden oluştur</string>
+    <string name="use_format_sorting">Format Önem Sıralamasını Kullan</string>
+    <string name="automatic_backup">Otomatik yedekleme</string>
+    <string name="automatic_backup_summary">Uygulamanın yeni bir sürümü bulunduğunda her şeyin otomatik olarak yedeğini alın</string>
+    <string name="retry_missing_downloads_desc">İndirme geçmişinde bulunmayan ögeleri yeniden indirin</string>
+    <string name="reset_processed_links_desc">Tüm ögeleri tekrar indirin</string>
+    <string name="sync_with_source_desc">Kaynakta eksikse, indirilen ögeleri silin</string>
+    <string name="app_icon_change">Simge değişebilir ve uygulama kapanabilir</string>
+    <string name="generate_potokens_warning">* Bunu etkinleştirerek çerezleri devre dışı bırakmanız gerekir</string>
+    <string name="custom">Özel</string>
+    <string name="write_subs_when_embed_subs_summary">Bu, altyazıları indirmek ve daha sonra yerleştirdikten sonra silmek için Altyazıları Kaydet ve Otomatik Altyazıları Kaydet\'i uygulayacaktır</string>
 </resources>

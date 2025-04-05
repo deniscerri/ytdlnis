@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Titr dilləri</string>
     <string name="format_source">Formatlar Mənbəsi</string>
     <string name="video_recommendations">Video Tövsiyələr</string>
-    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan YouTube videoların əldə et</string>
+    <string name="video_recommendations_summary">Ev ekranında tövsiyə olunan videoları əldə et</string>
     <string name="preferred_search_engine">Üstünlük Verilən Axtarış Mühərrik</string>
     <string name="format_filtering_hint">Bu seçimi işlətmək üçün bütün elementlər eyni növdə olmalıdır</string>
     <string name="preferred_search_engine_summary">Tətbiqdaxili axtarışlar üçün istifadə edilməli axtarış mühərriki</string>
@@ -470,4 +470,8 @@
     <string name="backup_path">Nüsxələmə Yolu</string>
     <string name="write_subs_when_embed_subs">Yerləşdirərkən titr yaz</string>
     <string name="automatic_backup_summary">Tətbiqin yeni versiyası tapıldıqda, birbaşa hər şeyi nüsxələ</string>
+    <string name="regenerate">Təkrar yarat</string>
+    <string name="generate_potokens">PO Token\'ləri Yarat</string>
+    <string name="generate_potokens_warning">* Bunu aktiv edərkən məlumat bazasın qapatmalısız</string>
+    <string name="custom">Xüsusi</string>
 </resources>

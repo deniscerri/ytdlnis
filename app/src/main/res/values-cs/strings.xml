@@ -97,7 +97,7 @@
     <string name="scheduling">Rozvrh</string>
     <string name="dont_ask_again">Neptat se znovu</string>
     <string name="warning">Upozornění</string>
-    <string name="video_recommendations_summary">Zobrazíte doporučená videa YouTube na domovské obrazovce</string>
+    <string name="video_recommendations_summary">Zobrazíte doporučená videa na domovské obrazovce</string>
     <string name="codec">Kodek</string>
     <string name="select_backup_categories">Výběr kategorií zálohování</string>
     <string name="downloads_running_try_later">Dělník pro stahování je spuštěn. Zkuste to později</string>
@@ -459,7 +459,7 @@
     <string name="cache_directory_warning">Změna složky mezipaměti může způsobit neočekávané problémy. Pokud aplikace nemůže zapisovat do nakonfigurované cesty, uchýlí se do výchozího interního adresáře mezipaměti</string>
     <string name="use_only_po_token">Použít pouze PO Token (ignorovat klienta přehrávače)</string>
     <string name="sync_with_source_desc">Smazat stažené položky pokud chybí ve zdroji</string>
-    <string name="use_format_sorting">Použít Formát Řazení dle Důležitosti</string>
+    <string name="use_format_sorting">Použít formát řazení dle důležitosti</string>
     <string name="retry_missing_downloads_desc">Znovu stáhnout položky nepřítomné v historii stahování</string>
     <string name="reset_processed_links_desc">Znovu stáhnout všechny položky</string>
     <string name="app_icon_change">Ikona se může změnit a aplikace se zavře</string>
@@ -469,5 +469,9 @@
     <string name="write_subs_when_embed_subs">Napsat titulky při vkládání</string>
     <string name="automatic_backup">Automatické zálohování</string>
     <string name="backup_path">Cesta zálohy</string>
-    <string name="automatic_backup_summary">Automaticky provést zálohu všeho, když je nalezena nová verze aplikace</string>
+    <string name="automatic_backup_summary">Automaticky vytvoří zálohu všeho, když je nalezena nová verze aplikace</string>
+    <string name="generate_potokens">Generovat tokeny PO</string>
+    <string name="regenerate">Znovu vygenerovat</string>
+    <string name="generate_potokens_warning">* Pro zapnutí této funkce musíte zakázat soubory cookie</string>
+    <string name="custom">Vlastní</string>
 </resources>

@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Gjuhet e Titrave</string>
     <string name="format_source">Burimi i Formateve</string>
     <string name="video_recommendations">Rekomendimet e Videove</string>
-    <string name="video_recommendations_summary">Merrni videot e rekomanduara të YouTube në ekranin bazë</string>
+    <string name="video_recommendations_summary">Merrni videot e rekomanduara në ekranin bazë</string>
     <string name="preferred_search_engine">Kërkuesi i Preferuar</string>
     <string name="preferred_search_engine_summary">Kërkuesi që do të përdoret për kërkimet në aplikacion</string>
     <string name="format_filtering_hint">Të gjithë elementet duhet të jenë të një i njëjti lloj për të përdorur këtë opsion</string>
@@ -462,4 +462,15 @@
     <string name="sync_with_source_desc">Fshi artikujt e shkarkuar nëse mungojnë në burim</string>
     <string name="use_format_sorting">Përdor renditjen e formateve të personalizuar</string>
     <string name="app_icon_change">Ikona mund të ndryshojë dhe Aplikacioni do të mbyllet</string>
+    <string name="use_code_highlighter">Shëno kodin me ngjyra</string>
+    <string name="reset_preferences_in_screen">Rivendos të gjithë cilësimet në këtë ekran</string>
+    <string name="automatic_backup">Ruajte Automatike</string>
+    <string name="backup_path">Direktoria e Ruajtjes</string>
+    <string name="write_subs_when_embed_subs">Shkruaj titrat si skedar kur ato mbivendosen në video</string>
+    <string name="generate_potokens">Gjenero Po Token</string>
+    <string name="regenerate">Ri-gjenero</string>
+    <string name="generate_potokens_warning">* Duke aktivizuar këtë, duhet të çaktivizosh biskotat</string>
+    <string name="custom">Tjetër</string>
+    <string name="automatic_backup_summary">Ruaj automatikisht gjithçka kur një version i ri i aplikacionit u gjet</string>
+    <string name="write_subs_when_embed_subs_summary">Kjo do të aktivizojë \"Ruaj Titrat\" dhe \"Ruaj Titrat Automatike\" për të shkarkuar titrat si skedar dhe i fshin pasi mbivendosen në video</string>
 </resources>
