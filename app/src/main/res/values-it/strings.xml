@@ -240,7 +240,7 @@
     <string name="access_all_directories_summary">Consenti il download dell\'app nelle directory limitate per impostazione predefinita</string>
     <string name="in_queue">In coda</string>
     <string name="download_over_metered_networks_summary">Scarica utilizzando qualsiasi tipo di rete. Altrimenti attende rete illimitata</string>
-    <string name="video_recommendations_summary">Ottieni i video YouTube consigliati sulla schermata principale</string>
+    <string name="video_recommendations_summary">Ottieni i video consigliati sulla schermata principale</string>
     <string name="light">Chiaro</string>
     <string name="quick_download">Download rapido</string>
     <string name="misc">Miscellanea</string>
@@ -467,4 +467,10 @@
     <string name="automatic_backup">Backup automatico</string>
     <string name="backup_path">Percorso Backup</string>
     <string name="automatic_backup_summary">Esegui un backup automatico di tutti i contenuti quando viene trovata una nuova versione dell\'applicazione</string>
+    <string name="write_subs_when_embed_subs_summary">Questo applicherà Salva sottotitoli e Salva sottotitoli automatici per scaricare i file dei sottotitoli e poi eliminarli dopo l\'embedding</string>
+    <string name="generate_potokens">Genera token PO</string>
+    <string name="regenerate">Rigenera</string>
+    <string name="write_subs_when_embed_subs">Scrivi sottotili durante l\'embedding</string>
+    <string name="generate_potokens_warning">* Abilitando questa opzione, devi disabilitare i cookie</string>
+    <string name="custom">Personalizzato</string>
 </resources>
