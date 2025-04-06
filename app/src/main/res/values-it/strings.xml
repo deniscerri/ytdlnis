@@ -473,4 +473,5 @@
     <string name="write_subs_when_embed_subs">Scrivi sottotili durante l\'embedding</string>
     <string name="generate_potokens_warning">* Abilitando questa opzione, devi disabilitare i cookie</string>
     <string name="custom">Personalizzato</string>
+    <string name="use_code_highlighter">Usa Code Color Highlighter</string>
 </resources>
