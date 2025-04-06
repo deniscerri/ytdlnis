@@ -110,6 +110,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)
         output.tag = "${item.id}##output"
+        output.text = ""
 
         output.setOnClickListener {
             onItemClickListener.onOutputClick(item)

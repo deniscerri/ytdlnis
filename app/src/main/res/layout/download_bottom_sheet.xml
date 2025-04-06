@@ -187,6 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:outlineProvider="none"
                 android:contentDescription="@string/incognito"
                 app:icon="@drawable/ic_nightly"
                 android:alpha="0.3"
@@ -203,7 +204,7 @@
             android:gravity="end"
             android:visibility="gone"
             android:paddingBottom="10dp"
-            android:paddingHorizontal="20dp"
+            android:layout_marginHorizontal="15dp"
             android:layout_height="wrap_content">
 
             <Button
@@ -212,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
+                android:outlineProvider="none"
                 android:text="@string/update"
                 app:icon="@drawable/ic_update"
                 app:layout_constraintBottom_toBottomOf="parent"

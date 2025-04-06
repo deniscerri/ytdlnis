@@ -81,6 +81,7 @@
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical|end"
                         android:orientation="horizontal"
+                        android:outlineProvider="none"
                         android:paddingHorizontal="10dp"
                         app:chipSpacingHorizontal="0dp">
 
@@ -89,6 +90,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:clickable="false"
+                            android:outlineProvider="none"
+                            app:chipStrokeColor="@android:color/transparent"
                             android:textSize="11sp"
                             app:chipBackgroundColor="?attr/colorSurface"
                             app:chipMinTouchTargetSize="0dp"
@@ -106,6 +109,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:dividerPadding="5dp"
+                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toTopOf="@+id/output"
                     app:layout_constraintEnd_toStartOf="@+id/active_pause_cancel_btns"
@@ -119,15 +123,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
+                        android:paddingEnd="5dp"
                         android:shadowColor="@color/black"
                         android:shadowDx="2"
                         android:shadowDy="2"
                         android:shadowRadius="1"
                         android:textColor="#FFF"
-                        android:textSize="17sp"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -140,12 +144,10 @@
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="5dp"
-                        android:shadowColor="@color/black"
                         android:shadowDx="2"
                         android:shadowDy="2"
                         android:shadowRadius="1"
-                        android:textColor="#FFF"
-                        android:textSize="12sp"
+                        android:textSize="11sp"
                         android:textStyle="bold" />
 
 
@@ -172,6 +174,7 @@
                         android:layout_width="wrap_content"
                         android:contentDescription="@string/resume"
                         android:layout_height="wrap_content"
+                        android:padding="8dp"
                         app:backgroundTint="?attr/colorSurface"
                         app:cornerRadius="15dp"
                         app:icon="@drawable/exomedia_ic_play_arrow_white"
@@ -190,6 +193,7 @@
                         android:layout_height="wrap_content"
                         app:backgroundTint="?attr/colorSurface"
                         app:cornerRadius="15dp"
+                        android:padding="8dp"
                         app:icon="@drawable/baseline_close_24"
                         app:iconSize="30dp"
                         app:iconTint="?android:textColorPrimary"
@@ -203,12 +207,13 @@
                 <TextView
                     android:id="@+id/output"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:clickable="true"
                     android:ellipsize="end"
                     android:focusable="true"
                     android:fontFamily="monospace"
                     android:maxLines="2"
+                    android:gravity="bottom"
                     android:padding="10dp"
                     android:shadowColor="#000"
                     android:shadowDx="4"

@@ -11,7 +11,7 @@ plugins {
 def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 8
-def versionPatch = 3
+def versionPatch = 4
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 def isBeta = false
 
@@ -145,7 +145,7 @@ dependencies {
 //    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
 
-    implementation "io.github.junkfood02.youtubedl-android:library:0.17.2"
+    implementation "io.github.junkfood02.youtubedl-android:library:0.17.3"
     implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
     implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
 
