@@ -361,7 +361,7 @@
     <string name="back">戻る</string>
     <string name="swipe_gestures_download_card">ダウンロードカードでのスワイプジェスチャー</string>
     <string name="show_download_count">ダウンロード待ちの数を表示</string>
-    <string name="get_new_uploads">新しいアップロードのみ取得</string>
+    <string name="get_new_uploads">新たなアップロードのみ取得 (既存の項目無視)</string>
     <string name="also_download_audio">音声としてもダウンロード</string>
     <string name="wrap_text">文章を折り返す</string>
     <string name="thumbnail_format">サムネイルの形式</string>
@@ -470,4 +470,8 @@
     <string name="automatic_backup">自動バックアップ</string>
     <string name="use_code_highlighter">コードの色による強調表示を使用</string>
     <string name="use_format_sorting">形式の重要度による並び替えを使用</string>
+    <string name="custom">指定</string>
+    <string name="generate_potokens_warning">* これを有効にすることで、クッキーを無効にする必要あり</string>
+    <string name="generate_potokens">POトークンを生成</string>
+    <string name="regenerate">再生成</string>
 </resources>
