@@ -45,7 +45,7 @@ class NewPipePoTokenGenerator : PoTokenProvider {
 
         val (poTokenGenerator, visitorData, streamingPot, hasBeenRecreated) =
             synchronized(WebPoTokenGenLock) {
-                val shouldRecreate = webPoTokenGenerator == null || forceRecreate || webPoTokenGenerator!!.isExpired
+                val shouldRecreate = webPoTokenGenerator == null || forceRecreate || webPoTokenGenerator!!.isExpired()
 
                 if (shouldRecreate) {
                     val innertubeClientRequestInfo = InnertubeClientRequestInfo.ofWebClient()

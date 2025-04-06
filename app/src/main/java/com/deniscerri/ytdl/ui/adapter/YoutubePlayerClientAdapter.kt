@@ -83,10 +83,12 @@ class YoutubePlayerClientAdapter(onItemClickListener: OnItemClickListener, activ
 
         if (item.urlRegex.isNotEmpty()) {
             val text = "URL Regex: " + item.urlRegex.joinToString(", ")
-            content.findViewById<TextView>(R.id.urlRegex).apply {
-                isVisible = true
-                setText(text)
-            }
+            val tmp =  activity.layoutInflater.inflate(R.layout.textview_chip, content, false) as TextView
+            tmp.maxWidth = 500
+            tmp.maxLines = 1
+            tmp.ellipsize = TextUtils.TruncateAt.END
+            tmp.text = text
+            content.addView(tmp)
         }
 
         title.alpha = if (item.enabled) 1f else 0.3f

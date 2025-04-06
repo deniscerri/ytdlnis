@@ -136,13 +136,13 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         noResults.isVisible = false
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         recyclerView.adapter = historyAdapter
+
         lifecycleScope.launch {
             historyViewModel.paginatedItems.collectLatest {
-                withContext(Dispatchers.IO){
-                    historyAdapter.submitData(it)
-                }
+                historyAdapter.submitData(it)
             }
         }
+
         lifecycleScope.launch {
             historyViewModel.websites.collectLatest {
                 if(it.isEmpty()) {

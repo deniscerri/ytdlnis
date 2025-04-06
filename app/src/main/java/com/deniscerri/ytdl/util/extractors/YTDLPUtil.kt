@@ -1253,6 +1253,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.merge(metadataCommands)
 
         if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
+            // check for cache dir as extra command and add it as an actual option to prevent --no-cache-dir in youtubedl_android
+            val cacheDirArg = """(--cache-dir (".*"))""".toRegex().find(downloadItem.extraCommands)
+            if (cacheDirArg != null) {
+                ytDlRequest.addOption("--cache-dir", cacheDirArg.groupValues.last().replace("\"", ""))
+                downloadItem.extraCommands.replace(cacheDirArg.value, "")
+            }
             request.addOption(downloadItem.extraCommands)
         }
 
