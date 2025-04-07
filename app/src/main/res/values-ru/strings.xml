@@ -210,7 +210,7 @@
     <string name="preferred_format_id">Предпочитаемый ID формата</string>
     <string name="download_now">Загрузить сейчас</string>
     <string name="resume">Продолжить</string>
-    <string name="video_recommendations_summary">Получайте рекомендуемые видео YouTube на главном экране</string>
+    <string name="video_recommendations_summary">Получите рекомендуемые видео на главном экране</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
     <string name="Theme">Тема</string>
     <string name="dark">Тёмная</string>
@@ -368,7 +368,7 @@
     <string name="all_queries_finished">Все запросы обработаны</string>
     <string name="select_between">Выберите элементы между</string>
     <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
-    <string name="get_new_uploads">Получать только новые загрузки</string>
+    <string name="get_new_uploads">Получать только будущие загрузки (игнорировать существующие элементы)</string>
     <string name="add">Добавить</string>
     <string name="wrap_text">Перенос текста</string>
     <string name="no_download_fragments">Не загружать как фрагменты</string>
@@ -458,4 +458,20 @@
     <string name="cache_directory">Папка кэша</string>
     <string name="use_only_po_token">Используйте только PO токен (игнорировать клиент плеера)</string>
     <string name="cache_directory_warning">Изменение папки кеша может вызвать неожиданные проблемы. Если приложение не может записать на настроенный путь, оно прибегает к каталогу внутреннего кэша по умолчанию</string>
+    <string name="retry_missing_downloads_desc">Повторно загрузить элементы, отсутствующие в истории загрузок</string>
+    <string name="reset_processed_links_desc">Повторно загрузить все элементы снова</string>
+    <string name="use_code_highlighter">Используйте код Цвет</string>
+    <string name="reset_preferences_in_screen">Сбросить все предпочтения на этом экране</string>
+    <string name="automatic_backup">Автоматическая резервная копия</string>
+    <string name="backup_path">Резервный путь</string>
+    <string name="automatic_backup_summary">Автоматически сделайте резервную копию всего, когда найдена новая версия приложения</string>
+    <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
+    <string name="write_subs_when_embed_subs_summary">Это применяет субтитры Сохранить и сохранить автоматические субтитры для загрузки суб -файлов, а затем удалить их после внедрения</string>
+    <string name="generate_potokens">Згенерировать токены PO</string>
+    <string name="regenerate">Перегенерировать</string>
+    <string name="use_format_sorting">Использовать важность формата</string>
+    <string name="sync_with_source_desc">Удалить загруженные элементы, если они отсутствуют в источнике</string>
+    <string name="app_icon_change">Значок может измениться, и приложение закроется</string>
+    <string name="generate_potokens_warning">* Включив это, вам нужно отключить куки</string>
+    <string name="custom">Другой</string>
 </resources>
