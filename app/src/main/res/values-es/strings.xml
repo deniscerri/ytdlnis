@@ -4,7 +4,7 @@
     <string name="settings">Ajustes</string>
     <string name="home">Inicio</string>
     <string name="directories">Directorios</string>
-    <string name="music_directory">Directorio de Música</string>
+    <string name="music_directory">Carpeta de audio</string>
     <string name="video_directory">Directorio de Video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil si tienes problemas para descargar</string>
@@ -457,4 +457,17 @@
     <string name="no_check_certificates">Suprimir la validación del certificado HTTPS</string>
     <string name="retry_missing_downloads_desc">Descargar elementos que no están presentes en el historial de descargas</string>
     <string name="reset_processed_links_desc">Descargar nuevamente todos los elementos</string>
+    <string name="reset_preferences_in_screen">Restablecer todas las preferencias en esta pantalla</string>
+    <string name="automatic_backup">Copia de seguridad automática</string>
+    <string name="backup_path">Ruta de respaldo</string>
+    <string name="write_subs_when_embed_subs">Guardar subtítulos al incrustar</string>
+    <string name="generate_potokens">Generar tokens de PO</string>
+    <string name="regenerate">Generar de nuevo</string>
+    <string name="automatic_backup_summary">Realizar automáticamente una copia de seguridad de todo cuando se encuentre una nueva versión de la aplicación</string>
+    <string name="live_from_start">Transmisión en Vivo desde el Inicio</string>
+    <string name="wait_for_video">Esperar el video</string>
+    <string name="retry_every">Reintentar cada</string>
+    <string name="cache_directory">Carpeta caché</string>
+    <string name="generate_potokens_warning">* Al habilitar esto, debe deshabilitar las cookies</string>
+    <string name="custom">Personalizado</string>
 </resources>
