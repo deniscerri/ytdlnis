@@ -441,4 +441,17 @@
     <string name="ytdlp_recommnedations">Recomendaciones de Youtube de YT-DLP (necesita cookies )</string>
     <string name="ytdlp_liked">Vídeos que me gustan en Youtube de YT-DLP (necesita cookies )</string>
     <string name="ytdlp_watch_history">Historial de visualización de YouTube de YT-DLP (requiere cookies )</string>
+    <string name="player_client">Cliente de reproducción</string>
+    <string name="layout">Layout</string>
+    <string name="list">Lista</string>
+    <string name="cache_directory_warning">Cambiar la carpeta caché podría causar problemas inesperados. Si la aplicación no puede escribir en la ruta configurada, recurrirá al directorio de caché interno predeterminado</string>
+    <string name="prefer_container_over_codec_audio_summary">Con esto habilitado, se ignorará la preferencia de códec de audio preferido y solo cambiará el contenedor</string>
+    <string name="sync_with_source_desc">Eliminar los elementos descargados si faltan en la fuente</string>
+    <string name="live_stream">Transmisión en vivo</string>
+    <string name="minutes">Minutos</string>
+    <string name="prefer_container_over_codec_audio">Preferir el contenedor al códec para descargas de audio</string>
+    <string name="player_client_summary"><![CDATA[Clientes del reproductor de YouTube y token PO]]></string>
+    <string name="use_app_language_for_metadata">Usar el lenguaje de la aplicación para los metadatos</string>
+    <string name="use_only_po_token">Utilice únicamente la clave de acceso PO (ignore el cliente de reproducción)</string>
+    <string name="app_icon_change">El ícono podría cambiar y la aplicación se cerrará</string>
 </resources>
