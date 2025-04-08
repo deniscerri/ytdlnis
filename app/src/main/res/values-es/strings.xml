@@ -368,7 +368,7 @@
     <string name="all_queries_finished">Se han procesado todas las consultas</string>
     <string name="select_between">Seleccione los elementos entre</string>
     <string name="reset_processed_links">Restablecer enlaces ya procesados</string>
-    <string name="get_new_uploads">Obtener sólo las nuevas cargas</string>
+    <string name="get_new_uploads">Obtener sólo las nuevas cargas (Ignorar elementos existentes)</string>
     <string name="wrap_text">Ajustar texto</string>
     <string name="also_download_audio">Descargar también en audio</string>
     <string name="no_download_fragments">No descargar como fragmentos</string>
@@ -454,4 +454,7 @@
     <string name="use_app_language_for_metadata">Usar el lenguaje de la aplicación para los metadatos</string>
     <string name="use_only_po_token">Utilice únicamente la clave de acceso PO (ignore el cliente de reproducción)</string>
     <string name="app_icon_change">El ícono podría cambiar y la aplicación se cerrará</string>
+    <string name="no_check_certificates">Suprimir la validación del certificado HTTPS</string>
+    <string name="retry_missing_downloads_desc">Descargar elementos que no están presentes en el historial de descargas</string>
+    <string name="reset_processed_links_desc">Descargar nuevamente todos los elementos</string>
 </resources>
