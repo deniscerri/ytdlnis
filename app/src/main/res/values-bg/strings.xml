@@ -253,7 +253,7 @@
     <string name="save_subs">Запазване на субтитрите</string>
     <string name="save_subs_desc">Запазете субтитрите във файл</string>
     <string name="format_source">Източник формати</string>
-    <string name="video_recommendations_summary">Вземете препоръчаните YouTube видеоклипове на началния екран</string>
+    <string name="video_recommendations_summary">Вземете препоръчаните видеоклипове на началния екран</string>
     <string name="preferred_search_engine">Предпочитана търсачка</string>
     <string name="preferred_search_engine_summary">Търсачката ще се използва за търсене в приложението</string>
     <string name="format_filtering_hint">Всички елементи трябва да са от един и същи тип, за да използвате тази опция</string>
@@ -459,4 +459,18 @@
     <string name="cache_directory_warning">Промяната на папката на кеша може да причини неочаквани проблеми. Ако приложението не може да пише в конфигурирания път, то ще прибегне до директорията на вътрешния кеш по подразбиране</string>
     <string name="cache_directory">Папка кеш</string>
     <string name="app_icon_change">Иконата може да се промени и приложението ще се затвори</string>
+    <string name="list">Списък</string>
+    <string name="grid">Мрежа</string>
+    <string name="reset_preferences_in_screen">Възстановете всички настройки на този екран</string>
+    <string name="automatic_backup">Автоматично резервно копие</string>
+    <string name="use_code_highlighter">За подчертаване използване ба цветен код</string>
+    <string name="backup_path">Път до резервно копие</string>
+    <string name="write_subs_when_embed_subs">Пишете субтитри при вграждане</string>
+    <string name="write_subs_when_embed_subs_summary">Това ще приложи запазване на субтитри и автоматично запазване на субтитри, за да изтегли файловете със субтитри и да ги изтрие след вграждане</string>
+    <string name="generate_potokens">Генериране на PO Token-и</string>
+    <string name="regenerate">Генериране наново</string>
+    <string name="automatic_backup_summary">Автоматично създаване на резервно копие на всичко, когато бъде намерена нова версия на приложението</string>
+    <string name="use_only_po_token">Използвайте само PO Token (Игнорирайте клиента на плеъра)</string>
+    <string name="generate_potokens_warning">* Като активирате това, трябва да деактивирате бисквитките</string>
+    <string name="custom">персонализирани</string>
 </resources>
