@@ -205,7 +205,6 @@
     <string name="system">Σύστημα</string>
     <string name="accents">Εμφάσεις</string>
     <string name="high_contrast">Υψηλή Αντίθεση</string>
-    <string name="material_you"></string>
     <string name="blue">Μπλε</string>
     <string name="red">Κόκκινο</string>
     <string name="green">Πράσινο</string>
@@ -222,7 +221,6 @@
     <string name="pause">Παύση</string>
     <string name="resume">Συνέχεια</string>
     <string name="incognito">Ανώνυμη Λειτουργία</string>
-    <string name="sponsorblock"></string>
     <string name="couldnt_parse_file">Δεν ήταν δυνατή η ανάλυση του αρχείου</string>
     <string name="select_backup_categories">Επιλέξτε κατηγορίες αντιγράφων ασφαλείας</string>
     <string name="search_history">Ιστορικό Αναζήτησης</string>
@@ -349,7 +347,6 @@
     <string name="preferred_video_codec">Προτιμώμενος κωδικοποιητής βίντεο</string>
     <string name="preferred_audio_codec">Προτιμώμενος κωδικοποιητής ήχου</string>
     <string name="loading">Φόρτωση</string>
-    <string name="sponsorblock_api_url"></string>
     <string name="changed_path_for_everyone_to">Αλλαγή της διαδρομής λήψης κάθε αντικειμένου σε:</string>
     <string name="dismiss">Απόρριψε</string>
     <string name="all">Όλα</string>
