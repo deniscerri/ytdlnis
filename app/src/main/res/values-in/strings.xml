@@ -11,7 +11,7 @@
     <string name="download_all">Unduh Semua</string>
     <string name="settings">Setelan</string>
     <string name="search">Telusuri</string>
-    <string name="failed_download">Tidak bisa mengunduh berkas</string>
+    <string name="failed_download">Tidak dapat mengunduh berkas</string>
     <string name="download_notification_channel_name">Unduhan Berkas</string>
     <string name="download_notification_channel_description">Notifikasi yang memperlihatkan kemajuan pengunduhan berkas audio dan video</string>
     <string name="home">Beranda</string>
@@ -198,7 +198,7 @@
     <string name="save_subs">Simpan Takarir (Subtitle)</string>
     <string name="save_subs_desc">Menulis berkas takarir (subtitle)</string>
     <string name="subtitle_languages">Bahasa takarir (subtitle)</string>
-    <string name="video_recommendations_summary">Dapatkan rekomendasi video YouTube di layar beranda</string>
+    <string name="video_recommendations_summary">Dapatkan rekomendasi video di layar beranda</string>
     <string name="format_source">Format Sumber</string>
     <string name="video_recommendations">Rekomendasi Video</string>
     <string name="copied_to_clipboard">Disalin ke Papan Klip</string>
@@ -462,4 +462,15 @@
     <string name="use_only_po_token">Gunakan hanya PO Token (Abaikan Klien Pemutar)</string>
     <string name="cache_directory">Folder Cache</string>
     <string name="app_icon_change">Ikon dapat berubah dan Aplikasi akan ditutup</string>
+    <string name="reset_preferences_in_screen">Atur ulang semua preferensi di layar ini</string>
+    <string name="use_code_highlighter">Gunakan Stabilo Warna Kode</string>
+    <string name="write_subs_when_embed_subs_summary">Ini akan menerapkan Simpan Subtitel dan Simpan Subtitel Otomatis untuk mengunduh berkas sub lalu menghapusnya setelah penyematan</string>
+    <string name="automatic_backup">Pencadangan otomatis</string>
+    <string name="backup_path">Jaalur Pencadangan</string>
+    <string name="write_subs_when_embed_subs">Tulis subtitle saat menyematkan</string>
+    <string name="generate_potokens">Hasilkan PO Tokens</string>
+    <string name="regenerate">Hasilkan ulang</string>
+    <string name="automatic_backup_summary">Secara otomatis membuat cadangan semuanya ketika versi baru aplikasi ditemukan</string>
+    <string name="generate_potokens_warning">* Dengan mengaktifkan ini, Anda perlu menonaktifkan kuki</string>
+    <string name="custom">Khusus</string>
 </resources>
