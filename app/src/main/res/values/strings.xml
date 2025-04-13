@@ -256,7 +256,7 @@
     <string name="restore_complete">App Restore Complete. The following items have been restored:</string>
     <string name="select_backup_categories">Select backup categories</string>
     <string name="search_history">Search History</string>
-    <string name="backup_created_successfully">Backup file saved in the downloads folder</string>
+    <string name="backup_created_successfully">Backup file saved successfully!</string>
     <string name="appearance">Appearance</string>
     <string name="backup_restore">Backup And Restore</string>
     <string name="socks5_proxy_summary">Use the specified HTTP/HTTPS/SOCKS proxy</string>
