@@ -428,4 +428,6 @@
     <string name="resume_all">Alles hervatten</string>
     <string name="package_name">Pakket­naam</string>
     <string name="websites">Websites</string>
+    <string name="retry_missing_downloads_desc">Download items die niet aanwezig zijn in het download geschiedenis opnieuw</string>
+    <string name="reset_processed_links_desc">Download alle items opnieuw</string>
 </resources>
