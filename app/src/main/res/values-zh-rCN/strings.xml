@@ -148,7 +148,7 @@
     <string name="blue">蓝色</string>
     <string name="red">红色</string>
     <string name="couldnt_parse_file">无法解析文件</string>
-    <string name="backup_created_successfully">备份文件保存在下载文件夹中</string>
+    <string name="backup_created_successfully">成功保存了备份文件！</string>
     <string name="appearance">外观</string>
     <string name="pause">暂停</string>
     <string name="configure_download">调整下载</string>
