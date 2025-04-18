@@ -250,7 +250,7 @@
     <string name="couldnt_parse_file">تعذرَ تحليل الملف</string>
     <string name="restore">استعادة نسخة احتياطية</string>
     <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
-    <string name="backup_created_successfully">تم حفظ ملف النسخة الاحتياطية في مجلد التنزيلات</string>
+    <string name="backup_created_successfully">حُفظ ملف النسخة الاحتياطية بنجاح!</string>
     <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>

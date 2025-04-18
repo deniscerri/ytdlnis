@@ -176,7 +176,7 @@
     <string name="swipe_gestures_summary">Превуците предмете за одређене радње</string>
     <string name="backup">Резервна копија</string>
     <string name="license">Лиценца</string>
-    <string name="backup_created_successfully">Фајл резервне копије је сачуван у фолдеру за преузимања</string>
+    <string name="backup_created_successfully">Фајл резервне копије је успешно сачуван!</string>
     <string name="update_template">Ажурирај шаблон</string>
     <string name="downloaded">"Преузето: "</string>
     <string name="download_already_exists_summary">Желите ли још увек да преузмете\?</string>

@@ -221,7 +221,7 @@
     <string name="restore">Restaurar</string>
     <string name="incognito">Anônimo</string>
     <string name="appearance">Aparência</string>
-    <string name="backup_created_successfully">Backup salvo na pasta de downloads</string>
+    <string name="backup_created_successfully">Arquivo de backup salvo com sucesso!</string>
     <string name="search_history">Histórico de busca</string>
     <string name="select_backup_categories">Selecionar categorias de backup</string>
     <string name="restore_complete">Restauração do aplicativo concluída. Os seguintes itens foram restaurados:</string>

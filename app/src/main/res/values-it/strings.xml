@@ -127,7 +127,7 @@
     <string name="preferred_locale">Località preferita</string>
     <string name="pause">Pausa</string>
     <string name="resume">Riprendi</string>
-    <string name="backup_created_successfully">File di backup salvato nella cartella dei download</string>
+    <string name="backup_created_successfully">File di backup salvato con successo!</string>
     <string name="appearance">Aspetto</string>
     <string name="backup_restore">Backup e Ripristino</string>
     <string name="search_suggestions">Suggerimenti di Ricerca</string>
