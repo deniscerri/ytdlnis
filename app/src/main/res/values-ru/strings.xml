@@ -243,7 +243,7 @@
     <string name="video_recommendations">Рекомендации видео</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
-    <string name="backup_created_successfully">Файл резервного копирования успешно сохранен!</string>
+    <string name="backup_created_successfully">Файл резервной копии успешно сохранён!</string>
     <string name="material_you">Material You</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
