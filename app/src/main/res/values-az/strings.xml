@@ -250,7 +250,7 @@
     <string name="select_backup_categories">Nüsxə kateqoriyaları seç</string>
     <string name="search_history">Axtarış Tarixçəsi</string>
     <string name="appearance">Görünüş</string>
-    <string name="backup_created_successfully">Nüsxə faylı yükləmələr qovluğunda saxlanıldı</string>
+    <string name="backup_created_successfully">Nüsxə faylı uğurla saxlanıldı!</string>
     <string name="backup_restore">Nüsxələ və Bərpa et</string>
     <string name="socks5_proxy_summary">Dəqiqləşdirilən HTTP/HTTPS/SOCKS proksi istifadə et</string>
     <string name="socks5_proxy">Socks5 Proksi URL</string>
