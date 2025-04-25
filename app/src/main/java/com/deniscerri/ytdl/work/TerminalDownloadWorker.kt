@@ -120,7 +120,7 @@ class TerminalDownloadWorker(
                 }
             }
 
-            YoutubeDL.getInstance().execute(request, itemId.toString()){ progress, _, line ->
+            YoutubeDL.getInstance().execute(request, itemId.toString(), true){ progress, _, line ->
                 runBlocking {
                     eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }

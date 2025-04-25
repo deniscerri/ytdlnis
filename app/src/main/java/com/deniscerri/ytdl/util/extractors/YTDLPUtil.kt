@@ -40,7 +40,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
-import java.util.ArrayList
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
@@ -174,8 +173,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (Patterns.WEB_URL.matcher(query).matches() && playlistURL?.isEmpty() == true){
                     query
                 }else{
-                    jsonObject.getStringByAny("webpage_url", "original_url", "url", )
-                    jsonObject.getString("webpage_url")
+                    jsonObject.getStringByAny("webpage_url", "original_url", "url")
                 }
             }
 
@@ -580,7 +578,129 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             this.add(it)
         }
     }
-    @OptIn(ExperimentalStdlibApi::class)
+
+    fun getVersion(context: Context, channel: String) : String {
+        if (listOf("stable", "nightly", "master").contains(channel)) {
+            return YoutubeDL.version(context) ?: ""
+        }
+
+        val req = YoutubeDLRequest(emptyList())
+        req.addOption("--version")
+        return YoutubeDL.getInstance().execute(req).out.trim()
+    }
+
+    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
+        val extractorArgs = mutableListOf<String>()
+        val playerClients = mutableSetOf<String>()
+        val poTokens = mutableListOf<String>()
+
+        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
+        kotlin.runCatching {
+            val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+
+            for (value in configuredPlayerClients) {
+                if (value.enabled) {
+                    if (!value.useOnlyPoToken) {
+                        playerClients.add(value.playerClient)
+                    }
+
+                    var canUsePoToken = true
+                    if (value.urlRegex.isNotEmpty() && url != null) {
+                        canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
+                    }
+
+                    if (canUsePoToken) {
+                        value.poTokens.forEach { pt ->
+                            poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                        }
+                    }
+                }
+            }
+        }
+
+        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
+        if (dataSyncID.isNotBlank()) {
+            extractorArgs.add("player_skip=webpage,configs")
+            extractorArgs.add("data_sync_id=${dataSyncID}")
+        }
+
+        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
+        kotlin.runCatching {
+            val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
+            if (generatedPoTokens.isNotEmpty()) {
+                for (value in generatedPoTokens) {
+                    if (value.enabled) {
+                        for (cl in value.clients) {
+                            playerClients.add(cl)
+                            for (pt in value.poTokens) {
+                                if (pt.token.isNotBlank()) {
+                                    poTokens.add("${cl}.${pt.context}+${pt.token}")
+                                }
+                            }
+                        }
+
+                        if (dataSyncID.isBlank() && value.useVisitorData) {
+                            extractorArgs.add("player_skip=webpage,configs")
+                            extractorArgs.add("visitor_data=${value.visitorData}")
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if (playerClients.isNotEmpty()){
+            extractorArgs.add("player_client=${playerClients.joinToString(",")}")
+        }
+
+        if (poTokens.isNotEmpty()) {
+            extractorArgs.add("po_token=${poTokens.joinToString(",")}")
+        }
+
+        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
+        if (useLanguageForMetadata) {
+            val lang = Locale.getDefault().language
+            val langTag = Locale.getDefault().toLanguageTag()
+            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+                extractorArgs.add("lang=$lang")
+            }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
+                extractorArgs.add("lang=$langTag")
+            }
+        }
+
+        val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!
+        if (otherArgs.isNotBlank()) {
+            extractorArgs.add(otherArgs)
+        }
+
+        val extArgs = extractorArgs.joinToString(";")
+        if (extractorArgs.isNotEmpty()) {
+            this.addOption("--extractor-args", "youtube:${extArgs}")
+        }
+    }
+
+    private fun YoutubeDLRequest.addConfig(commandString: String) {
+        this.addOption(
+            "--config-locations",
+            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
+                writeText(commandString)
+            }.absolutePath
+        )
+    }
+
+    private fun StringJoiner.addOption(vararg elements: Any) {
+        this.add(elements.first().toString())
+        if (elements.size > 1) {
+            for (el in elements.drop(1)) {
+                val arg = el.toString()
+                    //.replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+
+                this.add("\"$arg\"")
+            }
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
@@ -1271,127 +1391,5 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         tmp.addOption("--config-locations", conf.absolutePath)
         ytDlRequest.addCommands(tmp)
         return ytDlRequest
-    }
-
-    fun getVersion(context: Context, channel: String) : String {
-        if (listOf("stable", "nightly", "master").contains(channel)) {
-            return YoutubeDL.version(context) ?: ""
-        }
-
-        val req = YoutubeDLRequest(emptyList())
-        req.addOption("--version")
-        return YoutubeDL.getInstance().execute(req).out.trim()
-    }
-
-    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
-        val extractorArgs = mutableListOf<String>()
-        val playerClients = mutableSetOf<String>()
-        val poTokens = mutableListOf<String>()
-
-        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
-        kotlin.runCatching {
-            val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
-
-            for (value in configuredPlayerClients) {
-                if (value.enabled) {
-                    if (!value.useOnlyPoToken) {
-                        playerClients.add(value.playerClient)
-                    }
-
-                    var canUsePoToken = true
-                    if (value.urlRegex.isNotEmpty() && url != null) {
-                        canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
-                    }
-
-                    if (canUsePoToken) {
-                        value.poTokens.forEach { pt ->
-                            poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
-                        }
-                    }
-                }
-            }
-        }
-
-        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
-        if (dataSyncID.isNotBlank()) {
-            extractorArgs.add("player_skip=webpage,configs")
-            extractorArgs.add("data_sync_id=${dataSyncID}")
-        }
-
-        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
-        kotlin.runCatching {
-            val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
-            if (generatedPoTokens.isNotEmpty()) {
-                for (value in generatedPoTokens) {
-                    if (value.enabled) {
-                        for (cl in value.clients) {
-                            playerClients.add(cl)
-                            for (pt in value.poTokens) {
-                                if (pt.token.isNotBlank()) {
-                                    poTokens.add("${cl}.${pt.context}+${pt.token}")
-                                }
-                            }
-                        }
-
-                        if (dataSyncID.isBlank() && value.useVisitorData) {
-                            extractorArgs.add("player_skip=webpage,configs")
-                            extractorArgs.add("visitor_data=${value.visitorData}")
-                        }
-
-                    }
-                }
-            }
-        }
-
-        if (playerClients.isNotEmpty()){
-            extractorArgs.add("player_client=${playerClients.joinToString(",")}")
-        }
-
-        if (poTokens.isNotEmpty()) {
-            extractorArgs.add("po_token=${poTokens.joinToString(",")}")
-        }
-
-        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
-        if (useLanguageForMetadata) {
-            val lang = Locale.getDefault().language
-            val langTag = Locale.getDefault().toLanguageTag()
-            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-                extractorArgs.add("lang=$lang")
-            }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
-                extractorArgs.add("lang=$langTag")
-            }
-        }
-
-        val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!
-        if (otherArgs.isNotBlank()) {
-            extractorArgs.add(otherArgs)
-        }
-
-        val extArgs = extractorArgs.joinToString(";")
-        if (extractorArgs.isNotEmpty()) {
-            this.addOption("--extractor-args", "youtube:${extArgs}")
-        }
-    }
-
-    private fun YoutubeDLRequest.addConfig(commandString: String) {
-        this.addOption(
-            "--config-locations",
-            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
-                writeText(commandString)
-            }.absolutePath
-        )
-    }
-
-    private fun StringJoiner.addOption(vararg elements: Any) {
-        this.add(elements.first().toString())
-        if (elements.size > 1) {
-            for (el in elements.drop(1)) {
-                val arg = el.toString()
-                    //.replace("\\", "\\\\")
-                    .replace("\"", "\\\"")
-
-                this.add("\"$arg\"")
-            }
-        }
     }
 }

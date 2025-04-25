@@ -221,7 +221,7 @@ class DownloadWorker(
 
                     runCatching {
                         YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
-                        YoutubeDL.getInstance().execute(request, downloadItem.id.toString()){ progress, _, line ->
+                        YoutubeDL.getInstance().execute(request, downloadItem.id.toString(), true){ progress, _, line ->
                             eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
