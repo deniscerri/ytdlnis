@@ -249,7 +249,7 @@
     <string name="backup_restore">バックアップと復元</string>
     <string name="search_suggestions_summary">Googleから検索候補を取得する</string>
     <string name="preferred_format_id_summary">ダウンロードカードでこの ID の形式を選択します</string>
-    <string name="backup_created_successfully">バックアップファイルをダウンロードフォルダに保存しました</string>
+    <string name="backup_created_successfully">バックアップファイルをダウンロードフォルダに保存しました。</string>
     <string name="audio_only_item">この項目は音声形式のみを含みます</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="custom_audio_quality">音質を指定</string>
