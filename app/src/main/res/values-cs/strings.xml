@@ -211,7 +211,7 @@
     <string name="swipe_gestures_summary">Přejeďte prstem položky pro určité akce</string>
     <string name="backup">Zálohování</string>
     <string name="license">Licence</string>
-    <string name="backup_created_successfully">Záložní soubor uložený ve složce stažených souborů</string>
+    <string name="backup_created_successfully">Záložní soubor úspěšně uložen!</string>
     <string name="update_template">Aktualizace šablony</string>
     <string name="downloaded">"Stažené: "</string>
     <string name="download_already_exists_summary">Chcete ještě stahovat?</string>
