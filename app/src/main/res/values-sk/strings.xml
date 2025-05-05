@@ -244,7 +244,7 @@
     <string name="container">Kontajner</string>
     <string name="download">Sťahovanie</string>
     <string name="swipe_gestures_summary">Potiahnutie položiek pre určité akcie</string>
-    <string name="backup_created_successfully">Zálohovací súbor uložený v priečinku sťahovania</string>
+    <string name="backup_created_successfully">Záložný súbor úspešne uložený!</string>
     <string name="about">O nás</string>
     <string name="date_added">Dátum pridania</string>
     <string name="sponsorblock_outro">Ostatné</string>
