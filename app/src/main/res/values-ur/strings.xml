@@ -40,4 +40,8 @@
     <string name="downloading_update">نیا ورژن ڈاؤن لوڈ ہو رہا ہے</string>
     <string name="audio">‬آڈیو</string>
     <string name="video">ویڈیو</string>
+    <string name="limit_rate_summary">زیادہ سے زیادہ ڈاؤن لوڈ کی شرح (بائٹس فی سیکنڈ میں)، جیسے 50K یا 4.2M</string>
+    <string name="aria2_summary">ڈیفالٹ کے بجائے aria2c کو بطور ڈاؤنلوڈر استعمال کریں۔</string>
+    <string name="processing">کارروائی ہو رہی ہے</string>
+    <string name="embed_subs_summary">ویڈیو میں سب ٹائٹلز شامل کریں</string>
 </resources>
