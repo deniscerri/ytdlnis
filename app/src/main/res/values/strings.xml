@@ -68,8 +68,8 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">Use API Key</string>
-    <string name="api_key_summary">Video Recommendations from Youtube API</string>
-    <string name="update_app_summary">Announce new versions of the app when it is opened. The data is extracted from the official Github Repository</string>
+    <string name="api_key_summary">Video Recommendations from YouTube API</string>
+    <string name="update_app_summary">Announce new versions of the app when it is opened. The data is extracted from the official GitHub Repository</string>
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remove Deleted</string>
     <string name="remove_duplicates">Remove Duplicates</string>
@@ -260,7 +260,7 @@
     <string name="appearance">Appearance</string>
     <string name="backup_restore">Backup And Restore</string>
     <string name="socks5_proxy_summary">Use the specified HTTP/HTTPS/SOCKS proxy</string>
-    <string name="socks5_proxy">Socks5 Proxy URL</string>
+    <string name="socks5_proxy">SOCKS5 Proxy URL</string>
     <string name="search_suggestions">Search Suggestions</string>
     <string name="search_suggestions_summary">Get search suggestions from Google</string>
     <string name="preferred_format_id_summary">Select the format with this ID in the download card</string>
@@ -309,7 +309,7 @@
     <string name="preferred_video_codec">Preferred Video Codec</string>
     <string name="preferred_audio_codec">Preferred Audio Codec</string>
     <string name="loading">Loading</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="remember_download_type">Remember Download Type</string>
     <string name="remember_download_type_summary">Select the last opened download type for the current item</string>
     <string name="user_agent_header">User-Agent header</string>
@@ -442,10 +442,10 @@
     <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
     <string name="disable_write_info_json">Disable Write Info Json</string>
     <string name="disable_write_info_json_summary">(Not Recommended) Every time you restart / resume the download, yt-dlp will re-download json data from the servers.</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (needs cookies)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube Recommendations (needs cookies)</string>
-    <string name="ytdlp_liked">YT-DLP Youtube Liked Videos (needs cookies)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube Watch History (needs cookies)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube Watch Later (needs cookies)</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube Recommendations (needs cookies)</string>
+    <string name="ytdlp_liked">yt-dlp YouTube Liked Videos (needs cookies)</string>
+    <string name="ytdlp_watch_history">yt-dlp YouTube Watch History (needs cookies)</string>
     <string name="no_check_certificates">Suppress HTTPS certificate validation</string>
     <string name="live_stream">Live Stream</string>
     <string name="live_from_start">Live From Start</string>

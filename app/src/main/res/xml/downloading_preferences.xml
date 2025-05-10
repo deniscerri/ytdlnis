@@ -148,7 +148,7 @@
             android:key="aria2"
             app:summary="@string/aria2_summary"
             android:disableDependentsState="true"
-            app:title="Aria2" />
+            app:title="aria2c" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

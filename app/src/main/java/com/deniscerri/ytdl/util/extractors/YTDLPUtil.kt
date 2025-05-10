@@ -999,6 +999,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     formatSorting.add(0, "abr:${abrSort}")
                 }
 
+                if (downloadItem.downloadSections.isNotBlank()) {
+                    formatSorting.add(0, "proto:https")
+                }
+
                 if(formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))
                 }
@@ -1015,7 +1019,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--split-chapters")
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
-
                     if (embedMetadata){
                         metadataCommands.addOption("--embed-metadata")
 
@@ -1295,6 +1298,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 //                if (preferredLanguage.isNotBlank()) {
 //                    formatSorting.add("lang:${preferredLanguage}")
 //                }
+
+                if (downloadItem.downloadSections.isNotBlank()) {
+                    formatSorting.add(0, "proto:https")
+                }
 
                 if (formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))

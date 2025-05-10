@@ -1146,7 +1146,7 @@
     <array name="video_recommendations">
         <item>@string/disabled</item>
         <item>NewPipe</item>
-        <item>Youtube API</item>
+        <item>YouTube API</item>
         <item>@string/ytdlp_watch_later</item>
         <item>@string/ytdlp_recommnedations</item>
         <item>@string/ytdlp_liked</item>

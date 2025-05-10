@@ -44,7 +44,7 @@
     <string name="downloading">Po shkarkohet</string>
     <string name="limit_rate">Limito Shpejtësinë</string>
     <string name="limit_rate_summary">Shpejtësia maksimale e shkarkimit (në byte për sekond), p.sh 50K ose 4.2M</string>
-    <string name="aria2_summary">Përdor Aria2c si shkarkues në vend të atij normal</string>
+    <string name="aria2_summary">Përdor aria2c si shkarkues në vend të atij normal</string>
     <string name="processing">Proçesimi</string>
     <string name="command_templates">Modelet e Komandave</string>
     <string name="terminal">Terminali</string>
