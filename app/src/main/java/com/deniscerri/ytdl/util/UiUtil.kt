@@ -2210,7 +2210,10 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.ytdlp_sources_list)
 
-        val list = preferences.getStringSet("custom_ytdlp_sources", emptySet())!!.toMutableList()
+        val list = kotlin.runCatching {
+            preferences.getStringSet("custom_ytdlp_sources", emptySet())!!.toMutableList()
+        }.getOrDefault(mutableListOf<String>())
+
         val parentView = bottomSheet.findViewById<LinearLayout>(R.id.sourcesList)!!
 
         bottomSheet.findViewById<View>(R.id.add)?.apply {

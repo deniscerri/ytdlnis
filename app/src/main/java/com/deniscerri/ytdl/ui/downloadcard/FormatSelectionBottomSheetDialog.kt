@@ -129,7 +129,7 @@ class FormatSelectionBottomSheetDialog(
                 requireActivity()
             )
         recyclerView = view.findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
+        recyclerView.layoutManager = GridLayoutManager(context, 1)
         recyclerView.adapter = adapter
 
         refreshBtn = view.findViewById(R.id.format_refresh)

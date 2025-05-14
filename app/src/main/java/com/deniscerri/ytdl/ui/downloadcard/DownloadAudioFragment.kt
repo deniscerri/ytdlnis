@@ -64,7 +64,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     lateinit var title : TextInputLayout
     lateinit var author : TextInputLayout
     lateinit var preferences: SharedPreferences
-    lateinit var shownFields: List<String>
+    private lateinit var shownFields: List<String>
+
+    private var disabledCutClicked: Boolean = false
+
     @SuppressLint("RestrictedApi")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -341,6 +344,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                             resultItem?.apply {
                                                 val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
                                                 rsVM.updateItemData(this)
+                                                disabledCutClicked = true
                                             }
                                         }
                                     }
@@ -375,6 +379,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 e.printStackTrace()
             }
             super.onViewCreated(view, savedInstanceState)
+
+            view.findViewById<Chip>(R.id.cut).apply {
+                if (this.isEnabled && savedInstanceState?.containsKey("click_cut") == true) {
+                    this.performClick()
+                }
+            }
         }
     }
 
@@ -401,6 +411,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         resultItem = res
         val state = Bundle()
         state.putBoolean("updated", true)
+        if (disabledCutClicked) {
+            state.putBoolean("click_cut", true)
+            disabledCutClicked = false
+        }
         onViewCreated(requireView(),savedInstanceState = state)
     }
 

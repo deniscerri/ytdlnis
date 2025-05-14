@@ -358,7 +358,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.applyDefaultOptionsForFetchingData(urls.firstOrNull { it.isURL() })
             if (urls.all { it.isYoutubeURL() }) {
                 request.setYoutubeExtractorArgs(urls[0])
+                request.addOption("--extractor-args", "youtube:player_skip=initial_data,webpage")
+                request.addOption("--extractor-args", "youtubetab:skip=webpage")
             }
+            if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
             val txt = parseYTDLRequestString(request)
             println(txt)
@@ -388,26 +391,24 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 urlIdx++
             }
         } catch (e: Exception) {
-            e.message?.split(System.lineSeparator())?.apply {
-                this.forEach { line ->
-                    println(line)
-                    if (line.contains("unavailable")) {
-                        kotlin.runCatching {
-                            val id = Regex("""\[.*?\] (\w+):""").find(line)!!.groupValues[1]
-                            val url = urls.first { it.contains(id) }
-                            progress(
-                                ResultViewModel.MultipleFormatProgress(
-                                    url,
-                                    listOf(),
-                                    true,
-                                    line
-                                )
+            e.message?.split(System.lineSeparator())?.onEach { line ->
+                println(line)
+                if (line.contains("unavailable")) {
+                    kotlin.runCatching {
+                        val id = Regex("""\[.*?\] (\w+):""").find(line)!!.groupValues[1]
+                        val url = urls.first { it.contains(id) }
+                        progress(
+                            ResultViewModel.MultipleFormatProgress(
+                                url,
+                                listOf(),
+                                true,
+                                line
                             )
-                            delay(500)
-                        }
+                        )
+                        delay(500)
                     }
-
                 }
+
             }
 
             handler.post {
@@ -430,7 +431,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.applyDefaultOptionsForFetchingData(url)
         if (url.isYoutubeURL()) {
             request.setYoutubeExtractorArgs(url)
+            request.addOption("--extractor-args", "youtube:player_skip=initial_data,webpage")
+            request.addOption("--extractor-args", "youtubetab:skip=webpage")
         }
+        if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
