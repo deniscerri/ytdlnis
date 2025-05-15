@@ -1560,8 +1560,10 @@ object UiUtil {
                 }
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (duration != "-1") {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }
@@ -1715,8 +1717,10 @@ object UiUtil {
 
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (duration != "-1") {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }
