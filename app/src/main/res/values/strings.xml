@@ -476,5 +476,5 @@
     <string name="regenerate">Re-generate</string>
     <string name="generate_potokens_warning">* By enabling this, you need to disable cookies</string>
     <string name="custom">Custom</string>
-    <string name="cut_live_unsupported">Cutting live videos is not supported</string>
+    <string name="cut_unsupported">Cutting is not available for this item</string>
 </resources>

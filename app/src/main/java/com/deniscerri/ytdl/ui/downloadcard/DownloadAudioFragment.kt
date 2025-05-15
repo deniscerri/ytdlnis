@@ -338,7 +338,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                     val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
                                     snack.show()
                                 }else if (downloadItem.duration=="0:00"){
-                                    val snack = Snackbar.make(view, context.getString(R.string.cut_live_unsupported), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT)
                                     snack.show()
                                 }else if (!nonSpecific){
                                     val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
