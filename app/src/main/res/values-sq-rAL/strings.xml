@@ -327,7 +327,7 @@
     <string name="changelog">Ndryshimet</string>
     <string name="app">Aplikacioni</string>
     <string name="source">Burimi</string>
-    <string name="cut_unavailable">Ju duhet të përditësoni të dhënat e artikullit që të përdorni prerjen</string>
+    <string name="cut_unavailable_please_update_item">Ju duhet të përditësoni të dhënat e artikullit që të përdorni prerjen</string>
     <string name="changed_path_for_everyone_to">Direktoria e secilit element u ndryshua tek:</string>
     <string name="dismiss">Hiq</string>
     <string name="all">Të gjitha</string>

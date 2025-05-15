@@ -327,7 +327,7 @@
     <string name="changelog">更新履歴</string>
     <string name="app">アプリ</string>
     <string name="source">取得元</string>
-    <string name="cut_unavailable">カット機能を使うにはこの項目のデータを更新する必要があります</string>
+    <string name="cut_unavailable_please_update_item">カット機能を使うにはこの項目のデータを更新する必要があります</string>
     <string name="dismiss">非表示</string>
     <string name="all">すべて</string>
     <string name="multiple_download_card">複数ダウンロードの画面</string>

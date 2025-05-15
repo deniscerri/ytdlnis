@@ -327,7 +327,7 @@
     <string name="changelog">Dəyişiklik jurnalı</string>
     <string name="app">Tətbiq</string>
     <string name="source">Mənbə</string>
-    <string name="cut_unavailable">Kəsmə xüsusiyyətin istifadə etmək üçün element məlumatın yeniləməlisiniz</string>
+    <string name="cut_unavailable_please_update_item">Kəsmə xüsusiyyətin istifadə etmək üçün element məlumatın yeniləməlisiniz</string>
     <string name="changed_path_for_everyone_to">Hər bir elementin yükləmə yeri buna dəyişdirildi:</string>
     <string name="dismiss">Ləğv et</string>
     <string name="all">Hamısı</string>

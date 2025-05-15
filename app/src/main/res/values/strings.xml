@@ -330,7 +330,7 @@
     <string name="changelog">Changelog</string>
     <string name="source">Source</string>
     <string name="app">App</string>
-    <string name="cut_unavailable">You need to update the item data in order to be able to use cut feature</string>
+    <string name="cut_unavailable_please_update_item">You need to update the item data in order to be able to use cut feature</string>
     <string name="changed_path_for_everyone_to">Changed every item\'s download path to:</string>
     <string name="dismiss">Dismiss</string>
     <string name="all">All</string>

@@ -358,7 +358,7 @@
     <string name="ends">Slutar</string>
     <string name="after">Efter</string>
     <string name="occurrences">händelser</string>
-    <string name="cut_unavailable">Du måste uppdatera objektdata för att kunna använda klippfunktionen</string>
+    <string name="cut_unavailable_please_update_item">Du måste uppdatera objektdata för att kunna använda klippfunktionen</string>
     <string name="format_filter">Formatfilter</string>
     <string name="format_smallest">Minsta format (per upplösning)</string>
     <string name="starts">Startar</string>

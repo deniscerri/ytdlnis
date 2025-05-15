@@ -327,7 +327,7 @@
     <string name="changelog">Евиденција промена</string>
     <string name="app">Апликација</string>
     <string name="source">Извор</string>
-    <string name="cut_unavailable">Морате да ажурирате податке о предмету да бисте могли да користите функцију сечења</string>
+    <string name="cut_unavailable_please_update_item">Морате да ажурирате податке о предмету да бисте могли да користите функцију сечења</string>
     <string name="dismiss">Одбаци</string>
     <string name="changed_path_for_everyone_to">Путања за преузимање свих предмета је промењена у:</string>
     <string name="all">Све</string>

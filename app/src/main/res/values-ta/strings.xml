@@ -204,7 +204,7 @@
     <string name="update_ytdl_master">YT-DLP இன் முதன்மை பதிப்பு</string>
     <string name="changelog">மாற்றபதிவு</string>
     <string name="app">பயன்பாடு</string>
-    <string name="cut_unavailable">வெட்டு அம்சத்தைப் பயன்படுத்த நீங்கள் உருப்படி தரவைப் புதுப்பிக்க வேண்டும்</string>
+    <string name="cut_unavailable_please_update_item">வெட்டு அம்சத்தைப் பயன்படுத்த நீங்கள் உருப்படி தரவைப் புதுப்பிக்க வேண்டும்</string>
     <string name="all">அனைத்தும்</string>
     <string name="generic">பொதுவான</string>
     <string name="format_smallest">மிகச்சிறிய வடிவம் (தீர்மானத்திற்கு)</string>

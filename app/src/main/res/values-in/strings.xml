@@ -357,7 +357,7 @@
     <string name="multiple_download_card">Beberapa Kartu Unduhan</string>
     <string name="format_filter">Format Penyaring</string>
     <string name="format_smallest">Format terkecil (per Resolusi)</string>
-    <string name="cut_unavailable">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
+    <string name="cut_unavailable_please_update_item">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
     <string name="no_download_fragments">Jangan unduh sebagai Fragmen</string>
     <string name="wrap_text">Bungkus Teks</string>
     <string name="swipe_gestures_download_card">Gestur Usap di kartu unduhan</string>

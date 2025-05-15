@@ -337,7 +337,7 @@
     <string name="multiple_download_card">Çoklu İndirme Kartı</string>
     <string name="format_filter">Format Filtresi</string>
     <string name="format_smallest">En küçük format (Çözünürlük başına)</string>
-    <string name="cut_unavailable">Kesme özelliğini kullanabilmek için öğe verilerini güncellemeniz gerekir</string>
+    <string name="cut_unavailable_please_update_item">Kesme özelliğini kullanabilmek için öğe verilerini güncellemeniz gerekir</string>
     <string name="observe_sources">Kaynakları Gözlemle</string>
     <string name="new_source">Yeni Kaynak</string>
     <string name="delete_all_sources">Bütün Kaynakları Sil</string>

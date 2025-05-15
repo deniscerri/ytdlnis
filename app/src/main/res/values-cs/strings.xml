@@ -143,7 +143,7 @@
     <string name="show_download_card">Zobrazit kartu stahování</string>
     <string name="format_order">Pořadí formátů</string>
     <string name="fragment_retries">Opakování fragmentů</string>
-    <string name="cut_unavailable">Abyste mohli použít funkci střihu, musíte aktualizovat údaje o položce</string>
+    <string name="cut_unavailable_please_update_item">Abyste mohli použít funkci střihu, musíte aktualizovat údaje o položce</string>
     <string name="copy_log">Kopírovat protokol</string>
     <string name="socks5_proxy">Adresa Socks5 Proxy</string>
     <string name="edit">Editovat</string>
