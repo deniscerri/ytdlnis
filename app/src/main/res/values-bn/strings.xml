@@ -46,7 +46,7 @@
     <string name="link_copied_to_clipboard">ক্লিপবোর্ডে লিঙ্ক কপি করা হয়েছে</string>
     <string name="api_key">API কী ব্যবহার করুন</string>
     <string name="api_key_summary">YouTube API থেকে প্রস্তাবিত ভিডিওগুলো</string>
-    <string name="update_app_summary">অ্যাপটি খোলা হলে এর নতুন সংস্করণ ঘোষণা করুন। তথ্য অফিসিয়াল Github সংগ্রহস্থল থেকে বের করা হয়</string>
+    <string name="update_app_summary">অ্যাপ চালু হলেই যদি কোনো নতুন ভার্সন থাকে, আপনাকে জানিয়ে দেওয়া হবে! এই তথ্য সরাসরি নেওয়া হয় অফিসিয়াল GitHub রিপোজিটরি থেকে</string>
     <string name="downloads">ডাউনলোডসমূহ</string>
     <string name="remove_deleted">ডিলেট মুছে ফেলুন</string>
     <string name="remove_duplicates">সদৃশ অপসারণ</string>
@@ -200,7 +200,7 @@
     <string name="save_subs">সাবটাইটেল সংরক্ষণ করুন</string>
     <string name="format_source">ফরম্যাট উৎস</string>
     <string name="video_recommendations">সুপারিশ করা ভিডিও</string>
-    <string name="video_recommendations_summary">হোম স্ক্রিনে প্রস্তাবিত ইউটিউব ভিডিও পান</string>
+    <string name="video_recommendations_summary">হোম স্ক্রিনেই পেয়ে যান আপনার জন্য সাজানো ইউটিউব ভিডিওর তালিকা – একদম আপনার পছন্দ অনুযায়ী!</string>
     <string name="preferred_search_engine">পছন্দের সার্চ ইঞ্জিন</string>
     <string name="preferred_search_engine_summary">অ্যাপ-মধ্যস্থ অনুসন্ধানের জন্য ব্যবহার করার জন্য সার্চ ইঞ্জিন</string>
     <string name="format_filtering_hint">এই বিকল্পটি ব্যবহার করার জন্য সমস্ত আইটেম একই ধরনের হতে হবে</string>
@@ -245,7 +245,7 @@
     <string name="updating_download_data">ডাউনলোড আইটেম ডাটা আপডেট হচ্ছে</string>
     <string name="keep_cache">টুকরা রাখুন</string>
     <string name="search_history">অনুসন্ধান ইতিহাস</string>
-    <string name="backup_created_successfully">ব্যাকআপ ফাইল ডাউনলোড ফোল্ডারে সংরক্ষিত হয়েছে</string>
+    <string name="backup_created_successfully">ব্যাকআপ ফাইল সফলভাবে ডাউনলোড ফোল্ডারে সংরক্ষিত হয়েছে!</string>
     <string name="backup_restore">ব্যাকআপ এবং পুনরুদ্ধার</string>
     <string name="preferred_format_id_summary">ডাউনলোড কার্ডে এই আইডি সহ ফরম্যাট নির্বাচন করুন</string>
     <string name="swipe_gestures">সোয়াইপ অঙ্গভঙ্গি</string>
@@ -342,4 +342,14 @@
     <string name="loading">লোড হচ্ছে</string>
     <string name="ytdlp_watch_later">YT-DLP ইউটিউব \'পরে দেখুন\' (কুকিজ প্রয়োজন)</string>
     <string name="multiple_download_card">একাধিক ডাউনলোড কার্ড</string>
+    <string name="scheduling">সময়সূচি (সময় নির্ধারণ)</string>
+    <string name="use_scheduler">নির্ধারিত সময়ে ডাউনলোড</string>
+    <string name="remember_download_type">ডাউনলোডের ধরন মনে রাখুন</string>
+    <string name="auto">স্বয়ংক্রিয়</string>
+    <string name="remember_download_type_summary">ভবিষ্যতের ডাউনলোডের জন্য আপনার পছন্দসই ডাউনলোড ধরন স্মরণ করুন।</string>
+    <string name="cache_first_summary">ক্যাশ ফাইলগুলো প্রথমে ইন্টারনাল স্টোরেজে ডাউনলোড হয়, তারপর আপনার পছন্দের ফোল্ডারে স্থানান্তরিত হয়। যখন সরাসরি স্টোরেজে লেখা যায় না, তখন এটা ব্যবহার করুন। সরাসরি স্টোরেজে লেখার সমস্যা হলে এই অপশন ব্যবহার করুন।</string>
+    <string name="update_app_beta_summary">বেটা প্রোগ্রামে অংশগ্রহণ করুন। তবে খেয়াল রাখবেন, এখানে কিছু বাগ থাকতে পারে!</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
+    <string name="preferred_video_codec">পছন্দসই ভিডিও কোডেক</string>
+    <string name="preferred_audio_codec">পছন্দসই অডিও কোডেক</string>
 </resources>
