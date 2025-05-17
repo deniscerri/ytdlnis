@@ -320,7 +320,7 @@
     <string name="update_ytdl_stable">Stabilná verzia yt-dlp</string>
     <string name="force_keyframes_summary">Pomalší proces, ale presnejšie orezania</string>
     <string name="changelog">Zoznam zmien</string>
-    <string name="cut_unavailable">Aby ste mohli použiť funkciu orezania, musíte aktualizovať údaje o položke</string>
+    <string name="cut_unavailable_please_update_item">Aby ste mohli použiť funkciu orezania, musíte aktualizovať údaje o položke</string>
     <string name="app">Aplikácia</string>
     <string name="modify_download_card">Upraviť kartu sťahovania</string>
     <string name="source">Zdroj</string>

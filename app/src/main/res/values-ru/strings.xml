@@ -327,7 +327,7 @@
     <string name="changelog">Список изменений</string>
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
-    <string name="cut_unavailable">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
+    <string name="cut_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
     <string name="changed_path_for_everyone_to">Изменен путь загрузки каждого элемента на:</string>
     <string name="all">Все</string>
     <string name="generic">Общий</string>

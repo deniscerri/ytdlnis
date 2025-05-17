@@ -327,7 +327,7 @@
     <string name="changelog">更新日志</string>
     <string name="app">应用</string>
     <string name="source">源</string>
-    <string name="cut_unavailable">你需要更新项目数据才能使用剪切功能</string>
+    <string name="cut_unavailable_please_update_item">你需要更新项目数据才能使用剪切功能</string>
     <string name="changed_path_for_everyone_to">已将每个项目的下载路径更改至：</string>
     <string name="dismiss">放弃</string>
     <string name="all">全部</string>

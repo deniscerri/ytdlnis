@@ -354,7 +354,7 @@
     <string name="multiple_download_card">Πολλαπλή κάρτα λήψης</string>
     <string name="format_filter">Φίλτρο μορφής</string>
     <string name="format_smallest">Μικρότερη μορφή (ανά ανάλυση)</string>
-    <string name="cut_unavailable">Πρέπει να ενημερώσετε τα δεδομένα του στοιχείου για να μπορέσετε να χρησιμοποιήσετε τη λειτουργία αποκοπής</string>
+    <string name="cut_unavailable_please_update_item">Πρέπει να ενημερώσετε τα δεδομένα του στοιχείου για να μπορέσετε να χρησιμοποιήσετε τη λειτουργία αποκοπής</string>
     <string name="cache_first_summary">Τα αρχεία της προσωρινής μνήμης κατεβαίνουν στον εσωτερικό αποθηκευτικό χώρο και στη συνέχεια μεταφέρονται στον επιλεγμένο κατάλογο. Χρησιμοποιήστε το όταν δεν μπορείτε να γράψετε απευθείας στον αποθηκευτικό χώρο</string>
     <string name="update_app_beta_summary">Εγγραφείτε στο πρόγραμμα beta. Μπορεί να περιέχει σφάλματα.</string>
     <string name="security">Ασφάλεια</string>

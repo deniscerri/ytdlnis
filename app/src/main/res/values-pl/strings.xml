@@ -334,7 +334,7 @@
     <string name="multiple_download_card">Karta wielokrotnego pobierania</string>
     <string name="format_filter">Format filtra</string>
     <string name="format_smallest">Najmniejszy format (według rozdzielczości)</string>
-    <string name="cut_unavailable">Musisz zaktualizować dane elementu, aby móc korzystać z funkcji cięcia</string>
+    <string name="cut_unavailable_please_update_item">Musisz zaktualizować dane elementu, aby móc korzystać z funkcji cięcia</string>
     <string name="observe_sources">Obserwuj źródła</string>
     <string name="new_source">Nowe źródło</string>
     <string name="confirm_delete_sources_desc">Usuń trwale wszystkie źródła</string>

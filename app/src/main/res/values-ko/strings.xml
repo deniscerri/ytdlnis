@@ -370,7 +370,7 @@
     <string name="multiple_download_card">여러 다운로드 카드</string>
     <string name="format_filter">포맷 필터</string>
     <string name="format_smallest">가장 작은 포맷 (해상도 단위)</string>
-    <string name="cut_unavailable">컷 기능을 사용하기 위해 항목 데이터를 업데이트해야 합니다</string>
+    <string name="cut_unavailable_please_update_item">컷 기능을 사용하기 위해 항목 데이터를 업데이트해야 합니다</string>
     <string name="my_filename_templates">내 파일 이름 템플릿</string>
     <string name="prefer_smaller_formats">파일 크기가 더 작은 형식을 선호합니다</string>
     <string name="display_over_apps">앱 위에 표시</string>

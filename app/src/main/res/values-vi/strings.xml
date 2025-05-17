@@ -319,7 +319,7 @@
     <string name="update_ytdl_master">Phiên bản Master của yt-dlp</string>
     <string name="ytdl_source">Nguồn yt-dlp</string>
     <string name="changelog">Nhật ký thay đổi</string>
-    <string name="cut_unavailable">Bạn cần cập nhật dữ liệu để có thể sử dụng tính năng cắt</string>
+    <string name="cut_unavailable_please_update_item">Bạn cần cập nhật dữ liệu để có thể sử dụng tính năng cắt</string>
     <string name="app">Ứng dụng</string>
     <string name="errored_downloads">Tải xuống bị lỗi</string>
     <string name="preferred_audio_language">Ngôn ngữ âm thanh ưa thích</string>

@@ -334,7 +334,7 @@
     <string name="multiple_download_card">Scheda download multipla</string>
     <string name="format_filter">Formato del filtro</string>
     <string name="format_smallest">Formato più piccolo (per Risoluzione)</string>
-    <string name="cut_unavailable">È necessario aggiornare i dati dell\'articolo per poter utilizzare la funzione di taglio</string>
+    <string name="cut_unavailable_please_update_item">È necessario aggiornare i dati dell\'articolo per poter utilizzare la funzione di taglio</string>
     <string name="delete_all_sources">Cancella Tutti i Sorgenti</string>
     <string name="force_ipv4_desc">Esegui tutti le connessioni usando IPv4</string>
     <string name="force_ipv4">Forza IPv4</string>

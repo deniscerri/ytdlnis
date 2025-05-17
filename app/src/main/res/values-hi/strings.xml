@@ -327,7 +327,7 @@
     <string name="changelog">चैंजलॉग</string>
     <string name="app">ऐप</string>
     <string name="source">स्रोत</string>
-    <string name="cut_unavailable">कट सुविधा का उपयोग करने में सक्षम होने के लिए आपको आइटम डेटा को अपडेट करना होगा</string>
+    <string name="cut_unavailable_please_update_item">कट सुविधा का उपयोग करने में सक्षम होने के लिए आपको आइटम डेटा को अपडेट करना होगा</string>
     <string name="changed_path_for_everyone_to">प्रत्येक आइटम के डाउनलोड पथ को इसमें बदल दिया:</string>
     <string name="dismiss">ख़ारिज करें</string>
     <string name="all">सभी</string>
