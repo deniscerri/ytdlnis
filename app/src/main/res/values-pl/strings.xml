@@ -269,7 +269,7 @@
     <string name="confirm_terminate">Zatrzymuje wszystkie pobierania i wymusza zamknięcie aplikacji</string>
     <string name="download_over_metered_networks_summary">Umożliwia pobieranie przez dowolną sieć. Jeśli opcja nie jest wybrana, aplikacja czeka na sieć bez planu taryfowego</string>
     <string name="format_filtering_hint">Aby można było użyć tej opcji, wszystkie elementy muszą być tego samego typu</string>
-    <string name="backup_created_successfully">Zapisano plik kopii zapasowej w katalogu pobierania</string>
+    <string name="backup_created_successfully">Plik kopii zapasowej został pomyślnie zapisany!</string>
     <string name="general">Ogólne</string>
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
     <string name="force_keyframes">Wymuś klatki kluczowe na cięciach</string>
