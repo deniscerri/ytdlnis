@@ -2232,8 +2232,11 @@ object UiUtil {
         val tmp = list.toMutableList()
         tmp.addAll(0, defaultSourceTitles.mapIndexed { index, s -> "${s}___${defaultSourceValues[index]}" })
         tmp.forEach { s ->
-            val title = s.split("___")[0]
-            val source = s.split("___")[1]
+            val arr = s.split("___")
+            if (arr.size < 2) return@forEach
+
+            val title = arr[0]
+            val source = arr[1]
             val isEditable = !defaultSourceValues.contains(source)
             val child = LayoutInflater.from(context).inflate(R.layout.custom_ytdlp_source, null)
             child.findViewById<MaterialCardView>(R.id.sampleCustomSource).setOnClickListener {

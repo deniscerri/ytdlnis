@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_margin="10dp">
+            android:layout_marginHorizontal="10dp">
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:scrollbars="none"
