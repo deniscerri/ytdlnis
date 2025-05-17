@@ -66,10 +66,10 @@
     <string name="api_key">Použít klíč API</string>
     <string name="downloads">Stažené</string>
     <string name="you_are_going_to_delete">Odstraní se</string>
-    <string name="update_app_summary">Oznámení nových verzí aplikace při jejím otevření. Data jsou převzata z oficiálního repozitáře Github</string>
+    <string name="update_app_summary">Oznámení nových verzí aplikace při jejím otevření. Data jsou převzata z oficiálního repozitáře GitHub</string>
     <string name="url">URL adresa</string>
     <string name="link_copied_to_clipboard">Odkaz zkopírován do schránky</string>
-    <string name="api_key_summary">Doporučená videa z rozhraní Youtube API</string>
+    <string name="api_key_summary">Doporučená videa z YouTube API</string>
     <string name="socks5_proxy_summary">Použijte zadaný proxy server HTTP/HTTPS/SOCKS</string>
     <string name="shortcuts_desc">Použijte běžně používané příkazy k vytváření šablon</string>
     <string name="delete_file_too">Odstranit soubor ze zařízení</string>
@@ -145,7 +145,7 @@
     <string name="fragment_retries">Opakování fragmentů</string>
     <string name="cut_unavailable_please_update_item">Abyste mohli použít funkci střihu, musíte aktualizovat údaje o položce</string>
     <string name="copy_log">Kopírovat protokol</string>
-    <string name="socks5_proxy">Adresa Socks5 Proxy</string>
+    <string name="socks5_proxy">Adresa SOCKS5 Proxy</string>
     <string name="edit">Editovat</string>
     <string name="restore">Obnovit</string>
     <string name="update">Aktualizace</string>
@@ -254,7 +254,7 @@
     <string name="Theme">Motiv</string>
     <string name="cancelled">Zrušené</string>
     <string name="edit_selected">Upravit vybranou</string>
-    <string name="sponsorblock_api_url">Adresa Sponsorblock API</string>
+    <string name="sponsorblock_api_url">Adresa SponsorBlock API</string>
     <string name="log_downloads_summary">Vytvoří soubor protokolu pro každé stahování</string>
     <string name="hide_thumbnails">Skrýt náhledy</string>
     <string name="all_items_selected">Všechny položky vybrané</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">Povolí použití šablon příkazů pro načítání dat jako doplňkových příkazů</string>
     <string name="disable_write_info_json_summary">(Nedoporučuje se) Při každém restartu/obnovení stahování bude yt-dlp znovu stahovat data json ze serverů.</string>
     <string name="disable_write_info_json">Vypnout zápis údajů Json</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube doporučené (potřebuje soubory cookie)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube historie sledování (potřebuje soubory cookie)</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube sledovat později (vyžaduje soubory cookie)</string>
-    <string name="ytdlp_liked">YT-DLP Youtube oblíbená videa (potřebuje soubory cookie)</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube doporučené (potřebuje soubory cookie)</string>
+    <string name="ytdlp_watch_history">yt-dlp YouTube historie sledování (potřebuje soubory cookie)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube sledovat později (vyžaduje soubory cookie)</string>
+    <string name="ytdlp_liked">yt-dlp YouTube oblíbená videa (potřebuje soubory cookie)</string>
     <string name="no_check_certificates">Zakázat ověřování certifikátu HTTPS</string>
     <string name="live_stream">Živě</string>
     <string name="live_from_start">Živě od začátku</string>
