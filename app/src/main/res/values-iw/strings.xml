@@ -408,7 +408,7 @@
     <string name="multiple_download_card">כרטיס הורדה מרובה</string>
     <string name="format_filter">פורמט מסנן</string>
     <string name="format_smallest">הפורמט הקטן היותר (לכל רזולוציה)</string>
-    <string name="cut_unavailable">עליך לעדכן את נתוני הפריט כדי שתוכל להשתמש בתכונת החיתוך</string>
+    <string name="cut_unavailable_please_update_item">עליך לעדכן את נתוני הפריט כדי שתוכל להשתמש בתכונת החיתוך</string>
     <string name="use_item_url_not_playlist">השתמש בקישור של פריט במקום בקישור של רשימת ההשמעה</string>
     <string name="recode_video_summary">מקודד מחדש את קובץ הוידאו לפורמט הוידאו שצוין</string>
     <string name="recode_video">קודד מחדש את הוידאו</string>

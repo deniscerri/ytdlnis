@@ -302,7 +302,7 @@
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
     <string name="preferred_video_codec">Предпочитаемый видеокодек</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">Загрузка</string>
     <string name="schedule">Расписание</string>
     <string name="user_agent_header">Заголовок User-Agent</string>
@@ -327,7 +327,7 @@
     <string name="changelog">Список изменений</string>
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
-    <string name="cut_unavailable">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
+    <string name="cut_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию резки</string>
     <string name="changed_path_for_everyone_to">Изменен путь загрузки каждого элемента на:</string>
     <string name="all">Все</string>
     <string name="generic">Общий</string>

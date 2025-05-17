@@ -171,7 +171,7 @@
     <string name="pause">وەستاندن</string>
     <string name="format_order">ڕیزکردنی فۆڕمات</string>
     <string name="fragment_retries">دووبارەکردنەوەی پارچەپارچە</string>
-    <string name="cut_unavailable">پێویستە داتای بابەتەکە نوێ بکەیتەوە بۆ ئەوەی بتوانیت تایبەتمەندی بڕین بەکاربهێنیت</string>
+    <string name="cut_unavailable_please_update_item">پێویستە داتای بابەتەکە نوێ بکەیتەوە بۆ ئەوەی بتوانیت تایبەتمەندی بڕین بەکاربهێنیت</string>
     <string name="copy_log">لەبەرگرتنەوەی تۆمار</string>
     <string name="socks5_proxy">Socks5 پرۆکسی URL</string>
     <string name="edit">دەستکاری</string>

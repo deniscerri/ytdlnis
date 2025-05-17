@@ -8,7 +8,7 @@
     <string name="music_directory">音频文件夹</string>
     <string name="failed_download">无法下载文件</string>
     <string name="download_notification_channel_name">文件下载</string>
-    <string name="you_are_in_latest_version">使用最新版本</string>
+    <string name="you_are_in_latest_version">已是最新版本</string>
     <string name="ytld_update_success">已安装新版本</string>
     <string name="confirm_delete_history">确认</string>
     <string name="search_history_hint">从历史记录中搜索</string>
@@ -101,7 +101,7 @@
     <string name="history_is_empty">历史记录为空</string>
     <string name="link_copied_to_clipboard">链接已复制到剪贴板</string>
     <string name="api_key">使用 API 密钥</string>
-    <string name="api_key_summary">使用 Youtube API 获取视频推荐</string>
+    <string name="api_key_summary">使用 YouTube API 获取视频推荐</string>
     <string name="update_app_summary">打开应用时通知新版本（数据从官方 GitHub 仓库提取）</string>
     <string name="url">URL</string>
     <string name="show_download_card">显示下载卡片</string>
@@ -302,7 +302,7 @@
     <string name="auto">自动</string>
     <string name="preferred_audio_codec">首选音频编解码器</string>
     <string name="preferred_video_codec">首选视频编解码器</string>
-    <string name="sponsorblock_api_url">Sponsorblock API 地址</string>
+    <string name="sponsorblock_api_url">SponsorBlock API 地址</string>
     <string name="loading">加载中</string>
     <string name="user_agent_header">User-Agent 头</string>
     <string name="remember_download_type">记住下载类型</string>
@@ -327,7 +327,7 @@
     <string name="changelog">更新日志</string>
     <string name="app">应用</string>
     <string name="source">源</string>
-    <string name="cut_unavailable">你需要更新项目数据才能使用剪切功能</string>
+    <string name="cut_unavailable_please_update_item">你需要更新项目数据才能使用剪切功能</string>
     <string name="changed_path_for_everyone_to">已将每个项目的下载路径更改至：</string>
     <string name="dismiss">放弃</string>
     <string name="all">全部</string>
@@ -436,10 +436,10 @@
     <string name="data_fetching_extra_command_summary">将获取数据的命令模板作为附加命令开启</string>
     <string name="disable_write_info_json">停用写入信息 Json</string>
     <string name="disable_write_info_json_summary">（不推荐）每次重启/恢复下载，yt-dlp 都会从服务器重新下载 json 数据。</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube 稍后观看（需要 cookies）</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube 推荐（需要 cookies）</string>
-    <string name="ytdlp_liked">YT-DLP Youtube 点赞的视频 （需要 cookies）</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube 观看历史（需要 cookies）</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube 稍后观看（需要 cookies）</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube 推荐（需要 cookies）</string>
+    <string name="ytdlp_liked">yt-dlp YouTube 点赞的视频 （需要 cookies）</string>
+    <string name="ytdlp_watch_history">yt=dl[ YouTube 观看历史（需要 cookies）</string>
     <string name="no_check_certificates">不验证 HTTPS 证书</string>
     <string name="live_stream">直播</string>
     <string name="live_from_start">从头直播</string>

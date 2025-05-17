@@ -93,7 +93,7 @@
     <string name="sponsorblock_intro">Intro</string>
     <string name="sponsorblock_outro">Outro</string>
     <string name="sponsorblock_promos">Promosi Diri Sendiri</string>
-    <string name="api_key_summary">Rekomendasi Video dari API YouTube</string>
+    <string name="api_key_summary">Video Rekomendasi dari API YouTube</string>
     <string name="update_app_summary">Beri tahu versi aplikasi yang baru saat aplikasi dibuka. Data tersebut diambil dari Repositori Github resmi</string>
     <string name="remove_duplicates">Tiadakan Duplikat</string>
     <string name="sort_by">Penyortiran</string>
@@ -253,7 +253,7 @@
     <string name="restore">Pulihkan</string>
     <string name="backup_restore">Pencadangan dan Pemulihan</string>
     <string name="socks5_proxy_summary">Gunakan proksi HTTP/HTTPS/SOCKS yang ditentukan</string>
-    <string name="socks5_proxy">URL Proksi Socks5</string>
+    <string name="socks5_proxy">URL Proksi SOCKS5</string>
     <string name="search_suggestions">Saran Penelusuran</string>
     <string name="search_suggestions_summary">Dapatkan saran penelusuran dari Google</string>
     <string name="preferred_format_id_summary">Pilih format dengan ID ini di kartu unduhan</string>
@@ -357,7 +357,7 @@
     <string name="multiple_download_card">Beberapa Kartu Unduhan</string>
     <string name="format_filter">Format Penyaring</string>
     <string name="format_smallest">Format terkecil (per Resolusi)</string>
-    <string name="cut_unavailable">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
+    <string name="cut_unavailable_please_update_item">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
     <string name="no_download_fragments">Jangan unduh sebagai Fragmen</string>
     <string name="wrap_text">Bungkus Teks</string>
     <string name="swipe_gestures_download_card">Gestur Usap di kartu unduhan</string>
@@ -433,11 +433,11 @@
     <string name="playlist_as_album">Gunakan Nama Daftar Putar sebagai Metadata Album</string>
     <string name="disable_write_info_json_summary">(Tidak Disarankan) Setiap kali Anda memulai ulang/melanjutkan unduhan, yt-dlp akan mengunduh ulang data json dari server.</string>
     <string name="disable_write_info_json">Nonaktifkan Tulis Info JSON</string>
-    <string name="ytdlp_recommnedations">YT-DLP Rekomendasi YouTube (perlu cookie)</string>
+    <string name="ytdlp_recommnedations">yt-dlp Rekomendasi YouTube (perlu cookie)</string>
     <string name="data_fetching_extra_command">Perintah Tambahan Pengambilan Data</string>
-    <string name="ytdlp_watch_later">YT-DLP Tonton Nanti di YouTube (perlu cookie)</string>
-    <string name="ytdlp_watch_history">YT-DLP Riwayat Tontonan YouTube (perlu cookie)</string>
-    <string name="ytdlp_liked">YT-DLP Video Yang Disukai di YouTube (perlu cookie)</string>
+    <string name="ytdlp_watch_later">yt-dlp Tonton Nanti di YouTube (perlu cookie)</string>
+    <string name="ytdlp_watch_history">yt-dlp Riwayat Tontonan YouTube (perlu cookie)</string>
+    <string name="ytdlp_liked">yt-dlp Video Yang Disukai di YouTube (perlu cookie)</string>
     <string name="data_fetching_extra_command_summary">Aktifkan templat perintah yang digunakan untuk pengambilan data sebagai perintah tambahan</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor Pengambilan Data (YouTube)</string>
     <string name="no_check_certificates">Menekan validasi sertifikat HTTPS</string>

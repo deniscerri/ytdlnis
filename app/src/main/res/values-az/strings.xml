@@ -65,7 +65,7 @@
     <string name="link_copied_to_clipboard">Bağlantı buferə köçürüldü</string>
     <string name="api_key">API Açar İşlət</string>
     <string name="api_key_summary">YouTube API-dən Video Tövsiyələri</string>
-    <string name="update_app_summary">Açıldıqda tətbiqin yeni versiyasın bildir. Məlumatlar rəsmi olaraq Github Saxlayıcıdan götürülüb</string>
+    <string name="update_app_summary">Açıldıqda tətbiqin yeni versiyasın bildir. Məlumatlar rəsmi olaraq GitHub Saxlayıcıdan götürülüb</string>
     <string name="downloads">Yükləmələr</string>
     <string name="remove_deleted">Silinənləri Təmizlə</string>
     <string name="remove_duplicates">Dublikatları Təmizlə</string>
@@ -253,7 +253,7 @@
     <string name="backup_created_successfully">Nüsxə faylı uğurla saxlanıldı!</string>
     <string name="backup_restore">Nüsxələ və Bərpa et</string>
     <string name="socks5_proxy_summary">Dəqiqləşdirilən HTTP/HTTPS/SOCKS proksi istifadə et</string>
-    <string name="socks5_proxy">Socks5 Proksi URL</string>
+    <string name="socks5_proxy">SOCKS5 Proksi URL</string>
     <string name="search_suggestions">Axtarış Təklifləri</string>
     <string name="search_suggestions_summary">Google-dan axtarış təklifləri əldə et</string>
     <string name="preferred_format_id_summary">Yükləmə kartında bu ID ilə format seç</string>
@@ -327,7 +327,7 @@
     <string name="changelog">Dəyişiklik jurnalı</string>
     <string name="app">Tətbiq</string>
     <string name="source">Mənbə</string>
-    <string name="cut_unavailable">Kəsmə xüsusiyyətin istifadə etmək üçün element məlumatın yeniləməlisiniz</string>
+    <string name="cut_unavailable_please_update_item">Kəsmə xüsusiyyətin istifadə etmək üçün element məlumatın yeniləməlisiniz</string>
     <string name="changed_path_for_everyone_to">Hər bir elementin yükləmə yeri buna dəyişdirildi:</string>
     <string name="dismiss">Ləğv et</string>
     <string name="all">Hamısı</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">Əlavə əmrlər kimi məlumat alınmasında istifadə ediləcək əmr şablonların işə sal</string>
     <string name="disable_write_info_json">Məlumat Json-u Yazmağı Qapat</string>
     <string name="disable_write_info_json_summary">(Tövsiyə edilmir) Hər dəfə yükləməni təkrar başlatdığınızda/davam etdirdiyinizdə yt-dlp serverlərdən json məlumatını yenidən endirəcək.</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube Sonra İzlə (məlumata ehtiyac var)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube Tövsiyələri (məlumata ehtiyac var)</string>
-    <string name="ytdlp_liked">YT-DLP Youtube Bəyənilən Videolar (məlumata ehtiyac var)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube Baxış Tarixçəsi (məlumata ehtiyac var)</string>
+    <string name="ytdlp_watch_later">Yt-dlp Youtube Sonra İzlə (məlumata ehtiyac var)</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube Tövsiyələri (məlumata ehtiyac var)</string>
+    <string name="ytdlp_liked">yt-dlp YouTube Bəyənilən Videolar (məlumata ehtiyac var)</string>
+    <string name="ytdlp_watch_history">Yt-dlp YouTube Baxış Tarixçəsi (məlumata ehtiyac var)</string>
     <string name="no_check_certificates">HTTPS sertifikatının təsdiqini dayandır</string>
     <string name="live_stream">Canlı Yayım</string>
     <string name="live_from_start">Başlanğıcdan Canlı</string>

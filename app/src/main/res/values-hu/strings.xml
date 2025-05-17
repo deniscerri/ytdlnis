@@ -334,7 +334,7 @@
     <string name="multiple_download_card">Többszörös letöltési kártya</string>
     <string name="format_filter">Formátum szűrő</string>
     <string name="format_smallest">Legkisebb formátum (felbontásonként)</string>
-    <string name="cut_unavailable">A vágási funkció használatához frissítenie kell az elemadatokat</string>
+    <string name="cut_unavailable_please_update_item">A vágási funkció használatához frissítenie kell az elemadatokat</string>
     <string name="observe_sources">Források megfigyelése</string>
     <string name="new_source">Új forrás</string>
     <string name="delete_all_sources">Minden forrás törlése</string>

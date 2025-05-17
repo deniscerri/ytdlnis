@@ -345,7 +345,7 @@
     <string name="save_auto_subs">Enregistrer les sous-titres automatiques</string>
     <string name="not_deleted">Non supprimé</string>
     <string name="on_time">Sur</string>
-    <string name="cut_unavailable">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
+    <string name="cut_unavailable_please_update_item">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
     <string name="format_smallest">Le plus petit format
 \n(par résolution)</string>
     <string name="confirm_delete_sources_desc">Supprimer définitivement

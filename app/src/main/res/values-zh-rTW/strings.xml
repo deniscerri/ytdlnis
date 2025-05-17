@@ -325,7 +325,7 @@
     <string name="buffer_size">緩衝區大小</string>
     <string name="update_ytdl_stable">yt-dlp 的穩定版本</string>
     <string name="changelog">更新日誌</string>
-    <string name="cut_unavailable">為了使用剪切功能，您需要更新項目資料</string>
+    <string name="cut_unavailable_please_update_item">為了使用剪切功能，您需要更新項目資料</string>
     <string name="app">應用程式</string>
     <string name="source">來源</string>
     <string name="changed_path_for_everyone_to">將每個項目的下載路徑更改為：</string>

@@ -74,8 +74,8 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Link copiato negli appunti</string>
     <string name="api_key">Usa la chiave API</string>
-    <string name="api_key_summary">Consigli video dall\'API di Youtube</string>
-    <string name="update_app_summary">Annuncia nuove versioni dell\'app all\'apertura. I dati sono estratti dalla Repository ufficiale di Github</string>
+    <string name="api_key_summary">Consigli video dall\'API di YouTube</string>
+    <string name="update_app_summary">Annuncia nuove versioni dell\'app all\'apertura. I dati sono estratti dalla Repository ufficiale di GitHub</string>
     <string name="downloads">Download</string>
     <string name="remove_deleted">Rimuovi eliminati</string>
     <string name="remove_duplicates">Rimuovi duplicati</string>
@@ -259,7 +259,7 @@
     <string name="confirm_delete_logs_desc">Elimina l\'intero elenco del registro in modo permanente.</string>
     <string name="add_template_first">Devi avere almeno un modello di comando creato!</string>
     <string name="socks5_proxy_summary">Utilizza il proxy HTTP/HTTPS/SOCKS specificato</string>
-    <string name="socks5_proxy">URL del Proxy Socks5</string>
+    <string name="socks5_proxy">URL del Proxy SOCKS5</string>
     <string name="format_order">Ordine del Formato</string>
     <string name="create_shortcut">Crea scorciatoia</string>
     <string name="error_restarting_download">Errore durante il tentativo di riavviare il download</string>
@@ -314,7 +314,7 @@
     <string name="update_app_beta">Rilasci beta</string>
     <string name="update_app_beta_summary">Iscriviti al programma beta. Potrebbe contenere bug.</string>
     <string name="preferred_audio_codec">Codec Audio Preferito</string>
-    <string name="sponsorblock_api_url">URL API Sponsorblock</string>
+    <string name="sponsorblock_api_url">URL API SponsorBlock</string>
     <string name="user_agent_header">Intestazione User-Agent</string>
     <string name="length">Lunghezza</string>
     <string name="security">Sicurezza</string>
@@ -334,7 +334,7 @@
     <string name="multiple_download_card">Scheda download multipla</string>
     <string name="format_filter">Formato del filtro</string>
     <string name="format_smallest">Formato più piccolo (per Risoluzione)</string>
-    <string name="cut_unavailable">È necessario aggiornare i dati dell\'articolo per poter utilizzare la funzione di taglio</string>
+    <string name="cut_unavailable_please_update_item">È necessario aggiornare i dati dell\'articolo per poter utilizzare la funzione di taglio</string>
     <string name="delete_all_sources">Cancella Tutti i Sorgenti</string>
     <string name="force_ipv4_desc">Esegui tutti le connessioni usando IPv4</string>
     <string name="force_ipv4">Forza IPv4</string>
@@ -443,10 +443,10 @@
     <string name="cache_directory_warning">Cambiare la cartella della cache potrebbe provocare malfunzionamenti. Se l\'app non può scrivere nel percorso configurato, utilizzerà il percorso della cartella della cache predefinito</string>
     <string name="no_check_certificates">Sopprimi la validazione del certificato HTTPS</string>
     <string name="disable_write_info_json">Disabilita Scrittura Info Json</string>
-    <string name="ytdlp_watch_later">Guarda più tardi di YouTube YT-DLP (richiede cookie)</string>
-    <string name="ytdlp_recommnedations">Consigliati di Youtube YT-DLP (richiede cookie)</string>
-    <string name="ytdlp_watch_history">Cronologia di Youtube YT-DLP (richiede cookie)</string>
-    <string name="ytdlp_liked">Video piaciuti di Youtube YT-DLP (richiede cookie)</string>
+    <string name="ytdlp_watch_later">Guarda più tardi di YouTube yt-dlp (richiede cookie)</string>
+    <string name="ytdlp_recommnedations">Consigliati di YouTube yt-dlp (richiede cookie)</string>
+    <string name="ytdlp_watch_history">Cronologia di YouTube yt-dlp (richiede cookie)</string>
+    <string name="ytdlp_liked">Video piaciuti di YouTube yt-dlp (richiede cookie)</string>
     <string name="live_stream">Diretta Streaming</string>
     <string name="wait_for_video">Attendi il video</string>
     <string name="live_from_start">Diretta dall\'inizio</string>

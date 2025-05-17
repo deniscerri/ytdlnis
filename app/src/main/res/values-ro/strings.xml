@@ -387,7 +387,7 @@
     <string name="all">Toate</string>
     <string name="generic">Generic</string>
     <string name="format_filter">Filtru de format</string>
-    <string name="cut_unavailable">Trebuie să actualizați datele articolului pentru a putea folosi funcția de tăiere</string>
+    <string name="cut_unavailable_please_update_item">Trebuie să actualizați datele articolului pentru a putea folosi funcția de tăiere</string>
     <string name="always">Mereu</string>
     <string name="label_visibility">Vizibilitate Etichete</string>
     <string name="reset">Resetare</string>

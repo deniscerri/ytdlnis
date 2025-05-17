@@ -1520,8 +1520,8 @@ object UiUtil {
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
             cut.setOnClickListener(null)
-            val invalidDuration = items[0].duration == "-1"
-            if(items[0].duration.isNotEmpty() && !invalidDuration){
+            val duration = items[0].duration
+            if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
                 val downloadItem = items[0]
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
@@ -1560,10 +1560,8 @@ object UiUtil {
                 }
             }else{
                 cut.alpha = 0.3f
-                if (!invalidDuration) {
-                    cut.setOnClickListener {
-                        cutDisabledClicked()
-                    }
+                cut.setOnClickListener {
+                    cutDisabledClicked()
                 }
             }
         }
@@ -1686,8 +1684,8 @@ object UiUtil {
         else{
             cut.setOnClickListener(null)
             val downloadItem = items[0]
-            val invalidDuration = downloadItem.duration == "-1"
-            if (downloadItem.duration.isNotEmpty() && !invalidDuration){
+            val duration = downloadItem.duration
+            if (duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
@@ -1717,10 +1715,8 @@ object UiUtil {
 
             }else{
                 cut.alpha = 0.3f
-                if (!invalidDuration) {
-                    cut.setOnClickListener {
-                        cutDisabledClicked()
-                    }
+                cut.setOnClickListener {
+                    cutDisabledClicked()
                 }
             }
         }

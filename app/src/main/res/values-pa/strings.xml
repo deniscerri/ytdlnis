@@ -327,7 +327,7 @@
     <string name="changelog">ਚੇਂਜਲੌਗ</string>
     <string name="app">ਐਪ</string>
     <string name="source">ਸ੍ਰੋਤ</string>
-    <string name="cut_unavailable">ਕੱਟ ਫੀਚਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਤੁਹਾਨੂੰ ਆਈਟਮ ਡੇਟਾ ਨੂੰ ਅਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ</string>
+    <string name="cut_unavailable_please_update_item">ਕੱਟ ਫੀਚਰ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਤੁਹਾਨੂੰ ਆਈਟਮ ਡੇਟਾ ਨੂੰ ਅਪਡੇਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ</string>
     <string name="format_filter">ਫਾਰਮੈਟ ਫਿਲਟਰ</string>
     <string name="changed_path_for_everyone_to">ਹਰ ਆਈਟਮ ਦੇ ਡਾਊਨਲੋਡ ਮਾਰਗ ਨੂੰ ਇਸ ਵਿੱਚ ਬਦਲਿਆ:</string>
     <string name="dismiss">ਖਾਰਿਜ ਕਰੋ</string>

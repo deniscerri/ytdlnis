@@ -327,7 +327,7 @@
     <string name="changelog">Registo de alterações</string>
     <string name="app">Aplicação</string>
     <string name="source">Fonte</string>
-    <string name="cut_unavailable">Tem que atualizar os dados do item para poder utilizar a função de corte</string>
+    <string name="cut_unavailable_please_update_item">Tem que atualizar os dados do item para poder utilizar a função de corte</string>
     <string name="changed_path_for_everyone_to">Alterado o caminho da descarga de cada item para:</string>
     <string name="dismiss">Rejeitar</string>
     <string name="all">Tudo</string>
