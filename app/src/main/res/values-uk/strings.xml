@@ -65,7 +65,7 @@
     <string name="audio_format">Формат аудіо</string>
     <string name="save_thumb_summary">Зберегти мініатюру в папці завантаження</string>
     <string name="audio_quality_summary">0 (найкраще) 10 (найгірше)</string>
-    <string name="cancel_task">Скасувати завантаження</string>
+    <string name="cancel_task">Скасувати задачу</string>
     <string name="run_command">Виконати команду</string>
     <string name="command_download_notification_channel_name">Завантаження команд</string>
     <string name="items_left">елементів залишилося</string>
@@ -79,7 +79,7 @@
     <string name="video_quality">Якість відео</string>
     <string name="Open_File">Відкрити файл</string>
     <string name="api_key_summary">Відеорекомендації від YouTube API</string>
-    <string name="update_app_summary">Оголошувати про нові версії програми, коли її відкривають. Дані отримано з офіційного репозиторію Github</string>
+    <string name="update_app_summary">Оголошувати про нові версії програми, коли її відкривають. Дані отримано з офіційного репозиторію GitHub</string>
     <string name="remove_deleted">Вилучити видалене</string>
     <string name="title">Назва</string>
     <string name="show_download_card">Показати картку завантаження</string>
@@ -253,7 +253,7 @@
     <string name="backup_created_successfully">Файл резервної копії успішно збережено!</string>
     <string name="backup_restore">Резервне копіювання і відновлення</string>
     <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
-    <string name="socks5_proxy">URL-адреса проксі Socks5</string>
+    <string name="socks5_proxy">URL-адреса проксі SOCKS5</string>
     <string name="search_suggestions">Пошукові пропозиції</string>
     <string name="search_suggestions_summary">Отримуйте пошукові пропозиції від Google</string>
     <string name="preferred_format_id_summary">Виберіть формат із цим ID у картці завантаження</string>
@@ -302,7 +302,7 @@
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Бажаний аудіокодек</string>
     <string name="preferred_video_codec">Бажаний відеокодек</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">Завантаження</string>
     <string name="schedule">Розклад</string>
     <string name="user_agent_header">Заголовок User-Agent</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">Увімкнути використання шаблонів команд для отримання даних як додаткових команд</string>
     <string name="disable_write_info_json_summary">(Не рекомендується) Щоразу, коли ви перезапускаєте/відновлюєте завантаження, yt-dlp повторно завантажує дані json із серверів.</string>
     <string name="disable_write_info_json">Вимкнути запис інформації у форматі Json</string>
-    <string name="ytdlp_recommnedations">Рекомендації YT-DLP для YouTube (потрібні файли cookie)</string>
-    <string name="ytdlp_liked">YT-DLP Відео з лайками на YouTube (потрібні файли cookie)</string>
-    <string name="ytdlp_watch_later">YT-DLP Переглянути пізніше на YouTube (потрібні файли cookie)</string>
-    <string name="ytdlp_watch_history">YT-DLP Історія перегляду на YouTube (потрібні файли cookie)</string>
+    <string name="ytdlp_recommnedations">Рекомендації yt-dlp для YouTube (потрібні файли cookie)</string>
+    <string name="ytdlp_liked">yt-dlp Відео з лайками на YouTube (потрібні файли cookie)</string>
+    <string name="ytdlp_watch_later">yt-dlp Переглянути пізніше на YouTube (потрібні файли cookie)</string>
+    <string name="ytdlp_watch_history">yt-dlp Історія перегляду на YouTube (потрібні файли cookie)</string>
     <string name="live_stream">Пряма трансляція</string>
     <string name="live_from_start">Наживо з початку</string>
     <string name="retry_every">Повторювати кожні</string>

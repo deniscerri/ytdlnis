@@ -85,7 +85,7 @@
     <string name="run_command">Executar comando</string>
     <string name="audio_quality_summary">0 (melhor) 10 (menor)</string>
     <string name="cancel_task">Cancelar download</string>
-    <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo. Os dados são extraídos do repositório oficial do Github</string>
+    <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo. Os dados são extraídos do repositório oficial do GitHub</string>
     <string name="configure_download">Ajustar download</string>
     <string name="save_thumb_summary">Salvar miniatura na pasta de download</string>
     <string name="audio_format">Formato de áudio</string>
@@ -230,7 +230,7 @@
     <string name="codec">Codec</string>
     <string name="blue">Azul</string>
     <string name="cut">Cortar</string>
-    <string name="socks5_proxy">URL do proxy Socks5</string>
+    <string name="socks5_proxy">URL do proxy SOCKS5</string>
     <string name="socks5_proxy_summary">Usar proxy HTTP/HTTPS/SOCKS especificado</string>
     <string name="backup">Backup</string>
     <string name="finished_download_notification_channel_name">Downloads concluídos</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados para busca de dados a partir de comandos extras</string>
     <string name="disable_write_info_json">Desabilitar salvamento de informações Json</string>
     <string name="disable_write_info_json_summary">(Não recomendado) Cada vez que você reiniciar/continuar o download, o yt-dlp baixará novamente os dados json dos servidores.</string>
-    <string name="ytdlp_recommnedations">YT-DLP: Recomendações do YouTube (precisa de cookies)</string>
-    <string name="ytdlp_liked">YT-DLP: Vídeos curtidos do YouTube (precisa de cookies)</string>
-    <string name="ytdlp_watch_later">YT-DLP: Assistir mais tarde no YouTube (precisa de cookies)</string>
-    <string name="ytdlp_watch_history">YT-DLP: Histórico de exibição do YouTube (precisa de cookies)</string>
+    <string name="ytdlp_recommnedations">yt-dlp: Recomendações do YouTube (precisa de cookies)</string>
+    <string name="ytdlp_liked">yt-dlp: Vídeos curtidos do YouTube (precisa de cookies)</string>
+    <string name="ytdlp_watch_later">yt-dlp: Assistir mais tarde no YouTube (precisa de cookies)</string>
+    <string name="ytdlp_watch_history">yt-dlp: Histórico de exibição do YouTube (precisa de cookies)</string>
     <string name="use_app_language_for_metadata">Usar idioma do aplicativo para metadados</string>
     <string name="layout">Layout</string>
     <string name="player_client">Cliente de reprodução</string>
