@@ -474,4 +474,5 @@
     <string name="regenerate">Znovu vygenerovat</string>
     <string name="generate_potokens_warning">* Pro zapnutí této funkce musíte zakázat soubory cookie</string>
     <string name="custom">Vlastní</string>
+    <string name="cut_unsupported">Ořezání není pro tuto položku k dispozici</string>
 </resources>
