@@ -474,4 +474,5 @@
     <string name="app_icon_change">Ikona sa môže zmeniť a aplikácia sa zavrie</string>
     <string name="generate_potokens_warning">* Pre zapnutie tejto funkcie musíte zakázať súbory cookie</string>
     <string name="custom">Vlastné</string>
+    <string name="cut_unsupported">Orezanie nie je pre túto položku k dispozícii</string>
 </resources>
