@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.processNextEventInCurrentThread
 import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -28,6 +29,10 @@ class UpdateUtil(var context: Context) {
         Pair<String, YoutubeDL.UpdateChannel>("master", YoutubeDL.UpdateChannel.MASTER)
     )
 
+    private fun String.tagNameToVersionNumber() : Int {
+        return this.replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
+    }
+
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun tryGetNewVersion() : Result<GithubRelease> {
         try {
@@ -38,31 +43,41 @@ class UpdateUtil(var context: Context) {
                 return Result.failure(Error(context.getString(R.string.network_error)))
             }
 
+            val currentVersion = BuildConfig.VERSION_NAME
+            val currentVerNumber = currentVersion.tagNameToVersionNumber()
+
             val useBeta = sharedPreferences.getBoolean("update_beta", false)
-            val v: GithubRelease
-            if (useBeta){
-                val tmp = res.firstOrNull { it.tag_name.contains("beta", true) && res.indexOf(it) == 0 }
-                v = tmp ?: res.first()
-            }else{
-                v = res.first { !it.tag_name.contains("beta", true) }
-            }
-
-            val current = BuildConfig.VERSION_NAME.replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
-            val incoming = v.tag_name.removePrefix("v").replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
-
-
             var isInLatest = true
-            if ((current < incoming) ||
-                (current > incoming && BuildConfig.VERSION_NAME.contains("beta", true) && !useBeta)){
-                isInLatest = false
+
+            var v: GithubRelease
+            if (useBeta) {
+                v = res.firstOrNull { it.tag_name.contains("beta", true) } ?: res.first()
+                val stableV = res.first { !it.tag_name.contains("beta", true) }
+
+                val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
+                val incomingStableVerNumber = stableV.tag_name.removePrefix("v").tagNameToVersionNumber()
+
+                //if in beta but latest stable higher
+                if (currentVerNumber < incomingStableVerNumber) {
+                    isInLatest = false
+                    v = stableV
+                }else{
+                    isInLatest = currentVerNumber >= incomingVerNumber
+                }
+            }else {
+                v = res.first { !it.tag_name.contains("beta", true) }
+                val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
+
+                //if current version is beta but wants to downgrade to stable, allow it
+                isInLatest = if (currentVersion.contains("beta", true)) {
+                    false
+                }else {
+                    currentVerNumber >= incomingVerNumber
+                }
             }
 
             if (skippedVersions.contains(v.tag_name)) isInLatest = true
-
-            if (isInLatest){
-                return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
-            }
-
+            if (isInLatest) return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
             return Result.success(v)
         }catch (e: Exception){
             e.printStackTrace()

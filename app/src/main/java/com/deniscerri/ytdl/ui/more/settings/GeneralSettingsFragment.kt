@@ -14,6 +14,8 @@ import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.databinding.NavOptionsItemBinding
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
 import com.deniscerri.ytdl.util.NavbarUtil
@@ -34,12 +37,16 @@ import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 
 class GeneralSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.general
     private lateinit var preferences: SharedPreferences
+    private lateinit var resultViewModel: ResultViewModel
 
     private var updateUtil: UpdateUtil? = null
     private var activeDownloadCount = 0
@@ -49,6 +56,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
         NavbarUtil.init(requireContext())
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         updateUtil = UpdateUtil(requireContext())
         val editor = preferences.edit()
 
@@ -288,6 +296,13 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
 
                 findPreference<EditTextPreference>("api_key")?.isVisible = newValue == "yt_api"
                 findPreference<EditTextPreference>("custom_home_recommendation_url")?.isVisible = newValue == "custom"
+
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO){
+                        resultViewModel.deleteAll()
+                    }
+                }
+
                 true
             }
         }
@@ -295,6 +310,16 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         findPreference<EditTextPreference>("custom_home_recommendation_url")?.apply {
             title = "[${getString(R.string.video_recommendations)}] ${getString(R.string.custom)}"
             isVisible = preferences.getString("recommendations_home", "") == "custom"
+
+
+            setOnPreferenceChangeListener { preference, newValue ->
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO){
+                        resultViewModel.deleteAll()
+                    }
+                }
+                true
+            }
         }
 
         findPreference<EditTextPreference>("api_key")?.apply {
@@ -311,6 +336,13 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
                 }else {
                     "${s}\n[${newValue}]"
                 }
+
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO){
+                        resultViewModel.deleteAll()
+                    }
+                }
+
                 true
             }
         }
