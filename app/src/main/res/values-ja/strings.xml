@@ -81,7 +81,7 @@
     <string name="save_thumb">サムネイルを保存</string>
     <string name="add_chapters_summary">YouTube / SponsorBlock の登録シーンを動画のチャプターとして表示</string>
     <string name="run_command">コマンドを実行</string>
-    <string name="api_key_summary">おすすめの動画を YouTube API 経由で表示します</string>
+    <string name="api_key_summary">おすすめの動画をYouTube APIで取得</string>
     <string name="remove_deleted">削除済みを削除</string>
     <string name="downloads">ダウンロード</string>
     <string name="Open_File">ファイルを開く</string>
@@ -256,7 +256,7 @@
     <string name="piped_instance">Piped のインスタンス</string>
     <string name="piped_instance_summary">YouTube からの動画やその形式の取得に使う Piped API サーバーを指定</string>
     <string name="socks5_proxy_summary">指定した HTTP/HTTPS/SOCKS プロキシを使用します</string>
-    <string name="socks5_proxy">Socks5 プロキシ URL</string>
+    <string name="socks5_proxy">SOCKS5 プロキシ URL</string>
     <string name="move_temporary_files">一時ファイルを移動</string>
     <string name="move_temporary_files_summary">キャッシュファイルをダウンロードフォルダに転送します</string>
     <string name="preferred_home_screen">優先するホーム画面</string>
@@ -361,7 +361,7 @@
     <string name="back">戻る</string>
     <string name="swipe_gestures_download_card">ダウンロードカードでのスワイプジェスチャー</string>
     <string name="show_download_count">ダウンロード待ちの数を表示</string>
-    <string name="get_new_uploads">新たなアップロードのみ取得 (既存の項目無視)</string>
+    <string name="get_new_uploads">今後のアップロードのみ取得 (既存の項目無視)</string>
     <string name="also_download_audio">音声としてもダウンロード</string>
     <string name="wrap_text">文章を折り返す</string>
     <string name="thumbnail_format">サムネイルの形式</string>
@@ -474,4 +474,5 @@
     <string name="generate_potokens_warning">* これを有効にすることで、クッキーを無効にする必要あり</string>
     <string name="generate_potokens">POトークンを生成</string>
     <string name="regenerate">再生成</string>
+    <string name="cut_unsupported">この項目はカットできません</string>
 </resources>
