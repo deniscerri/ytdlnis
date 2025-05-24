@@ -177,7 +177,6 @@ class ShareActivity : BaseActivity() {
 
             val type = intent.getStringExtra("TYPE")
             val background = intent.getBooleanExtra("BACKGROUND", false)
-            val command = intent.getStringExtra("COMMAND") ?: ""
 
             lifecycleScope.launch {
                 val result: ResultItem
@@ -204,11 +203,6 @@ class ShareActivity : BaseActivity() {
                             result = result,
                             givenType = downloadType)
 
-                        if (downloadType == DownloadViewModel.Type.command && command.isNotBlank()){
-                            downloadItem.format.format_note = command
-                        }else{
-                            downloadItem.extraCommands = downloadItem.extraCommands + " $command"
-                        }
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
                     this@ShareActivity.finish()
