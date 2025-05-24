@@ -8,7 +8,7 @@
     <string name="home">Ana Sayfa</string>
     <string name="directories"> Klasörler</string>
     <string name="music_directory">Ses Klasörü</string>
-    <string name="video_directory"> Video Klasörü</string>
+    <string name="video_directory">Video Klasörü</string>
     <string name="updating">Güncellemeler</string>
     <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız yararlıdır</string>
     <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
@@ -281,7 +281,7 @@
     <string name="use_extra_commands">Ekstra Komutlar Ekle</string>
     <string name="use_extra_commands_summary">Ses / Video indirmeleri için. GUI yapılandırması ile birlikte ekstra komutlar ekle</string>
     <string name="current">Geçerli Komut</string>
-    <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi\?</string>
+    <string name="save_for_later">Daha Sonra İndirmek için Kaydedilsin mi?</string>
     <string name="subtitle_format">Altyazı Formatı</string>
     <string name="saved">Kaydedildi</string>
     <string name="clear_saved">Kaydedilenleri Temizle</string>
