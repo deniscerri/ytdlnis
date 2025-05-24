@@ -216,4 +216,4 @@ dependencies {
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("com.github.teamnewpipe:newpipeextractor:0.24.6")
-}
+    implementation("com.grack:nanojson:1.10")}
