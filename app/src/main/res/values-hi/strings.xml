@@ -272,7 +272,7 @@
     <string name="orange">नारंगी</string>
     <string name="current">वर्तमान कमांड</string>
     <string name="clear_saved">सहेजे हुए मिटाएं</string>
-    <string name="save_for_later">डाउनलोड को बाद के लिए सहेजें\?</string>
+    <string name="save_for_later">डाउनलोड को बाद के लिए सहेजें?</string>
     <string name="force_keyframes_summary">सटीक वीडियो कट्स, पर धीमा</string>
     <string name="subtitle_format">सबटाइटल फार्मेट</string>
     <string name="hide_thumbnails">थंबनेल छिपाएँ</string>
