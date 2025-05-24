@@ -279,7 +279,7 @@
     <string name="hide_thumbnails">サムネイルを非表示</string>
     <string name="saved">保存済み</string>
     <string name="clear_saved">保存済みの項目を消去</string>
-    <string name="save_for_later">後でダウンロードを保存しますか\?</string>
+    <string name="save_for_later">後でダウンロードを保存しますか?</string>
     <string name="write_description">説明文を保存</string>
     <string name="write_description_summary">説明用のファイルを書き込む</string>
     <string name="extra_command">追加のコマンド</string>
