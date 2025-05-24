@@ -94,7 +94,7 @@
     <string name="restore">คืนค่า</string>
     <string name="backup">สำรอง</string>
     <string name="backup_restore">สำรองและคืนค่า</string>
-    <string name="save_for_later">บันทึกการดาวน์โหลดสำหรับภายหลัง\?</string>
+    <string name="save_for_later">บันทึกการดาวน์โหลดสำหรับภายหลัง?</string>
     <string name="clear_saved">ล้างข้อมูลที่บันทึกไว้</string>
     <string name="saved">บันทึกแล้ว</string>
     <string name="hide_thumbnails">ซ่อนภาพขนาดย่อ</string>
