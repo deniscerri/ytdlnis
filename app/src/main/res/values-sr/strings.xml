@@ -146,7 +146,7 @@
     <string name="selected">Изабрано</string>
     <string name="preferred_download_type">Преферирани тип преузимања</string>
     <string name="ok">ОК</string>
-    <string name="save_for_later">Сачувати преузимање за касније\?</string>
+    <string name="save_for_later">Сачувати преузимање за касније?</string>
     <string name="update_app_summary">Обавештење о новим верзијама при отварању апликације. Подаци су извучени из званичног GitHub репозиторијума</string>
     <string name="url">URL адреса</string>
     <string name="access_all_directories">Дозволи приступ свим фолдерима</string>
