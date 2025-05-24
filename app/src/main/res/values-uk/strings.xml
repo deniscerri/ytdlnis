@@ -474,4 +474,5 @@
     <string name="regenerate">Перегенерувати</string>
     <string name="generate_potokens_warning">* Увімкнувши цей параметр, вам потрібно вимкнути файли cookie</string>
     <string name="custom">Власний</string>
+    <string name="cut_unsupported">Цей елемент не можна вирізати</string>
 </resources>

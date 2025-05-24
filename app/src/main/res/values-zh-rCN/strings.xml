@@ -473,4 +473,5 @@
     <string name="regenerate">重新生成</string>
     <string name="generate_potokens_warning">* 启用此选项，你需要禁用 cookies</string>
     <string name="custom">自定义</string>
+    <string name="cut_unsupported">剪切对此项目不可用</string>
 </resources>

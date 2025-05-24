@@ -92,7 +92,7 @@
     <string name="format_order">Редослед формата</string>
     <string name="fragment_retries">Поновни покушаји фрагмента</string>
     <string name="copy_log">Копирај евиденцију</string>
-    <string name="socks5_proxy">URL Socks5 проксија</string>
+    <string name="socks5_proxy">URL адреса Socks5 проксија</string>
     <string name="edit">Измени</string>
     <string name="restore">Врати</string>
     <string name="update_ytdl">Инсталирај нову верзију yt-dlp-а</string>
@@ -437,9 +437,9 @@
     <string name="data_fetching_extra_command_summary">Омогућите да се командни шаблони користе за прикупљање података као додатне команде</string>
     <string name="disable_write_info_json">Онемогући JSON за писање информација</string>
     <string name="disable_write_info_json_summary">(Не препоручује се) Сваки пут када рестартујете/наставите преузимање, yt-dlp ће поново преузети json податке са сервера.</string>
-    <string name="ytdlp_recommnedations">YT-DLP YouTube „Препоруке“ (потребни су колачићи)</string>
-    <string name="ytdlp_watch_history">YT-DLP YouTube „Историја гледања“ (потребни су колачићи)</string>
-    <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни су колачићи)</string>
+    <string name="ytdlp_recommnedations">YT-DLP YouTube „Препоруке“ (потребни колачићи)</string>
+    <string name="ytdlp_watch_history">YT-DLP YouTube „Историја гледања“ (потребни колачићи)</string>
+    <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни колачићи)</string>
     <string name="ytdlp_watch_later">YT-DLP YouTube „За касније“ (потребни су колачићи)</string>
     <string name="no_check_certificates">Поништи проверу HTTPS сертификата</string>
     <string name="live_stream">Стрим уживо</string>
@@ -474,4 +474,5 @@
     <string name="generate_potokens">Генериши PO токене</string>
     <string name="generate_potokens_warning">* Ако ово омогућите, морате да онемогућите колачиће</string>
     <string name="custom">Прилагођено</string>
+    <string name="cut_unsupported">Сечење није доступно за овај предмет</string>
 </resources>

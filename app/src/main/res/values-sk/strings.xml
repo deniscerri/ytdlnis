@@ -30,7 +30,7 @@
     <string name="version">Verzia</string>
     <string name="concurrent_fragments_summary">Počet fragmentov videa DASH/HLS, ktoré možno sťahovať súbežne</string>
     <string name="ok">OK</string>
-    <string name="update_app_summary">Oznámi nové verzie aplikácie pri jej otvorení. Údaje sú prevzaté z oficiálneho repozitára Github</string>
+    <string name="update_app_summary">Oznámi nové verzie aplikácie pri jej otvorení. Údaje sú prevzaté z oficiálneho repozitára GitHub</string>
     <string name="url">URL adresa</string>
     <string name="link_copied_to_clipboard">Odkaz skopírovaný do schránky</string>
     <string name="remove_all">Odstrániť všetko</string>
@@ -52,7 +52,7 @@
     <string name="downloading_update">Sťahovanie novej verzie</string>
     <string name="settings">Nastavenia</string>
     <string name="worst_quality">Najhoršia kvalita</string>
-    <string name="api_key_summary">Odporúčané videá z Youtube API</string>
+    <string name="api_key_summary">Odporúčané videá z YouTube API</string>
     <string name="ytdl_update_hint">Užitočné pri problémoch so sťahovaním</string>
     <string name="you_are_in_latest_version">Používate najnovšiu verziu</string>
     <string name="audio">Audio</string>
@@ -226,7 +226,7 @@
     <string name="search_suggestions_summary">Získate návrhy vyhľadávania z Google</string>
     <string name="sponsorblock_previews">Ukážky</string>
     <string name="show_download_card">Zobraziť kartu sťahovania</string>
-    <string name="socks5_proxy">Socks5 Proxy URL</string>
+    <string name="socks5_proxy">SOCKS5 Proxy URL</string>
     <string name="video_quality">Kvalita videa</string>
     <string name="template">Šablóna</string>
     <string name="appearance">Vzhľad</string>
@@ -326,7 +326,7 @@
     <string name="source">Zdroj</string>
     <string name="piped_instance">Inštancia Piped</string>
     <string name="use_scheduler">Sťahovať podľa rozvrhu</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="force_keyframes">Vynútiť kľúčové snímky pri orezaní</string>
     <string name="dismiss">Odmietnuť</string>
     <string name="format_smallest">Najmenší formát (podľa rozlíšenia)</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">Povolí šablóny príkazov, ktoré budú použité na načítanie údajov ako doplnkové príkazy</string>
     <string name="disable_write_info_json_summary">(Neodporúča sa) Pri každom reštarte/obnovení sťahovania bude yt-dlp znovu sťahovať údaje json zo serverov.</string>
     <string name="disable_write_info_json">Vypnúť zápis údajov Json</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube pozerať neskôr (potrebuje súbory cookie)</string>
-    <string name="ytdlp_liked">YT-DLP Youtube obľúbené videá (potrebuje cookies)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube doporučené (potrebuje cookies)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube história sledovania (potrebuje cookies)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube pozerať neskôr (potrebuje súbory cookie)</string>
+    <string name="ytdlp_liked">yt-dlp YouTube obľúbené videá (potrebuje cookies)</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube doporučené (potrebuje cookies)</string>
+    <string name="ytdlp_watch_history">yt-dlp YouTube história sledovania (potrebuje cookies)</string>
     <string name="no_check_certificates">Zakázať overovanie certifikátu HTTPS</string>
     <string name="live_from_start">Naživo od začiatku</string>
     <string name="wait_for_video">Čakajte na video</string>
@@ -474,4 +474,5 @@
     <string name="app_icon_change">Ikona sa môže zmeniť a aplikácia sa zavrie</string>
     <string name="generate_potokens_warning">* Pre zapnutie tejto funkcie musíte zakázať súbory cookie</string>
     <string name="custom">Vlastné</string>
+    <string name="cut_unsupported">Orezanie nie je pre túto položku k dispozícii</string>
 </resources>
