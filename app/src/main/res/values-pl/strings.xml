@@ -280,7 +280,7 @@
     <string name="hide_thumbnails">Ukryj miniatury</string>
     <string name="saved">Zapisane</string>
     <string name="clear_saved">Wyczyść zapisane</string>
-    <string name="save_for_later">Zachować pobieranie na później\?</string>
+    <string name="save_for_later">Zachować pobieranie na później?</string>
     <string name="subtitle_format">Format napisów</string>
     <string name="orange">Pomarańczowy</string>
     <string name="embed_metadata_summary">Osadzaj i analizuj metadane w pliku audio</string>
