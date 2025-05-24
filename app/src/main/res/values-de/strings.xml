@@ -275,7 +275,7 @@
     <string name="subtitle_format">Untertitelformat</string>
     <string name="hide_thumbnails">Vorschaubilder verstecken</string>
     <string name="saved">Gespeichert</string>
-    <string name="save_for_later">Download für später merken\?</string>
+    <string name="save_for_later">Download für später merken?</string>
     <string name="clear_saved">Gespeichertes leeren</string>
     <string name="force_keyframes_summary">Präzise Videoschnitte. Langsamer</string>
     <string name="force_keyframes">Keyframes bei Schnitten erzwingen</string>
