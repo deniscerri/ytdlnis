@@ -279,7 +279,7 @@
     <string name="show_terminal">Shfaq Terminalin në fletën e shpërndarjes</string>
     <string name="saved">Të ruajtura</string>
     <string name="clear_saved">Pastro të ruajturat</string>
-    <string name="save_for_later">Ruaj Shkarkimin për më vonë\?</string>
+    <string name="save_for_later">Ruaj Shkarkimin për më vonë?</string>
     <string name="force_keyframes">Përforco frame-t gjatë Prerjeve</string>
     <string name="use_extra_commands">Shto komanda shtesë</string>
     <string name="use_extra_commands_summary">Për shkarkime audio/video. Shtoni komanda shtesë së bashku me konfigurimin GUI</string>
