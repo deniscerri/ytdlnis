@@ -278,7 +278,7 @@
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
     <string name="clear_saved">Limpar downloads salvos</string>
-    <string name="save_for_later">Salvar download para mais tarde\?</string>
+    <string name="save_for_later">Salvar download para mais tarde?</string>
     <string name="use_extra_commands">Adicionar comandos extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicionar comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
