@@ -231,7 +231,7 @@
     <string name="hide_thumbnails">Nascondi miniature</string>
     <string name="saved">Salvato</string>
     <string name="clear_saved">Cancella Salvati</string>
-    <string name="save_for_later">Salvare il download per dopo\?</string>
+    <string name="save_for_later">Salvare il download per dopo?</string>
     <string name="audio_only_item">Questo elemento contiene solo formati audio</string>
     <string name="error_updating_formats">Errore durante l\'aggiornamento dei formati!</string>
     <string name="defaultValue">Predefinito</string>
