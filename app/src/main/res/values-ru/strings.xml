@@ -281,7 +281,7 @@
     <string name="hide_thumbnails">Скрыть миниатюры</string>
     <string name="saved">Сохранённые</string>
     <string name="clear_saved">Очистить сохранённые</string>
-    <string name="save_for_later">Сохранить загрузку на потом\?</string>
+    <string name="save_for_later">Сохранить загрузку на потом?</string>
     <string name="orange">Оранжевый</string>
     <string name="show_terminal">Показывать Терминал в меню «Поделиться»</string>
     <string name="write_description">Сохранять описание</string>
