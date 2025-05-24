@@ -196,7 +196,7 @@
     <string name="freespace">Espace libre</string>
     <string name="downloads_running_try_later">Le programme de téléchargement est en cours d\'exécution. Réessayez plus tard</string>
     <string name="copied_to_clipboard">Copié dans le presse-papiers</string>
-    <string name="video_recommendations_summary">Activer les vidéos YouTube recommandées sur l\'écran d\'accueil</string>
+    <string name="video_recommendations_summary">Recevoir des vidéos YouTube recommandées sur l\'écran d\'accueil</string>
     <string name="codec">Codec</string>
     <string name="high_contrast">Contraste élevé</string>
     <string name="save_subs">Enregistrer les sous-titres</string>
@@ -270,7 +270,7 @@
     <string name="misc">Divers</string>
     <string name="search_suggestions_summary">Obtenir des suggestions de recherche de Google</string>
     <string name="search_history">Historique de recherche</string>
-    <string name="socks5_proxy">URL proxy Socks5</string>
+    <string name="socks5_proxy">URL Proxy SOCKS5</string>
     <string name="restore">Restaurer</string>
     <string name="appearance">Apparence</string>
     <string name="search_suggestions">Suggestions de recherche</string>
@@ -279,7 +279,7 @@
     <string name="backup_restore">Sauvegarder et Restaurer</string>
     <string name="incognito">Incognito</string>
     <string name="backup">Sauvegarder</string>
-    <string name="backup_created_successfully">Fichier de sauvegarde enregistré dans le dossier des téléchargements</string>
+    <string name="backup_created_successfully">Fichier de sauvegarde enregistré!</string>
     <string name="downloaded">"Téléchargé : "</string>
     <string name="general">Général</string>
     <string name="preferred_format_id_summary">Sélectionner le format avec cet ID dans la carte de téléchargement</string>
@@ -435,8 +435,8 @@
     <string name="items">élément(s)</string>
     <string name="other_youtube_extractor_args">Autres arguments de YouTube Extractor</string>
     <string name="no_check_certificates">Supprimer la validation du certificat HTTPS</string>
-    <string name="ytdlp_watch_later">YT-DLP YouTube à regarder plus tard (nécessite des cookies)</string>
-    <string name="ytdlp_recommnedations">Recommandations YouTube YT-DLP (nécessite des cookies)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube À regarder plus tard (nécessite des cookies)</string>
+    <string name="ytdlp_recommnedations">yt-dlp Recommandations YouTube (nécessite des cookies)</string>
     <string name="use_only_po_token">Utiliser uniquement le jeton PO (ignorez le client du lecteur)</string>
     <string name="cache_directory">Dossier cache</string>
     <string name="prefer_container_over_codec_audio_summary">Lorsque cette option est activée, la préférence du codec audio préféré sera ignorée et seul le conteneur changera.</string>
@@ -453,8 +453,8 @@
     <string name="preferred_command_template">Modèle de commande préféré</string>
     <string name="socket_timeout">Délai d\'expiration du socket</string>
     <string name="data_fetching_extra_command">Commande supplémentaire de récupération de données</string>
-    <string name="ytdlp_liked">Vidéos aimées par YouTube YT-DLP (nécessite des cookies)</string>
-    <string name="ytdlp_watch_history">Historique de visionnage YouTube YT-DLP (nécessite des cookies)</string>
+    <string name="ytdlp_liked">yt-dlp Vidéos aimées par YouTube (nécessite des cookies)</string>
+    <string name="ytdlp_watch_history">yt-dlp Historique de visionnage YouTube (nécessite des cookies)</string>
     <string name="live_stream">En direct</string>
     <string name="live_from_start">En direct depuis le début</string>
     <string name="wait_for_video">Attendre la vidéo</string>
@@ -464,4 +464,16 @@
     <string name="list">Liste</string>
     <string name="prefer_container_over_codec_audio">Préférer le conteneur au codec pour les téléchargements audio</string>
     <string name="app_icon_change">L\'icône pourrait changer et l\'application se fermera</string>
+    <string name="use_code_highlighter">Mettre les codes couleur en surbrillance</string>
+    <string name="reset_preferences_in_screen">Réinitialiser toutes les préférences de cet écran</string>
+    <string name="automatic_backup">Backup automatique</string>
+    <string name="backup_path">Chemin de backup</string>
+    <string name="write_subs_when_embed_subs_summary">Cette action va exécuter Sauvegarder les sous-titres et Sauvegarder les sous-titres automatiques pour télécharger les fichiers sous-titre, puis les supprimera après l\'incrustation</string>
+    <string name="generate_potokens">Générer les jetons PO</string>
+    <string name="use_format_sorting">Trier par format</string>
+    <string name="cut_unsupported">Le coupage n\'est pas disponible pour cet élément</string>
+    <string name="automatic_backup_summary">Faire une backup complète lorsqu\'une nouvelle version de l\'application est trouvée</string>
+    <string name="regenerate">Regénérer</string>
+    <string name="generate_potokens_warning">* En activant cette option, vous devez désactiver les cookies</string>
+    <string name="custom">Custom</string>
 </resources>

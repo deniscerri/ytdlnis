@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="remove_all">Alles löschen</string>
+    <string name="remove_all">Alles entfernen</string>
     <string name="ytdl_update_hint">Nützlich, wenn du Probleme beim Herunterladen hast</string>
-    <string name="remove_results">Ergebnisse leeren</string>
+    <string name="remove_results">Ergebnisse entleeren</string>
     <string name="download_all">Alles herunterladen</string>
     <string name="settings">Einstellungen</string>
     <string name="directories">Ordner</string>
-    <string name="music_directory">Audio-Ordner</string>
-    <string name="video_directory">Video-Ordner</string>
+    <string name="music_directory">Musik-Ordner</string>
+    <string name="video_directory">Video Ordner</string>
     <string name="updating">Aktualisieren</string>
     <string name="update_ytdl">Neuste Version von youtube-dl installieren</string>
     <string name="source_code">Quellcode</string>
@@ -62,7 +62,7 @@
     <string name="search">Suchen</string>
     <string name="home">Startseite</string>
     <string name="failed_download">Datei konnte nicht heruntergeladen werden</string>
-    <string name="download_notification_channel_name">Datei-Downloads</string>
+    <string name="download_notification_channel_name">Datei Downloads</string>
     <string name="you_are_in_latest_version">Du verwendest die neueste Version</string>
     <string name="downloading_update">Neuste Version wird heruntergeladen</string>
     <string name="concurrent_fragments_summary">Anzahl der Fragmente eines nativen DASH/HLS-Videos, die gleichzeitig heruntergeladen werden sollen</string>

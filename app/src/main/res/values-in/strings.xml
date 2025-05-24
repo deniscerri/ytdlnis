@@ -473,4 +473,5 @@
     <string name="automatic_backup_summary">Secara otomatis membuat cadangan semuanya ketika versi baru aplikasi ditemukan</string>
     <string name="generate_potokens_warning">* Dengan mengaktifkan ini, Anda perlu menonaktifkan kuki</string>
     <string name="custom">Khusus</string>
+    <string name="cut_unsupported">Pemotongan tidak tersedia untuk item ini</string>
 </resources>
