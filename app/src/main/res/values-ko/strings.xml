@@ -270,7 +270,7 @@
     <string name="piped_instance">파이프 인스턴스</string>
     <string name="piped_instance_summary">앱이 유튜브 쿼리 및 형식에 사용할 수 있는 PIPED API 서버 설정</string>
     <string name="orange">주황색</string>
-    <string name="save_for_later">나중에 다운로드를 저장하시겠습니까\?</string>
+    <string name="save_for_later">나중에 다운로드를 저장하시겠습니까?</string>
     <string name="retries">재시도</string>
     <string name="use_extra_commands_summary">오디오 / 비디오 다운로드의 경우 GUI 구성과 함께 추가 명령을 추가</string>
     <string name="subtitle_format">자막 형식</string>

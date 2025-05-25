@@ -274,7 +274,7 @@
     <string name="format_order">Format Düzülüşü</string>
     <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
     <string name="force_keyframes_summary">Daha yavaş emal, lakin daha dəqiq kəsiklər</string>
-    <string name="save_for_later">Yükləmə Sonraya Saxlanılsın\?</string>
+    <string name="save_for_later">Yükləmə Sonraya Saxlanılsın?</string>
     <string name="subtitle_format">Titr Formatı</string>
     <string name="hide_thumbnails">Miniatürləri Gizlət</string>
     <string name="show_terminal">Paylaş Menyusunda Sıxac Göstər</string>

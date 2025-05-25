@@ -285,7 +285,7 @@
     <string name="preferred_format_id_summary">Sélectionner le format avec cet ID dans la carte de téléchargement</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="swipe_gestures">Gestes de balayage</string>
-    <string name="restore_complete">Restauration de l\'application terminée. Les éléments suivants ont été restaurés :</string>
+    <string name="restore_complete">Restauration de l\'application terminée. Les éléments suivants ont été restaurés :</string>
     <string name="couldnt_parse_file">Impossible d\'analyser le fichier</string>
     <string name="current">Commande actuelle</string>
     <string name="export_file">Exporter le fichier</string>
@@ -346,8 +346,7 @@
     <string name="not_deleted">Non supprimé</string>
     <string name="on_time">Sur</string>
     <string name="cut_unavailable_please_update_item">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
-    <string name="format_smallest">Le plus petit format
-\n(par résolution)</string>
+    <string name="format_smallest">Le plus petit format \n(par résolution)</string>
     <string name="confirm_delete_sources_desc">Supprimer définitivement
 \ntoutes les sources</string>
     <string name="week">Semaine</string>

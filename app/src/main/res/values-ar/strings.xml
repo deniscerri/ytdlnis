@@ -122,8 +122,8 @@
     <string name="you_are_going_to_delete">إزالة/حذف</string>
     <string name="url">الرابط</string>
     <string name="api_key">استخدام مفتاح API</string>
-    <string name="api_key_summary">توصيات الفيديو من واجهة يوتيوب البرمجية</string>
-    <string name="update_app_summary">الإعلام بإصدارات التطبيق الجديدة عند الفتح. يتم استخراج البيانات من مستودع Github الرسمي</string>
+    <string name="api_key_summary">توصيات الفيديو من API يوتويب</string>
+    <string name="update_app_summary">الإعلام بإصدارات التطبيق الجديدة عند الفتح. يتم استخراج البيانات من مستودع GitHub الرسمي</string>
     <string name="downloads">التنزيلات</string>
     <string name="remove_deleted">إزالة المحذوفة أساسًا</string>
     <string name="remove_duplicates">إزالة المكررة</string>
@@ -254,7 +254,7 @@
     <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
-    <string name="socks5_proxy">رابط الوكيل Socks5</string>
+    <string name="socks5_proxy">رابط بروكسي SOCKS5</string>
     <string name="move_temporary_files">النقر لنقل الملفات المؤقتة</string>
     <string name="move_temporary_files_summary">نقل الملفات المؤقتة إلى مجلد التنزيلات</string>
     <string name="search_suggestions">اقتراحات البحث</string>
@@ -302,7 +302,7 @@
     <string name="auto">تلقائي</string>
     <string name="preferred_audio_codec">الترميز المفضل للصوت</string>
     <string name="preferred_video_codec">الترميز المفضل للفيديو</string>
-    <string name="sponsorblock_api_url">رابط الـ API لحاجب شرائح الإعلانات</string>
+    <string name="sponsorblock_api_url">رابط API SponsorBlock</string>
     <string name="loading">تتم التعبئة</string>
     <string name="user_agent_header">رأس وكيل المستخدم</string>
     <string name="remember_download_type">تذكر نوع التنزيل</string>
@@ -438,8 +438,8 @@
     <string name="disable_write_info_json">تعطيل كتابة معلومات Json</string>
     <string name="disable_write_info_json_summary">(غير مستحسن) في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم.</string>
     <string name="ytdlp_watch_later">مشاهدة يوتيوب لاحقًا على YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
-    <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة على YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
-    <string name="ytdlp_liked">مقاطع الفيديو المفضلة على اليوتيوب YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة بـYT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_liked">مقاطع الفيديو المفضلة على يوتيوب YT-DLP (تحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب YT-DLP (يحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="no_check_certificates">قمع التحقق من صحة شهادة HTTPS</string>
     <string name="live_from_start">مباشر من البداية</string>

@@ -43,8 +43,8 @@
     <string name="audio_quality">Qualidade do áudio</string>
     <string name="command_download_notification_channel_description">Mostrar notificação do progresso de download usando um comando do yt-dlp</string>
     <string name="history_is_empty">O histórico está vazio</string>
-    <string name="api_key">Usar chave de API</string>
-    <string name="api_key_summary">Recomendações de vídeo da API do YouTube</string>
+    <string name="api_key">Usar chave da API</string>
+    <string name="api_key_summary">Recomendações de vídeos a partir da API do YouTube</string>
     <string name="remove_duplicates">Remover duplicados</string>
     <string name="sort_by">Ordenar por</string>
     <string name="incognito_summary">Faça o download sem adicionar no histórico</string>
@@ -278,7 +278,7 @@
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
     <string name="clear_saved">Limpar downloads salvos</string>
-    <string name="save_for_later">Salvar download para mais tarde\?</string>
+    <string name="save_for_later">Salvar download para mais tarde?</string>
     <string name="use_extra_commands">Adicionar comandos extras</string>
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicionar comandos extras junto com a configuração da GUI</string>
     <string name="current">Comando atual</string>
