@@ -32,7 +32,6 @@
         android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
-        android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="YTDLnis"
         android:localeConfig="@xml/locales_config"

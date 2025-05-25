@@ -84,10 +84,6 @@ android {
         }
     }
 
-    lintOptions{
-        disable 'MissingTranslation'
-        disable 'RestrictedApi'
-    }
 
     android.applicationVariants.configureEach { variant ->
         variant.outputs.each { output ->
@@ -133,6 +129,14 @@ android {
         includeInApk = false
         // Disables dependency metadata when building Android App Bundles.
         includeInBundle = false
+    }
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging true
+        }
+    }
+    lint {
+        disable 'MissingTranslation', 'RestrictedApi'
     }
 }
 

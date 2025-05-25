@@ -358,8 +358,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.applyDefaultOptionsForFetchingData(urls.firstOrNull { it.isURL() })
             if (urls.all { it.isYoutubeURL() }) {
                 request.setYoutubeExtractorArgs(urls[0])
-                request.addOption("--extractor-args", "youtube:player_skip=initial_data,webpage")
-                request.addOption("--extractor-args", "youtubetab:skip=webpage")
             }
             if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
@@ -431,8 +429,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.applyDefaultOptionsForFetchingData(url)
         if (url.isYoutubeURL()) {
             request.setYoutubeExtractorArgs(url)
-            request.addOption("--extractor-args", "youtube:player_skip=initial_data,webpage")
-            request.addOption("--extractor-args", "youtubetab:skip=webpage")
         }
         if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 

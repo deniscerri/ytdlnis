@@ -134,9 +134,12 @@ class NewPipeUtil(context: Context) {
     fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
             val streamInfo = StreamInfo.getInfo(url)
-            val item = createVideoFromStream(streamInfo, url)
-            if (item!!.urls.isBlank()) return Result.failure(Throwable())
-            val urls = item.urls.split(",")
+            val item = createVideoFromStream(streamInfo, url)!!
+
+            val videoURL = item.formats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.firstOrNull { !it.url.isNullOrBlank() }?.url ?: ""
+            val audioURL = item.formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }.firstOrNull { !it.url.isNullOrBlank() }?.url ?: ""
+
+            val urls = listOf(videoURL, audioURL)
             val chapters = item.chapters
             return Result.success(Pair(urls, chapters))
         }catch (e: Exception) {
