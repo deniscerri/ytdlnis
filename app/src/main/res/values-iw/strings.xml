@@ -152,7 +152,7 @@
     <string name="crop_thumb_summary">חתוך את התמונה הממוזערת כעטיפה מרובעת להורדות אודיו</string>
     <string name="write_description">שמור תיאור</string>
     <string name="cache_first_summary">קובצי מטמון ירדו לזכרון הפנימי, ואח\"כ יעברו לתיקייה הנבחרת. השתמש באפשרות זו רק כשאינך יכול להוריד ישירות לזיכרון הפנימי</string>
-    <string name="save_for_later">לשמור הורדה למאוחר יותר \?</string>
+    <string name="save_for_later">לשמור הורדה למאוחר יותר ?</string>
     <string name="write_description_summary">כתוב תיאור קובץ</string>
     <string name="swipe_gestures_summary">החלק על פריטים לבצע פעולות שונות</string>
     <string name="cache_first">הורדת קבצי מטמון</string>

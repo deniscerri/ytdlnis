@@ -234,7 +234,7 @@
     <string name="preferred_format_id">পছন্দের ফরম্যাট আইডি</string>
     <string name="download_now">এখনই ডাউনলোড করুন</string>
     <string name="download_already_exists">ডাউনলোড আগে থেকেই আছে</string>
-    <string name="save_for_later">পরে ডাউনলোড করার জন্য সংরক্ষণ করবেন\?</string>
+    <string name="save_for_later">পরে ডাউনলোড করার জন্য সংরক্ষণ করবেন?</string>
     <string name="custom_audio_quality">কাস্টম অডিও মান ব্যবহার করুন</string>
     <string name="use_cookies">কুকি ব্যবহার করুন</string>
     <string name="orange">কমলা</string>
