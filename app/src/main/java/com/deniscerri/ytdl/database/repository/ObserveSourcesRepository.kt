@@ -79,7 +79,7 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao,
         Calendar.getInstance().apply {
             timeInMillis = it.startsTime
 
-            if (it.everyCategory != ObserveSourcesRepository.EveryCategory.HOUR){
+            if (it.everyCategory != EveryCategory.HOUR){
                 val hourMin = Calendar.getInstance()
                 hourMin.timeInMillis = it.everyTime
                 set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
@@ -87,9 +87,9 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao,
             }
 
             when(it.everyCategory){
-                ObserveSourcesRepository.EveryCategory.HOUR -> {}
-                ObserveSourcesRepository.EveryCategory.DAY -> {}
-                ObserveSourcesRepository.EveryCategory.WEEK -> {
+                EveryCategory.HOUR -> {}
+                EveryCategory.DAY -> {}
+                EveryCategory.WEEK -> {
                     var weekDayNr = get(Calendar.DAY_OF_WEEK) - 1
                     if (weekDayNr == 0) weekDayNr = 7
                     val followingWeekDay = it.weeklyConfig?.weekDays?.firstOrNull { it >= weekDayNr }
@@ -101,7 +101,7 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao,
                         add(Calendar.DAY_OF_MONTH, followingWeekDay - weekDayNr)
                     }
                 }
-                ObserveSourcesRepository.EveryCategory.MONTH -> {
+                EveryCategory.MONTH -> {
                     val currentMonthIndex = get(Calendar.MONTH)
                     if (it.monthlyConfig?.startsMonth != currentMonthIndex){
                         set(Calendar.MONTH, it.monthlyConfig?.startsMonth ?: 0)

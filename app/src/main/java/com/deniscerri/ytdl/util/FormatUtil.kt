@@ -45,9 +45,10 @@ class FormatUtil(private var context: Context) {
 
             return orderPreferences
         }else {
-            val formatImportance = mutableListOf("codec", "container", "language")
+            val formatImportance = mutableListOf("id","codec", "container", "language", "file_size")
             if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
                 formatImportance.add(0, "smallsize")
+                formatImportance.remove("file_size")
             }
 
             val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
@@ -71,9 +72,10 @@ class FormatUtil(private var context: Context) {
 
             return orderPreferences
         }else {
-            val formatImportance = mutableListOf("resolution", "codec", "container")
+            val formatImportance = mutableListOf("id","resolution", "codec", "container", "file_size")
             if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
                 formatImportance.add("smallsize")
+                formatImportance.remove("file_size")
             }
 
             return formatImportance
