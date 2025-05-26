@@ -418,7 +418,7 @@
     <string name="playlist_as_album">Përdorni emrin e playlistit si metadata për albumin</string>
     <string name="playlist_as_album_summary">Nëse metadata e albumit nuk ekziston, përdor emrin e playlist</string>
     <string name="cleanup_leftover_downloads">Pastro shkarkimet e mbetura (të anuluara, me probleme)</string>
-    <string name="resume_all">Resume All</string>
+    <string name="resume_all">Rifillo të gjitha</string>
     <string name="data_fetching_extractor_youtube">Ekstraktuesi i marrjes së të dhënave (YouTube)</string>
     <string name="thumbnail">Fotoja</string>
     <string name="pause_all">Ndalo të gjitha</string>
@@ -473,4 +473,5 @@
     <string name="custom">Tjetër</string>
     <string name="automatic_backup_summary">Ruaj automatikisht gjithçka kur një version i ri i aplikacionit u gjet</string>
     <string name="write_subs_when_embed_subs_summary">Kjo do të aktivizojë \"Ruaj Titrat\" dhe \"Ruaj Titrat Automatike\" për të shkarkuar titrat si skedar dhe i fshin pasi mbivendosen në video</string>
+    <string name="cut_unsupported">Prerja nuk është e mundur për këtë artikull</string>
 </resources>

@@ -107,7 +107,7 @@
     <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
     <string name="file_name_template">Modelo para o nome de arquivo</string>
     <string name="language">Idioma</string>
-    <string name="command_templates">Modelos de Comando</string>
+    <string name="command_templates">Modelos de comando</string>
     <string name="format">Formato</string>
     <string name="select_format">Selecionar formato</string>
     <string name="please_wait">Aguarde</string>
@@ -169,7 +169,7 @@
     <string name="suggested">Sugerido</string>
     <string name="add_template_first">Você precisa ter pelo menos um modelo de comando existente!</string>
     <string name="new_cut">Novo corte</string>
-    <string name="ignore_battery_optimization">Ignorar \'Otimização da Bateria\'</string>
+    <string name="ignore_battery_optimization">Desativar \'Otimização da Bateria\'</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
     <string name="restrict_filenames">Restringir nomes de arquivos</string>
     <string name="cache_cleared">Arquivos temporários removidos</string>
@@ -193,7 +193,7 @@
     <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede Wi-Fi</string>
     <string name="download_over_metered_networks">Download via dados móveis</string>
     <string name="confirm_delete_cookies_desc">Todas os cookies serão excluídos</string>
-    <string name="delete_all_cookies">Excluir todos os cookies</string>
+    <string name="delete_all_cookies">Excluir Cookies</string>
     <string name="get_cookies">Obter Cookies</string>
     <string name="new_cookie">Novo Cookie</string>
     <string name="share">Compartilhar</string>

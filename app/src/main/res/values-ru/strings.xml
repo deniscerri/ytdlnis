@@ -46,7 +46,7 @@
     <string name="url">URL</string>
     <string name="link_copied_to_clipboard">Ссылка скопирована в буфер обмена</string>
     <string name="api_key">Использовать ключ API</string>
-    <string name="api_key_summary">Видеорекомендации от YouTube API</string>
+    <string name="api_key_summary">Видео рекомендации от YouTube API</string>
     <string name="downloads">Загрузки</string>
     <string name="command_download_notification_channel_name">Загрузка команд</string>
     <string name="remove_deleted">Удалить удалённые</string>
@@ -59,12 +59,12 @@
     <string name="warning">Предупреждение</string>
     <string name="sponsorblock_intro">Вступление</string>
     <string name="sponsorblock_outro">Концовка</string>
-    <string name="sponsorblock_promos">Самореклама</string>
+    <string name="sponsorblock_promos">Само реклама</string>
     <string name="sponsorblock_previews">Предварительный просмотр</string>
     <string name="sponsorblock_reminders">Напоминания о подписке</string>
     <string name="select_sponsorblock_filtering">Выберите фильтрацию SponsorBlock</string>
     <string name="sponsorblock_fillers">Заполнители (филлеры)</string>
-    <string name="sponsorblock_nonmusic">Немузыкальные фрагменты</string>
+    <string name="sponsorblock_nonmusic">Не музыкальные фрагменты</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Видео папка</string>
     <string name="download_all">Скачать все</string>
@@ -225,15 +225,15 @@
     <string name="select_backup_categories">Категории для бэкапа</string>
     <string name="search_history">История поиска</string>
     <string name="appearance">Настройка YTDLnis</string>
-    <string name="backup_restore">Резервная копия и восстановление</string>
+    <string name="backup_restore">Резервное копирование и восстановление</string>
     <string name="blue">Синий</string>
     <string name="purple">Фиолетовый</string>
     <string name="save_subs">Сохранять субтитры</string>
     <string name="save_subs_desc">Сохранять субтитры в файл</string>
     <string name="subtitle_languages">Языки субтитров</string>
     <string name="socks5_proxy_summary">Использовать указанный HTTP/HTTPS/SOCKS-прокси</string>
-    <string name="socks5_proxy">URL Socks5-прокси</string>
-    <string name="preferred_search_engine">Поисковая система</string>
+    <string name="socks5_proxy">SOCKS5 прокси URL</string>
+    <string name="preferred_search_engine">Предпочтительная поисковая система</string>
     <string name="preferred_search_engine_summary">Поисковая система в приложении</string>
     <string name="format_filtering_hint">Для использования функции, все элементы должны быть одного типа</string>
     <string name="restore_complete">Восстановление приложения завершено. Были восстановлены следующие объекты:</string>
@@ -244,10 +244,10 @@
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии успешно сохранён!</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Material you</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
-    <string name="preferred_home_screen">Предпочитаемый главный экран</string>
+    <string name="preferred_home_screen">Предпочтительный домашний экран</string>
     <string name="undo">Отменить</string>
     <string name="format_id">ID формата</string>
     <string name="codec">Видеокодек</string>
@@ -274,7 +274,7 @@
     <string name="format_order">Порядок форматов</string>
     <string name="force_keyframes">Ключевые кадры при обрезке видео</string>
     <string name="force_keyframes_summary">Более медленный процесс, но более точный монтаж</string>
-    <string name="use_extra_commands_summary">Добавлять дополнительные команды перед загрузкой аудио/видео</string>
+    <string name="use_extra_commands_summary">Для загрузки аудио / видео. Добавить дополнительные команды вместе с конфигурацией графического интерфейса</string>
     <string name="use_extra_commands">Дополнительные команды</string>
     <string name="current">Текущая команда</string>
     <string name="subtitle_format">Формат субтитров</string>
@@ -283,7 +283,7 @@
     <string name="clear_saved">Очистить сохранённые</string>
     <string name="save_for_later">Сохранить загрузку на потом?</string>
     <string name="orange">Оранжевый</string>
-    <string name="show_terminal">Показывать Терминал в меню «Поделиться»</string>
+    <string name="show_terminal">Показать терминал в меню обмена</string>
     <string name="write_description">Сохранять описание</string>
     <string name="write_description_summary">Сохранять описание в файл</string>
     <string name="extra_command">Дополнительная команда</string>
@@ -291,7 +291,7 @@
     <string name="embed_metadata_summary">Извлекать метаданные и встраивать их в аудиофайл</string>
     <string name="embed_metadata">Встраивать метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
-    <string name="update_formats_background">Обновлять форматы в фоновом режиме</string>
+    <string name="update_formats_background">Обновление форматов в фоне</string>
     <string name="use_sponsorblock">Использовать SponsorBlock</string>
     <string name="scheduling">Планировщик</string>
     <string name="use_scheduler">Загружать по расписанию</string>
@@ -300,8 +300,8 @@
     <string name="update_app_beta_summary">Учавствуйте в программе бета-тестирования. Она может содержать ошибки.</string>
     <string name="update_app_beta">Бета-версии</string>
     <string name="auto">Авто</string>
-    <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
-    <string name="preferred_video_codec">Предпочитаемый видеокодек</string>
+    <string name="preferred_audio_codec">Предпочтительный аудиокодек</string>
+    <string name="preferred_video_codec">Предпочтительный видеокодек</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="loading">Загрузка</string>
     <string name="schedule">Расписание</string>
@@ -381,13 +381,13 @@
     <string name="disabled">Отключено</string>
     <string name="subtitles">Субтитры</string>
     <string name="prevent_duplicate_downloads">Предотвращение дублирования загрузок</string>
-    <string name="prevent_duplicate_url_type">URL &amp; Тип загрузки</string>
+    <string name="prevent_duplicate_url_type">URL &amp; тип загрузки</string>
     <string name="prevent_duplicate_config">Полная конфигурация</string>
     <string name="copy_url">Копировать URL</string>
     <string name="move_top">Перейти вверх</string>
     <string name="move_bottom">Двигайтесь вниз</string>
     <string name="scheduled">Запланированное</string>
-    <string name="clear_scheduled">Очистить Запланированное</string>
+    <string name="clear_scheduled">Очистить запланированное</string>
     <string name="download_archive_folder">Скачать папку архива</string>
     <string name="location">Расположение</string>
     <string name="minute">Минута</string>
@@ -408,7 +408,7 @@
 \nНажмите «Сброс», чтобы стереть и использовать только сохраненные данные в файле.</string>
     <string name="use_alarm_manager">Используйте AlarmManager вместо WorkManager для планирования</string>
     <string name="use_alarm_manager_summary">Включите это, если WorkManager ограничен поставщиком вашего устройства или запланированные задания не слишком точны</string>
-    <string name="use_item_url_not_playlist">Используйте URL-адрес элемента вместо URL-адреса плейлиста</string>
+    <string name="use_item_url_not_playlist">Используйте URL -адрес вместо URL -адреса плейлиста</string>
     <string name="use_item_url_not_playlist_summary">Метаданные плейлиста не будут встроены, если эта функция включена</string>
     <string name="recode_video">Перекодировать видео</string>
     <string name="recode_video_summary">Перекодирует видеофайл в указанный видеоформат</string>
@@ -417,8 +417,8 @@
     <string name="monthly">Ежемесячно</string>
     <string name="cleanup_leftover_downloads">Очистка оставшихся загрузок (отмененных, с ошибками)</string>
     <string name="continue_anyway">Все равно продолжить</string>
-    <string name="playlist_as_album">Использовать название плейлиста в качестве метаданных альбома</string>
-    <string name="playlist_as_album_summary">Если метаданные альбома отсутствуют, вместо этого используйте имя списка воспроизведения</string>
+    <string name="playlist_as_album">Используйте название плейлиста как метаданные альбома</string>
+    <string name="playlist_as_album_summary">Если метаданные альбома не присутствуют, вместо этого используйте название плейлиста</string>
     <string name="data_fetching_extractor_youtube">Средство извлечения данных (YouTube)</string>
     <string name="items">предмет(ы)</string>
     <string name="advanced">Дополнительно</string>
@@ -435,7 +435,7 @@
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда получения данных</string>
     <string name="disable_write_info_json">Отключить запись информации в формате Json</string>
-    <string name="disable_write_info_json_summary">(Не рекомендуется) Каждый раз, когда вы перезапускаете/возобновляете загрузку, yt-dlp повторно загружает данные json с серверов.</string>
+    <string name="disable_write_info_json_summary">(Не рекомендуется) Каждый раз, когда вы перезагружаете / возобновляете загрузку, YT-DLP будет повторно загружать данные JSON с серверов.</string>
     <string name="data_fetching_extra_command_summary">Включите использование шаблонов команд для выбора данных в качестве дополнительных команд</string>
     <string name="ytdlp_recommnedations">Рекомендации YT-DLP для YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">YT-DLP Видео с лайками на YouTube (требуются файлы cookie)</string>
@@ -447,9 +447,9 @@
     <string name="live_from_start">Вживую с начала</string>
     <string name="minutes">Минуты</string>
     <string name="retry_every">Повторять каждые</string>
-    <string name="prefer_container_over_codec_audio">Предпочитайте контейнер кодеку для загрузки аудио</string>
+    <string name="prefer_container_over_codec_audio">Предпочитаю контейнер через кодек для аудио загрузки</string>
     <string name="prefer_container_over_codec_audio_summary">Если этот параметр включен, предпочтительный аудиокодек будет игнорироваться, и изменится только контейнер</string>
-    <string name="player_client">Клиент Плеера</string>
+    <string name="player_client">Клиент плеера</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
     <string name="use_app_language_for_metadata">Используйте язык приложений для метаданных</string>
     <string name="layout">Макет</string>
@@ -467,11 +467,12 @@
     <string name="automatic_backup_summary">Автоматически сделайте резервную копию всего, когда найдена новая версия приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
     <string name="write_subs_when_embed_subs_summary">Это применяет субтитры Сохранить и сохранить автоматические субтитры для загрузки суб -файлов, а затем удалить их после внедрения</string>
-    <string name="generate_potokens">Згенерировать токены PO</string>
+    <string name="generate_potokens">Згенерировать PO токены</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Использовать важность формата</string>
     <string name="sync_with_source_desc">Удалить загруженные элементы, если они отсутствуют в источнике</string>
     <string name="app_icon_change">Значок может измениться, и приложение закроется</string>
     <string name="generate_potokens_warning">* Включив это, вам нужно отключить куки</string>
     <string name="custom">Другой</string>
+    <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
 </resources>
