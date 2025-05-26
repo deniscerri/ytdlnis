@@ -1012,7 +1012,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
                 if (downloadItem.author.isBlank()) {
-                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
                 }
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
@@ -1384,7 +1384,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             val cacheDirArg = """(--cache-dir (".*"))""".toRegex().find(downloadItem.extraCommands)
             if (cacheDirArg != null) {
                 ytDlRequest.addOption("--cache-dir", cacheDirArg.groupValues.last().replace("\"", ""))
-                downloadItem.extraCommands.replace(cacheDirArg.value, "")
+                kotlin.runCatching {
+                    downloadItem.extraCommands = downloadItem.extraCommands.replace(cacheDirArg.value, "")
+                }
             }
             request.addOption(downloadItem.extraCommands)
         }

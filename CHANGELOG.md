@@ -731,7 +731,6 @@ Accepted variables:
 
 TYPE -> it can be: audio,video,command
 BACKGROUND -> whether the app downloads on its own and wont show the download card if you have it on
-COMMAND -> if your preferred type is audio/video or you set the TYPE variable as so, this will be appended to your Extra Commands string. If the type is command, the whole command will be used for the download
 The intent that needs to be created is of android.intent.action.SEND and the intent text should be the url that you need to download.
 
 > # 1.6.9 (2023-11)

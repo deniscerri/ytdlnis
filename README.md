@@ -130,7 +130,6 @@ Accepted variables:
 
 <b>TYPE</b> -> it can be: audio,video,command <br/>
 <b>BACKGROUND</b> -> it can be: true,false. If its true the app won't show the download card no matter what and run the download in the background <br/>
-<b>COMMAND</b> -> if your preferred type is audio/video or you set the TYPE variable as one of them, this will be appended to your Extra Commands string. If the type is command, the whole command you wrote here will be used for the download <br/>
 
 ### Tasker Example of downloading an audio in the background
 1. Create Send Intent task

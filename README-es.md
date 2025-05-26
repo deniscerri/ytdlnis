@@ -119,7 +119,6 @@ Variables aceptadas:
 
 <b>TIPO</b> -> puede ser: audio, video, comando <br/>
 <b>BACKGROUND</b> -> puede ser: verdadero, falso.  Si es cierto, la aplicación no mostrará la tarjeta de descarga pase lo que pase y ejecutará la descarga en segundo plano. <br/>
-<b>COMMAND</b> -> Si su tipo preferido es audio/video o configura la variable TIPO como uno de ellos, esto se agregará a su cadena de Comandos adicionales.  Si el tipo es comando, todo el comando que escribió aquí se usará para la descarga. <br/>
 
 ### Tasker Ejemplo de descarga de un audio en segundo plano
 1. Crear tarea de intención de envío
