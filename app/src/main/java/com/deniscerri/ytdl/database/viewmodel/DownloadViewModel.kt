@@ -528,7 +528,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             Type.audio -> {
                 return cloneFormat (
                     try {
-                        val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }
+                        val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }.ifEmpty {
+                            formatUtil.getGenericAudioFormats(resources).sortedByDescending { it.filesize }
+                        }
                         FormatUtil(application).sortAudioFormats(theFormats).first()
                     }catch (e: Exception){
                         formatUtil.getGenericAudioFormats(resources).first()
