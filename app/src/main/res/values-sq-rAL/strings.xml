@@ -473,4 +473,5 @@
     <string name="custom">Tjetër</string>
     <string name="automatic_backup_summary">Ruaj automatikisht gjithçka kur një version i ri i aplikacionit u gjet</string>
     <string name="write_subs_when_embed_subs_summary">Kjo do të aktivizojë \"Ruaj Titrat\" dhe \"Ruaj Titrat Automatike\" për të shkarkuar titrat si skedar dhe i fshin pasi mbivendosen në video</string>
+    <string name="cut_unsupported">Prerja nuk është e mundur për këtë artikull</string>
 </resources>
