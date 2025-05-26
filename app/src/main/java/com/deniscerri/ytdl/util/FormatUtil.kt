@@ -8,6 +8,8 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
+import kotlin.math.max
+import kotlin.math.min
 
 class FormatUtil(private var context: Context) {
     private val sharedPreferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -168,8 +170,12 @@ class FormatUtil(private var context: Context) {
                         "resolution" -> {
                             when (videoQualityPreference) {
                                 "worst" -> {
-                                    b.format_note.contains("worst", ignoreCase = true)
+                                    val containsWorst = b.format_note.contains("worst", ignoreCase = true)
                                         .compareTo(a.format_note.contains("worst", ignoreCase = true))
+
+                                    val worstFilesize = a.filesize.compareTo(b.filesize)
+
+                                    min(containsWorst, worstFilesize)
                                 }
                                 "best" -> {
                                     b.format_note.contains("best", ignoreCase = true)
