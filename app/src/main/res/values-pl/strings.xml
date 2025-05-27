@@ -5,7 +5,7 @@
     <string name="download_all">Pobierz wszystko</string>
     <string name="settings">Ustawienia</string>
     <string name="home">Główna</string>
-    <string name="music_directory">Folder Audio</string>
+    <string name="music_directory">Folder audio</string>
     <string name="video_directory">Folder filmów</string>
     <string name="updating">Aktualizowanie</string>
     <string name="update_ytdl">Zainstaluj nowszą wersję yt-dlp</string>
@@ -449,7 +449,7 @@
     <string name="live_stream">Transmisja na żywo</string>
     <string name="live_from_start">Transmisja na żywo od początku</string>
     <string name="wait_for_video">Poczekaj na wideo</string>
-    <string name="retry_every">Ilość prób</string>
+    <string name="retry_every">Liczba prób</string>
     <string name="prefer_container_over_codec_audio_summary">Gdy ta opcja jest włączona, preferencje dotyczące preferowanego kodeka audio będą ignorowane, a zmieniany będzie tylko kontener</string>
     <string name="cache_directory_warning">Zmiana folderu pamięci podręcznej może spowodować nieoczekiwane problemy. Jeśli aplikacja nie będzie mogła zapisać do skonfigurowanej ścieżki, powróci do domyślnego wewnętrznego katalogu pamięci podręcznej</string>
     <string name="cache_directory">Folder pamięci podręcznej</string>
@@ -469,4 +469,8 @@
     <string name="write_subs_when_embed_subs">Tworzenie napisów podczas osadzania</string>
     <string name="automatic_backup_summary">Automatyczne tworzenie kopii zapasowej wszystkiego po znalezieniu nowej wersji aplikacji</string>
     <string name="write_subs_when_embed_subs_summary">Spowoduje to zastosowanie opcji Zapisz napisy i Zapisz automatyczne napisy w celu pobrania plików napisów, a następnie usunięcia ich po osadzeniu</string>
+    <string name="generate_potokens">Wygeneruj token PO</string>
+    <string name="regenerate">Wygeneruj ponownie</string>
+    <string name="cut_unsupported">Przycinanie jest niedostępne dla tego elementu</string>
+    <string name="generate_potokens_warning">* Uruchamiając to, potrzebujesz wyłączyć ciasteczka</string>
 </resources>
