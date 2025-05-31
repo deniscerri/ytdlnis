@@ -54,10 +54,15 @@ interface DownloadDao {
     """)
     fun getProcessingDownloadTypes() : List<String>
 
-    @Query("""
-        SELECT DISTINCT container from downloads where status = 'Processing'
-    """)
+
+    @Query("SELECT DISTINCT type from downloads where status = 'Processing' and id in (:ids)")
+    fun getProcessingDownloadTypesByIDs(ids: List<Long>) : List<String>
+
+    @Query("""SELECT DISTINCT container from downloads where status = 'Processing'""")
     fun getProcessingDownloadContainers() : List<String>
+
+    @Query("""SELECT DISTINCT container from downloads where id in (:ids)""")
+    fun getDownloadContainersByIDs(ids: List<Long>) : List<String>
 
 
     @Query("UPDATE downloads set status = 'Processing' WHERE id in (:ids)")
@@ -74,8 +79,14 @@ interface DownloadDao {
     @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
     suspend fun updateProcessingDownloadPath(path: String)
 
+    @Query("UPDATE downloads set downloadPath=:path WHERE id in (:ids)")
+    suspend fun updateDownloadPathByIDs(ids: List<Long>, path: String)
+
     @Query("UPDATE downloads set container=:cont WHERE status ='Processing'")
     suspend fun updateProcessingContainer(cont: String)
+
+    @Query("UPDATE downloads set container=:cont WHERE id in (:ids)")
+    suspend fun updateContainerByIds(ids: List<Long>, cont: String)
 
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
@@ -356,6 +367,12 @@ interface DownloadDao {
     @Query("UPDATE downloads set incognito=:incognito WHERE status='Processing'")
     suspend fun updateProcessingIncognito(incognito: Boolean)
 
+    @Query("UPDATE downloads set incognito=:incognito WHERE id in (:ids)")
+    suspend fun updateIncognitoByIDs(incognito: Boolean, ids: List<Long>)
+
     @Query("SELECT COUNT(id) FROM downloads WHERE status='Processing' AND incognito='1'")
     fun getProcessingAsIncognitoCount(): Int
+
+    @Query("SELECT COUNT(id) FROM downloads WHERE status='Processing' AND incognito='1' and id in (:ids)")
+    fun getProcessingAsIncognitoCountByIDs(ids: List<Long>): Int
 }

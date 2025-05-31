@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.ui.adapter
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
 import android.os.Handler
@@ -7,6 +8,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,6 +34,10 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences : SharedPreferences
+    private var checkedItems: MutableSet<Long> = mutableSetOf()
+    private var currentItems: Set<Long> = setOf()
+    private var _isCheckingItems: Boolean = false
+    private var inverted: Boolean = false
 
     init {
         this.onItemClickListener = onItemClickListener
@@ -51,6 +57,69 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         val cardView = LayoutInflater.from(parent.context)
             .inflate(R.layout.download_card, parent, false)
         return ViewHolder(cardView)
+    }
+
+    fun isCheckingItems() : Boolean {
+        return _isCheckingItems
+    }
+
+    fun getCheckedItemsOrNull(): List<Long>? {
+        val res = if (inverted) {
+            currentItems.filter { !checkedItems.contains(it) }
+        }else {
+            checkedItems
+        }
+
+        return res.toList().ifEmpty { null }
+    }
+
+    fun getCheckedItemsSize() : Int {
+        return if (inverted){
+            currentItems.size - checkedItems.size
+        }else{
+            checkedItems.size
+        }
+    }
+
+    fun removeItemsFromCheckList(ids: List<Long>) {
+        checkedItems.removeAll(ids.toSet())
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearCheckedItems() {
+        _isCheckingItems = false
+        inverted = false
+        checkedItems = mutableSetOf()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun selectItems(ids: List<Long>) {
+        checkedItems = mutableSetOf()
+        inverted = false
+        checkedItems.addAll(ids)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkAll() {
+        checkedItems = mutableSetOf()
+        inverted = true
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun invertSelected() {
+        inverted = !inverted
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun initCheckingItems(itemIDs: List<Long>) {
+        currentItems = itemIDs.toSet()
+        _isCheckingItems = true
+        checkedItems = mutableSetOf()
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -162,18 +231,48 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
             }
         }
 
+        val checkbox = card.findViewById<CheckBox>(R.id.checkBox)
+        checkbox.isVisible = _isCheckingItems
+        checkbox.isChecked = (checkedItems.contains(item.id) && !inverted) || (inverted && !checkedItems.contains(item.id))
+        checkbox.setOnClickListener {
+            if (checkbox.isChecked) {
+                if (inverted) checkedItems.remove(item.id)
+                else checkedItems.add(item.id)
+                onItemClickListener.onCardChecked(item.id)
+            }else {
+                if (inverted) checkedItems.add(item.id)
+                else checkedItems.remove(item.id)
+                onItemClickListener.onCardUnChecked(item.id)
+            }
+        }
+
+        val index = card.findViewById<TextView>(R.id.index)
+        index.isVisible = _isCheckingItems
+        index.text = (position + 1).toString()
+
         card.setOnClickListener {
-            onItemClickListener.onCardClick(item.id)
+            if (_isCheckingItems) {
+                checkbox.performClick()
+            }else {
+                onItemClickListener.onCardClick(item.id)
+            }
         }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDelete(item.id); true
+            if (_isCheckingItems) {
+                checkbox.performClick()
+            }else{
+                onItemClickListener.onDelete(item.id)
+            }
+            true
         }
     }
 
     interface OnItemClickListener {
         fun onButtonClick(id: Long)
         fun onCardClick(id: Long)
+        fun onCardChecked(id: Long)
+        fun onCardUnChecked(id: Long)
         fun onDelete(id: Long)
     }
 

@@ -140,7 +140,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.deleteProcessingByUrl(url)
     }
 
-    fun getProcessingDownloads() : List<DownloadItem> {
+    fun getAllProcessingDownloads() : List<DownloadItem> {
         return downloadDao.getProcessingDownloadsList()
     }
 

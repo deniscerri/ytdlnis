@@ -20,6 +20,7 @@ import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
+import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -2012,6 +2013,73 @@ object UiUtil {
         }
 
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
+    }
+
+    fun showSelectRangeDialog(context: Activity, itemCount: Int, rangeSelected: (rangeSelected: Pair<Int, Int>) -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.select_between))
+        builder.setMessage(context.getString(R.string.select_between_desc))
+        builder.setIcon(R.drawable.baseline_format_list_numbered_24)
+        val view = context.layoutInflater.inflate(R.layout.select_range_dialog, null)
+
+        val fromTextInput = view.findViewById<TextInputLayout>(R.id.from_textinput)
+        fromTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
+        val toTextInput = view.findViewById<TextInputLayout>(R.id.to_textinput)
+        toTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
+
+
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { _: DialogInterface?, _: Int ->
+            val firstIndex = fromTextInput.editText!!.text.toString().toInt() - 1
+            val secondIndex = toTextInput.editText!!.text.toString().toInt() - 1
+
+            rangeSelected(Pair(firstIndex,secondIndex))
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        val dialog = builder.create()
+        dialog.show()
+
+
+        fun checkRanges(start: String, end: String) : Boolean {
+            fromTextInput.error = ""
+            toTextInput.error = ""
+
+            if (start.isBlank() || end.isBlank()) return false
+
+            val startValid = start.toInt() >= 0
+            val endValid = end.toInt() <= itemCount
+
+            if (!startValid) {
+                fromTextInput.editText?.setText("")
+                fromTextInput.error = "Invalid Number"
+            }
+            if (!endValid) {
+                toTextInput.editText?.setText("")
+                toTextInput.error = "Invalid Number"
+            }
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = startValid && endValid
+            return startValid && endValid
+        }
+
+        fromTextInput.editText!!.doAfterTextChanged { editable ->
+            val start = editable.toString()
+            val end = toTextInput.editText!!.text.toString()
+            checkRanges(start, end)
+        }
+
+        toTextInput.editText!!.doAfterTextChanged { editable  ->
+            val start = fromTextInput.editText!!.text.toString()
+            val end = editable.toString()
+            checkRanges(start, end)
+        }
     }
 
     private fun createPersonalFilenameTemplateChip(context: Activity, text: String, myChipGroup: ChipGroup, onClick: (f: Chip) -> Unit, onLongClick: (f: Chip) -> Unit) : Chip {

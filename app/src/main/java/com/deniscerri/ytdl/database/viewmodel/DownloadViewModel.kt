@@ -890,7 +890,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     suspend fun queueProcessingDownloads() : QueueDownloadsResult {
-        val processingItems = repository.getProcessingDownloads()
+        val processingItems = repository.getAllProcessingDownloads()
         return queueDownloads(processingItems)
     }
 
@@ -1087,13 +1087,22 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dbManager.downloadDao.getDownloadIDsNotPresentInList(items.ifEmpty { listOf(-1L) }, status.map { it.toString() })
     }
 
-    suspend fun moveProcessingToSavedCategory(){
-        dao.updateProcessingtoSavedStatus()
+    suspend fun moveProcessingToSavedCategory(selectedItems: List<Long>?){
+        if (selectedItems.isNullOrEmpty()) {
+            dao.updateProcessingtoSavedStatus()
+        }else {
+            repository.setDownloadStatusMultiple(selectedItems, DownloadRepository.Status.Saved)
+        }
     }
 
 
-    fun updateAllProcessingFormats(formatTuples : List<MultipleItemFormatTuple>) = viewModelScope.launch(Dispatchers.IO) {
-        val items = repository.getProcessingDownloads()
+    fun updateAllProcessingFormats(selectedItems: List<Long>?, formatTuples : List<MultipleItemFormatTuple>) = viewModelScope.launch(Dispatchers.IO) {
+        val items = if (selectedItems.isNullOrEmpty()) {
+            repository.getAllProcessingDownloads()
+        }else {
+            repository.getAllItemsByIDs(selectedItems)
+        }
+
         items.forEach {
             val ft = formatTuples.first { ft -> ft.url == it.url }.formatTuple
             ft.format?.apply {
@@ -1112,28 +1121,48 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     }
 
-    suspend fun updateProcessingCommandFormat(format: Format){
-        val items = repository.getProcessingDownloads()
+    suspend fun updateProcessingCommandFormat(selectedItems: List<Long>?, format: Format){
+        val items = if (selectedItems.isNullOrEmpty()) {
+            repository.getAllProcessingDownloads()
+        }else {
+            repository.getAllItemsByIDs(selectedItems)
+        }
+
         items.forEach {
             it.format = format
             repository.update(it)
         }
     }
 
-    suspend fun updateProcessingContainer(cont: String) {
+    suspend fun updateProcessingContainer(checkedItems: List<Long>?, cont: String) {
         var container = ""
         if (cont != resources.getString(R.string.defaultValue)) {
             container = cont
         }
-        dao.updateProcessingContainer(container)
+
+        if (checkedItems.isNullOrEmpty()) {
+            dao.updateProcessingContainer(container)
+        }else {
+            dao.updateContainerByIds(checkedItems, container)
+        }
+
     }
 
-    suspend fun updateProcessingDownloadPath(path: String){
-        dao.updateProcessingDownloadPath(path)
+    suspend fun updateProcessingDownloadPath(selectedItems: List<Long>?, path: String){
+        if (selectedItems.isNullOrEmpty()) {
+            dao.updateProcessingDownloadPath(path)
+        }else {
+            dao.updateDownloadPathByIDs(selectedItems, path)
+        }
     }
 
-    fun getProcessingDownloads() : List<DownloadItem> {
-        return repository.getProcessingDownloads()
+    fun getProcessingDownloads(checkedItems: List<Long>?) : List<DownloadItem> {
+        return if (checkedItems.isNullOrEmpty()) {
+            repository.getAllProcessingDownloads()
+        }else {
+            repository.getAllItemsByIDs(checkedItems)
+        }
+
     }
 
     fun updateDownloadItemFormats(id: Long, list: List<Format>) = viewModelScope.launch(Dispatchers.IO) {
@@ -1174,9 +1203,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         resultRepository.deleteByUrl(url)
     }
 
-    suspend fun continueUpdatingFormatsOnBackground(){
-        val ids = repository.getProcessingDownloads().map { it.id }
-        dao.updateProcessingtoSavedStatus()
+    suspend fun continueUpdatingFormatsOnBackground(selectedItems: List<Long>?){
+        val ids = if (selectedItems.isNullOrEmpty()) {
+            repository.getAllProcessingDownloads().map { it.id }
+        }else {
+            selectedItems
+        }
+
+        moveProcessingToSavedCategory(selectedItems)
 
         val id = System.currentTimeMillis().toInt()
         val workRequest = OneTimeWorkRequestBuilder<UpdateMultipleDownloadsFormatsWorker>()
@@ -1213,8 +1247,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     }
 
-    suspend fun updateProcessingType(newType: Type) {
-        val processing = repository.getProcessingDownloads()
+    suspend fun updateProcessingType(selectedItems: List<Long>?, newType: Type) {
+        val processing = if (selectedItems.isNullOrEmpty()) {
+            repository.getAllProcessingDownloads()
+        }else{
+            repository.getAllItemsByIDs(selectedItems)
+        }
+
         processing.apply {
             val new = switchDownloadType(this, newType)
             new.forEach {
@@ -1224,7 +1263,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     suspend fun updateProcessingDownloadTimeAndQueueScheduled(time: Long) : QueueDownloadsResult {
-        val processing = repository.getProcessingDownloads()
+        val processing = repository.getAllProcessingDownloads()
         processing.forEach {
             it.downloadStartTime = time
             it.status = DownloadRepository.Status.Scheduled.toString()
@@ -1232,8 +1271,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return queueDownloads(processing)
     }
 
-    fun checkIfAllProcessingItemsHaveSameType() : Pair<Boolean, Type> {
-        val types = dao.getProcessingDownloadTypes()
+    fun checkIfAllProcessingItemsHaveSameType(selectedItems: List<Long>?) : Pair<Boolean, Type> {
+        val types = if (!selectedItems.isNullOrEmpty()) {
+            dao.getProcessingDownloadTypesByIDs(selectedItems)
+        }else {
+            dao.getProcessingDownloadTypes()
+        }
+
         if (types.isEmpty()) {
             return Pair(false, Type.command)
         }
@@ -1241,8 +1285,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return Pair(types.size == 1, Type.valueOf(types.first()))
     }
 
-    fun checkIfAllProcessingItemsHaveSameContainer() : Pair<Boolean, String> {
-        val containers = dao.getProcessingDownloadContainers()
+    fun checkIfAllProcessingItemsHaveSameContainer(checkedItems: List<Long>?) : Pair<Boolean, String> {
+        val containers = if (checkedItems.isNullOrEmpty()) {
+            dao.getProcessingDownloadContainers()
+        }else {
+            dao.getDownloadContainersByIDs(checkedItems)
+        }
+
         return Pair(containers.size == 1, containers.first())
     }
 
@@ -1277,12 +1326,20 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dao.getScheduledIDsBetweenTwoItems(item1, item2)
     }
 
-    suspend fun updateProcessingIncognito(incognito: Boolean) {
-        dao.updateProcessingIncognito(incognito)
+    suspend fun updateProcessingIncognito(selectedItems: List<Long>?, incognito: Boolean) {
+        if (selectedItems.isNullOrEmpty()) {
+            dao.updateProcessingIncognito(incognito)
+        }else {
+            dao.updateIncognitoByIDs(incognito, selectedItems)
+        }
     }
 
-    fun areAllProcessingIncognito() : Boolean {
-        return dao.getProcessingAsIncognitoCount() > 0
+    fun areAllProcessingIncognito(selectedItems: List<Long>?) : Boolean {
+        return if (selectedItems.isNullOrEmpty()) {
+            dao.getProcessingAsIncognitoCount() > 0
+        }else {
+            dao.getProcessingAsIncognitoCountByIDs(selectedItems) > 0
+        }
     }
 
     fun cancelDownloadOnly(id : Long) {

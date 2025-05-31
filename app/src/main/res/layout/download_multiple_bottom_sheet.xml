@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -34,6 +35,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/downloadHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
@@ -137,39 +139,126 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/multiple_top_info"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/multipleSelectHeader"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
+
+            <TextView
+                android:id="@+id/bottom_sheet_edit_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/edit"
+                android:textSize="25sp"
+                android:maxLines="2"
+                android:singleLine="false"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_ok_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/bottom_sheet_edit_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_selected"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_ok_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_edit_title" />
+
+            <Button
+                android:id="@+id/bottomsheet_ok_button"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
+                android:text="@string/ok"
+                app:icon="@drawable/ic_check"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/count"
+            <LinearLayout
+                android:id="@+id/multiple_top_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="10dp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/selectRangeBtn"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/filesize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingTop="10dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/filesize"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/file_size"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/selectRangeBtn"
                 android:visibility="gone"
-                android:paddingEnd="20dp"
-                android:paddingStart="0dp"
-                android:paddingTop="10dp"
-                android:text="@string/file_size"
-                android:textStyle="bold"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                app:icon="@drawable/baseline_format_list_numbered_24"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/select_between"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/selectItemsMenu"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/selectItemsMenu"
+                android:visibility="gone"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/settings"
+                app:icon="@drawable/baseline_more_vert_24"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/downloadMultipleRecyclerview"

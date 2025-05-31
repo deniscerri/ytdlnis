@@ -9,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -16,14 +17,18 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
@@ -59,6 +64,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.CancellationException
@@ -68,6 +74,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.math.abs
 
 class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), ConfigureMultipleDownloadsAdapter.OnItemClickListener, View.OnClickListener,
     ConfigureDownloadBottomSheetDialog.OnDownloadItemUpdateListener {
@@ -81,6 +88,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var filesize : TextView
+    private var itemsFileSize: Long = 0L
     private lateinit var count : TextView
     private lateinit var downloadBtn : MaterialButton
     private lateinit var scheduleBtn : MaterialButton
@@ -97,6 +105,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
     private lateinit var containerBtn : MenuItem
     private lateinit var containerTextView: TextView
+
+    private lateinit var multipleSelectHeader: ConstraintLayout
+    private lateinit var selectItemsMenuBtn: MaterialButton
+    private lateinit var selectRangeBtn: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -182,28 +194,51 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         lifecycleScope.launch {
             downloadViewModel.processingDownloads.collectLatest { items ->
                 processingItemsCount = items.size
+                currentDownloadIDs = items.map { it.id }
                 count.text = "$processingItemsCount ${getString(R.string.selected)}"
                 listAdapter.submitList(items)
 
                 updateFileSize(items)
 
                 if (items.isNotEmpty()){
-                    if (items.all { it2 -> it2.type == items[0].type }) {
-                        formatBtn.icon?.alpha = 255
-                        if (items[0].type != DownloadViewModel.Type.command) {
-                            moreBtn.icon?.alpha = 255
+                    lifecycleScope.launch {
+                        val haveSameType = if (listAdapter.isCheckingItems()) {
+                            val res = withContext(Dispatchers.IO) {
+                                downloadViewModel.checkIfAllProcessingItemsHaveSameType(listAdapter.getCheckedItemsOrNull())
+                            }
+
+                            res.first
+                        }else {
+                            items.all { it2 -> it2.type == items[0].type }
                         }
 
-                        containerBtn.isVisible = items.first().type != DownloadViewModel.Type.command
-                    } else {
-                        formatBtn.icon?.alpha = 30
-                        moreBtn.icon?.alpha = 30
-                    }
+                        if (haveSameType) {
+                            formatBtn.icon?.alpha = 255
+                            if (items[0].type != DownloadViewModel.Type.command) {
+                                moreBtn.icon?.alpha = 255
+                            }
 
-                    if (items.all { it.container == items[0].container }) {
-                        setContainerText(items[0].container)
-                    }else{
-                        setContainerText("")
+                            containerBtn.isVisible = items.first().type != DownloadViewModel.Type.command
+                        }else {
+                            formatBtn.icon?.alpha = 30
+                            moreBtn.icon?.alpha = 30
+                        }
+
+                        val haveSameContainer = if (listAdapter.isCheckingItems()) {
+                            val res = withContext(Dispatchers.IO) {
+                                downloadViewModel.checkIfAllProcessingItemsHaveSameContainer(listAdapter.getCheckedItemsOrNull())
+                            }
+
+                            res.first
+                        }else {
+                            items.all { it.container == items[0].container }
+                        }
+
+                        if (haveSameContainer) {
+                            setContainerText(items[0].container)
+                        }else {
+                            setContainerText("")
+                        }
                     }
 
                     val type = items.first().type
@@ -233,7 +268,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 toggleLoading(true)
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                         val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis)
                         if (result.message.isNotBlank()){
@@ -257,7 +291,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             toggleLoading(true)
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
-                    downloadViewModel.deleteAllWithID(currentDownloadIDs)
                     historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     val result = downloadViewModel.queueProcessingDownloads()
                     if (result.message.isNotBlank()){
@@ -283,8 +316,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
-                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
-                        downloadViewModel.moveProcessingToSavedCategory()
+                        downloadViewModel.moveProcessingToSavedCategory(null)
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     }
 
@@ -300,7 +332,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         val formatListener = object : OnMultipleFormatClickListener {
             override fun onFormatClick(formatTuple: List<MultipleItemFormatTuple>) {
-                downloadViewModel.updateAllProcessingFormats(formatTuple)
+                downloadViewModel.updateAllProcessingFormats(listAdapter.getCheckedItemsOrNull(), formatTuple)
             }
 
             override fun onFormatUpdated(url: String, formats: List<Format>) {
@@ -314,7 +346,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             override fun onContinueOnBackground() {
                 requireActivity().lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        downloadViewModel.continueUpdatingFormatsOnBackground()
+                        downloadViewModel.continueUpdatingFormatsOnBackground(listAdapter.getCheckedItemsOrNull())
                     }
                     downloadViewModel.processingItemsJob?.cancel(CancellationException())
                     downloadViewModel.processingItemsJob = null
@@ -326,7 +358,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         lifecycleScope.launch {
             val allIncognito = withContext(Dispatchers.IO){
-                downloadViewModel.areAllProcessingIncognito()
+                downloadViewModel.areAllProcessingIncognito(listAdapter.getCheckedItemsOrNull())
             }
 
             incognitoBtn.icon!!.apply {
@@ -359,40 +391,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
-                R.id.incognito -> {
-                    lifecycleScope.launch {
-                        if (m.icon!!.alpha == 255) {
-                            incognitoBtn.isEnabled = false
-                            withContext(Dispatchers.IO) {
-                                downloadViewModel.updateProcessingIncognito(false)
-                                withContext(Dispatchers.Main){
-                                    m.icon!!.alpha = 30
-                                    m.isEnabled = true
-                                }
-                            }
-                            incognitoBtn.icon?.alpha = 30
-                            incognitoBtn.isEnabled = true
-                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.disabled)}", Toast.LENGTH_SHORT).show()
-                        }else{
-                            incognitoBtn.isEnabled = false
-                            withContext(Dispatchers.IO) {
-                                downloadViewModel.updateProcessingIncognito(true)
-                                withContext(Dispatchers.Main){
-                                }
-                            }
-                            incognitoBtn.icon?.alpha = 255
-                            incognitoBtn.isEnabled = true
-                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.ok)}", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }
-                R.id.folder -> {
-                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-                    pathResultLauncher.launch(intent)
-                }
                 R.id.preferred_download_type -> {
                     lifecycleScope.launch{
                         val bottomSheet = BottomSheetDialog(requireContext())
@@ -416,7 +414,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         audio!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch {
-                                downloadViewModel.updateProcessingType(DownloadViewModel.Type.audio)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.audio)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                                     formatBtn.icon?.alpha = 255
@@ -424,7 +422,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.cancel()
                                 }
 
-                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer()
+                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer(listAdapter.getCheckedItemsOrNull())
                                 withContext(Dispatchers.Main) {
                                     if (!res.first) {
                                         setContainerText("")
@@ -438,7 +436,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         video!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(DownloadViewModel.Type.video)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.video)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                                     formatBtn.icon?.alpha = 255
@@ -446,7 +444,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     bottomSheet.cancel()
                                 }
 
-                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer()
+                                val res = downloadViewModel.checkIfAllProcessingItemsHaveSameContainer(listAdapter.getCheckedItemsOrNull())
                                 withContext(Dispatchers.Main) {
                                     if (!res.first) {
                                         setContainerText("")
@@ -459,7 +457,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         command!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(DownloadViewModel.Type.command)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.command)
                                 withContext(Dispatchers.Main){
                                     preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                                     formatBtn.icon?.alpha = 255
@@ -485,7 +483,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 R.id.format -> {
                     lifecycleScope.launch {
                         val res = withContext(Dispatchers.IO){
-                            downloadViewModel.checkIfAllProcessingItemsHaveSameType()
+                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(listAdapter.getCheckedItemsOrNull())
                         }
                         if (!res.first){
                             Toast.makeText(requireContext(), getString(R.string.format_filtering_hint), Toast.LENGTH_SHORT).show()
@@ -505,13 +503,13 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                                     lifecycleScope.launch {
                                         withContext(Dispatchers.IO){
-                                            downloadViewModel.updateProcessingCommandFormat(format)
+                                            downloadViewModel.updateProcessingCommandFormat(listAdapter.getCheckedItemsOrNull(), format)
                                         }
                                     }
                                 }
                             }else{
                                 val items = withContext(Dispatchers.IO){
-                                    downloadViewModel.getProcessingDownloads()
+                                    downloadViewModel.getProcessingDownloads(listAdapter.getCheckedItemsOrNull())
                                 }
                                 formatViewModel.setItems(items)
                                 val bottomSheet = FormatSelectionBottomSheetDialog( _multipleFormatsListener = formatListener)
@@ -520,10 +518,63 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         }
                     }
                 }
+                R.id.folder -> {
+                    val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+                    intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+                    pathResultLauncher.launch(intent)
+                }
+                R.id.select_items -> {
+                    if (listAdapter.isCheckingItems()) {
+                        multipleSelectHeader.isVisible = false
+                        view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = true
+                        filesize.isVisible = itemsFileSize > 0L
+                        selectRangeBtn.isVisible = false
+                        count.text = "${currentDownloadIDs.size} ${getString(R.string.selected)}"
+                        listAdapter.clearCheckedItems()
+                    }else {
+                        multipleSelectHeader.apply {
+                            isVisible = true
+                        }
+                        view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = false
+                        filesize.isVisible = false
+                        listAdapter.initCheckingItems(currentDownloadIDs)
+                        selectRangeBtn.isVisible = true
+                        count.text = "0 ${getString(R.string.selected)}"
+                    }
+                }
+                R.id.incognito -> {
+                    lifecycleScope.launch {
+                        if (m.icon!!.alpha == 255) {
+                            incognitoBtn.isEnabled = false
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.updateProcessingIncognito(listAdapter.getCheckedItemsOrNull(), false)
+                                withContext(Dispatchers.Main){
+                                    m.icon!!.alpha = 30
+                                    m.isEnabled = true
+                                }
+                            }
+                            incognitoBtn.icon?.alpha = 30
+                            incognitoBtn.isEnabled = true
+                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.disabled)}", Toast.LENGTH_SHORT).show()
+                        }else{
+                            incognitoBtn.isEnabled = false
+                            withContext(Dispatchers.IO) {
+                                downloadViewModel.updateProcessingIncognito(listAdapter.getCheckedItemsOrNull(),true)
+                                withContext(Dispatchers.Main){
+                                }
+                            }
+                            incognitoBtn.icon?.alpha = 255
+                            incognitoBtn.isEnabled = true
+                            Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.ok)}", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
                 R.id.more -> {
                     lifecycleScope.launch {
                         val res = withContext(Dispatchers.IO){
-                            downloadViewModel.checkIfAllProcessingItemsHaveSameType()
+                            downloadViewModel.checkIfAllProcessingItemsHaveSameType(listAdapter.getCheckedItemsOrNull())
                         }
                         if (!res.first) {
                             Toast.makeText(
@@ -544,7 +595,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     sheetView.findViewById<View>(R.id.adjust).setPadding(padding)
 
                                     val items = withContext(Dispatchers.IO){
-                                        downloadViewModel.getProcessingDownloads()
+                                        downloadViewModel.getProcessingDownloads(listAdapter.getCheckedItemsOrNull())
                                     }
 
                                     UiUtil.configureAudio(
@@ -626,7 +677,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     sheetView.findViewById<View>(R.id.adjust).setPadding(padding)
 
                                     val items = withContext(Dispatchers.IO){
-                                        downloadViewModel.getProcessingDownloads()
+                                        downloadViewModel.getProcessingDownloads(listAdapter.getCheckedItemsOrNull())
                                     }
 
                                     UiUtil.configureVideo(
@@ -731,7 +782,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         containerTextView.setOnClickListener {
             lifecycleScope.launch {
                 val res = withContext(Dispatchers.IO){
-                    downloadViewModel.checkIfAllProcessingItemsHaveSameType()
+                    downloadViewModel.checkIfAllProcessingItemsHaveSameType(listAdapter.getCheckedItemsOrNull())
                 }
                 if (!res.first){
                     Toast.makeText(requireContext(), getString(R.string.format_filtering_hint), Toast.LENGTH_SHORT).show()
@@ -749,7 +800,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         val container = mm.title
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
-                                downloadViewModel.updateProcessingContainer(container.toString())
+                                downloadViewModel.updateProcessingContainer(listAdapter.getCheckedItemsOrNull(), container.toString())
                             }
                         }
                         setContainerText(container.toString())
@@ -758,9 +809,90 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                     popup.show()
                 }
-
-
             }
+        }
+
+        multipleSelectHeader = view.findViewById(R.id.multipleSelectHeader)
+        selectItemsMenuBtn = view.findViewById(R.id.selectItemsMenu)
+        selectItemsMenuBtn.setOnClickListener {
+            val popup = PopupMenu(activity, it)
+            popup.menuInflater.inflate(R.menu.select_multiple_items_menu_context, popup.menu)
+            if (Build.VERSION.SDK_INT > 27) popup.menu.setGroupDividerEnabled(true)
+
+            val selectedItems = listAdapter.getCheckedItemsOrNull() ?: listOf()
+            popup.menu.findItem(R.id.delete).isVisible = selectedItems.isNotEmpty()
+            popup.menu.findItem(R.id.select_between).apply {
+                if (selectedItems.size == 2) {
+                    val firstIndex = currentDownloadIDs.indexOf(selectedItems.first())
+                    val secondIndex = currentDownloadIDs.indexOf(selectedItems.last())
+
+                    isVisible = abs(firstIndex - secondIndex) > 1
+                }else{
+                    isVisible = false
+                }
+            }
+
+            popup.setOnMenuItemClickListener { m: MenuItem ->
+                when(m.itemId) {
+                    R.id.select_between -> {
+                        val firstIndex = currentDownloadIDs.indexOf(selectedItems.first())
+                        val secondIndex = currentDownloadIDs.indexOf(selectedItems.last())
+
+                        val itemsBetween = currentDownloadIDs.filterIndexed { index, _ -> index >= firstIndex && index <= secondIndex }
+                        listAdapter.selectItems(itemsBetween)
+                        count.text = "${itemsBetween.size} ${getString(R.string.selected)}"
+                    }
+                    R.id.delete -> {
+                        UiUtil.showGenericDeleteAllDialog(requireContext()) {
+                            lifecycleScope.launch {
+                                val deletedAll = processingItemsCount == listAdapter.getCheckedItemsSize()
+                                val toDelete = listAdapter.getCheckedItemsOrNull() ?: listOf()
+                                withContext(Dispatchers.IO) {
+                                    downloadViewModel.deleteAllWithID(toDelete)
+                                }
+                                listAdapter.removeItemsFromCheckList(toDelete)
+                                val checkedSize = listAdapter.getCheckedItemsSize()
+                                count.text = "$checkedSize ${getString(R.string.selected)}"
+                                if (deletedAll) dismiss()
+                            }
+                        }
+                    }
+                    R.id.select_all -> {
+                        listAdapter.checkAll()
+                        val checkedSize = listAdapter.getCheckedItemsSize()
+                        count.text = "$checkedSize ${getString(R.string.selected)}"
+                    }
+                    R.id.invert_selected -> {
+                        listAdapter.invertSelected()
+                        val checkedSize = listAdapter.getCheckedItemsSize()
+                        count.text = "$checkedSize ${getString(R.string.selected)}"
+                    }
+                }
+                true
+            }
+
+            popup.show()
+        }
+
+        selectRangeBtn = view.findViewById(R.id.selectRangeBtn)
+        selectRangeBtn.setOnClickListener {
+            UiUtil.showSelectRangeDialog(requireActivity(), currentDownloadIDs.size) {
+                val itemsBetween = currentDownloadIDs.filterIndexed { index, _ -> index >= it.first && index <= it.second }
+                listAdapter.selectItems(itemsBetween)
+                selectItemsMenuBtn.isVisible = true
+                count.text = "${itemsBetween.size} ${getString(R.string.selected)}"
+            }
+        }
+
+        val editSelectedOkBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_ok_button)
+        editSelectedOkBtn.setOnClickListener {
+            multipleSelectHeader.isVisible = false
+            view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = true
+            selectItemsMenuBtn.isVisible = false
+            filesize.isVisible = itemsFileSize > 0
+            count.text = "${currentDownloadIDs.size} ${getString(R.string.selected)}"
+            selectRangeBtn.isVisible = false
+            listAdapter.clearCheckedItems()
         }
 
     }
@@ -819,7 +951,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         if (fileSizes.all { it > 5L }){
             val size = FileUtil.convertFileSize(fileSizes.sum())
-            filesize.isVisible = size != "?"
+            itemsFileSize = fileSizes.sum()
+            filesize.isVisible = size != "?" && !listAdapter.isCheckingItems()
             filesize.text = "${getString(R.string.file_size)}: >~ $size"
         }else{
             filesize.visibility = View.GONE
@@ -839,7 +972,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
 
             CoroutineScope(Dispatchers.IO).launch {
-                downloadViewModel.updateProcessingDownloadPath(result.data?.data.toString())
+                downloadViewModel.updateProcessingDownloadPath(listAdapter.getCheckedItemsOrNull(), result.data?.data.toString())
             }
 
             val path = FileUtil.formatPath(result.data!!.data.toString())
@@ -924,6 +1057,20 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 bottomSheet.show(parentFragmentManager, "configureDownloadSingleSheet")
             }
         }
+    }
+
+    override fun onCardChecked(id: Long) {
+        selectItemsMenuBtn.isVisible = true
+        val checkedSize = listAdapter.getCheckedItemsSize()
+        count.text = "$checkedSize ${getString(R.string.selected)}"
+    }
+
+    override fun onCardUnChecked(id: Long) {
+        val checkedSize = listAdapter.getCheckedItemsSize()
+        if (checkedSize == 0) {
+            selectItemsMenuBtn.isVisible = false
+        }
+        count.text = "$checkedSize ${getString(R.string.selected)}"
     }
 
     override fun onDelete(id: Long) {

@@ -21,24 +21,56 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:paddingHorizontal="20dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="10dp"
         android:paddingVertical="10dp"
         android:layout_height="wrap_content">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:minWidth="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/downloads_image_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
+            android:layout_marginStart="10dp"
             android:background="?attr/colorSurfaceVariant"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="H,16:9"
             app:layout_constraintEnd_toStartOf="@+id/download_item_data"
             app:layout_constraintHorizontal_weight="0.3"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/checkBox"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
+
+        <TextView
+            android:id="@+id/index"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:ellipsize="end"
+            android:background="@drawable/rounded_corner_index"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:maxLength="17"
+            android:maxLines="1"
+            android:text="1"
+            android:minWidth="10dp"
+            android:paddingHorizontal="5dp"
+            android:textSize="12sp"
+            app:layout_constraintTop_toTopOf="@+id/downloads_image_view"
+            app:layout_constraintStart_toStartOf="@+id/downloads_image_view" />
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/incognitoLabel"
