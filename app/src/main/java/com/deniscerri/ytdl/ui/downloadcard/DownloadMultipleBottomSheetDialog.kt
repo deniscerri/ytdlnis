@@ -109,6 +109,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var multipleSelectHeader: ConstraintLayout
     private lateinit var selectItemsMenuBtn: MaterialButton
     private lateinit var selectRangeBtn: MaterialButton
+    private lateinit var selectItemsOpenBtn: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -316,7 +317,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
-                        downloadViewModel.moveProcessingToSavedCategory(null)
+                        downloadViewModel.moveProcessingToSavedCategory()
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     }
 
@@ -524,25 +525,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     pathResultLauncher.launch(intent)
-                }
-                R.id.select_items -> {
-                    if (listAdapter.isCheckingItems()) {
-                        multipleSelectHeader.isVisible = false
-                        view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = true
-                        filesize.isVisible = itemsFileSize > 0L
-                        selectRangeBtn.isVisible = false
-                        count.text = "${currentDownloadIDs.size} ${getString(R.string.selected)}"
-                        listAdapter.clearCheckedItems()
-                    }else {
-                        multipleSelectHeader.apply {
-                            isVisible = true
-                        }
-                        view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = false
-                        filesize.isVisible = false
-                        listAdapter.initCheckingItems(currentDownloadIDs)
-                        selectRangeBtn.isVisible = true
-                        count.text = "0 ${getString(R.string.selected)}"
-                    }
                 }
                 R.id.incognito -> {
                     lifecycleScope.launch {
@@ -812,6 +794,19 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
         }
 
+        selectItemsOpenBtn = view.findViewById(R.id.selectItemsOpenBtn)
+        selectItemsOpenBtn.setOnClickListener {
+            multipleSelectHeader.apply {
+                isVisible = true
+            }
+            view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = false
+            filesize.isVisible = false
+            listAdapter.initCheckingItems(currentDownloadIDs)
+            selectRangeBtn.isVisible = true
+            count.text = "0 ${getString(R.string.selected)}"
+            selectItemsOpenBtn.isVisible = false
+        }
+
         multipleSelectHeader = view.findViewById(R.id.multipleSelectHeader)
         selectItemsMenuBtn = view.findViewById(R.id.selectItemsMenu)
         selectItemsMenuBtn.setOnClickListener {
@@ -892,6 +887,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             filesize.isVisible = itemsFileSize > 0
             count.text = "${currentDownloadIDs.size} ${getString(R.string.selected)}"
             selectRangeBtn.isVisible = false
+            selectItemsOpenBtn.isVisible = true
             listAdapter.clearCheckedItems()
         }
 

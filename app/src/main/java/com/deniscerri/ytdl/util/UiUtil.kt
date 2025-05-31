@@ -2048,38 +2048,50 @@ object UiUtil {
 
 
         fun checkRanges(start: String, end: String) : Boolean {
+            val res: Boolean
+
             fromTextInput.error = ""
             toTextInput.error = ""
 
-            if (start.isBlank() || end.isBlank()) return false
+            if (start.isBlank() || end.isBlank()){
+                res = false
+            }else{
+                val startValid = kotlin.runCatching {
+                    start.toInt() > 0
+                }.getOrElse { false }
 
-            val startValid = start.toInt() >= 0
-            val endValid = end.toInt() <= itemCount
+                val endValid = kotlin.runCatching {
+                    end.toInt() <= itemCount
+                }.getOrElse { false }
 
-            if (!startValid) {
-                fromTextInput.editText?.setText("")
-                fromTextInput.error = "Invalid Number"
+                if (!startValid) {
+                    fromTextInput.error = "Invalid Number"
+                }
+                if (!endValid) {
+                    toTextInput.error = "Invalid Number"
+                }
+
+                res = startValid && endValid
             }
-            if (!endValid) {
-                toTextInput.editText?.setText("")
-                toTextInput.error = "Invalid Number"
-            }
 
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = startValid && endValid
-            return startValid && endValid
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = res
+            return res
         }
 
-        fromTextInput.editText!!.doAfterTextChanged { editable ->
-            val start = editable.toString()
+        fromTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
+            val start = text.toString()
             val end = toTextInput.editText!!.text.toString()
             checkRanges(start, end)
         }
 
-        toTextInput.editText!!.doAfterTextChanged { editable  ->
+        toTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
             val start = fromTextInput.editText!!.text.toString()
-            val end = editable.toString()
+            val end = text.toString()
             checkRanges(start, end)
         }
+
+        fromTextInput.editText!!.setText("1")
+        toTextInput.editText!!.setText(itemCount.toString())
     }
 
     private fun createPersonalFilenameTemplateChip(context: Activity, text: String, myChipGroup: ChipGroup, onClick: (f: Chip) -> Unit, onLongClick: (f: Chip) -> Unit) : Chip {

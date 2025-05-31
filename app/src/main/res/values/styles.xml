@@ -71,4 +71,9 @@
     <style name="PreferenceTheme" parent="PreferenceThemeOverlay">
         <item name="singleLineTitle">false</item>
     </style>
+
+    <style name="MyZeroSizeTextAppearance">
+        <item name="android:textSize">0sp</item>
+    </style>
+
 </resources>

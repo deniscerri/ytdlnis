@@ -19,6 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="45"
+            app:errorTextAppearance="@style/MyZeroSizeTextAppearance"
             android:layout_marginEnd="10dp"
             android:hint="@string/start">
 
@@ -36,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/end"
+            app:errorTextAppearance="@style/MyZeroSizeTextAppearance"
             android:layout_weight="45"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/colon">

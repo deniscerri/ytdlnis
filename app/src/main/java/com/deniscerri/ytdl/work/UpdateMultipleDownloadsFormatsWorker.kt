@@ -27,6 +27,7 @@ class UpdateMultipleDownloadsFormatsWorker(
         val vm = DownloadViewModel(App.instance)
         val notificationUtil = NotificationUtil(context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()
+        val otherIdsInBundle = inputData.getLongArray("other_ids_in_bundle")!!.toMutableList()
         val workID = inputData.getInt("id", 0)
         if (workID == 0) return Result.failure()
 
@@ -80,7 +81,7 @@ class UpdateMultipleDownloadsFormatsWorker(
             Result.failure()
         }finally {
             if (ids.isNotEmpty()){
-                notificationUtil.showFormatsUpdatedNotification(ids)
+                notificationUtil.showFormatsUpdatedNotification(ids + otherIdsInBundle)
             }
         }
     }

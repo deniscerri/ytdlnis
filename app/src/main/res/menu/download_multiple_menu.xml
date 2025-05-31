@@ -28,13 +28,6 @@
         app:actionLayout="@layout/bottom_app_bar_text"
         app:showAsAction="always"/>
 
-
-    <item
-        android:id="@+id/select_items"
-        android:title="@string/select"
-        android:icon="@drawable/ic_select_all"
-        app:showAsAction="always"/>
-
     <item
         android:id="@+id/incognito"
         android:title="@string/incognito"

@@ -1087,12 +1087,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return dbManager.downloadDao.getDownloadIDsNotPresentInList(items.ifEmpty { listOf(-1L) }, status.map { it.toString() })
     }
 
-    suspend fun moveProcessingToSavedCategory(selectedItems: List<Long>?){
-        if (selectedItems.isNullOrEmpty()) {
-            dao.updateProcessingtoSavedStatus()
-        }else {
-            repository.setDownloadStatusMultiple(selectedItems, DownloadRepository.Status.Saved)
-        }
+    suspend fun moveProcessingToSavedCategory(){
+        dao.updateProcessingtoSavedStatus()
     }
 
 
@@ -1210,13 +1206,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             selectedItems
         }
 
-        moveProcessingToSavedCategory(selectedItems)
+        moveProcessingToSavedCategory()
 
         val id = System.currentTimeMillis().toInt()
         val workRequest = OneTimeWorkRequestBuilder<UpdateMultipleDownloadsFormatsWorker>()
             .setInputData(
                 Data.Builder()
                     .putLongArray("ids", ids.toLongArray())
+                    .putLongArray("other_ids_in_bundle", selectedItems?.toLongArray() ?: longArrayOf())
                     .putInt("id", id)
                     .build())
             .addTag("updateFormats")
