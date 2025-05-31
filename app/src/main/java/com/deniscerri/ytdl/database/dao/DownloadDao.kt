@@ -58,7 +58,9 @@ interface DownloadDao {
     @Query("SELECT DISTINCT type from downloads where status = 'Processing' and id in (:ids)")
     fun getProcessingDownloadTypesByIDs(ids: List<Long>) : List<String>
 
-    @Query("""SELECT DISTINCT container from downloads where status = 'Processing'""")
+    @Query("""
+        SELECT DISTINCT container from downloads where status = 'Processing'
+        """)
     fun getProcessingDownloadContainers() : List<String>
 
     @Query("""SELECT DISTINCT container from downloads where id in (:ids)""")

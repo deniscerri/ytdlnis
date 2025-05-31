@@ -64,6 +64,8 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     }
 
     fun getCheckedItemsOrNull(): List<Long>? {
+        if (!_isCheckingItems) return null
+
         val res = if (inverted) {
             currentItems.filter { !checkedItems.contains(it) }
         }else {

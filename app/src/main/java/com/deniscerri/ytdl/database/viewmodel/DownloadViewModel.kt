@@ -1200,8 +1200,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     suspend fun continueUpdatingFormatsOnBackground(selectedItems: List<Long>?){
+        val allProcessing = repository.getAllProcessingDownloads().map { it.id }
+
         val ids = if (selectedItems.isNullOrEmpty()) {
-            repository.getAllProcessingDownloads().map { it.id }
+            allProcessing
         }else {
             selectedItems
         }
@@ -1213,7 +1215,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             .setInputData(
                 Data.Builder()
                     .putLongArray("ids", ids.toLongArray())
-                    .putLongArray("other_ids_in_bundle", selectedItems?.toLongArray() ?: longArrayOf())
+                    .putLongArray("other_ids_in_bundle", allProcessing.filter { !ids.contains(it) }.toLongArray())
                     .putInt("id", id)
                     .build())
             .addTag("updateFormats")
