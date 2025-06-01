@@ -3,7 +3,7 @@
     <string name="search">Ara</string>
     <string name="remove_all">Hepsini kaldır</string>
     <string name="remove_results">Sonuçları temizle</string>
-    <string name="download_all">Tümünü indir</string>
+    <string name="download_all">Hepsini İndir</string>
     <string name="settings"> Ayarlar</string>
     <string name="home">Ana Sayfa</string>
     <string name="directories"> Klasörler</string>
@@ -478,4 +478,5 @@
     <string name="custom">Özel</string>
     <string name="write_subs_when_embed_subs_summary">Bu, altyazıları indirmek ve daha sonra yerleştirdikten sonra silmek için Altyazıları Kaydet ve Otomatik Altyazıları Kaydet\'i uygulayacaktır</string>
     <string name="cut_unsupported">Bunun için kesme işlemi mevcut değil</string>
+    <string name="select_between_desc">Seçilecek öge aralığını belirtin</string>
 </resources>
