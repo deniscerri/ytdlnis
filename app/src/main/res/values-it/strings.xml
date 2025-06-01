@@ -475,4 +475,5 @@
     <string name="custom">Personalizzato</string>
     <string name="use_code_highlighter">Usa l’evidenziatore di sintassi del codice</string>
     <string name="cut_unsupported">Taglio non disponibile per questo elemento</string>
+    <string name="select_between_desc">Specifica l’intervallo di elementi da selezionare</string>
 </resources>
