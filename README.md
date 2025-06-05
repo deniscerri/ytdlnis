@@ -28,8 +28,8 @@
 
 <div align="center">
 
-[![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 [![Official Website](https://custom-icon-badges.herokuapp.com/badge/Official%20Website-violet?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.org)
+[![GitHub Releases](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 [![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
 [![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
@@ -41,51 +41,50 @@
 [![community](https://img.shields.io/badge/Telegram-YTDLnis-blue?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 
-
-### Only the links above are the only trusted sources of YTDLnis. Everything else is not related to me. YTDLnis doesn't have a personal website. 
+### Only the links above are the only trusted sources of YTDLnis. Everything else is not related to me.
 
 </div>
 
 ## 💡 Features:
 
-- download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
-- process playlists
-	- edit every playlist item separately just like in a normal download item.
-	- select a common format for all items and/or select multiple audio formats in case you are downloading them as a video
-	- select a download path for all items
-	- select a filename template for all items
-	- batch update download type to audio/video/custom command in one click
-- queue downloads and schedule them by date and time
-	- you can also schedule multiple items at the same time
-- download multiple items at the same time
-- use custom commands and templates or go full yt-dlp mode with a built in terminal
-	- you can backup and restore templates, so you can share with your buddies
-- COOKIES support. Log in with your accounts and download private/unavailable videos, unlock premium formats etc.
-- cut videos based on timestamps and video chapters (This yt-dlp feature is experimental on the original project)
-	- you can make unlimited cuts
-- remove sponsorblock elements from the item
-	- embed them as a chapters in your video 
-- embed subtitles/metadata/chapters etc
-- modify metadata such as title and author
-- split item into separate files depending on its chapters
-- select different download formats
-- bottom card right from the share menu, no need to open the app 
-	- you can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
-- search or insert a link from the app
-	- you can stack searches so you can process them at the same time
-- log downloads in case of problems
-- re-download cancelled or failed downloads
-	- you can use gestures to swipe left to redownload and right to delete
-	- you can long click the redownload button in the details sheet to show the download card for more functionality
-- incognito mode when you don't want to save a download history or logs
-- quick download mode
-	- download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
-- open / share downloaded files right from the finished notification
-- most yt-dlp features are implemented, suggestions are welcome
+- Download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
+- Process playlists
+	- Edit every playlist item separately just like in a normal download item
+	- Select a common format for all items and/or select multiple audio formats in case you are downloading them as a video
+	- Select a download path for all items
+	- Select a filename template for all items
+	- Batch update download type to audio/video/custom command in one click
+- Queue downloads and schedule them by date and time
+	- You can also schedule multiple items at the same time
+- Download multiple items at the same time
+- Use custom commands and templates or use yt-dlp with the built-in terminal
+	- You can backup and restore templates so you can share them with your buddies
+- Supports cookies. Log in with your accounts and download private/unavailable videos, unlock premium formats etc.
+- Cut videos based on timestamps and video chapters (experimental yt-dlp feature)
+	- You can make unlimited cuts
+- Remove SponsorBlock elements from downloaded items
+	- Embed them as a chapters in your video 
+- Embed subtitles/metadata/chapters etc
+- Modify metadata such as title and author
+- Split item into separate files depending on its chapters
+- Select different download formats
+- Bottom card right from the share menu, no need to open the app 
+	- You can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
+- Search or insert a link from the app
+	- You can stack searches so you can process them at the same time
+- Log downloads in case of problems
+- Re-download cancelled or failed downloads
+	- You can use gestures to swipe left to redownload and right to delete
+	- You can long click the redownload button in the details sheet to show the download card for more functionality
+- Incognito mode when you don't want to save a download history or logs
+- Quick download mode
+	- Download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
+- Open / share downloaded files right from the finished notification
+- Most yt-dlp features are implemented, suggestions are welcome
 - Material You interface
 - Theming options
-- Backup and restore features. (Almost everything can be backed up)
-- MVVM Architecture w/ WorkManager
+- Backup and restore features
+- MVVM architecture with WorkManager
 
 ## 📲 Screenshots
 
@@ -107,13 +106,13 @@
 
 ## 💬 Contact
 
-Join our [Telegram Channel](https://t.me/ytdlnis) or [Discord](https://discord.gg/WW3KYWxAPm) for discussion, announcements, and releases!
+Join our [Discord](https://discord.gg/WW3KYWxAPm) or [Telegram channel](https://t.me/ytdlnis) for announcements, discussion and releases.
 
-## 🔑 Connect with ReVanced and LibreTube
+## 😇 Contributing
 
-The App's package name is "com.deniscerri.ytdl"
+Please read the [contributing](CONTRIBUTING.MD) section if you would like to contribute.
 
-## 📝 Help Translate on Weblate
+## 📝 Help translate on Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png" alt="Translation status" />
 </a>
@@ -123,43 +122,42 @@ The App's package name is "com.deniscerri.ytdl"
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
-## ✔️🤖 Connect with Tasker / Macrodroid etc
+## 🔑 Connect with third-party apps using the package name
 
-You can use intents on apps like tasker or macrodroid to push commands to the app to run a download without user interaction
+The app's package name is "com.deniscerri.ytdl".
+
+
+## 🤖 Connect with third-party apps using intents
+
+You can use intents to push commands to the app to run downloads without user interaction.
 Accepted variables:
 
 <b>TYPE</b> -> it can be: audio,video,command <br/>
 <b>BACKGROUND</b> -> it can be: true,false. If its true the app won't show the download card no matter what and run the download in the background <br/>
 
-### Tasker Example of downloading an audio in the background
+### Example of downloading an audio item in the background in Tasker
 1. Create Send Intent task
 2. Action: android.intent.action.SEND
 3. Cat: Default
 4. Mime Type: text/*
-5. Extra: android.intent.extra.TEXT:url (instead of url write the url of the video you want to download)
+5. Extra: android.intent.extra.TEXT:url (instead of "url" write the URL of the video you want to download)
 6. Extra: TYPE:audio
 7. Extra: BACKGROUND:true
-
-
-## 😇 Contributing
-
-If you would like to contribute. Please read the [Contributing](CONTRIBUTING.MD) section.
 
 ## 📄 License
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-⚠️  Warning <br>
-
-Except for the source code licensed under the GPLv3 license, all other parties are prohibited from using the 'YTDLnis' name as a downloader app, and the same is true for its derivatives. Derivatives include but are not limited to forks and unofficial builds.
+Except for the source code licensed under the GPLv3 license, all other parties are prohibited from using the "YTDLnis" name as a downloader app, and the same is true for its derivatives. Derivatives include but are not limited to forks and unofficial builds.
 
 ## 🙏 Thanks
 
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist.
-- [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to android
-- [dvd](https://github.com/yausername/dvd) for showing how to implement youtubedl-android
-- [seal](https://github.com/JunkFood02/Seal) for certain design elements and features i wanted to use aswell in this app when i started developing
-- [decipher3114](https://github.com/decipher3114) for the app icon
+- [decipher3114](https://github.com/decipher3114) for the app's icon
+- [dvd](https://github.com/yausername/dvd) for being an example youtubedl-android implementation
+- [seal](https://github.com/JunkFood02/Seal) for certain design elements and features I wanted to have in this app when I started developing it
+- [youtubedl-android](https://github.com/yausername/youtubedl-android) for porting yt-dlp to Android
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) and its contributors for making this tool possible. Without it this app wouldn't exist
 
-and alot of other internet forum strangers.
+
+and to a lot of other people, such as contributors.
 
