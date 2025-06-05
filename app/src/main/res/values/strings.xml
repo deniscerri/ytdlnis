@@ -264,7 +264,7 @@
     <string name="search_suggestions">Search suggestions</string>
     <string name="search_suggestions_summary">Get search suggestions from Google</string>
     <string name="preferred_format_id_summary">Select the format with this ID in the download card</string>
-    <string name="misc">Misc</string>
+    <string name="misc">Miscellaneous</string>
     <string name="general">General</string>
     <string name="swipe_gestures">Swipe gestures</string>
     <string name="swipe_gestures_summary">Swipe items for certain actions</string>
@@ -274,7 +274,7 @@
     <string name="move_temporary_files">Move temporary files</string>
     <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
     <string name="piped_instance">Piped instance</string>
-    <string name="piped_instance_summary">Write a PIPED API server, the app can use for YouTube queries and formats</string>
+    <string name="piped_instance_summary">Write a PIPED API server the app can use for YouTube queries and formats</string>
     <string name="custom_audio_quality">Use custom audio quality</string>
     <string name="retries">Retries</string>
     <string name="fragment_retries">Fragment retries</string>
@@ -441,7 +441,7 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
     <string name="disable_write_info_json">Disable write info json</string>
-    <string name="disable_write_info_json_summary">(Not recommended) Every time you restart / resume the download, yt-dlp will re-download json data from the servers.</string>
+    <string name="disable_write_info_json_summary">Every time you restart / resume the download, yt-dlp will re-download json data from the servers (not recommended)</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube watch later (needs cookies)</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube recommendations (needs cookies)</string>
     <string name="ytdlp_liked">yt-dlp YouTube liked videos (needs cookies)</string>
@@ -474,7 +474,7 @@
     <string name="write_subs_when_embed_subs_summary">This will apply Save Subtitles and Save Automatic Subtitles to download the sub files and then delete them after embedding</string>
     <string name="generate_potokens">Generate PO tokens</string>
     <string name="regenerate">Re-generate</string>
-    <string name="generate_potokens_warning">* By enabling this, you need to disable cookies</string>
+    <string name="generate_potokens_warning">By enabling this you need to disable cookies</string>
     <string name="custom">Custom</string>
     <string name="cut_unsupported">Cutting is not available for this item</string>
     <string name="select_between_desc">Specify the range of items to select</string>
