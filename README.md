@@ -76,7 +76,7 @@
 - Re-download cancelled or failed downloads
 	- You can use gestures to swipe left to redownload and right to delete
 	- You can long click the redownload button in the details sheet to show the download card for more functionality
-- Incognito mode when you don't want to save a download history or logs
+- Incognito mode when you don't want to save to download history or logs
 - Quick download mode
 	- Download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
 - Open / share downloaded files right from the finished notification
