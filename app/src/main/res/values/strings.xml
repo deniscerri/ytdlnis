@@ -440,8 +440,8 @@
     <string name="data_fetching_extra_command">Data fetching extra command</string>
     <string name="thumbnail">Thumbnail</string>
     <string name="data_fetching_extra_command_summary">Enable command templates to be used for data fetching as extra commands</string>
-    <string name="disable_write_info_json">Disable write info json</string>
-    <string name="disable_write_info_json_summary">(Not recommended) Every time you restart / resume the download, yt-dlp will re-download json data from the servers.</string>
+    <string name="disable_write_info_json">Disable writing information to json</string>
+    <string name="disable_write_info_json_summary">Every time you restart / resume the download, yt-dlp will re-download json data from the servers (not recommended)</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube watch later (needs cookies)</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube recommendations (needs cookies)</string>
     <string name="ytdlp_liked">yt-dlp YouTube liked videos (needs cookies)</string>
