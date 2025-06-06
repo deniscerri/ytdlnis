@@ -435,7 +435,7 @@
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда получения данных</string>
     <string name="disable_write_info_json">Отключить запись информации в формате Json</string>
-    <string name="disable_write_info_json_summary">(Не рекомендуется) Каждый раз, когда вы перезагружаете / возобновляете загрузку, YT-DLP будет повторно загружать данные JSON с серверов.</string>
+    <string name="disable_write_info_json_summary">Каждый раз, когда вы перезагружаете / возобновляете загрузку, YT-DLP будет повторно загружать данные JSON с серверов (Не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Включите использование шаблонов команд для выбора данных в качестве дополнительных команд</string>
     <string name="ytdlp_recommnedations">Рекомендации YT-DLP для YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">YT-DLP Видео с лайками на YouTube (требуются файлы cookie)</string>
@@ -475,4 +475,5 @@
     <string name="generate_potokens_warning">* Включив это, вам нужно отключить куки</string>
     <string name="custom">Другой</string>
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
+    <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
 </resources>
