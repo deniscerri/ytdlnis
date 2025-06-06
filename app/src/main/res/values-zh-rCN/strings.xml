@@ -283,7 +283,7 @@
     <string name="sponsorblock_fillers">补充</string>
     <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为最近修改时间</string>
     <string name="piped_instance">PIPED 实例</string>
-    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 YouTube 查询和格式化</string>
+    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 YouTube 查询和格式</string>
     <string name="format_order">格式排序</string>
     <string name="cookies">Cookies</string>
     <string name="format_id">格式 ID</string>
@@ -435,7 +435,7 @@
     <string name="data_fetching_extra_command">数据获取的额外命令</string>
     <string name="data_fetching_extra_command_summary">将获取数据的命令模板作为附加命令开启</string>
     <string name="disable_write_info_json">停用写入信息 Json</string>
-    <string name="disable_write_info_json_summary">（不推荐）每次重启/恢复下载，yt-dlp 都会从服务器重新下载 json 数据。</string>
+    <string name="disable_write_info_json_summary">每次重启/恢复下载，yt-dlp 都会从服务器重新下载 json 数据。（不推荐）</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube 稍后观看（需要 cookies）</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube 推荐（需要 cookies）</string>
     <string name="ytdlp_liked">yt-dlp YouTube 点赞的视频 （需要 cookies）</string>
@@ -471,7 +471,7 @@
     <string name="write_subs_when_embed_subs">嵌入时写入字幕</string>
     <string name="generate_potokens">生成 PO 令牌</string>
     <string name="regenerate">重新生成</string>
-    <string name="generate_potokens_warning">* 启用此选项，你需要禁用 cookies</string>
+    <string name="generate_potokens_warning">启用此选项，你需要禁用 cookies</string>
     <string name="custom">自定义</string>
     <string name="cut_unsupported">剪切对此项目不可用</string>
     <string name="select_between_desc">指定要选择的项目的时间范围</string>
