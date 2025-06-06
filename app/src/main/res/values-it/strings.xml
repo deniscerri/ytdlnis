@@ -438,7 +438,7 @@
     <string name="retry_missing_downloads_desc">Scarica nuovamente gli elementi non presenti nella cronologia dei download</string>
     <string name="reset_processed_links_desc">Scarica nuovamente tutti gli elementi di nuovo</string>
     <string name="sync_with_source_desc">Elimina elementi scaricati se non sono presenti nella sorgente</string>
-    <string name="disable_write_info_json_summary">(Sconsigliato) Ogni volta che riavvii / riprendi il download, yt-dlp scaricherà nuovamente i dati json dai server.</string>
+    <string name="disable_write_info_json_summary">Ogni volta che riavvii / riprendi il download, yt-dlp scaricherà nuovamente i dati json dai server (sconsigliato)</string>
     <string name="grid">Griglia</string>
     <string name="cache_directory_warning">Cambiare la cartella della cache potrebbe provocare malfunzionamenti. Se l\'app non può scrivere nel percorso configurato, utilizzerà il percorso della cartella della cache predefinito</string>
     <string name="no_check_certificates">Sopprimi la validazione del certificato HTTPS</string>
@@ -471,7 +471,7 @@
     <string name="generate_potokens">Genera token PO</string>
     <string name="regenerate">Rigenera</string>
     <string name="write_subs_when_embed_subs">Scrivi sottotili durante l\'embedding</string>
-    <string name="generate_potokens_warning">* Abilitando questa opzione, devi disabilitare i cookie</string>
+    <string name="generate_potokens_warning">Abilitando questa opzione devi disabilitare i cookie</string>
     <string name="custom">Personalizzato</string>
     <string name="use_code_highlighter">Usa l’evidenziatore di sintassi del codice</string>
     <string name="cut_unsupported">Taglio non disponibile per questo elemento</string>
