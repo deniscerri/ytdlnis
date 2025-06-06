@@ -50,7 +50,7 @@
     <string name="update_app_summary">பயன்பாட்டின் புதிய பதிப்புகளை திறக்கும்போது அறிவிக்கவும். அதிகாரப்பூர்வ அறிவிலிமையம் களஞ்சியத்திலிருந்து தரவு பிரித்தெடுக்கப்படுகிறது</string>
     <string name="downloads">பதிவிறக்கங்கள்</string>
     <string name="remove_duplicates">நகல்களை அகற்று</string>
-    <string name="remove_downloading">பதிவிறக்கங்களை ரத்துசெய்</string>
+    <string name="remove_downloading">பதிவிறக்கங்களை கைவிடு</string>
     <string name="incognito_summary">வரலாற்றில் சேர்க்காமல் பதிவிறக்கவும்</string>
     <string name="embed_subtitles">வசனங்களை உட்பொதி</string>
     <string name="configure_download">பதிவிறக்கத்தை சரிசெய்</string>
@@ -82,12 +82,12 @@
     <string name="remove_search_history">தேடல் வரலாற்றை அழி</string>
     <string name="enable_mtime">mtime ஐ இயக்கவும்</string>
     <string name="enable_mtime_summary">கடைசி மாற்றியமைக்கப்பட்ட நேரமாக HTTP கடைசி மாற்றியமைக்கப்பட்ட தலைப்பை அமைக்கவும்</string>
-    <string name="update_formats">வடிவங்களைப் புதுப்பிக்கவும்</string>
+    <string name="update_formats">வடிவங்களைப் புதுப்பி</string>
     <string name="error_updating_formats">வடிவங்களைப் புதுப்பிப்பதில் பிழை!</string>
     <string name="running">ஓடுகிறது</string>
     <string name="import_from_clipboard">இடைநிலைப்பலகையிலிருந்து இறக்குமதி</string>
     <string name="export_from_clipboard">இடைநிலைப்பலகைக்கு ஏற்றுமதி</string>
-    <string name="create_template">வார்ப்புருவை உருவாக்கவும்</string>
+    <string name="create_template">வார்ப்புருவை உருவாக்கு</string>
     <string name="cancelled">ரத்து செய்யப்பட்டது</string>
     <string name="errored">பிழைஏற்பட்டது</string>
     <string name="copy_log">பதிவை நகலெடு</string>
@@ -97,8 +97,8 @@
     <string name="selected">தேர்ந்தெடுக்கப்பட்டது</string>
     <string name="all_items_selected">அனைத்து பொருட்களும் தேர்ந்தெடுக்கப்பட்டது</string>
     <string name="access_all_directories_summary">இயல்பாகவே தடைசெய்யப்பட்ட கோப்பகங்களில் பயன்பாட்டைப் பதிவிறக்க அனுமதி</string>
-    <string name="clear_cancelled">அழி ரத்து செய்யப்பட்டது</string>
-    <string name="clear_errored">பிழை அழிக்கப்பட்டது</string>
+    <string name="clear_cancelled">அழி கைவிப்பட்டது</string>
+    <string name="clear_errored">அழி பிழையாது</string>
     <string name="split_by_chapters">அத்தியாயங்கள் மூலம் பிரி</string>
     <string name="items_imported">இறக்குமதி செய்யப்பட்ட உருப்படிகள்</string>
     <string name="help_translate">மொழிபெயர்க்க உதவு</string>
@@ -154,7 +154,7 @@
     <string name="errored_download_notification_channel_description">தவறான பதிவிறக்கங்களுக்கான அறிவிப்பு</string>
     <string name="quick_download">விரைவான பதிவிறக்கம்</string>
     <string name="preferred_format_id">விருப்பமான வடிவமைப்பு ஐடி</string>
-    <string name="download_now">இப்போது பதிவிறக்கவும்</string>
+    <string name="download_now">இப்போது பதிவிறக்கு</string>
     <string name="download_already_exists">பதிவிறக்கம் ஏற்கனவே உள்ளது</string>
     <string name="preferred_locale">விருப்பமான மொழி</string>
     <string name="pause">இடைநிறுத்தம்</string>
@@ -170,7 +170,7 @@
     <string name="backup_restore">காப்பு மற்றும் மீட்பு</string>
     <string name="socks5_proxy">சாக்ச்5 பதிலாள் முகவரி</string>
     <string name="swipe_gestures">சைகைகள் செய்</string>
-    <string name="move_temporary_files">தற்காலிக கோப்புகளை நகர்த்தவும்</string>
+    <string name="move_temporary_files">தற்காலிக கோப்புகளை நகர்த்து</string>
     <string name="piped_instance_summary">குழாய் பநிஇ சேவையகத்தை எழுதுங்கள், பயன்பாடு யூடியூப் வினவல்கள் மற்றும் வடிவங்களுக்கு பயன்படுத்தலாம்</string>
     <string name="custom_audio_quality">தனிப்பயன் இசை தரத்தைப் பயன்படுத்து</string>
     <string name="retries">மறுமுயற்சிகள்</string>
@@ -264,10 +264,10 @@
     <string name="ytdl_already_updating">புதிய பதிப்பை நிறுவுதல்</string>
     <string name="ytdl_updating_started">புதிய பதிப்பைப் பதிவிறக்குகிறது</string>
     <string name="confirm_delete_history">உறுதிப்படுத்து</string>
-    <string name="search_history_hint">வரலாற்றிலிருந்து தேடுங்கள்</string>
+    <string name="search_history_hint">வரலாற்றிலிருந்து தேடு</string>
     <string name="embed_subs_summary">காணொளியில் வசனங்களைச் சேர்</string>
     <string name="command_download_notification_channel_name">கட்டளை பதிவிறக்கங்கள்</string>
-    <string name="api_key">பநிஇ விசையைப் பயன்படுத்தவும்</string>
+    <string name="api_key">பநிஇ விசையைப் பயன்படுத்து</string>
     <string name="link_copied_to_clipboard">இணைப்பு இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது</string>
     <string name="remove_deleted">நீக்கப்பட்டதை அகற்று</string>
     <string name="sort_by">வரிசைப்படுத்துதல்</string>
@@ -314,7 +314,7 @@
     <string name="no_download_fragments_summary">.Part கோப்புகளைப் பயன்படுத்த வேண்டாம் மற்றும் வெளியீட்டு கோப்பில் நேரடியாக எழுதுங்கள்</string>
     <string name="concurrent_fragments">ஒரே நேரத்தில் துண்டுகள்</string>
     <string name="audio_format">இசை வடிவம்</string>
-    <string name="run_command">கட்டளை இயக்கவும்</string>
+    <string name="run_command">கட்டளை இயக்கு</string>
     <string name="show_download_card">பதிவிறக்க அட்டையைக் காட்டு</string>
     <string name="you_are_going_to_delete_multiple_items">பல உருப்படிகளை நீக்குகிறது</string>
     <string name="warning">முன்னறிவிப்பு</string>
@@ -323,7 +323,7 @@
     <string name="new_template">புதிய வார்ப்புரு</string>
     <string name="adjust_video">காணொளியை சரிசெய்</string>
     <string name="concurrent_downloads">ஒரே நேரத்தில் பதிவிறக்கங்கள்</string>
-    <string name="please_wait">தயவுசெய்து காத்திருங்கள்</string>
+    <string name="please_wait">தயவுசெய்து காத்திரு</string>
     <string name="log_downloads">பதிவிறக்கங்கள் பதிவுசெய்</string>
     <string name="download_queue">பதிவிறக்க வரிசை</string>
     <string name="command">கட்டளை</string>
@@ -331,7 +331,7 @@
     <string name="shortcuts_desc">வார்ப்புருக்களை உருவாக்க பொதுவாக பயன்படுத்தப்படும் கட்டளைகளைப் பயன்படுத்தவும்</string>
     <string name="create_shortcut">குறுக்குவழியை உருவாக்கு</string>
     <string name="error_restarting_download">பதிவிறக்கத்தை மறுதொடக்கும் முயற்சியில் பிழை</string>
-    <string name="update_template">வார்ப்புருவைப் புதுப்பிக்கவும்</string>
+    <string name="update_template">வார்ப்புருவைப் புதுப்பி</string>
     <string name="preferred_download_type">விருப்பமான பதிவிறக்க வகை</string>
     <string name="redownload">மீண்டும் பதிவிறக்கவும்</string>
     <string name="in_queue">வரிசையில்</string>
@@ -346,7 +346,7 @@
     <string name="audio_samplerate">இசை மாதிரி விகிதம்</string>
     <string name="system">அமைப்பு</string>
     <string name="purple">ஊதா</string>
-    <string name="remove_audio">இசைவை அகற்று</string>
+    <string name="remove_audio">இசையை அகற்று</string>
     <string name="select_backup_categories">காப்புபிரதி வகைகளைத் தேர்ந்தெடு</string>
     <string name="swipe_gestures_summary">சில செயல்களுக்கு சைகை உருப்படிகளை செய்</string>
     <string name="crop_thumb">வெட்டு சிறுபடவுரு</string>
@@ -365,11 +365,11 @@
     <string name="cache_first_summary">கேச் கோப்புகள் உள் சேமிப்பகத்திற்கு பதிவிறக்குகின்றன, பின்னர் நீங்கள் தேர்ந்தெடுத்த கோப்பகத்திற்கு நகர்த்தவும். சேமிப்பகத்திற்கு நேரடியாக எழுத முடியாதபோது இதைப் பயன்படுத்தவும்</string>
     <string name="update_formats_background">பின்னணியில் வடிவங்களைப் புதுப்பிக்கவும்</string>
     <string name="no_results">முடிவுகள் இல்லை</string>
-    <string name="search_command_hint">கட்டளைகளிலிருந்து தேடுங்கள்</string>
+    <string name="search_command_hint">கட்டளைகளிலிருந்து தேடு</string>
     <string name="version">பதிப்பு</string>
     <string name="downloading_update">புதிய பதிப்பைப் பதிவிறக்குகிறது</string>
     <string name="embed_thumb">சிறுபட அட்டைகள்</string>
-    <string name="add_chapters">காணொளிக்களில் அத்தியாயங்கள்</string>
+    <string name="add_chapters">காணொளிகளில் அத்தியாயங்கள்</string>
     <string name="cache_cleared">தற்காலிக கோப்புகள் அழிக்கப்பட்டன</string>
     <string name="source">மூலம்</string>
     <string name="archive">காப்பகத்தைப் பதிவிறக்குக [செயல்பாட்டில் கட்டமைக்கப்பட்டதற்கு பதிலாக நகல் பதிவிறக்கங்களைத் தடுக்க YT-DLP இன் பதிவிறக்க காப்பகக் கோப்பைப் பயன்படுத்தவும்]</string>
@@ -387,7 +387,7 @@
     <string name="sponsorblock_api_url">ஒப்புரவாளர் தொகுதி பநிஇ முகவரி</string>
     <string name="keep_cache">துண்டுகளை வைத்திருங்கள்</string>
     <string name="export_file">ஏற்றுமதி கோப்பு</string>
-    <string name="cancel_task">பணி ரத்துசெய்</string>
+    <string name="cancel_task">பணி கைவிடு</string>
     <string name="changed_path_for_everyone_to">ஒவ்வொரு பொருளின் பதிவிறக்க பாதையும் மாற்றியது:</string>
     <string name="dismiss">தள்ளுபடி</string>
     <string name="multiple_download_card">பல பதிவிறக்க அட்டை</string>
@@ -473,4 +473,6 @@
     <string name="app_icon_change">படவுரு மாறக்கூடும் மற்றும் பயன்பாடு மூடப்படும்</string>
     <string name="generate_potokens_warning">* இதை இயக்குவதன் மூலம், நீங்கள் குக்கீகளை முடக்க வேண்டும்</string>
     <string name="custom">தனிப்பயன்</string>
+    <string name="select_between_desc">தேர்ந்தெடுக்க பொருட்களின் வரம்பைக் குறிப்பிடவும்</string>
+    <string name="cut_unsupported">இந்த உருப்படிக்கு வெட்டு கிடைக்கவில்லை</string>
 </resources>
