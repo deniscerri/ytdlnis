@@ -2,7 +2,7 @@
 <resources>
     <string name="updating">更新</string>
     <string name="remove_all">すべて削除</string>
-    <string name="remove_results">結果をクリア</string>
+    <string name="remove_results">結果を消去</string>
     <string name="settings">設定</string>
     <string name="home">ホーム</string>
     <string name="directories">フォルダ</string>
@@ -297,7 +297,7 @@
     <string name="cache_first_summary">キャッシュファイルは内部の保存領域にダウンロードしてから、選択したディレクトリに移動します。保存領域に直接書き込めない際にこれを使用します</string>
     <string name="cache_first">キャッシュを最初にダウンロード</string>
     <string name="use_sponsorblock">SponsorBlock を使用する</string>
-    <string name="use_scheduler">時間に従ってダウンロードする</string>
+    <string name="use_scheduler">予定に従ってダウンロードする</string>
     <string name="auto">自動</string>
     <string name="auto_update_ytdlp">yt-dlp の自動更新</string>
     <string name="preferred_audio_codec">優先する音声コーデック</string>
@@ -433,7 +433,7 @@
     <string name="live_stream">ライブ配信</string>
     <string name="retry_every">すべて再試行</string>
     <string name="minutes">分</string>
-    <string name="disable_write_info_json_summary">(非推奨) ダウンロードを再開するたび、yt-dlpがサーバからjsonデータを再ダウンロードします。</string>
+    <string name="disable_write_info_json_summary">ダウンロードを再開するたび、yt-dlpがサーバからjsonデータを再ダウンロード (非推奨)</string>
     <string name="disable_write_info_json">情報用の json を書き込まない</string>
     <string name="no_check_certificates">HTTPS証明書を検証しない</string>
     <string name="data_fetching_extra_command">データ取得用の追加コマンド</string>
@@ -471,8 +471,9 @@
     <string name="use_code_highlighter">コードの色による強調表示を使用</string>
     <string name="use_format_sorting">形式の重要度による並び替えを使用</string>
     <string name="custom">指定</string>
-    <string name="generate_potokens_warning">* これを有効にすることで、クッキーを無効にする必要あり</string>
+    <string name="generate_potokens_warning">これを有効にすることで、クッキーを無効にする必要あり</string>
     <string name="generate_potokens">POトークンを生成</string>
     <string name="regenerate">再生成</string>
     <string name="cut_unsupported">この項目はカットできません</string>
+    <string name="select_between_desc">選択する項目の範囲を指定</string>
 </resources>
