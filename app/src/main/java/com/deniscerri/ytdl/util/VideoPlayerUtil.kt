@@ -12,7 +12,7 @@ import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import kotlin.math.max
 
 object VideoPlayerUtil {
-    private const val MINIMUM_BUFFER_DURATION = 1000 * 10 //exo default is 50s
+    private const val MINIMUM_BUFFER_DURATION = 1000 * 5 //exo default is 50s
 
     @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
     fun buildPlayer(context: Context) : ExoPlayer {

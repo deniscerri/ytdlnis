@@ -119,10 +119,10 @@ class FormatUtil(private var context: Context) {
                         }
 
                         "codec" -> {
-                            ("^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE)
+                            ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
                                     .matches(b.acodec))
                                     .compareTo(
-                                        "^(${audioCodecPreference}).+$".toRegex(RegexOption.IGNORE_CASE)
+                                        "^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
                                             .matches(a.acodec)
                                     )
                         }
