@@ -267,7 +267,7 @@
     <string name="move_temporary_files">Müvəqqəti faylları köçür</string>
     <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
     <string name="piped_instance">Piped instansiya</string>
-    <string name="piped_instance_summary">PIPED API server yazın, tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
+    <string name="piped_instance_summary">PIPED API server yazın tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
     <string name="custom_audio_quality">Fərdi səs keyfiyyəti işlət</string>
     <string name="retries">Təkrar cəhdlər</string>
     <string name="fragment_retries">Fraqment təkrar cəhdləri</string>
@@ -436,7 +436,7 @@
     <string name="data_fetching_extra_command">Məlumat alınması əlavə əmri</string>
     <string name="data_fetching_extra_command_summary">Əlavə əmrlər kimi məlumat alınmasında istifadə ediləcək əmr şablonların işə sal</string>
     <string name="disable_write_info_json">Məlumat Json-u yazmağı qapat</string>
-    <string name="disable_write_info_json_summary">(Tövsiyə edilmir) Hər dəfə yükləməni təkrar başlatdığınızda/davam etdirdiyinizdə yt-dlp serverlərdən json məlumatını yenidən endirəcək.</string>
+    <string name="disable_write_info_json_summary">Hər dəfə yükləməni təkrar başlatdığınızda/davam etdirdiyinizdə yt-dlp serverlərdən json məlumatını yenidən endirəcək. (Tövsiyə edilmir)</string>
     <string name="ytdlp_watch_later">Yt-dlp Youtube sonra izlə (məlumata ehtiyac var)</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube tövsiyələri (məlumata ehtiyac var)</string>
     <string name="ytdlp_liked">yt-dlp YouTube bəyənilən videolar (məlumata ehtiyac var)</string>
@@ -472,7 +472,7 @@
     <string name="automatic_backup_summary">Tətbiqin yeni versiyası tapıldıqda, birbaşa hər şeyi nüsxələ</string>
     <string name="regenerate">Təkrar yarat</string>
     <string name="generate_potokens">PO token-ləri yarat</string>
-    <string name="generate_potokens_warning">* Bunu aktiv edərkən məlumat bazasın qapatmalısız</string>
+    <string name="generate_potokens_warning">Bunu aktiv edərkən məlumat bazasın qapatmalısız</string>
     <string name="custom">Xüsusi</string>
     <string name="cut_unsupported">Bu element üçün kəsmə əlçatan deyil</string>
     <string name="select_between_desc">Seçmək üçün elementlərin həddini təyin et</string>
