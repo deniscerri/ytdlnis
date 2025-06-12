@@ -27,7 +27,7 @@
     <string name="search_suggestions">பரிந்துரைகளைத் தேடு</string>
     <string name="search_suggestions_summary">கூகுளிலிருந்து தேடல் பரிந்துரைகளைப் பெறு</string>
     <string name="general">பொது</string>
-    <string name="misc">இதர</string>
+    <string name="misc">மற்றவை</string>
     <string name="move_temporary_files_summary">சேமித்த கோப்புகளை பதிவிறக்கங்கள் கோப்புறையில் மாற்றவும்</string>
     <string name="piped_instance">குழாய் நிகழ்வு</string>
     <string name="observe_sources">ஆதாரங்களைக் கவனியுங்கள்</string>
@@ -171,7 +171,7 @@
     <string name="socks5_proxy">சாக்ச்5 பதிலாள் முகவரி</string>
     <string name="swipe_gestures">சைகைகள் செய்</string>
     <string name="move_temporary_files">தற்காலிக கோப்புகளை நகர்த்து</string>
-    <string name="piped_instance_summary">குழாய் பநிஇ சேவையகத்தை எழுதுங்கள், பயன்பாடு யூடியூப் வினவல்கள் மற்றும் வடிவங்களுக்கு பயன்படுத்தலாம்</string>
+    <string name="piped_instance_summary">குழாய் பநிஇ சேவையகத்தை எழுதுங்கள், பயன்பாடு யூடியூப் வினவல்கள் மற்றும் வடிவங்களுக்குப் பயன்படுத்தலாம்</string>
     <string name="custom_audio_quality">தனிப்பயன் இசை தரத்தைப் பயன்படுத்து</string>
     <string name="retries">மறுமுயற்சிகள்</string>
     <string name="fragment_retries">துண்டு மறுமுயற்சிகள்</string>
@@ -227,7 +227,7 @@
     <string name="download_notification_channel_description">இசை மற்றும் காணொளி கோப்புகளைப் பதிவிறக்குவதன் முன்னேற்றத்தைக் காட்டும் அறிவிப்பு</string>
     <string name="Remove">அகற்று</string>
     <string name="ok">சரி</string>
-    <string name="cancel">ரத்துசெய்</string>
+    <string name="cancel">நீக்கறல்</string>
     <string name="more">மேலும்</string>
     <string name="update_app">புதுப்பிப்புகளை சரிபார்</string>
     <string name="command_directory">தனிப்பயன் கட்டளை கோப்புறை</string>
@@ -351,7 +351,7 @@
     <string name="swipe_gestures_summary">சில செயல்களுக்கு சைகை உருப்படிகளை செய்</string>
     <string name="crop_thumb">வெட்டு சிறுபடவுரு</string>
     <string name="write_description">விளக்கத்தை சேமி</string>
-    <string name="confirm_delete_history_desc">முழு வரலாற்றையும் நிரந்தரமாக நீக்கவும்</string>
+    <string name="confirm_delete_history_desc">முழு வரலாற்றையும் நிரந்தரமாக நீக்கு</string>
     <string name="ignore">புறக்கணிக்கவும்</string>
     <string name="embed_metadata">மேனிலை தரவு உட்பொதிக்கவும்</string>
     <string name="embed_metadata_summary">இசை கோப்பில் மெட்டாடேட்டாவை பாகுபடுத்தி உட்பொதிக்கவும்</string>
@@ -439,7 +439,7 @@
     <string name="automatic_backup">தானியங்கி காப்புப்பிரதி</string>
     <string name="regenerate">மீண்டும் உருவாக்கவும்</string>
     <string name="use_format_sorting">வடிவமைப்பு முக்கியத்துவம் வரிசைப்படுத்தலைப் பயன்படுத்தவும்</string>
-    <string name="disable_write_info_json_summary">(பரிந்துரைக்கப்படவில்லை) ஒவ்வொரு முறையும் நீங்கள் பதிவிறக்கத்தை மறுதொடக்கம் / மீண்டும் தொடங்கும்போது, YT-DLP சேவையகங்களிலிருந்து சாதொபொகு தரவை மீண்டும் ஏற்றும்.</string>
+    <string name="disable_write_info_json_summary">ஒவ்வொரு முறையும் நீங்கள் பதிவிறக்கத்தை மறுதொடக்கம் / மீண்டும் தொடங்கும்போது, YT-DLP சேவையகங்களிலிருந்து சாதொபொகு தரவை மீண்டும் ஏற்றும்(பரிந்துரைக்கப்படவில்லை)</string>
     <string name="sync_with_source_desc">பதிவிறக்கம் செய்யப்பட்ட உருப்படிகள் மூலத்தில் காணவில்லை என்றால் அவற்றை நீக்கு</string>
     <string name="use_app_language_for_metadata">மெட்டாடேட்டாவுக்கு பயன்பாட்டு மொழியைப் பயன்படுத்தவும்</string>
     <string name="ytdlp_watch_later">YT-DLP YouTube வாட்ச் பின்னர் (குக்கீகள் தேவை)</string>
@@ -471,7 +471,7 @@
     <string name="retry_missing_downloads_desc">பதிவிறக்க வரலாற்றில் இல்லாத உருப்படிகளை மீண்டும் ஏற்றவும்</string>
     <string name="reset_processed_links_desc">எல்லா உருப்படிகளையும் மீண்டும் ஏற்றவும்</string>
     <string name="app_icon_change">படவுரு மாறக்கூடும் மற்றும் பயன்பாடு மூடப்படும்</string>
-    <string name="generate_potokens_warning">* இதை இயக்குவதன் மூலம், நீங்கள் குக்கீகளை முடக்க வேண்டும்</string>
+    <string name="generate_potokens_warning">இதை இயக்குவதன் மூலம் நீங்கள் குக்கீகளை முடக்க வேண்டும்</string>
     <string name="custom">தனிப்பயன்</string>
     <string name="select_between_desc">தேர்ந்தெடுக்க பொருட்களின் வரம்பைக் குறிப்பிடவும்</string>
     <string name="cut_unsupported">இந்த உருப்படிக்கு வெட்டு கிடைக்கவில்லை</string>
