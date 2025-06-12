@@ -259,7 +259,7 @@
     <string name="move_temporary_files_summary">نقل الملفات المؤقتة إلى مجلد التنزيلات</string>
     <string name="search_suggestions">اقتراحات البحث</string>
     <string name="search_suggestions_summary">الحصول على اقتراحات بحث من جوجل</string>
-    <string name="misc">الأخرى</string>
+    <string name="misc">متنوع</string>
     <string name="preferred_format_id_summary">ضبط التنسيق في بطاقة التنزيل على المعرف الذي يتم إدراجه هنا</string>
     <string name="general">العامة</string>
     <string name="swipe_gestures">إيماءات السحب</string>
@@ -268,7 +268,7 @@
     <string name="crop_thumb_summary">قص الصورة المصغرة على شكل مربع للتنزيلات الصوتية</string>
     <string name="custom_audio_quality">استخدام جودة صوت مخصصة</string>
     <string name="piped_instance">مثيل Piped</string>
-    <string name="piped_instance_summary">إدخال خادم PIPED API، يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
+    <string name="piped_instance_summary">إدخال خادم PIPED API يمكن للتطبيق استخدامه لاستعلامات وتنسيقات يوتيوب</string>
     <string name="subtitle_format">صيغة الترجمة</string>
     <string name="hide_thumbnails">إخفاء الصور المصغرة من الشاشة المحددة</string>
     <string name="saved">المحتفَظة</string>
@@ -472,7 +472,7 @@
     <string name="automatic_backup_summary">قم بعمل نسخة احتياطية لكل شيء تلقائيًا عند العثور على إصدار جديد</string>
     <string name="generate_potokens">ولّد رموز PO</string>
     <string name="regenerate">أعد التوليد</string>
-    <string name="generate_potokens_warning">* من خلال تفعيل هذا، تحتاج إلى تعطيل ملفات تعريف الارتباط</string>
+    <string name="generate_potokens_warning">من خلال تفعيل هذا تحتاج إلى تعطيل ملفات تعريف الارتباط</string>
     <string name="custom">مخصّص</string>
     <string name="cut_unsupported">القص غير متاح لهذا العنصر</string>
 </resources>
