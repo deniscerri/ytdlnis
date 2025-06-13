@@ -43,7 +43,7 @@
     <string name="concurrent_fragments_summary">Брой DASH/HLS собствени видео фрагменти за едновременно изтегляне</string>
     <string name="processing">Процес</string>
     <string name="embed_thumb_summary">Използване на миниатюра за обложка</string>
-    <string name="add_chapters">Глави във видео</string>
+    <string name="add_chapters">Глави във видеа</string>
     <string name="save_thumb">Запазване на миниатюра</string>
     <string name="audio_quality_summary">0 (най-добро качество), 10 (най-ниско)</string>
     <string name="cancel_task">Отмяна на задача</string>
@@ -61,7 +61,7 @@
     <string name="audio_quality">Качество на звука</string>
     <string name="link_copied_to_clipboard">Връзката е копирана в клипборда</string>
     <string name="api_key">Използване API ключ</string>
-    <string name="api_key_summary">Препоръки за видео от Youtube API</string>
+    <string name="api_key_summary">Препоръки за видео от YouTube API</string>
     <string name="search_command_hint">Търсене по команда</string>
     <string name="concurrent_fragments">Паралелни фрагменти</string>
     <string name="download">Изтегли</string>
@@ -84,12 +84,12 @@
     <string name="template">Шаблон</string>
     <string name="logs">Дневник събития</string>
     <string name="date_added">Дата добавяне</string>
-    <string name="update_ytdl_nightly">Nightly версия yt-dlp</string>
+    <string name="update_ytdl_nightly">Nightly версия на yt-dlp</string>
     <string name="adjust_audio">Настройка аудио</string>
     <string name="file_name_template">Шаблон за име на файл</string>
     <string name="language">Език</string>
     <string name="command_templates">Командни шаблони</string>
-    <string name="select_format">Изберете Формат</string>
+    <string name="select_format">Изберете формат</string>
     <string name="please_wait">Моля изчакайте</string>
     <string name="remove_search_history">Изчистване историята на търсенията</string>
     <string name="enable_mtime_summary">Задаване HTTP Last-Modified хедър на последно модифицирано време</string>
@@ -130,7 +130,7 @@
     <string name="suggested">Предложения</string>
     <string name="select_all">Изберете всички</string>
     <string name="share">Споделяне</string>
-    <string name="new_cookie">Нови Cookie\'s</string>
+    <string name="new_cookie">Нова бисквитка</string>
     <string name="confirm_delete_cookies_desc">Изтриване на всички Cookies за постоянно</string>
     <string name="get_cookies">Get Cookies</string>
     <string name="invert_selected">Инвертиране на избраното</string>
@@ -139,7 +139,7 @@
     <string name="format_id">Идентификатор на формат</string>
     <string name="codec">Видео кодек</string>
     <string name="audio_samplerate">Честота на аудио дискретизация</string>
-    <string name="copied_to_clipboard">Копирано в клипборда</string>
+    <string name="copied_to_clipboard">Копирано в клип борда</string>
     <string name="Theme">Тема</string>
     <string name="dark">Тъмна</string>
     <string name="light">Светла</string>
@@ -153,7 +153,7 @@
     <string name="orange">Оранжев</string>
     <string name="monochrome">Монохромен</string>
     <string name="downloaded">"Изтеглено: "</string>
-    <string name="material_you">Material_You</string>
+    <string name="material_you">Material_you</string>
     <string name="updating_download_data">Актуализиране на информацията за изтегляне</string>
     <string name="keep_cache">Запазете кеш-а</string>
     <string name="backup">Архивиране</string>
@@ -239,7 +239,7 @@
     <string name="cut">IИзрежи</string>
     <string name="new_cut">Нова изрезка</string>
     <string name="cookies">Бисквитки</string>
-    <string name="delete_all_cookies">Изтриване на всички Cookies</string>
+    <string name="delete_all_cookies">Изтриване на всички бисквитки</string>
     <string name="ignore_battery_optimization">Игнорирайте оптимизацията на батерията</string>
     <string name="add_template_first">Трябва да създадете поне един команден шаблон!</string>
     <string name="download_over_metered_networks">Изтегляне през мрежи с измерване на данни</string>
@@ -279,9 +279,9 @@
     <string name="network_error">Мрежова грешка</string>
     <string name="incognito">Инкогнито</string>
     <string name="sponsorblock">Блокира спонсори (SponsorBlock)</string>
-    <string name="search_history">История на търсенията</string>
+    <string name="search_history">История на търсения</string>
     <string name="couldnt_parse_file">Файлът не може да бъде анализиран</string>
-    <string name="backup_created_successfully">Архивният файл се записва в папката за изтегляне</string>
+    <string name="backup_created_successfully">Файлът с резервно копие е запазен!</string>
     <string name="appearance">Външен вид на YTDLnis</string>
     <string name="backup_restore">Архивиране и възстановяване</string>
     <string name="socks5_proxy">URL Socks5-прокси</string>
@@ -323,10 +323,10 @@
     <string name="retries">Брой повторения</string>
     <string name="prefer_smaller_formats">Предпочитан формати с по-малък размер</string>
     <string name="display_over_apps">Показване върху приложения</string>
-    <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните се извличат от официалното хранилище на Github</string>
+    <string name="update_app_summary">Известяване за нова версия при отваряне на приложението. Данните се извличат от официалното хранилище на GitHub</string>
     <string name="downloads">Изтегляния</string>
-    <string name="remove_deleted">Премахване на изтритите</string>
-    <string name="remove_downloading">Отмяна на изтеглянията</string>
+    <string name="remove_deleted">Премахване на изтрити</string>
+    <string name="remove_downloading">Отмяна на изтегляния</string>
     <string name="remove_duplicates">Премахване на дубликати</string>
     <string name="incognito_summary">Изтегляне без добавяне към историята</string>
     <string name="configure_download">Настройка изтегляне</string>
@@ -337,7 +337,7 @@
     <string name="delete_file_too">Изтрийте файла от устройството</string>
     <string name="sort_by">Сортиране</string>
     <string name="request_permission_desc">Това приложение изисква разрешение за достъп до файлове, за да запази изтеглянията на устройството</string>
-    <string name="select_sponsorblock_filtering">Избиране Филтриране на SponsorBlock</string>
+    <string name="select_sponsorblock_filtering">Избиране филтриране на SponsorBlock</string>
     <string name="save_dir">Запазете пътя на папката</string>
     <string name="new_template">Нов шаблон</string>
     <string name="adjust_templates">Настройка шаблон</string>
@@ -473,4 +473,5 @@
     <string name="use_only_po_token">Използвайте само PO Token (Игнорирайте клиента на плеъра)</string>
     <string name="generate_potokens_warning">* Като активирате това, трябва да деактивирате бисквитките</string>
     <string name="custom">персонализирани</string>
+    <string name="cut_unsupported">Изрязване не е налично за този елемент</string>
 </resources>
