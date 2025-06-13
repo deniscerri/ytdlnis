@@ -40,14 +40,239 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
+import java.util.ArrayList
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.HttpUrl
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
+import java.io.IOException
+import java.time.Duration
+import java.time.OffsetDateTime
+import java.time.format.DateTimeParseException
+import java.util.concurrent.TimeUnit
+
+val TWITCH_VOD_REGEX = "https?://(?:www\\.|m\\.)?twitch\\.tv/videos/(\\d+)".toRegex()
 
 class YTDLPUtil(private val context: Context, private val commandTemplateDao: CommandTemplateDao) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val formatUtil = FormatUtil(context)
     private val handler = Handler(Looper.getMainLooper())
+    private val httpClient = OkHttpClient.Builder()
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .build()
+
+    // Constantes (tirées du script JS)
+    private val GQL_URL = "https://gql.twitch.tv/gql"
+    private val CLIENT_ID = "kimne78kx3ncx6brgo4mv6wki5h1ko"
+    private val RESOLUTIONS = mapOf(
+        "chunked" to mapOf("res" to "1920x1080", "fps" to 60, "bitrate" to 6000), // Source quality, often 1080p60
+        "1080p60" to mapOf("res" to "1920x1080", "fps" to 60, "bitrate" to 6000),
+        "1080p30" to mapOf("res" to "1920x1080", "fps" to 30, "bitrate" to 4500),
+        "720p60" to mapOf("res" to "1280x720", "fps" to 60, "bitrate" to 4500),
+        "720p30" to mapOf("res" to "1280x720", "fps" to 30, "bitrate" to 3000),
+        "480p30" to mapOf("res" to "854x480", "fps" to 30, "bitrate" to 1500),
+        "360p30" to mapOf("res" to "640x360", "fps" to 30, "bitrate" to 1000),
+        "160p30" to mapOf("res" to "284x160", "fps" to 30, "bitrate" to 500)
+    )
+    private val QUALITIES_ORDER = listOf(
+        "chunked", "1080p60", "1080p30", "720p60", "720p30", "480p30", "360p30", "160p30"
+    )
+
+    private fun fetchTwitchGQL(queryBody: JSONObject): JSONObject? {
+        return try {
+            val requestBody = queryBody.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+            val request = Request.Builder()
+                .url(GQL_URL)
+                .post(requestBody)
+                .header("Client-ID", CLIENT_ID)
+                .header("Accept", "application/json")
+                .build()
+
+            val response = httpClient.newCall(request).execute()
+            if (!response.isSuccessful) {
+                Log.e("TwitchDownloader", "Erreur lors de la requête GraphQL: ${response.code} - ${response.message}")
+                return null
+            }
+            response.body?.string()?.let { JSONObject(it) }
+
+        } catch (e: IOException) {
+            Log.e("TwitchDownloader", "Erreur réseau lors de la requête GraphQL: ${e.message}")
+            null
+        } catch (e: Exception) {
+            Log.e("TwitchDownloader", "Erreur inattendue lors du traitement GraphQL: ${e.message}")
+            null
+        }
+    }
+
+    private fun getVodMetadata(vodId: String): JSONObject? {
+        val query = JSONObject().apply {
+            put("operationName", "VideoMetadata")
+            put("variables", JSONObject().apply {
+                put("channelLogin", "")
+                put("videoID", vodId)
+            })
+            put("extensions", JSONObject().apply {
+                put("persistedQuery", JSONObject().apply {
+                    put("version", 1)
+                    put("sha256Hash", "0921ba77e7396a766ff2c90694c8568e3c71c758af657509e145d51a1c7f32d1")
+                })
+            })
+        }
+        Log.d("TwitchDownloader", "Récupération des métadonnées pour VOD ID: $vodId...")
+        var data = fetchTwitchGQL(query)
+        if (data != null && data.optJSONObject("data")?.optJSONObject("video") != null) {
+            Log.d("TwitchDownloader", "Métadonnées GraphQL récupérées.")
+            return data.getJSONObject("data").getJSONObject("video")
+        } else {
+            Log.w("TwitchDownloader", "Impossible de récupérer les métadonnées GraphQL complètes pour VOD $vodId.")
+            val gqlErrors = data?.optJSONArray("errors")?.toString() ?: "Aucune donnée reçue"
+            Log.d("TwitchDownloader", "Réponse GraphQL brute: $data")
+            Log.d("TwitchDownloader", "Erreurs GraphQL: $gqlErrors")
+            Log.i("TwitchDownloader", "Tentative avec une requête GraphQL de secours pour VOD $vodId...")
+            val queryFallback = JSONObject().apply {
+                put("query", "query { video(id: \"$vodId\") { title, lengthSeconds, previewThumbnailURL, broadcastType, createdAt, seekPreviewsURL, owner { login, displayName } } }")
+            }
+            val dataFallback = fetchTwitchGQL(queryFallback)
+            if (dataFallback != null && dataFallback.optJSONObject("data")?.optJSONObject("video") != null) {
+                Log.d("TwitchDownloader", "Métadonnées de secours récupérées.")
+                return dataFallback.getJSONObject("data").getJSONObject("video")
+            } else {
+                Log.e("TwitchDownloader", "Échec de la récupération des métadonnées, même avec la requête de secours pour VOD $vodId.")
+                return null
+            }
+        }
+    }
+
+    private fun checkUrlValidity(url: String): Boolean {
+        return try {
+            val headers = okhttp3.Headers.Builder()
+                .add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
+                .build()
+            val request = Request.Builder()
+                .url(url)
+                .head()
+                .headers(headers)
+                .build()
+            val response = httpClient.newCall(request).execute()
+            val isValid = response.code == 200
+            Log.d("TwitchDownloader", "  -> Test URL $url - Status: ${response.code}")
+            isValid
+        } catch (e: IOException) {
+            Log.d("TwitchDownloader", "  -> Test URL $url - Erreur: ${e.message}")
+            false
+        }
+    }
+
+    private fun findAllM3u8UrlsAndBest(vodId: String, metadata: JSONObject?, desiredQuality: String?): Pair<String?, List<Pair<String, String>>> {
+        if (metadata == null || !metadata.has("seekPreviewsURL") || metadata.getString("seekPreviewsURL").isNullOrBlank()) {
+            Log.w("TwitchDownloader", "Métadonnées ou seekPreviewsURL manquantes pour trouver l'URL M3U8.")
+            return Pair(null, emptyList())
+        }
+
+        try {
+            val seekPreviewsUrl = metadata.getString("seekPreviewsURL")
+            val parsedUrl = seekPreviewsUrl.toHttpUrlOrNull() ?: return Pair(null, emptyList())
+            val domain = parsedUrl.host
+            val paths = parsedUrl.pathSegments
+
+            var storyboardIndex = -1
+            for (i in paths.indices) {
+                if (paths[i].contains("storyboards")) {
+                    storyboardIndex = i
+                    break
+                }
+            }
+            if (storyboardIndex <= 0) {
+                Log.e("TwitchDownloader", "Impossible de trouver l'ID spécial (avant 'storyboards') dans seekPreviewsURL: $seekPreviewsUrl")
+                return Pair(null, emptyList())
+            }
+            val vodSpecialId = paths[storyboardIndex - 1]
+
+            val channelLogin = metadata.optJSONObject("owner")?.optString("login", "inconnu") ?: "inconnu"
+            val broadcastType = metadata.optString("broadcastType", "").lowercase(Locale.ROOT)
+            val createdAtStr = metadata.optString("createdAt", "")
+            var daysDifference = Double.POSITIVE_INFINITY
+            if (createdAtStr.isNotBlank()) {
+                try {
+                    val createdAt = OffsetDateTime.parse(createdAtStr)
+                    val now = OffsetDateTime.now(createdAt.offset)
+                    val timeDifference = Duration.between(createdAt, now)
+                    daysDifference = timeDifference.seconds / (3600.0 * 24.0)
+                } catch (e: DateTimeParseException) {
+                    Log.w("TwitchDownloader", "Format de date invalide: $createdAtStr")
+                }
+            }
+
+            Log.i("TwitchDownloader", "Recherche des URLs M3U8 pour VOD $vodId (Type: $broadcastType, Age: ${String.format(Locale.ROOT, "%.1f", daysDifference)} jours).")
+            if (desiredQuality != null) {
+                Log.i("TwitchDownloader", "Qualité désirée : $desiredQuality")
+            }
+
+            val qualitiesToCheck = QUALITIES_ORDER.toMutableList()
+            
+            val foundQualities = mutableListOf<Pair<String, String>>()
+            val foundResolutions = mutableSetOf<String>()
+
+
+            for (resKey in qualitiesToCheck) {
+                val resInfo = RESOLUTIONS[resKey] ?: continue
+                val resolution = resInfo["res"] as? String ?: ""
+
+                if (resolution.isNotEmpty() && foundResolutions.contains(resolution)) {
+                    continue
+                }
+                
+                val urlsToTest = mutableListOf<String>()
+
+                val standardUrl = "https://$domain/$vodSpecialId/$resKey/index-dvr.m3u8"
+                urlsToTest.add(standardUrl)
+
+                if (broadcastType == "highlight") {
+                    val highlightUrl = "https://$domain/$vodSpecialId/$resKey/highlight-$vodId.m3u8"
+                    urlsToTest.add(0, highlightUrl)
+                } else if (broadcastType == "upload" && daysDifference > 7) {
+                    val oldUploadUrl = "https://$domain/$channelLogin/$vodId/$vodSpecialId/$resKey/index-dvr.m3u8"
+                    urlsToTest.add(0, oldUploadUrl)
+                }
+
+                for (urlToTest in urlsToTest) {
+                    Log.d("TwitchDownloader", "Test qualité '$resKey' avec URL: $urlToTest")
+                    if (checkUrlValidity(urlToTest)) {
+                        Log.i("TwitchDownloader", "URL M3U8 trouvée pour qualité '$resKey': $urlToTest")
+                        foundQualities.add(resKey to urlToTest)
+                        if (resolution.isNotEmpty()) {
+                            foundResolutions.add(resolution)
+                        }
+                        break 
+                    }
+                }
+            }
+
+            if(foundQualities.isEmpty()){
+                 Log.w("TwitchDownloader", "Aucune URL M3U8 valide trouvée via la méthode de l'extension pour VOD $vodId.")
+                return Pair(null, emptyList())
+            }
+
+            var bestUrl = foundQualities.firstOrNull { it.first == desiredQuality }?.second
+            if (bestUrl == null) {
+                bestUrl = foundQualities.firstOrNull()?.second
+            }
+            
+            return Pair(bestUrl, foundQualities)
+
+        } catch (e: Exception) {
+            Log.e("TwitchDownloader", "Erreur inattendue lors de la recherche de l'URL M3U8 pour VOD $vodId: ${e.message}", e)
+            return Pair(null, emptyList())
+        }
+    }
 
     private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData(url: String?) {
         addOption("--skip-download")
@@ -58,6 +283,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         addOption("--compat-options", "manifest-filesize-approx")
         val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
         addOption("--socket-timeout", socketTimeout)
+
+        if (url != null && TWITCH_VOD_REGEX.matches(url)) {
+            addOption("--force-generic-extractor")
+        }
 
         if (sharedPreferences.getBoolean("force_ipv4", false)){
             addOption("-4")
@@ -73,16 +302,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             if (useHeader && !header.isNullOrBlank()){
                 addOption("--add-header","User-Agent:${header}")
             }
-        }
-
-        val proxy = sharedPreferences.getString("proxy", "")
-        if (proxy!!.isNotBlank()){
-            addOption("--proxy", proxy)
-        }
-        addOption("-P", FileUtil.getCachePath(context) + "/tmp")
-
-        if (sharedPreferences.getBoolean("no_check_certificates", false)) {
-            addOption("--no-check-certificates")
         }
 
         var extraCommands = commandTemplateDao.getAllTemplatesAsDataFetchingExtraCommands()
@@ -102,20 +321,86 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     @SuppressLint("RestrictedApi")
     fun getFromYTDL(query: String, singleItem: Boolean = false): ArrayList<ResultItem> {
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
+        var request: YoutubeDLRequest
 
-        val request : YoutubeDLRequest
-        if (query.contains("http")){
+        val twitchVodMatch = TWITCH_VOD_REGEX.find(query)
+        if (twitchVodMatch != null) {
+            val vodId = twitchVodMatch.groupValues[1]
+            Log.i("TwitchDownloader", "Twitch VOD URL détectée. VOD ID: $vodId")
+            val metadata = getVodMetadata(vodId)
+            if (metadata != null) {
+                Log.d("TwitchDownloader", "Full metadata received: ${metadata.toString(2)}")
+                val (bestUrl, allUrls) = findAllM3u8UrlsAndBest(vodId, metadata, null)
+                if (bestUrl != null) {
+                    Log.i("TwitchDownloader", "URL M3U8 directe trouvée pour Twitch VOD: $bestUrl")
+
+                    val title = metadata.optString("title", "Twitch VOD $vodId")
+                    val author = metadata.optJSONObject("owner")?.optString("displayName") ?: metadata.optJSONObject("owner")?.optString("login") ?: "Unknown Streamer"
+                    var thumb = metadata.optString("previewThumbnailURL", "")
+                    Log.d("TwitchDownloader", "Original thumbnail URL from metadata: '$thumb'")
+                    if (thumb.contains("{width}") && thumb.contains("{height}")) {
+                        thumb = thumb.replace("{width}", "640").replace("{height}", "360")
+                        Log.d("TwitchDownloader", "Formatted thumbnail URL: '$thumb'")
+                    }
+                    val durationInSeconds = metadata.optInt("lengthSeconds", -1)
+                    val duration = if(durationInSeconds != -1) durationInSeconds.toStringDuration(Locale.US) else "N/A"
+
+                    val formats = ArrayList<Format>()
+                    allUrls.forEach { (quality, url) ->
+                        val resInfo = RESOLUTIONS[quality]
+                        val note = if (quality == "chunked") "Source (Best)" else quality
+                        val bitrate = resInfo?.get("bitrate") as? Int ?: 0
+                        val estimatedSize = if (durationInSeconds > 0 && bitrate > 0) {
+                            (bitrate.toLong() * 1000 / 8) * durationInSeconds.toLong()
+                        } else {
+                            0
+                        }
+
+                        val format = Format(
+                            url = url,
+                            container = "mp4",
+                            format_note = note,
+                            format_id = quality,
+                            vcodec = "avc1",
+                            acodec = "mp4a",
+                            filesize = estimatedSize,
+                            fps = resInfo?.get("fps")?.toString()
+                        )
+                        formats.add(format)
+                    }
+
+                    val resultItem = ResultItem(
+                        id = 0,
+                        url = bestUrl,
+                        title = title,
+                        author = author,
+                        duration = duration,
+                        thumb = thumb,
+                        website = "Twitch",
+                        formats = formats,
+                        chapters = arrayListOf(),
+                        urls = bestUrl,
+                        playlistTitle = "",
+                        playlistURL = "",
+                        playlistIndex = null
+                    )
+                    return arrayListOf(resultItem)
+                }
+            }
+            Log.w("TwitchDownloader", "Falling back to yt-dlp for Twitch VOD $vodId (direct M3u8 not found or metadata missing).")
+            request = YoutubeDLRequest(query)
+        } else if (query.contains("http")) {
             if (query.isYoutubeWatchVideosURL()) {
                 request = YoutubeDLRequest(emptyList())
                 val config = File(context.cacheDir.absolutePath + "/config" + System.currentTimeMillis() + "##url.txt")
                 config.writeText(query)
                 request.addOption("--config", config.absolutePath)
-            }else{
+            } else {
                 request = YoutubeDLRequest(query)
             }
-        }else{
+        } else {
             request = YoutubeDLRequest(emptyList())
-            when (searchEngine){
+            when (searchEngine) {
                 "ytsearchmusic" -> {
                     request.addOption("--default-search", "https://music.youtube.com/search?q=")
                     request.addOption("ytsearch25:\"${query}\"")
@@ -125,6 +410,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
             }
         }
+
         if (searchEngine == "ytsearch" || query.isYoutubeURL()) {
             request.setYoutubeExtractorArgs(query)
         }
@@ -147,7 +433,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         return parseYTDLPListResults(results, query)
     }
 
-    private fun parseYTDLPListResults(results: List<String?>, query: String = "") : ArrayList<ResultItem> {
+    private fun parseYTDLPListResults(results: List<String?>, query: String = ""): ArrayList<ResultItem> {
         val items = arrayListOf<ResultItem>()
 
         for (result in results) {
@@ -155,7 +441,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             val jsonObject = JSONObject(result)
             val title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
-
 
             var playlistTitle = jsonObject.getStringByAny("playlist_title")
             var playlistURL: String? = ""
@@ -173,7 +458,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (Patterns.WEB_URL.matcher(query).matches() && playlistURL?.isEmpty() == true){
                     query
                 }else{
-                    jsonObject.getStringByAny("webpage_url", "original_url", "url")
+                    jsonObject.getStringByAny("webpage_url", "original_url", "url", )
+                    jsonObject.getString("webpage_url")
                 }
             }
 
@@ -211,7 +497,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             var website = jsonObject.getStringByAny("extractor_key", "extractor","ie_key")
             if (website == "Generic" || website == "HTML5MediaEmbed") website = jsonObject.getStringByAny("webpage_url_domain")
 
-
             val formatsInJSON = if (jsonObject.has("formats") && jsonObject.get("formats") is JSONArray) jsonObject.getJSONArray("formats") else null
             val formats : ArrayList<Format> = parseYTDLFormats(formatsInJSON)
 
@@ -234,8 +519,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 urls = urlList.joinToString("\n")
             }
-
-
 
             val type = jsonObject.getStringByAny("_type")
             if (type == "playlist" && playlistTitle.isEmpty()) {
@@ -359,7 +642,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             if (urls.all { it.isYoutubeURL() }) {
                 request.setYoutubeExtractorArgs(urls[0])
             }
-            if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
             val txt = parseYTDLRequestString(request)
             println(txt)
@@ -389,24 +671,26 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 urlIdx++
             }
         } catch (e: Exception) {
-            e.message?.split(System.lineSeparator())?.onEach { line ->
-                println(line)
-                if (line.contains("unavailable")) {
-                    kotlin.runCatching {
-                        val id = Regex("""\[.*?\] (\w+):""").find(line)!!.groupValues[1]
-                        val url = urls.first { it.contains(id) }
-                        progress(
-                            ResultViewModel.MultipleFormatProgress(
-                                url,
-                                listOf(),
-                                true,
-                                line
+            e.message?.split(System.lineSeparator())?.apply {
+                this.forEach { line ->
+                    println(line)
+                    if (line.contains("unavailable")) {
+                        kotlin.runCatching {
+                            val id = Regex("""\[.*?\] (\w+):""").find(line)!!.groupValues[1]
+                            val url = urls.first { it.contains(id) }
+                            progress(
+                                ResultViewModel.MultipleFormatProgress(
+                                    url,
+                                    listOf(),
+                                    true,
+                                    line
+                                )
                             )
-                        )
-                        delay(500)
+                            delay(500)
+                        }
                     }
-                }
 
+                }
             }
 
             handler.post {
@@ -430,7 +714,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (url.isYoutubeURL()) {
             request.setYoutubeExtractorArgs(url)
         }
-        if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
@@ -578,129 +861,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             this.add(it)
         }
     }
-
-    fun getVersion(context: Context, channel: String) : String {
-        if (listOf("stable", "nightly", "master").contains(channel)) {
-            return YoutubeDL.version(context) ?: ""
-        }
-
-        val req = YoutubeDLRequest(emptyList())
-        req.addOption("--version")
-        return YoutubeDL.getInstance().execute(req).out.trim()
-    }
-
-    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
-        val extractorArgs = mutableListOf<String>()
-        val playerClients = mutableSetOf<String>()
-        val poTokens = mutableListOf<String>()
-
-        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
-        kotlin.runCatching {
-            val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
-
-            for (value in configuredPlayerClients) {
-                if (value.enabled) {
-                    if (!value.useOnlyPoToken) {
-                        playerClients.add(value.playerClient)
-                    }
-
-                    var canUsePoToken = true
-                    if (value.urlRegex.isNotEmpty() && url != null) {
-                        canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
-                    }
-
-                    if (canUsePoToken) {
-                        value.poTokens.forEach { pt ->
-                            poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
-                        }
-                    }
-                }
-            }
-        }
-
-        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
-        if (dataSyncID.isNotBlank()) {
-            extractorArgs.add("player_skip=webpage,configs")
-            extractorArgs.add("data_sync_id=${dataSyncID}")
-        }
-
-        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
-        kotlin.runCatching {
-            val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
-            if (generatedPoTokens.isNotEmpty()) {
-                for (value in generatedPoTokens) {
-                    if (value.enabled) {
-                        for (cl in value.clients) {
-                            playerClients.add(cl)
-                            for (pt in value.poTokens) {
-                                if (pt.token.isNotBlank()) {
-                                    poTokens.add("${cl}.${pt.context}+${pt.token}")
-                                }
-                            }
-                        }
-
-                        if (dataSyncID.isBlank() && value.useVisitorData) {
-                            extractorArgs.add("player_skip=webpage,configs")
-                            extractorArgs.add("visitor_data=${value.visitorData}")
-                        }
-
-                    }
-                }
-            }
-        }
-
-        if (playerClients.isNotEmpty()){
-            extractorArgs.add("player_client=${playerClients.joinToString(",")}")
-        }
-
-        if (poTokens.isNotEmpty()) {
-            extractorArgs.add("po_token=${poTokens.joinToString(",")}")
-        }
-
-        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
-        if (useLanguageForMetadata) {
-            val lang = Locale.getDefault().language
-            val langTag = Locale.getDefault().toLanguageTag()
-            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
-                extractorArgs.add("lang=$lang")
-            }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
-                extractorArgs.add("lang=$langTag")
-            }
-        }
-
-        val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!
-        if (otherArgs.isNotBlank()) {
-            extractorArgs.add(otherArgs)
-        }
-
-        val extArgs = extractorArgs.joinToString(";")
-        if (extractorArgs.isNotEmpty()) {
-            this.addOption("--extractor-args", "youtube:${extArgs}")
-        }
-    }
-
-    private fun YoutubeDLRequest.addConfig(commandString: String) {
-        this.addOption(
-            "--config-locations",
-            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
-                writeText(commandString)
-            }.absolutePath
-        )
-    }
-
-    private fun StringJoiner.addOption(vararg elements: Any) {
-        this.add(elements.first().toString())
-        if (elements.size > 1) {
-            for (el in elements.drop(1)) {
-                val arg = el.toString()
-                    //.replace("\\", "\\\\")
-                    .replace("\"", "\\\"")
-
-                this.add("\"$arg\"")
-            }
-        }
-    }
-
+    @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
         val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
@@ -999,10 +1160,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     formatSorting.add(0, "abr:${abrSort}")
                 }
 
-                if (downloadItem.downloadSections.isNotBlank()) {
-                    formatSorting.add(0, "proto:https")
-                }
-
                 if(formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))
                 }
@@ -1012,13 +1169,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
                 if (downloadItem.author.isBlank()) {
-                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
                 }
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
                     request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
                 }else{
+
                     if (embedMetadata){
                         metadataCommands.addOption("--embed-metadata")
 
@@ -1192,7 +1350,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         videoF = "bv"
                     }
 
-                    val preferredFormatIDs = sharedPreferences.getString("format_id", "").toString()
+                    val preferredFormatIDs = sharedPreferences.getString("format_id", "")
+                        .toString()
                         .split(",")
                         .filter { it.isNotEmpty() }
                         .ifEmpty { listOf(videoF) }.toMutableList()
@@ -1299,10 +1458,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 //                    formatSorting.add("lang:${preferredLanguage}")
 //                }
 
-                if (downloadItem.downloadSections.isNotBlank()) {
-                    formatSorting.add(0, "proto:https")
-                }
-
                 if (formatSorting.isNotEmpty()) {
                     request.addOption("-S", formatSorting.joinToString(","))
                 }
@@ -1384,9 +1539,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             val cacheDirArg = """(--cache-dir (".*"))""".toRegex().find(downloadItem.extraCommands)
             if (cacheDirArg != null) {
                 ytDlRequest.addOption("--cache-dir", cacheDirArg.groupValues.last().replace("\"", ""))
-                kotlin.runCatching {
-                    downloadItem.extraCommands = downloadItem.extraCommands.replace(cacheDirArg.value, "")
-                }
+                downloadItem.extraCommands.replace(cacheDirArg.value, "")
             }
             request.addOption(downloadItem.extraCommands)
         }
@@ -1400,5 +1553,127 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         tmp.addOption("--config-locations", conf.absolutePath)
         ytDlRequest.addCommands(tmp)
         return ytDlRequest
+    }
+
+    fun getVersion(context: Context, channel: String) : String {
+        if (listOf("stable", "nightly", "master").contains(channel)) {
+            return YoutubeDL.version(context) ?: ""
+        }
+
+        val req = YoutubeDLRequest(emptyList())
+        req.addOption("--version")
+        return YoutubeDL.getInstance().execute(req).out.trim()
+    }
+
+    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
+        val extractorArgs = mutableListOf<String>()
+        val playerClients = mutableSetOf<String>()
+        val poTokens = mutableListOf<String>()
+
+        val configuredPlayerClientsRaw = sharedPreferences.getString("youtube_player_clients", "[]")!!.ifEmpty { "[]" }
+        kotlin.runCatching {
+            val configuredPlayerClients = Gson().fromJson(configuredPlayerClientsRaw, Array<YoutubePlayerClientItem>::class.java).toMutableList()
+
+            for (value in configuredPlayerClients) {
+                if (value.enabled) {
+                    if (!value.useOnlyPoToken) {
+                        playerClients.add(value.playerClient)
+                    }
+
+                    var canUsePoToken = true
+                    if (value.urlRegex.isNotEmpty() && url != null) {
+                        canUsePoToken = value.urlRegex.any { url.matches(it.toRegex()) }
+                    }
+
+                    if (canUsePoToken) {
+                        value.poTokens.forEach { pt ->
+                            poTokens.add("${value.playerClient}.${pt.context}+${pt.token}")
+                        }
+                    }
+                }
+            }
+        }
+
+        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
+        if (dataSyncID.isNotBlank()) {
+            extractorArgs.add("player_skip=webpage,configs")
+            extractorArgs.add("data_sync_id=${dataSyncID}")
+        }
+
+        val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
+        kotlin.runCatching {
+            val generatedPoTokens = Gson().fromJson(generatedPoTokensRaw,Array<YoutubeGeneratePoTokenItem>::class.java).toMutableList()
+            if (generatedPoTokens.isNotEmpty()) {
+                for (value in generatedPoTokens) {
+                    if (value.enabled) {
+                        for (cl in value.clients) {
+                            playerClients.add(cl)
+                            for (pt in value.poTokens) {
+                                if (pt.token.isNotBlank()) {
+                                    poTokens.add("${cl}.${pt.context}+${pt.token}")
+                                }
+                            }
+                        }
+
+                        if (dataSyncID.isBlank() && value.useVisitorData) {
+                            extractorArgs.add("player_skip=webpage,configs")
+                            extractorArgs.add("visitor_data=${value.visitorData}")
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if (playerClients.isNotEmpty()){
+            extractorArgs.add("player_client=${playerClients.joinToString(",")}")
+        }
+
+        if (poTokens.isNotEmpty()) {
+            extractorArgs.add("po_token=${poTokens.joinToString(",")}")
+        }
+
+        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
+        if (useLanguageForMetadata) {
+            val lang = Locale.getDefault().language
+            val langTag = Locale.getDefault().toLanguageTag()
+            if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
+                extractorArgs.add("lang=$lang")
+            }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
+                extractorArgs.add("lang=$langTag")
+            }
+        }
+
+        val otherArgs = sharedPreferences.getString("youtube_other_extractor_args", "")!!
+        if (otherArgs.isNotBlank()) {
+            extractorArgs.add(otherArgs)
+        }
+
+        val extArgs = extractorArgs.joinToString(";")
+        if (extractorArgs.isNotEmpty()) {
+            this.addOption("--extractor-args", "youtube:${extArgs}")
+        }
+    }
+
+    private fun YoutubeDLRequest.addConfig(commandString: String) {
+        this.addOption(
+            "--config-locations",
+            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
+                writeText(commandString)
+            }.absolutePath
+        )
+    }
+
+    private fun StringJoiner.addOption(vararg elements: Any) {
+        this.add(elements.first().toString())
+        if (elements.size > 1) {
+            for (el in elements.drop(1)) {
+                val arg = el.toString()
+                    //.replace("\\", "\\\\")
+                    .replace("\"", "\\\"")
+
+                this.add("\"$arg\"")
+            }
+        }
     }
 }
