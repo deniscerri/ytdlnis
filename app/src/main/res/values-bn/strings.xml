@@ -70,7 +70,7 @@
     <string name="sponsorblock_previews">পূর্বরূপ</string>
     <string name="sponsorblock_reminders">সদস্যতা রিমাইন্ডার</string>
     <string name="ytdl_update_hint">ডাউনলোড করতে সমস্যা হলে সেক্ষেত্রে উপকারী</string>
-    <string name="search_hint">অনুসন্ধান করুন বা URL ইনসার্ট করুন</string>
+    <string name="search_hint">সার্চ করুন বা URL লিখুন</string>
     <string name="select_sponsorblock_filtering">SponsorBlock ফিল্টারিং নির্বাচন করুন</string>
     <string name="ytdl_already_updating">নতুন সংস্করণ ইনস্টল করা হচ্ছে</string>
     <string name="ok">ঠিক আছে</string>
@@ -169,7 +169,7 @@
     <string name="cache_cleared">অস্থায়ী ফাইল সাফ করা হয়েছে</string>
     <string name="downloads_running_try_later">ডাউনলোডটি চলছে। পরে আবার চেষ্টা করুন</string>
     <string name="freespace">মুক্ত স্থান</string>
-    <string name="worst_quality">সবচেয়ে খারাপ মানের</string>
+    <string name="worst_quality">সবচেয়ে নিম্ন মানের</string>
     <string name="best_quality">সবচেয়ে ভালো মানের</string>
     <string name="restrict_filenames">ফাইল নাম সীমাবদ্ধ করুন</string>
     <string name="restrict_filenames_summary">ফাইলের নামগুলিকে শুধুমাত্র ASCII অক্ষরের মধ্যে সীমাবদ্ধ করুন এবং ফাইলের নামগুলিতে \"&amp;\" এবং স্পেস এড়িয়ে চলুন</string>
