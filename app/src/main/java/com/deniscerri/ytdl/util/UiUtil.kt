@@ -20,7 +20,6 @@ import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
-import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.view.Gravity
@@ -1521,8 +1520,8 @@ object UiUtil {
         if (items.size > 1 || items.first().url.isEmpty()) cut.isVisible = false
         else{
             cut.setOnClickListener(null)
-            val duration = items[0].duration
-            if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
+            val invalidDuration = items[0].duration == "-1"
+            if(items[0].duration.isNotEmpty() && !invalidDuration){
                 val downloadItem = items[0]
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
@@ -1561,8 +1560,10 @@ object UiUtil {
                 }
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (!invalidDuration) {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }
@@ -1685,8 +1686,8 @@ object UiUtil {
         else{
             cut.setOnClickListener(null)
             val downloadItem = items[0]
-            val duration = downloadItem.duration
-            if (duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
+            val invalidDuration = downloadItem.duration == "-1"
+            if (downloadItem.duration.isNotEmpty() && !invalidDuration){
                 cut.alpha = 1f
                 if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
                 val cutVideoListener = object : VideoCutListener {
@@ -1716,8 +1717,10 @@ object UiUtil {
 
             }else{
                 cut.alpha = 0.3f
-                cut.setOnClickListener {
-                    cutDisabledClicked()
+                if (!invalidDuration) {
+                    cut.setOnClickListener {
+                        cutDisabledClicked()
+                    }
                 }
             }
         }
@@ -2015,85 +2018,6 @@ object UiUtil {
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
-    fun showSelectRangeDialog(context: Activity, itemCount: Int, rangeSelected: (rangeSelected: Pair<Int, Int>) -> Unit) {
-        val builder = MaterialAlertDialogBuilder(context)
-        builder.setTitle(context.getString(R.string.select_between))
-        builder.setMessage(context.getString(R.string.select_between_desc))
-        builder.setIcon(R.drawable.baseline_format_list_numbered_24)
-        val view = context.layoutInflater.inflate(R.layout.select_range_dialog, null)
-
-        val fromTextInput = view.findViewById<TextInputLayout>(R.id.from_textinput)
-        fromTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
-        val toTextInput = view.findViewById<TextInputLayout>(R.id.to_textinput)
-        toTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789")
-
-
-        builder.setView(view)
-        builder.setPositiveButton(
-            context.getString(R.string.ok)
-        ) { _: DialogInterface?, _: Int ->
-            val firstIndex = fromTextInput.editText!!.text.toString().toInt() - 1
-            val secondIndex = toTextInput.editText!!.text.toString().toInt() - 1
-
-            rangeSelected(Pair(firstIndex,secondIndex))
-        }
-
-        // handle the negative button of the alert dialog
-        builder.setNegativeButton(
-            context.getString(R.string.cancel)
-        ) { _: DialogInterface?, _: Int -> }
-
-        val dialog = builder.create()
-        dialog.show()
-
-
-        fun checkRanges(start: String, end: String) : Boolean {
-            val res: Boolean
-
-            fromTextInput.error = ""
-            toTextInput.error = ""
-
-            if (start.isBlank() || end.isBlank()){
-                res = false
-            }else{
-                val startValid = kotlin.runCatching {
-                    start.toInt() > 0
-                }.getOrElse { false }
-
-                val endValid = kotlin.runCatching {
-                    end.toInt() <= itemCount
-                }.getOrElse { false }
-
-                if (!startValid) {
-                    fromTextInput.error = "Invalid Number"
-                }
-                if (!endValid) {
-                    toTextInput.error = "Invalid Number"
-                }
-
-                res = startValid && endValid
-            }
-
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = res
-            return res
-        }
-
-        fromTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
-            val start = text.toString()
-            val end = toTextInput.editText!!.text.toString()
-            checkRanges(start, end)
-        }
-
-        toTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
-            val start = fromTextInput.editText!!.text.toString()
-            val end = text.toString()
-            checkRanges(start, end)
-        }
-
-        fromTextInput.editText!!.setText("1")
-        toTextInput.editText!!.setText(itemCount.toString())
-    }
-
     private fun createPersonalFilenameTemplateChip(context: Activity, text: String, myChipGroup: ChipGroup, onClick: (f: Chip) -> Unit, onLongClick: (f: Chip) -> Unit) : Chip {
         val tmp = context.layoutInflater.inflate(R.layout.filter_chip, myChipGroup, false) as Chip
         tmp.text = text
@@ -2286,10 +2210,7 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.ytdlp_sources_list)
 
-        val list = kotlin.runCatching {
-            preferences.getStringSet("custom_ytdlp_sources", emptySet())!!.toMutableList()
-        }.getOrDefault(mutableListOf<String>())
-
+        val list = preferences.getStringSet("custom_ytdlp_sources", emptySet())!!.toMutableList()
         val parentView = bottomSheet.findViewById<LinearLayout>(R.id.sourcesList)!!
 
         bottomSheet.findViewById<View>(R.id.add)?.apply {
@@ -2308,11 +2229,8 @@ object UiUtil {
         val tmp = list.toMutableList()
         tmp.addAll(0, defaultSourceTitles.mapIndexed { index, s -> "${s}___${defaultSourceValues[index]}" })
         tmp.forEach { s ->
-            val arr = s.split("___")
-            if (arr.size < 2) return@forEach
-
-            val title = arr[0]
-            val source = arr[1]
+            val title = s.split("___")[0]
+            val source = s.split("___")[1]
             val isEditable = !defaultSourceValues.contains(source)
             val child = LayoutInflater.from(context).inflate(R.layout.custom_ytdlp_source, null)
             child.findViewById<MaterialCardView>(R.id.sampleCustomSource).setOnClickListener {
@@ -2462,5 +2380,29 @@ object UiUtil {
             }
         }).build()
         mw.setMarkdown(textView, v.body)
+    }
+
+    fun showSelectRangeDialog(
+        activity: Activity,
+        maxSize: Int,
+        rangeSelected: (Pair<Int, Int>) -> Unit
+    ) {
+        val builder = MaterialAlertDialogBuilder(activity)
+        val view = activity.layoutInflater.inflate(R.layout.dialog_select_range, null)
+        builder.setView(view)
+        val startEditText = view.findViewById<EditText>(R.id.start_edit_text)
+        val endEditText = view.findViewById<EditText>(R.id.end_edit_text)
+        builder.setTitle(R.string.select_range)
+        builder.setPositiveButton(R.string.ok) { _, _ ->
+            val start = startEditText.text.toString().toIntOrNull()?.minus(1)
+            val end = endEditText.text.toString().toIntOrNull()?.minus(1)
+            if (start != null && end != null && start <= end && start >= 0 && end < maxSize) {
+                rangeSelected(Pair(start, end))
+            } else {
+                Toast.makeText(activity, R.string.invalid_range, Toast.LENGTH_SHORT).show()
+            }
+        }
+        builder.setNegativeButton(R.string.cancel, null)
+        builder.show()
     }
 }

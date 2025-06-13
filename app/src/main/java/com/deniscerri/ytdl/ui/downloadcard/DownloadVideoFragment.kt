@@ -37,7 +37,6 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
@@ -68,8 +67,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var genericAudioFormats: MutableList<Format>
 
     lateinit var downloadItem: DownloadItem
-
-    private var disabledCutClicked: Boolean = false
 
 
     @SuppressLint("RestrictedApi")
@@ -367,17 +364,13 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 if(isUpdatingData){
                                     val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
                                     snack.show()
-                                }else if (downloadItem.duration == "0:00" || downloadItem.duration == "-1"){
-                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT)
-                                    snack.show()
                                 }else if (!nonSpecific){
-                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable_please_update_item), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable), Snackbar.LENGTH_SHORT)
                                     snack.setAction(R.string.update){
                                         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                                             resultItem?.apply {
                                                 val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
                                                 rsVM.updateItemData(this)
-                                                disabledCutClicked = true
                                             }
                                         }
                                     }
@@ -451,12 +444,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
-            view.findViewById<Chip>(R.id.cut).apply {
-                if (this.isEnabled && savedInstanceState?.containsKey("click_cut") == true) {
-                    this.performClick()
-                }
-            }
         }
     }
 
@@ -473,10 +460,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         resultItem = res
         val state = Bundle()
         state.putBoolean("updated", true)
-        if (disabledCutClicked) {
-            state.putBoolean("click_cut", true)
-            disabledCutClicked = false
-        }
         onViewCreated(requireView(),savedInstanceState = state)
     }
 
