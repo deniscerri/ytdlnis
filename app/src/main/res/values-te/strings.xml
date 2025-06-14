@@ -34,4 +34,11 @@
     <string name="cancel">కాన్సిల్</string>
     <string name="confirm_delete_history_desc">పూర్తి హిస్టరీని శాశ్వతంగా తొలగించు</string>
     <string name="search_history_hint">హిస్టరీలో వెతకండి</string>
+    <string name="command_directory">కస్టమ్ కమాండ్ ఫోల్డర్</string>
+    <string name="couldnt_find_apk">తగిన APK కనుగొనబడలేదు</string>
+    <string name="audio">ఆడియో</string>
+    <string name="concurrent_fragments_summary">ఏకకాలంలో డౌన్ లోడ్ చేయాల్సిన DASH/HLS స్థానిక వీడియో యొక్క శకలాల సంఖ్య</string>
+    <string name="downloading_update">కొత్త వెర్షన్ డౌన్ లోడ్ చేస్తోంది</string>
+    <string name="video">వీడియో</string>
+    <string name="search_command_hint">కమాండ్ ల నుండి శోధించండి</string>
 </resources>
