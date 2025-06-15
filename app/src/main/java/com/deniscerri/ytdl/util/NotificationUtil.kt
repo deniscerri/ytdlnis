@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
@@ -257,7 +258,6 @@ class NotificationUtil(var context: Context) {
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)
             .setLargeIcon(bitmap)
             .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
-            .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
             .setContentText(title)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -319,6 +319,22 @@ class NotificationUtil(var context: Context) {
         }
         notificationBuilder.setStyle(NotificationCompat.BigTextStyle().bigText(contentText.toString().trimIndent()))
         notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
+
+        if (
+            !notificationManager.activeNotifications.any { it.id == DOWNLOAD_FINISHED_NOTIFICATION_ID }
+            && Build.VERSION.SDK_INT > 24
+            && isNotificationChannelEnabled(DOWNLOAD_FINISHED_CHANNEL_ID)
+        ) {
+            //make summary notification
+            val summaryNotification = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+                .setLargeIcon(bitmap)
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                .setGroup(DOWNLOAD_FINISHED_NOTIFICATION_ID.toString())
+                .setGroupSummary(true)
+                .build()
+            notificationManager.notify(DOWNLOAD_FINISHED_NOTIFICATION_ID, summaryNotification)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -386,6 +402,26 @@ class NotificationUtil(var context: Context) {
             notificationBuilder.addAction(0, res.getString(R.string.logs), errorPendingIntent)
         }
         notificationManager.notify(DOWNLOAD_ERRORED_NOTIFICATION_ID + id.toInt(), notificationBuilder.build())
+
+        if (
+            !notificationManager.activeNotifications.any { it.id == DOWNLOAD_ERRORED_NOTIFICATION_ID }
+            && Build.VERSION.SDK_INT > 24
+            && isNotificationChannelEnabled(DOWNLOAD_ERRORED_CHANNEL_ID)
+        ) {
+            //make summary notification
+            val summaryNotification = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+                .setLargeIcon(BitmapFactory.decodeResource(
+                    res,
+                    R.drawable.ic_launcher_foreground_large
+                ))
+                .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
+                .setGroup(DOWNLOAD_ERRORED_NOTIFICATION_ID.toString())
+                .setGroupSummary(true)
+                .build()
+            notificationManager.notify(DOWNLOAD_ERRORED_NOTIFICATION_ID, summaryNotification)
+        }
+
     }
 
 
@@ -733,6 +769,20 @@ class NotificationUtil(var context: Context) {
             .clearActions()
 
         notificationManager.notify(QUERY_PROCESS_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    private fun isNotificationChannelEnabled(channelId: String?): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (!TextUtils.isEmpty(channelId)) {
+                val manager =
+                    context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val channel = manager.getNotificationChannel(channelId)
+                return channel.importance != NotificationManager.IMPORTANCE_NONE
+            }
+            return false
+        } else {
+            return NotificationManagerCompat.from(context).areNotificationsEnabled()
+        }
     }
 
     companion object {
