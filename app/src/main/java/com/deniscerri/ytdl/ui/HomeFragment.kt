@@ -113,6 +113,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var materialToolbar: MaterialToolbar? = null
     private var loadingItems: Boolean = false
     private var queryList = mutableListOf<String>()
+
+    private var showDownloadAllFab: Boolean = false
+    private var showClipboardFab: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -191,12 +195,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 resultsList = it
                 progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                    if (it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems){
-                        downloadAllFab!!.visibility = VISIBLE
-                    }else{
-                        downloadAllFab!!.visibility = GONE
-                    }
-
+                    showDownloadAllFab = it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems
+                    downloadAllFab!!.isVisible = showDownloadAllFab
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
                         if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
@@ -207,6 +207,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         }
                     }
                 }else{
+                    showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE
                 }
                 quickLaunchSheet = true
@@ -310,11 +311,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         recyclerView?.setPadding(0,0,0,100)
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
-                        if (resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()){
-                            downloadAllFab!!.visibility = VISIBLE
-                        }else{
-                            downloadAllFab!!.visibility = GONE
-                        }
+
+                        showDownloadAllFab = resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()
+                        downloadAllFab!!.isVisible = showDownloadAllFab
                     }
                 }
             }
@@ -384,10 +383,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         requireView().post {
             checkClipboard().apply {
                 this?.apply {
-                    clipboardFab?.isVisible = this.isNotEmpty()
+                    showClipboardFab = this.isNotEmpty()
+                    clipboardFab?.isVisible = showClipboardFab
                     clipboardFab?.setOnClickListener {
                         if (this.size == 1){
                             searchView?.setText(this.first())
+                            showClipboardFab = false
                             clipboardFab?.isVisible = false
                             initSearch(searchView!!)
                         }else{
@@ -520,6 +521,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     resultViewModel.getHomeRecommendations()
                     selectedObjects = ArrayList()
                     searchBar!!.setText("")
+                    showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE
                     downloadSelectedFab!!.visibility = GONE
                 }
@@ -816,6 +818,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = false }
             searchBar!!.menu.forEach { it.isEnabled = false }
             (activity as MainActivity).disableBottomNavigation()
+            downloadAllFab!!.isVisible = false
+            clipboardFab!!.isVisible = false
             return true
         }
 
@@ -914,6 +918,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = true }
             searchBar!!.menu.forEach { it.isEnabled = true }
             searchBar?.expand(appBarLayout!!)
+
+            downloadAllFab!!.isVisible = showDownloadAllFab
+            clipboardFab!!.isVisible = showClipboardFab
         }
     }
 
@@ -947,6 +954,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     override fun onSearchSuggestionClick(text: String) {
         val res = text.split("\n")
         if (res.size == 1){
+            showClipboardFab = false
             clipboardFab?.isVisible = false
             searchView!!.setText(text)
             initSearch(searchView!!)

@@ -379,15 +379,19 @@ object Extensions {
         Regex("""^(?:(?:(\d+):)?(\d{1,2}):)?(\d+)(?:\.(\d+))?$""")
 
     fun String.tryConvertToTimestamp(): Long? {
-        val match = timeRegex.matchEntire(this.trim()) ?: return null
+        try {
+            val match = timeRegex.matchEntire(this.trim()) ?: return null
 
-        val hours = match.groups[1]?.value?.toInt() ?: 0
-        val minutes = match.groups[2]?.value?.toInt() ?: 0
-        val seconds = match.groups[3]!!.value.toInt()
-        val millis = match.groups[4]?.value
-            ?.take(3)?.padEnd(3,'0')?.toInt() ?: 0
+            val hours = match.groups[1]?.value?.toInt() ?: 0
+            val minutes = match.groups[2]?.value?.toInt() ?: 0
+            val seconds = match.groups[3]!!.value.toInt()
+            val millis = match.groups[4]?.value
+                ?.take(3)?.padEnd(3,'0')?.toInt() ?: 0
 
-        return (hours.hours + minutes.minutes + seconds.seconds + millis.milliseconds).inWholeMilliseconds
+            return (hours.hours + minutes.minutes + seconds.seconds + millis.milliseconds).inWholeMilliseconds
+        }catch (ex: Exception) {
+            return null
+        }
     }
 
     fun String.convertNetscapeToSetCookie(): String {
