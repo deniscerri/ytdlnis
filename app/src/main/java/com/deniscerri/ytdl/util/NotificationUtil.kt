@@ -111,11 +111,11 @@ class NotificationUtil(var context: Context) {
         return notificationBuilder
             .setContentTitle(resources.getString(R.string.downloading))
             .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(android.R.drawable.stat_sys_download)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     resources,
-                    R.drawable.ic_launcher_foreground_large
+                    android.R.drawable.stat_sys_download
                 )
             )
             .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -384,11 +384,11 @@ class NotificationUtil(var context: Context) {
         notificationBuilder
             .setContentTitle("${res.getString(R.string.failed_download)}: $title")
             .setContentText(error)
-            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setSmallIcon(R.drawable.baseline_error_24)
             .setLargeIcon(
                 BitmapFactory.decodeResource(
                     res,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.baseline_error_24
                 )
             )
             .setGroup(DOWNLOAD_ERRORED_NOTIFICATION_ID.toString())
@@ -410,10 +410,10 @@ class NotificationUtil(var context: Context) {
         ) {
             //make summary notification
             val summaryNotification = getBuilder(DOWNLOAD_WORKER_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+                .setSmallIcon(R.drawable.baseline_error_24)
                 .setLargeIcon(BitmapFactory.decodeResource(
                     res,
-                    R.drawable.ic_launcher_foreground_large
+                    R.drawable.baseline_error_24
                 ))
                 .setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_CHILDREN)
                 .setGroup(DOWNLOAD_ERRORED_NOTIFICATION_ID.toString())
