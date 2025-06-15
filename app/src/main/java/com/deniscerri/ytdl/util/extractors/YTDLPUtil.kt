@@ -858,13 +858,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             if(downloadItem.title.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "title", ".+", downloadItem.title)
+                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title)
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
 
             if (downloadItem.author.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "uploader", ".+", downloadItem.author)
+                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author)
                 metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
