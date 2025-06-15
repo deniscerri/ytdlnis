@@ -280,9 +280,12 @@ class DownloadWorker(
                                     }
                                 }catch (e: Exception){
                                     e.printStackTrace()
-                                    handler.postDelayed({
-                                        Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                                    }, 1000)
+                                    if (e.message?.isNotBlank() == true) {
+                                        handler.postDelayed({
+                                            Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                                        }, 1000)
+                                    }
+
                                 }
                             }
 
@@ -387,9 +390,6 @@ class DownloadWorker(
                         }
 
                         tempFileDir.delete()
-                        handler.postDelayed({
-                            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                        }, 1000)
 
                         Log.e(TAG, context.getString(R.string.failed_download), it)
                         notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())

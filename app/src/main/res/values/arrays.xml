@@ -127,6 +127,7 @@
 
 
     <string-array name="language_entries">
+        <item>System</item>
         <item>English</item>
         <item>العربية</item>
         <item>Azərbaycanca</item>
@@ -171,6 +172,7 @@
     </string-array>
 
     <string-array name="language_values">
+        <item>system</item>
         <item>en</item>
         <item>ar</item>
         <item>az</item>

@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
@@ -68,12 +69,15 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
         }
 
         findPreference<ListPreference>("app_language")?.apply {
-            if (value.isNullOrBlank()) {
-                value = Locale.getDefault().language
-            }
+            value = Locale.getDefault().language
             summary = Locale.getDefault().displayLanguage
+
             setOnPreferenceChangeListener { _, newValue ->
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                if (newValue == "system") {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(null))
+                }else{
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                }
                 summary = Locale.getDefault().displayLanguage
                 true
             }
