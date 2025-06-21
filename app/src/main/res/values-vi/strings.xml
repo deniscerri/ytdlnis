@@ -14,7 +14,7 @@
     <string name="ytdl_update_hint">Hữu ích nếu bạn gặp sự cố khi tải xuống</string>
     <string name="source_code">Mã nguồn</string>
     <string name="search_hint">Tìm kiếm hoặc nhập URL</string>
-    <string name="failed_download">Tệp này không thể tải xuống</string>
+    <string name="failed_download">Không thể tải xuống tệp</string>
     <string name="download_notification_channel_name">Tải xuống tệp</string>
     <string name="you_are_in_latest_version">Đang dùng phiên bản mới nhất</string>
     <string name="ytld_update_success">Phiên bản mới được cài đặt</string>
@@ -22,7 +22,7 @@
     <string name="ytdl_updating_started">Đang tải phiên bản mới</string>
     <string name="Remove">Loại bỏ</string>
     <string name="ok">Xong</string>
-    <string name="confirm_delete_history_desc">Xóa toàn bộ lịch sử, vĩnh viễn</string>
+    <string name="confirm_delete_history_desc">Xóa vĩnh viễn toàn bộ lịch sử</string>
     <string name="confirm_delete_history">Xác nhận</string>
     <string name="search_history_hint">Tìm kiếm từ lịch sử</string>
     <string name="no_results">Không có kết quả nào</string>
@@ -99,7 +99,7 @@
     <string name="download_card_summary">Thay đổi cài đặt cách tải xuống mục trước khi tải xuống. Tắt tùy chọn này sẽ làm các quá trình tải xuống bắt đầu ngay tức thì</string>
     <string name="worst_quality">Chất lượng tệ nhất</string>
     <string name="best_quality">Chất lượng tốt nhất</string>
-    <string name="about">Về chúng tôi</string>
+    <string name="about">Giới thiệu</string>
     <string name="adjust_templates">Cấu hình mẫu</string>
     <string name="edit_selected">Chỉnh sửa đã chọn</string>
     <string name="adjust_video">Cấu hình video</string>
