@@ -100,7 +100,7 @@
     <string name="worst_quality">Худшее качество</string>
     <string name="best_quality">Лучшее качество</string>
     <string name="error_updating_formats">Ошибка обновления форматов!</string>
-    <string name="access_all_directories">Прдеоставить доступ ко всем папкам</string>
+    <string name="access_all_directories">Предоставить доступ ко всем папкам</string>
     <string name="access_all_directories_summary">Разрешить приложению загружать файлы в папки, доступ к которым по умолчанию ограничен</string>
     <string name="redownload">Повторить загрузку</string>
     <string name="in_queue">В очереди</string>
