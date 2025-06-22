@@ -246,9 +246,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             val availableSubtitles = mutableListOf<String>()
-            if (jsonObject.has("automatic_captions")) {
-                availableSubtitles.addAll(jsonObject.getJSONObject("automatic_captions").keys().asSequence().toList())
-            }
             if (jsonObject.has("subtitles")) {
                 availableSubtitles.addAll(jsonObject.getJSONObject("subtitles").keys().asSequence().toList())
             }
