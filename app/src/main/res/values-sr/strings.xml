@@ -393,7 +393,7 @@
     <string name="minute">Минут</string>
     <string name="format_importance">Редослед важности формата</string>
     <string name="format_importance_note">Подесите важност елемента формата. Овај налог ће се користити само када апликација преузме формате на картици за преузимање и аутоматски изабере формат!</string>
-    <string name="no_audio">Видео без звука</string>
+    <string name="no_audio">Видео снимак без звука</string>
     <string name="process_downloads_background">"Преузимања се и даље учитавају. Наставити с обрађивањем преузимања у позадини и започети преузимање? "</string>
     <string name="download_archive_folder">Фолдер архиве преузимања</string>
     <string name="location">Локација</string>
@@ -436,7 +436,7 @@
     <string name="data_fetching_extra_command">Додатна команда за прикупљање података</string>
     <string name="data_fetching_extra_command_summary">Омогућите да се командни шаблони користе за прикупљање података као додатне команде</string>
     <string name="disable_write_info_json">Онемогући JSON за писање информација</string>
-    <string name="disable_write_info_json_summary">(Не препоручује се) Сваки пут када рестартујете/наставите преузимање, yt-dlp ће поново преузети json податке са сервера.</string>
+    <string name="disable_write_info_json_summary">Сваки пут када рестартујете/наставите преузимање, yt-dlp ће поново преузети json податке са сервера (не препоручује се)</string>
     <string name="ytdlp_recommnedations">YT-DLP YouTube „Препоруке“ (потребни колачићи)</string>
     <string name="ytdlp_watch_history">YT-DLP YouTube „Историја гледања“ (потребни колачићи)</string>
     <string name="ytdlp_liked">YT-DLP YouTube „Лајковани видеи“ (потребни колачићи)</string>
@@ -465,14 +465,15 @@
     <string name="use_format_sorting">Користи сортирање по важности формата</string>
     <string name="reset_preferences_in_screen">Ресетуј сва подешавања на овом екрану</string>
     <string name="automatic_backup">Аутоматска резервна копија</string>
-    <string name="use_code_highlighter">Користи код текст маркера</string>
+    <string name="use_code_highlighter">Користи текст маркер кода</string>
     <string name="backup_path">Путања резервне копије</string>
     <string name="automatic_backup_summary">Аутоматско прављење резервне копије свега, када се пронађе нова верзија апликације</string>
     <string name="write_subs_when_embed_subs">Писање титлова приликом уграђивања</string>
     <string name="write_subs_when_embed_subs_summary">Ово ће применити „Сачувај титлове“ и „Сачувај аутоматске титлове“ за преузимање потфајлова, а затим их избрисати након уграђивања</string>
     <string name="regenerate">Поново генериши</string>
     <string name="generate_potokens">Генериши PO токене</string>
-    <string name="generate_potokens_warning">* Ако ово омогућите, морате да онемогућите колачиће</string>
+    <string name="generate_potokens_warning">Ако ово омогућите, морате да онемогућите колачиће</string>
     <string name="custom">Прилагођено</string>
     <string name="cut_unsupported">Сечење није доступно за овај предмет</string>
+    <string name="select_between_desc">Наведите опсег предмета за избор</string>
 </resources>
