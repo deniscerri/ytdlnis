@@ -87,10 +87,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         var extraCommands = commandTemplateDao.getAllTemplatesAsDataFetchingExtraCommands()
 
-        if (url != null) {
-            extraCommands = extraCommands.filter { it.urlRegex.any { u -> Regex(u).containsMatchIn(url) } }
+        extraCommands = if (url != null) {
+            extraCommands.filter {
+                it.urlRegex.any { u -> Regex(u).containsMatchIn(url) } ||
+                it.urlRegex.isEmpty()
+            }
         }else{
-            extraCommands = extraCommands.filter { it.urlRegex.isEmpty() }
+            extraCommands.filter { it.urlRegex.isEmpty() }
         }
 
         if (extraCommands.isNotEmpty()){
@@ -242,19 +245,28 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 playlistTitle = title
             }
 
+            val availableSubtitles = mutableListOf<String>()
+            if (jsonObject.has("automatic_captions")) {
+                availableSubtitles.addAll(jsonObject.getJSONObject("automatic_captions").keys().asSequence().toList())
+            }
+            if (jsonObject.has("subtitles")) {
+                availableSubtitles.addAll(jsonObject.getJSONObject("subtitles").keys().asSequence().toList())
+            }
+
             val res = ResultItem(0,
-                url,
-                title,
-                author,
-                duration,
-                thumb!!,
-                website,
-                playlistTitle,
-                formats,
-                urls,
-                chapters,
-                playlistURL,
-                playlistIndex
+                url = url,
+                title = title,
+                author = author,
+                duration = duration,
+                thumb = thumb!!,
+                website = website,
+                playlistTitle = playlistTitle,
+                formats = formats,
+                urls = urls,
+                chapters = chapters,
+                playlistURL = playlistURL,
+                playlistIndex = playlistIndex,
+                availableSubtitles = availableSubtitles
             )
 
             items.add(res)

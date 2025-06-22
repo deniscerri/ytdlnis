@@ -31,7 +31,7 @@
                 android:maxLines="2"
                 android:singleLine="false"
                 android:text="@string/observe_sources"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

@@ -44,5 +44,7 @@ data class DownloadItem(
     @ColumnInfo(defaultValue = "")
     var playlistIndex: Int? = null,
     @ColumnInfo(defaultValue = "0")
-    var incognito: Boolean = false
+    var incognito: Boolean = false,
+    @ColumnInfo(defaultValue = "[]")
+    var availableSubtitles: List<String> = listOf()
 ) : Parcelable

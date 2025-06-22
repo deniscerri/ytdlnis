@@ -345,7 +345,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             null,
             playlistURL = resultItem.playlistURL,
             playlistIndex = resultItem.playlistIndex,
-            incognito = sharedPreferences.getBoolean("incognito", false)
+            incognito = sharedPreferences.getBoolean("incognito", false),
+            availableSubtitles = resultItem.availableSubtitles
         )
     }
 

@@ -56,7 +56,7 @@
                 android:layout_marginEnd="20dp"
                 android:singleLine="false"
                 android:text="@string/download"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

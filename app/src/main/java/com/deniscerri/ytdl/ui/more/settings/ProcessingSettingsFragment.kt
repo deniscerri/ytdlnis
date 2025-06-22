@@ -31,7 +31,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
         subtitleLanguages?.summary = prefs.getString("subs_lang", "en.*,.*-orig")!!
         subtitleLanguages?.setOnPreferenceClickListener {
-            UiUtil.showSubtitleLanguagesDialog(requireActivity(), prefs.getString("subs_lang", "en.*,.*-orig")!!){
+            UiUtil.showSubtitleLanguagesDialog(requireActivity(), listOf(), prefs.getString("subs_lang", "en.*,.*-orig")!!){
                 editor.putString("subs_lang", it)
                 editor.apply()
                 subtitleLanguages.summary = it

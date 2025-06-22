@@ -141,6 +141,7 @@
                         android:ellipsize="end"
                         android:gravity="bottom"
                         android:maxLines="1"
+                        android:textColor="#FFF"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="5dp"

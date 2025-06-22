@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="false"
                 android:text="@string/command_templates"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:maxLines="2"
                 android:layout_marginEnd="10dp"
                 app:layout_constraintHorizontal_bias="0.0"

@@ -51,6 +51,15 @@ object Migrations {
 
             // Add `urlRegex` as a JSON string (since lists are not supported in SQLite)
             database.execSQL("ALTER TABLE commandTemplates ADD COLUMN urlRegex TEXT NOT NULL DEFAULT '[]'")
+        },
+
+        //add available subtitles list in result and download item
+        Migration(22, 23) { database ->
+            //add available subtitles for result item
+            database.execSQL("ALTER TABLE results ADD COLUMN availableSubtitles TEXT NOT NULL DEFAULT '[]'")
+
+            //add available subtitles for download item
+            database.execSQL("ALTER TABLE downloads ADD COLUMN availableSubtitles TEXT NOT NULL DEFAULT '[]'")
         }
     )
 

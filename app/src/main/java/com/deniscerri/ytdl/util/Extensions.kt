@@ -52,6 +52,7 @@ import com.neoutils.highlight.core.util.UiColor
 import com.neoutils.highlight.view.extension.toSpannedString
 import com.neoutils.highlight.view.text.HighlightTextWatcher
 import com.squareup.picasso.Picasso
+import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -64,7 +65,6 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.regex.Pattern
 import kotlin.math.abs
-import kotlin.math.pow
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.minutes
@@ -314,6 +314,22 @@ object Extensions {
         }
     }
 
+    fun ImageView.loadBlurryThumbnail(context: Context, hideThumb: Boolean, imageURL: String) {
+        if(!hideThumb){
+            if (imageURL.isNotEmpty()) {
+                Picasso.get()
+                    .load(imageURL)
+                    .resize(1280, 0)
+                    .transform(BlurTransformation(context, 10, 1))
+                    .onlyScaleDown()
+                    .into(this)
+
+            } else {
+                Picasso.get().load(R.color.black).into(this)
+            }
+        }
+    }
+
 
     fun List<DownloadRepository.Status>.toListString() : List<String>{
         return this.map { it.toString() }
@@ -554,7 +570,7 @@ object Extensions {
         combine(flow2, flow3, ::Pair),
         combine(flow4, flow5, ::Pair),
         combine(flow6, flow7, ::Pair),
-    ) { t1, t2, t3, t4, ->
+    ) { t1, t2, t3, t4 ->
         transform(
             t1,
             t2.first,

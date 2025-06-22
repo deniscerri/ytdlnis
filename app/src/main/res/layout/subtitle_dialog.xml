@@ -24,8 +24,50 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <LinearLayout
+        android:id="@+id/suggestedLinear"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold"
+            android:paddingVertical="15dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subtitle"
+            android:text="@string/suggested" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            app:layout_constraintHeight_max="50dp"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/suggested">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/subtitle_suggested_chipgroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:chipSpacingVertical="-7dp"
+                app:chipSpacingHorizontal="5dp"
+                app:selectionRequired="false"
+                app:singleSelection="false">
+
+            </com.google.android.material.chip.ChipGroup>
+
+        </ScrollView>
+
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/suggested"
+        android:id="@+id/all_subs"
         android:layout_width="match_parent"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
@@ -34,7 +76,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/subtitle"
-        android:text="@string/suggested" />
+        android:text="@string/select" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -43,18 +85,18 @@
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/suggested">
+        app:layout_constraintTop_toBottomOf="@id/all_subs">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/subtitle_suggested_chipgroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:chipSpacingVertical="-7dp"
-        app:chipSpacingHorizontal="5dp"
-        app:selectionRequired="false"
-        app:singleSelection="false">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/subtitle_all_chipgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacingVertical="-7dp"
+            app:chipSpacingHorizontal="5dp"
+            app:selectionRequired="false"
+            app:singleSelection="false">
 
-    </com.google.android.material.chip.ChipGroup>
+        </com.google.android.material.chip.ChipGroup>
 
     </ScrollView>
 

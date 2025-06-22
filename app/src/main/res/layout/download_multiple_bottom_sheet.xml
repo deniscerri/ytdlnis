@@ -70,7 +70,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/download"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:maxLines="2"
                 android:singleLine="false"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_schedule_button"

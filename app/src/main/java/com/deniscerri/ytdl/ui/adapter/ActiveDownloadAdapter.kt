@@ -22,6 +22,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.dp
+import com.deniscerri.ytdl.util.Extensions.loadBlurryThumbnail
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -66,7 +67,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         // THUMBNAIL ----------------------------------
         val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("queue")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, item.thumb) }
+        uiHandler.post { thumbnail.loadBlurryThumbnail(activity, hideThumb, item.thumb) }
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)

@@ -1067,7 +1067,7 @@ object UiUtil {
     }
 
     @SuppressLint("RestrictedApi")
-    fun showSubtitleLanguagesDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
+    fun showSubtitleLanguagesDialog(context: Activity, availableSubtitles: List<String>, currentValue: String, ok: (newValue: String) -> Unit){
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.subtitle_languages))
         val view = context.layoutInflater.inflate(R.layout.subtitle_dialog, null)
@@ -1093,8 +1093,6 @@ object UiUtil {
             context.startActivity(browserIntent)
         }
 
-        view.findViewById<View>(R.id.suggested).visibility = View.GONE
-
         val dialog = builder.create()
         dialog.show()
         val imm = context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -1105,9 +1103,12 @@ object UiUtil {
 
         //handle suggestion chips
         CoroutineScope(Dispatchers.IO).launch {
-            val chipGroup = view.findViewById<ChipGroup>(R.id.subtitle_suggested_chipgroup)
-            val chips = mutableListOf<Chip>()
-            context.getStringArray(R.array.subtitle_langs).forEachIndexed { index, s ->
+            val suggestedLinearLayout = view.findViewById<LinearLayout>(R.id.suggestedLinear)
+            val suggestedChipGroup = view.findViewById<ChipGroup>(R.id.subtitle_suggested_chipgroup)
+
+            val allChipGroup = view.findViewById<ChipGroup>(R.id.subtitle_all_chipgroup)
+
+            fun buildChip(chipGroup: ChipGroup, s: String, index: Int) : Chip {
                 val tmp = context.layoutInflater.inflate(R.layout.filter_chip, chipGroup, false) as Chip
                 s.split("-", ".*").run {
                     if (s.endsWith(".*")) {
@@ -1140,17 +1141,38 @@ object UiUtil {
                     }
                 }
 
-                chips.add(tmp)
+                return tmp
             }
+
+            val suggestedChips = mutableListOf<Chip>()
+            val allChips = mutableListOf<Chip>()
+
+            //populate suggested
+            if (availableSubtitles.isNotEmpty()) {
+                suggestedLinearLayout.isVisible = true
+                availableSubtitles.forEachIndexed { index, s ->
+                    suggestedChips.add(buildChip(suggestedChipGroup, s, index))
+                }
+            }
+
+            //populate all
+            context.getStringArray(R.array.subtitle_langs).filter { !availableSubtitles.contains(it) }.forEachIndexed { index, s ->
+                allChips.add(buildChip(allChipGroup, s, index))
+            }
+
             withContext(Dispatchers.Main){
-                view.findViewById<View>(R.id.suggested).visibility = View.VISIBLE
-                chips.forEach {
+                suggestedChips.forEach {
                     it.isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() }
-                    chipGroup!!.addView(it)
+                    suggestedChipGroup!!.addView(it)
+                }
+                allChips.forEach {
+                    it.isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() }
+                    allChipGroup!!.addView(it)
                 }
 
                 editText.textChanged {
-                    chipGroup.children.forEach { (it as Chip).isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() } }
+                    suggestedChipGroup.children.forEach { (it as Chip).isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() } }
+                    allChipGroup.children.forEach { (it as Chip).isChecked = editText.text.split(",").any { it2 -> it2 == it.tag.toString() } }
                 }
             }
         }
@@ -1362,7 +1384,8 @@ object UiUtil {
                     ""
                 }.ifEmpty { sharedPreferences.getString("subs_lang", "en.*,.*-orig")!! }
 
-                showSubtitleLanguagesDialog(context, currentSubtitleLang){
+                val availabeSubtitles = if (items.size == 1) items[0].availableSubtitles else listOf()
+                showSubtitleLanguagesDialog(context, availabeSubtitles, currentSubtitleLang){
                     subtitleLanguagesSet(it)
                     subtitleLanguagesDescription.text = it
                 }
