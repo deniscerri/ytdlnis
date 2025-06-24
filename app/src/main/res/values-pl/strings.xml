@@ -56,7 +56,7 @@
     <string name="more">Więcej</string>
     <string name="save_thumb">Zapisz miniaturę</string>
     <string name="link_copied_to_clipboard">Skopiowano link do schowka</string>
-    <string name="search_history_hint">Wyszukaj z historii przeglądania</string>
+    <string name="search_history_hint">Szukaj w historii</string>
     <string name="version">Wersja</string>
     <string name="command_directory">Własny folder poleceń</string>
     <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK</string>
