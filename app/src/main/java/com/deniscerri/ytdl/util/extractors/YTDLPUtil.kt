@@ -1337,7 +1337,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
-                    val subFormat = sharedPreferences.getString("sub_format", "srt")
+                    val subFormat = sharedPreferences.getString("sub_format", "")
                     if(subFormat!!.isNotBlank()){
                         request.addOption("--sub-format", "${subFormat}/best")
                         request.addOption("--convert-subtitles", subFormat)

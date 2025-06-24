@@ -202,7 +202,7 @@
 
 
         <ListPreference
-            android:defaultValue="srt"
+            android:defaultValue=""
             android:entries="@array/sub_formats"
             android:entryValues="@array/sub_formats_values"
             android:icon="@drawable/baseline_format_quote_24"
