@@ -179,4 +179,6 @@
     <string name="concurrent_downloads_summary">Jumlah muat turun yang dijalankan secara selari</string>
     <string name="enable_mtime_summary">Menetapkan kepala Diubah-Suai-Terakhir HTTP sebagai masa diubah suai terakhir</string>
     <string name="enable_mtime">Dayakan mtime</string>
+    <string name="template">Templat</string>
+    <string name="log_downloads_summary">Cipta fail log untuk setiap muat turun</string>
 </resources>
