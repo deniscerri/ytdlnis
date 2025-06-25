@@ -191,4 +191,10 @@
     <string name="update_template">Kemas kini templat</string>
     <string name="preferred_download_type_summary">Tab asal kad muat turun akan dibuka kepada</string>
     <string name="cancelled">Dibatalkan</string>
+    <string name="export_from_clipboard">Eksport ke papan klip</string>
+    <string name="import_from_clipboard">Import daripada papan klip</string>
+    <string name="edit">Sunting</string>
+    <string name="create">Cipta</string>
+    <string name="confirm_delete_logs_desc">Padam semua senarai log secara tetap.</string>
+    <string name="update">Kemas kini</string>
 </resources>
