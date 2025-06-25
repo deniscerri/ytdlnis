@@ -37,7 +37,7 @@
     <string name="ytdl_update_hint">Przydatne, jeśli masz problem z pobieraniem</string>
     <string name="download_notification_channel_description">Powiadomienie pokazujące postęp pobierania plików audio i wideo</string>
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
-    <string name="download_notification_channel_name">Pobrane pliki</string>
+    <string name="download_notification_channel_name">Pobieranie plików</string>
     <string name="ytld_update_success">Zainstalowano nową wersję</string>
     <string name="ytdl_updating_started">Pobieranie nowej wersji</string>
     <string name="ytdl_already_updating">Instalacja nowej wersji</string>
@@ -56,7 +56,7 @@
     <string name="more">Więcej</string>
     <string name="save_thumb">Zapisz miniaturę</string>
     <string name="link_copied_to_clipboard">Skopiowano link do schowka</string>
-    <string name="search_history_hint">Szukaj w historii</string>
+    <string name="search_history_hint">Wyszukaj z historii przeglądania</string>
     <string name="version">Wersja</string>
     <string name="command_directory">Własny folder poleceń</string>
     <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK</string>
@@ -110,9 +110,9 @@
     <string name="enable_mtime">Włącz mtime</string>
     <string name="update_formats">Zaktualizuj formaty</string>
     <string name="error_updating_formats">Błąd aktualizacji formatów!</string>
-    <string name="log_downloads">Logi pobranych</string>
+    <string name="log_downloads">Dziennik pobrań</string>
     <string name="log_downloads_summary">Utwórz plik z logiem dla każdego pobrania</string>
-    <string name="download_queue">Kolejka pobrań</string>
+    <string name="download_queue">Kolejka pobierania</string>
     <string name="update_ytdl_nightly">Codzienna wersja yt-dlp</string>
     <string name="adjust_audio">Dostosuj dźwięk</string>
     <string name="file_name_template">Szablon nazwy pliku</string>
@@ -130,7 +130,7 @@
     <string name="dont_ask_again">Nie pytaj ponownie</string>
     <string name="command">Polecenie</string>
     <string name="select">Wybierz</string>
-    <string name="items_imported">Importowane elementy</string>
+    <string name="items_imported">Zaimportowane elementy</string>
     <string name="clear_cancelled">Wyczyść anulowane</string>
     <string name="help_translate">Pomóż w tłumaczeniu</string>
     <string name="cache_cleared">Wyczyszczono pliki tymczasowe</string>
@@ -139,9 +139,9 @@
     <string name="delete_all_cookies">Usuń wszystkie pliki cookie</string>
     <string name="confirm_delete_cookies_desc">Usuń wszystkie pliki cookie na stałe</string>
     <string name="format_source">Źródło formatów</string>
-    <string name="video_recommendations_summary">Polecane filmy z YouTube na ekranie głównym</string>
+    <string name="video_recommendations_summary">Otrzymuj polecane filmy na ekranie głównym</string>
     <string name="preferred_format_id">Preferowany identyfikator formatu</string>
-    <string name="restrict_filenames">Ogranicz nazwy plików</string>
+    <string name="restrict_filenames">Nałóż ograniczenia na nazwy plików</string>
     <string name="metered_network_download_start_info">Pobieranie rozpocznie się, gdy połączysz się z siecią bez planu taryfowego</string>
     <string name="export_from_clipboard">Eksportuj do schowka</string>
     <string name="download_rescheduled_to">Pobieranie przełożone na:</string>
@@ -173,7 +173,7 @@
     <string name="confirm_delete_logs_desc">Usuń wszystkie logi na zawsze.</string>
     <string name="all_items_selected">Wybrano wszystkie elementy</string>
     <string name="access_all_directories">Zezwól na dostęp do wszystkich katalogów</string>
-    <string name="clear_errored">Usuń błąd</string>
+    <string name="clear_errored">Wyczyść błędne</string>
     <string name="freespace">Wolna przestrzeń</string>
     <string name="link_you_copied">Skopiowany link</string>
     <string name="end">Koniec</string>
@@ -184,7 +184,7 @@
     <string name="new_cut">Nowe cięcie</string>
     <string name="share">Udostępnij</string>
     <string name="cookies">Ciasteczka</string>
-    <string name="new_cookie">Nowe ciasteczko</string>
+    <string name="new_cookie">Nowy plik cookie</string>
     <string name="invert_selected">Odwróć wybrane</string>
     <string name="save_subs">Zapisz napisy</string>
     <string name="video_recommendations">Rekomendacje wideo</string>
@@ -330,7 +330,7 @@
     <string name="changed_path_for_everyone_to">Zmieniono ścieżkę pobierania każdego elementu na:</string>
     <string name="dismiss">Odrzuć</string>
     <string name="all">Wszystko</string>
-    <string name="generic">Ogólne</string>
+    <string name="generic">Uniwersalny</string>
     <string name="multiple_download_card">Karta wielokrotnego pobierania</string>
     <string name="format_filter">Format filtra</string>
     <string name="format_smallest">Najmniejszy format (według rozdzielczości)</string>
