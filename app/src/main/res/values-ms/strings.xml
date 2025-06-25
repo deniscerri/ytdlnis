@@ -83,7 +83,7 @@
     <string name="remove_search_history">Kosongkan sejarah carian</string>
     <string name="errored">Ralat</string>
     <string name="copy_log">Salin log</string>
-    <string name="preferred_download_type">Jenis Muat Turun Terpilih</string>
+    <string name="preferred_download_type">Jenis muat turun yang diutamakan</string>
     <string name="selected">Dipilih</string>
     <string name="all_items_selected">Semua item dipilih</string>
     <string name="delete_all_sources">Padam Semua Sumber</string>
@@ -181,4 +181,14 @@
     <string name="enable_mtime">Dayakan mtime</string>
     <string name="template">Templat</string>
     <string name="log_downloads_summary">Cipta fail log untuk setiap muat turun</string>
+    <string name="create_shortcut">Cipta pintasan</string>
+    <string name="download_queue">Barisan muat turun</string>
+    <string name="running">Berjalan</string>
+    <string name="command">Perintah</string>
+    <string name="shortcuts">Pintasan</string>
+    <string name="create_template">Cipta templat</string>
+    <string name="shortcuts_desc">Gunakan perintah yang biasa digunakan untuk membuat templat</string>
+    <string name="update_template">Kemas kini templat</string>
+    <string name="preferred_download_type_summary">Tab asal kad muat turun akan dibuka kepada</string>
+    <string name="cancelled">Dibatalkan</string>
 </resources>
