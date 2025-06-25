@@ -129,4 +129,5 @@
     <string name="search_command_hint">Carian menggunakan perintah</string>
     <string name="concurrent_fragments">Fragmen selari</string>
     <string name="limit_rate_summary">Batas muat turun maksimum (dalam bytes per saat), e.g. 50K atau 4.2M</string>
+    <string name="cancel_task">Batalkan aktiviti</string>
 </resources>
