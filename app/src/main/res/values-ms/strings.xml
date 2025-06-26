@@ -69,9 +69,9 @@
     <string name="ytdl_version">Versi yt-dlp</string>
     <string name="restrict_filenames">Hadkan nama fail</string>
     <string name="confirm_terminate">Hentikan semua muat turun dan menutup aplikasi secara paksa</string>
-    <string name="cut">Memotong</string>
+    <string name="cut">Potong</string>
     <string name="suggested">Dicadangkan</string>
-    <string name="share">Berkongsi</string>
+    <string name="share">Kongsi</string>
     <string name="select_all">Pilih semua</string>
     <string name="video_format">Format Video</string>
     <string name="url">URL</string>
