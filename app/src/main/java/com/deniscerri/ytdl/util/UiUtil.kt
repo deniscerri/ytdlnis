@@ -1183,7 +1183,6 @@ object UiUtil {
     fun showAudioBitrateDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
         val entries = context.getStringArray(R.array.audio_bitrate)
         val entryValues = context.getStringArray(R.array.audio_bitrate_values)
-
         val prefIndex = entryValues.indexOf(currentValue)
         MaterialAlertDialogBuilder(context)
             .setTitle(context.getString(R.string.bitrate))
