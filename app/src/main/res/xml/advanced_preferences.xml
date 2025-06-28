@@ -14,7 +14,7 @@
             android:defaultValue=""
             android:icon="@drawable/baseline_stars_24"
             android:key="generate_po_tokens"
-            android:summary="Web Client PO Token"
+            android:summary="@string/web_client_po_token"
             android:title="@string/generate_potokens" />
 
         <SwitchPreferenceCompat

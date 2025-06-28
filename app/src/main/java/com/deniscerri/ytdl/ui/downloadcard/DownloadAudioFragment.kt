@@ -315,6 +315,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                             splitByChaptersClicked = {
                                 downloadItem.audioPreferences.splitByChapters = it
                             },
+                            bitrateSet = {
+                                downloadItem.audioPreferences.bitrate = it
+                            },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
                             },

@@ -1556,4 +1556,20 @@
         <item>web_music</item>
     </string-array>
 
+    <string-array name="audio_bitrate">
+        <item>@string/defaultValue</item>
+        <item>320 kpbs</item>
+        <item>192 kpbs</item>
+        <item>128 kpbs</item>
+        <item>64 kpbs</item>
+    </string-array>
+
+    <string-array name="audio_bitrate_values">
+        <item></item>
+        <item>320k</item>
+        <item>192k</item>
+        <item>128k</item>
+        <item>64k</item>
+    </string-array>
+
 </resources>

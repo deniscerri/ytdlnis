@@ -24,7 +24,7 @@
                 android:checked="false"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="Web Client Po Token"
+                android:text="@string/web_client_po_token"
                 tools:ignore="HardcodedText" />
 
             <com.google.android.material.card.MaterialCardView

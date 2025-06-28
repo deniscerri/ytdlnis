@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.util.UiUtil
 
@@ -69,6 +70,31 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                     s
                 }else {
                     "${s}\n[${newValue}]"
+                }
+                true
+            }
+        }
+
+        findPreference<Preference>("audio_bitrate")?.apply {
+            var currentValue = prefs.getString("audio_bitrate", "")!!
+            val entries = context.getStringArray(R.array.audio_bitrate)
+            val entryValues = context.getStringArray(R.array.audio_bitrate_values)
+
+            summary = if (currentValue.isNotBlank()) {
+                entries[entryValues.indexOf(currentValue)]
+            }else {
+                getString(R.string.defaultValue)
+            }
+
+            setOnPreferenceClickListener {
+                currentValue = prefs.getString("audio_bitrate", "")!!
+                UiUtil.showAudioBitrateDialog(requireActivity(), currentValue) {
+                    editor.putString("audio_bitrate", it).apply()
+                    summary = if (it.isNotBlank()) {
+                        entries[entryValues.indexOf(it)]
+                    }else {
+                        getString(R.string.defaultValue)
+                    }
                 }
                 true
             }

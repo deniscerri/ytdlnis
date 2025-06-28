@@ -320,7 +320,7 @@ object Extensions {
                 Picasso.get()
                     .load(imageURL)
                     .resize(1280, 0)
-                    .transform(BlurTransformation(context, 10, 1))
+                    .transform(BlurTransformation(context, 7, 1))
                     .onlyScaleDown()
                     .into(this)
 

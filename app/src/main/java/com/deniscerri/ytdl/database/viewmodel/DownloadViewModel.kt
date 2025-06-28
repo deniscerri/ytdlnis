@@ -293,8 +293,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+        val bitrate = sharedPreferences.getString("audio_bitrate", "")
 
-        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
+        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!), bitrate!!)
 
 
         val preferredAudioFormats = getPreferredAudioFormats(resultItem.formats)
@@ -473,6 +474,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
 
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
+        val audioBitrate = sharedPreferences.getString("audio_bitrate", "")
 
         val extraCommands = when (historyItem.type) {
             Type.audio -> extraCommandsForAudio
@@ -484,7 +486,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }.joinToString(" ") { it.content }
 
-        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!))
+        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!), audioBitrate!!)
         val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, subsLanguages, recodeVideo = recodeVideo)
         var path = defaultPath
         historyItem.downloadPath.first().apply {
@@ -890,9 +892,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.startDownloadWorker(emptyList(), application)
     }
 
-    suspend fun queueProcessingDownloads() : QueueDownloadsResult {
+    suspend fun queueProcessingDownloads(ignoreDuplicates: Boolean = false) : QueueDownloadsResult {
         val processingItems = repository.getAllProcessingDownloads()
-        return queueDownloads(processingItems)
+        return queueDownloads(processingItems, ignoreDuplicates)
     }
 
     data class QueueDownloadsResult(
@@ -1262,13 +1264,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }
     }
 
-    suspend fun updateProcessingDownloadTimeAndQueueScheduled(time: Long) : QueueDownloadsResult {
+    suspend fun updateProcessingDownloadTimeAndQueueScheduled(time: Long, ignoreDuplicates: Boolean = false) : QueueDownloadsResult {
         val processing = repository.getAllProcessingDownloads()
         processing.forEach {
             it.downloadStartTime = time
             it.status = DownloadRepository.Status.Scheduled.toString()
         }
-        return queueDownloads(processing)
+        return queueDownloads(processing, ignoreDuplicates)
     }
 
     fun checkIfAllProcessingItemsHaveSameType(selectedItems: List<Long>?) : Pair<Boolean, Type> {

@@ -516,7 +516,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         if (!filePresent) {
                             historyViewModel.delete(it, false)
                         }
-                        downloadViewModel.queueDownloads(listOf(downloadItem))
+                        downloadViewModel.queueDownloads(listOf(downloadItem), ignoreDuplicates = true)
                     }
                     historyViewModel.delete(it, false)
                 },
@@ -524,6 +524,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
                         Pair("result", downloadViewModel.createResultItemFromHistory(it)),
                         Pair("type", it.type),
+                        Pair("ignore_duplicates", true),
                     ))
                 }
             )
@@ -647,7 +648,8 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
 
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
                                 Pair("result", downloadViewModel.createResultItemFromHistory(tmp)),
-                                Pair("type", tmp.type)
+                                Pair("type", tmp.type),
+                                Pair("ignore_duplicates", true)
                             ))
                         }else {
                             val showDownloadCard = sharedPreferences.getBoolean("download_card", true)
@@ -656,6 +658,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                             if (showDownloadCard){
                                 val bundle = Bundle()
                                 bundle.putLongArray("currentHistoryIDs", selectedObjects.toLongArray())
+                                bundle.putBoolean("ignore_duplicates", true)
                                 findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
                             }
                         }
@@ -741,7 +744,8 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                             historyAdapter.notifyItemChanged(position)
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
                                 Pair("result", downloadViewModel.createResultItemFromHistory(item)),
-                                Pair("type", item.type)
+                                Pair("type", item.type),
+                                Pair("ignore_duplicates", true)
                             ))
                         }
                     }

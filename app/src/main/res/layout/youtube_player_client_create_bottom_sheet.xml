@@ -131,7 +131,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="PO Token"
+                    android:text="@string/potoken"
                     tools:ignore="HardcodedText" />
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:tag="potoken_gvs"
-                    android:hint="PO Token (GVS)"
+                    android:hint="GVS"
                     app:endIconDrawable="@drawable/ic_clipboard"
                     app:endIconMode="custom"
                     android:paddingBottom="10dp">
@@ -158,10 +158,30 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:tag="potoken_player"
-                    android:hint="PO Token (Player)"
+                    android:hint="Player"
                     app:endIconDrawable="@drawable/ic_clipboard"
                     app:endIconMode="custom"
-                    android:paddingBottom="10dp">
+                    android:paddingBottom="10dp"
+                    tools:ignore="HardcodedText">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/po_token_subs"
+                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:tag="potoken_subs"
+                    android:hint="Subs"
+                    app:endIconDrawable="@drawable/ic_clipboard"
+                    app:endIconMode="custom"
+                    android:paddingBottom="10dp"
+                    tools:ignore="HardcodedText">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -176,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:tag="url_regex"
-                    android:hint="PO Token URL Regex"
+                    android:hint="URL Regex"
                     app:endIconDrawable="@drawable/ic_plus"
                     app:endIconMode="custom"
                     android:paddingBottom="10dp"

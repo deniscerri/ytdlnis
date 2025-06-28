@@ -85,6 +85,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
     private lateinit var result: ResultItem
     private lateinit var type: Type
+    private var ignoreDuplicates: Boolean = false
     private var disableUpdateData : Boolean = false
     private var currentDownloadItem: DownloadItem? = null
     private var incognito: Boolean = false
@@ -108,6 +109,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         }
         type = arguments?.getSerializable("type") as Type
         disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
+        ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true
 
         if (res == null){
             dismiss()
@@ -335,7 +337,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
                         lifecycleScope.launch {
                             val result = withContext(Dispatchers.IO){
-                                downloadViewModel.queueDownloads(itemsToQueue)
+                                downloadViewModel.queueDownloads(itemsToQueue, ignoreDuplicates)
                             }
 
                             if (result.message.isNotBlank()){
@@ -350,7 +352,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 }else{
                     lifecycleScope.launch {
                         val result = withContext(Dispatchers.IO){
-                            downloadViewModel.queueDownloads(listOf(item))
+                            downloadViewModel.queueDownloads(listOf(item), ignoreDuplicates)
                         }
 
                         if (result.message.isNotBlank()){
@@ -381,7 +383,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
                         lifecycleScope.launch {
                             val result = withContext(Dispatchers.IO) {
-                                downloadViewModel.queueDownloads(itemsToQueue)
+                                downloadViewModel.queueDownloads(itemsToQueue, ignoreDuplicates)
                             }
                             withContext(Dispatchers.Main){
                                 handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
@@ -390,7 +392,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                     })
                 }else{
                     val result = withContext(Dispatchers.IO) {
-                        downloadViewModel.queueDownloads(listOf(item))
+                        downloadViewModel.queueDownloads(listOf(item), ignoreDuplicates)
                     }
                     handleDuplicatesAndDismiss(result.duplicateDownloadIDs)
                 }

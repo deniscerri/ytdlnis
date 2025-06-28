@@ -73,6 +73,13 @@
             app:summary="@string/embed_metadata_summary"
             app:title="@string/embed_metadata" />
 
+        <Preference
+            android:icon="@drawable/baseline_high_quality_24"
+            app:key="audio_bitrate"
+            app:defaultValue=""
+            android:summary="@string/defaultValue"
+            app:title="@string/bitrate" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
@@ -97,23 +104,6 @@
             app:key="playlist_as_album"
             app:summary="@string/playlist_as_album_summary"
             app:title="@string/playlist_as_album" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            app:icon="@drawable/ic_music"
-            app:key="use_audio_quality"
-            app:title="@string/custom_audio_quality" />
-
-        <SeekBarPreference
-            android:defaultValue="0"
-            android:max="10"
-            android:dependency="use_audio_quality"
-            app:key="audio_quality"
-            app:min="0"
-            app:showSeekBarValue="true"
-            app:summary="@string/audio_quality_summary"
-            app:title="@string/audio_quality" />
 
         <ListPreference
             app:icon="@drawable/ic_language"

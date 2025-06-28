@@ -105,6 +105,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
     private lateinit var currentDownloadIDs: List<Long>
     private lateinit var currentHistoryIDs: List<Long>
+    private var ignoreDuplicates: Boolean = false
     private var processingItemsCount : Int = 0
 
     private lateinit var formatBtn : MenuItem
@@ -128,6 +129,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
         currentHistoryIDs = arguments?.getLongArray("currentHistoryIDs")?.toList() ?: listOf()
+        ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true
         processingItemsCount = currentDownloadIDs.size
     }
 
@@ -242,7 +244,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
-                        val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis)
+                        val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis, ignoreDuplicates)
                         if (result.message.isNotBlank()){
                             lifecycleScope.launch {
                                 withContext(Dispatchers.Main) {
@@ -265,7 +267,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
                     historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
-                    val result = downloadViewModel.queueProcessingDownloads()
+                    val result = downloadViewModel.queueProcessingDownloads(ignoreDuplicates)
                     if (result.message.isNotBlank()){
                         lifecycleScope.launch {
                             withContext(Dispatchers.Main) {
@@ -544,6 +546,15 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                                 it.audioPreferences.splitByChapters = enabled
                                             }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                        },
+                                        bitrateSet = { bitrate ->
+                                            items.forEach {
+                                                it.audioPreferences.bitrate = bitrate
+                                            }
+                                            requireActivity().lifecycleScope.launch {
+                                                items.forEach { downloadViewModel.updateDownload(it) }
+                                            }
+                                            bottomSheet.dismiss()
                                         },
                                         filenameTemplateSet = {template ->
                                             items.forEach {

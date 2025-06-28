@@ -867,13 +867,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             if(downloadItem.title.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title)
+                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title.replace("""\""", """\\"""))
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
 
             if (downloadItem.author.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author)
+                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author.replace("""\""", """\\"""))
                 metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
@@ -890,10 +890,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (downloadItem.downloadSections.split(";").size > 1){
                     filenameTemplate = "%(autonumber)d. $filenameTemplate [%(section_start>%H∶%M∶%S)s]"
                 }
-            }
-
-            if (sharedPreferences.getBoolean("use_audio_quality", false)){
-                request.addOption("--audio-quality", sharedPreferences.getInt("audio_quality", 0).toString())
             }
 
             if (sharedPreferences.getBoolean("write_description", false)){
@@ -1087,6 +1083,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     if (filenameTemplate.isNotBlank()){
                         request.addOption("-o", "${filenameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
+                }
+
+                if (downloadItem.audioPreferences.bitrate.isNotBlank()) {
+                    request.addOption("--audio-quality", downloadItem.audioPreferences.bitrate)
                 }
 
             }

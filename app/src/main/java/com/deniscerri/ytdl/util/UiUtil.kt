@@ -1180,6 +1180,21 @@ object UiUtil {
         dialog.getButton(AlertDialog.BUTTON_NEUTRAL).gravity = Gravity.START
     }
 
+    fun showAudioBitrateDialog(context: Activity, currentValue: String, ok: (newValue: String) -> Unit){
+        val entries = context.getStringArray(R.array.audio_bitrate)
+        val entryValues = context.getStringArray(R.array.audio_bitrate_values)
+
+        val prefIndex = entryValues.indexOf(currentValue)
+        MaterialAlertDialogBuilder(context)
+            .setTitle(context.getString(R.string.bitrate))
+            .setSingleChoiceItems(entries, prefIndex) { dialog, index ->
+                ok(entryValues[index])
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
 
     fun copyToClipboard(text: String, activity: Activity){
         val clipboard = activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -1620,6 +1635,7 @@ object UiUtil {
         embedThumbClicked: (Boolean) -> Unit,
         cropThumbClicked: (Boolean) -> Unit,
         splitByChaptersClicked: (Boolean) -> Unit,
+        bitrateSet: (String) -> Unit,
         filenameTemplateSet: (String) -> Unit,
         sponsorBlockItemsSet: (Array<String>, List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
@@ -1652,6 +1668,34 @@ object UiUtil {
 
         splitByChapters.setOnClickListener {
             splitByChaptersClicked(splitByChapters.isChecked)
+        }
+
+        val bitrate = view.findViewById<Chip>(R.id.audio_bitrate)
+        bitrate.apply {
+            fun changeLabelText(newVal: String) {
+                if(newVal.isBlank()) return
+                val t = context.getString(R.string.bitrate) + " (${newVal})"
+                text = t
+            }
+
+            fun getCurrentBitrate() = if (items.size == 1 || items.all { it.audioPreferences.bitrate == items[0].audioPreferences.bitrate }){
+                items[0].audioPreferences.bitrate
+            }else {
+                ""
+            }
+
+            changeLabelText(getCurrentBitrate())
+
+            setOnClickListener {
+                showAudioBitrateDialog(context, getCurrentBitrate()) {
+                    var newText = context.getString(R.string.bitrate)
+                    if (it.isNotBlank()) {
+                        newText += " (${it})"
+                    }
+                    text = newText
+                    bitrateSet(it)
+                }
+            }
         }
 
         val filenameTemplate = view.findViewById<Chip>(R.id.filename_template)
