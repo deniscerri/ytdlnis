@@ -456,7 +456,7 @@
     <string name="retry_every">Opakovať každých</string>
     <string name="minutes">minút</string>
     <string name="cache_directory">Priečinok medzipamäte</string>
-    <string name="use_only_po_token">Použiť iba PO Token (ignorovať klienta prehrávača)</string>
+    <string name="use_only_po_token">Použiť iba PO token (ignorovať klienta prehrávača)</string>
     <string name="cache_directory_warning">Zmena priečinka nedzipamäte môže spôsobiť neočakávané problémy. Ak aplikácia nemôže zapisovať do nakonfigurovanej cesty, uchýli sa k predvolenému internému adresáru vyrovnávacej pamäte</string>
     <string name="sync_with_source_desc">Odstrániť stiahnuté položky, ak chýbajú v zdroji</string>
     <string name="retry_missing_downloads_desc">Znovu stiahnuť položky, ktoré sa nenachádzajú v histórii sťahovania</string>
@@ -469,10 +469,11 @@
     <string name="write_subs_when_embed_subs">Zapísať titulky pri vkladaní</string>
     <string name="use_code_highlighter">Použiť zvýrazňovač farby kódu</string>
     <string name="regenerate">Znovu vygenerovať</string>
-    <string name="use_format_sorting">Použiť formát radenia podľa dôležitosti</string>
+    <string name="use_format_sorting">Použiť radenie formátu podľa dôležitosti</string>
     <string name="reset_processed_links_desc">Znovu stiahnuť všetky položky</string>
     <string name="app_icon_change">Ikona sa môže zmeniť a aplikácia sa zavrie</string>
-    <string name="generate_potokens_warning">* Pre zapnutie tejto funkcie musíte zakázať súbory cookie</string>
+    <string name="generate_potokens_warning">Pre zapnutie tejto funkcie musíte zakázať súbory cookie</string>
     <string name="custom">Vlastné</string>
     <string name="cut_unsupported">Orezanie nie je pre túto položku k dispozícii</string>
+    <string name="select_between_desc">Špecifikujte rozsah položiek pre výber</string>
 </resources>
