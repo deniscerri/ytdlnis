@@ -11,7 +11,7 @@
     <string name="download_all">Stáhnout vše</string>
     <string name="updating">Aktualizuji</string>
     <string name="home">Domů</string>
-    <string name="remove_results">Odstranit výsledky</string>
+    <string name="remove_results">Vymazat výsledky</string>
     <string name="failed_download">Soubor se nepodařilo stáhnout</string>
     <string name="search">Hledat</string>
     <string name="settings">Nastavení</string>
@@ -435,7 +435,7 @@
     <string name="websites">Webové stránky</string>
     <string name="data_fetching_extra_command">Doplňkové příkazy pro načítání dat</string>
     <string name="data_fetching_extra_command_summary">Povolí použití šablon příkazů pro načítání dat jako doplňkových příkazů</string>
-    <string name="disable_write_info_json_summary">(Nedoporučuje se) Při každém restartu/obnovení stahování bude yt-dlp znovu stahovat data json ze serverů.</string>
+    <string name="disable_write_info_json_summary">Při každém restartu/obnovení stahování bude yt-dlp znovu stahovat data json ze serverů (nedoporučuje se)</string>
     <string name="disable_write_info_json">Vypnout zápis údajů Json</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube doporučené (potřebuje soubory cookie)</string>
     <string name="ytdlp_watch_history">yt-dlp YouTube historie sledování (potřebuje soubory cookie)</string>
@@ -475,4 +475,5 @@
     <string name="generate_potokens_warning">* Pro zapnutí této funkce musíte zakázat soubory cookie</string>
     <string name="custom">Vlastní</string>
     <string name="cut_unsupported">Ořezání není pro tuto položku k dispozici</string>
+    <string name="select_between_desc">Specifikujte rozsah položek pro výběr</string>
 </resources>
