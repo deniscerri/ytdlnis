@@ -96,7 +96,7 @@
     <string name="update">Aktualizovať</string>
     <string name="format_source">Zdroj formátov</string>
     <string name="link_you_copied">Odkaz, ktorý ste skopírovali</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">Material you</string>
     <string name="resume">Pokračovať</string>
     <string name="finished_download_notification_channel_description">Upozornenie na dokončené sťahovanie</string>
     <string name="add_template_first">Musíte mať vytvorenú aspoň jednu šablónu príkazu!</string>
@@ -226,7 +226,7 @@
     <string name="search_suggestions_summary">Získate návrhy vyhľadávania z Google</string>
     <string name="sponsorblock_previews">Ukážky</string>
     <string name="show_download_card">Zobraziť kartu sťahovania</string>
-    <string name="socks5_proxy">SOCKS5 Proxy URL</string>
+    <string name="socks5_proxy">SOCKS5 proxy URL</string>
     <string name="video_quality">Kvalita videa</string>
     <string name="template">Šablóna</string>
     <string name="appearance">Vzhľad</string>
@@ -305,7 +305,7 @@
     <string name="hide_thumbnails">Skryť miniatúry</string>
     <string name="preferred_audio_language">Uprednostňovaný jazyk zvuku</string>
     <string name="auto">Auto</string>
-    <string name="extra_command">Dodatočný príkaz</string>
+    <string name="extra_command">Ďalší príkaz</string>
     <string name="auto_update_ytdlp">Automatická aktualizácia yt-dlp</string>
     <string name="subtitle_format">Formát titulkov</string>
     <string name="loading">Načítanie</string>
@@ -335,16 +335,16 @@
     <string name="format_filter">Filtrovať formát</string>
     <string name="changed_path_for_everyone_to">Zmenená cesta sťahovania každej položky na:</string>
     <string name="multiple_download_card">Viacnásobná karta sťahovania</string>
-    <string name="delete_all_sources">Vymazať všetky zdroje</string>
+    <string name="delete_all_sources">Odstrániť všetky zdroje</string>
     <string name="confirm_delete_sources_desc">Vymaže natrvalo všetky zdroje</string>
     <string name="force_ipv4">Vynútiť IPv4</string>
     <string name="day">Deň</string>
     <string name="occurrences">udalostiach</string>
     <string name="after">Po</string>
     <string name="month">Mesiac</string>
-    <string name="retry_missing_downloads">Opakovať zmeškané sťahovania</string>
+    <string name="retry_missing_downloads">Opakovať chýbajúce sťahovania</string>
     <string name="save_auto_subs">Uložiť automatické titulky</string>
-    <string name="not_deleted">Nevymazané</string>
+    <string name="not_deleted">Neodstránené</string>
     <string name="archive">Stiahnuť archív [Použije archívny súbor yt-dlp namiesto vstavanej funkcie, aby sa zabránilo duplicitnému sťahovaniu]</string>
     <string name="copy_urls">Kopírovať adresy URL</string>
     <string name="observe_sources">Sledovať zdroje</string>
@@ -363,7 +363,7 @@
     <string name="thumbnail_format">Formát miniatúr</string>
     <string name="get_new_uploads">Prevziať len budúce nahrané položky (ignorovať existujúce položky)</string>
     <string name="also_download_audio">Stiahnuť aj ako audio</string>
-    <string name="wrap_text">Zabaliť text</string>
+    <string name="wrap_text">Zalomiť text</string>
     <string name="scroll_down">Posun na spodok</string>
     <string name="text_size">Veľkosť textu</string>
     <string name="add">Pridať</string>
@@ -375,7 +375,7 @@
     <string name="no_download_fragments">Nesťahovať ako fragmenty</string>
     <string name="display_over_apps">Zobraziť cez ostatné aplikácie</string>
     <string name="my_filename_templates">Moje šablóny názvov súborov</string>
-    <string name="prefer_smaller_formats">Uprednostňovať menšie formáty</string>
+    <string name="prefer_smaller_formats">Uprednostňovať veľkosťou menšie formáty</string>
     <string name="display_over_apps_summary">Zabezpečí, aby sa karta sťahovania vždy zobrazovala na vrchu. Pri zapnutí tejto funkcie, ak sa aktuálne spustená aplikácia zatvorí, tak sa zobrazí karta sťahovania</string>
     <string name="hour">Hodina</string>
     <string name="disabled">Zakázané</string>
@@ -416,7 +416,7 @@
     <string name="weekly">Týždenne</string>
     <string name="monthly">Mesačne</string>
     <string name="cleanup_leftover_downloads">Vyčistiť zvyšky sťahovania (zrušené, chybné)</string>
-    <string name="continue_anyway">Pokračovať ďalej</string>
+    <string name="continue_anyway">Pokračovať aj tak</string>
     <string name="playlist_as_album">Použiť názov playlistu ako metadáta albumu</string>
     <string name="playlist_as_album_summary">Ak metadáta albumu nie sú k dispozícii, použije namiesto nich názov playlistu</string>
     <string name="data_fetching_extractor_youtube">Extraktor načítaných dát (YouTube)</string>
@@ -433,9 +433,9 @@
     <string name="deleted">Odstránené</string>
     <string name="websites">Webové stránky</string>
     <string name="thumbnail">Miniatúra</string>
-    <string name="data_fetching_extra_command">Doplnkové príkazy na načítanie údajov</string>
+    <string name="data_fetching_extra_command">Ďalšie príkazy na načítanie údajov</string>
     <string name="data_fetching_extra_command_summary">Povolí šablóny príkazov, ktoré budú použité na načítanie údajov ako doplnkové príkazy</string>
-    <string name="disable_write_info_json_summary">(Neodporúča sa) Pri každom reštarte/obnovení sťahovania bude yt-dlp znovu sťahovať údaje json zo serverov.</string>
+    <string name="disable_write_info_json_summary">Pri každom reštarte/obnovení sťahovania bude yt-dlp znovu sťahovať údaje json zo serverov (neodporúča sa)</string>
     <string name="disable_write_info_json">Vypnúť zápis údajov Json</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube pozerať neskôr (potrebuje súbory cookie)</string>
     <string name="ytdlp_liked">yt-dlp YouTube obľúbené videá (potrebuje cookies)</string>
