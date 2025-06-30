@@ -238,7 +238,7 @@
     <string name="piped_instance">Instancja Piped</string>
     <string name="piped_instance_summary">Zapisz serwer PIPED API, którego aplikacja może używać do zapytań i formatów YouTube</string>
     <string name="socks5_proxy_summary">Użyj określonego serwera proxy HTTP/HTTPS/SOCKS</string>
-    <string name="socks5_proxy">Adres URL serwera proxy Socks5</string>
+    <string name="socks5_proxy">Adres URL serwera proxy SOCKS5</string>
     <string name="retries">Ponowne próby</string>
     <string name="fragment_retries">Ponowne próby fragmentu</string>
     <string name="format_order">Kolejność formatów</string>
