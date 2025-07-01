@@ -38,7 +38,7 @@
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">فصول الفيديو</string>
-    <string name="worst_quality">الأقل جودة</string>
+    <string name="worst_quality">أقل جودة</string>
     <string name="embed_thumb">الصورة المصغرة غلافًا للصوت</string>
     <string name="downloading_update">يتم تحميل أحدث إصدار</string>
     <string name="audio">الصوت</string>
