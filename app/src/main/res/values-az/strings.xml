@@ -476,4 +476,6 @@
     <string name="custom">Xüsusi</string>
     <string name="cut_unsupported">Bu element üçün kəsmə əlçatan deyil</string>
     <string name="select_between_desc">Seçmək üçün elementlərin həddini təyin et</string>
+    <string name="potoken">PO Token</string>
+    <string name="web_client_po_token">Web Qəbuledici PO Token</string>
 </resources>
