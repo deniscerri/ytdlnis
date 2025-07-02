@@ -272,7 +272,7 @@
     <string name="backup_created_successfully">Plik kopii zapasowej został pomyślnie zapisany!</string>
     <string name="general">Ogólne</string>
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
-    <string name="force_keyframes">Wymuś klatki kluczowe na cięciach</string>
+    <string name="force_keyframes">Wymuś kluczowe klatki na cięciach</string>
     <string name="force_keyframes_summary">Wolniejszy proces, ale dokładniejsze cięcie</string>
     <string name="use_extra_commands">Dodaj dodatkowe polecenia</string>
     <string name="use_extra_commands_summary">Do pobierania audio/wideo. Dodaj dodatkowe polecenia wraz z konfiguracją GUI</string>
@@ -287,7 +287,7 @@
     <string name="preferred_audio_codec">Preferowany kodek audio</string>
     <string name="use_cookies">Używaj plików cookie</string>
     <string name="update_app_beta_summary">Zarejestruj się w programie beta. (Mogą wystąpić błędy).</string>
-    <string name="update_app_beta">Wydania testowe(BETA)</string>
+    <string name="update_app_beta">Wydania BETA</string>
     <string name="scheduling">Planowanie</string>
     <string name="update_formats_background">Aktualizuj formaty w tle</string>
     <string name="embed_metadata">Osadź metadane</string>
@@ -295,7 +295,7 @@
     <string name="write_description">Zapisz opis</string>
     <string name="cache_first_summary">Pliki pamięci podręcznej są pobierane do pamięci wewnętrznej, a następnie przenoszone do wybranego katalogu. Użyj tej opcji, jeśli nie możesz pisać bezpośrednio do pamięci</string>
     <string name="write_description_summary">Zapisz plik opisu</string>
-    <string name="cache_first">Najpierw buforuj pobieranie</string>
+    <string name="cache_first">Najpierw pobierz pamięć podręczną</string>
     <string name="use_sponsorblock">Użyj SponsorBlock</string>
     <string name="preferred_video_codec">Preferowany kodek wideo</string>
     <string name="use_scheduler">Pobierz zgodnie z harmonogramem</string>
@@ -323,7 +323,7 @@
     <string name="ytdl_source">Źródło yt-dlp</string>
     <string name="buffer_size">Rozmiar bufora</string>
     <string name="preferred_audio_language">Preferowany język dźwięku</string>
-    <string name="update_ytdl_stable">Stabilna wersja yt-dlp</string>
+    <string name="update_ytdl_stable">Wersja stabilna yt-dlp</string>
     <string name="changelog">Dziennik zmian</string>
     <string name="source">Źródło</string>
     <string name="app">Aplikacja</string>
@@ -332,7 +332,7 @@
     <string name="all">Wszystko</string>
     <string name="generic">Uniwersalny</string>
     <string name="multiple_download_card">Karta wielokrotnego pobierania</string>
-    <string name="format_filter">Format filtra</string>
+    <string name="format_filter">Filtr formatów</string>
     <string name="format_smallest">Najmniejszy format (według rozdzielczości)</string>
     <string name="cut_unavailable_please_update_item">Musisz zaktualizować dane elementu, aby móc korzystać z funkcji cięcia</string>
     <string name="observe_sources">Obserwuj źródła</string>
@@ -401,13 +401,13 @@
     <string name="navigation_bar">Pasek nawigacji</string>
     <string name="label_visibility">Widoczność etykiet</string>
     <string name="always">Zawsze</string>
-    <string name="sync_with_source">Synchronizacja ze źródłem</string>
+    <string name="sync_with_source">Synchronizuj ze źródłem</string>
     <string name="queue">Kolejka</string>
     <string name="reset">Zresetuj</string>
     <string name="playlist_as_album">Używanie nazwy listy odtwarzania jako metadanych albumu</string>
     <string name="playlist_as_album_summary">Jeśli nie występują metadane albumu, użyj nazwy listy odtwarzania</string>
     <string name="cleanup_leftover_downloads">Czyszczenie pozostałości po pobraniu (anulowane, błędne)</string>
-    <string name="use_alarm_manager">Używanie AlarmManager zamiast WorkManager do tworzenia harmonogramów</string>
+    <string name="use_alarm_manager">Używah AlarmManager zamiast WorkManager do tworzenia harmonogramów</string>
     <string name="use_alarm_manager_summary">Włącz tę opcję, jeśli WorkManager jest ograniczony przez dostawcę urządzenia lub zaplanowane zadania nie są zbyt dokładne</string>
     <string name="restore_info">Naciśnij przycisk „Restore” (Przywróć), aby połączyć zapisane dane z bieżącymi danymi.
 \nNaciśnij „Reset”, aby usunąć i używać tylko zapisanych danych w pliku.</string>
@@ -415,7 +415,7 @@
     <string name="weekly">Co tydzień</string>
     <string name="monthly">Co miesiąc</string>
     <string name="continue_anyway">Kontynuuj mimo wszystko</string>
-    <string name="use_item_url_not_playlist">Użyj adresu URL elementu zamiast adresu URL listy odtwarzania</string>
+    <string name="use_item_url_not_playlist">Użyj URL elementu zamiast URL listy odtwarzania</string>
     <string name="use_item_url_not_playlist_summary">Metadane listy odtwarzania nie zostaną osadzone po włączeniu tej opcji</string>
     <string name="recode_video_summary">Przekodowuje plik wideo do określonego formatu wideo</string>
     <string name="recode_video">Przekoduj Video</string>
@@ -435,12 +435,12 @@
     <string name="socket_timeout">Limit czasu gniazda</string>
     <string name="status">Status</string>
     <string name="data_fetching_extra_command_summary">Włączenie szablonów poleceń, które mogą być używane do pobierania danych jako dodatkowe polecenia</string>
-    <string name="disable_write_info_json_summary">(Niezalecane) Za każdym razem, gdy ponownie uruchomisz / wznowisz pobieranie, yt-dlp ponownie pobierze dane json z serwerów.</string>
+    <string name="disable_write_info_json_summary">Za każdym razem, gdy ponownie uruchomisz / wznowisz pobieranie, yt-dlp ponownie pobierze dane json z serwerów. (Nie zalecane)</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (wymaga plików cookie)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Rekomendacje YouTube (wymaga plików cookie)</string>
+    <string name="ytdlp_recommnedations">Rekomendacje YouTube yt-dlp (wymaga plików cookie)</string>
     <string name="data_fetching_extractor_youtube">Ekstraktor pobierania danych (YouTube)</string>
-    <string name="ytdlp_liked">YT-DLP Polubione filmy w serwisie Youtube (wymaga plików cookie)</string>
-    <string name="ytdlp_watch_history">Historia oglądania w YouTube YT-DLP (wymaga plików cookie)</string>
+    <string name="ytdlp_liked">yt-dlp Polubione filmy w serwisie Youtube (wymaga plików cookie)</string>
+    <string name="ytdlp_watch_history">Historia oglądania w YouTube yt-dlp(wymaga plików cookie)</string>
     <string name="player_client">Klient Odtwarzacza</string>
     <string name="list">Lista</string>
     <string name="grid">Siatka</string>
@@ -460,8 +460,8 @@
     <string name="minutes">Minut</string>
     <string name="use_format_sorting">Użyj porządku ważności formatu</string>
     <string name="reset_processed_links_desc">Ponownie pobierz wszystkie elementy</string>
-    <string name="use_only_po_token">Używaj tylko tokena PO (ignoruj klienta odtwarzacza)</string>
-    <string name="prefer_container_over_codec_audio">Preferuj kontener nad kodekiem przy pobieraniu audio</string>
+    <string name="use_only_po_token">Użyj tylko tokena PO (ignoruj klienta odtwarzacza)</string>
+    <string name="prefer_container_over_codec_audio">Preferuj kontener nad kodekiem dla pobierań audio</string>
     <string name="app_icon_change">Ikona może się zmienić, a aplikacja zostanie zamknięta</string>
     <string name="reset_preferences_in_screen">Zresetuj wszystkie preferencje na tym ekranie</string>
     <string name="automatic_backup">Automatyczna kopia zapasowa</string>
@@ -472,7 +472,7 @@
     <string name="generate_potokens">Wygeneruj token PO</string>
     <string name="regenerate">Wygeneruj ponownie</string>
     <string name="cut_unsupported">Przycinanie jest niedostępne dla tego elementu</string>
-    <string name="generate_potokens_warning">* Uruchamiając to, potrzebujesz wyłączyć ciasteczka</string>
+    <string name="generate_potokens_warning">* Uruchamiając to, musisz wyłączyć Cookies</string>
     <string name="custom">Niestandardowe</string>
     <string name="web_client_po_token">Token PO klienta sieci web</string>
     <string name="use_code_highlighter">Użyj kodu koloru zakreślenia</string>
