@@ -454,5 +454,10 @@
     <string name="player_client">Client redare</string>
     <string name="player_client_summary"><![CDATA[Clienți redare YouTube și token PO]]></string>
     <string name="use_app_language_for_metadata">Folosește limba aplicației pentru metadate</string>
-    <string name="layout">Aspect</string>
+    <string name="layout">Aranjament</string>
+    <string name="list">Listă</string>
+    <string name="grid">Grilă</string>
+    <string name="use_only_po_token">Folosește doar tokenul PO (ignorează clientul de redare)</string>
+    <string name="cache_directory">Dosarul cache</string>
+    <string name="cache_directory_warning">Schimbarea folderului cache ar putea cauza probleme neașteptate. Dacă aplicația nu poate scrie în calea configurată, va recurge la directorul cache intern implicit.</string>
 </resources>
