@@ -412,5 +412,7 @@
     <string name="format_importance_note">Ajustați importanța elementelor de format. Această ordine va fi utilizată numai atunci când aplicația preia formatele din cardul de descărcare și selectează automat formatul!</string>
     <string name="enable_alarm_permission">Trebuie să activați permisiunea SCHEDULE_EXACT_ALARM în setările aplicației.</string>
     <string name="sync_with_source_desc">Ștergeți elementele descărcate dacă lipsesc din sursă</string>
-    <string name="restore_info">Apăsați pe „Restaurare” pentru a îmbina datele salvate cu datele curente.\n\nApăsați pe „Resetare” pentru a șterge și a utiliza doar datele salvate din fișier.</string>
+    <string name="restore_info">Apăsați pe „Restaurare” pentru a îmbina datele salvate cu datele curente.\nApăsați pe „Resetare” pentru a șterge și a utiliza doar datele salvate din fișier.</string>
+    <string name="use_alarm_manager">Folosește AlarmManager în loc de WorkManager pentru programare</string>
+    <string name="use_alarm_manager_summary">Activați această opțiune dacă WorkManager este restricționat de furnizorul dispozitivului sau dacă lucrările programate nu sunt prea precise.</string>
 </resources>
