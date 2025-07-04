@@ -56,7 +56,7 @@
     <string name="logs">Jurnale</string>
     <string name="file_name_template">Șablon de nume de fișier</string>
     <string name="language">Limba</string>
-    <string name="select_format">Selectați format</string>
+    <string name="select_format">Selectă format</string>
     <string name="download_queue">Descărcări în coadă</string>
     <string name="export_from_clipboard">Exportă în clipboard</string>
     <string name="create_template">Creați un șablon</string>
@@ -70,8 +70,8 @@
     <string name="command_templates">Șabloane de comandă</string>
     <string name="terminal">Terminal</string>
     <string name="format">Format</string>
-    <string name="please_wait">Va rugam asteptati</string>
-    <string name="remove_search_history">Sterge istoricul cautarii</string>
+    <string name="please_wait">Vă rugăm asteptati</string>
+    <string name="remove_search_history">Sterge istoricul căutării</string>
     <string name="enable_mtime">Activați mtime</string>
     <string name="enable_mtime_summary">Setați antetul HTTP Ultima modificare ca oră pentru ultima modificare</string>
     <string name="running">Rulează</string>
