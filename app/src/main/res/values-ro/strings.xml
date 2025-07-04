@@ -439,8 +439,16 @@
     <string name="data_fetching_extra_command_summary">Activează utilizarea șabloanelor de comenzi pentru preluarea datelor ca comenzi suplimentare</string>
     <string name="disable_write_info_json">Dezactivați scrierea informațiilor în format JSON</string>
     <string name="disable_write_info_json_summary">De fiecare dată când reporniți/reluați descărcarea, yt-dlp va redescărca datele json de pe servere (nerecomandat)</string>
-    <string name="ytdlp_watch_later">yt-dlp Vizionare YouTube mai târziu (necesită cookie-uri)</string>
+    <string name="ytdlp_watch_later">yt-dlp Vizionare mai târziu YouTube (necesită cookie-uri)</string>
     <string name="ytdlp_recommnedations">Recomandări YouTube yt-dlp (necesită cookie-uri)</string>
     <string name="ytdlp_liked">yt-dlp Videoclipuri apreciate Youtube (necesită cookie-uri)</string>
     <string name="ytdlp_watch_history">Istoricul vizionăre YouTube yt-dlp (necesită cookie-uri)</string>
+    <string name="no_check_certificates">Suprimă validării certificatului HTTPS</string>
+    <string name="live_stream">Stream live</string>
+    <string name="live_from_start">În direct de la început</string>
+    <string name="wait_for_video">Așteptați videoclipul</string>
+    <string name="retry_every">Reîncercați fiecare</string>
+    <string name="minutes">Minute</string>
+    <string name="prefer_container_over_codec_audio">Preferați containerul în locul codecului pentru descărcările audio</string>
+    <string name="prefer_container_over_codec_audio_summary">Dacă această opțiune este activată, preferința pentru codecul audio preferat va fi ignorată și se va schimba doar containerul.</string>
 </resources>
