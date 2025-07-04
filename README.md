@@ -18,7 +18,6 @@
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
 	  |   
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
-
 	  |   
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
 </div>
