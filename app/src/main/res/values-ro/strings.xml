@@ -459,5 +459,11 @@
     <string name="grid">Grilă</string>
     <string name="use_only_po_token">Folosește doar tokenul PO (ignorează clientul de redare)</string>
     <string name="cache_directory">Dosarul cache</string>
-    <string name="cache_directory_warning">Schimbarea folderului cache ar putea cauza probleme neașteptate. Dacă aplicația nu poate scrie în calea configurată, va recurge la directorul cache intern implicit.</string>
+    <string name="cache_directory_warning">Schimbarea folderului cache ar putea cauza probleme neașteptate. Dacă aplicația nu poate scrie în calea configurată, va recurge la directorul cache intern implicit</string>
+    <string name="app_icon_change">Pictograma s-ar putea schimba și aplicația se va închide</string>
+    <string name="use_format_sorting">Utilizați ordinea de importanță a formatului</string>
+    <string name="use_code_highlighter">Folosește evidențiatorul de culoare a codului</string>
+    <string name="reset_preferences_in_screen">Resetează toate preferințele din acest ecran</string>
+    <string name="automatic_backup">Backup automat</string>
+    <string name="backup_path">Calea de backup</string>
 </resources>
