@@ -18,7 +18,7 @@
     <string name="worst_quality">Cea mai scăzută calitate</string>
     <string name="search">Căutare</string>
     <string name="directories">Dosare</string>
-    <string name="music_directory">Dosar de muzică</string>
+    <string name="music_directory">Dosar de audio</string>
     <string name="you_are_in_latest_version">Utilizezi cea mai recentă versiune a aplicației</string>
     <string name="ytld_update_success">Noua versiune a aplicației a fost instalată cu succes</string>
     <string name="ytdl_already_updating">Instalez noua versiune</string>
@@ -407,4 +407,10 @@
     <string name="daily">Zilnic</string>
     <string name="weekly">Săptămânal</string>
     <string name="monthly">Lunar</string>
+    <string name="retry_missing_downloads_desc">Redescarcă elemente care nu sunt presente in istoricul de descărcare</string>
+    <string name="reset_processed_links_desc">Redescarcă toate elementele din nou</string>
+    <string name="format_importance_note">Ajustați importanța elementelor de format. Această ordine va fi utilizată numai atunci când aplicația preia formatele din cardul de descărcare și selectează automat formatul!</string>
+    <string name="enable_alarm_permission">Trebuie să activați permisiunea SCHEDULE_EXACT_ALARM în setările aplicației.</string>
+    <string name="sync_with_source_desc">Ștergeți elementele descărcate dacă lipsesc din sursă</string>
+    <string name="restore_info">Apăsați pe „Restaurare” pentru a îmbina datele salvate cu datele curente.\n\nApăsați pe „Resetare” pentru a șterge și a utiliza doar datele salvate din fișier.</string>
 </resources>
