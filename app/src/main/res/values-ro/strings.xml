@@ -12,9 +12,9 @@
     <string name="ytdl_update_hint">Util dacă aveți probleme la descărcare</string>
     <string name="update_ytdl">Instalează o nouă versiune de yt-dlp</string>
     <string name="source_code">Codul sursă</string>
-    <string name="search_hint">Caută sau Introdu adresa URL</string>
+    <string name="search_hint">Caută sau introdu adresa URL</string>
     <string name="failed_download">Nu s-a putut descărca fișierul</string>
-    <string name="download_notification_channel_name">Fișiere Descărcate</string>
+    <string name="download_notification_channel_name">Fișiere descărcate</string>
     <string name="worst_quality">Cea mai scăzută calitate</string>
     <string name="search">Căutare</string>
     <string name="directories">Dosare</string>
@@ -28,10 +28,10 @@
     <string name="ok">OK</string>
     <string name="confirm_delete_history_desc">Ștergeți întregul istoric, definitiv</string>
     <string name="confirm_delete_history">Confirmă</string>
-    <string name="search_history_hint">Căutare din Istoric</string>
+    <string name="search_history_hint">Căutare din istoric</string>
     <string name="no_results">Fără rezultate</string>
     <string name="more">Mai mult</string>
-    <string name="remove_results">Șterge Rezultatele</string>
+    <string name="remove_results">Șterge rezultatele</string>
     <string name="update_app">Verifică pentru actualizări</string>
     <string name="version">Versiune</string>
     <string name="command_directory">Dosar de comandă personalizat</string>
@@ -56,7 +56,7 @@
     <string name="logs">Jurnale</string>
     <string name="file_name_template">Șablon de nume de fișier</string>
     <string name="language">Limba</string>
-    <string name="select_format">Selectați Format</string>
+    <string name="select_format">Selectați format</string>
     <string name="download_queue">Descărcări în coadă</string>
     <string name="export_from_clipboard">Exportă în clipboard</string>
     <string name="create_template">Creați un șablon</string>
@@ -162,7 +162,7 @@
     <string name="video_quality">Calitate video</string>
     <string name="embed_subtitles">Încorporați subtitrări</string>
     <string name="add_chapter">Adăugați capitole</string>
-    <string name="show_download_card">Afișați opțiuni pentru descărcare</string>
+    <string name="show_download_card">Afișă opțiuni pentru descărcare</string>
     <string name="download_card_summary">Modificați setările pentru acel element înainte de descărcare. Dezactivarea acestei opțiuni începe descărcarea imediat</string>
     <string name="Open_File">Deschide fișierul</string>
     <string name="delete_file_too">Ștergeți fișierul de pe dispozitiv</string>
@@ -185,7 +185,7 @@
     <string name="sponsorblock_previews">Previzualizări</string>
     <string name="sponsorblock_fillers">Umpluturi</string>
     <string name="sponsorblock_reminders">Mementouri pentru abonament</string>
-    <string name="select_sponsorblock_filtering">Selectați SponsorBlock Filtering</string>
+    <string name="select_sponsorblock_filtering">Selectați SponsorBlock filtering</string>
     <string name="save_dir">Salvați dir</string>
     <string name="new_template">Șablon nou</string>
     <string name="adjust_video">Ajustați videoclipul</string>
@@ -235,7 +235,7 @@
     <string name="confirm_delete_cookies_desc">Ștergeți toate cookie-urile, definitiv</string>
     <string name="invert_selected">Inversați selecția</string>
     <string name="save_subs">Salvați subtitrări</string>
-    <string name="video_recommendations_summary">Obțineți videoclipuri YouTube recomandate pe ecranul de pornire din API-ul PIPED</string>
+    <string name="video_recommendations_summary">Obțineți videoclipuri recomandate pe ecranul de pornire din API-ul PIPED</string>
     <string name="preferred_search_engine">Motor de căutare preferat</string>
     <string name="preferred_search_engine_summary">Motorul de căutare de utilizat pentru căutări în aplicație</string>
     <string name="downloaded">"Descărcat: "</string>
@@ -263,14 +263,14 @@
     <string name="restore_complete">Restaurare aplicație finalizată. Următoarele elemente au fost restaurate:</string>
     <string name="select_backup_categories">Selectați categoriile de rezervă</string>
     <string name="search_history">Istoricul cautarilor</string>
-    <string name="backup_created_successfully">Fișier de rezervă salvat în folderul de descărcări</string>
+    <string name="backup_created_successfully">Fișier de rezervă salvat cu succes!</string>
     <string name="appearance">Aspect</string>
     <string name="title">Titlu</string>
     <string name="update">Actualizați</string>
     <string name="Theme">Temă</string>
     <string name="downloads">Descărcări</string>
     <string name="confirm_terminate">Oprește toate descărcările și forțat închide aplicația</string>
-    <string name="sponsorblock_nonmusic">Porțiuni non-muzică și OffTopic</string>
+    <string name="sponsorblock_nonmusic">Porțiuni non-muzică și în afara subiectului</string>
     <string name="subtitle_format">Format subtitrare</string>
     <string name="hide_thumbnails">Ascunde miniaturile</string>
     <string name="force_keyframes_summary">Tăieri video precise. Mai lent</string>
@@ -279,7 +279,7 @@
     <string name="pause">Pauză</string>
     <string name="show_terminal">Afișați terminalul în meniul de partajare</string>
     <string name="sponsorblock">Sponsor Block</string>
-    <string name="configure_download">Ajustați Descărcarea</string>
+    <string name="configure_download">Ajustați descărcarea</string>
     <string name="write_description">Salvați descrierea</string>
     <string name="update_app_summary">Anunță versiuni noi ale aplicației atunci când este deschisă. Datele sunt extrase din Repository-ul oficial de pe Github</string>
     <string name="retries">Reîncercări</string>
@@ -465,5 +465,16 @@
     <string name="use_code_highlighter">Folosește evidențiatorul de culoare a codului</string>
     <string name="reset_preferences_in_screen">Resetează toate preferințele din acest ecran</string>
     <string name="automatic_backup">Backup automat</string>
-    <string name="backup_path">Calea de backup</string>
+    <string name="backup_path">Calea pentru backup</string>
+    <string name="automatic_backup_summary">Face automat un backup a tuturor datelor atunci când este găsită o versiune nouă a aplicației</string>
+    <string name="write_subs_when_embed_subs">Scrieți subtitrări la încorporare</string>
+    <string name="write_subs_when_embed_subs_summary">Aceasta va aplica Salvare Subtitrări și Salvare Subtitrări Automate pentru a descărca subfișierele și apoi le va șterge după încorporare</string>
+    <string name="generate_potokens">Generează tokenuri PO</string>
+    <string name="regenerate">Regeneră</string>
+    <string name="generate_potokens_warning">Prin activarea acestei opțiuni, trebuie să dezactivați cookie-urile</string>
+    <string name="custom">Personalizat</string>
+    <string name="cut_unsupported">Tăierea nu este disponibilă pentru acest element</string>
+    <string name="select_between_desc">Specificați intervalul de elemente pentru selectare</string>
+    <string name="potoken">Token PO</string>
+    <string name="web_client_po_token">Token PO pentru clientul web</string>
 </resources>
