@@ -450,5 +450,9 @@
     <string name="retry_every">Reîncercați fiecare</string>
     <string name="minutes">Minute</string>
     <string name="prefer_container_over_codec_audio">Preferați containerul în locul codecului pentru descărcările audio</string>
-    <string name="prefer_container_over_codec_audio_summary">Dacă această opțiune este activată, preferința pentru codecul audio preferat va fi ignorată și se va schimba doar containerul.</string>
+    <string name="prefer_container_over_codec_audio_summary">Dacă această opțiune este activată, preferința pentru codecul audio preferat va fi ignorată și se va schimba doar containerul</string>
+    <string name="player_client">Client redare</string>
+    <string name="player_client_summary"><![CDATA[Clienți redare YouTube și token PO]]></string>
+    <string name="use_app_language_for_metadata">Folosește limba aplicației pentru metadate</string>
+    <string name="layout">Aspect</string>
 </resources>
