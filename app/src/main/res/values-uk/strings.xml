@@ -476,4 +476,6 @@
     <string name="custom">Власний</string>
     <string name="cut_unsupported">Цей елемент не можна вирізати</string>
     <string name="select_between_desc">Вкажіть діапазон елементів для вибору</string>
+    <string name="potoken">PO токен</string>
+    <string name="web_client_po_token">Вебклієнт PO токена</string>
 </resources>
