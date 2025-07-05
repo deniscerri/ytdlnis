@@ -450,12 +450,12 @@
     <string name="minutes">Минути</string>
     <string name="prefer_container_over_codec_audio_summary">Када је ово омогућено, преферирани аудио кодек ће бити занемарен и само ће се контејнер променити</string>
     <string name="player_client">Клијент плејера</string>
-    <string name="player_client_summary"><![CDATA[Клијенти плејера YouTube-а и PO токен]]></string>
+    <string name="player_client_summary"><![CDATA[Клијенти плејера YouTube-а и токен PO]]></string>
     <string name="use_app_language_for_metadata">Користи језик апликације за метаподатке</string>
     <string name="layout">Изглед</string>
     <string name="list">Листа</string>
     <string name="grid">Мрежа</string>
-    <string name="use_only_po_token">Користи само PO токен (занемаривање клијента плејера)</string>
+    <string name="use_only_po_token">Користи само токен PO (занемаривање клијента плејера)</string>
     <string name="cache_directory">Фолдер кеш меморије</string>
     <string name="cache_directory_warning">Промена фолдера кеша може изазвати неочекиване проблеме. Ако апликација не може да пише на конфигурисану путању, прибећи ће подразумеваном интерном директоријуму кеша</string>
     <string name="retry_missing_downloads_desc">Поново преузмите предмете који нису присутни у историји преузимања</string>
@@ -471,10 +471,11 @@
     <string name="write_subs_when_embed_subs">Писање титлова приликом уграђивања</string>
     <string name="write_subs_when_embed_subs_summary">Ово ће применити „Сачувај титлове“ и „Сачувај аутоматске титлове“ за преузимање потфајлова, а затим их избрисати након уграђивања</string>
     <string name="regenerate">Поново генериши</string>
-    <string name="generate_potokens">Генериши PO токене</string>
+    <string name="generate_potokens">Генериши токене PO</string>
     <string name="generate_potokens_warning">Ако ово омогућите, морате да онемогућите колачиће</string>
     <string name="custom">Прилагођено</string>
     <string name="cut_unsupported">Сечење није доступно за овај предмет</string>
     <string name="select_between_desc">Наведите опсег предмета за избор</string>
-    <string name="potoken">PO токем</string>
+    <string name="potoken">PO токен</string>
+    <string name="web_client_po_token">Токен PO веб-клијента</string>
 </resources>
