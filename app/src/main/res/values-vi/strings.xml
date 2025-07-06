@@ -476,4 +476,5 @@
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
     <string name="generate_potokens_warning">Bạn cần phải tắt cookie để sử dụng tùy chọn này</string>
     <string name="custom">Tuỳ chỉnh</string>
+    <string name="potoken">PO Token</string>
 </resources>
