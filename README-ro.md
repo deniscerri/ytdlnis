@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-YTDLnis este un descarcător de audio/video gratuit y de sursă deschisă care utilizează yt-dlp pentru Android 7.0 și mai sus.
+YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care utilizează yt-dlp pentru Android 7.0 și mai sus.
 </h3>
 <h4 align="center">
 	Creat de Denis Çerri
@@ -118,11 +118,11 @@ Numele pachetului aplicației este „com.deniscerri.ytdl”.
 
 ## 🤖 Conectați-vă cu aplicații terțe folosind Intents
 
-Puteți folosi intenții pentru a trimite comenzi către aplicație pentru a rula descărcări fără interacțiunea utilizatorului. Variabile acceptate:
+Puteți folosi Intents pentru a trimite comenzi către aplicație pentru a rula descărcări fără interacțiunea utilizatorului. Variabile acceptate:
 
-<b>TYPE</b> -> puede ser: audio, video, comando 
+<b>TYPE</b> -> poate să fie: audio, video, comandă
 
-<b>BACKGROUND</b> -> puede ser: verdadero, falso.  Si es cierto, la aplicación no mostrará la tarjeta de descarga pase lo que pase y ejecutará la descarga en segundo plano. 
+<b>BACKGROUND</b> -> poate să fie: adevărat, fals.  Dacă este adevărat, aplicația nu va afișa cardul de descărcare indiferent de situație și va rula descărcarea în fundal.
 
 
 ### Un exemplu de descărcare a unui element audio în fundal cu Tasker
