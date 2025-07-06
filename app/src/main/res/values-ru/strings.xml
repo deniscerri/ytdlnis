@@ -476,4 +476,6 @@
     <string name="custom">Другой</string>
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
+    <string name="potoken">PO Токен</string>
+    <string name="web_client_po_token">Веб -Клиент PO Токен</string>
 </resources>
