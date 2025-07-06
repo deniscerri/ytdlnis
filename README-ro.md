@@ -1,6 +1,5 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> 
-
+	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
 </h1>
 
