@@ -446,11 +446,11 @@
     <string name="wait_for_video">Chờ video</string>
     <string name="prefer_container_over_codec_audio">Ưu tiên định dạng khi tải âm thanh</string>
     <string name="use_app_language_for_metadata">Dùng ngôn ngữ ứng dụng cho siêu dữ liệu</string>
-    <string name="use_only_po_token">Chỉ dùng PO token (bỏ qua trình phát máy khách)</string>
+    <string name="use_only_po_token">Chỉ dùng mã PO (bỏ qua máy khách của trình phát)</string>
     <string name="cache_directory">Thư mục cache</string>
     <string name="app_icon_change">Biểu tượng có thể thay đổi và ứng dụng sẽ đóng</string>
     <string name="use_format_sorting">Dùng định dạng theo thứ tự ưu tiên</string>
-    <string name="generate_potokens">Tạo PO token</string>
+    <string name="generate_potokens">Tạo mã PO</string>
     <string name="layout">Bố cục</string>
     <string name="list">Danh sách</string>
     <string name="grid">Lưới</string>
@@ -476,5 +476,6 @@
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
     <string name="generate_potokens_warning">Bạn cần phải tắt cookie để sử dụng tùy chọn này</string>
     <string name="custom">Tuỳ chỉnh</string>
-    <string name="potoken">PO Token</string>
+    <string name="potoken">Mã PO</string>
+    <string name="web_client_po_token">Mã PO cho máy khách web</string>
 </resources>
