@@ -43,13 +43,13 @@ YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care
   - Selectează un format comun pentru toate elementele și/sau selectează mai multe formate de audio în caz că le descarci ca un video
   - Selectează o cale de descărcare pentru toate fișierele
   - Selectează un șablon de nume de fișier pentru toate fișierele
-  - Tip de descărcare de actualizare în lot la audio/vídeo/comando personalizado con un solo click
+  - Tip de descărcare de actualizare în lot la audio/video/comandă personalizat cu un singur click
 - Pune descarcări în coadă și programează-le după dată și oră
   - De asemenea, puteți programa mai multe elemente în același timp
 - Descărcați mai multe articole simultan
 - Folosește comenzi și șabloane personalizate sau accesează modul yt-dlp complet cu un terminal încorporat
   - Poți face backup și restaurare șabloane pentru a le putea partaja cu prietenii tăi
-- Suport pentru cookie-uri. Conectați-vă cu contul dvs. și descărcați videoclipuri private sau indisponibile, deblocați formate premium și multe altele
+- Suport pentru cookie-uri. Conectează cu contul tău și descărcă videoclipuri private sau indisponibile, deblocați formate premium și multe altele
 - Decupează videoclipurile în funcție de marcajuri temporale și capitole (această funcție yt-dlp este experimentală în proiectul original)
   - Puteți face tăieturi nelimitate
 - Elimină sponsorizările din video-uri (SponsorBlock)
@@ -102,7 +102,7 @@ Alăturați-vă la [Canalul de Telegram](https://t.me/ytdlnis) sau la [Discord](
 
 Vă rugăm să citiți secțiunea de [contribuții](https://github.com/deniscerri/ytdlnis/blob/main/CONTRIBUTING.MD) dacă doriți să contribuiți. (Link-ul este în engleză)
 
-## 📝 Ajută cu tradicerile pe Weblate
+## 📝 Ajută cu traducerile pe Weblate
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="[https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png](https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png)" alt="Translation status" />
