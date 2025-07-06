@@ -37,7 +37,7 @@ YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care
 
 ## 💡 Caracteristice:
 
-- Descarcă fișiere audio/vídeo de mai mult de <a href="[https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)">1000 de site-uri</a>
+- Descarcă fișiere audio/video de mai mult de <a href="[https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)">1000 de site-uri</a>
 - Descarcă Playlist-uri
   - Editează fiecare element din listă separat, ca un element normal de descărcare
   - Selectează un format comun pentru toate elementele și/sau selectează mai multe formate de audio în caz că le descarci ca un video
