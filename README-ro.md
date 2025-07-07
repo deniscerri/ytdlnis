@@ -10,7 +10,7 @@
 </div>
 
 <h3 align="center">
-YTDLnis este un descarcător de audio/video gratuit y de sursă deschisă care utilizează yt-dlp pentru Android 7.0 și mai sus.
+YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care utilizează yt-dlp pentru Android 7.0 și mai sus.
 </h3>
 <h4 align="center">
 	Creat de Denis Çerri
@@ -37,19 +37,19 @@ YTDLnis este un descarcător de audio/video gratuit y de sursă deschisă care u
 
 ## 💡 Caracteristice:
 
-- Descarcă fișiere audio/vídeo de mai mult de <a href="[https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)">1000 de site-uri</a>
+- Descarcă fișiere audio/video de mai mult de <a href="[https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)">1000 de site-uri</a>
 - Descarcă Playlist-uri
   - Editează fiecare element din listă separat, ca un element normal de descărcare
   - Selectează un format comun pentru toate elementele și/sau selectează mai multe formate de audio în caz că le descarci ca un video
   - Selectează o cale de descărcare pentru toate fișierele
   - Selectează un șablon de nume de fișier pentru toate fișierele
-  - Tip de descărcare de actualizare în lot la audio/vídeo/comando personalizado con un solo click
+  - Tip de descărcare de actualizare în lot la audio/video/comandă personalizat cu un singur click
 - Pune descarcări în coadă și programează-le după dată și oră
   - De asemenea, puteți programa mai multe elemente în același timp
 - Descărcați mai multe articole simultan
 - Folosește comenzi și șabloane personalizate sau accesează modul yt-dlp complet cu un terminal încorporat
   - Poți face backup și restaurare șabloane pentru a le putea partaja cu prietenii tăi
-- Suport pentru cookie-uri. Conectați-vă cu contul dvs. și descărcați videoclipuri private sau indisponibile, deblocați formate premium și multe altele
+- Suport pentru cookie-uri. Conectează cu contul tău și descărcă videoclipuri private sau indisponibile, deblocați formate premium și multe altele
 - Decupează videoclipurile în funcție de marcajuri temporale și capitole (această funcție yt-dlp este experimentală în proiectul original)
   - Puteți face tăieturi nelimitate
 - Elimină sponsorizările din video-uri (SponsorBlock)
@@ -102,7 +102,7 @@ Alăturați-vă la [Canalul de Telegram](https://t.me/ytdlnis) sau la [Discord](
 
 Vă rugăm să citiți secțiunea de [contribuții](https://github.com/deniscerri/ytdlnis/blob/main/CONTRIBUTING.MD) dacă doriți să contribuiți. (Link-ul este în engleză)
 
-## 📝 Ajută cu tradicerile pe Weblate
+## 📝 Ajută cu traducerile pe Weblate
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="[https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png](https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png)" alt="Translation status" />
@@ -118,11 +118,11 @@ Numele pachetului aplicației este „com.deniscerri.ytdl”.
 
 ## 🤖 Conectați-vă cu aplicații terțe folosind Intents
 
-Puteți folosi intenții pentru a trimite comenzi către aplicație pentru a rula descărcări fără interacțiunea utilizatorului. Variabile acceptate:
+Puteți folosi Intents pentru a trimite comenzi către aplicație pentru a rula descărcări fără interacțiunea utilizatorului. Variabile acceptate:
 
-<b>TYPE</b> -> puede ser: audio, video, comando 
+<b>TYPE</b> -> poate să fie: audio, video, comandă
 
-<b>BACKGROUND</b> -> puede ser: verdadero, falso.  Si es cierto, la aplicación no mostrará la tarjeta de descarga pase lo que pase y ejecutará la descarga en segundo plano. 
+<b>BACKGROUND</b> -> poate să fie: adevărat, fals.  Dacă este adevărat, aplicația nu va afișa cardul de descărcare indiferent de situație și va rula descărcarea în fundal.
 
 
 ### Un exemplu de descărcare a unui element audio în fundal cu Tasker
