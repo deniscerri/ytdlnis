@@ -364,5 +364,9 @@
     <string name="sync_with_source_desc">اگر موارد دانلود شده در منبع وجود ندارند، آنها را حذف کنید</string>
     <string name="queue">صف</string>
     <string name="reset">تنظیم مجدد</string>
-    <string name="restore_info">برای ادغام داده‌های ذخیره‌شده با داده‌های فعلی‌تان، «بازیابی» را فشار دهید.\n\nبی پاک کردن و فقط استفاده از داده‌های ذخیره شده در فایل، «تنظیم مجدد» را فشار دهید.</string>
+    <string name="restore_info">برای ادغام داده‌های ذخیره‌شده با داده‌های فعلی‌تان، «بازیابی» را فشار دهید بی پاک کردن و فقط استفاده از داده‌های ذخیره شده در فایل، «تنظیم مجدد» را فشار دهید.</string>
+    <string name="use_alarm_manager">برای برنامه‌ریزی، به جای مدیر کار، از مدیر زنگ هشدار استفاده کنید</string>
+    <string name="use_alarm_manager_summary">اگر مدیر کار توسط فروشنده دستگاه شما محدود شده است یا کارهای زمان‌بندی شده خیلی دقیق نیستند، این را فعال کنید</string>
+    <string name="use_item_url_not_playlist">به جای آدرس لیست پخش، از آدرس آیتم استفاده کنید</string>
+    <string name="use_item_url_not_playlist_summary">با فعال بودن این گزینه، فراداده‌های لیست پخش جاسازی نمی‌شوند.</string>
 </resources>
