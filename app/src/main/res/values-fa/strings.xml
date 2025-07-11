@@ -358,4 +358,7 @@
     <string name="preferred_audio_language">زبان ترجیحی صدا</string>
     <string name="bitrate">بیت‌ریت</string>
     <string name="save_auto_subs">ذخیرهٔ زیرنویس‌های خودکار</string>
+    <string name="cut_unsupported">برش برای این کالا موجود نیست</string>
+    <string name="select_between_desc">محدوده موارد قابل انتخاب را مشخص کنید</string>
+    <string name="cache_directory_warning">تغییر پوشه کش ممکن است باعث مشکلات غیرمنتظره‌ای شود. اگر برنامه نتواند در مسیر پیکربندی‌شده بنویسد، به پوشه کش داخلی پیش‌فرض متوسل می‌شود.</string>
 </resources>
