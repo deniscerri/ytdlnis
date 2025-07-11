@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">بدترین کیفیت</string>
+    <string name="worst_quality">کیفیت پایین</string>
     <string name="best_quality">بهترین کیفیت</string>
     <string name="remove_all">حذف همه</string>
     <string name="download_all">همه را دانلود کن</string>
@@ -360,5 +360,9 @@
     <string name="save_auto_subs">ذخیرهٔ زیرنویس‌های خودکار</string>
     <string name="cut_unsupported">برش برای این کالا موجود نیست</string>
     <string name="select_between_desc">محدوده موارد قابل انتخاب را مشخص کنید</string>
-    <string name="cache_directory_warning">تغییر پوشه کش ممکن است باعث مشکلات غیرمنتظره‌ای شود. اگر برنامه نتواند در مسیر پیکربندی‌شده بنویسد، به پوشه کش داخلی پیش‌فرض متوسل می‌شود.</string>
+    <string name="cache_directory_warning">تغییر پوشه کش ممکن است باعث مشکلات غیرمنتظره‌ای شود. اگر برنامه نتواند در مسیر پیکربندی‌شده بنو یسد، به پوشه کش داخلی پیش‌فرض متوسل می‌شود.</string>
+    <string name="sync_with_source_desc">اگر موارد دانلود شده در منبع وجود ندارند، آنها را حذف کنید</string>
+    <string name="queue">صف</string>
+    <string name="reset">تنظیم مجدد</string>
+    <string name="restore_info">برای ادغام داده‌های ذخیره‌شده با داده‌های فعلی‌تان، «بازیابی» را فشار دهید.\n\nبی پاک کردن و فقط استفاده از داده‌های ذخیره شده در فایل، «تنظیم مجدد» را فشار دهید.</string>
 </resources>
