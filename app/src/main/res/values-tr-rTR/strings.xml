@@ -424,7 +424,7 @@
     <string name="playlist_as_album_summary">Albüm meta verileri mevcut değilse, bunun yerine çalma listesi adını kullan</string>
     <string name="data_fetching_extractor_youtube">Veri alma çıkartıcısı (YouTube)</string>
     <string name="disable_write_info_json">Bilgi yazma Json\'unu devre dışı bırak</string>
-    <string name="disable_write_info_json_summary">Her indirmeyi yeniden başlattığınızda/devam ettirdiğinizde yt-dlp sunuculardan json verilerini yeniden indirecektir.</string>
+    <string name="disable_write_info_json_summary">İndirmeyi her yeniden başlattığınızda / devam ettirdiğinizde, yt-dlp sunuculardan JSON verilerini yeniden indirir (önerilmez).</string>
     <string name="other_youtube_extractor_args">Diğer YouTube çıkartıcı argümanları</string>
     <string name="items">öğeler</string>
     <string name="socket_timeout">Soket zaman aşımı</string>

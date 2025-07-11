@@ -475,4 +475,6 @@
     <string name="custom">Khusus</string>
     <string name="cut_unsupported">Pemotongan tidak tersedia untuk item ini</string>
     <string name="select_between_desc">Tentukan rentang item yang akan dipilih</string>
+    <string name="potoken">PO Token</string>
+    <string name="web_client_po_token">PO Token Klien Web</string>
 </resources>
