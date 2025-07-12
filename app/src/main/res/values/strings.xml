@@ -11,7 +11,7 @@
     <string name="directories">Folders</string>
     <string name="music_directory">Audio folder</string>
     <string name="video_directory">Video folder</string>
-    <string name="updating">Updating </string>
+    <string name="updating">https://hosted.weblate.org/translate/ytdlnis/strings/en/?checksum=a1342d1fd2cac4a5</string>
     <string name="ytdl_update_hint"> Useful tip while downloading updates</string>
     <string name="update_ytdl">Install new version of yt-dlp</string>
     <string name="about">About</string>
