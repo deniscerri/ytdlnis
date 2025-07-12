@@ -8,7 +8,7 @@
     <string name="music_directory">Folder audio</string>
     <string name="video_directory">Folder wideo</string>
     <string name="updating">Aktualizowanie</string>
-    <string name="update_ytdl">Zainstaluj nowszą wersję yt-dlp</string>
+    <string name="update_ytdl">Aktualizuj yt-dlp do nowej wersji</string>
     <string name="source_code">Kod źródłowy</string>
     <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
