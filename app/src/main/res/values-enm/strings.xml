@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="worst_quality">أدنى جودة</string>
+    <string name="about">O yt-dl</string>
+    <string name="source_code">Kod źródłowy</string>
+    <string name="search_hint">Szukaj lub wprowadź URL</string>
+    <string name="failed_download">Nie można pobrac pliku</string>
+    <string name="you_are_in_latest_version">Using the latest version of yt-dl</string>
 </resources>
