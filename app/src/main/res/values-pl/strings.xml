@@ -195,7 +195,7 @@
     <string name="high_contrast">Wysoki kontrast</string>
     <string name="pure_theme_summary">Czysty motyw czarno-biały</string>
     <string name="blue">Niebieski</string>
-    <string name="downloaded"></string>
+    <string name="downloaded">"Pobrane: "</string>
     <string name="material_you">Twój materiał</string>
     <string name="finished_download_notification_channel_description">Powiadomienie o zakończeniu pobierania</string>
     <string name="quick_download">Szybkie pobieranie</string>
