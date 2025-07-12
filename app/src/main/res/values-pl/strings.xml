@@ -195,7 +195,7 @@
     <string name="high_contrast">Wysoki kontrast</string>
     <string name="pure_theme_summary">Czysty motyw czarno-biały</string>
     <string name="blue">Niebieski</string>
-    <string name="downloaded">"Pobrano: "</string>
+    <string name="downloaded"></string>
     <string name="material_you">Twój materiał</string>
     <string name="finished_download_notification_channel_description">Powiadomienie o zakończeniu pobierania</string>
     <string name="quick_download">Szybkie pobieranie</string>
@@ -204,7 +204,7 @@
     <string name="download_already_exists">Pobieranie już istnieje</string>
     <string name="preferred_locale">Preferowane ustawienia regionalne</string>
     <string name="pause">Pauza</string>
-    <string name="updating_download_data">Aktualizowanie danych elementu do pobrania</string>
+    <string name="updating_download_data">Aktualizowanie danych pobierania</string>
     <string name="keep_cache_summary">Nie usuwaj plików tymczasowych po zakończeniu pobierania</string>
     <string name="restore">Przywróć</string>
     <string name="network_error">Błąd sieci</string>
@@ -311,7 +311,7 @@
     <string name="ignore">Pomiń</string>
     <string name="license">Licencja</string>
     <string name="download_already_exists_summary">Czy nadal chcesz pobrać\?</string>
-    <string name="modify_download_card">Modyfikowanie karty pobierania</string>
+    <string name="modify_download_card">Zmodyfikuj kartę pobierania</string>
     <string name="security">Bezpieczeństwo</string>
     <string name="remember_download_type">Zapamiętaj typ pobierania</string>
     <string name="remember_download_type_summary">Wybierz ostatnio otwarty typ pobierania dla bieżącego elementu</string>
