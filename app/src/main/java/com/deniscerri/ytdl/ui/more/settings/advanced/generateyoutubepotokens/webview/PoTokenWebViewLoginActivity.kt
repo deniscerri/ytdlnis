@@ -7,6 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.CookieManager
+import android.webkit.WebSettings
+import android.webkit.WebStorage
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
@@ -67,6 +69,20 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     R.id.get_data_sync_id -> {
                         webView.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
                             UiUtil.copyToClipboard(id.replace("\"", ""), this@PoTokenWebViewLoginActivity)
+                        }
+                    }
+                    R.id.incognito -> {
+                        m.isChecked = !m.isChecked
+                        webView.apply {
+                            configureIncognito(this, m.isChecked)
+                            this.reload()
+                        }
+                    }
+                    R.id.desktop -> {
+                        m.isChecked = !m.isChecked
+                        webView.apply {
+                            configureDesktopMode(this, m.isChecked)
+                            this.reload()
                         }
                     }
                     else -> {}
@@ -156,6 +172,50 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
         }
 
     }
+
+    private fun configureIncognito(webView: WebView, incognito: Boolean) {
+        if (!incognito) {
+            webView.settings.run {
+                cacheMode = WebSettings.LOAD_DEFAULT
+                domStorageEnabled = true
+                setGeolocationEnabled(true)
+            }
+        }else {
+            webView.settings.run {
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                domStorageEnabled = false
+                setGeolocationEnabled(false)
+            }
+        }
+
+        if (incognito) {
+            WebStorage.getInstance().deleteAllData()
+        }
+
+        if (incognito) {
+            webView.apply {
+                clearHistory()
+                clearCache(true)
+                clearFormData()
+            }
+        }
+    }
+
+    private fun configureDesktopMode(webView: WebView, desktop: Boolean) {
+        webView.settings.apply {
+            if (desktop) {
+                userAgentString = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " +
+                        "(KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+                useWideViewPort = true
+                loadWithOverviewMode = true
+            } else {
+                userAgentString = WebSettings.getDefaultUserAgent(webView.context)
+                useWideViewPort = false
+                loadWithOverviewMode = false
+            }
+        }
+    }
+
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     @Composable
