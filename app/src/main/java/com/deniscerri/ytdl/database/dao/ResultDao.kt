@@ -67,4 +67,6 @@ interface ResultDao {
     @Query("SELECT * from results WHERE id > :item1 AND id < :item2 ORDER BY id")
     fun getResultsBetweenTwoItems(item1: Long, item2: Long) : List<ResultItem>
 
+    @Query("UPDATE results SET id = :newID where id = :id")
+    fun updateID(id: Long, newID: Long)
 }

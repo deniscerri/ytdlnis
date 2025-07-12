@@ -232,6 +232,10 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                         count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
                     }
                 }
+                R.id.reverse -> {
+                    resultItemIDs = resultViewModel.reverseResults(resultItemIDs)
+                    reset()
+                }
             }
             true
         }
@@ -251,7 +255,6 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                 toTextInput.isEnabled = !isLoading
 
                 items = it
-                resultItemIDs = items.map { itm -> itm.id }
             }
         }
 

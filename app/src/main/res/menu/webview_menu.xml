@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/get_data_sync_id"
         android:title="Get Data Sync ID"
         tools:ignore="HardcodedText" />
+
+    <item
+        android:id="@+id/incognito"
+        android:title="@string/incognito"
+        android:checkable="true"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/desktop"
+        android:title="Desktop"
+        android:checkable="true"
+        app:showAsAction="never" />
 
 </menu>

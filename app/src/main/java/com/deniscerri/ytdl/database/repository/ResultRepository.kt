@@ -370,6 +370,10 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         return resultDao.getAllByIDs(ids)
     }
 
+    fun updateID(id: Long, newID: Long) {
+        resultDao.updateID(id, newID)
+    }
+
     suspend fun getResultsFromSource(inputQuery: String, resetResults: Boolean, addToResults: Boolean = true, singleItem: Boolean = false) : List<ResultItem> {
         return when(getQueryType(inputQuery)){
             SourceType.YOUTUBE_VIDEO -> {

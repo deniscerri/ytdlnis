@@ -14,4 +14,11 @@
         android:icon="@drawable/ic_terminal"
         app:showAsAction="never"
         android:id="@+id/invert_selected"/>
+
+    <item
+        android:id="@+id/reverse"
+        android:title="@string/reverse"
+        android:icon="@drawable/baseline_compare_arrows_24"
+        app:showAsAction="never" />
+
 </menu>

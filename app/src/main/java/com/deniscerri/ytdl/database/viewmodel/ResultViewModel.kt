@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.joinAll
@@ -382,5 +383,24 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
         return repository.getStreamingUrlAndChapters(url)
+    }
+
+    fun reverseResults(resultItems: List<Long>): List<Long> {
+        val latestResult = resultItems.max()
+        val newIdsMap = mutableListOf<Pair<Long, Long>>()
+
+        var i = 0
+        resultItems.reversed().forEach {
+            newIdsMap.add(Pair(it, latestResult + (++i)))
+        }
+
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(1000)
+            newIdsMap.forEach {
+                repository.updateID(it.first, it.second)
+            }
+        }
+
+        return newIdsMap.map { it.second }
     }
 }

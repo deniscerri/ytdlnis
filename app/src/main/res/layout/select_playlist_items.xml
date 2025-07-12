@@ -22,18 +22,23 @@
             app:menu="@menu/select_playlist_menu"
             android:layout_gravity="bottom">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:layout_marginVertical="10dp"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/from_textinput"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintHorizontal_weight="1"
+                    app:layout_constraintEnd_toStartOf="@id/to_textinput"
+                    app:layout_constraintStart_toStartOf="parent"
                     android:hint="@string/start">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -47,11 +52,15 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/to_textinput"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:hint="@string/end"
+                    app:layout_constraintHorizontal_weight="1"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/colon">
+                    app:layout_constraintStart_toEndOf="@id/from_textinput"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -61,7 +70,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.bottomappbar.BottomAppBar>
 

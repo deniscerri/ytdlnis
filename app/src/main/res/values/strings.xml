@@ -480,4 +480,5 @@
     <string name="select_between_desc">Specify the range of items to select</string>
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Web Client PO Token</string>
+    <string name="reverse">Reverse</string>
 </resources>

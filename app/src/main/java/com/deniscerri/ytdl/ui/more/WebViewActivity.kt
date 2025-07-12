@@ -6,7 +6,10 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.CookieManager
+import android.webkit.WebSettings
+import android.webkit.WebStorage
 import android.webkit.WebView
+import android.webkit.WebViewDatabase
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -15,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -32,6 +36,7 @@ import com.google.accompanist.web.rememberWebViewState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,27 +62,52 @@ class WebViewActivity : BaseActivity() {
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
-            if (!url.isYoutubeURL()) {
-                toolbar.menu.forEach { it.isVisible = false }
-            }else {
-                toolbar.setOnMenuItemClickListener { m : MenuItem ->
-                    when(m.itemId) {
-                        R.id.get_data_sync_id -> {
-                            webView?.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
-                                UiUtil.copyToClipboard(id.replace("\"", ""), this@WebViewActivity)
-                            }
-                        }
-                        else -> {}
-                    }
-                    true
-                }
-            }
-
-
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
+
+            if (!url.isYoutubeURL()) {
+                toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
+            }
+
+            toolbar.setOnMenuItemClickListener { m : MenuItem ->
+                when(m.itemId) {
+                    R.id.get_data_sync_id -> {
+                        webView?.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
+                            UiUtil.copyToClipboard(id.replace("\"", ""), this@WebViewActivity)
+                        }
+                    }
+                    R.id.incognito -> {
+                        m.isChecked = !m.isChecked
+                        webView.apply {
+                            if (this == null) {
+                                m.isChecked = false
+                                return@apply
+                            }
+
+                            configureIncognito(this, m.isChecked)
+                            this.reload()
+                        }
+                    }
+                    R.id.desktop -> {
+                        m.isChecked = !m.isChecked
+                        webView.apply {
+                            if (this == null) {
+                                m.isChecked = false
+                                return@apply
+                            }
+
+                            configureDesktopMode(this, m.isChecked)
+                            this.reload()
+                        }
+                    }
+                    else -> {}
+                }
+                true
+            }
+
             cookieManager = CookieManager.getInstance()
             cookieManager.removeAllCookies(null)
+            cookieManager.flush()
 
             preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
@@ -132,6 +162,50 @@ class WebViewActivity : BaseActivity() {
             }
         }
 
+    }
+
+
+    private fun configureIncognito(webView: WebView, incognito: Boolean) {
+        if (!incognito) {
+            webView.settings.run {
+                cacheMode = WebSettings.LOAD_DEFAULT
+                domStorageEnabled = true
+                setGeolocationEnabled(true)
+            }
+        }else {
+            webView.settings.run {
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                domStorageEnabled = false
+                setGeolocationEnabled(false)
+            }
+        }
+
+        if (incognito) {
+            WebStorage.getInstance().deleteAllData()
+        }
+
+        if (incognito) {
+            webView.apply {
+                clearHistory()
+                clearCache(true)
+                clearFormData()
+            }
+        }
+    }
+
+    private fun configureDesktopMode(webView: WebView, desktop: Boolean) {
+        webView.settings.apply {
+            if (desktop) {
+                userAgentString = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 " +
+                        "(KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
+                useWideViewPort = true
+                loadWithOverviewMode = true
+            } else {
+                userAgentString = WebSettings.getDefaultUserAgent(webView.context)
+                useWideViewPort = false
+                loadWithOverviewMode = false
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
