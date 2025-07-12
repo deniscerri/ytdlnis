@@ -475,4 +475,6 @@
     <string name="custom">自定义</string>
     <string name="cut_unsupported">剪切对此项目不可用</string>
     <string name="select_between_desc">指定要选择的项目的时间范围</string>
+    <string name="potoken">PO 令牌</string>
+    <string name="web_client_po_token">Web 客户端 PO 令牌</string>
 </resources>
