@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="worst_quality">أدنى جودة</string>
+    <string name="about">About yt-dl</string>
+    <string name="source_code">Source code</string>
+    <string name="search_hint">URL search tip</string>
+    <string name="failed_download">Tthe file cannot be downloaded</string>
+    <string name="you_are_in_latest_version">Latest version of yt-dl installed</string>
+    <string name="download_notification_channel_name">Download notification channel</string>
+    <string name="download_notification_channel_description">Aaudio and video download progress</string>
+    <string name="ytld_update_success">Update completed successfully</string>
+    <string name="ytdl_already_updating">Update in progress</string>
+    <string name="ytdl_updating_started">Downloading in progress</string>
+    <string name="Remove">Cancel/delete</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Dissmiss/remove</string>
+    <string name="confirm_delete_history_desc">Delete history permanently (changes cannot be undone)</string>
+    <string name="confirm_delete_history">Confirm history erasing</string>
+    <string name="search_history_hint">Tip in history search</string>
 </resources>

@@ -95,7 +95,7 @@
     <string name="socks5_proxy">URL адреса Socks5 проксија</string>
     <string name="edit">Измени</string>
     <string name="restore">Врати</string>
-    <string name="update_ytdl">Инсталирај нову верзију yt-dlp-а</string>
+    <string name="update_ytdl">Ажурирај yt-dl на нову верзију</string>
     <string name="audio_quality_summary">0 (најбоље) 10 (најгоре)</string>
     <string name="directories">Фолдери</string>
     <string name="update">Ажурирај</string>
@@ -278,7 +278,7 @@
     <string name="create_shortcut">Направи пречицу</string>
     <string name="ytdl_version">yt-dlp верзија</string>
     <string name="piped_instance_summary">Додајте PIPED API сервер, апликација то може да користи за YouTube упите и формате</string>
-    <string name="ytdl_update_hint">Корисно ако имате проблема са преузимањем</string>
+    <string name="ytdl_update_hint">Корисни савет приликом преузимања ажурирања</string>
     <string name="command">Команда</string>
     <string name="remove_audio">Уклони аудио снимак</string>
     <string name="system">Системски</string>

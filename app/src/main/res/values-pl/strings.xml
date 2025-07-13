@@ -8,7 +8,7 @@
     <string name="music_directory">Folder audio</string>
     <string name="video_directory">Folder wideo</string>
     <string name="updating">Aktualizowanie</string>
-    <string name="update_ytdl">Zainstaluj nowszą wersję yt-dlp</string>
+    <string name="update_ytdl">Aktualizuj yt-dlp do nowej wersji</string>
     <string name="source_code">Kod źródłowy</string>
     <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
@@ -34,7 +34,7 @@
     <string name="search">Szukaj</string>
     <string name="directories">Foldery</string>
     <string name="failed_download">Nie można pobrać pliku</string>
-    <string name="ytdl_update_hint">Przydatne, jeśli masz problem z pobieraniem</string>
+    <string name="ytdl_update_hint">Przydatna wskazówka przy aktualizacji</string>
     <string name="download_notification_channel_description">Powiadomienie pokazujące postęp pobierania plików audio i wideo</string>
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
     <string name="download_notification_channel_name">Pobieranie plików</string>
@@ -195,7 +195,7 @@
     <string name="high_contrast">Wysoki kontrast</string>
     <string name="pure_theme_summary">Czysty motyw czarno-biały</string>
     <string name="blue">Niebieski</string>
-    <string name="downloaded">"Pobrano: "</string>
+    <string name="downloaded">"Pobrane: "</string>
     <string name="material_you">Twój materiał</string>
     <string name="finished_download_notification_channel_description">Powiadomienie o zakończeniu pobierania</string>
     <string name="quick_download">Szybkie pobieranie</string>
@@ -204,7 +204,7 @@
     <string name="download_already_exists">Pobieranie już istnieje</string>
     <string name="preferred_locale">Preferowane ustawienia regionalne</string>
     <string name="pause">Pauza</string>
-    <string name="updating_download_data">Aktualizowanie danych elementu do pobrania</string>
+    <string name="updating_download_data">Aktualizowanie danych pobierania</string>
     <string name="keep_cache_summary">Nie usuwaj plików tymczasowych po zakończeniu pobierania</string>
     <string name="restore">Przywróć</string>
     <string name="network_error">Błąd sieci</string>
@@ -311,7 +311,7 @@
     <string name="ignore">Pomiń</string>
     <string name="license">Licencja</string>
     <string name="download_already_exists_summary">Czy nadal chcesz pobrać\?</string>
-    <string name="modify_download_card">Modyfikowanie karty pobierania</string>
+    <string name="modify_download_card">Zmodyfikuj kartę pobierania</string>
     <string name="security">Bezpieczeństwo</string>
     <string name="remember_download_type">Zapamiętaj typ pobierania</string>
     <string name="remember_download_type_summary">Wybierz ostatnio otwarty typ pobierania dla bieżącego elementu</string>

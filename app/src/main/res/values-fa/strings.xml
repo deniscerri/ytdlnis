@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">بدترین کیفیت</string>
+    <string name="worst_quality">کیفیت پایین</string>
     <string name="best_quality">بهترین کیفیت</string>
     <string name="remove_all">حذف همه</string>
     <string name="download_all">همه را دانلود کن</string>
@@ -358,4 +358,35 @@
     <string name="preferred_audio_language">زبان ترجیحی صدا</string>
     <string name="bitrate">بیت‌ریت</string>
     <string name="save_auto_subs">ذخیرهٔ زیرنویس‌های خودکار</string>
+    <string name="cut_unsupported">برش برای این کالا موجود نیست</string>
+    <string name="select_between_desc">محدوده موارد قابل انتخاب را مشخص کنید</string>
+    <string name="cache_directory_warning">تغییر پوشه کش ممکن است باعث مشکلات غیرمنتظره‌ای شود. اگر برنامه نتواند در مسیر پیکربندی‌شده بنو یسد، به پوشه کش داخلی پیش‌فرض متوسل می‌شود.</string>
+    <string name="sync_with_source_desc">اگر موارد دانلود شده در منبع وجود ندارند، آنها را حذف کنید</string>
+    <string name="queue">صف</string>
+    <string name="reset">تنظیم مجدد</string>
+    <string name="restore_info">برای ادغام داده‌های ذخیره‌شده با داده‌های فعلی‌تان، «بازیابی» را فشار دهید بی پاک کردن و فقط استفاده از داده‌های ذخیره شده در فایل، «تنظیم مجدد» را فشار دهید.</string>
+    <string name="use_alarm_manager">برای برنامه‌ریزی، به جای مدیر کار، از مدیر زنگ هشدار استفاده کنید</string>
+    <string name="use_alarm_manager_summary">اگر مدیر کار توسط فروشنده دستگاه شما محدود شده است یا کارهای زمان‌بندی شده خیلی دقیق نیستند، این را فعال کنید</string>
+    <string name="use_item_url_not_playlist">به جای آدرس لیست پخش، از آدرس آیتم استفاده کنید</string>
+    <string name="use_item_url_not_playlist_summary">با فعال بودن این گزینه، فرا داده‌های لیست پخش جاسازی نمی‌شوند.</string>
+    <string name="recode_video">ویدیو را دوباره کدگذاری کنید</string>
+    <string name="recode_video_summary">فایل ویدیویی را به فرمت ویدیویی مشخص شده، کدگذاری مجدد می‌کند.</string>
+    <string name="daily">روزانه</string>
+    <string name="weekly">هفتگی</string>
+    <string name="monthly">ماهانه</string>
+    <string name="cleanup_leftover_downloads">پاک کردن دانلودهای باقی مانده (لغو شده، خطادار)</string>
+    <string name="continue_anyway">به هر حال ادامه بده</string>
+    <string name="playlist_as_album">استفاده از نام لیست پخش به عنوان متادیتای آلبوم</string>
+    <string name="playlist_as_album_summary">اگر متادیتای آلبوم وجود ندارد، به جای آن از نام لیست پخش استفاده کنید</string>
+    <string name="data_fetching_extractor_youtube">استخراج‌کننده‌ی داده‌ها (یوتیوب)</string>
+    <string name="pause_all">همه را متوقف کنید</string>
+    <string name="resume_all">از سرگیری همه</string>
+    <string name="package_name">نام بسته</string>
+    <string name="preferred_command_template">الگوی دستور ترجیحی</string>
+    <string name="status">وضعیت</string>
+    <string name="deleted">حذف شده</string>
+    <string name="websites">وبسایت ها</string>
+    <string name="other_youtube_extractor_args">سایر استدلال‌های استخراج یوتیوب</string>
+    <string name="items">مورد(ها)</string>
+    <string name="socket_timeout">زمان انقضای سوکت</string>
 </resources>
