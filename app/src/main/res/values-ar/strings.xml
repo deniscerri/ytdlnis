@@ -10,8 +10,8 @@
     <string name="music_directory">مجلد الصوتيات</string>
     <string name="video_directory">مجلد الفيديوهات</string>
     <string name="updating">التحديثات</string>
-    <string name="ytdl_update_hint">مهم، في حال كانت هناك مشاكل في التنزيل</string>
-    <string name="update_ytdl">تثبيت أحدث إصدار من yt-dlp</string>
+    <string name="ytdl_update_hint">نصيحة مفيدة أثناء تنزيل التحديثات</string>
+    <string name="update_ytdl">حدِّث yt-dl إلى الإصدار الجديد</string>
     <string name="source_code">الرمز المصدري</string>
     <string name="search_hint">بحث أو إدخال رابط</string>
     <string name="failed_download">تعذّر تنزيل الملف</string>

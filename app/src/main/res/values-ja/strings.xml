@@ -8,7 +8,7 @@
     <string name="directories">フォルダ</string>
     <string name="music_directory">音声用フォルダ</string>
     <string name="video_directory">動画用フォルダ</string>
-    <string name="update_ytdl">最新の yt-dlp をインストール</string>
+    <string name="update_ytdl">yt-dl を最新版に更新</string>
     <string name="failed_download">ファイルをダウンロードできませんでした</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用中です</string>
@@ -71,7 +71,7 @@
     <string name="search">検索</string>
     <string name="download_all">すべてダウンロード</string>
     <string name="search_hint">検索または URL を入力</string>
-    <string name="ytdl_update_hint">ダウンロードの問題が発生する際に役立ちます</string>
+    <string name="ytdl_update_hint">アップデートのダウンロード中に役立つヒント</string>
     <string name="download_notification_channel_description">音声や動画ファイルのダウンロードの進捗状況を通知で表示</string>
     <string name="Remove">削除</string>
     <string name="audio">音声</string>
