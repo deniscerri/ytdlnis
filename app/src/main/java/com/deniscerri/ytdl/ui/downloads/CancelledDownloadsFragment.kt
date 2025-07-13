@@ -305,10 +305,30 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
                     }
                     val showDownloadCard = preferences.getBoolean("download_card", true)
                     if (showDownloadCard) {
-                        downloadViewModel.turnDownloadItemsToProcessingDownloads(selectedObjects)
-                        val bundle = Bundle()
-                        bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
-                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
+                        lifecycleScope.launch {
+                            if (selectedObjects.size == 1) {
+                                val itm = withContext(Dispatchers.IO){
+                                    downloadViewModel.getItemByID(selectedObjects.first())
+                                }
+
+                                withContext(Dispatchers.Main) {
+                                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                        Pair("downloadItem", itm),
+                                        Pair("result", downloadViewModel.createResultItemFromDownload(itm)),
+                                        Pair("type", itm.type)
+                                    ))
+                                }
+                            }else {
+                                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                    downloadViewModel.turnDownloadItemsToProcessingDownloads(selectedObjects)
+                                }
+                                withContext(Dispatchers.Main){
+                                    val bundle = Bundle()
+                                    bundle.putLongArray("currentDownloadIDs", selectedObjects.toLongArray())
+                                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
+                                }
+                            }
+                        }
                     }else {
                         downloadViewModel.reQueueDownloadItems(selectedObjects)
                     }

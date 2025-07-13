@@ -17,8 +17,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.CheckBox
-import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
@@ -28,10 +26,8 @@ import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.children
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
-import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -57,18 +53,15 @@ import com.deniscerri.ytdl.ui.adapter.ConfigureMultipleDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.util.UiUtil.populateCommandCard
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.CancellationException
@@ -103,6 +96,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var parentActivity: BaseActivity
 
+    private var processingDownloadIDs: List<Long> = listOf()
     private lateinit var currentDownloadIDs: List<Long>
     private lateinit var currentHistoryIDs: List<Long>
     private var ignoreDuplicates: Boolean = false
@@ -203,7 +197,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         lifecycleScope.launch {
             downloadViewModel.processingDownloads.collectLatest { items ->
                 processingItemsCount = items.size
-                currentDownloadIDs = items.map { it.id }
+                processingDownloadIDs = items.map { it.id }
                 count.text = "$processingItemsCount ${getString(R.string.selected)}"
                 listAdapter.submitList(items)
 
@@ -243,6 +237,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 toggleLoading(true)
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
+                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                         val result = downloadViewModel.updateProcessingDownloadTimeAndQueueScheduled(cal.timeInMillis, ignoreDuplicates)
                         if (result.message.isNotBlank()){
@@ -266,6 +261,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             toggleLoading(true)
             lifecycleScope.launch {
                 withContext(Dispatchers.IO){
+                    downloadViewModel.deleteAllWithID(currentDownloadIDs)
                     historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     val result = downloadViewModel.queueProcessingDownloads(ignoreDuplicates)
                     if (result.message.isNotBlank()){
@@ -292,6 +288,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 lifecycleScope.launch{
                     withContext(Dispatchers.IO){
                         downloadViewModel.moveProcessingToSavedCategory()
+                        downloadViewModel.deleteAllWithID(currentDownloadIDs)
                         historyViewModel.deleteAllWithIDsCheckFiles(currentHistoryIDs)
                     }
 
@@ -833,7 +830,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
             view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = false
             filesize.isVisible = false
-            listAdapter.initCheckingItems(currentDownloadIDs)
+            listAdapter.initCheckingItems(processingDownloadIDs)
             selectRangeBtn.isVisible = true
             count.text = "0 ${getString(R.string.selected)}"
             selectItemsOpenBtn.isVisible = false
@@ -850,8 +847,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             popup.menu.findItem(R.id.delete).isVisible = selectedItems.isNotEmpty()
             popup.menu.findItem(R.id.select_between).apply {
                 if (selectedItems.size == 2) {
-                    val firstIndex = currentDownloadIDs.indexOf(selectedItems.first())
-                    val secondIndex = currentDownloadIDs.indexOf(selectedItems.last())
+                    val firstIndex = processingDownloadIDs.indexOf(selectedItems.first())
+                    val secondIndex = processingDownloadIDs.indexOf(selectedItems.last())
 
                     isVisible = abs(firstIndex - secondIndex) > 1
                 }else{
@@ -862,10 +859,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             popup.setOnMenuItemClickListener { m: MenuItem ->
                 when(m.itemId) {
                     R.id.select_between -> {
-                        val firstIndex = currentDownloadIDs.indexOf(selectedItems.first())
-                        val secondIndex = currentDownloadIDs.indexOf(selectedItems.last())
+                        val firstIndex = processingDownloadIDs.indexOf(selectedItems.first())
+                        val secondIndex = processingDownloadIDs.indexOf(selectedItems.last())
 
-                        val itemsBetween = currentDownloadIDs.filterIndexed { index, _ -> index >= firstIndex && index <= secondIndex }
+                        val itemsBetween = processingDownloadIDs.filterIndexed { index, _ -> index >= firstIndex && index <= secondIndex }
                         listAdapter.selectItems(itemsBetween)
                         count.text = "${itemsBetween.size} ${getString(R.string.selected)}"
                     }
@@ -903,8 +900,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         selectRangeBtn = view.findViewById(R.id.selectRangeBtn)
         selectRangeBtn.setOnClickListener {
-            UiUtil.showSelectRangeDialog(requireActivity(), currentDownloadIDs.size) {
-                val itemsBetween = currentDownloadIDs.filterIndexed { index, _ -> index >= it.first && index <= it.second }
+            UiUtil.showSelectRangeDialog(requireActivity(), processingDownloadIDs.size) {
+                val itemsBetween = processingDownloadIDs.filterIndexed { index, _ -> index >= it.first && index <= it.second }
                 listAdapter.selectItems(itemsBetween)
                 selectItemsMenuBtn.isVisible = true
                 count.text = "${itemsBetween.size} ${getString(R.string.selected)}"
@@ -917,7 +914,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             view.findViewById<ConstraintLayout>(R.id.downloadHeader).isVisible = true
             selectItemsMenuBtn.isVisible = false
             filesize.isVisible = itemsFileSize > 0
-            count.text = "${currentDownloadIDs.size} ${getString(R.string.selected)}"
+            count.text = "${processingDownloadIDs.size} ${getString(R.string.selected)}"
             selectRangeBtn.isVisible = false
             selectItemsOpenBtn.isVisible = true
             listAdapter.clearCheckedItems()
