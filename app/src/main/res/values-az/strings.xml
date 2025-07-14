@@ -478,4 +478,5 @@
     <string name="select_between_desc">Seçmək üçün elementlərin həddini təyin et</string>
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Web Qəbuledici PO Token</string>
+    <string name="reverse">Dəyişdir</string>
 </resources>
