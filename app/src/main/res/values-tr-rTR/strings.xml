@@ -481,5 +481,5 @@
     <string name="select_between_desc">Seçilecek öge aralığını belirtin</string>
     <string name="potoken">PO Jetonu</string>
     <string name="web_client_po_token">Web İstemcisi PO Jetonu</string>
-    <string name="reverse">Geri al</string>
+    <string name="reverse">Tersine çevir</string>
 </resources>
