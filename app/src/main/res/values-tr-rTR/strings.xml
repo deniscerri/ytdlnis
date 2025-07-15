@@ -10,8 +10,8 @@
     <string name="music_directory">Ses klasörü</string>
     <string name="video_directory">Video klasörü</string>
     <string name="updating">Güncellemeler</string>
-    <string name="ytdl_update_hint">İndirmede sorun yaşıyorsanız yararlıdır</string>
-    <string name="update_ytdl">yt-dlp\'nin yeni sürümünü yükle</string>
+    <string name="ytdl_update_hint">Güncellemeleri indirirken faydalı ipucu</string>
+    <string name="update_ytdl">yt-dl\'yi yeni sürüme güncelleyin</string>
     <string name="source_code">Kaynak kodu</string>
     <string name="search_hint">Ara veya URL ekle</string>
     <string name="failed_download">Dosya indirilemedi</string>
@@ -481,4 +481,5 @@
     <string name="select_between_desc">Seçilecek öge aralığını belirtin</string>
     <string name="potoken">PO Jetonu</string>
     <string name="web_client_po_token">Web İstemcisi PO Jetonu</string>
+    <string name="reverse">Geri al</string>
 </resources>
