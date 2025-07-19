@@ -18,9 +18,9 @@
     <string name="search_hint">Пошук або вставка URL-адреси</string>
     <string name="updating">Оновлення</string>
     <string name="ytdl_already_updating">Встановлення нової версії</string>
-    <string name="ytdl_update_hint">Корисно, якщо у вас виникли проблеми із завантаженням</string>
+    <string name="ytdl_update_hint">Корисна порада при завантаженні оновлень</string>
     <string name="source_code">Вихідний код</string>
-    <string name="update_ytdl">Встановити нову версію yt-dlp</string>
+    <string name="update_ytdl">Оновіть YT-DL до нової версії</string>
     <string name="about">Про нас</string>
     <string name="failed_download">Не вдалося завантажити файл</string>
     <string name="download_notification_channel_name">Завантаження файлів</string>
@@ -478,4 +478,5 @@
     <string name="select_between_desc">Вкажіть діапазон елементів для вибору</string>
     <string name="potoken">PO токен</string>
     <string name="web_client_po_token">Веб -Клієнт PO Токен</string>
+    <string name="reverse">Зворотній</string>
 </resources>

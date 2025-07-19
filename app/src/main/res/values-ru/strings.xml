@@ -7,7 +7,7 @@
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Введите запрос или вставьте URL</string>
-    <string name="update_ytdl">Установить новую версию yt-dlp</string>
+    <string name="update_ytdl">Обновить YT-DL до новой версии</string>
     <string name="failed_download">Не удалось скачать файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
@@ -70,7 +70,7 @@
     <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
-    <string name="ytdl_update_hint">Полезно, если у вас проблемы со скачиванием</string>
+    <string name="ytdl_update_hint">Полезный совет при загрузке обновлений</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии</string>
     <string name="command_directory">Папка пользовательских команд</string>
@@ -478,4 +478,5 @@
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
     <string name="potoken">PO Токен</string>
     <string name="web_client_po_token">Веб -Клиент PO Токен</string>
+    <string name="reverse">Обратный</string>
 </resources>

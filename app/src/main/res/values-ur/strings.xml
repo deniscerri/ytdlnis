@@ -9,12 +9,12 @@
     <string name="music_directory">موسیقی کا فولڈر</string>
     <string name="video_directory">ویڈیو فولڈر</string>
     <string name="updating">تحديث</string>
-    <string name="update_ytdl">yt-dlp کا نیا ورژن انسٹال کریں.</string>
+    <string name="update_ytdl">yt-dl کو نئے ورژن پر اپ ڈیٹ کریں</string>
     <string name="about">متعلق</string>
     <string name="source_code">سورس کوڈ</string>
-    <string name="search_hint">URL تلاش کریں یا داخل کریں</string>
+    <string name="search_hint">URL تلاش یا داخل کریں</string>
     <string name="failed_download">فائل ڈاؤن لوڈ نہیں ہو سکی</string>
-    <string name="download_notification_channel_name">فائل ڈاؤن لوڈز</string>
+    <string name="download_notification_channel_name">فائل ڈاؤنلوڈس</string>
     <string name="you_are_in_latest_version">تازہ ترین ورژن استعمال کیا جا رہا ہے</string>
     <string name="ytld_update_success">نیا ورژن انسٹال ہو گیا</string>
     <string name="ytdl_already_updating">نیا ورژن انسٹال کیا جا رہا ہے</string>
@@ -24,13 +24,13 @@
     <string name="worst_quality">بدترین معیار</string>
     <string name="remove_all">سب ہٹا دیں</string>
     <string name="home">گھر</string>
-    <string name="ytdl_update_hint">اگر آپ کو ڈاؤن لوڈ کرنے میں دشواری ہو تو مفید ہے.</string>
+    <string name="ytdl_update_hint">مفید مشورہ اپڈیٹس ڈؤنلوڈ کرتے ہوئے</string>
     <string name="download_notification_channel_description">آڈیو اور ویڈیو فائلوں کو ڈاؤن لوڈ کرنے کی پیشرفت کو ظاہر کرنے والی اطلاع</string>
     <string name="cancel">منسوخ کریں</string>
     <string name="confirm_delete_history_desc">تمام تاریخ کو مستقل طور پر حذف کریں</string>
     <string name="confirm_delete_history">تصدیق کریں</string>
-    <string name="search_history_hint">تاریخ سے تلاش کریں</string>
-    <string name="search_command_hint">حکموں سے تلاش کریں</string>
+    <string name="search_history_hint">ماضی میں تلاش کریں</string>
+    <string name="search_command_hint">احکامات سے تلاش کریں</string>
     <string name="no_results">کوئی نتیجہ نہیں</string>
     <string name="more">زیادہ</string>
     <string name="update_app">اپدیٹ چیک کریں</string>
@@ -44,4 +44,13 @@
     <string name="aria2_summary">ڈیفالٹ کے بجائے aria2c کو بطور ڈاؤنلوڈر استعمال کریں۔</string>
     <string name="processing">کارروائی ہو رہی ہے</string>
     <string name="embed_subs_summary">ویڈیو میں سب ٹائٹلز شامل کریں</string>
+    <string name="concurrent_fragments_summary">DASH/HLS ویڈیو کے حصوں کی تعداد جو بیک وقت ڈاؤنلوڈ کیے جا سکتے ہیں</string>
+    <string name="concurrent_fragments">ہم آہنگ حصے</string>
+    <string name="downloading">ڈاؤنلوڈنگ</string>
+    <string name="limit_rate">حد کی شرح</string>
+    <string name="embed_thumb">تھمبنیل کاورس</string>
+    <string name="embed_thumb_summary">تھمبنیل کو کاور آرٹ کے طور پر استعمال کرایں</string>
+    <string name="add_chapters">ویڈیوز کے حصے</string>
+    <string name="add_chapters_summary">یوٹیوب/اسپانسر بلاک سیگمنٹس کو ویڈیو کے چیپٹرز کے طور پر نشان زد کریں</string>
+    <string name="save_thumb">تمبھنیل محفوظ کریں</string>
 </resources>

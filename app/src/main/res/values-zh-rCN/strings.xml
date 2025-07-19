@@ -35,7 +35,7 @@
     <string name="remove_all">移除所有</string>
     <string name="concurrent_fragments">同时下载片段数</string>
     <string name="run_command">运行命令</string>
-    <string name="update_ytdl">安装新版本的 yt-dlp</string>
+    <string name="update_ytdl">更新 yt-dl 到新版本</string>
     <string name="about">相关信息</string>
     <string name="search_hint">搜索或插入URL</string>
     <string name="download_notification_channel_description">音频和视频文件下载进度的通知</string>
@@ -87,7 +87,7 @@
     <string name="remove_duplicates">移除重复项</string>
     <string name="shortcuts">快捷方式</string>
     <string name="remove_results">清除结果</string>
-    <string name="ytdl_update_hint">如果您在下载时遇到问题，这很有用</string>
+    <string name="ytdl_update_hint">下载更新时的有用提示</string>
     <string name="concurrent_fragments_summary">同时下载 DASH/HLS 原视频的片段数</string>
     <string name="downloading">下载中</string>
     <string name="limit_rate">限速</string>
@@ -477,4 +477,5 @@
     <string name="select_between_desc">指定要选择的项目的时间范围</string>
     <string name="potoken">PO 令牌</string>
     <string name="web_client_po_token">Web 客户端 PO 令牌</string>
+    <string name="reverse">颠倒</string>
 </resources>

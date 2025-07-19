@@ -478,4 +478,5 @@
     <string name="select_between_desc">حدد نطاق العناصر المراد تحديدها</string>
     <string name="potoken">رمز PO</string>
     <string name="web_client_po_token">رمز عيمل الويب PO</string>
+    <string name="reverse">اعكس</string>
 </resources>
