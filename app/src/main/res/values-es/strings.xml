@@ -4,7 +4,7 @@
     <string name="settings">Ajustes</string>
     <string name="home">Inicio</string>
     <string name="directories">Directorios</string>
-    <string name="music_directory">Carpeta de audio</string>
+    <string name="music_directory">Directorio de Audio</string>
     <string name="video_directory">Directorio de Video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil si tienes problemas para descargar</string>
