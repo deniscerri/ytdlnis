@@ -27,8 +27,8 @@
     <string name="music_directory">Pasta de áudio</string>
     <string name="video_directory">Pasta de vídeo</string>
     <string name="updating">Atualizações</string>
-    <string name="ytdl_update_hint">Útil se ocorrerem erros durante as descargas</string>
-    <string name="update_ytdl">Instalar nova versão yt-dlp</string>
+    <string name="ytdl_update_hint">Dica útil enquanto as atualizações são baixadas</string>
+    <string name="update_ytdl">Atualize YT-DL para a nova versão</string>
     <string name="about">Acerca</string>
     <string name="source_code">Código fonte</string>
     <string name="no_results">Sem resultados</string>
@@ -53,7 +53,7 @@
     <string name="downloads">Transferências</string>
     <string name="remove_deleted">Remover eliminadas</string>
     <string name="sort_by">Ordem</string>
-    <string name="Open_File">Abrir ficheiro</string>
+    <string name="Open_File">Abrir arquivo</string>
     <string name="download_all">Transferir tudo</string>
     <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado</string>
     <string name="downloading_update">A transferir a nova versão</string>
@@ -82,7 +82,7 @@
     <string name="delete_file_too">Eliminar ficheiro do dispositivo</string>
     <string name="directories">Pastas</string>
     <string name="delete_files_too">Eliminar ficheiros do dispositivo</string>
-    <string name="exit_app">Sair da aplicação</string>
+    <string name="exit_app">Sair do aplicativo</string>
     <string name="warning">Aviso</string>
     <string name="sponsorblock_previews">Pré-visualizações</string>
     <string name="sponsorblock_fillers">Preenchimento</string>
@@ -117,7 +117,7 @@
     <string name="aria2_summary">Utilizar aria2c como transferidor em vez da predefinição</string>
     <string name="limit_rate_summary">Taxa máxima para transferência (em bytes por segundo), exemplo, 50K ou 4,2M</string>
     <string name="concurrent_fragments_summary">Número de fragmentos simultâneos para vídeos nativos DASH/HLS</string>
-    <string name="concurrent_fragments">Fragmentos em simultâneo</string>
+    <string name="concurrent_fragments">Fragmentos simultâneos</string>
     <string name="sponsorblock_sponsors">Patrocinadores</string>
     <string name="sponsorblock_intro">Introdução</string>
     <string name="sponsorblock_outro">Cartões finais/créditos</string>
@@ -126,9 +126,9 @@
     <string name="adjust_templates">Ajustar modelos</string>
     <string name="remove_search_history">Limpar histórico de pesquisas</string>
     <string name="update_formats">Atualizar formatos</string>
-    <string name="log_downloads">Registos de descargas</string>
+    <string name="log_downloads">Registos de downloads</string>
     <string name="log_downloads_summary">Criar um ficheiro de registo para cada descarga</string>
-    <string name="download_queue">Fila de descarga</string>
+    <string name="download_queue">Fila de downloads</string>
     <string name="running">Em execução</string>
     <string name="command">Comando</string>
     <string name="import_from_clipboard">Importar da área de transferência</string>
@@ -183,7 +183,7 @@
     <string name="misc">Outras</string>
     <string name="general">Geral</string>
     <string name="concurrent_downloads_summary">Número de descargas executadas em simultâneo</string>
-    <string name="concurrent_downloads">Descargas simultâneas</string>
+    <string name="concurrent_downloads">Downloads simultâneos</string>
     <string name="template">Modelo</string>
     <string name="select_sponsorblock_filtering">Selecionar filtros SponsorBlock</string>
     <string name="container">Formato</string>
@@ -202,11 +202,11 @@
     <string name="video_recommendations_summary">Obter recomendações de vídeos no ecrã inicial</string>
     <string name="add_chapters_summary">Marcar segmentos YouTube/SponsorBlock como capítulos do vídeo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminar vários itens</string>
-    <string name="request_permission_desc">Esta aplicação requer permissões de acesso aos ficheiros para guardar itens</string>
-    <string name="sponsorblock_nonmusic">Partes não musicais e off-topic</string>
-    <string name="update_ytdl_nightly">Versão diária de yt-dlp</string>
+    <string name="request_permission_desc">Este aplicativo requer permissões para salvar arquivos nesse dispositivo</string>
+    <string name="sponsorblock_nonmusic">Partes não-musicais e fora de tópico</string>
+    <string name="update_ytdl_nightly">Versão Nightly de YT-DLP</string>
     <string name="adjust_audio">Ajustar áudio</string>
-    <string name="file_name_template">Modelo para o nome de ficheiro</string>
+    <string name="file_name_template">Modelo para o nome de arquivo</string>
     <string name="language">Idioma</string>
     <string name="command_templates">Modelos de comandos</string>
     <string name="terminal">Terminal</string>
