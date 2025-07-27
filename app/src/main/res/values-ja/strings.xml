@@ -478,4 +478,5 @@
     <string name="select_between_desc">選択する項目の範囲を指定</string>
     <string name="web_client_po_token">ウェブクライアントPOトークン</string>
     <string name="potoken">POトークン</string>
+    <string name="reverse">逆順</string>
 </resources>
