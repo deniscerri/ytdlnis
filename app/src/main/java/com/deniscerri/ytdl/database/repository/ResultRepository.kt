@@ -189,41 +189,43 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     }
 
     private suspend fun getYoutubePlaylist(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
-        val id = inputQuery.split("list=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("&").first()
-        val playlistURL = "https://youtube.com/playlist?list=${id}"
-        if (resetResults) deleteAll()
-        val items = mutableListOf<ResultItem>()
-        val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()){
-            newPipeUtil.getPlaylistData(playlistURL) {
-                if (addToResults){
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
-                    }
-                }
-                items.addAll(it)
+//        val id = inputQuery.split("list=".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()[1].split("&").first()
+//        val playlistURL = "https://youtube.com/playlist?list=${id}"
+//        if (resetResults) deleteAll()
+//        val items = mutableListOf<ResultItem>()
+//        val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()){
+//            newPipeUtil.getPlaylistData(playlistURL) {
+//                if (addToResults){
+//                    runBlocking {
+//                        val ids = resultDao.insertMultiple(it)
+//                        ids.forEachIndexed { index, id ->
+//                            it[index].id = id
+//                        }
+//                    }
+//                }
+//                items.addAll(it)
+//            }
+//        }else {
+//            Result.failure(Throwable())
+//        }
+//
+//        val response = if (ytExtractorResult.isSuccess){
+//            ytExtractorResult.getOrElse { items }
+//        }else{
+//
+//            res
+//        }
+
+        val res = ytdlpUtil.getFromYTDL(inputQuery)
+        if (addToResults) {
+            val ids = resultDao.insertMultiple(res)
+            ids.forEachIndexed { index, id ->
+                res[index].id = id
             }
-        }else {
-            Result.failure(Throwable())
         }
 
-        val response = if (ytExtractorResult.isSuccess){
-            ytExtractorResult.getOrElse { items }
-        }else{
-            val res = ytdlpUtil.getFromYTDL(playlistURL)
-            if (addToResults) {
-                val ids = resultDao.insertMultiple(res)
-                ids.forEachIndexed { index, id ->
-                    res[index].id = id
-                }
-            }
-            res
-        }
-
-        itemCount.value = response.size
-        return response
+        itemCount.value = res.size
+        return res
     }
 
     private suspend fun getYoutubeChannel(url: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{

@@ -2450,6 +2450,8 @@ object UiUtil {
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, preferences: SharedPreferences) {
+        if (context.isFinishing || context.isDestroyed) return
+
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val skippedVersions = preferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
 

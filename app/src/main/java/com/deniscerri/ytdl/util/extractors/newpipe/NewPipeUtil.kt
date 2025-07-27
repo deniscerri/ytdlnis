@@ -214,7 +214,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    suspend fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val totalItems = mutableListOf<ResultItem>()
             var nextPage : Page? = null
@@ -234,8 +234,6 @@ class NewPipeUtil(context: Context) {
                     nextPage = if (tmp.hasNextPage()) tmp.nextPage else null
                     tmp.items.toList()
                 }
-
-                if (req.isEmpty()) return Result.failure(Throwable())
 
                 for (element in req) {
                     if (element is StreamInfoItem) {
