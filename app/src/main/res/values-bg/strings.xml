@@ -17,8 +17,8 @@
     <string name="music_directory">Папка аудио</string>
     <string name="video_directory">Папка видео</string>
     <string name="updating">Обновяване</string>
-    <string name="ytdl_update_hint">Полезно, ако имате проблеми с изтеглянето</string>
-    <string name="update_ytdl">Инсталиране на нова версия yt-dlp</string>
+    <string name="ytdl_update_hint">Полезен съвет при изтегляне на актуализации</string>
+    <string name="update_ytdl">Обновяване на yt-dlp до нова версия</string>
     <string name="about">За</string>
     <string name="source_code">Source Code</string>
     <string name="search_hint">Търсене или вмъкване на URL</string>
@@ -192,7 +192,7 @@
     <string name="ignore">Пропускане</string>
     <string name="user_agent_header">User-Agent заглавие</string>
     <string name="export_file">Експортиране на файл</string>
-    <string name="ytdl_source">Предпочитана версия yt-dlp</string>
+    <string name="ytdl_source">Източник yt-dlp</string>
     <string name="update_ytdl_master">Основна версия на yt-dlp</string>
     <string name="update_ytdl_stable">Стабилна версия на yt-dlp</string>
     <string name="preferred_audio_language">Предпочитан аудио език</string>
@@ -245,7 +245,7 @@
     <string name="download_over_metered_networks">Изтегляне през мрежи с измерване на данни</string>
     <string name="add">Добавяне</string>
     <string name="back">Назад</string>
-    <string name="all_queries_finished">Всички Заявки обработени</string>
+    <string name="all_queries_finished">Всички заявки обработени</string>
     <string name="no_download_fragments">Не изтегляйте като частични файлове</string>
     <string name="download_over_metered_networks_summary">Изтеглете през всички мрежи. В противен случай изчакайте мрежа без лимити</string>
     <string name="metered_network_download_start_info">Изтеглянето ще започне, когато се свържете с безлимитна мрежа</string>
@@ -384,8 +384,8 @@
     <string name="scheduled">Планирани</string>
     <string name="clear_scheduled">Изчисти планирани</string>
     <string name="disabled">Забранено</string>
-    <string name="prevent_duplicate_config">Предотврати дублираща конфигурация</string>
-    <string name="prevent_duplicate_url_type">URL &amp; Тип изтегляне</string>
+    <string name="prevent_duplicate_config">Пълна конфигурация</string>
+    <string name="prevent_duplicate_url_type">URL &amp; тип изтегляне</string>
     <string name="subtitles">Субтитри</string>
     <string name="copy_url">Копиране URL</string>
     <string name="minute">Минута</string>
@@ -467,11 +467,14 @@
     <string name="backup_path">Път до резервно копие</string>
     <string name="write_subs_when_embed_subs">Пишете субтитри при вграждане</string>
     <string name="write_subs_when_embed_subs_summary">Това ще приложи запазване на субтитри и автоматично запазване на субтитри, за да изтегли файловете със субтитри и да ги изтрие след вграждане</string>
-    <string name="generate_potokens">Генериране на PO Token-и</string>
+    <string name="generate_potokens">Генериране на PO token-и</string>
     <string name="regenerate">Генериране наново</string>
     <string name="automatic_backup_summary">Автоматично създаване на резервно копие на всичко, когато бъде намерена нова версия на приложението</string>
     <string name="use_only_po_token">Използвайте само PO Token (Игнорирайте клиента на плеъра)</string>
-    <string name="generate_potokens_warning">* Като активирате това, трябва да деактивирате бисквитките</string>
+    <string name="generate_potokens_warning">Като активирате това, трябва да деактивирате бисквитките</string>
     <string name="custom">персонализирани</string>
     <string name="cut_unsupported">Изрязване не е налично за този елемент</string>
+    <string name="select_between_desc">Посочете диапазона от елементи за избор</string>
+    <string name="potoken">PO Токен</string>
+    <string name="web_client_po_token">Уеб -Клиент PO Токен</string>
 </resources>
