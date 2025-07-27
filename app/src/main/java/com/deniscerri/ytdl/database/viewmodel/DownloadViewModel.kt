@@ -127,6 +127,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
     var processingItems = MutableStateFlow(false)
     var processingItemsJob : Job? = null
+    var processingSort = MutableStateFlow("ASC")
 
     init {
         dbManager =  DBManager.getInstance(application)
@@ -619,6 +620,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         )
     }
 
+    suspend fun toggleProcessingSort() : String {
+        processingItems.emit(true)
+        processingSort.value = if (processingSort.value == "ASC") "DESC" else "ASC"
+        repository.reverseProcessingDownloads()
+        processingItems.emit(false)
+        return processingSort.value
+    }
 
     fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>, deleteExisting : Boolean = false) = viewModelScope.launch(Dispatchers.IO){
         val job = viewModelScope.launch(Dispatchers.IO) {

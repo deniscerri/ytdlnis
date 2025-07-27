@@ -356,6 +356,17 @@ interface DownloadDao {
         }
     }
 
+    @Transaction
+    suspend fun reverseProcessingDownloads() {
+        val items = getProcessingDownloadsList()
+        val newIDs = items.reversed().map { it.id }
+        items.forEach { updateDownloadID(it.id, -(it.id)) }
+
+        items.forEachIndexed { idx, it ->
+            updateDownloadID(-(it.id), newIDs[idx])
+        }
+    }
+
     @Query("Update downloads set id=:newId where id=:id")
     suspend fun updateDownloadID(id: Long, newId: Long)
 

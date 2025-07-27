@@ -22,6 +22,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -38,6 +39,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
@@ -919,6 +921,22 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             selectItemsOpenBtn.isVisible = true
             listAdapter.clearCheckedItems()
             updateBottomAppBarMenuItemsVisibility()
+        }
+
+
+        val sortBtn = view.findViewById<MaterialButton>(R.id.sortBtn)
+        sortBtn.setOnClickListener {
+            lifecycleScope.launch {
+                val newSort = withContext(Dispatchers.IO) {
+                    downloadViewModel.toggleProcessingSort()
+                }
+
+                when(newSort) {
+                    "ASC" -> sortBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
+                    "DESC" -> sortBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+                }
+                recyclerView.scrollTo(0, 0)
+            }
         }
 
     }

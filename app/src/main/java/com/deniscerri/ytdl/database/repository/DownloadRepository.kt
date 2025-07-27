@@ -144,6 +144,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         return downloadDao.getProcessingDownloadsList()
     }
 
+    suspend fun reverseProcessingDownloads() {
+        downloadDao.reverseProcessingDownloads()
+    }
+
     fun getActiveAndQueuedDownloads() : List<DownloadItem> {
         return downloadDao.getActiveAndQueuedDownloadsList()
     }

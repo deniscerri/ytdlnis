@@ -233,6 +233,7 @@ class WebViewActivity : BaseActivity() {
                             }
                             preferences.edit().putString("useragent_header", userAgentString).apply()
                         }
+                        cookieManager.setAcceptCookie(true)
                         cookieManager.setAcceptThirdPartyCookies(this, true)
                     }
                 }
