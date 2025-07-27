@@ -232,8 +232,8 @@ class DownloadWorker(
                             CoroutineScope(Dispatchers.IO).launch {
                                 if (logDownloads) {
                                     logRepo.update(line, logItem.id)
-                                    logString.append("$line\n")
                                 }
+                                logString.append("$line\n")
                             }
                         }
                     }.onSuccess {
@@ -378,16 +378,16 @@ class DownloadWorker(
                             FileUtil.deleteFile("${cachePath}/${infoJsonName}.info.json")
                         }
 
-                        if(it.message != null){
-                            if (logDownloads){
-                                logRepo.update(it.message!!, logItem.id)
-                            }else{
-                                logString.append("${it.message}\n")
-                                logItem.content = logString.toString()
-                                val logID = logRepo.insert(logItem)
-                                downloadItem.logID = logID
-                            }
+
+                        if (logDownloads){
+                            logRepo.update(it.message ?: "", logItem.id)
+                        }else{
+                            logString.append("${it.message ?: it.stackTraceToString()}\n")
+                            logItem.content = logString.toString()
+                            val logID = logRepo.insert(logItem)
+                            downloadItem.logID = logID
                         }
+
 
                         tempFileDir.delete()
 

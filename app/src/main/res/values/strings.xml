@@ -481,4 +481,6 @@
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Web Client PO Token</string>
     <string name="reverse">Reverse</string>
+    <string name="no_keep_subs">Delete subtitle files after embedding</string>
+    <string name="no_keep_subs_summary">When using both Embed Subtitles and Write Subtitles, don\'t keep the subtitle files after embedding</string>
 </resources>

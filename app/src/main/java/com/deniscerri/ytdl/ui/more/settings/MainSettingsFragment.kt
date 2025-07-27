@@ -49,6 +49,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.ui.more.settings.FolderSettingsFragment.Companion.COMMAND_PATH_CODE
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -492,27 +493,19 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle(getString(R.string.restore))
         builder.setMessage("${getString(R.string.restore_complete)}\n $restoreDataMessage")
+        builder.setCancelable(false)
         builder.setPositiveButton(
-            getString(R.string.restart)
-        ) { _: DialogInterface?, _: Int ->
-            val intent = Intent(requireContext(), MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(intent)
-            requireActivity().finishAffinity()
-            if(data.settings != null){
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
-            }
-            activity?.finishAffinity()
-        }
-
-        // handle the negative button of the alert dialog
-        builder.setNegativeButton(
-            getString(R.string.cancel)
+            getString(R.string.ok)
         ) { _: DialogInterface?, _: Int ->
             if(data.settings != null){
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(preferences.getString("app_language", "en")))
+                val languageValue = preferences.getString("app_language", "en")
+                if (languageValue == "system") {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(null))
+                }else{
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageValue.toString()))
+                }
             }
+            ThemeUtil.recreateAllActivities()
         }
 
         val dialog = builder.create()

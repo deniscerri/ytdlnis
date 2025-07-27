@@ -77,6 +77,12 @@ object ThemeUtil {
         activities.firstOrNull { it.javaClass == MainActivity::class.java }?.recreate()
     }
 
+    fun recreateAllActivities() {
+        activities.forEach {
+            it.recreate()
+        }
+    }
+
     fun updateThemes() {
         activities.forEach {
             updateTheme(it)

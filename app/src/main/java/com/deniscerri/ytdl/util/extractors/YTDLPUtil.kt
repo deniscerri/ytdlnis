@@ -525,6 +525,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.applyDefaultOptionsForFetchingData(url)
             if (url.isYoutubeURL()) {
                 request.setYoutubeExtractorArgs(url)
+                request.addOption("--extractor-args", "youtube:player_skip=webpage,configs,js;player_client=android,web")
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
@@ -1327,9 +1328,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (downloadItem.videoPreferences.embedSubs) {
-                    if (sharedPreferences.getBoolean("write_subs_when_embed_subs", false) && !downloadItem.videoPreferences.writeSubs && !downloadItem.videoPreferences.writeAutoSubs) {
-                        request.addOption("--write-subs")
-                        request.addOption("--write-auto-subs")
+                    if (sharedPreferences.getBoolean("no_keep_subs", false) && !downloadItem.videoPreferences.writeSubs && !downloadItem.videoPreferences.writeAutoSubs) {
                         request.addOption("--compat-options", "no-keep-subs")
                     }
 
