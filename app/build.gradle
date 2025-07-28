@@ -13,7 +13,7 @@ def versionMajor = 1
 def versionMinor = 8
 def versionPatch = 5
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
-def isBeta = true
+def isBeta = false
 
 def versionExt = ""
 if (versionBuild > 0) {
