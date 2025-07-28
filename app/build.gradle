@@ -11,8 +11,8 @@ plugins {
 def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 8
-def versionPatch = 4
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
+def versionPatch = 5
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 def isBeta = true
 
 def versionExt = ""

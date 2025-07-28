@@ -1,0 +1,48 @@
+# What's Changed
+
+## Bulk Edit items in the Multiple Download Card #817
+
+Now you can select a subset of the items in the multiple download card and apply changes only to them.
+- Select items between 2 items
+- Write down item indexes to select
+- remove items
+- Invert selected
+- All options in this screen that previously could apply to all items are implemented for this function.
+
+Also if you select a sublist and try to update formats and decide to update in the background, the app will remember the other items you didnt select when you return back to it but only the selected items will have their formats updated of course.
+
+## Other changes:
+
+- App now can show FFmpeg output in the download card to avoid confusion on cases where it might appear as if the download is stuck but its running a ffmpeg subprocess
+- App can now downgrade to stable when in beta. You will get a popup to update to the prev stable release if you installed from github and had use beta disabled
+- Fixed app crashing if yt-dlp sources in preferences is badly written
+- Fixed app having multiple columns for format items instead of just one #800
+- Clear results when changing home recommendation source to avoid confusion
+- Fix app passing --cache-dir twice in the command
+- Remove buffer time in cut player, could help it load faster
+- Fix app not consistently preferring codec in a format
+- Prevent app from showing 'null' in author field if its not available #814
+- Change text to be Sentence Case #793
+- Add feature to convert audio bitrate up to 320kbps. * Even though it doesnt really increase quality many people requested it so here you go
+- Added feature to show available subtitles a video has when selecting subtitle languages
+- Made default subtitle format default instead of srt
+- Fix app not properly putting data fetching extra commands in some cases
+- Added "system" option in language selection so it follows the system language always
+- Fixed app crashing when putting unreal numbers in cut section
+- Hid download all and clipboard chip when selecting items to avoid confusion
+- Added separate icons for success, running and failed downloads
+- Used  ^.*$ for replace-in-metadata
+- Groupped finished, running, errored notifications
+- Added subs in po token creator screen
+- Fix download failing when title has forbidden characters #847
+- Fix titles doubling up #835
+- Add option to reverse items in the multiple download card
+- Made app not restart when restoring backup
+- Fix app not removing items that you redownload from cancelled/erroret etc
+
+## For advanced users:
+
+For anyone who is using intent arguments in YTDLnis for automation, the COMMAND argument has been removed. This is due to a found security vulnerability by SonarPaul where user information and app integrity could be compromised. Read the pdf for more information in the YTDLnis Updates Telegram Channel.
+
+If you were using that argument for extra commands with audio/video downloads, you could make a command template about it and use it as extra command and also add a url regex if you want.
+
