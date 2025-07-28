@@ -17,9 +17,9 @@
     <string name="home">Beranda</string>
     <string name="directories">Folder</string>
     <string name="music_directory">Folder audio</string>
-    <string name="ytdl_update_hint">Berguna apabila kamu mengalami masalah saat mengunduh</string>
+    <string name="ytdl_update_hint">Tips berguna saat mengunduh pembaruan</string>
     <string name="video_directory">Folder video</string>
-    <string name="update_ytdl">Pasang yt-dlp versi yang baru</string>
+    <string name="update_ytdl">Perbarui yt-dl ke versi baru</string>
     <string name="source_code">Kode sumber</string>
     <string name="search_hint">Telusuri atau sisipkan URL</string>
     <string name="ytld_update_success">Versi yang baru terpasang</string>
@@ -477,4 +477,5 @@
     <string name="select_between_desc">Tentukan rentang item yang akan dipilih</string>
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">PO Token Klien Web</string>
+    <string name="reverse">Balik</string>
 </resources>
