@@ -479,4 +479,6 @@
     <string name="potoken">رمز PO</string>
     <string name="web_client_po_token">رمز عيمل الويب PO</string>
     <string name="reverse">اعكس</string>
+    <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
+    <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
 </resources>
