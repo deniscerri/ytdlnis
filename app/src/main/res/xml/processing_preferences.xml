@@ -11,7 +11,6 @@
             app:title="@string/use_sponsorblock" />
 
         <MultiSelectListPreference
-            app:defaultValue="@array/sponsorblock_settings_default"
             app:icon="@drawable/ic_money"
             android:dependency="use_sponsorblock"
             app:dialogTitle="@string/select_sponsorblock_filtering"
