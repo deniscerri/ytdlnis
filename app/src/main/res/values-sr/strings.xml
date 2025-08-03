@@ -123,7 +123,7 @@
     <string name="source_code">Изворни кôд</string>
     <string name="cookies">Колачићи</string>
     <string name="light">Светла</string>
-    <string name="save_subs_desc">Напишите фајл титла</string>
+    <string name="save_subs_desc">Сачувајте фајл титла</string>
     <string name="export_from_clipboard">Извези у привремену меморију</string>
     <string name="limit_rate">Ограничење брзине</string>
     <string name="end">Крај</string>
@@ -478,4 +478,7 @@
     <string name="select_between_desc">Наведите опсег предмета за избор</string>
     <string name="potoken">Токен PO</string>
     <string name="web_client_po_token">Токен PO веб-клијента</string>
+    <string name="reverse">Обрнуто</string>
+    <string name="no_keep_subs">Избриши фајлове титлова након уграђивања</string>
+    <string name="no_keep_subs_summary">Када користите и „Уграђивање титлова“ и „Писање титлова“, неће се чувати фајлови титлова након уграђивања</string>
 </resources>

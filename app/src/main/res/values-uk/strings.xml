@@ -479,4 +479,6 @@
     <string name="potoken">PO токен</string>
     <string name="web_client_po_token">Веб -Клієнт PO Токен</string>
     <string name="reverse">Зворотній</string>
+    <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
+    <string name="no_keep_subs_summary">При використанні функцій «Вбудувати субтитри» та «Написати субтитри» не зберігати файли субтитрів після вбудовування</string>
 </resources>

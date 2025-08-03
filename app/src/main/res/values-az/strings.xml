@@ -176,7 +176,7 @@
     <string name="kill_app">Tətbiqi dayandır</string>
     <string name="confirm_terminate">Bütün yükləmələri dayandırır və tətbiqi zorla bağlayır</string>
     <string name="dont_ask_again">Təkrar soruşma</string>
-    <string name="end">Bitir</string>
+    <string name="end">Son</string>
     <string name="start">Başla</string>
     <string name="update_formats_summary">Yükləmə kartı görünən kimi formatları əldə edin</string>
     <string name="ignore_battery_optimization">Batareya optimallaşmasına məhəl qoyma</string>
@@ -479,4 +479,6 @@
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Web Qəbuledici PO Token</string>
     <string name="reverse">Dəyişdir</string>
+    <string name="no_keep_subs">Yerləşdirmə sonrası titr fayllarını sil</string>
+    <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
 </resources>
