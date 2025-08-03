@@ -281,7 +281,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<DownloadItemConfigureMultiple> = object : DiffUtil.ItemCallback<DownloadItemConfigureMultiple>() {
             override fun areItemsTheSame(oldItem: DownloadItemConfigureMultiple, newItem: DownloadItemConfigureMultiple): Boolean {
-                return oldItem.url == newItem.url
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: DownloadItemConfigureMultiple, newItem: DownloadItemConfigureMultiple): Boolean {

@@ -364,11 +364,15 @@ interface DownloadDao {
 
         items.forEachIndexed { idx, it ->
             updateDownloadID(-(it.id), newIDs[idx])
+            updateDownloadRowNumber(newIDs[idx], items.size - idx)
         }
     }
 
     @Query("Update downloads set id=:newId where id=:id")
     suspend fun updateDownloadID(id: Long, newId: Long)
+
+    @Query("Update downloads set rowNumber=:newNr where id=:id")
+    suspend fun updateDownloadRowNumber(id: Long, newNr: Int)
 
     @Query("SELECT id from downloads WHERE id > :item1 AND id < :item2 AND status in (:statuses) ORDER BY id DESC")
     fun getIDsBetweenTwoItems(item1: Long, item2: Long, statuses: List<String>) : List<Long>
