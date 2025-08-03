@@ -60,6 +60,12 @@ object Migrations {
 
             //add available subtitles for download item
             database.execSQL("ALTER TABLE downloads ADD COLUMN availableSubtitles TEXT NOT NULL DEFAULT '[]'")
+        },
+
+        //add row number to download item, use to set autonumber metadata
+        Migration(23, 24) { database ->
+            //add available subtitles for download item
+            database.execSQL("ALTER TABLE downloads ADD COLUMN rowNumber INTEGER NOT NULL DEFAULT 0")
         }
     )
 

@@ -931,11 +931,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             repository.getActiveAndQueuedDownloads()
         }
 
-        items.forEach {
+        items.forEachIndexed { idx, it ->
             if (it.downloadStartTime > 0) {
                 it.status = DownloadRepository.Status.Scheduled.toString()
             }else {
                 it.status = DownloadRepository.Status.Queued.toString()
+            }
+            if (it.rowNumber == 0) {
+                it.rowNumber = idx + 1
             }
 
             //CHECK DUPLICATES

@@ -748,6 +748,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
         }
 
+        downloadItem.rowNumber.apply {
+            if (this > 0) {
+                request.addOption("--autonumber-start", this.toString())
+            }
+        }
+
         val type = downloadItem.type
 
         val downDir : File
