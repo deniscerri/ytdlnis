@@ -176,7 +176,7 @@
     <string name="kill_app">Tətbiqi dayandır</string>
     <string name="confirm_terminate">Bütün yükləmələri dayandırır və tətbiqi zorla bağlayır</string>
     <string name="dont_ask_again">Təkrar soruşma</string>
-    <string name="end">Bitir</string>
+    <string name="end">Son</string>
     <string name="start">Başla</string>
     <string name="update_formats_summary">Yükləmə kartı görünən kimi formatları əldə edin</string>
     <string name="ignore_battery_optimization">Batareya optimallaşmasına məhəl qoyma</string>
