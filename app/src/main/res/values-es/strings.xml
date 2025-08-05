@@ -8,7 +8,7 @@
     <string name="video_directory">Directorio de video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil al descargar actualizaciones</string>
-    <string name="update_ytdl">Instalar nueva versión de yt-dlp</string>
+    <string name="update_ytdl">Update yt-dl to the new version</string>
     <string name="about">Acerca de</string>
     <string name="source_code">Código fuente</string>
     <string name="search_hint">Buscar o insertar URL</string>

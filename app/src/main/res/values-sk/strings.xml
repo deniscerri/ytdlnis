@@ -19,7 +19,7 @@
     <string name="search_history_hint">Hľadať v histórii</string>
     <string name="search_command_hint">Hľadať cez príkazy</string>
     <string name="download_notification_channel_description">Upozornenie zobrazujúce priebeh sťahovania audio a video súborov</string>
-    <string name="update_ytdl">Nainštalovať novú verziu yt-dlp</string>
+    <string name="update_ytdl">Aktualizovať yt-dl na novú verziu</string>
     <string name="audio_quality_summary">0 (najlepšia) 10 (najhoršia)</string>
     <string name="directories">Priečinky</string>
     <string name="limit_rate_summary">Maximálna rýchlosť sťahovania (v bajtoch za sekundu), napr. 50k alebo 4.2M</string>
@@ -53,7 +53,7 @@
     <string name="settings">Nastavenia</string>
     <string name="worst_quality">Najhoršia kvalita</string>
     <string name="api_key_summary">Odporúčané videá z YouTube API</string>
-    <string name="ytdl_update_hint">Užitočné pri problémoch so sťahovaním</string>
+    <string name="ytdl_update_hint">Užitočný tip pri sťahovaní aktualizácií</string>
     <string name="you_are_in_latest_version">Používate najnovšiu verziu</string>
     <string name="audio">Audio</string>
     <string name="add_chapters_summary">Označí YouTube / SponsorBlock segmenty ako kapitoly pre video</string>
@@ -467,7 +467,7 @@
     <string name="automatic_backup">Automatické zálohovanie</string>
     <string name="backup_path">Cesta k zálohe</string>
     <string name="write_subs_when_embed_subs">Zapísať titulky pri vkladaní</string>
-    <string name="use_code_highlighter">Použiť zvýrazňovač farby kódu</string>
+    <string name="use_code_highlighter">Použiť kódový zvýrazňovač farby</string>
     <string name="regenerate">Znovu vygenerovať</string>
     <string name="use_format_sorting">Použiť radenie formátu podľa dôležitosti</string>
     <string name="reset_processed_links_desc">Znovu stiahnuť všetky položky</string>
@@ -476,4 +476,8 @@
     <string name="custom">Vlastné</string>
     <string name="cut_unsupported">Orezanie nie je pre túto položku k dispozícii</string>
     <string name="select_between_desc">Špecifikujte rozsah položiek pre výber</string>
+    <string name="potoken">PO Token</string>
+    <string name="web_client_po_token">Webový klient PO Token</string>
+    <string name="no_keep_subs">Vymazať súbory s titulkami po vložení</string>
+    <string name="no_keep_subs_summary">Pri použití funkcií Vložiť titulky a Zapísať titulky nezachováva súbory s titulkami po vložení</string>
 </resources>
