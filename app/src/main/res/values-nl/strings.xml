@@ -72,7 +72,7 @@
     <string name="api_key_summary">Video­aanbevelingen van de YouTube-API</string>
     <string name="remove_downloading">Downloads annuleren</string>
     <string name="author">Auteur</string>
-    <string name="ytdl_update_hint">Handig als u problemen heeft met downloaden</string>
+    <string name="ytdl_update_hint">Handige tip tijdens het downloaden</string>
     <string name="you_are_in_latest_version">Nieuwste versie wordt gebruikt</string>
     <string name="exit_app">App verlaten</string>
     <string name="incognito_summary">Downloadt zonder aan geschiedenis toe te voegen</string>
@@ -436,4 +436,10 @@
     <string name="socket_timeout_description">Wachttijd voor het opgeven, in seconden</string>
     <string name="data_fetching_extra_command">Data Ophalen Extra Commando</string>
     <string name="data_fetching_extra_command_summary">Schakel commando sjabloon voor het ophalen van data als extra commandos</string>
+    <string name="data_fetching_extractor_youtube">Gegevens extractor (YouTube)</string>
+    <string name="disable_write_info_json">Zet de scrijfgegevens-json uit</string>
+    <string name="disable_write_info_json_summary">Elke keer dat u de download opnieuw aanzet of resumeert, dan download yt-dlp de json-data opnieuw (niet aanbevolen)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube later bekijken (cookies nodig)</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube reccomendaties (cookies nodig)</string>
+    <string name="ytdlp_liked">yt-dlp YouTube gelikede video\'s (cookies nodig)</string>
 </resources>
