@@ -6,7 +6,7 @@
     <string name="remove_results">Cancella risultati</string>
     <string name="updating">Aggiornamento in corso</string>
     <string name="home">Home</string>
-    <string name="ytdl_update_hint">Utile se hai problemi con il download</string>
+    <string name="ytdl_update_hint">Suggerimento utile durante il download degli aggiornamenti</string>
     <string name="download_all">Scarica tutto</string>
     <string name="settings">Impostazioni</string>
     <string name="directories">Cartelle</string>
@@ -32,7 +32,7 @@
     <string name="embed_subs_summary">Aggiungi i sottotitoli al video</string>
     <string name="add_chapters_summary">Contrassegna i segmenti YouTube/SponsorBlock come capitoli per il video</string>
     <string name="save_thumb">Salva miniatura</string>
-    <string name="update_ytdl">Installa nuova versione di yt-dlp</string>
+    <string name="update_ytdl">Aggiorna yt-dlp alla nuova versione</string>
     <string name="search_hint">Cerca o inserisci URL</string>
     <string name="failed_download">Impossibile scaricare il file</string>
     <string name="download_notification_channel_description">Notifica che mostra l\'avanzamento del download di file audio e video</string>
@@ -476,4 +476,9 @@
     <string name="use_code_highlighter">Usa l’evidenziatore di sintassi del codice</string>
     <string name="cut_unsupported">Taglio non disponibile per questo elemento</string>
     <string name="select_between_desc">Specifica l’intervallo di elementi da selezionare</string>
+    <string name="potoken">Token PO</string>
+    <string name="reverse">Inverti</string>
+    <string name="no_keep_subs_summary">Quando si utilizzano sia Incorpora sottotitoli che Scrivi sottotitoli, non mantenere i file dei sottotitoli dopo l’incorporamento</string>
+    <string name="no_keep_subs">Elimina i file dei sottotitoli dopo l’incorporamento</string>
+    <string name="web_client_po_token">Token PO client web</string>
 </resources>
