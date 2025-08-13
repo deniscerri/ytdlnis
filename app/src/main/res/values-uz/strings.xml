@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">Qidirish</string>
+    <string name="remove_all">Hammasini oʻchirish</string>
+    <string name="remove_results">Natijalarni oʻchirish</string>
+    <string name="download_all">Barchasini yuklash</string>
+    <string name="settings">Sozlamalar</string>
+    <string name="home">Bosh sahifa</string>
+    <string name="directories">Jildlar</string>
+    <string name="music_directory">Musiqa jildi</string>
+    <string name="video_directory">Video jildi</string>
+    <string name="updating">Yangilanish</string>
+    <string name="update_ytdl">yt-dl yangi versiyasiga yangilash</string>
+    <string name="about">Haqida (maʼlumot, info)</string>
+    <string name="source_code">Manba kodi</string>
+    <string name="search_hint">Qidirish yoki link joylash</string>
+    <string name="failed_download">Fayl topilmadi</string>
+    <string name="download_notification_channel_name">Yuklangan fayllar</string>
+    <string name="you_are_in_latest_version">Ohirgi versiyasidan foydalanish</string>
+    <string name="ytld_update_success">Yangi versiya oʻrnatildi</string>
+    <string name="ytdl_already_updating">Yangi versiya oʻrnatilmoqda</string>
+    <string name="ytdl_updating_started">Yangi versiya yuklanmoqda</string>
+    <string name="Remove">Oʻchirish</string>
+    <string name="ok">Tayyor</string>
+    <string name="cancel">Orqaga</string>
+    <string name="confirm_delete_history">Tasdiqlash</string>
+    <string name="search_history_hint">Tarixdan qidirish</string>
+    <string name="search_command_hint">Buyruqlardan qidirish</string>
+    <string name="no_results">Natijalar topilmadi</string>
+    <string name="more">Koʻproq...</string>
+    <string name="update_app">Yangilanishlarni tekshirish</string>
+    <string name="version">Versiya</string>
+    <string name="downloading_update">Yangi versiyani yuklash</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+    <string name="downloading">Yuklanmoqda</string>
+    <string name="processing">Jarayonda</string>
+    <string name="embed_subs_summary">Videoga subtitr qoʻshish</string>
+</resources>
