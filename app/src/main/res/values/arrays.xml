@@ -29,6 +29,7 @@
         <item>mov</item>
         <item>avi</item>
         <item>flv</item>
+        <item>gif</item>
     </string-array>
 
     <string-array name="video_containers_values">
@@ -39,6 +40,7 @@
         <item>mov</item>
         <item>avi</item>
         <item>flv</item>
+        <item>gif</item>
     </string-array>
 
     <string-array name="video_formats">

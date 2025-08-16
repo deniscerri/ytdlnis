@@ -307,7 +307,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     true
                 }
 
-                container?.isEnabled = true
+                container?.isEnabled = !downloadItem.videoPreferences.compatibilityMode
                 containerAutoCompleteTextView?.setAdapter(
                     ArrayAdapter(
                         requireContext(),
@@ -318,6 +318,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
+                if (downloadItem.videoPreferences.compatibilityMode) {
+                    container.editText?.setText("mkv")
+                }
                 containerAutoCompleteTextView!!.setText(
                     downloadItem.container.ifEmpty { getString(R.string.defaultValue) },
                     false)
@@ -326,8 +329,18 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     AdapterView.OnItemClickListener { _: AdapterView<*>?, _: View?, index: Int, _: Long ->
                         downloadItem.container = containers[index]
                         if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
+                        if (containers[index] == "gif") {
+                            view.findViewById<Chip>(R.id.adjust_audio).isEnabled = false
+                            downloadItem.videoPreferences.removeAudio = true
+                            view.findViewById<Chip>(R.id.recode_video).isEnabled = false
+                            downloadItem.videoPreferences.recodeVideo = true
+                        }else {
+                            view.findViewById<Chip>(R.id.adjust_audio).isEnabled = true
+                            downloadItem.videoPreferences.removeAudio = false
+                            view.findViewById<Chip>(R.id.recode_video).isEnabled = true
+                            downloadItem.videoPreferences.recodeVideo = false
+                        }
                     }
-
 
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
                     visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
@@ -425,6 +438,14 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             recodeVideoClicked = {
                                 downloadItem.videoPreferences.recodeVideo = it
+                            },
+                            compatibilityModeClicked = {
+                                downloadItem.videoPreferences.compatibilityMode = it
+                                container.isEnabled = !it
+                                if (it) {
+                                    container.editText?.setText("mkv")
+                                    downloadItem.container = "mkv"
+                                }
                             },
                             alsoDownloadAsAudioClicked = {
                                 downloadItem.videoPreferences.alsoDownloadAsAudio = it

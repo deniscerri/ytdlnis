@@ -1309,6 +1309,7 @@ object UiUtil {
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
         recodeVideoClicked: (Boolean) -> Unit,
+        compatibilityModeClicked: (Boolean) -> Unit,
         alsoDownloadAsAudioClicked: (Boolean) -> Unit,
         extraCommandsClicked: () -> Unit,
         liveFromStart: (Boolean) -> Unit,
@@ -1414,7 +1415,7 @@ object UiUtil {
             adjustSubtitleDialog.show()
         }
 
-        if (items.size == 1 && items.first().id == 0L){
+        if (items.size == 1){
             val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
             adjustAudio.setOnClickListener {
                 val adjustAudioView = context.layoutInflater.inflate(R.layout.audio_download_preferences_dialog, null)
@@ -1440,6 +1441,7 @@ object UiUtil {
 
                 adjustAudioDialog.show()
             }
+            adjustAudio.isEnabled = items.first().container != "gif"
         }else{
             val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
             adjustAudio.isVisible = false
@@ -1449,7 +1451,36 @@ object UiUtil {
             removeAudio.setOnCheckedChangeListener { _, _ ->
                 removeAudioClicked(removeAudio.isChecked)
             }
+            removeAudio.isEnabled = !items.any { it.container == "gif" }
         }
+
+        val recodeVideo = view.findViewById<Chip>(R.id.recode_video)
+        recodeVideo.setOnClickListener {
+            val adjustVideoView = context.layoutInflater.inflate(R.layout.video_download_preferences_dialog, null)
+            adjustVideoView.findViewById<MaterialSwitch>(R.id.recodeVideoSwitch).apply {
+                isChecked = items.all { it.videoPreferences.recodeVideo }
+                setOnCheckedChangeListener { _, b ->
+                    recodeVideoClicked(b)
+                }
+            }
+
+            adjustVideoView.findViewById<MaterialSwitch>(R.id.compatiblityModeSwitch).apply {
+                isChecked = items.first().videoPreferences.compatibilityMode
+                setOnCheckedChangeListener { _, b ->
+                    compatibilityModeClicked(b)
+                }
+            }
+
+            val adjustVideoDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.recode_video))
+                .setView(adjustVideoView)
+                .setIcon(R.drawable.ic_video)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+            adjustVideoDialog.show()
+        }
+        recodeVideo.isEnabled = items.first().container != "gif"
+
 
         val adjustLiveStream = view.findViewById<Chip>(R.id.adjust_live_stream)
         if (items.size == 1) {
@@ -1508,13 +1539,6 @@ object UiUtil {
         }else {
             adjustLiveStream.isVisible = false
         }
-
-        val recodeVideo = view.findViewById<Chip>(R.id.recode_video)
-        recodeVideo.isChecked = items.all { it.videoPreferences.recodeVideo }
-        recodeVideo.setOnCheckedChangeListener { _, _ ->
-            recodeVideoClicked(recodeVideo.isChecked)
-        }
-
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
         sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)

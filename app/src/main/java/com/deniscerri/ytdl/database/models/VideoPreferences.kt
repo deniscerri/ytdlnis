@@ -17,5 +17,6 @@ data class VideoPreferences (
     var alsoDownloadAsAudio: Boolean = false,
     var recodeVideo: Boolean = false,
     var liveFromStart: Boolean = false,
-    var waitForVideoMinutes: Int = 0
+    var waitForVideoMinutes: Int = 0,
+    var compatibilityMode: Boolean = false
 ) : Parcelable

@@ -1127,10 +1127,16 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     if (downloadItem.videoPreferences.recodeVideo && !cantRecode.contains(cont)) {
                         request.addOption("--recode-video", outputContainer.lowercase())
                     }else{
-                        request.addOption("--merge-output-format", outputContainer.lowercase())
+                        if (downloadItem.videoPreferences.compatibilityMode) {
+                            request.addOption("--recode-video", "mp4")
+                            request.addOption("--merge-output-format", "mkv")
+                        }
+                        else {
+                            request.addOption("--merge-output-format", outputContainer.lowercase())
+                        }
                     }
 
-                    if (!listOf("webm", "avi", "flv").contains(outputContainer.lowercase())) {
+                    if (!listOf("webm", "avi", "flv", "gif").contains(outputContainer.lowercase())) {
                         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
                         if (embedThumb) {
                             metadataCommands.addOption("--embed-thumbnail")
@@ -1350,12 +1356,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                 }
 
-
-
-                if (downloadItem.videoPreferences.removeAudio){
+                if (downloadItem.videoPreferences.removeAudio && outputContainer != "gif") {
                     request.addOption("--use-postprocessor", "FFmpegCopyStream")
                     request.addOption("--ppa", "CopyStream:-c copy -an")
-
                 }
 
                 request.addOption("-P", downDir.absolutePath)

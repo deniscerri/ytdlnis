@@ -674,6 +674,15 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach { it.videoPreferences.recodeVideo = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
+                                        compatibilityModeClicked = { checked ->
+                                            items.forEach {
+                                                it.videoPreferences.compatibilityMode = checked
+                                                if(checked) {
+                                                    it.container = "mkv"
+                                                }
+                                            }
+                                            CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                        },
                                         alsoDownloadAsAudioClicked = {},
                                         extraCommandsClicked = {
                                             val callback = object : ExtraCommandsListener {
@@ -814,6 +823,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 downloadViewModel.updateProcessingContainer(listAdapter.getCheckedItemsOrNull(), container.toString())
+                            }
+                            if (container == "gif") {
+                                val items = withContext(Dispatchers.IO){
+                                    downloadViewModel.getProcessingDownloads(listAdapter.getCheckedItemsOrNull())
+                                }
+                                items.forEach {
+                                    it.videoPreferences.removeAudio = true
+                                    it.videoPreferences.recodeVideo = true
+                                }
+                                CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                             }
                         }
                         setContainerText(container.toString())
