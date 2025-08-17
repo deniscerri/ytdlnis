@@ -928,7 +928,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
-        val aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
+        var aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
 
         when(type){
             DownloadViewModel.Type.audio -> {
@@ -1129,7 +1129,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     }else{
                         if (downloadItem.videoPreferences.compatibilityMode) {
                             request.addOption("--recode-video", "mp4")
-                            request.addOption("--merge-output-format", "mkv")
+                            request.addOption("--merge-output-format", "mp4/mkv")
                         }
                         else {
                             request.addOption("--merge-output-format", outputContainer.lowercase())
@@ -1177,7 +1177,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
                 val preferredQuality = sharedPreferences.getString("video_quality", "best")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+                var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+
+                if (downloadItem.videoPreferences.compatibilityMode) {
+                    vCodecPref = "h264"
+                    aCodecPref = "aac"
+                }
 
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == formatUtil.getGenericVideoFormats(context.resources)

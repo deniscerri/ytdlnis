@@ -443,7 +443,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.compatibilityMode = it
                                 container.isEnabled = !it
                                 if (it) {
-                                    container.editText?.setText("mkv")
+                                    containerAutoCompleteTextView.setText("mkv",false)
                                     downloadItem.container = "mkv"
                                 }
                             },
