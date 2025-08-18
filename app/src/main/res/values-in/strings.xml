@@ -341,7 +341,7 @@
     <string name="month">Bulan</string>
     <string name="retry_missing_downloads">Coba lagi unduhan yang hilang</string>
     <string name="bitrate">Laju Bit</string>
-    <string name="save_auto_subs">Simpan subtitel otomatis</string>
+    <string name="save_auto_subs">Simpan subtitle otomatis</string>
     <string name="archive">Arsip unduhan [Gunakan berkas arsip unduhan yt-dlp untuk mencegah unduhan duplikat daripada menggunakan fungsi bawaan]</string>
     <string name="observe_sources">Amati Sumber</string>
     <string name="confirm_delete_sources_desc">Hapus semua sumber, secara permanen</string>
@@ -464,7 +464,7 @@
     <string name="app_icon_change">Ikon dapat berubah dan aplikasi akan tertutup</string>
     <string name="reset_preferences_in_screen">Atur ulang semua preferensi di layar ini</string>
     <string name="use_code_highlighter">Gunakan kode pemilih warna</string>
-    <string name="write_subs_when_embed_subs_summary">Ini akan menerapkan Simpan Subtitel dan Simpan Subtitel Otomatis untuk mengunduh berkas sub lalu menghapusnya setelah penyematan</string>
+    <string name="write_subs_when_embed_subs_summary">Ini akan menerapkan Simpan Subtitle dan Simpan Subtitle Otomatis untuk mengunduh berkas sub lalu menghapusnya setelah penyematan</string>
     <string name="automatic_backup">Pencadangan otomatis</string>
     <string name="backup_path">Jaalur pencadangan</string>
     <string name="write_subs_when_embed_subs">Tulis subtitle saat menyematkan</string>
@@ -478,4 +478,8 @@
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">PO Token Klien Web</string>
     <string name="reverse">Balik</string>
+    <string name="no_keep_subs">Hapus berkas subtitle setelah penyematan</string>
+    <string name="no_keep_subs_summary">Saat menggunakan Subtitle Semat dan Subtitle Tulis, jangan simpan berkas subtitle setelah penyematan</string>
+    <string name="video_compatible">Video yang Kompatibel</string>
+    <string name="video_compatible_summary">Mengkodekan ulang video agar kompatibel dengan aplikasi lain</string>
 </resources>
