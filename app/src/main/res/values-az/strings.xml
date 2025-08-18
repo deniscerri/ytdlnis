@@ -481,4 +481,6 @@
     <string name="reverse">Dəyişdir</string>
     <string name="no_keep_subs">Yerləşdirmə sonrası titr fayllarını sil</string>
     <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
+    <string name="video_compatible">Uyğun Video</string>
+    <string name="video_compatible_summary">Videonu başqa tətbiqlərlə uyuşdurmaq üçün yenidən kodlayır</string>
 </resources>
