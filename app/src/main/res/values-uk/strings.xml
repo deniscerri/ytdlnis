@@ -481,4 +481,6 @@
     <string name="reverse">Зворотній</string>
     <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
     <string name="no_keep_subs_summary">При використанні функцій «Вбудувати субтитри» та «Написати субтитри» не зберігати файли субтитрів після вбудовування</string>
+    <string name="video_compatible">Сумісне відео</string>
+    <string name="video_compatible_summary">Перекодовує відео, роблячи його сумісним з іншими застосунками</string>
 </resources>
