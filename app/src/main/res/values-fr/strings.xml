@@ -210,7 +210,7 @@
     <string name="dark">Sombre</string>
     <string name="Theme">Thème</string>
     <string name="video_recommendations">Recommendations de vidéos</string>
-    <string name="accents">Accents</string>
+    <string name="accents">l\' accent</string>
     <string name="quality">Qualité</string>
     <string name="preferred_home_screen">Écran d\'accueil par défaut</string>
     <string name="system">Système</string>
@@ -237,7 +237,7 @@
     <string name="write_description">Description de la sauvegarde</string>
     <string name="cache_first_summary">Télécharger les fichiers dans un dossier générique, puis les déplacer dans votre dossier désigné. Utilisez ceci quand vous n\'avez pas le droit d\'écrire directement dans votre stockage</string>
     <string name="save_for_later">Enregistrer le téléchargement pour plus tard ?</string>
-    <string name="monochrome">Monochrome</string>
+    <string name="monochrome">couleur monochrome</string>
     <string name="errored_downloads">Téléchargements erronés</string>
     <string name="write_description_summary">Écrire la description du fichier</string>
     <string name="updating_download_data">Mise à jour des éléments téléchargés</string>
@@ -260,7 +260,7 @@
     <string name="loading">Chargement</string>
     <string name="download_now">Télécharger maintenant</string>
     <string name="finished_download_notification_channel_name">Téléchargements terminés</string>
-    <string name="remove_audio">Enlever le son</string>
+    <string name="remove_audio">Supprimer le son</string>
     <string name="purple">Violet</string>
     <string name="blue">Bleu</string>
     <string name="preferred_format_id">ID de format préféré</string>
@@ -277,13 +277,13 @@
     <string name="finished_download_notification_channel_description">Notifications pour les téléchargements finis</string>
     <string name="network_error">Erreur réseau</string>
     <string name="backup_restore">Sauvegarder et Restaurer</string>
-    <string name="incognito">Incognito</string>
+    <string name="incognito">mode navigation privée</string>
     <string name="backup">Sauvegarder</string>
-    <string name="backup_created_successfully">Fichier de sauvegarde enregistré!</string>
-    <string name="downloaded">"Téléchargé : "</string>
+    <string name="backup_created_successfully">Le fichier de sauvegarde a été enregistré avec succès !</string>
+    <string name="downloaded">"Téléchargé : "</string>
     <string name="general">Général</string>
     <string name="preferred_format_id_summary">Sélectionner le format avec cet ID dans la carte de téléchargement</string>
-    <string name="sponsorblock">SponsorBlock</string>
+    <string name="sponsorblock">Blocage des sponsors</string>
     <string name="swipe_gestures">Gestes de balayage</string>
     <string name="restore_complete">Restauration de l\'application terminée. Les éléments suivants ont été restaurés :</string>
     <string name="couldnt_parse_file">Impossible d\'analyser le fichier</string>
