@@ -225,7 +225,7 @@
     <string name="accents">Tonlar</string>
     <string name="high_contrast">Yüksek kontrast</string>
     <string name="pure_theme_summary">Saf siyah / beyaz tema</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Uyumlu tasarım</string>
     <string name="blue">Mavi</string>
     <string name="red">Kırmızı</string>
     <string name="green">Yeşil</string>
@@ -253,7 +253,7 @@
     <string name="restore_complete">Uygulama geri yükleme tamamlandı. Aşağıdaki ögeler geri yüklendi:</string>
     <string name="incognito">Gizli Mod</string>
     <string name="couldnt_parse_file">Dosya ayrıştırılamadı</string>
-    <string name="backup_created_successfully">Yedekleme dosyası başarıyla kaydedildi!</string>
+    <string name="backup_created_successfully">Yedekleme dosyası başarıyla kaydedildi</string>
     <string name="appearance">Görünüm</string>
     <string name="socks5_proxy">SOCKS5 proxy URL\'si</string>
     <string name="search_suggestions">Arama önerileri</string>
@@ -424,7 +424,7 @@
     <string name="playlist_as_album_summary">Albüm meta verileri mevcut değilse, bunun yerine çalma listesi adını kullan</string>
     <string name="data_fetching_extractor_youtube">Veri alma çıkartıcısı (YouTube)</string>
     <string name="disable_write_info_json">Bilgi yazma Json\'unu devre dışı bırak</string>
-    <string name="disable_write_info_json_summary">İndirmeyi her yeniden başlattığınızda / devam ettirdiğinizde, yt-dlp sunuculardan JSON verilerini yeniden indirir (önerilmez).</string>
+    <string name="disable_write_info_json_summary">İndirmeyi her yeniden başlattığınızda / devam ettirdiğinizde, yt-dlp sunuculardan JSON verilerini yeniden indirir (önerilmez)</string>
     <string name="other_youtube_extractor_args">Diğer YouTube çıkartıcı argümanları</string>
     <string name="items">öğeler</string>
     <string name="socket_timeout">Soket zaman aşımı</string>
@@ -482,4 +482,8 @@
     <string name="potoken">PO Jetonu</string>
     <string name="web_client_po_token">Web İstemcisi PO Jetonu</string>
     <string name="reverse">Tersine çevir</string>
+    <string name="no_keep_subs">Gömme işleminden sonra altyazı dosyalarını silin</string>
+    <string name="no_keep_subs_summary">Altyazı Ekleme ve Altyazı Yazma özelliklerini birlikte kullanırken, altyazı dosyalarını ekledikten sonra saklama</string>
+    <string name="video_compatible">Uyumlu Video</string>
+    <string name="video_compatible_summary">Videoyu yeniden kodlayarak diğer uygulamalarla uyumlu hale getirir</string>
 </resources>
