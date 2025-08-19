@@ -148,7 +148,7 @@
     <string name="blue">蓝色</string>
     <string name="red">红色</string>
     <string name="couldnt_parse_file">无法解析文件</string>
-    <string name="backup_created_successfully">成功保存了备份文件！</string>
+    <string name="backup_created_successfully">成功保存了备份文件</string>
     <string name="appearance">外观</string>
     <string name="pause">暂停</string>
     <string name="configure_download">调整下载</string>
@@ -480,4 +480,6 @@
     <string name="reverse">颠倒</string>
     <string name="no_keep_subs">嵌入后删除字幕文件</string>
     <string name="no_keep_subs_summary">同时使用内嵌字幕和写入字幕时，嵌入后不保留字幕文件</string>
+    <string name="video_compatible">兼容的视频</string>
+    <string name="video_compatible_summary">重新编解码视频让它兼容其他应用</string>
 </resources>
