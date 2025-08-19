@@ -71,7 +71,7 @@
     <string name="remove_deleted">Silinmişleri kaldır</string>
     <string name="remove_duplicates">Kopyaları kaldır</string>
     <string name="sort_by">Sıralama</string>
-    <item type="id" name="cancelDownload"/>
+    <item type="id" name="cancelDownload"></item>
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">İndirmeleri iptal et</string>
     <string name="incognito_summary">Geçmişe eklemeden indir</string>
