@@ -74,7 +74,7 @@
     <string name="remove_deleted">Remove deleted</string>
     <string name="remove_duplicates">Remove duplicates</string>
     <string name="sort_by">Sorting</string>
-    <item type="id" name="cancelDownload"/>
+    <item type="id" name="cancelDownload"></item>
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">Cancel downloads</string>
     <string name="incognito_summary">Download without adding to history</string>
@@ -256,7 +256,7 @@
     <string name="restore_complete">App restore complete. The following items have been restored:</string>
     <string name="select_backup_categories">Select backup categories</string>
     <string name="search_history">Search history</string>
-    <string name="backup_created_successfully">Backup file saved successfully!</string>
+    <string name="backup_created_successfully">Backup file saved successfully</string>
     <string name="appearance">Appearance</string>
     <string name="backup_restore">Backup and restore</string>
     <string name="socks5_proxy_summary">Use the specified HTTP/HTTPS/SOCKS proxy</string>
