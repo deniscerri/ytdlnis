@@ -24,7 +24,7 @@
     <string name="title">Tytuł</string>
     <string name="author">Autor</string>
     <string name="download">Pobierz</string>
-    <string name="video_quality">Jakość wideo</string>
+    <string name="video_quality">Jakość video</string>
     <string name="embed_subtitles">Osadź napisy</string>
     <string name="add_chapter">Dodaj rozdziały</string>
     <string name="show_download_card">Pokaż kartę pobierania</string>
@@ -60,7 +60,7 @@
     <string name="version">Wersja</string>
     <string name="command_directory">Własny folder poleceń</string>
     <string name="couldnt_find_apk">Nie można znaleźć odpowiedniego pliku APK</string>
-    <string name="video">Wideo</string>
+    <string name="video">Video</string>
     <string name="audio">Audio</string>
     <string name="concurrent_fragments">Jednoczesne fragmenty</string>
     <string name="limit_rate_summary">Maksymalna szybkość pobierania (w bajtach na sekundę), np. 50 tys. lub 4,2 mln</string>
@@ -71,7 +71,7 @@
     <string name="items_left">pozostałe przedmioty</string>
     <string name="downloading">Pobieranie</string>
     <string name="aria2_summary">Użyj aria2c do pobierania zamiast domyślnego narzędzia</string>
-    <string name="warning">Uwaga</string>
+    <string name="warning">Ostrzeżenie</string>
     <string name="processing">Przetwarzanie</string>
     <string name="add_chapters">Rozdziały w filmach</string>
     <string name="save_thumb_summary">Zapisz miniaturę w folderze pobierania</string>
@@ -147,7 +147,7 @@
     <string name="download_rescheduled_to">Pobieranie przełożone na:</string>
     <string name="split_by_chapters">Podziel według rozdziałów</string>
     <string name="downloads_running_try_later">Uruchomiony jest proces pobierania. Spróbuj ponownie później</string>
-    <string name="get_cookies">Pobierz pliki cookie</string>
+    <string name="get_cookies">Pobierz cookie</string>
     <string name="monochrome">Monochromatyczny</string>
     <string name="yellow">Żółty</string>
     <string name="new_template">Nowy szablon</string>
@@ -183,8 +183,8 @@
     <string name="cut">Cięcie</string>
     <string name="new_cut">Nowe cięcie</string>
     <string name="share">Udostępnij</string>
-    <string name="cookies">Ciasteczka</string>
-    <string name="new_cookie">Nowy plik cookie</string>
+    <string name="cookies">Cookies</string>
+    <string name="new_cookie">Nowy cookie</string>
     <string name="invert_selected">Odwróć wybrane</string>
     <string name="save_subs">Zapisz napisy</string>
     <string name="video_recommendations">Rekomendacje wideo</string>
@@ -208,7 +208,7 @@
     <string name="keep_cache_summary">Nie usuwaj plików tymczasowych po zakończeniu pobierania</string>
     <string name="restore">Przywróć</string>
     <string name="network_error">Błąd sieci</string>
-    <string name="sponsorblock">Blokada Sponsorów</string>
+    <string name="sponsorblock" translatable="false">Blokowanie sponsorów</string>
     <string name="couldnt_parse_file">Nie można przeanalizować pliku</string>
     <string name="restore_complete">Ukończono przywracanie aplikacji. Przywrócono następujące elementy:</string>
     <string name="select_backup_categories">Wybierz elementy kopii zapasowej</string>
@@ -269,7 +269,7 @@
     <string name="confirm_terminate">Zatrzymuje wszystkie pobierania i wymusza zamknięcie aplikacji</string>
     <string name="download_over_metered_networks_summary">Umożliwia pobieranie przez dowolną sieć. Jeśli opcja nie jest wybrana, aplikacja czeka na sieć bez planu taryfowego</string>
     <string name="format_filtering_hint">Aby można było użyć tej opcji, wszystkie elementy muszą być tego samego typu</string>
-    <string name="backup_created_successfully">Plik kopii zapasowej został pomyślnie zapisany!</string>
+    <string name="backup_created_successfully">Plik kopii zapasowej został pomyślnie zapisany</string>
     <string name="general">Ogólne</string>
     <string name="crop_thumb_summary">Przytnij miniaturę do kwadratu, aby pobrać dźwięk</string>
     <string name="force_keyframes">Wymuś kluczowe klatki na cięciach</string>
@@ -478,4 +478,9 @@
     <string name="use_code_highlighter">Użyj kodu koloru zakreślenia</string>
     <string name="potoken">Token \"Proof of Origin\" , Token dowodu pochodzenia</string>
     <string name="select_between_desc">Określ zakres elementów do wybrania</string>
+    <string name="reverse">Odwróć</string>
+    <string name="no_keep_subs">Usuń pliki napisów po osadzeniu</string>
+    <string name="no_keep_subs_summary">W przypadku korzystania z opcji Osadzanie napisów i Tworzenie napisów nie należy zachowywać plików napisów po osadzeniu</string>
+    <string name="video_compatible">Kompatybilne video</string>
+    <string name="video_compatible_summary">Przekodowuje video, czyniąc je kompatybilnym z innymi aplikacjami</string>
 </resources>
