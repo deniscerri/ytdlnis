@@ -250,7 +250,7 @@
     <string name="sponsorblock">SponsorBlock</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
-    <string name="backup_created_successfully">Файл резервної копії успішно збережено!</string>
+    <string name="backup_created_successfully">Файл резервної копії успішно збережено</string>
     <string name="backup_restore">Резервне копіювання і відновлення</string>
     <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">SOCKS5 проксі URL</string>
