@@ -244,7 +244,7 @@
     <string name="container">Kontajner</string>
     <string name="download">Sťahovanie</string>
     <string name="swipe_gestures_summary">Potiahnutie položiek pre určité akcie</string>
-    <string name="backup_created_successfully">Záložný súbor úspešne uložený!</string>
+    <string name="backup_created_successfully">Záložný súbor bol úspešne uložený</string>
     <string name="about">O nás</string>
     <string name="date_added">Dátum pridania</string>
     <string name="sponsorblock_outro">Ostatné</string>
@@ -481,4 +481,6 @@
     <string name="no_keep_subs">Vymazať súbory s titulkami po vložení</string>
     <string name="no_keep_subs_summary">Pri použití funkcií Vložiť titulky a Zapísať titulky nezachováva súbory s titulkami po vložení</string>
     <string name="reverse">Vrátiť</string>
+    <string name="video_compatible_summary">Prekóduje video, aby bolo kompatibilné s inými aplikáciami</string>
+    <string name="video_compatible">Kompatibilné video</string>
 </resources>
