@@ -481,4 +481,6 @@
     <string name="reverse">逆順</string>
     <string name="no_keep_subs_summary">「字幕の埋め込み」と「字幕の書き込み」を併用する時、埋め込み後に字幕ファイルを残さない</string>
     <string name="no_keep_subs">字幕ファイルを埋め込み後に削除する</string>
+    <string name="video_compatible_summary">動画を再エンコードし、ほかのアプリと互換性のある形式に変換</string>
+    <string name="video_compatible">より互換性が高い動画</string>
 </resources>
