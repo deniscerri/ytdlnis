@@ -250,7 +250,7 @@
     <string name="sponsorblock">SponsorBlock</string>
     <string name="network_error">Помилка мережі</string>
     <string name="select_backup_categories">Виберіть категорії резервного копіювання</string>
-    <string name="backup_created_successfully">Файл резервної копії успішно збережено!</string>
+    <string name="backup_created_successfully">Файл резервної копії успішно збережено</string>
     <string name="backup_restore">Резервне копіювання і відновлення</string>
     <string name="socks5_proxy_summary">Використовуйте вказаний проксі HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">SOCKS5 проксі URL</string>
@@ -481,4 +481,6 @@
     <string name="reverse">Зворотній</string>
     <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
     <string name="no_keep_subs_summary">При використанні функцій «Вбудувати субтитри» та «Написати субтитри» не зберігати файли субтитрів після вбудовування</string>
+    <string name="video_compatible">Сумісне відео</string>
+    <string name="video_compatible_summary">Перекодовує відео, роблячи його сумісним з іншими застосунками</string>
 </resources>

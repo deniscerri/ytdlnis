@@ -211,7 +211,7 @@
     <string name="swipe_gestures_summary">Přejeďte prstem položky pro určité akce</string>
     <string name="backup">Zálohování</string>
     <string name="license">Licence</string>
-    <string name="backup_created_successfully">Záložní soubor úspěšně uložen!</string>
+    <string name="backup_created_successfully">Záložní soubor byl úspěšně uložen</string>
     <string name="update_template">Aktualizace šablony</string>
     <string name="downloaded">"Stažené: "</string>
     <string name="download_already_exists_summary">Chcete ještě stahovat?</string>
@@ -480,4 +480,7 @@
     <string name="web_client_po_token">Webový klient PO token</string>
     <string name="no_keep_subs">Odstranit soubory s titulky po vložení</string>
     <string name="no_keep_subs_summary">Při použití funkcí Vložení titulků a Zapsat titulky neuchovává soubory s titulky po vložení</string>
+    <string name="reverse">Vrátit</string>
+    <string name="video_compatible">Kompatibilní video</string>
+    <string name="video_compatible_summary">Překóduje video tak, aby bylo kompatibilní s jinými aplikacemi</string>
 </resources>

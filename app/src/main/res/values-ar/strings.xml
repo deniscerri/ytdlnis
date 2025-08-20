@@ -250,7 +250,7 @@
     <string name="couldnt_parse_file">تعذرَ تحليل الملف</string>
     <string name="restore">استعادة نسخة احتياطية</string>
     <string name="restore_complete">اكتملت عملية الاستعادة، تمت استعادة العناصر التالية:</string>
-    <string name="backup_created_successfully">حُفظ ملف النسخة الاحتياطية بنجاح!</string>
+    <string name="backup_created_successfully">حُفظ ملف النسخة الاحتياطية بنجاح</string>
     <string name="select_backup_categories">اختيار فئات النسخ الاحتياطي</string>
     <string name="audio_only_item">يحتوي هذا العنصر على تنسيقات الصوت فقط</string>
     <string name="socks5_proxy_summary">استخدام وكيل HTTP/HTTPS/SOCKS المحدد</string>
@@ -481,4 +481,6 @@
     <string name="reverse">اعكس</string>
     <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
+    <string name="video_compatible">فيديو متوافق</string>
+    <string name="video_compatible_summary">يعيد ترميز الفيديو لجعله متوافقًا مع التطبيقات الأخرى</string>
 </resources>
