@@ -200,7 +200,7 @@
     <string name="subtitle_languages">Untertitelsprachen</string>
     <string name="format_source">Formatquelle</string>
     <string name="video_recommendations">Videoempfehlungen</string>
-    <string name="video_recommendations_summary">Erhalte empfohlene YouTube-Videos auf dem Startbildschirm</string>
+    <string name="video_recommendations_summary">Erhalte empfohlene Videos auf dem Startbildschirm</string>
     <string name="preferred_search_engine">Bevorzugte Suchmaschine</string>
     <string name="preferred_search_engine_summary">Die Suchmaschine für die In-App-Suche</string>
     <string name="format_filtering_hint">Um diese Option nutzen zu können, müssen alle Elemente vom gleichen Typ sein</string>

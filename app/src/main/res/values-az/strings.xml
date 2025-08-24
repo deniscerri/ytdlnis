@@ -250,7 +250,7 @@
     <string name="select_backup_categories">Nüsxə kateqoriyaları seç</string>
     <string name="search_history">Axtarış tarixçəsi</string>
     <string name="appearance">Görünüş</string>
-    <string name="backup_created_successfully">Nüsxə faylı uğurla saxlanıldı!</string>
+    <string name="backup_created_successfully">Nüsxə faylı uğurla saxlanıldı</string>
     <string name="backup_restore">Nüsxələ və bərpa et</string>
     <string name="socks5_proxy_summary">Dəqiqləşdirilən HTTP/HTTPS/SOCKS proksi istifadə et</string>
     <string name="socks5_proxy">SOCKS5 proksi URL</string>
@@ -481,4 +481,6 @@
     <string name="reverse">Dəyişdir</string>
     <string name="no_keep_subs">Yerləşdirmə sonrası titr fayllarını sil</string>
     <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
+    <string name="video_compatible">Uyğun Video</string>
+    <string name="video_compatible_summary">Videonu başqa tətbiqlərlə uyuşdurmaq üçün yenidən kodlayır</string>
 </resources>

@@ -200,7 +200,7 @@
     <string name="save_subs">সাবটাইটেল সংরক্ষণ করুন</string>
     <string name="format_source">ফরম্যাট উৎস</string>
     <string name="video_recommendations">সুপারিশ করা ভিডিও</string>
-    <string name="video_recommendations_summary">হোম স্ক্রিনেই পেয়ে যান আপনার জন্য সাজানো ইউটিউব ভিডিওর তালিকা – একদম আপনার পছন্দ অনুযায়ী!</string>
+    <string name="video_recommendations_summary">হোম স্ক্রিনেই পেয়ে যান আপনার জন্য সাজানো ইউটিউব ভিডিওর তালিকা – একদম আপনার পছন্দ অনুযায়ী</string>
     <string name="preferred_search_engine">পছন্দের সার্চ ইঞ্জিন</string>
     <string name="preferred_search_engine_summary">অ্যাপ-মধ্যস্থ অনুসন্ধানের জন্য ব্যবহার করার জন্য সার্চ ইঞ্জিন</string>
     <string name="format_filtering_hint">এই বিকল্পটি ব্যবহার করার জন্য সমস্ত আইটেম একই ধরনের হতে হবে</string>

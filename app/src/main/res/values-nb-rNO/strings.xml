@@ -76,7 +76,7 @@
     <string name="items_left">element(er) igjen</string>
     <string name="limit_rate_summary">Maks. nedlastingshastighet (i byte per sekund), f.eks. 50K, eller 4.2M</string>
     <string name="you_are_going_to_delete">Sletter</string>
-    <string name="updating">Installerer ny versjon …</string>
+    <string name="updating">Oppdatering</string>
     <string name="download_notification_channel_description">Merknad som viser nedlastingsframdrift for lyd- og videofiler</string>
     <string name="concurrent_fragments_summary">Antall fragmenter av DASH/HLS-video å laste ned samtidig</string>
     <string name="downloading">Nedlasting</string>

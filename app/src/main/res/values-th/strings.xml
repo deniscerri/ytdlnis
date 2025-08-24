@@ -86,7 +86,7 @@
     <string name="keep_cache">เก็บแคช</string>
     <string name="search_history">ประวัติการค้นหา</string>
     <string name="select_backup_categories">เลือกหมวดหมู่สำรอง</string>
-    <string name="restore_complete">"การคืนค่าแอปเสร็จสมบูรณ์  รายการต่อไปนี้ได้รับการกู้คืน:"</string>
+    <string name="restore_complete">การคืนค่าแอปเสร็จสมบูรณ์ รายการต่อไปนี้ได้รับการกู้คืน:</string>
     <string name="keep_cache_summary">อย่าลบไฟล์ชั่วคราวหลังจากการดาวน์โหลดเสร็จสิ้น</string>
     <string name="ytdl_update_hint">มีประโยชน์หากคุณมีปัญหาในการดาวน์โหลด</string>
     <string name="couldnt_parse_file">ไม่สามารถแยกวิเคราะห์ไฟล์</string>
