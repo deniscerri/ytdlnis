@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_video"
+                app:chipIcon="@drawable/baseline_video_metadata"
                 android:text="@string/recode_video" />
 
             <com.google.android.material.chip.Chip

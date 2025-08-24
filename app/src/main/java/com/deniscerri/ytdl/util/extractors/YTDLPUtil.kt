@@ -1115,12 +1115,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 var cont = ""
                 val outputContainer = downloadItem.container
-                if(
-                    outputContainer.isNotEmpty() &&
-                    outputContainer != "Default" &&
-                    outputContainer != context.getString(R.string.defaultValue) &&
-                    supportedContainers.contains(outputContainer)
-                ){
+                if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(R.string.defaultValue) && supportedContainers.contains(outputContainer)){
                     cont = outputContainer
 
                     val cantRecode = listOf("avi")
@@ -1150,7 +1145,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 //format logic
                 var videoF = downloadItem.format.format_id
                 var altAudioF = ""
-                var audioF = downloadItem.videoPreferences.audioFormatIDs.map { f ->
+                var audioF = downloadItem.videoPreferences.audioFormatIDs.joinToString("+") { f ->
                     val format = downloadItem.allFormats.find { it.format_id == f }
                     format?.run {
                         if (this.format_id.matches(".*-[0-9]+".toRegex())) {
@@ -1162,7 +1157,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             }
                         } else this.format_id
                     } ?: f
-                }.joinToString("+").ifBlank { "ba" }
+                }.ifBlank { "ba" }
                 val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
@@ -1175,7 +1170,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 val f = StringBuilder()
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
-                val preferredQuality = sharedPreferences.getString("video_quality", "best")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
                 var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
@@ -1277,6 +1271,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                     if(!f.endsWith("b/")){
                         //last fallback
+                        if (f.isBlank()) {
+                            f.append("bv/")
+                        }
+
                         f.append("b")
                     }
 

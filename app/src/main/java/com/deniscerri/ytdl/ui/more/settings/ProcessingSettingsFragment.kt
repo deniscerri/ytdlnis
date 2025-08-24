@@ -6,6 +6,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.util.UiUtil
@@ -98,6 +99,23 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
+        }
+
+        val recodeVideoPreference = findPreference<SwitchPreferenceCompat>("recode_video")!!
+        val compatibleVideoPreference = findPreference<SwitchPreferenceCompat>("compatible_video")!!
+
+        recodeVideoPreference.setOnPreferenceClickListener {
+            if (compatibleVideoPreference.isChecked && recodeVideoPreference.isChecked) {
+                compatibleVideoPreference.performClick()
+            }
+            true
+        }
+
+        compatibleVideoPreference.setOnPreferenceClickListener {
+            if (compatibleVideoPreference.isChecked && recodeVideoPreference.isChecked) {
+                recodeVideoPreference.performClick()
+            }
+            true
         }
 
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {

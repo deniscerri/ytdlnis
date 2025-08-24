@@ -243,6 +243,14 @@
             android:summary="@string/recode_video_summary"
             app:title="@string/recode_video" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_video_metadata"
+            app:key="compatible_video"
+            android:summary="@string/video_compatible_summary"
+            app:title="@string/video_compatible" />
+
 
         <ListPreference
             android:defaultValue=""

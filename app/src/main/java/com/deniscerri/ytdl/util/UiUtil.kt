@@ -1457,25 +1457,35 @@ object UiUtil {
         val recodeVideo = view.findViewById<Chip>(R.id.recode_video)
         recodeVideo.setOnClickListener {
             val adjustVideoView = context.layoutInflater.inflate(R.layout.video_download_preferences_dialog, null)
-            adjustVideoView.findViewById<MaterialSwitch>(R.id.recodeVideoSwitch).apply {
+
+            val recodeVideoSwitch = adjustVideoView.findViewById<MaterialSwitch>(R.id.recodeVideoSwitch)
+            val compatibilityModeSwitch = adjustVideoView.findViewById<MaterialSwitch>(R.id.compatiblityModeSwitch)
+
+            recodeVideoSwitch.apply {
                 isChecked = items.all { it.videoPreferences.recodeVideo }
-                setOnCheckedChangeListener { _, b ->
-                    recodeVideoClicked(b)
+                setOnClickListener { _ ->
+                    recodeVideoClicked(isChecked)
+
+                    compatibilityModeSwitch.isChecked = false
+                    compatibilityModeClicked(false)
                 }
             }
 
-            adjustVideoView.findViewById<MaterialSwitch>(R.id.compatiblityModeSwitch).apply {
+            compatibilityModeSwitch.apply {
                 isChecked = items.first().videoPreferences.compatibilityMode
-                setOnCheckedChangeListener { _, b ->
-                    compatibilityModeClicked(b)
+                setOnClickListener { _ ->
+                    compatibilityModeClicked(isChecked)
+
+                    recodeVideoSwitch.isChecked = false
+                    recodeVideoClicked(false)
                 }
             }
 
             val adjustVideoDialog = MaterialAlertDialogBuilder(context)
                 .setTitle(context.getString(R.string.recode_video))
                 .setView(adjustVideoView)
-                .setIcon(R.drawable.ic_video)
-                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+                .setIcon(R.drawable.baseline_video_metadata)
+                .setNegativeButton(context.resources.getString(R.string.ok)) { _: DialogInterface?, _: Int -> }
 
             adjustVideoDialog.show()
         }

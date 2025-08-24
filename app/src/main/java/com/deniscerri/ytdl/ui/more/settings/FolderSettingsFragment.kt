@@ -198,7 +198,20 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                         downloadViewModel.getActiveDownloadsCount()
                     }
                     if (activeDownloadCount == 0){
-                        File(FileUtil.getCachePath(requireContext())).deleteRecursively()
+                        fun clearCacheFolder(folder: File) {
+                            if (folder.exists() && folder.isDirectory) {
+                                folder.listFiles()?.forEach { file ->
+                                    if (file.isDirectory) {
+                                        clearCacheFolder(file)
+                                        file.delete()
+                                    } else {
+                                        file.delete()
+                                    }
+                                }
+                            }
+                        }
+                        clearCacheFolder(File(FileUtil.getCachePath(requireContext())))
+
                         Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
                         cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
                         clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
