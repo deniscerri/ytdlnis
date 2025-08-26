@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -115,39 +116,11 @@ class MoreFragment : Fragment() {
         }
 
         terminateApp.setOnClickListener {
-            if (mainSharedPreferences.getBoolean("ask_terminate_app", true)){
-                var doNotShowAgain = false
-                val terminateDialog = MaterialAlertDialogBuilder(requireContext())
-                terminateDialog.setTitle(getString(R.string.confirm_delete_history))
-                val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
-                val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
-                terminateDialog.setView(dialogView)
-
-                checkbox.setOnCheckedChangeListener { compoundButton, b ->
-                    doNotShowAgain = compoundButton.isChecked
-                }
-
-                terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                terminateDialog.setPositiveButton(getString(R.string.ok)) { diag: DialogInterface?, _: Int ->
-                    lifecycleScope.launch {
-                        downloadViewModel.pauseAllDownloads()
-
-                        if (doNotShowAgain){
-                            mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false).apply()
-                        }
-                        mainSharedPreferencesEditor.commit()
-                        mainActivity.finishAndRemoveTask()
-                        mainActivity.finishAffinity()
-                        exitProcess(0)
-                    }
-                }
-                terminateDialog.show()
-            }else{
-                mainActivity.finishAndRemoveTask()
-                mainActivity.finishAffinity()
-                exitProcess(0)
-            }
-
+            showTerminateConfirmationDialog()
+        }
+        terminateApp.setOnLongClickListener {
+            showTerminateConfirmationDialog(skipPreference = true)
+            true
         }
 
         settings.setOnClickListener {
@@ -155,6 +128,52 @@ class MoreFragment : Fragment() {
             startActivity(intent)
         }
 
+    }
+
+    fun showTerminateConfirmationDialog(skipPreference: Boolean = false) {
+        val shouldAskToTerminate = mainSharedPreferences.getBoolean("ask_terminate_app", true)
+        if (!shouldAskToTerminate && !skipPreference) {
+            terminateApp.isEnabled = false
+            terminateApp()
+            return
+        }
+
+        var doNotShowAgainFinalState = !shouldAskToTerminate
+
+        lateinit var dialog: AlertDialog
+        val terminateDialog = MaterialAlertDialogBuilder(requireContext())
+        terminateDialog.setTitle(getString(R.string.confirm_terminate))
+        val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
+        val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
+        terminateDialog.setView(dialogView)
+
+        checkbox.isChecked = doNotShowAgainFinalState
+        checkbox.setOnCheckedChangeListener { _, isChecked ->
+            doNotShowAgainFinalState = isChecked
+        }
+
+        terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface, _ ->
+            dialogInterface.cancel()
+        }
+
+        terminateDialog.setPositiveButton(getString(R.string.ok), null)
+        dialog = terminateDialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
+            mainSharedPreferencesEditor.putBoolean("ask_terminate_app", !doNotShowAgainFinalState).commit()
+            terminateApp()
+        }
+    }
+
+    fun terminateApp() {
+        lifecycleScope.launch {
+            downloadViewModel.pauseAllDownloads()
+            mainActivity.finishAndRemoveTask()
+            mainActivity.finishAffinity()
+            exitProcess(0)
+        }
     }
 
     companion object {
