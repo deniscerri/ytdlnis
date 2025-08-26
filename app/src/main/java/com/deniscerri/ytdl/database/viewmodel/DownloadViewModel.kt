@@ -1370,7 +1370,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         updateToStatus(id, DownloadRepository.Status.Paused)
     }
 
-    fun pauseAllDownloads() = viewModelScope.launch {
+    suspend fun pauseAllDownloads() {
         pausedAllDownloads.value = PausedAllDownloadsState.PROCESSING
         isPausingResuming = true
         WorkManager.getInstance(application).cancelAllWorkByTag("download")
