@@ -50,7 +50,7 @@ class FormatUtil(private var context: Context) {
             val formatImportance = mutableListOf("id","codec", "container", "language")
             if (preferredFormatSize == "smallest") {
                 formatImportance.add("smallsize")
-            }else if (preferredFormatSize == "biggest") {
+            }else if (preferredFormatSize == "largest") {
                 formatImportance.add("file_size")
             }
 
@@ -81,7 +81,7 @@ class FormatUtil(private var context: Context) {
             val formatImportance = mutableListOf("id","resolution", "codec", "container")
             if (preferredFormatSize == "smallest") {
                 formatImportance.add("smallsize")
-            }else if (preferredFormatSize == "biggest") {
+            }else if (preferredFormatSize == "largest") {
                 formatImportance.add("file_size")
             }
 
