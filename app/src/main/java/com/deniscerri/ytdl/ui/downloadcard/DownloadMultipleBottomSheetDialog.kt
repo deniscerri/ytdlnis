@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -71,6 +72,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
@@ -193,6 +195,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         lifecycleScope.launch {
             downloadViewModel.processingItems.collectLatest {
                 toggleLoading(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            formatViewModel.noFreeSpace.collectLatest {
+                if (it != null) {
+                    val snack = Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE)
+                    snack.setTextMaxLines(10)
+                    snack.show()
+                }
             }
         }
 
@@ -1013,10 +1025,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         if (fileSizes.all { it > 5L }){
-            val size = FileUtil.convertFileSize(fileSizes.sum())
+            val filesizeRaw = fileSizes.sum()
+            val size = FileUtil.convertFileSize(filesizeRaw)
             itemsFileSize = fileSizes.sum()
             filesize.isVisible = size != "?" && !listAdapter.isCheckingItems()
             filesize.text = "${getString(R.string.file_size)}: >~ $size"
+            formatViewModel.checkFreeSpace(filesizeRaw, Environment.getExternalStorageDirectory().path)
         }else{
             filesize.visibility = View.GONE
         }

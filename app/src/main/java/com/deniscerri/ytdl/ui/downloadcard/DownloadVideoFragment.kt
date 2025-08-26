@@ -46,6 +46,8 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -244,14 +246,15 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
 
                 val chosenFormat = downloadItem.format
-
-                UiUtil.populateFormatCard(
+                val chosenAudioFormats = downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) }
+                val filesize = UiUtil.populateFormatCard(
                     requireContext(),
                     formatCard,
                     chosenFormat,
-                    downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) },
+                    chosenAudioFormats,
                     showSize = downloadItem.downloadSections.isEmpty()
                 )
+                formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
 
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(formatTuple: FormatTuple) {
@@ -262,10 +265,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
-                        UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
+                        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
                             if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats,
                             showSize = downloadItem.downloadSections.isEmpty()
                         )
+                        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                     }
 
                     override fun onFormatsUpdated(allFormats: List<Format>) {
@@ -287,10 +291,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
-                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
+                        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
                             if(downloadItem.videoPreferences.removeAudio) listOf() else formats.filter { preferredAudioFormats.contains(it.format_id) },
                             showSize = downloadItem.downloadSections.isEmpty()
                         )
+                        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                     }
 
                 }
@@ -399,7 +404,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             cutValueChanged = {
                                 downloadItem.downloadSections = it
-                                UiUtil.populateFormatCard(
+                                val filesize = UiUtil.populateFormatCard(
                                     requireContext(),
                                     formatCard,
                                     downloadItem.format,
@@ -407,6 +412,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     else downloadItem.allFormats.filter { f -> downloadItem.videoPreferences.audioFormatIDs.contains(f.format_id) },
                                     showSize = downloadItem.downloadSections.isEmpty()
                                 )
+                                formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
 
                                 if (it.isNotBlank()){
                                     downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.applyFilenameTemplateForCuts()
@@ -428,13 +434,14 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             removeAudioClicked = {
                                 downloadItem.videoPreferences.removeAudio = it
-                                UiUtil.populateFormatCard(
+                                val filesize = UiUtil.populateFormatCard(
                                     requireContext(),
                                     formatCard,
                                     downloadItem.format,
                                     if (it) listOf() else downloadItem.allFormats.filter { downloadItem.videoPreferences.audioFormatIDs.contains(it.format_id) },
                                     showSize = downloadItem.downloadSections.isEmpty()
                                 )
+                                formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                             },
                             recodeVideoClicked = {
                                 downloadItem.videoPreferences.recodeVideo = it
@@ -479,6 +486,16 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 }
             }
         }
+
+        lifecycleScope.launch {
+            formatViewModel.noFreeSpace.collectLatest {
+                if (it != null) {
+                    val snack = Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE)
+                    snack.setTextMaxLines(10)
+                    snack.show()
+                }
+            }
+        }
     }
 
     override fun updateTitleAuthor(t: String, a: String){
@@ -510,10 +527,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         downloadItem.videoPreferences.audioFormatIDs.clear()
         downloadItem.videoPreferences.audioFormatIDs.addAll(arrayListOf(format.format_id))
         val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
-        UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
+        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
             if(downloadItem.videoPreferences.removeAudio) listOf() else listOf(format),
             showSize = downloadItem.downloadSections.isEmpty()
         )
+        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
     }
 
     private var pathResultLauncher = registerForActivityResult(

@@ -108,7 +108,8 @@ import java.util.Locale
 
 object UiUtil {
     @SuppressLint("SetTextI18n")
-    fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>? = null, showSize: Boolean = true){
+    //return filesize
+    fun populateFormatCard(context: Context, formatCard : MaterialCardView, chosenFormat: Format, audioFormats: List<Format>? = null, showSize: Boolean = true) : Long {
         var formatNote = chosenFormat.format_note
         if (formatNote.isEmpty()) formatNote = context.getString(R.string.defaultValue)
         else if (formatNote == "best") formatNote = context.getString(R.string.best_quality)
@@ -183,6 +184,12 @@ object UiUtil {
                 isVisible = true
                 text = chosenFormat.tbr
             }
+        }
+
+        if (showSize) {
+            return filesize
+        }else {
+            return 0
         }
 
     }

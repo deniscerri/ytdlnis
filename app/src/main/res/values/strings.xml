@@ -485,4 +485,5 @@
     <string name="no_keep_subs_summary">When using both Embed Subtitles and Write Subtitles, don\'t keep the subtitle files after embedding</string>
     <string name="video_compatible">Compatible Video</string>
     <string name="video_compatible_summary">Recodes the video making it compatible with other apps</string>
+    <string name="no_free_space_warning">There is no free space for this configuration.</string>
 </resources>

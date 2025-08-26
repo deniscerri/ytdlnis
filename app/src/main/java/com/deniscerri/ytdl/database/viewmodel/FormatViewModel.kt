@@ -22,6 +22,7 @@ import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.Form
 import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
 import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.snackbar.Snackbar
@@ -30,11 +31,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.text.Normalizer.Form
+import kotlin.text.compareTo
 
 class FormatViewModel(private val application: Application) : AndroidViewModel(application) {
     private val downloadRepository: DownloadRepository
@@ -55,6 +59,9 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
     var sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
     var filterBy = MutableStateFlow(FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!))
+
+    private val _noFreeSpace = MutableSharedFlow<String?>()
+    val noFreeSpace = _noFreeSpace.asSharedFlow()
 
     init {
         downloadRepository = DownloadRepository(DBManager.getInstance(application).downloadDao)
@@ -244,5 +251,20 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
         }
 
         return formatsToReturn
+    }
+
+    fun checkFreeSpace(size: Long, path: String) = viewModelScope.launch {
+        _noFreeSpace.emit(null)
+        if (size > 10L) {
+            File(FileUtil.formatPath(path)).apply {
+                if (size > this.freeSpace) {
+                    val warningTxt = application.getString(R.string.no_free_space_warning) +
+                            "\n" + "${application.getString(R.string.file_size)}:\t${FileUtil.convertFileSize(size)}" +
+                            "\n" + "${application.getString(R.string.freespace)}:\t${FileUtil.convertFileSize(this.freeSpace)}"
+
+                    _noFreeSpace.emit(warningTxt)
+                }
+            }
+        }
     }
 }

@@ -45,6 +45,8 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -227,12 +229,14 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
                 val formatCard = view.findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
                 val chosenFormat = downloadItem.format
-                UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null, showSize = downloadItem.downloadSections.isEmpty())
+                val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, chosenFormat, null, showSize = downloadItem.downloadSections.isEmpty())
+                formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                 val listener = object : OnFormatClickListener {
                     override fun onFormatClick(formatTuple: FormatTuple) {
                         formatTuple.format?.apply {
                             downloadItem.format = this
-                            UiUtil.populateFormatCard(requireContext(), formatCard, this, null, showSize = downloadItem.downloadSections.isEmpty())
+                            val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, this, null, showSize = downloadItem.downloadSections.isEmpty())
+                            formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                         }
                     }
 
@@ -253,7 +257,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         val preferredFormat = downloadViewModel.getFormat(formats, Type.audio)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
-                        UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null, showSize = downloadItem.downloadSections.isEmpty())
+                        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null, showSize = downloadItem.downloadSections.isEmpty())
+                        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                     }
                 }
                 formatCard.setOnClickListener{
@@ -359,7 +364,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                             },
                             cutValueChanged = {
                                 downloadItem.downloadSections = it
-                                UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, showSize = downloadItem.downloadSections.isEmpty())
+                                val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, showSize = downloadItem.downloadSections.isEmpty())
+                                formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
 
                                 if (it.isNotBlank()){
                                     downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.applyFilenameTemplateForCuts()
@@ -392,6 +398,16 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 }
             }
         }
+
+        lifecycleScope.launch {
+            formatViewModel.noFreeSpace.collectLatest {
+                if (it != null) {
+                    val snack = Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE)
+                    snack.setTextMaxLines(10)
+                    snack.show()
+                }
+            }
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -400,7 +416,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         formats.find { it.format_id == formatID }?.apply {
             downloadItem.format = this
             val formatCard = requireView().findViewById<MaterialCardView>(R.id.format_card_constraintLayout)
-            UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf(), showSize = downloadItem.downloadSections.isEmpty())
+            val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format, listOf(), showSize = downloadItem.downloadSections.isEmpty())
+            formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
         }
     }
 
