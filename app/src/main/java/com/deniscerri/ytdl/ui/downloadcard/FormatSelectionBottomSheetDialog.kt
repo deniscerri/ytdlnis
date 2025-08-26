@@ -225,7 +225,7 @@ class FormatSelectionBottomSheetDialog(
                                 items.first().allFormats.addAll(chosenFormats)
 
                                 withContext(Dispatchers.Main){
-                                    formatViewModel.setItem(items.first())
+                                    formatViewModel.setItem(items.first(), false)
                                     listener.onFormatsUpdated(res)
                                 }
                             }.onFailure { err ->
@@ -269,12 +269,13 @@ class FormatSelectionBottomSheetDialog(
                                 }
                             }
 
-                            formatViewModel.setItems(items)
+                            formatViewModel.setItems(items, false)
                         }
 
                         withContext(Dispatchers.Main){
                             filterBtn.isEnabled = true
                             okBtn.isEnabled = true
+                            refreshBtn.isEnabled = true
                         }
                     }catch (e: Exception){
                         withContext(Dispatchers.Main) {

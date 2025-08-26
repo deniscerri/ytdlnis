@@ -39,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
+                android:outlineProvider="none"
                 android:visibility="gone"
                 android:text="@string/crop_thumb"/>
 

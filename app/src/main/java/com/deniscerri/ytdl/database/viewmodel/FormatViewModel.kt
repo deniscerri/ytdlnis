@@ -45,8 +45,8 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     val selectedItems = MutableStateFlow(listOf<DownloadItem>())
     val selectedItemsSharedFlow = MutableSharedFlow<List<DownloadItem>>(replay = 1)
     var formats : Flow<List<FormatRecyclerView>>
-    var showFilterBtn = MutableStateFlow(false)
-    var showRefreshBtn = MutableStateFlow(false)
+    var showFilterBtn = MutableSharedFlow<Boolean>(1)
+    var showRefreshBtn = MutableSharedFlow<Boolean>(1)
     private var canUpdate = true
     var canMultiSelectAudio = MutableStateFlow(false)
     var isMissingFormats = MutableStateFlow(false)
@@ -114,12 +114,10 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
                 showFilterBtn.apply {
                     val vl = chosenFormats.isNotEmpty() || items.all { it.url.isYoutubeURL() }
-                    value = vl
                     emit(vl)
                 }
                 showRefreshBtn.apply {
                     val vl = (isMissingFormats.value || items.isEmpty() || items.first().url.isEmpty()) && canUpdate
-                    value = vl
                     emit(vl)
                 }
 
@@ -214,21 +212,21 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     fun setItems(list: List<DownloadItem>, updateFormats: Boolean? = null) = viewModelScope.launch {
+        canUpdate = updateFormats ?: canUpdate
         selectedItems.apply {
             value = list
             emit(list)
         }
         selectedItemsSharedFlow.emit(list)
-        canUpdate = updateFormats ?: canUpdate
     }
 
     fun setItem(item: DownloadItem, updateFormats: Boolean? = null) = viewModelScope.launch {
+        canUpdate = updateFormats ?: canUpdate
         selectedItems.apply {
             value = listOf(item)
             emit(listOf(item))
         }
         selectedItemsSharedFlow.emit(listOf(item))
-        canUpdate = updateFormats ?: canUpdate
     }
 
 

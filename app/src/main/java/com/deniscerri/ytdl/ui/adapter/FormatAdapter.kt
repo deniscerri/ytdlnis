@@ -138,11 +138,11 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     companion object {
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<FormatRecyclerView> = object : DiffUtil.ItemCallback<FormatRecyclerView>() {
             override fun areItemsTheSame(oldItem: FormatRecyclerView, newItem: FormatRecyclerView): Boolean {
-                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id
+                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id && oldItem.format?.format_note == newItem.format?.format_note
             }
 
             override fun areContentsTheSame(oldItem: FormatRecyclerView, newItem: FormatRecyclerView): Boolean {
-                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id
+                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id && oldItem.format?.format_note == newItem.format?.format_note
             }
         }
     }

@@ -339,6 +339,12 @@ class NewPipeUtil(context: Context) {
 
                         formats.add(formatObj)
                     }
+
+                    val hasDefaultFormat = formats.firstOrNull { it.format_note.contains("ORIGINAL", true) }
+                    if (hasDefaultFormat != null) {
+                        formats.remove(hasDefaultFormat)
+                        formats.add(0, hasDefaultFormat)
+                    }
                 }
 
                 if (stream.videoStreams.isNotEmpty()){
@@ -385,7 +391,6 @@ class NewPipeUtil(context: Context) {
                         defaultLang?.format_id = (defaultLang?.format_id?.split("-")?.get(0) ?: "") + "-${it.value.size-1}"
                     }
                 }
-                formats.sortByDescending { it.filesize }
             }
 
             val chapters = ArrayList<ChapterItem>()

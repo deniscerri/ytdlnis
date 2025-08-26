@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp"
+            app:cardElevation="0dp"
             app:checkedIcon="@null"
             app:cardMaxElevation="12dp"
             android:checkable="true"
