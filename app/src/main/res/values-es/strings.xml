@@ -8,7 +8,7 @@
     <string name="video_directory">Directorio de video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil al descargar actualizaciones</string>
-    <string name="update_ytdl">Update yt-dl to the new version</string>
+    <string name="update_ytdl">Actualiza yt-dl a la última versión</string>
     <string name="about">Acerca de</string>
     <string name="source_code">Código fuente</string>
     <string name="search_hint">Buscar o insertar URL</string>
@@ -470,4 +470,17 @@
     <string name="cache_directory">Carpeta caché</string>
     <string name="generate_potokens_warning">* Al habilitar esto, debe deshabilitar las cookies</string>
     <string name="custom">Personalizado</string>
+    <string name="grid">Tabla</string>
+    <string name="use_format_sorting">Ordenar por importancia de formato</string>
+    <string name="use_code_highlighter">Usar subrayador de código de colores</string>
+    <string name="write_subs_when_embed_subs_summary">Este ajuste aplicará \"Guardar Subtítulos\" y \"Guardar Subtítulos Automáticos\" para descargar los archivos de subtítulos y después los borrará tras insertarlos en el vídeo</string>
+    <string name="cut_unsupported">El recorte no está disponible para este elemento</string>
+    <string name="select_between_desc">Especifica el rango de elementos a seleccionar</string>
+    <string name="potoken">Token PO</string>
+    <string name="web_client_po_token">Token PO del cliente web</string>
+    <string name="reverse">Revertir</string>
+    <string name="no_keep_subs">Borrar archivos de subtítulos tras insertarlos</string>
+    <string name="no_keep_subs_summary">Al usar tanto \"Integrar subtítulos\" como \"Escribir subtítulos\", no guardar los archivos de subtítulos tras insertarlos</string>
+    <string name="video_compatible">Vídeo compatible</string>
+    <string name="video_compatible_summary">Recodifica el vídeo, haciéndolo compatible con otras apps</string>
 </resources>
