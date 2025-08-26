@@ -114,40 +114,62 @@ class MoreFragment : Fragment() {
             findNavController().navigate(R.id.observeSourcesFragment)
         }
 
+        fun showTerminateConfirmationDialog() {
+            val shouldAskToTerminate = mainSharedPreferences.getBoolean("ask_terminate_app", true)
+            val isDoNotAskAgainChecked = !shouldAskToTerminate
+            var doNotShowAgainFinalState = isDoNotAskAgainChecked
+
+            val terminateDialog = MaterialAlertDialogBuilder(requireContext())
+            terminateDialog.setTitle(getString(R.string.confirm_terminate))
+            val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
+            val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
+            terminateDialog.setView(dialogView)
+
+            checkbox.isChecked = doNotShowAgainFinalState
+            checkbox.setOnCheckedChangeListener { _, isChecked ->
+                doNotShowAgainFinalState = isChecked
+            }
+
+            terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface, _ ->
+                dialogInterface.cancel()
+            }
+
+            terminateDialog.setPositiveButton(getString(R.string.ok)) { _, _ ->
+                lifecycleScope.launch {
+                    downloadViewModel.pauseAllDownloads()
+
+                    mainSharedPreferencesEditor.putBoolean("ask_terminate_app", !doNotShowAgainFinalState).commit()
+
+                    mainActivity.finishAndRemoveTask()
+                    mainActivity.finishAffinity()
+                    exitProcess(0)
+                }
+            }
+            terminateDialog.show()
+        }
+
+        // This handles the long press
+        terminateApp.setOnLongClickListener {
+            // A long press will ALWAYS show the dialog, ignoring the saved preference.
+            showTerminateConfirmationDialog()
+
+            // Return true to indicate that the long click event is consumed
+            // and the regular OnClickListener should NOT be triggered.
+            true
+        }
+
+        // This handles the regular (short) press
         terminateApp.setOnClickListener {
-            if (mainSharedPreferences.getBoolean("ask_terminate_app", true)){
-                var doNotShowAgain = false
-                val terminateDialog = MaterialAlertDialogBuilder(requireContext())
-                terminateDialog.setTitle(getString(R.string.confirm_delete_history))
-                val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
-                val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
-                terminateDialog.setView(dialogView)
-
-                checkbox.setOnCheckedChangeListener { compoundButton, b ->
-                    doNotShowAgain = compoundButton.isChecked
-                }
-
-                terminateDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
-                terminateDialog.setPositiveButton(getString(R.string.ok)) { diag: DialogInterface?, _: Int ->
-                    lifecycleScope.launch {
-                        downloadViewModel.pauseAllDownloads()
-
-                        if (doNotShowAgain){
-                            mainSharedPreferencesEditor.putBoolean("ask_terminate_app", false).apply()
-                        }
-                        mainSharedPreferencesEditor.commit()
-                        mainActivity.finishAndRemoveTask()
-                        mainActivity.finishAffinity()
-                        exitProcess(0)
-                    }
-                }
-                terminateDialog.show()
-            }else{
+            // Check the saved preference, just like before.
+            if (mainSharedPreferences.getBoolean("ask_terminate_app", true)) {
+                // If the user wants to be asked, show the dialog.
+                showTerminateConfirmationDialog()
+            } else {
+                // If they checked "Don't ask again", terminate immediately.
                 mainActivity.finishAndRemoveTask()
                 mainActivity.finishAffinity()
                 exitProcess(0)
             }
-
         }
 
         settings.setOnClickListener {
