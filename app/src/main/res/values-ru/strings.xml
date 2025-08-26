@@ -243,7 +243,7 @@
     <string name="video_recommendations">Рекомендации</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
-    <string name="backup_created_successfully">Файл резервной копии успешно сохранён!</string>
+    <string name="backup_created_successfully">Файл резервной копии успешно сохранён</string>
     <string name="material_you">Material you</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
@@ -297,7 +297,7 @@
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэш загружается во внутреннюю память и переносится в выбранную вами папку. Используйте при невозможности записывать файлы в память</string>
-    <string name="update_app_beta_summary">Участвуйте в программе Beta-тестирования. Beta-версии могут быть нестабильными и содержать ошибки</string>
+    <string name="update_app_beta_summary">Зарегистрируйтесь в бета-программе. Она может содержать ошибки.</string>
     <string name="update_app_beta">Beta-релизы</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочтительный аудиокодек</string>
@@ -394,7 +394,7 @@
     <string name="second">Секунда</string>
     <string name="milliseconds">Миллисекунды</string>
     <string name="format_importance">Пооядок приоритета форматов</string>
-    <string name="format_importance_note">Настройте приоритет критериев. Этот порядок будет использоваться только в карточке загрузки при получении форматов и автовыборе наиболее подходящего.</string>
+    <string name="format_importance_note">Измените важность элементов формата. Этот порядок будет использоваться только в том случае, если приложение загружает форматы из карточки загрузки и автоматически выбирает нужный формат!</string>
     <string name="no_audio">Видео без аудио</string>
     <string name="enable_alarm_permission">Вам необходимо включить разрешение SCHEDULE_EXACT_ALARM в настройках приложения.</string>
     <string name="process_downloads_background">"Загрузки все еще загружаются. Продолжить их обработку в фоновом режиме и начать загрузку?. "</string>
@@ -479,4 +479,8 @@
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">PO Token веб-клиента</string>
     <string name="reverse">Обратный</string>
+    <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
+    <string name="no_keep_subs_summary">При использовании функций «Встроить субтитры» и «Записать субтитры» не сохраняйте файлы субтитров после встраивания</string>
+    <string name="video_compatible">Совместимое Видео</string>
+    <string name="video_compatible_summary">Перекодирует видео, делая его совместимым с другими приложениями</string>
 </resources>
