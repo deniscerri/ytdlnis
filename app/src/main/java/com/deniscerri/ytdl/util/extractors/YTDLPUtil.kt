@@ -1288,7 +1288,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         "smallsize" -> {
                             formatSorting.add("+size")
                         }
-                        "filesize" -> {
+                        "file_size" -> {
                             formatSorting.add("size")
                         }
                         "no_audio" -> {
