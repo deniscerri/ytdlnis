@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp"
+            app:cardElevation="0dp"
             android:checkable="true"
             app:strokeWidth="0dp"
             app:cardPreventCornerOverlap="true"
@@ -126,7 +126,6 @@
                         android:maxLines="2"
                         android:paddingStart="10dp"
                         android:paddingEnd="5dp"
-                        android:shadowColor="@color/black"
                         android:shadowDx="2"
                         android:shadowDy="2"
                         android:shadowRadius="1"
@@ -162,11 +161,10 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:animateLayoutChanges="true"
-                    app:layout_constraintBottom_toTopOf="@+id/output"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginEnd="5dp"
-                    app:layout_constraintTop_toBottomOf="@+id/linearlayout2_horizontalscrollview"
-                    app:layout_constraintVertical_bias="0.51"
+                    app:layout_constraintTop_toTopOf="parent"
                     >
 
                     <com.google.android.material.button.MaterialButton
@@ -213,18 +211,21 @@
                     android:ellipsize="end"
                     android:focusable="true"
                     android:fontFamily="monospace"
-                    android:maxLines="2"
                     android:gravity="bottom"
+                    android:maxLines="2"
                     android:padding="10dp"
                     android:shadowColor="#000"
                     android:shadowDx="4"
                     android:shadowDy="4"
                     android:shadowRadius="2"
+                    android:textStyle="bold"
                     android:textColor="#FFF"
                     android:textSize="11sp"
+                    app:layout_constraintVertical_bias="1.0"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/active_pause_cancel_btns" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

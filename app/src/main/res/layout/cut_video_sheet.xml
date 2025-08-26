@@ -281,6 +281,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_height="wrap_content"
                     android:text="@string/cancel"
+                    android:outlineProvider="none"
                     app:icon="@drawable/ic_baseline_delete_outline_24"/>
 
                 <Button
@@ -289,6 +290,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cut"
+                    android:outlineProvider="none"
                     app:icon="@drawable/ic_check"/>
 
             </LinearLayout>

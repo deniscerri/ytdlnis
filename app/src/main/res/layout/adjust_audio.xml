@@ -29,6 +29,7 @@
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:outlineProvider="none"
                 android:checked="false"
                 android:text="@string/embed_thumb"/>
 
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
+                android:outlineProvider="none"
                 android:text="@string/split_by_chapters"/>
 
         </com.google.android.material.chip.ChipGroup>
@@ -54,15 +56,15 @@
     </HorizontalScrollView>
 
     <HorizontalScrollView
-        android:scrollbars="none"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:chipSpacingVertical="0dp"
-            app:singleLine="true"
-            android:layout_height="wrap_content">
+            app:singleLine="true">
 
 
             <com.google.android.material.chip.Chip
@@ -71,10 +73,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/sponsorblock"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_money"
                 android:minWidth="30dp"
+                android:outlineProvider="none"
+                android:text="@string/sponsorblock"
+                app:chipIcon="@drawable/ic_money"
+                app:chipIconVisible="true"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -86,10 +89,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/bitrate"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/baseline_high_quality_24"
                 android:minWidth="30dp"
+                android:outlineProvider="none"
+                android:text="@string/bitrate"
+                app:chipIcon="@drawable/baseline_high_quality_24"
+                app:chipIconVisible="true"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,10 +105,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/file_name_template"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_edit"
+                android:outlineProvider="none"
                 android:minWidth="30dp"
+                android:text="@string/file_name_template"
+                app:chipIcon="@drawable/ic_edit"
+                app:chipIconVisible="true"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +119,7 @@
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
-    
+
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -130,6 +135,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/use_extra_commands"
+                android:outlineProvider="none"
+
                 app:chipIconVisible="true"
                 app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
@@ -145,6 +152,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 app:chipIconVisible="true"
+                android:outlineProvider="none"
                 app:chipIcon="@drawable/ic_cut"
                 android:text="@string/cut"
                 android:minWidth="30dp"

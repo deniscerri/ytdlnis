@@ -486,4 +486,7 @@
     <string name="video_compatible">Compatible Video</string>
     <string name="video_compatible_summary">Recodes the video making it compatible with other apps</string>
     <string name="no_free_space_warning">There is no free space for this configuration.</string>
+    <string name="preferred_format_size">Preferred Format Size</string>
+    <string name="smallest">Smallest</string>
+    <string name="largest">Largest</string>
 </resources>

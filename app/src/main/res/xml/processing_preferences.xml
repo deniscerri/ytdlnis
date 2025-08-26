@@ -283,13 +283,15 @@
 
     <PreferenceCategory android:title="@string/format">
 
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
+        <ListPreference
             app:icon="@drawable/ic_format"
-            app:key="prefer_smaller_formats"
-            app:title="@string/prefer_smaller_formats" />
-
+            app:dialogTitle="@string/preferred_format_size"
+            app:entries="@array/preferred_format_size"
+            app:entryValues="@array/preferred_format_size_values"
+            android:defaultValue=""
+            app:key="preferred_format_size"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/preferred_format_size" />
 
     </PreferenceCategory>
 

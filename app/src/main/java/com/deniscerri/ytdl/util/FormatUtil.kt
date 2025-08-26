@@ -27,15 +27,15 @@ class FormatUtil(private var context: Context) {
                                                 this.reverse()
                                             }
 
-
-    private val preferSmallerFormats = sharedPreferences.getBoolean("prefer_smaller_formats", false)
-
     @SuppressLint("RestrictedApi")
     fun getAudioFormatImportance() : List<String> {
+        val preferredFormatSize = sharedPreferences.getString("preferred_format_size", "")
+
         if (sharedPreferences.getBoolean("use_format_sorting", false)) {
             val itemValues = context.getStringArray(R.array.format_importance_audio_values).toMutableList()
             val orderPreferences = sharedPreferences.getString("format_importance_audio", itemValues.joinToString(","))!!.split(",").toMutableList()
-            if (preferSmallerFormats) {
+
+            if (preferredFormatSize == "smallest") {
                 orderPreferences.remove("file_size")
                 orderPreferences.add(0,"smallsize")
             }
@@ -47,10 +47,11 @@ class FormatUtil(private var context: Context) {
 
             return orderPreferences
         }else {
-            val formatImportance = mutableListOf("id","codec", "container", "language", "file_size")
-            if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
-                formatImportance.add(0, "smallsize")
-                formatImportance.remove("file_size")
+            val formatImportance = mutableListOf("id","codec", "container", "language")
+            if (preferredFormatSize == "smallest") {
+                formatImportance.add("smallsize")
+            }else if (preferredFormatSize == "biggest") {
+                formatImportance.add("file_size")
             }
 
             val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
@@ -64,20 +65,24 @@ class FormatUtil(private var context: Context) {
 
     @SuppressLint("RestrictedApi")
     fun getVideoFormatImportance() : List<String> {
+        val preferredFormatSize = sharedPreferences.getString("preferred_format_size", "")
+
         if (sharedPreferences.getBoolean("use_format_sorting", false)) {
             val itemValues = context.getStringArray(R.array.format_importance_video_values).toList()
             val orderPreferences = sharedPreferences.getString("format_importance_video", itemValues.joinToString(","))!!.split(",").toMutableList()
-            if (preferSmallerFormats) {
+
+            if (preferredFormatSize == "smallest") {
                 orderPreferences.remove("file_size")
                 orderPreferences.add("smallsize")
             }
 
             return orderPreferences
         }else {
-            val formatImportance = mutableListOf("id","resolution", "codec", "container", "file_size")
-            if (sharedPreferences.getBoolean("prefer_smaller_formats", false)) {
+            val formatImportance = mutableListOf("id","resolution", "codec", "container")
+            if (preferredFormatSize == "smallest") {
                 formatImportance.add("smallsize")
-                formatImportance.remove("file_size")
+            }else if (preferredFormatSize == "biggest") {
+                formatImportance.add("file_size")
             }
 
             return formatImportance
@@ -101,9 +106,13 @@ class FormatUtil(private var context: Context) {
                             result
                         }
                         "id" -> {
-                            (audioFormatIDPreference.contains(b.format_id)).compareTo(
-                                audioFormatIDPreference.contains(a.format_id)
-                            )
+                            if (audioFormatIDPreference.isEmpty()) {
+                                0
+                            }else {
+                                (audioFormatIDPreference.contains(b.format_id)).compareTo(
+                                    audioFormatIDPreference.contains(a.format_id)
+                                )
+                            }
                         }
 
                         "language" -> {
@@ -119,18 +128,27 @@ class FormatUtil(private var context: Context) {
                         }
 
                         "codec" -> {
-                            ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
+                            if (audioCodecPreference.isBlank()) {
+                                0
+                            }else {
+                                ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
                                     .matches(b.acodec))
                                     .compareTo(
                                         "^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
                                             .matches(a.acodec)
                                     )
+                            }
                         }
 
                         "container" -> {
-                            (audioContainerPreference == b.container).compareTo(
-                                audioContainerPreference == a.container
-                            )
+                            if (audioContainerPreference.isBlank()) {
+                                0
+                            }else {
+                                (audioContainerPreference == b.container).compareTo(
+                                    audioContainerPreference == a.container
+                                )
+                            }
+
                         }
 
                         else -> 0
@@ -160,12 +178,20 @@ class FormatUtil(private var context: Context) {
                             result
                         }
                         "id" -> {
-                            videoFormatIDPreference.contains(b.format_id).compareTo(videoFormatIDPreference.contains(a.format_id))
+                            if (videoFormatIDPreference.isEmpty()) {
+                                0
+                            }else {
+                                videoFormatIDPreference.contains(b.format_id).compareTo(videoFormatIDPreference.contains(a.format_id))
+                            }
                         }
                         "codec" -> {
-                            val first = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(b.vcodec.uppercase())
-                            val second = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(a.vcodec.uppercase())
-                            first.compareTo(second)
+                            if (videoCodecPreference.isBlank()) {
+                                0
+                            }else {
+                                val first = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(b.vcodec.uppercase())
+                                val second = videoCodecPreference.toRegex(RegexOption.IGNORE_CASE).containsMatchIn(a.vcodec.uppercase())
+                                first.compareTo(second)
+                            }
                         }
                         "resolution" -> {
                             when (videoQualityPreference) {
@@ -201,8 +227,12 @@ class FormatUtil(private var context: Context) {
                             (b.acodec == "none" || b.acodec == "").compareTo(a.acodec == "none" || a.acodec == "")
                         }
                         "container" -> {
-                            videoContainerPreference.equals(b.container, ignoreCase = true)
-                                .compareTo(videoContainerPreference.equals(a.container, ignoreCase = true))
+                            if (videoContainerPreference.isBlank()) {
+                                0
+                            }else {
+                                videoContainerPreference.equals(b.container, ignoreCase = true)
+                                    .compareTo(videoContainerPreference.equals(a.container, ignoreCase = true))
+                            }
                         }
                         else -> 0
                     }

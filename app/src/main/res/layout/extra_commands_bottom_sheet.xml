@@ -119,6 +119,7 @@
                 android:layout_margin="20dp"
                 android:text="@string/ok"
                 app:icon="@drawable/ic_check"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

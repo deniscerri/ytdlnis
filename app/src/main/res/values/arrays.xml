@@ -1574,4 +1574,16 @@
         <item>64k</item>
     </string-array>
 
+    <string-array name="preferred_format_size">
+        <item>@string/defaultValue</item>
+        <item>@string/smallest</item>
+        <item>@string/largest</item>
+    </string-array>
+
+    <string-array name="preferred_format_size_values">
+        <item></item>
+        <item>smallest</item>
+        <item>largest</item>
+    </string-array>
+
 </resources>

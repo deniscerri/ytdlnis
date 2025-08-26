@@ -31,6 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
+                android:outlineProvider="none"
                 android:text="@string/save_thumb" />
 
             <com.google.android.material.chip.Chip
@@ -39,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
+                android:outlineProvider="none"
                 android:text="@string/add_chapter" />
 
             <com.google.android.material.chip.Chip
@@ -47,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
+                android:outlineProvider="none"
                 android:text="@string/split_by_chapters"/>
 
 
@@ -76,6 +79,7 @@
                 app:chipIcon="@drawable/ic_subtitles"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -90,6 +94,7 @@
                 android:text="@string/remove_audio"
                 android:visibility="gone"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -105,6 +110,7 @@
                 app:chipIcon="@drawable/ic_music"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,6 +122,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 app:chipIconVisible="true"
+                android:outlineProvider="none"
                 app:chipIcon="@drawable/baseline_video_metadata"
                 android:text="@string/recode_video" />
 
@@ -130,6 +137,7 @@
                 app:chipIcon="@drawable/baseline_live_tv_24"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -160,6 +168,7 @@
                 app:chipIcon="@drawable/ic_money"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -175,6 +184,7 @@
                 app:chipIcon="@drawable/ic_edit"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -204,6 +214,7 @@
                 app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -219,6 +230,7 @@
                 android:minWidth="30dp"
                 android:text="@string/cut"
                 app:cornerRadius="10dp"
+                android:outlineProvider="none"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

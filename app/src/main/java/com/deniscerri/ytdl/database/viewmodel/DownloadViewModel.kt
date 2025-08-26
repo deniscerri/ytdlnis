@@ -937,7 +937,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }else {
                 it.status = DownloadRepository.Status.Queued.toString()
             }
-            if (it.rowNumber == 0) {
+            if (it.rowNumber == 0 && items.size > 1) {
                 it.rowNumber = idx + 1
             }
 
