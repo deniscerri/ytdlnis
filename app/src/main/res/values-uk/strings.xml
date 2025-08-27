@@ -222,7 +222,7 @@
     <string name="green">Зелений</string>
     <string name="purple">Фіолетовий</string>
     <string name="yellow">Жовтий</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Material You</string>
     <string name="red">Червоний</string>
     <string name="finished_download_notification_channel_name">Готові завантаження</string>
     <string name="monochrome">Монохромний</string>
@@ -483,4 +483,8 @@
     <string name="no_keep_subs_summary">При використанні функцій «Вбудувати субтитри» та «Написати субтитри» не зберігати файли субтитрів після вбудовування</string>
     <string name="video_compatible">Сумісне відео</string>
     <string name="video_compatible_summary">Перекодовує відео, роблячи його сумісним з іншими застосунками</string>
+    <string name="no_free_space_warning">Для цієї конфігурації немає вільного місця.</string>
+    <string name="preferred_format_size">Бажаний розмір формату</string>
+    <string name="smallest">Найменший</string>
+    <string name="largest">Найбільший</string>
 </resources>
