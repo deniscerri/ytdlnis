@@ -483,4 +483,8 @@
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
     <string name="video_compatible">فيديو متوافق</string>
     <string name="video_compatible_summary">يعيد ترميز الفيديو لجعله متوافقًا مع التطبيقات الأخرى</string>
+    <string name="no_free_space_warning">لا توجد مساحة خالية لهذا التضبيط.</string>
+    <string name="preferred_format_size">حجم التنسيق المفضل</string>
+    <string name="smallest">الأصغر</string>
+    <string name="largest">الأكبر</string>
 </resources>
