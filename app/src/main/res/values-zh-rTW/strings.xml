@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="worst_quality">最低品質</string>
-    <string name="best_quality">最高品質</string>
+    <string name="best_quality">最佳品質</string>
     <string name="home">首頁</string>
     <string name="directories">資料夾</string>
     <string name="music_directory">音樂資料夾</string>
     <string name="video_directory">影片資料夾</string>
-    <string name="ytdl_update_hint">下載更新出問題時可使用此功能</string>
+    <string name="ytdl_update_hint">下載更新時可點擊此選項</string>
     <string name="update_ytdl">更新 yt-dl 至最新版</string>
     <string name="about">關於</string>
     <string name="source_code">原始碼</string>
@@ -146,7 +146,7 @@
     <string name="format_order">格式順序</string>
     <string name="remove_all">移除全部</string>
     <string name="settings">設定</string>
-    <string name="updating">更新中</string>
+    <string name="updating">更新管理</string>
     <string name="search">搜尋</string>
     <string name="remove_results">清除結果</string>
     <string name="download_all">下載全部</string>
@@ -159,7 +159,7 @@
     <string name="version">版本</string>
     <string name="command_directory">自訂指令資料夾</string>
     <string name="limit_rate_summary">最大下載速率（以位元組每秒為單位），例如：50K 或 4.2M</string>
-    <string name="processing">處理中</string>
+    <string name="processing">片段處理</string>
     <string name="embed_subs_summary">在影片中添加字幕</string>
     <string name="save_thumb">儲存縮圖</string>
     <string name="audio_quality_summary">0（最佳）到 10（最差）</string>
