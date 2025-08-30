@@ -96,7 +96,7 @@
     <string name="update">Aktualizovať</string>
     <string name="format_source">Zdroj formátov</string>
     <string name="link_you_copied">Odkaz, ktorý ste skopírovali</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Material You</string>
     <string name="resume">Pokračovať</string>
     <string name="finished_download_notification_channel_description">Upozornenie na dokončené sťahovanie</string>
     <string name="add_template_first">Musíte mať vytvorenú aspoň jednu šablónu príkazu!</string>
@@ -483,4 +483,8 @@
     <string name="reverse">Vrátiť</string>
     <string name="video_compatible_summary">Prekóduje video, aby bolo kompatibilné s inými aplikáciami</string>
     <string name="video_compatible">Kompatibilné video</string>
+    <string name="no_free_space_warning">Pre túto konfiguráciu nie je k dispozícii žiadne voľné miesto.</string>
+    <string name="preferred_format_size">Preferovaná veľkosť formátu</string>
+    <string name="smallest">Najmenšia</string>
+    <string name="largest">Najväčšia</string>
 </resources>

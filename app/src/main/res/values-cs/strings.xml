@@ -155,7 +155,7 @@
     <string name="appearance">Personalizace</string>
     <string name="link_you_copied">Zkopírovaný odkaz</string>
     <string name="custom_audio_quality">Použití vlastní kvality audia</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Material You</string>
     <string name="search_suggestions">Návrhy vyhledávání</string>
     <string name="embed_metadata">Vkládání metadat</string>
     <string name="resume">Pokračovat</string>
@@ -483,4 +483,8 @@
     <string name="reverse">Vrátit</string>
     <string name="video_compatible">Kompatibilní video</string>
     <string name="video_compatible_summary">Překóduje video tak, aby bylo kompatibilní s jinými aplikacemi</string>
+    <string name="no_free_space_warning">Pro tuto konfiguraci není k dispozici žádné volné místo.</string>
+    <string name="preferred_format_size">Preferovaná velikost formátu</string>
+    <string name="smallest">Nejmenší</string>
+    <string name="largest">Největší</string>
 </resources>
