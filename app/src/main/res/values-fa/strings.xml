@@ -158,7 +158,7 @@
     <string name="clear_temporary_files_summary">حذف فایل‌های نهان از دانلودهای ازکارافتاده/خطاشده/لغوشده</string>
     <string name="restrict_filenames">محدود کردن نام فایل‌ها</string>
     <string name="restrict_filenames_summary">نام فایل ها را فقط به کاراکترهای ASCII محدود کنید و از \"&amp;\" و فاصله در نام فایل ها خودداری کنید</string>
-    <string name="kill_app">بستن برنامه</string>
+    <string name="kill_app">پایان دادن برنامه</string>
     <string name="start">راه اندازی</string>
     <string name="update_formats_summary">گرفتن فرمت‌ها به محض پدیدارشدن کارت‌های دانلود</string>
     <string name="get_cookies">دریافت کوکی‌ها</string>
@@ -216,7 +216,7 @@
     <string name="suggested">پیشنهادی</string>
     <string name="select_all">انتخاب همه</string>
     <string name="metered_network_download_start_info">دانلود زمانی که به شبکه‌ای بدون مصرف سنج متصل شوید، شروع خواهد شد</string>
-    <string name="download_over_metered_networks">دانلود از شبکه‌های دارای مصرف سنج</string>
+    <string name="download_over_metered_networks">دانلود از شبکه‌های دارای کنترل مصرف</string>
     <string name="invert_selected">وارون کردن انتخاب‌شده‌ها</string>
     <string name="save_subs">ذخیره‌ی زیرنویس‌ها</string>
     <string name="save_subs_desc">نوشتن فایل زیرنویس</string>
