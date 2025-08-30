@@ -52,7 +52,7 @@
     <string name="embed_thumb_summary">Uporabi sličico kot naslovno sliko</string>
     <string name="add_chapters">Poglavlja v videih</string>
     <string name="add_chapters_summary">Uporabi Sponsorblock podatke kot poglavlja v videu</string>
-    <string name="save_thumb_summary">Shrani sličico v mapo za prenose</string>
+    <string name="save_thumb_summary">Shrani sličico v mapo s prenosi</string>
     <string name="audio_format">Zvočni format</string>
     <string name="video_format">Video format</string>
     <string name="audio_quality">Zvočna kvaliteta</string>
@@ -475,11 +475,15 @@
     <string name="format_id">ID formata</string>
     <string name="codec">Kodek</string>
     <string name="pure_theme_summary">Popolnoma črna / bela tema</string>
-    <string name="material_you">Material_you</string>
+    <string name="material_you">Material you</string>
     <string name="errored_downloads">Prenosi z napakami</string>
     <string name="errored_download_notification_channel_description">Obvestilo o neuspešnih prenosih</string>
     <string name="quick_download_summary">Ne pridobivaj podatkov v kartici s prenosi</string>
     <string name="preferred_format_id">Željeni ID formata</string>
     <string name="preferred_format_id_summary">Izberi format s tem ID-jem v kartici s prenosi</string>
     <string name="socket_timeout_description">Čas čakanja, preden preneha, v sekundah</string>
+    <string name="no_free_space_warning">Za to konfiguracijo ni prostega prostora.</string>
+    <string name="preferred_format_size">Prednostna velikost formata</string>
+    <string name="smallest">Najmanjše</string>
+    <string name="largest">Največje</string>
 </resources>
