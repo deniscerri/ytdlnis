@@ -71,7 +71,7 @@
     <string name="remove_deleted">Silinmişleri kaldır</string>
     <string name="remove_duplicates">Kopyaları kaldır</string>
     <string name="sort_by">Sıralama</string>
-    <item type="id" name="cancelDownload"></item>
+    <item type="id" name="cancelDownload"/>
     <string name="trendingPlaylist" translatable="false">ytdlnis-TRENDING</string>
     <string name="remove_downloading">İndirmeleri iptal et</string>
     <string name="incognito_summary">Geçmişe eklemeden indir</string>
@@ -486,4 +486,8 @@
     <string name="no_keep_subs_summary">Altyazı Ekleme ve Altyazı Yazma özelliklerini birlikte kullanırken, altyazı dosyalarını ekledikten sonra saklama</string>
     <string name="video_compatible">Uyumlu Video</string>
     <string name="video_compatible_summary">Videoyu yeniden kodlayarak diğer uygulamalarla uyumlu hale getirir</string>
+    <string name="preferred_format_size">Tavsiye edilen format boyutu</string>
+    <string name="smallest">En küçük</string>
+    <string name="largest">En büyük</string>
+    <string name="no_free_space_warning">Bu configürasyon için yeterli alan yok.</string>
 </resources>

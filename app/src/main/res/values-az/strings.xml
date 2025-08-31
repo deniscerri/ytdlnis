@@ -218,7 +218,7 @@
     <string name="accents">Çalarlar</string>
     <string name="high_contrast">Yüksək ziddiyyət</string>
     <string name="pure_theme_summary">Təmiz qara / ağ kolorit</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Material You</string>
     <string name="blue">Mavi</string>
     <string name="red">Qırmızı</string>
     <string name="green">Yaşıl</string>
@@ -483,4 +483,8 @@
     <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
     <string name="video_compatible">Uyğun Video</string>
     <string name="video_compatible_summary">Videonu başqa tətbiqlərlə uyuşdurmaq üçün yenidən kodlayır</string>
+    <string name="no_free_space_warning">Bu quruluş üçün boş yer yoxdur.</string>
+    <string name="preferred_format_size">Üstünlük verilən Format Həcmi</string>
+    <string name="smallest">Ən kiçik</string>
+    <string name="largest">Ən böyük</string>
 </resources>
