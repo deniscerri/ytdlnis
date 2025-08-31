@@ -482,4 +482,8 @@
     <string name="no_keep_subs_summary">同时使用内嵌字幕和写入字幕时，嵌入后不保留字幕文件</string>
     <string name="video_compatible">兼容的视频</string>
     <string name="video_compatible_summary">重新编解码视频让它兼容其他应用</string>
+    <string name="no_free_space_warning">没有剩余空间可用于此配置。</string>
+    <string name="preferred_format_size">首选的格式大小</string>
+    <string name="smallest">最小</string>
+    <string name="largest">最大</string>
 </resources>

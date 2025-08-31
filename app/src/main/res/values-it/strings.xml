@@ -127,7 +127,7 @@
     <string name="preferred_locale">Localizzazione preferita</string>
     <string name="pause">Pausa</string>
     <string name="resume">Riprendi</string>
-    <string name="backup_created_successfully">File di backup salvato con successo!</string>
+    <string name="backup_created_successfully">File di backup salvato con successo</string>
     <string name="appearance">Aspetto</string>
     <string name="backup_restore">Backup e ripristino</string>
     <string name="search_suggestions">Suggerimenti di ricerca</string>
@@ -200,7 +200,7 @@
     <string name="system">Sistema</string>
     <string name="accents">Accenti</string>
     <string name="pure_theme_summary">Tema bianco / nero puro</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Colori Material You</string>
     <string name="blue">Blu</string>
     <string name="red">Rosso</string>
     <string name="purple">Viola</string>
@@ -481,4 +481,10 @@
     <string name="no_keep_subs_summary">Quando si utilizzano sia Incorpora sottotitoli che Scrivi sottotitoli, non mantenere i file dei sottotitoli dopo l’incorporamento</string>
     <string name="no_keep_subs">Elimina i file dei sottotitoli dopo l’incorporamento</string>
     <string name="web_client_po_token">Token PO client web</string>
+    <string name="video_compatible">Video Compatibile</string>
+    <string name="video_compatible_summary">Ricodifica il video per renderlo compatibile con altre app</string>
+    <string name="no_free_space_warning">Non esiste spazio libero per questa configurazione.</string>
+    <string name="preferred_format_size">Formato Dimensione Preferito</string>
+    <string name="smallest">Il più piccolo</string>
+    <string name="largest">Il più grande</string>
 </resources>

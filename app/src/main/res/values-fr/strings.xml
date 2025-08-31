@@ -475,4 +475,17 @@
     <string name="regenerate">Regénérer</string>
     <string name="generate_potokens_warning">* En activant cette option, vous devez désactiver les cookies</string>
     <string name="custom">Custom</string>
+    <string name="write_subs_when_embed_subs">Écrire les sous-titres lors de l\'intégration</string>
+    <string name="select_between_desc">Spécifier l\'intervalle d\'éléments à sélectionner</string>
+    <string name="potoken">Token PO</string>
+    <string name="web_client_po_token">Token PO client web</string>
+    <string name="reverse">Inverser</string>
+    <string name="no_keep_subs">Supprimer les fichiers de sous-titres après l\'intégration</string>
+    <string name="no_keep_subs_summary">Quand les options Intégrer les sous-titres et Écrire les sous-titres sont toutes les deux utilisées, ne pas garder les fichiers de sous-titres après l\'intégration</string>
+    <string name="video_compatible">Vidéo compatible</string>
+    <string name="video_compatible_summary">Ré-encoder la vidéo pour qu\'elle soit compatible avec d\'autres applications</string>
+    <string name="no_free_space_warning">Il n\'y a pas d\'espace libre pour cette configuration.</string>
+    <string name="preferred_format_size">Taille du format préféré</string>
+    <string name="smallest">Plus petit</string>
+    <string name="largest">Plus grand</string>
 </resources>
