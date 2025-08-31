@@ -21,6 +21,7 @@ import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
 import com.deniscerri.ytdl.util.Extensions.isURL
@@ -731,9 +732,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }else{
             isPlaylistItem = true
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
-                if(downloadItem.playlistIndex == null){
-                    val matchPortion = downloadItem.url.split("/").last().split("=").last().split("&").first()
-                    request.addOption("--match-filter", "id~='${matchPortion}'")
+                if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL()){
+                    request.addOption("--match-filter", "id~='${downloadItem.url.getIDFromYoutubeURL()}'")
                 }else{
                     request.addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
                 }

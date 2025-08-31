@@ -142,7 +142,7 @@ class MoreFragment : Fragment() {
 
         lateinit var dialog: AlertDialog
         val terminateDialog = MaterialAlertDialogBuilder(requireContext())
-        terminateDialog.setTitle(getString(R.string.confirm_terminate))
+        terminateDialog.setTitle(getString(R.string.kill_app))
         val dialogView = layoutInflater.inflate(R.layout.dialog_terminate_app, null)
         val checkbox = dialogView.findViewById<CheckBox>(R.id.doNotShowAgain)
         terminateDialog.setView(dialogView)

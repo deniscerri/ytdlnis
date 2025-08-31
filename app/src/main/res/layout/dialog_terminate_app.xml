@@ -8,6 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="5dp"
         android:text="@string/confirm_terminate"
         android:textStyle="bold" />
 
@@ -16,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
+        android:minWidth="0dp"
         android:text="@string/dont_ask_again"/>
 
 </LinearLayout>

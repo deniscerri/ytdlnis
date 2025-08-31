@@ -53,11 +53,16 @@ class WebViewActivity : BaseActivity() {
     private lateinit var cookies: String
     private lateinit var webViewClient: AccompanistWebViewClient
     private lateinit var preferences: SharedPreferences
+
+    private var incognito: Boolean = false
+
     @SuppressLint("SetJavaScriptEnabled")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
         url = intent.extras!!.getString("url")!!
+        incognito = intent.extras!!.getBoolean("incognito", false)
+
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
@@ -69,6 +74,8 @@ class WebViewActivity : BaseActivity() {
                 toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
             }
 
+            toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isChecked = incognito
+
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
                     R.id.get_data_sync_id -> {
@@ -77,16 +84,8 @@ class WebViewActivity : BaseActivity() {
                         }
                     }
                     R.id.incognito -> {
-                        m.isChecked = !m.isChecked
-                        webView.apply {
-                            if (this == null) {
-                                m.isChecked = false
-                                return@apply
-                            }
-
-                            configureIncognito(this, m.isChecked)
-                            this.reload()
-                        }
+                        intent.putExtra("incognito", !incognito)
+                        recreate()
                     }
                     R.id.desktop -> {
                         m.isChecked = !m.isChecked
@@ -164,35 +163,6 @@ class WebViewActivity : BaseActivity() {
 
     }
 
-
-    private fun configureIncognito(webView: WebView, incognito: Boolean) {
-        if (!incognito) {
-            webView.settings.run {
-                cacheMode = WebSettings.LOAD_DEFAULT
-                domStorageEnabled = true
-                setGeolocationEnabled(true)
-            }
-        }else {
-            webView.settings.run {
-                cacheMode = WebSettings.LOAD_NO_CACHE
-                domStorageEnabled = false
-                setGeolocationEnabled(false)
-            }
-        }
-
-        if (incognito) {
-            WebStorage.getInstance().deleteAllData()
-        }
-
-        if (incognito) {
-            webView.apply {
-                clearHistory()
-                clearCache(true)
-                clearFormData()
-            }
-        }
-    }
-
     private fun configureDesktopMode(webView: WebView, desktop: Boolean) {
         webView.settings.apply {
             if (desktop) {
@@ -225,8 +195,22 @@ class WebViewActivity : BaseActivity() {
                 captureBackPresses = false, factory = { context ->
                     WebView(context).apply {
                         settings.run {
+                            if (!incognito) {
+                                cacheMode = WebSettings.LOAD_DEFAULT
+                                domStorageEnabled = true
+                                setGeolocationEnabled(true)
+                            }else {
+                                cacheMode = WebSettings.LOAD_NO_CACHE
+                                domStorageEnabled = false
+                                setGeolocationEnabled(false)
+                                WebStorage.getInstance().deleteAllData()
+
+                                this@apply.clearHistory()
+                                this@apply.clearCache(true)
+                                this@apply.clearFormData()
+                            }
+
                             javaScriptEnabled = true
-                            domStorageEnabled = true
                             javaScriptCanOpenWindowsAutomatically = true
                             if (Build.VERSION.SDK_INT >= 26) {
                                 safeBrowsingEnabled = true

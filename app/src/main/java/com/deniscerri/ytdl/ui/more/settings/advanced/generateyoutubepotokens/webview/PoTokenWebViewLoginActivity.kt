@@ -63,19 +63,13 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
         lifecycleScope.launch {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
-
+            //hide incognito
+            toolbar.menu.findItem(1).isVisible = false
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
                     R.id.get_data_sync_id -> {
                         webView.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
                             UiUtil.copyToClipboard(id.replace("\"", ""), this@PoTokenWebViewLoginActivity)
-                        }
-                    }
-                    R.id.incognito -> {
-                        m.isChecked = !m.isChecked
-                        webView.apply {
-                            configureIncognito(this, m.isChecked)
-                            this.reload()
                         }
                     }
                     R.id.desktop -> {
@@ -173,34 +167,6 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
     }
 
-    private fun configureIncognito(webView: WebView, incognito: Boolean) {
-        if (!incognito) {
-            webView.settings.run {
-                cacheMode = WebSettings.LOAD_DEFAULT
-                domStorageEnabled = true
-                setGeolocationEnabled(true)
-            }
-        }else {
-            webView.settings.run {
-                cacheMode = WebSettings.LOAD_NO_CACHE
-                domStorageEnabled = false
-                setGeolocationEnabled(false)
-            }
-        }
-
-        if (incognito) {
-            WebStorage.getInstance().deleteAllData()
-        }
-
-        if (incognito) {
-            webView.apply {
-                clearHistory()
-                clearCache(true)
-                clearFormData()
-            }
-        }
-    }
-
     private fun configureDesktopMode(webView: WebView, desktop: Boolean) {
         webView.settings.apply {
             if (desktop) {
@@ -232,11 +198,17 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     .padding(paddingValues)
                     .fillMaxSize(),
                 captureBackPresses = false, factory = { context ->
+                    WebStorage.getInstance().deleteAllData()
                     WebView(context).apply {
                         webView = this
+                        clearHistory()
+                        clearCache(true)
+                        clearFormData()
                         settings.run {
+                            cacheMode = WebSettings.LOAD_NO_CACHE
+                            domStorageEnabled = false
+                            setGeolocationEnabled(false)
                             javaScriptEnabled = true
-                            domStorageEnabled = true
                             javaScriptCanOpenWindowsAutomatically = true
                             if (Build.VERSION.SDK_INT >= 26) {
                                 safeBrowsingEnabled = true
