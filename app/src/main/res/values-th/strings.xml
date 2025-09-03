@@ -54,7 +54,7 @@
     <string name="exit_app">ออกจากแอป</string>
     <string name="warning">คำเตือน</string>
     <string name="request_permission_desc">แอปนี้ต้องการการอนุญาตไฟล์เพื่อบันทึกการดาวน์โหลดบนอุปกรณ์</string>
-    <string name="worst_quality">คุณภาพแย่ที่สุด</string>
+    <string name="worst_quality">คุณภาพที่ต่ำที่สุด</string>
     <string name="search">ค้นหา</string>
     <string name="settings">การตั้งค่า</string>
     <string name="directories">โฟลเดอร์</string>
