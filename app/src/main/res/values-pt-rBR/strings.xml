@@ -6,8 +6,8 @@
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
-    <string name="updating">Atualizando</string>
-    <string name="ytdl_update_hint">Útil se você tiver problemas para fazer download</string>
+    <string name="updating">Atualização</string>
+    <string name="ytdl_update_hint">Dica útil ao baixar atualizações</string>
     <string name="remove_results">Limpar resultados</string>
     <string name="download_all">Baixar todos</string>
     <string name="video_directory">Pasta de vídeos</string>
@@ -67,7 +67,7 @@
     <string name="worst_quality">Pior qualidade</string>
     <string name="music_directory">Pasta de áudio</string>
     <string name="download_notification_channel_description">Mostrar notificações do progresso de download dos arquivos</string>
-    <string name="update_ytdl">Instalar nova versão do yt-dlp</string>
+    <string name="update_ytdl">Atualizar yt-dl para a nova versão</string>
     <string name="update_app">Buscar atualizações</string>
     <string name="version">Versão</string>
     <string name="ytdl_already_updating">Instalando nova versão</string>
@@ -83,7 +83,7 @@
     <string name="remove_deleted">Remover excluídos</string>
     <string name="author">Autor</string>
     <string name="run_command">Executar comando</string>
-    <string name="audio_quality_summary">0 (melhor) 10 (menor)</string>
+    <string name="audio_quality_summary">0 (melhor) 10 (pior)</string>
     <string name="cancel_task">Cancelar download</string>
     <string name="update_app_summary">Verifica se há atualizações ao iniciar o aplicativo. Os dados são extraídos do repositório oficial do GitHub</string>
     <string name="configure_download">Ajustar download</string>
@@ -192,7 +192,7 @@
     <string name="invert_selected">Inverter seleção</string>
     <string name="download_over_metered_networks_summary">Faça o download usando qualquer tipo de rede. Caso contrário, espera por uma rede Wi-Fi</string>
     <string name="download_over_metered_networks">Download via dados móveis</string>
-    <string name="confirm_delete_cookies_desc">Todas os cookies serão excluídos</string>
+    <string name="confirm_delete_cookies_desc">Todas os Cookies serão excluídos</string>
     <string name="delete_all_cookies">Excluir Cookies</string>
     <string name="get_cookies">Obter Cookies</string>
     <string name="new_cookie">Novo Cookie</string>
@@ -200,7 +200,7 @@
     <string name="select_all">Selecionar todos</string>
     <string name="red">Vermelho</string>
     <string name="material_you">Material You</string>
-    <string name="pure_theme_summary">Tema preto/branco puro</string>
+    <string name="pure_theme_summary">Tema branco/preto natural</string>
     <string name="downloaded">"Download concluído: "</string>
     <string name="monochrome">Monocromático</string>
     <string name="yellow">Amarelo</string>
@@ -221,7 +221,7 @@
     <string name="restore">Restaurar</string>
     <string name="incognito">Anônimo</string>
     <string name="appearance">Aparência</string>
-    <string name="backup_created_successfully">Arquivo de backup salvo com sucesso!</string>
+    <string name="backup_created_successfully">Arquivo de backup salvo com sucesso</string>
     <string name="search_history">Histórico de busca</string>
     <string name="select_backup_categories">Selecionar categorias de backup</string>
     <string name="restore_complete">Restauração do aplicativo concluída. Os seguintes itens foram restaurados:</string>
@@ -273,7 +273,7 @@
     <string name="sponsorblock_outro">Cartões finais e créditos</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="force_keyframes">Forçar quadros-chave nos cortes</string>
-    <string name="force_keyframes_summary">Processo mais lento, mas cortes mais precisos</string>
+    <string name="force_keyframes_summary">Processamento lento, porém cortes muito mais precisos</string>
     <string name="subtitle_format">Formato da legenda</string>
     <string name="hide_thumbnails">Ocultar miniaturas</string>
     <string name="saved">Salvou</string>
@@ -286,7 +286,7 @@
     <string name="show_terminal">Mostrar \'terminal\' no menu de compartilhamento</string>
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
-    <string name="use_cookies">Usar cookies</string>
+    <string name="use_cookies">Usar Cookies</string>
     <string name="write_description_summary">Salvar arquivo de descrição na pasta de download</string>
     <string name="embed_metadata">Incluir metadados</string>
     <string name="embed_metadata_summary">Analisar e adicionar metadados no arquivo de áudio</string>
@@ -294,7 +294,7 @@
     <string name="use_sponsorblock">Habilitar SponsorBlock</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="cache_first">Downloads em cache primeiro</string>
-    <string name="cache_first_summary">Os arquivos de cache são baixados para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder salvar diretamente no armazenamento</string>
+    <string name="cache_first_summary">Os arquivos de cache são salvos para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder salvar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
     <string name="use_scheduler">Agendar o download</string>
     <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter bugs.</string>
@@ -467,13 +467,24 @@
     <string name="automatic_backup">Backup automático</string>
     <string name="backup_path">Caminho do backup</string>
     <string name="automatic_backup_summary">Fazer backup de tudo automaticamente quando uma nova versão do aplicativo for encontrada</string>
-    <string name="use_code_highlighter">Usar marcador para código de cores</string>
+    <string name="use_code_highlighter">Usar marcador de cores de código</string>
     <string name="write_subs_when_embed_subs">Salvar legendas ao incorporar</string>
     <string name="write_subs_when_embed_subs_summary">Isso aplicará \"Salvar legendas\" e \"Salvar legendas automáticas\" para baixar os subarquivos e excluí-los após a incorporação</string>
     <string name="generate_potokens">Gerar chave de acesso PO</string>
     <string name="regenerate">Gerar novamente</string>
-    <string name="generate_potokens_warning">Habilitando essa opção, será necessário desabilitar os cookies</string>
+    <string name="generate_potokens_warning">Habilitando essa opção, será necessário desabilitar os Cookies</string>
     <string name="custom">Personalizado</string>
     <string name="cut_unsupported">O corte não está disponível para este item</string>
     <string name="select_between_desc">Especifique o intervalo de itens para selecionar</string>
+    <string name="potoken">Chave de acesso PO</string>
+    <string name="web_client_po_token">Chave de acesso PO do cliente web</string>
+    <string name="reverse">Reverter</string>
+    <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
+    <string name="no_keep_subs_summary">Ao usar \"Incluir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
+    <string name="video_compatible">Vídeo compatível</string>
+    <string name="video_compatible_summary">Recodifica o vídeo tornando-o compatível com outros aplicativos</string>
+    <string name="no_free_space_warning">Não há espaço livre para esta configuração.</string>
+    <string name="preferred_format_size">Tamanho do formato preferido</string>
+    <string name="smallest">Menor</string>
+    <string name="largest">Maior</string>
 </resources>

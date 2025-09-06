@@ -416,7 +416,7 @@
     <string name="monthly">每月</string>
     <string name="cleanup_leftover_downloads">清理殘留的下載（取消或錯誤的下載）</string>
     <string name="use_item_url_not_playlist">使用項目 URL 而非播放清單 URL</string>
-    <string name="use_item_url_not_playlist_summary">啟用此選項後，播放清單的中繼資料將不會嵌入</string>
+    <string name="use_item_url_not_playlist_summary">啟用此選項後，播放清單的中繼資料將不會被嵌入</string>
     <string name="recode_video">重新編碼影片</string>
     <string name="recode_video_summary">將影片檔案重新編碼為指定的影片格式</string>
     <string name="data_fetching_extractor_youtube">資料擷取提取器（YouTube）</string>
@@ -463,4 +463,28 @@
     <string name="cache_directory">快取資料夾</string>
     <string name="app_icon_change">圖示可能會變更，且應用程式將會關閉</string>
     <string name="use_format_sorting">使用格式重要性排序</string>
+    <string name="use_code_highlighter">使用語法色彩突顯</string>
+    <string name="reset_preferences_in_screen">在此頁面中重設所有設定</string>
+    <string name="automatic_backup">自動備份</string>
+    <string name="backup_path">備份路徑</string>
+    <string name="automatic_backup_summary">更新應用程式後自動備份所有內容</string>
+    <string name="write_subs_when_embed_subs">嵌入時自動寫入字幕</string>
+    <string name="write_subs_when_embed_subs_summary">此將套用「儲存字幕」與「儲存自動字幕」以下載並於嵌入後刪除字幕檔案</string>
+    <string name="generate_potokens">生成 PO 權杖</string>
+    <string name="regenerate">重新生成</string>
+    <string name="generate_potokens_warning">請於啟用前停用 cookies</string>
+    <string name="custom">自訂</string>
+    <string name="cut_unsupported">無法於此項目使用剪切功能</string>
+    <string name="select_between_desc">請指定選取項目的範圍</string>
+    <string name="potoken">PO 權杖</string>
+    <string name="web_client_po_token">網路客戶端 PO 權杖</string>
+    <string name="reverse">反向</string>
+    <string name="no_keep_subs">於嵌入後刪除字幕檔案</string>
+    <string name="no_keep_subs_summary">當同時使用「嵌入字幕」與「寫入字幕」時將不會於添加後保留字幕檔案</string>
+    <string name="video_compatible">相容的影片</string>
+    <string name="video_compatible_summary">重新編碼影片以於其他應用程式中播放</string>
+    <string name="no_free_space_warning">目前沒有更多空間可套用此設定。</string>
+    <string name="preferred_format_size">偏好的格式大小</string>
+    <string name="smallest">最小</string>
+    <string name="largest">最大</string>
 </resources>
