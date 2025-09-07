@@ -10,6 +10,8 @@
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
