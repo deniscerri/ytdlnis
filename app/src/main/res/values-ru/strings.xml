@@ -244,7 +244,7 @@
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии успешно сохранён</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Material You</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
     <string name="preferred_home_screen">Предпочтительный домашний экран</string>
@@ -483,4 +483,8 @@
     <string name="no_keep_subs_summary">При использовании функций «Встроить субтитры» и «Записать субтитры» не сохраняйте файлы субтитров после встраивания</string>
     <string name="video_compatible">Совместимое Видео</string>
     <string name="video_compatible_summary">Перекодирует видео, делая его совместимым с другими приложениями</string>
+    <string name="no_free_space_warning">Для этой конфигурации нет свободного места.</string>
+    <string name="preferred_format_size">Предпочтительный размер формата</string>
+    <string name="smallest">Наименьший</string>
+    <string name="largest">Самый большой</string>
 </resources>

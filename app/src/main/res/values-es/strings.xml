@@ -483,4 +483,8 @@
     <string name="no_keep_subs_summary">Al usar tanto \"Integrar subtítulos\" como \"Escribir subtítulos\", no guardar los archivos de subtítulos tras insertarlos</string>
     <string name="video_compatible">Vídeo compatible</string>
     <string name="video_compatible_summary">Recodifica el vídeo, haciéndolo compatible con otras apps</string>
+    <string name="no_free_space_warning">No hay espacio disponible para esta configuración.</string>
+    <string name="preferred_format_size">Tamaño de formato preferido</string>
+    <string name="smallest">Más pequeño</string>
+    <string name="largest">Más pequeño</string>
 </resources>
