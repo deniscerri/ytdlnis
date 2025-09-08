@@ -2,7 +2,7 @@
 <resources>
     <string name="remove_all">ลบทั้งหมด</string>
     <string name="download_all">ดาวน์โหลดทั้งหมด</string>
-    <string name="best_quality">คุณภาพดีที่สุด</string>
+    <string name="best_quality">คุณภาพที่ดีที่สุด</string>
     <string name="remove_results">ล้างผลลัพธ์</string>
     <string name="home">หน้าหลัก</string>
     <string name="music_directory">โฟลเดอร์เพลง</string>
@@ -47,7 +47,7 @@
     <string name="remove_downloading">ยกเลิกการดาวน์โหลด</string>
     <string name="configure_download">ปรับแต่งการดาวน์โหลด</string>
     <string name="download">ดาวน์โหลด</string>
-    <string name="video_quality">คุณภาพวีดีโอ</string>
+    <string name="video_quality">คุณภาพของวิดีโอ</string>
     <string name="Open_File">เปิดไฟล์</string>
     <string name="delete_file_too">ลบไฟล์ออกจากอุปกรณ์</string>
     <string name="delete_files_too">ลบไฟล์ออกจากอุปกรณ์</string>
@@ -73,7 +73,7 @@
     <string name="update_app_summary">ประกาศเวอร์ชันใหม่เมื่อเปิดแอป</string>
     <string name="incognito_summary">ดาวน์โหลดโดยไม่ต้องเพิ่มประวัติ</string>
     <string name="show_download_card">แสดงตัวเลือกสำหรับการดาวน์โหลด</string>
-    <string name="download_card_summary">การตั้งค่าสำหรับวิธีการดาวน์โหลดรายการ</string>
+    <string name="download_card_summary">แก้ไขการตั้งค่าก่อนการดาวน์โหลด ปิดตัวเลือกนี้เพื่อเริ่มการดาวน์โหลดทันที</string>
     <string name="crop_thumb_summary">ครอบตัดภาพขนาดย่อเป็นสี่เหลี่ยมสำหรับการดาวน์โหลดไฟล์เสียง</string>
     <string name="use_extra_commands_summary">สำหรับการดาวน์โหลดเสียง / วิดีโอ เพิ่มคำสั่งพิเศษเพิ่มเติมรวมถึงการกำหนดค่า GUI</string>
     <string name="move_temporary_files_summary">ถ่ายโอนไฟล์แคชไปยังโฟลเดอร์ดาวน์โหลด</string>
@@ -90,7 +90,7 @@
     <string name="keep_cache_summary">อย่าลบไฟล์ชั่วคราวหลังจากการดาวน์โหลดเสร็จสิ้น</string>
     <string name="ytdl_update_hint">มีประโยชน์หากคุณมีปัญหาในการดาวน์โหลด</string>
     <string name="couldnt_parse_file">ไม่สามารถแยกวิเคราะห์ไฟล์</string>
-    <string name="network_error">ข้อผิดพลาดของเครือข่าย</string>
+    <string name="network_error">เกิดข้อผิดพลาดของอินเตอร์เน็ต</string>
     <string name="restore">คืนค่า</string>
     <string name="backup">สำรอง</string>
     <string name="backup_restore">สำรองและคืนค่า</string>
@@ -98,13 +98,13 @@
     <string name="clear_saved">ล้างข้อมูลที่บันทึกไว้</string>
     <string name="saved">บันทึกแล้ว</string>
     <string name="hide_thumbnails">ซ่อนภาพขนาดย่อ</string>
-    <string name="subtitle_format">รูปแบบคำบรรยาย</string>
+    <string name="subtitle_format">ประเภทไฟล์ของคำบรรยาย</string>
     <string name="current">คำสั่งปัจจุบัน</string>
     <string name="use_extra_commands">เพิ่มคำสั่งพิเศษ</string>
     <string name="force_keyframes_summary">กระบวนการช้าลง แต่มีการตัดที่แม่นยำยิ่งขึ้น</string>
     <string name="force_keyframes">บังคับคีย์เฟรมเมื่อตัด</string>
     <string name="format_order">รูปแบบคำสั่ง</string>
-    <string name="custom_audio_quality">ใช้คุณภาพเสียงที่กำหนดเอง</string>
+    <string name="custom_audio_quality">ใช้คุณภาพเสียงที่มีการกำหนดเอง</string>
     <string name="swipe_gestures">ท่าทางปัด</string>
     <string name="general">ทั่วไป</string>
     <string name="misc">อื่นๆ</string>
@@ -118,4 +118,11 @@
     <string name="concurrent_fragments">การทำงานที่เกิดขึ้นพร้อมกัน</string>
     <string name="limit_rate">การจำกัดอัตราในการกระทำ</string>
     <string name="embed_thumb_summary">ใช้ภาพขนาดย่อเป็นหน้าปก</string>
+    <string name="errored_download_notification_channel_description">การแจ้งเตือนสําหรับดาวน์โหลดที่เกิดข้อผิดพลาด</string>
+    <string name="use_sponsorblock">ใช้ SponsorBlock</string>
+    <string name="use_scheduler">ดาวน์โหลดในเวลาที่กำหนด</string>
+    <string name="loading">กำลังโหลด</string>
+    <string name="security">ความปลอดภัย</string>
+    <string name="confirm_terminate">หยุดการดาวน์โหลดทั้งหมดและบังคับปิดแอป</string>
+    <string name="dont_ask_again">อย่าถามอีก</string>
 </resources>
