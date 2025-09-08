@@ -9,8 +9,8 @@
     <string name="home">Acasă</string>
     <string name="video_directory">Dosar video</string>
     <string name="updating">Actualizare</string>
-    <string name="ytdl_update_hint">Util dacă aveți probleme la descărcare</string>
-    <string name="update_ytdl">Instalează o nouă versiune de yt-dlp</string>
+    <string name="ytdl_update_hint">Sfat util la descărcare</string>
+    <string name="update_ytdl">Actualizează yt-dlp la cea mai nouă versiune</string>
     <string name="source_code">Codul sursă</string>
     <string name="search_hint">Caută sau introdu adresa URL</string>
     <string name="failed_download">Nu s-a putut descărca fișierul</string>
@@ -34,7 +34,7 @@
     <string name="remove_results">Șterge rezultatele</string>
     <string name="update_app">Verifică pentru actualizări</string>
     <string name="version">Versiune</string>
-    <string name="command_directory">Dosar de comandă personalizat</string>
+    <string name="command_directory">Folder pentru comenzi personalizate</string>
     <string name="couldnt_find_apk">Nu s-a putut găsi un APK potrivit</string>
     <string name="downloading_update">Se descarcă versiunea nouă</string>
     <string name="audio">Audio</string>
