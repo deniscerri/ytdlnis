@@ -221,7 +221,7 @@
     <string name="yellow">Kuning</string>
     <string name="green">Hijau</string>
     <string name="blue">Biru</string>
-    <string name="material_you">Material you</string>
+    <string name="material_you">Materi Anda</string>
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
@@ -482,4 +482,8 @@
     <string name="no_keep_subs_summary">Saat menggunakan Subtitle Semat dan Subtitle Tulis, jangan simpan berkas subtitle setelah penyematan</string>
     <string name="video_compatible">Video yang Kompatibel</string>
     <string name="video_compatible_summary">Mengkodekan ulang video agar kompatibel dengan aplikasi lain</string>
+    <string name="no_free_space_warning">Tidak ada ruang kosong untuk konfigurasi ini.</string>
+    <string name="preferred_format_size">Ukuran Format yang Disukai</string>
+    <string name="smallest">Paling Kecil</string>
+    <string name="largest">Terbesar</string>
 </resources>
