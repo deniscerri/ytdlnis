@@ -11,11 +11,11 @@
     <string name="video_directory">Dossier vidéo</string>
     <string name="updating">Mise à jour</string>
     <string name="update_ytdl">Mettre à jour yt-dlp vers la nouvelle version</string>
-    <string name="ytdl_update_hint">Utile si vous rencontrez des problèmes de téléchargement</string>
-    <string name="source_code">Code Source</string>
+    <string name="ytdl_update_hint">Astuce utile lors du téléchargement des mises à jour</string>
+    <string name="source_code">Code source</string>
     <string name="search_hint">Rechercher ou insérer une URL</string>
     <string name="failed_download">Impossible de télécharger le fichier</string>
-    <string name="download_notification_channel_name">Téléchargements de Fichiers</string>
+    <string name="download_notification_channel_name">Téléchargements de fichiers</string>
     <string name="download_notification_channel_description">Notification indiquant la progression du téléchargement des fichiers audio et vidéo</string>
     <string name="you_are_in_latest_version">Vous utilisez la dernière version</string>
     <string name="ytld_update_success">Nouvelle version installée</string>
@@ -117,7 +117,7 @@
     <string name="create_shortcut">Créer un raccourci</string>
     <string name="update_template">Mettre à jour le modèle</string>
     <string name="create">Créer</string>
-    <string name="clear_errored">Erreur lors de l\'effacement</string>
+    <string name="clear_errored">Effacer erronés</string>
     <string name="split_by_chapters">Diviser par chapitres</string>
     <string name="items_imported">Éléments importés</string>
     <string name="help_translate">Aider à traduire</string>
@@ -177,7 +177,7 @@
     <string name="select">Sélectionner</string>
     <string name="selected">Sélectionné</string>
     <string name="all_items_selected">Tous les éléments sélectionnés</string>
-    <string name="clear_cancelled">Effacement annulé</string>
+    <string name="clear_cancelled">Effacer annulés</string>
     <string name="in_queue">En attente</string>
     <string name="update">Mettre à jour</string>
     <string name="access_all_directories">Autoriser l\'accès à tous les répertoires</string>
