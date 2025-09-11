@@ -3,7 +3,7 @@
     <string name="directories">폴더</string>
     <string name="music_directory">오디오 폴더</string>
     <string name="video_directory">비디오 폴더</string>
-    <string name="update_ytdl">새 버전의 yt-dlp 설치</string>
+    <string name="update_ytdl">yt-dl을 새 버전으로 업데이트</string>
     <string name="search_hint">검색 또는 URL 입력</string>
     <string name="download_notification_channel_description">오디오 및 비디오 파일 다운로드 진행률을 보여주는 알림</string>
     <string name="you_are_in_latest_version">현재 최신버전 사용중</string>
@@ -29,7 +29,7 @@
     <string name="download_all">모두 다운로드</string>
     <string name="settings">설정</string>
     <string name="home">홈</string>
-    <string name="ytdl_update_hint">다운로드에 문제가 있는 경우 업데이트로 해결될 수 있습니다</string>
+    <string name="ytdl_update_hint">업데이트를 다운로드할 때 유용한 도움말 표시</string>
     <string name="source_code">소스 코드</string>
     <string name="ytdl_updating_started">새 버전 다운로드 중…</string>
     <string name="updating">업데이트</string>
@@ -257,7 +257,7 @@
     <string name="restore">복원</string>
     <string name="network_error">네트워크 오류</string>
     <string name="search_history">검색 기록</string>
-    <string name="backup_created_successfully">백업 파일이 성공적으로 저장되었습니다!</string>
+    <string name="backup_created_successfully">백업 파일이 성공적으로 저장되었습니다</string>
     <string name="search_suggestions_summary">구글에서 추천 검색어 받기</string>
     <string name="socks5_proxy">SOCKS5 프록시 URL</string>
     <string name="crop_thumb">썸네일 자르기</string>
@@ -475,4 +475,15 @@
     <string name="write_subs_when_embed_subs_summary">자막 파일들을 다운로드할 때 자막 저장 및 자동 자막 저장 설정을 적용하며 자막을 내장한 뒤에는 삭제합니다</string>
     <string name="sync_with_source_desc">다운로드한 항목이 출처에서 사라진 경우 삭제</string>
     <string name="app_icon_change">앱을 종료하고 설정을 적용합니다</string>
+    <string name="potoken">PO 토큰</string>
+    <string name="web_client_po_token">웹 클라이언트 PO 토큰</string>
+    <string name="preferred_format_size">선호하는 형식 크기</string>
+    <string name="smallest">최소</string>
+    <string name="largest">최대</string>
+    <string name="no_free_space_warning">설정 적용에 필요한 저장 공간이 없습니다.</string>
+    <string name="video_compatible">동영상 호환</string>
+    <string name="video_compatible_summary">다른 앱과 호환되도록 동영상 재인코딩</string>
+    <string name="no_keep_subs">자막을 내장한 뒤 자막 파일 삭제</string>
+    <string name="no_keep_subs_summary">자막 내장과 자막 파일 저장 설정을 모두 켠 경우, 자막을 내장한 뒤 파일을 남기지 않고 지우기</string>
+    <string name="reverse">역순</string>
 </resources>
