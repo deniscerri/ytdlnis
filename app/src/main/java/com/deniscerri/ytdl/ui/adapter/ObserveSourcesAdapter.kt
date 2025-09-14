@@ -103,6 +103,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
             searchBtn.isVisible = false
 
             pauseBtn.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
+            pauseBtn.contentDescription = activity.getString(R.string.resume)
             pauseBtn.setOnClickListener {
                 pauseBtn.isEnabled = false
                 onItemClickListener.onItemStart(item, position)
@@ -119,6 +120,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
             }
 
             pauseBtn.setIconResource(R.drawable.exomedia_ic_pause_white)
+            pauseBtn.contentDescription = activity.getString(R.string.pause)
             pauseBtn.setOnClickListener {
                 pauseBtn.isEnabled = false
                 onItemClickListener.onItemPaused(item, position)

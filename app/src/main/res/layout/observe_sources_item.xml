@@ -132,6 +132,7 @@
                         app:borderWidth="0dp"
                         app:cornerRadius="10dp"
                         app:elevation="0dp"
+                        android:contentDescription="@string/pause"
                         app:icon="@drawable/exomedia_ic_pause_white"/>
 
 
@@ -145,6 +146,7 @@
                         app:borderWidth="0dp"
                         app:cornerRadius="10dp"
                         app:elevation="0dp"
+                        android:contentDescription="@string/search"
                         app:icon="@drawable/ic_search"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
