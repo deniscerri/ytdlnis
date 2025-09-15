@@ -77,4 +77,7 @@
     <string name="incognito_summary">ดาวน์โหลดโดยบ่เพิ่มลงประวัติ</string>
     <string name="configure_download">ปรับแต่งการดาวน์โหลด</string>
     <string name="title">ชื่อ</string>
+    <string name="author">ผู้สร้าง</string>
+    <string name="download">ดาวน์โหลด</string>
+    <string name="video_quality">คุณภาพของวิดีโอ</string>
 </resources>
