@@ -248,7 +248,7 @@
     <string name="network_error">Kesalahan jaringan</string>
     <string name="restore_complete">Pemulihan aplikasi selesai. Item berikut ini telah dipulihkan:</string>
     <string name="select_backup_categories">Pilih kategori pencadangan</string>
-    <string name="backup_created_successfully">Berkas cadangan berhasil disimpan!</string>
+    <string name="backup_created_successfully">Berkas cadangan berhasil disimpan</string>
     <string name="backup">Cadangkan</string>
     <string name="restore">Pulihkan</string>
     <string name="backup_restore">Pencadangan dan pemulihan</string>
