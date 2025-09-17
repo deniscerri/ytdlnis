@@ -217,7 +217,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         resultViewModel.items.observe(requireActivity()) {
             updateMultiplePlaylistResults(it
                 .filter { it2 -> it2.playlistTitle != "" && it2.playlistTitle != "YTDLNIS_SEARCH" }
-                .map { it.playlistTitle }
+                .map { it2 -> it2.playlistTitle }
                 .distinct()
             )
         }

@@ -596,20 +596,15 @@ object Extensions {
         }
     }
 
-    fun String.getIDFromYoutubeURL() : String {
-        var el: Array<String?> =
-            this.split("/".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
-        var query = el[el.size - 1]
-        if (query!!.contains("watch?v=")) {
-            query = query.substring(8)
+    fun String.getIDFromYoutubeURL() : String? {
+        val regex = Regex(
+            "(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*?[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})"
+        )
+        val match = regex.find(this)
+        return if (match != null){
+            match.groupValues[1]
+        }else {
+            null
         }
-        el = query.split("&".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
-        el = query!!.split("\\?".toRegex()).dropLastWhile { it.isEmpty() }
-            .toTypedArray()
-        query = el[0]
-        return query!!
     }
 }

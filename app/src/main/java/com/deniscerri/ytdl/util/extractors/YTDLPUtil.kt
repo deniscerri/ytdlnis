@@ -714,7 +714,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     @SuppressLint("RestrictedApi")
     fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
-        val useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
+        var useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
+        // for /releases youtube channel playlists that have playlists inside of them, cant use indexing or match filter id, so download on its own
+        if (downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() == null) {
+            useItemURL = true
+        }
+
         var isPlaylistItem = false
 
         val request = StringJoiner(" ")
