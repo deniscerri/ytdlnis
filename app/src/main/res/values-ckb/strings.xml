@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="ytdl_already_updating">دامەزراندنی وەشانی نوێ</string>
-    <string name="music_directory">فۆڵدەری مۆسیقا</string>
+    <string name="music_directory">فایلی دەنگی</string>
     <string name="ytdl_updating_started">داگرتنی وەشانی نوێ</string>
-    <string name="search_history_hint">گەڕان لەناو مێژوو</string>
+    <string name="search_history_hint">گەڕانەکانی پێشوو</string>
     <string name="search_command_hint">گەڕان لە فەرمانەکان</string>
     <string name="download_notification_channel_description">ئاگادارکردنەوە بۆ پیشاندانی پرۆسەی دابەزاندنی فایلە دەنگی و ڤیدیۆییەکان</string>
     <string name="update_ytdl">دابەزاندنی وەشانی نوێی yt-dlp</string>
@@ -21,13 +21,13 @@
     <string name="updating">لەنوێکردنەوە</string>
     <string name="home">سەرەکی‎</string>
     <string name="cancel">هەڵوەشانەوە</string>
-    <string name="download_notification_channel_name">فایلە دامەزراوەکان</string>
+    <string name="download_notification_channel_name">فایلە دابەزێنراوەکان</string>
     <string name="remove_results">پاکردنەوەی ئەنجامەکان</string>
     <string name="failed_download">نەتوانرا فایل دابەزێنرێت</string>
     <string name="search">لێرە گەڕان</string>
     <string name="settings">ڕێکخستنەکان</string>
     <string name="worst_quality">خراپترین کوالێتی</string>
-    <string name="ytdl_update_hint">ئەپ بەشەکاتێک بەسودە کێشەی دابەزاندنت هەبوو</string>
+    <string name="ytdl_update_hint">ڕێنمایی بەسوود کاتی دابەزاندنی نوێکارییەکان</string>
     <string name="you_are_in_latest_version">بەکارهێنەری دوای وەشان</string>
     <string name="ytld_update_success">وەشانی نوێ دامەزرا</string>
     <string name="best_quality">باشترین کوالێتی</string>
@@ -40,7 +40,7 @@
     <string name="cancel_task">پاشگەزبوونەوە</string>
     <string name="logs">تۆمارەکان</string>
     <string name="audio_quality">کوالێتی دەنگ</string>
-    <string name="audio_format">فۆرماتی دەنگ</string>
+    <string name="audio_format">فۆرماتی( شێوەی) دەنگ</string>
     <string name="title">ناونیشان</string>
     <string name="adjust_audio">ڕێکخستنی دەنگ</string>
     <string name="warning">ئاگاداریی</string>
@@ -48,7 +48,7 @@
     <string name="new_template">قاڵبی نوێ</string>
     <string name="update_ytdl_nightly">وەشانی شەوانەی yt-dlp</string>
     <string name="command_download_notification_channel_description">ئاگاداریەک کە بەرەوپێشچوونی دابەزاندن نیشان دەدات بە بەکارهێنانی فەرمانی yt-dlp</string>
-    <string name="add_chapters">بەشەکان لە ڤیدیۆکاندا</string>
+    <string name="add_chapters">بەشەکانی ڤیدیۆ</string>
     <string name="concurrent_downloads_summary">ژمارەی داگرتنەکان جێبەجێ دەکرێت لە هەمان کاتدا</string>
     <string name="embed_subtitles">جێگیرکردنی ژێرنووسەکان</string>
     <string name="aria2_summary">بەکارهێنانی Aria2c وەک دابەزاندن لەجیاتی بنەڕەت</string>
@@ -63,11 +63,11 @@
     <string name="add_chapter">زیادکردنی بەشەکان</string>
     <string name="items_left">بابەت ماوە</string>
     <string name="sponsorblock_nonmusic">بێ مۆسیقا و بەشەکانی OffTopic</string>
-    <string name="save_thumb">هەڵگرتنی وێنۆچکە</string>
+    <string name="save_thumb">هەڵگرتنی پەڕاوەی بچووک</string>
     <string name="sponsorblock_sponsors">سپۆنسەرەکان</string>
-    <string name="select_sponsorblock_filtering">فلتەرکردنی بلۆکردنی سپۆنسەر هەڵبژێرە</string>
-    <string name="sponsorblock_promos">پرۆمۆسەکانی خود</string>
-    <string name="embed_thumb">داپۆشەرەکانی وێنۆچکە</string>
+    <string name="select_sponsorblock_filtering">فلتەری بلۆکردنی سپۆنسەر هەڵبژێرە</string>
+    <string name="sponsorblock_promos">خۆڕاگەیاندن</string>
+    <string name="embed_thumb">پەڕاوەی بچووک</string>
     <string name="sponsorblock_previews">پێشبینیەکان</string>
     <string name="show_download_card">کارتی دابەزاندن پیشان بدە</string>
     <string name="audio_quality_summary">0 (باشترین) 10 (خراپترین)</string>
@@ -76,7 +76,7 @@
     <string name="limit_rate_summary">زۆرترین ڕێژەی دابەزاندن (بە بایت لە چرکەیەکدا)، بۆ نموونە. 50K یان 4.2M</string>
     <string name="downloads">داگرتنەکان</string>
     <string name="select_format">فۆرمات هەڵبژێرە</string>
-    <string name="limit_rate">ڕێژەی سنوور</string>
+    <string name="limit_rate">سنوردانی خێرایی</string>
     <string name="Open_File">فایل کردنەوە</string>
     <string name="you_are_going_to_delete">سڕینەوەی</string>
     <string name="request_permission_desc">ئەم بەرنامەیە پێویستی بە مۆڵەتی فایل هەیە بۆ هەڵگرتنی داگرتنەکان لەسەر ئامێرەکە</string>
@@ -91,7 +91,7 @@
     <string name="video_format">فۆرماتی ڤیدیۆ</string>
     <string name="container">کۆگا</string>
     <string name="download">داگرتن</string>
-    <string name="run_command">ڕاکردنی فەرمان</string>
+    <string name="run_command">جێبەجێکردنی فەرمان</string>
     <string name="date_added">بەرواری زیادکراو</string>
     <string name="file_name_template">ناوگۆڕینی قاڵب</string>
     <string name="sponsorblock_outro">دەرەوە</string>
@@ -112,8 +112,8 @@
     <string name="video">ڤیدیۆ</string>
     <string name="embed_thumb_summary">بەکارهێنانی وێنەی بچووک وەک هونەری داپۆشین</string>
     <string name="downloading_update">داگرتنی وەشانی نوێ</string>
-    <string name="command_directory">فۆڵدەری فەرمانی دەستی</string>
-    <string name="api_key_summary">پێشنیارکردنی ڤیدیۆکان لە یوتیوب API</string>
+    <string name="command_directory">فۆڵدەری فەرمانی تایبەتەکان</string>
+    <string name="api_key_summary">پێشنیارکردنی ڤیدیۆکان لە ڕێگەی یوتوبی API</string>
     <string name="remove_downloading">پاشگەزبوونەوە لە داگرتنەکان</string>
     <string name="author">نووسەر</string>
     <string name="exit_app">دەرچوون لە بەرنامە</string>
