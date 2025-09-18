@@ -46,7 +46,7 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         if (list != null) {
             formats = list
         }
-        super.submitList(list)
+        super.submitList(list ?: listOf<FormatRecyclerView>())
     }
 
     fun setCanMultiSelectAudio(it: Boolean) {

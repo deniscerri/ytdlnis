@@ -30,7 +30,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
         return dao.getActiveTerminalDownloadsFlow()
     }
 
-    fun getTerminal(id: Long) : Flow<TerminalItem> {
+    fun getTerminal(id: Long) : Flow<TerminalItem?> {
         return dao.getActiveTerminalFlow(id)
     }
 

@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -64,7 +65,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             val appbar = findViewById<AppBarLayout>(R.id.webview_appbarlayout)
             toolbar = appbar.findViewById(R.id.webviewToolbar)
             //hide incognito
-            toolbar.menu.findItem(1).isVisible = false
+            toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isVisible = false
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
                     R.id.get_data_sync_id -> {

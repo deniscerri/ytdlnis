@@ -18,7 +18,7 @@ interface TerminalDao {
     fun getActiveTerminalDownloadsFlow() : Flow<List<TerminalItem>>
 
     @Query("SELECT * from terminalDownloads where id=:id")
-    fun getActiveTerminalFlow(id: Long) : Flow<TerminalItem>
+    fun getActiveTerminalFlow(id: Long) : Flow<TerminalItem?>
 
     @Query("SELECT COUNT(*) FROM terminalDownloads")
     fun getActiveTerminalsCount() : Int
