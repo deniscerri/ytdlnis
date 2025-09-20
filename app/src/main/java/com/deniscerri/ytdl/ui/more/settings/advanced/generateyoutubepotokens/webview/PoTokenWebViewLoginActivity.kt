@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -59,6 +61,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
         setContentView(R.layout.webview_activity)
 
         val url = intent.getStringExtra("url")!!
+        var redirectUrl = intent.getStringExtra("redirect_url")
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
@@ -98,6 +101,18 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     kotlin.runCatching {
                         toolbar.title = view?.title ?: ""
                     }
+
+                    webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
+                        if (value?.trim('"') == "complete") {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                redirectUrl?.apply {
+                                    webView.loadUrl(this)
+                                }
+                                redirectUrl = null
+                            }, 2500)
+                        }
+                    }
+
                 }
             }
 

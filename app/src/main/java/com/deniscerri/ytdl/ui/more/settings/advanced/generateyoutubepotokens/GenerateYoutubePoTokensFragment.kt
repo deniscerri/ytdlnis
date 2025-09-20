@@ -31,6 +31,7 @@ import com.deniscerri.ytdl.ui.more.WebViewActivity
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -210,15 +211,50 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                 No Auth
                 -----------------------
-                1. Click 'No Auth' to open the video in WebView.
-                2. Play the video for at least 3 seconds.
+                1. Click 'No Auth'.
+                2. Write any youtube video url
+                3. Wait for the video to load and play the video for at least 3 seconds.
                 3. Click OK.
             """.trimIndent()
             dialog.setMessage(text)
             dialog.setNegativeButton("No Auth") { dialogInterface: DialogInterface, _: Int ->
-                val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
-                intent.putExtra("url", "https://www.youtube.com/embed/aqz-KE-bpKQ")
-                webPoTokenResultLauncher.launch(intent)
+
+                val layout = BottomSheetDialog(requireContext())
+                layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                layout.setContentView(R.layout.generate_po_token_url_bottom_sheet)
+
+                val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
+                editText.setSelection(editText.text.length)
+
+                val regenerateBtn = layout.findViewById<MaterialButton>(R.id.getPoTokenBtn)!!
+                regenerateBtn.isEnabled = false
+
+                editText.doOnTextChanged { text, start, before, count ->
+                    regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
+                }
+
+                regenerateBtn.setOnClickListener {
+                    layout.dismiss()
+
+                    val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
+                    intent.putExtra("url", "https://www.youtube.com")
+                    intent.putExtra("redirect_url", "https://www.youtube.com/embed/${editText.text.toString().getIDFromYoutubeURL()}")
+                    webPoTokenResultLauncher.launch(intent)
+                }
+
+
+                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                editText.postDelayed({
+                    editText.requestFocus()
+                    imm.showSoftInput(editText, 0)
+                }, 300)
+
+                layout.show()
+                layout.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                layout.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
             }
 
             dialog.setPositiveButton("Auth") { dialogInterface: DialogInterface, _: Int ->
