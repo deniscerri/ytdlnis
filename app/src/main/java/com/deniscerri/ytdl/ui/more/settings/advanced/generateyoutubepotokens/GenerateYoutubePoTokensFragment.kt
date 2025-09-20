@@ -217,7 +217,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             dialog.setMessage(text)
             dialog.setNegativeButton("No Auth") { dialogInterface: DialogInterface, _: Int ->
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
-                intent.putExtra("url", "https://www.youtube.com/watch?v=aqz-KE-bpKQ")
+                intent.putExtra("url", "https://www.youtube.com/embed/aqz-KE-bpKQ")
                 webPoTokenResultLauncher.launch(intent)
             }
 
