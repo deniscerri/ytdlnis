@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens
 
 import android.app.Activity
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -194,41 +195,39 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
     private fun showBottomSheet(){
         lifecycleScope.launch {
-            val layout = BottomSheetDialog(requireContext())
-            layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            layout.setContentView(R.layout.generate_po_token_url_bottom_sheet)
+            val dialog = MaterialAlertDialogBuilder(requireContext())
+            dialog.setTitle(getString(R.string.generate_potokens))
 
-            val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
-            val text = preferences.getString("genenerate_youtube_po_token_preferred_url", "https://youtube.com/account")
-            editText.setText(text)
-            editText.setSelection(editText.text.length)
+            val text = """
+                Auth
+                -----------------------
+                1. Click 'Auth' to open the sign in page in WebView.
+                2. Sign in to your Google Account.
+                3. Play any video that supports auto-translated subtitles.
+                4. Turn on auto-translated subtitles and see if it works.
+                    4.1 If auto-translated subtitles don't work, switch to another video that supports auto-translated subtitles and try step 4 again.
+                5. Click OK.
 
-            val regenerateBtn = layout.findViewById<MaterialButton>(R.id.getPoTokenBtn)!!
-
-            editText.doOnTextChanged { text, start, before, count ->
-                regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
-            }
-
-            regenerateBtn.setOnClickListener {
-                layout.dismiss()
+                No Auth
+                -----------------------
+                1. Click 'No Auth' to open the video in WebView.
+                2. Play the video for at least 3 seconds.
+                3. Click OK.
+            """.trimIndent()
+            dialog.setMessage(text)
+            dialog.setNegativeButton("No Auth") { dialogInterface: DialogInterface, _: Int ->
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
-                intent.putExtra("url", editText.text.toString())
+                intent.putExtra("url", "https://www.youtube.com/watch?v=aqz-KE-bpKQ")
                 webPoTokenResultLauncher.launch(intent)
             }
 
+            dialog.setPositiveButton("Auth") { dialogInterface: DialogInterface, _: Int ->
+                val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
+                intent.putExtra("url", "https://www.youtube.com/account")
+                webPoTokenResultLauncher.launch(intent)
+            }
 
-            val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            editText.postDelayed({
-                editText.requestFocus()
-                imm.showSoftInput(editText, 0)
-            }, 300)
-
-            layout.show()
-            layout.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            layout.window!!.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
+            dialog.show()
         }
 
     }
