@@ -80,4 +80,19 @@
     <string name="author">ผู้สร้าง</string>
     <string name="download">ดาวน์โหลด</string>
     <string name="video_quality">คุณภาพของวิดีโอ</string>
+    <string name="sponsorblock_sponsors">ผู้หนุน</string>
+    <string name="sponsorblock_intro">บทนำ</string>
+    <string name="sponsorblock_outro">สรุป</string>
+    <string name="sponsorblock_previews">พรีวิว</string>
+    <string name="defaultValue">ค่าเริ่มต้น</string>
+    <string name="limit_rate_summary">อัตราการดาวน์โหลดที่เฮ็ดได้มากสุด (ไบต์ต่อวินาที) เช่น 50K หรือ 4.2M</string>
+    <string name="embed_subtitles">ฝังคำบรรยาย</string>
+    <string name="add_chapter">เพิ่มบท</string>
+    <string name="show_download_card">เบิ่งการ์ดดาวน์โหลด</string>
+    <string name="download_card_summary">แก้ไขการตั้งค่าก่อนดาวน์โหลด ปิดตัวเลือกนี้ทิ่มเพื่อเฮ็ดการดาวน์โหลดทันที</string>
+    <string name="Open_File">เปิดไฟล์</string>
+    <string name="you_are_going_to_delete_multiple_items">ลบทิ่มรายการหลายอัน</string>
+    <string name="delete_file_too">ลบไฟล์จากตัวเครื่องทิ่ม</string>
+    <string name="delete_files_too">ลบไฟล์จากตัวเครื่องหลายอันทิ่ม</string>
+    <string name="request_permission_desc">แอปนี้ต้องการได้รับสิทธิ์การเข้าถึงไฟล์เพื่อบันทึกลงเครื่อง</string>
 </resources>
