@@ -147,6 +147,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             if (result.resultCode == Activity.RESULT_OK) {
                 val streamingDataPoTokenResult = result.data!!.getStringExtra("streaming_potoken") ?: ""
                 val playerRequestPoTokenResult = result.data!!.getStringExtra("player_potoken") ?: ""
+                val subsRequestPoTokenResult = result.data!!.getStringExtra("subs_potoken") ?: ""
                 val visitorDataResult = result.data!!.getStringExtra("visitor_data") ?: ""
 
 
@@ -154,6 +155,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 conf.poTokens.clear()
                 conf.poTokens.add(YoutubePoTokenItem("gvs", streamingDataPoTokenResult))
                 conf.poTokens.add(YoutubePoTokenItem("player", playerRequestPoTokenResult))
+                conf.poTokens.add(YoutubePoTokenItem("subs", subsRequestPoTokenResult))
                 conf.visitorData = visitorDataResult
 
                 configuration.add(conf)

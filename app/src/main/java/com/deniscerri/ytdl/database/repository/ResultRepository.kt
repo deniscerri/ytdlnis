@@ -18,8 +18,11 @@ import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.YTDLPUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
@@ -68,7 +71,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             "custom" -> {
                 val customURL = sharedPreferences.getString("custom_home_recommendation_url", "")
                 if (customURL.isNullOrBlank()) arrayListOf()
-                else ytdlpUtil.getFromYTDL(customURL)
+                else ytdlpUtil.getFromYTDL(customURL, resultsGenerated = {})
             }
             else -> arrayListOf()
         }
@@ -96,7 +99,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             .getOrDefault(Pair(listOf(""), null))
     }
 
-    suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : ArrayList<ResultItem>{
+    suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         if (resetResults) deleteAll()
         val res = when(sharedPreferences.getString("search_engine", "ytsearch")) {
             "ytsearch" -> newPipeUtil.search(inputQuery)
@@ -108,7 +111,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             res.getOrNull()!!
         }else{
             //fallback to yt-dlp
-            ytdlpUtil.getFromYTDL(inputQuery)
+            ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
         }
 
         itemCount.value = items.size
@@ -145,7 +148,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val response = if (newpipeExtractorResult.isSuccess){
             newpipeExtractorResult.getOrElse { items }
         }else{
-            val res = ytdlpUtil.getFromYTDL(inputQuery)
+            val res = ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
             if (addToResults) {
                 val ids = resultDao.insertMultiple(res)
                 ids.forEachIndexed { index, id ->
@@ -170,7 +173,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val res = if (newpipeExtractorResult.isSuccess) {
             newpipeExtractorResult.getOrNull()!!
         }else{
-            ytdlpUtil.getFromYTDL(inputQuery)
+            ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
         }
 
         if (resetResults) {
@@ -209,22 +212,30 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             Result.failure(Throwable())
         }
 
-        val result = if (ytExtractorResult.isSuccess){
-            ytExtractorResult.getOrElse { items }
-        }else{
-            val res = ytdlpUtil.getFromYTDL(inputQuery)
-            if (addToResults) {
-                val ids = resultDao.insertMultiple(res)
-                ids.forEachIndexed { index, id ->
-                    res[index].id = id
-                }
+        val finalResults = mutableListOf<ResultItem>()
+        if (ytExtractorResult.isSuccess) {
+            ytExtractorResult.getOrElse { items }.apply {
+                finalResults.addAll(this)
+                itemCount.value = this.size
             }
-
-            res
+        }else {
+            var itemCounts = 0
+            ytdlpUtil.getFromYTDL(inputQuery) {
+                if (addToResults) {
+                    runBlocking {
+                        val ids = resultDao.insertMultiple(it)
+                        ids.forEachIndexed { index, id ->
+                            it[index].id = id
+                        }
+                    }
+                }
+                finalResults.addAll(it)
+                itemCounts+=it.size
+                itemCount.value = itemCounts
+            }
         }
 
-        itemCount.value = result.size
-        return result
+        return finalResults
     }
 
     private suspend fun getYoutubeChannel(url: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
@@ -246,38 +257,58 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             Result.failure(Throwable())
         }
 
-        val response = if (ytExtractorResult.isSuccess){
-            ytExtractorResult.getOrElse { items }
-        }else{
-            val res = ytdlpUtil.getFromYTDL(url)
-            val ids = resultDao.insertMultiple(res)
-            ids.forEachIndexed { index, id ->
-                res[index].id = id
+        val finalResults = mutableListOf<ResultItem>()
+        if (ytExtractorResult.isSuccess) {
+            ytExtractorResult.getOrElse { items }.apply {
+                finalResults.addAll(this)
+                itemCount.value = this.size
             }
-            res
+        }else {
+            var itemCounts = 0
+            ytdlpUtil.getFromYTDL(url) {
+                if (addToResults) {
+                    runBlocking {
+                        val ids = resultDao.insertMultiple(it)
+                        ids.forEachIndexed { index, id ->
+                            it[index].id = id
+                        }
+                    }
+                }
+                finalResults.addAll(it)
+                itemCounts+=it.size
+                itemCount.value = itemCounts
+            }
         }
 
-        itemCount.value = response.size
-        return response
+        return finalResults
     }
 
-    private suspend fun getFromYTDLP(inputQuery: String, resetResults: Boolean, addToResults: Boolean, singleItem: Boolean = false) : ArrayList<ResultItem> {
-        val items = ytdlpUtil.getFromYTDL(inputQuery, singleItem)
+    private suspend fun getFromYTDLP(inputQuery: String, resetResults: Boolean, addToResults: Boolean, singleItem: Boolean = false) : List<ResultItem> {
         if (resetResults) {
             deleteAll()
-            itemCount.value = items.size
-        }else{
-            items.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
         }
 
-        if (addToResults){
-            val ids = resultDao.insertMultiple(items.toList())
-            ids.forEachIndexed { index, id ->
-                items[index].id = id
+        var itemsCount = 0
+        val itemsToReturn = mutableListOf<ResultItem>()
+
+        ytdlpUtil.getFromYTDL(inputQuery, singleItem) { results ->
+            if (resetResults) {
+                itemsCount += results.size
+                itemCount.value = itemsCount
             }
+            results.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
+            if (addToResults) {
+                runBlocking {
+                    val ids = resultDao.insertMultiple(results)
+                    ids.forEachIndexed { index, id ->
+                        results[index].id = id
+                    }
+                }
+            }
+            itemsToReturn.addAll(results)
         }
 
-        return items
+        return itemsToReturn
     }
 
     fun getFormats(url: String, source : String? = null) : List<Format> {

@@ -120,6 +120,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         val intent = Intent()
                         intent.putExtra("visitor_data", res.visitorData)
                         intent.putExtra("player_potoken", res.playerRequestPoToken)
+                        intent.putExtra("subs_potoken", res.playerRequestPoToken)
                         intent.putExtra("streaming_potoken", res.streamingDataPoToken)
                         setResult(RESULT_OK, intent)
                     }

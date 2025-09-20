@@ -104,7 +104,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     @SuppressLint("RestrictedApi")
-    fun getFromYTDL(query: String, singleItem: Boolean = false): ArrayList<ResultItem> {
+    fun getFromYTDL(query: String, singleItem: Boolean = false, resultsGenerated: (results: List<ResultItem>) -> Unit): List<ResultItem> {
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
 
         val request : YoutubeDLRequest
@@ -134,21 +134,31 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         request.addOption("--flat-playlist")
+        request.addOption("--lazy-playlist")
         request.addOption(if (singleItem) "-J" else "-j")
         request.applyDefaultOptionsForFetchingData(if (query.isURL()) query else null)
 
-        println(parseYTDLRequestString(request))
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-        val results: List<String?> = try {
-            val lineSeparator = System.getProperty("line.separator")
-            youtubeDLResponse.out.split(lineSeparator!!)
-        } catch (e: Exception) {
-            listOf(youtubeDLResponse.out)
-        }.filter { it.isNotBlank() }.apply {
-            if (this.isEmpty()) throw Exception("Command Used: \n yt-dlp ${parseYTDLRequestString(request)}")
+        val finalResults = mutableListOf<ResultItem>()
+        var postedProgress = false
+        YoutubeDL.getInstance().execute(request) { progress, _, line ->
+            runCatching {
+                val generatedResults = parseYTDLPListResults(listOf(line))
+                if (generatedResults.isNotEmpty()) {
+                    finalResults.addAll(generatedResults)
+                    if (!postedProgress) {
+                        if (finalResults.size > 1) {
+                            resultsGenerated(finalResults)
+                            postedProgress = true
+                        }
+                    }else{
+                        resultsGenerated(generatedResults)
+                    }
+                }
+            }
         }
 
-        return parseYTDLPListResults(results, query)
+        if (!postedProgress) resultsGenerated(finalResults)
+        return finalResults
     }
 
     private fun parseYTDLPListResults(results: List<String?>, query: String = "") : ArrayList<ResultItem> {
