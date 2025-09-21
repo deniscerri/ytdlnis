@@ -133,7 +133,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.setYoutubeExtractorArgs(query)
         }
 
-        request.addOption("--flat-playlist")
+        if (!sharedPreferences.getBoolean("no_flat_playlist", false)) {
+            request.addOption("--flat-playlist")
+        }
+
         request.addOption("--lazy-playlist")
         request.addOption(if (singleItem) "-J" else "-j")
         request.applyDefaultOptionsForFetchingData(if (query.isURL()) query else null)
@@ -508,6 +511,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 if (formatProper.format_note.contains("storyboard", ignoreCase = true)) continue
 
+                formatProper.format_note = formatProper.format_note.trim()
                 formatProper.container = format.getString("ext")
                 if (formatProper.tbr == "None") formatProper.tbr = ""
                 if (!formatProper.tbr.isNullOrBlank()){
@@ -816,9 +820,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (socketTimeout.isNotBlank()) {
             request.addOption("--socket-timeout", socketTimeout)
         }
-
-        val sponsorblockURL = sharedPreferences.getString("sponsorblock_url", "")!!
-        if (sponsorblockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorblockURL)
 
         if (sharedPreferences.getBoolean("restrict_filenames", true)) request.addOption("--restrict-filenames")
         if (sharedPreferences.getBoolean("force_ipv4", false)){
@@ -1424,6 +1425,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
             }
             request.addOption(downloadItem.extraCommands)
+        }
+
+        if (request.toString().contains("sponsorblock")) {
+            val sponsorBlockURL = sharedPreferences.getString("sponsorblock_url", "")!!
+            if (sponsorBlockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorBlockURL)
         }
 
         val cache = File(FileUtil.getCachePath(context))

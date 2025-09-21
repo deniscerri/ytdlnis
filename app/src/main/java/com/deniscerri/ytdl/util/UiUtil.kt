@@ -67,6 +67,7 @@ import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
@@ -1318,7 +1319,7 @@ object UiUtil {
         recodeVideoClicked: (Boolean) -> Unit,
         compatibilityModeClicked: (Boolean) -> Unit,
         alsoDownloadAsAudioClicked: (Boolean) -> Unit,
-        extraCommandsClicked: () -> Unit,
+        extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit,
         liveFromStart: (Boolean) -> Unit,
         waitForVideo: (Boolean, Int) -> Unit,
     ){
@@ -1362,6 +1363,18 @@ object UiUtil {
 
 
         val adjustSubtitles = view.findViewById<Chip>(R.id.adjust_subtitles)
+        fun calculateAdjustSubtitlesChangeCount() {
+            if (items.size == 1) {
+                val firstItem = items.first()
+                val count = listOf(
+                    firstItem.videoPreferences.embedSubs,
+                    firstItem.videoPreferences.writeSubs,
+                    firstItem.videoPreferences.writeAutoSubs,
+                )
+                adjustSubtitles.createBadge(context, count.filter { it }.size)
+            }
+        }
+        calculateAdjustSubtitlesChangeCount()
         adjustSubtitles.setOnClickListener {
             val adjustSubtitleView = context.layoutInflater.inflate(R.layout.subtitle_download_preferences_dialog, null)
             val embedSubs = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.embed_subtitles)
@@ -1376,6 +1389,9 @@ object UiUtil {
             embedSubs.setOnClickListener {
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
                 embedSubsClicked(embedSubs.isChecked)
+
+                items.forEach { it.videoPreferences.embedSubs = embedSubs.isChecked }
+                calculateAdjustSubtitlesChangeCount()
             }
 
             if (items.all { it.videoPreferences.writeSubs}) {
@@ -1391,11 +1407,15 @@ object UiUtil {
             saveSubtitles.setOnCheckedChangeListener { _, _ ->
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
                 saveSubtitlesClicked(saveSubtitles.isChecked)
+                items.forEach { it.videoPreferences.writeSubs = saveSubtitles.isChecked }
+                calculateAdjustSubtitlesChangeCount()
             }
 
             saveAutoSubtitles.setOnCheckedChangeListener { _, _ ->
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
                 saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
+                items.forEach { it.videoPreferences.writeAutoSubs = saveAutoSubtitles.isChecked }
+                calculateAdjustSubtitlesChangeCount()
             }
 
             subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
@@ -1424,12 +1444,19 @@ object UiUtil {
 
         if (items.size == 1){
             val adjustAudio = view.findViewById<Chip>(R.id.adjust_audio)
+            fun calculateAdjustAudioChanges() {
+                val count = listOf(items.first().videoPreferences.removeAudio, items.first().videoPreferences.alsoDownloadAsAudio)
+                adjustAudio.createBadge(context, count.filter { it }.size)
+            }
+            calculateAdjustAudioChanges()
             adjustAudio.setOnClickListener {
                 val adjustAudioView = context.layoutInflater.inflate(R.layout.audio_download_preferences_dialog, null)
                 adjustAudioView.findViewById<MaterialSwitch>(R.id.remove_audio).apply {
                     isChecked = items.first().videoPreferences.removeAudio
                     setOnCheckedChangeListener { _, b ->
                         removeAudioClicked(b)
+                        items.first().videoPreferences.removeAudio = b
+                        calculateAdjustAudioChanges()
                     }
                 }
 
@@ -1437,6 +1464,8 @@ object UiUtil {
                     isChecked = items.first().videoPreferences.alsoDownloadAsAudio
                     setOnCheckedChangeListener { _, b ->
                         alsoDownloadAsAudioClicked(b)
+                        items.first().videoPreferences.alsoDownloadAsAudio = b
+                        calculateAdjustAudioChanges()
                     }
                 }
 
@@ -1462,6 +1491,13 @@ object UiUtil {
         }
 
         val recodeVideo = view.findViewById<Chip>(R.id.recode_video)
+        fun calculateRecodeVideoChanges() {
+            if (items.size == 1) {
+                val count = listOf(items.first().videoPreferences.recodeVideo, items.first().videoPreferences.compatibilityMode)
+                recodeVideo.createBadge(context, count.filter { it }.size)
+            }
+        }
+        calculateRecodeVideoChanges()
         recodeVideo.setOnClickListener {
             val adjustVideoView = context.layoutInflater.inflate(R.layout.video_download_preferences_dialog, null)
 
@@ -1475,6 +1511,7 @@ object UiUtil {
 
                     compatibilityModeSwitch.isChecked = false
                     compatibilityModeClicked(false)
+                    recodeVideo.createBadge(context, if (isChecked) 1 else 0)
                 }
             }
 
@@ -1485,6 +1522,7 @@ object UiUtil {
 
                     recodeVideoSwitch.isChecked = false
                     recodeVideoClicked(false)
+                    recodeVideo.createBadge(context, if (isChecked) 1 else 0)
                 }
             }
 
@@ -1559,6 +1597,9 @@ object UiUtil {
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
         sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
+        if (items.size == 1 && sponsorBlock.isEnabled) {
+            sponsorBlock.createBadge(context, items.first().videoPreferences.sponsorBlockFilters.size)
+        }
         sponsorBlock!!.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(context)
             builder.setTitle(context.getString(R.string.select_sponsorblock_filtering))
@@ -1583,6 +1624,9 @@ object UiUtil {
             builder.setPositiveButton(
                 context.getString(R.string.ok)
             ) { _: DialogInterface?, _: Int ->
+                if (items.size == 1) {
+                    sponsorBlock.createBadge(context, checkedItems.filter { it }.size)
+                }
                 sponsorBlockItemsSet(values, checkedItems)
             }
 
@@ -1658,10 +1702,18 @@ object UiUtil {
         }
 
         val extraCommands = view.findViewById<Chip>(R.id.extra_commands)
+        if (items.size == 1) {
+            extraCommands.createBadge(context, if (items.first().extraCommands.isNotBlank()) 1 else 0)
+        }
         if (sharedPreferences.getBoolean("use_extra_commands", false)){
             extraCommands.visibility = View.VISIBLE
             extraCommands.setOnClickListener {
-                extraCommandsClicked()
+                extraCommandsClicked { newExtraCommandString ->
+                    items.forEach { it.extraCommands = newExtraCommandString }
+                    if (items.size == 1) {
+                        extraCommands.createBadge(context, if (newExtraCommandString.isNotBlank()) 1 else 0)
+                    }
+                }
             }
         }else{
             extraCommands.visibility = View.GONE
@@ -1681,8 +1733,10 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         cutDisabledClicked: () -> Unit,
         cutValueChanged: (String) -> Unit,
-        extraCommandsClicked: () -> Unit
+        extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit
     ){
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
         val cropThumb = view.findViewById<Chip>(R.id.crop_thumb)
 
@@ -1751,6 +1805,10 @@ object UiUtil {
         }
 
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
+        sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
+        if (items.size == 1 && sponsorBlock.isEnabled) {
+            sponsorBlock.createBadge(context, items.first().videoPreferences.sponsorBlockFilters.size)
+        }
         sponsorBlock!!.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(context)
             builder.setTitle(context.getString(R.string.select_sponsorblock_filtering))
@@ -1775,6 +1833,9 @@ object UiUtil {
             builder.setPositiveButton(
                 context.getString(R.string.ok)
             ) { _: DialogInterface?, _: Int ->
+                if (items.size == 1) {
+                    sponsorBlock.createBadge(context, checkedItems.filter { it }.size)
+                }
                 sponsorBlockItemsSet(values, checkedItems)
             }
 
@@ -1829,14 +1890,19 @@ object UiUtil {
             }
         }
 
-
-
         val extraCommands = view.findViewById<Chip>(R.id.extra_commands)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        if (items.size == 1) {
+            extraCommands.createBadge(context, if (items.first().extraCommands.isNotBlank()) 1 else 0)
+        }
         if (sharedPreferences.getBoolean("use_extra_commands", false)){
             extraCommands.visibility = View.VISIBLE
             extraCommands.setOnClickListener {
-                extraCommandsClicked()
+                extraCommandsClicked { newExtraCommandString ->
+                    items.forEach { it.extraCommands = newExtraCommandString }
+                    if (items.size == 1) {
+                        extraCommands.createBadge(context, if (newExtraCommandString.isNotBlank()) 1 else 0)
+                    }
+                }
             }
         }else{
             extraCommands.visibility = View.GONE

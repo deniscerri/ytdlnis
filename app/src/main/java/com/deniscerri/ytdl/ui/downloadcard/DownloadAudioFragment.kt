@@ -374,10 +374,11 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                 }
 
                             },
-                            extraCommandsClicked = {
+                            extraCommandsClicked = { returnValue ->
                                 val callback = object : ExtraCommandsListener {
                                     override fun onChangeExtraCommand(c: String) {
                                         downloadItem.extraCommands = c
+                                        returnValue(c)
                                     }
                                 }
 

@@ -51,11 +51,10 @@
                         android:layout_marginEnd="10dp"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:text="PO Token (GVS)"
+                        android:text="@string/potoken_gvs"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/content_gvs"
@@ -97,11 +96,10 @@
                         android:layout_marginEnd="10dp"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:text="PO Token (Player)"
+                        android:text="@string/potoken_player"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
                         android:id="@+id/content_player"
@@ -143,11 +141,10 @@
                         android:layout_marginEnd="10dp"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:text="PO Token (Subs)"
+                        android:text="@string/potoken_subs"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/content_subs"
@@ -189,11 +186,10 @@
                         android:layout_marginEnd="10dp"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:text="Visitor Data"
+                        android:text="@string/visitor_data"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText" />
+                        app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
                         android:id="@+id/content_visitordata"

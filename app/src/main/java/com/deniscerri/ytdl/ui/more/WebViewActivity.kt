@@ -75,14 +75,10 @@ class WebViewActivity : BaseActivity() {
             }
 
             toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isChecked = incognito
+            toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
 
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
-                    R.id.get_data_sync_id -> {
-                        webView?.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
-                            UiUtil.copyToClipboard(id.replace("\"", ""), this@WebViewActivity)
-                        }
-                    }
                     R.id.incognito -> {
                         intent.putExtra("incognito", !incognito)
                         recreate()

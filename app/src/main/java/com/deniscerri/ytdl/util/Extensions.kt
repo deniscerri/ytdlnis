@@ -24,12 +24,14 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroupOverlay
 import android.view.ViewOutlineProvider
 import android.view.animation.Interpolator
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
+import androidx.annotation.OptIn
 import androidx.annotation.Px
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -44,8 +46,12 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.neoutils.highlight.core.Highlight
 import com.neoutils.highlight.core.scheme.TextColorScheme
@@ -282,6 +288,23 @@ object Extensions {
         animator.interpolator = Extensions.CustomInterpolator()
         animator.setDuration(300)
         animator.start()
+    }
+
+    @OptIn(ExperimentalBadgeUtils::class)
+    fun Chip.createBadge(context: Context, nr: Int) {
+        this.overlay.clear()
+        if (nr > 0) {
+            val badge = BadgeDrawable.create(context).apply {
+                number = nr
+                backgroundColor = context.getColor(R.color.white)
+                verticalOffset = 25
+                horizontalOffset =
+                    if (nr < 10) dp(App.instance.resources,  17f)
+                    else if (nr < 100) dp(App.instance.resources,  19f)
+                    else dp(App.instance.resources,  22f)
+            }
+            BadgeUtils.attachBadgeDrawable(badge, this)
+        }
     }
 
     fun TabLayout.Tab.createBadge(nr: Int){

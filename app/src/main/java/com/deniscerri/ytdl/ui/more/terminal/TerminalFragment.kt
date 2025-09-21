@@ -173,14 +173,22 @@ class TerminalFragment : Fragment() {
                         if (shortcutCount > 0){
                             UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
                                 itemSelected = {sh ->
-                                    val txt = "${input.text} $sh"
+                                    val txt = "${input.text.trim()} $sh"
                                     input.setText(txt)
+                                    input.setSelection(input.text.length)
                                 },
                                 itemRemoved = {removed ->
-                                    input.setText(input.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trimEnd())
+                                    input.setText(input.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trim())
                                     input.setSelection(input.text.length)
                                 })
                         }
+                    }
+                }
+                R.id.filename_template -> {
+                    UiUtil.showFilenameTemplateDialog(requireActivity(), "") { filenameSelected ->
+                        val txt = "${input.text.replace("-o\\s+(?:\"([^\"]+)\"|(\\S+))".toRegex(), "").trim()} -o \"$filenameSelected\""
+                        input.setText(txt)
+                        input.setSelection(input.text.length)
                     }
                 }
                 R.id.folder -> {

@@ -5,8 +5,7 @@
 
     <item
         android:id="@+id/get_data_sync_id"
-        android:title="Get Data Sync ID"
-        tools:ignore="HardcodedText" />
+        android:title="@string/get_data_sync_id" />
 
     <item
         android:id="@+id/incognito"
@@ -17,7 +16,7 @@
 
     <item
         android:id="@+id/desktop"
-        android:title="Desktop"
+        android:title="@string/desktop"
         android:checkable="true"
         app:showAsAction="never" />
 

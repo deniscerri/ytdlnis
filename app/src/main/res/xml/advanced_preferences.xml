@@ -79,6 +79,15 @@
             android:title="@string/disable_write_info_json" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/misc">
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            android:icon="@drawable/ic_search"
+            android:key="no_flat_playlist"
+            android:summary="@string/disable_flat_playlist_summary"
+            android:title="@string/disable_flat_playlist" />
+    </PreferenceCategory>
+
     <Preference
         app:allowDividerAbove="true"
         app:icon="@drawable/baseline_reset_tv_24"

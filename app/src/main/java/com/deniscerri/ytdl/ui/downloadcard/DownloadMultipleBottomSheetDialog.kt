@@ -591,13 +591,14 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         cutClicked = {},
                                         cutDisabledClicked = {},
                                         cutValueChanged = {},
-                                        extraCommandsClicked = {
+                                        extraCommandsClicked = { returnValue ->
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
                                                     items.forEach { it.extraCommands = c }
                                                     requireActivity().lifecycleScope.launch {
                                                         items.forEach { downloadViewModel.updateDownload(it) }
                                                     }
+                                                    returnValue(c)
                                                     bottomSheet.dismiss()
                                                 }
                                             }
@@ -696,11 +697,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
                                         alsoDownloadAsAudioClicked = {},
-                                        extraCommandsClicked = {
+                                        extraCommandsClicked = { returnValue ->
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
                                                     items.forEach { it.extraCommands = c }
                                                     CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                                    returnValue(c)
                                                     bottomSheet.dismiss()
                                                 }
                                             }
