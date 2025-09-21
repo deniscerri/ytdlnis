@@ -84,6 +84,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         val switch = requireView().findViewById<MaterialSwitch>(R.id.web_client_switch)
         val gvs = requireView().findViewById<TextView>(R.id.content_gvs)
         val player = requireView().findViewById<TextView>(R.id.content_player)
+        val subs = requireView().findViewById<TextView>(R.id.content_subs)
         val visitorData = requireView().findViewById<TextView>(R.id.content_visitordata)
 
         val playerClientDiv = requireView().findViewById<View>(R.id.playerclient_div)
@@ -99,6 +100,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         fun setValues(conf: YoutubeGeneratePoTokenItem) {
             gvs.text = conf.poTokens.find { it.context == "gvs" }?.token ?: ""
             player.text = conf.poTokens.find { it.context == "player" }?.token ?: ""
+            subs.text = conf.poTokens.find { it.context == "subs" }?.token ?: ""
             visitorData.text = conf.visitorData
             playerClientText.text = conf.clients.joinToString(", ")
         }
@@ -111,6 +113,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
         gvs.setOnClickListener(clicker)
         player.setOnClickListener(clicker)
+        subs.setOnClickListener(clicker)
         visitorData.setOnClickListener(clicker)
 
         playerClientDiv.setOnClickListener {
@@ -261,6 +264,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                 intent.putExtra("url", "https://www.youtube.com/account")
                 webPoTokenResultLauncher.launch(intent)
+            }
+
+            dialog.setNeutralButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
+                dialogInterface.dismiss()
             }
 
             dialog.show()

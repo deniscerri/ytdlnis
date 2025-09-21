@@ -10,6 +10,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
@@ -173,7 +174,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val res = if (newpipeExtractorResult.isSuccess) {
             newpipeExtractorResult.getOrNull()!!
         }else{
-            ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
+            ytdlpUtil.getFromYTDL("https://youtu.be/${inputQuery.getIDFromYoutubeURL()}", resultsGenerated = {})
         }
 
         if (resetResults) {

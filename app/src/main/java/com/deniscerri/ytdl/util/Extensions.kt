@@ -16,7 +16,9 @@ import android.graphics.drawable.shapes.OvalShape
 import android.media.MediaMetadataRetriever
 import android.media.MediaMetadataRetriever.METADATA_KEY_DURATION
 import android.net.Uri
+import android.text.Editable
 import android.text.Spanned
+import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.MotionEvent
@@ -49,6 +51,8 @@ import com.neoutils.highlight.core.Highlight
 import com.neoutils.highlight.core.scheme.TextColorScheme
 import com.neoutils.highlight.core.util.Match
 import com.neoutils.highlight.core.util.UiColor
+import com.neoutils.highlight.view.extension.applyTo
+import com.neoutils.highlight.view.extension.removeAllSpans
 import com.neoutils.highlight.view.extension.toSpannedString
 import com.neoutils.highlight.view.text.HighlightTextWatcher
 import com.squareup.picasso.Picasso
@@ -84,12 +88,34 @@ object Extensions {
         TextColorScheme(regex = "\\d+(\\.\\d)?%".toRegex(), match = Match.fully(UiColor.Hex("#43a564"))),
     )
 
-
     fun View.enableTextHighlight(){
         if (this is EditText || this is TextView){
             //init syntax highlighter
             val highlight = Highlight(textHighlightSchemes)
-            val highlightWatcher = HighlightTextWatcher(highlight)
+            val highlightWatcher = object : TextWatcher {
+                override fun beforeTextChanged(
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int
+                ) = Unit
+
+                override fun onTextChanged(
+                    p0: CharSequence?,
+                    p1: Int,
+                    p2: Int,
+                    p3: Int
+                ) = Unit
+
+                override fun afterTextChanged(p0: Editable?) {
+                    p0?.apply {
+                        kotlin.runCatching {
+                            removeAllSpans()
+                            highlight.applyTo(this)
+                        }
+                    }
+                }
+            }
 
             if (this is EditText) {
                 this.addTextChangedListener(highlightWatcher)

@@ -489,4 +489,5 @@
     <string name="preferred_format_size">Preferred Format Size</string>
     <string name="smallest">Smallest</string>
     <string name="largest">Largest</string>
+    <string name="no_prefer_drc_audio">Don\'t prefer DRC Audio</string>
 </resources>
