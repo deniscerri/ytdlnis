@@ -442,4 +442,12 @@
     <string name="ytdlp_watch_later">yt-dlp YouTube later bekijken (cookies nodig)</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube reccomendaties (cookies nodig)</string>
     <string name="ytdlp_liked">yt-dlp YouTube gelikede video\'s (cookies nodig)</string>
+    <string name="sync_with_source_desc">Verwijder gedownloade items wanneer ze zich niet in de bron bevinden</string>
+    <string name="ytdlp_watch_history">yt-dlp YouTube kijkersgeschiedenis (heeft cookies nodig)</string>
+    <string name="no_check_certificates">Onderdruk HTTPS certificaat validaties</string>
+    <string name="live_stream">Live stream</string>
+    <string name="live_from_start">Live vanaf begin</string>
+    <string name="wait_for_video">Wacht op video</string>
+    <string name="retry_every">alles opnieuw proberen</string>
+    <string name="minutes">Minuten</string>
 </resources>
