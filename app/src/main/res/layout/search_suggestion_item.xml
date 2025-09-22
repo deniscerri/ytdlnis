@@ -27,7 +27,7 @@
             android:ellipsize="end"
             android:focusable="true"
             android:gravity="center_vertical"
-            android:maxLines="1"
+            android:maxLines="2"
             android:paddingEnd="20dp"
             android:textSize="16sp"
             android:textStyle="bold"

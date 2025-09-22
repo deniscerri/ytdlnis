@@ -492,7 +492,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setTitle(getString(R.string.restore))
-        builder.setMessage("${getString(R.string.restore_complete)}\n$restoreDataMessage")
+        builder.setMessage("${getString(R.string.restore_complete)}\n\n$restoreDataMessage")
         builder.setCancelable(false)
         builder.setPositiveButton(
             getString(R.string.ok)

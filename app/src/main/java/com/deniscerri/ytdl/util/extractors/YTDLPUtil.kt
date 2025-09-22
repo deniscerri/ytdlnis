@@ -261,7 +261,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
             val availableSubtitles = mutableListOf<String>()
             if (jsonObject.has("subtitles")) {
-                availableSubtitles.addAll(jsonObject.getJSONObject("subtitles").keys().asSequence().toList())
+                runCatching {
+                    availableSubtitles.addAll(jsonObject.getJSONObject("subtitles").keys().asSequence().toList())
+                }
             }
 
             val res = ResultItem(0,
@@ -795,7 +797,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (aria2) {
             request.addOption("--downloader", "libaria2c.so")
             //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-            request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
+            request.addOption("--no-check-certificates")
+            //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
         val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
@@ -831,7 +834,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
-        if (sharedPreferences.getBoolean("no_check_certificates", false)) {
+        if (sharedPreferences.getBoolean("no_check_certificates", false) && !request.toString().contains("--no-check-certificates")) {
             request.addOption("--no-check-certificates")
         }
 
