@@ -61,7 +61,7 @@ class FormatUtil(private var context: Context) {
 
             val noDRC = sharedPreferences.getBoolean("no_prefer_drc_audio", false)
             if (noDRC) {
-                formatImportance.add("no_drc")
+                formatImportance.add(0,"no_drc")
             }
 
             return formatImportance
@@ -155,13 +155,10 @@ class FormatUtil(private var context: Context) {
                             }
 
                         }
-
                         "no_drc" -> {
-                            if (!a.format_note.contains("drc", false)) {
-                                0
-                            }else {
-                                -1
-                            }
+                            val aHasDrc = a.format_note.contains("drc", ignoreCase = true)
+                            val bHasDrc = b.format_note.contains("drc", ignoreCase = true)
+                            aHasDrc.compareTo(bHasDrc)
                         }
 
                         else -> 0
