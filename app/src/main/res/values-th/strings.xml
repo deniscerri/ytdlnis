@@ -486,4 +486,14 @@
     <string name="video_compatible_summary">ถอดรหัสของวิดีโอเพื่อให้เข้ากันได้กับแอปอื่นๆ</string>
     <string name="no_free_space_warning">ไม่มีพื้นที่ว่างสำหรับการกำหนดค่านี้</string>
     <string name="preferred_format_size">ขนาดฟอร์แมตไฟล์ที่ต้องการ</string>
+    <string name="no_prefer_drc_audio">ไม่ต้องการเสียงแบบ DRC</string>
+    <string name="potoken_gvs">โทเค็น PO (GVS)</string>
+    <string name="potoken_player">โทเค็น PO (ตัวเล่น)</string>
+    <string name="potoken_subs">โทเค็น PO (Subs)</string>
+    <string name="visitor_data">ข้อมูลผู้เข้าชม</string>
+    <string name="get_data_sync_id">ข้อมูลผู้เข้าชม</string>
+    <string name="desktop">เดสก์ท็อป</string>
+    <string name="url_regex">ยูอาร์แอล Regex</string>
+    <string name="disable_flat_playlist">ปิดใช้งานเพลย์ลิสต์แบบกว้าง</string>
+    <string name="disable_flat_playlist_summary">อย่าใช้งาน --flat-playlist. การดึงข้อมูลช้าลงแต่ข้อมูลนั้นจะดีขึ้น</string>
 </resources>
