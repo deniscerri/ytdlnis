@@ -487,4 +487,14 @@
     <string name="preferred_format_size">حجم التنسيق المفضل</string>
     <string name="smallest">الأصغر</string>
     <string name="largest">الأكبر</string>
+    <string name="no_prefer_drc_audio">لا تفضل صوت DRC</string>
+    <string name="potoken_gvs">رمز PO (GVS)</string>
+    <string name="potoken_player">رمز PO (مشغّل)</string>
+    <string name="potoken_subs">رمز PO (الاشتراكات)</string>
+    <string name="visitor_data">بيانات الزوار</string>
+    <string name="get_data_sync_id">بيانات الزوار</string>
+    <string name="desktop">سطح المكتب</string>
+    <string name="url_regex">عنوان رابط Regex</string>
+    <string name="disable_flat_playlist">عطّل قائمة التشغيل المسطحة</string>
+    <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. جلب بيانات أبطأ، ولكنه أكثر ثراءً بالبيانات</string>
 </resources>
