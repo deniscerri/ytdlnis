@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.ViewGroup
@@ -63,7 +64,17 @@ object FileUtil {
             if (!File(path).delete()){
                 DocumentFile.fromSingleUri(App.instance, Uri.parse(path))?.delete()
             }
+            deleteFileFromMediaStore(path)
         }
+    }
+
+    private fun deleteFileFromMediaStore(path: String) {
+        val contentResolver = App.instance.contentResolver
+        val file = File(path)
+        val uri = MediaStore.Files.getContentUri("external")
+        val selection = MediaStore.MediaColumns.DATA + " =?"
+        val selectionArgs = arrayOf(file.absolutePath)
+        contentResolver.delete(uri, selection, selectionArgs)
     }
 
     fun exists(path: String) : Boolean {
