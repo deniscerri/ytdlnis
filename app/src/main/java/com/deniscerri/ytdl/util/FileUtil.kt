@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
+import android.provider.MediaStore
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.ViewGroup
@@ -63,7 +64,39 @@ object FileUtil {
             if (!File(path).delete()){
                 DocumentFile.fromSingleUri(App.instance, Uri.parse(path))?.delete()
             }
+            deleteFileFromMediaStore(path)
         }
+    }
+
+    private fun deleteFileFromMediaStore(path: String) {
+        val contentResolver = App.instance.contentResolver
+        val file = File(path)
+        val uri = MediaStore.Files.getContentUri("external")
+
+        val selection: String
+        val selectionArgs: Array<String>
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val parentPath = file.parentFile?.absolutePath.orEmpty()
+            val primaryRoot = Environment.getExternalStorageDirectory().absolutePath
+            if (parentPath.startsWith(primaryRoot)) {
+                val trimmed = parentPath
+                    .removePrefix(primaryRoot)
+                    .removePrefix(File.separator)
+                val relativePath = if (trimmed.isEmpty()) "" else "$trimmed${File.separator}"
+                selection = MediaStore.MediaColumns.RELATIVE_PATH + " =? AND " +
+                            MediaStore.MediaColumns.DISPLAY_NAME + " =?"
+                selectionArgs = arrayOf(relativePath, file.name)
+            } else {
+                // Non-primary storage: fall back to DATA query
+                selection = MediaStore.MediaColumns.DATA + " =?"
+                selectionArgs = arrayOf(file.absolutePath)
+            }
+        } else {
+            selection = MediaStore.MediaColumns.DATA + " =?"
+            selectionArgs = arrayOf(file.absolutePath)
+        }
+        contentResolver.delete(uri, selection, selectionArgs)
     }
 
     fun exists(path: String) : Boolean {
