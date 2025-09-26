@@ -249,7 +249,7 @@
     <string name="backup_restore">バックアップと復元</string>
     <string name="search_suggestions_summary">Googleから検索候補を取得する</string>
     <string name="preferred_format_id_summary">ダウンロードカードでこの ID の形式を選択します</string>
-    <string name="backup_created_successfully">バックアップファイルを保存しました！</string>
+    <string name="backup_created_successfully">バックアップファイルを保存しました</string>
     <string name="audio_only_item">この項目は音声形式のみを含みます</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="custom_audio_quality">音質を指定</string>
@@ -483,4 +483,18 @@
     <string name="no_keep_subs">字幕ファイルを埋め込み後に削除する</string>
     <string name="video_compatible_summary">動画を再エンコードし、ほかのアプリと互換性のある形式に変換</string>
     <string name="video_compatible">より互換性が高い動画</string>
+    <string name="no_free_space_warning">この構成用の空き領域がありません。</string>
+    <string name="preferred_format_size">推奨形式サイズ</string>
+    <string name="smallest">最小</string>
+    <string name="largest">最大</string>
+    <string name="no_prefer_drc_audio">DRCオーディオを推奨しない</string>
+    <string name="potoken_gvs">PO トークン (GVS)</string>
+    <string name="potoken_player">PO トークン (プレーヤー)</string>
+    <string name="potoken_subs">PO トークン (字幕)</string>
+    <string name="visitor_data">訪問者データ</string>
+    <string name="get_data_sync_id">訪問者データ</string>
+    <string name="desktop">デスクトップ</string>
+    <string name="url_regex">URL 正規表現</string>
+    <string name="disable_flat_playlist_summary">--flat-playlist を使用しない。データ取得は遅くなるが、より豊富なデータが得られます。</string>
+    <string name="disable_flat_playlist">flat playlist を無効</string>
 </resources>

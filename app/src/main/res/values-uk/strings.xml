@@ -487,4 +487,14 @@
     <string name="preferred_format_size">Бажаний розмір формату</string>
     <string name="smallest">Найменший</string>
     <string name="largest">Найбільший</string>
+    <string name="no_prefer_drc_audio">Не надавати перевагу DRC Audio</string>
+    <string name="potoken_gvs">PO токен (GVS)</string>
+    <string name="potoken_player">PO токен (Player)</string>
+    <string name="potoken_subs">PO токен (Subs)</string>
+    <string name="visitor_data">Дані відвідувачів</string>
+    <string name="get_data_sync_id">Дані відвідувачів</string>
+    <string name="desktop">Робочий стіл</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="disable_flat_playlist">Відключити простий плейлист</string>
+    <string name="disable_flat_playlist_summary">Не використовуйте --flat-playlist. Повільніше отримання даних, але більш насичений даними</string>
 </resources>

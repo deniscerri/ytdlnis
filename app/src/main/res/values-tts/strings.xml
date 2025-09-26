@@ -95,4 +95,6 @@
     <string name="delete_file_too">ลบไฟล์จากตัวเครื่องทิ่ม</string>
     <string name="delete_files_too">ลบไฟล์จากตัวเครื่องหลายอันทิ่ม</string>
     <string name="request_permission_desc">แอปนี้ต้องการได้รับสิทธิ์การเข้าถึงไฟล์เพื่อบันทึกลงเครื่อง</string>
+    <string name="exit_app">ออกจากแอป</string>
+    <string name="warning">เตือน</string>
 </resources>
