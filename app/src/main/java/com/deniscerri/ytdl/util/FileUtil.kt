@@ -72,8 +72,24 @@ object FileUtil {
         val contentResolver = App.instance.contentResolver
         val file = File(path)
         val uri = MediaStore.Files.getContentUri("external")
-        val selection = MediaStore.MediaColumns.DATA + " =?"
-        val selectionArgs = arrayOf(file.absolutePath)
+
+        val selection: String
+        val selectionArgs: Array<String>
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val parentPath = file.parentFile?.absolutePath ?: ""
+            val externalStoragePath = Environment.getExternalStorageDirectory().absolutePath
+            val relativePath = if (parentPath.length > externalStoragePath.length && parentPath.startsWith(externalStoragePath)) {
+                parentPath.substring(externalStoragePath.length).removePrefix("/") + "/"
+            } else {
+                ""
+            }
+            selection = MediaStore.MediaColumns.RELATIVE_PATH + " =? AND " + MediaStore.MediaColumns.DISPLAY_NAME + " =?"
+            selectionArgs = arrayOf(relativePath, file.name)
+        } else {
+            selection = MediaStore.MediaColumns.DATA + " =?"
+            selectionArgs = arrayOf(file.absolutePath)
+        }
         contentResolver.delete(uri, selection, selectionArgs)
     }
 
