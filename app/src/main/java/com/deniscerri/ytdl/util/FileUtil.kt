@@ -77,15 +77,21 @@ object FileUtil {
         val selectionArgs: Array<String>
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val parentPath = file.parentFile?.absolutePath ?: ""
-            val externalStoragePath = Environment.getExternalStorageDirectory().absolutePath
-            val relativePath = if (parentPath.length > externalStoragePath.length && parentPath.startsWith(externalStoragePath)) {
-                parentPath.substring(externalStoragePath.length).removePrefix("/") + "/"
+            val parentPath = file.parentFile?.absolutePath.orEmpty()
+            val primaryRoot = Environment.getExternalStorageDirectory().absolutePath
+            if (parentPath.startsWith(primaryRoot)) {
+                val trimmed = parentPath
+                    .removePrefix(primaryRoot)
+                    .removePrefix(File.separator)
+                val relativePath = if (trimmed.isEmpty()) "" else "$trimmed${File.separator}"
+                selection = MediaStore.MediaColumns.RELATIVE_PATH + " =? AND " +
+                            MediaStore.MediaColumns.DISPLAY_NAME + " =?"
+                selectionArgs = arrayOf(relativePath, file.name)
             } else {
-                ""
+                // Non-primary storage: fall back to DATA query
+                selection = MediaStore.MediaColumns.DATA + " =?"
+                selectionArgs = arrayOf(file.absolutePath)
             }
-            selection = MediaStore.MediaColumns.RELATIVE_PATH + " =? AND " + MediaStore.MediaColumns.DISPLAY_NAME + " =?"
-            selectionArgs = arrayOf(relativePath, file.name)
         } else {
             selection = MediaStore.MediaColumns.DATA + " =?"
             selectionArgs = arrayOf(file.absolutePath)
