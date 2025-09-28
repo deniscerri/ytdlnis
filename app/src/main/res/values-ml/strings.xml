@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="search">തിരയുക</string>
-    <string name="remove_results">ഫലങ്ങൾ നീക്കം ചെയ്യുക</string>
+    <string name="remove_results">ഫലങ്ങൾ റിമൂവ് ചെയ്യുക</string>
     <string name="download_all">എല്ലാം ഡൌൺലോഡ് ചെയ്യുക</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>
     <string name="home">ഹോം</string>
@@ -10,8 +10,46 @@
     <string name="updating">അപ്ഡേറ്റ് ചെയ്യുന്നു</string>
     <string name="worst_quality">ഏറ്റവും മോശം ക്വാളിറ്റി</string>
     <string name="best_quality">ഏറ്റവും നല്ല ക്വാളിറ്റി</string>
-    <string name="remove_all">എല്ലാം നീക്കം ചെയ്യുക</string>
+    <string name="remove_all">എല്ലാം റിമൂവ് ചെയ്യുക</string>
     <string name="directories">ഫോൾഡറുകൾ</string>
     <string name="ytdl_update_hint">നിങ്ങൾക്ക് ഡൗൺലോഡ് ചെയ്യുന്നതിൽ പ്രേശ്നങ്ങൾ ഉണ്ടെങ്കിൽ ഉപയോഗിക്കാം</string>
     <string name="update_ytdl">yt-dlp യുടെ പുതിയ വേർഷൻ ഇൻസ്റ്റാൾ ചെയ്യുക</string>
+    <string name="about">കൂടുതൽ</string>
+    <string name="source_code">സോഴ്സ് കോഡ്</string>
+    <string name="search_hint">തിരയുക അല്ലെങ്കിൽ ലിങ്ക് ഉപയോഗിക്കുക</string>
+    <string name="failed_download">ഫയൽ ഡൌൺലോഡ് ചെയ്യാൻ സാധിക്കുന്നില്ല</string>
+    <string name="download_notification_channel_name">ഫയൽ അപ്‌ലോഡുകൾ</string>
+    <string name="download_notification_channel_description">വീഡിയോയും ഓഡിയോയും ഡൌൺലോഡ് ആകുന്നതിന്റെ ശതമാനം നോട്ടിഫിക്കേഷനിൽ കാണിക്കുക</string>
+    <string name="you_are_in_latest_version">നിങ്ങൾ ഉപയോഗിക്കുന്നത് പുതിയ വേർഷൻ ആണ്</string>
+    <string name="ytld_update_success">പുതിയ വേർഷൻ ഇൻസ്റ്റാൾ ആയി</string>
+    <string name="ytdl_already_updating">പുതിയ വേർഷൻ ഇൻസ്റ്റാൾ ചെയ്യുന്നു</string>
+    <string name="ytdl_updating_started">പുതിയ വേർഷൻ ഡൌൺലോഡ് ചെയ്യുന്നു</string>
+    <string name="Remove">റിമൂവ് ചെയ്യുക</string>
+    <string name="ok">ശരി</string>
+    <string name="cancel">വേണ്ട</string>
+    <string name="confirm_delete_history_desc">മുഴുവൻ ഹിസ്‌റ്റോറിയും എന്നെന്നേക്കുമായി നശിപ്പിക്കുക</string>
+    <string name="confirm_delete_history">ശരി</string>
+    <string name="search_history_hint">ഹിസ്റ്ററിയിൽ തിരയുക</string>
+    <string name="search_command_hint">കമാൻഡിൽ തിരയുക</string>
+    <string name="no_results">ഒരു ഫലവുമില്ല</string>
+    <string name="more">കൂടുതൽ</string>
+    <string name="update_app">അപ്ഡേറ്റ് ചെക്ക് ചെയ്യുക</string>
+    <string name="version">വേർഷൻ</string>
+    <string name="command_directory">പ്രേത്യേക കമാൻഡ് ഫോൾഡർ</string>
+    <string name="couldnt_find_apk">അനുയോജ്യമായ ഒരു APK കണ്ടെത്താൻ കഴിഞ്ഞില്ല</string>
+    <string name="downloading_update">പുതിയ വേർഷൻ ഡൌൺലോഡ് ചെയ്യുന്നു</string>
+    <string name="audio">ഓഡിയോ</string>
+    <string name="video">വീഡിയോ</string>
+    <string name="concurrent_fragments_summary">ഒരു DASH/HLS നേറ്റീവ് വീഡിയോയുടെ ഒരേസമയം ഡൗൺലോഡ് ചെയ്യേണ്ട ഭാഗങ്ങളുടെ എണ്ണം</string>
+    <string name="downloading">ഡൗൺലോഡിങ്</string>
+    <string name="limit_rate">ലിമിറ്റ് റേറ്റ്</string>
+    <string name="limit_rate_summary">പരമാവധി ഡൗൺലോഡ് നിരക്ക് (സെക്കൻഡിൽ ബൈറ്റുകളിൽ), ഉദാ. 50K അല്ലെങ്കിൽ 4.2M</string>
+    <string name="aria2_summary">ഡിഫോൾട്ടിന് പകരം aria2c ഡൗൺലോഡർ ഉപയോഗിക്കുക</string>
+    <string name="processing">പ്രോസസ്സിംഗ്</string>
+    <string name="embed_subs_summary">വീഡിയോയിൽ സബ്ടൈറ്റിൽ ചേർക്കുക</string>
+    <string name="embed_thumb">തമ്പ്നെയിൽ ചേർക്കുക</string>
+    <string name="add_chapters">വീഡിയോയിൽ ചാപ്റ്റേഴ്സ് ചേർക്കുക</string>
+    <string name="save_thumb">തമ്പ്നെയിൽ സേവ് ചെയ്യുക</string>
+    <string name="save_thumb_summary">തമ്പ്നെയിൽ ഡൌൺലോഡ് ഫോൾഡറിൽ സേവ് ചെയ്യുക</string>
+    <string name="audio_format">ഓഡിയോ ഫോർമാറ്റ്‌</string>
 </resources>
