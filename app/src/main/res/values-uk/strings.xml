@@ -495,6 +495,6 @@
     <string name="get_data_sync_id">Дані відвідувачів</string>
     <string name="desktop">Робочий стіл</string>
     <string name="url_regex">URL Regex</string>
-    <string name="disable_flat_playlist">Відключити простий плейлист</string>
+    <string name="disable_flat_playlist">Вимкнути плоский плейлист</string>
     <string name="disable_flat_playlist_summary">Не використовуйте --flat-playlist. Повільніше отримання даних, але більш насичений даними</string>
 </resources>
