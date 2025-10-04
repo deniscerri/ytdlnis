@@ -682,7 +682,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             extractorArgs.add("player_client=${playerClients.joinToString(",")}")
         }
 
-        if (poTokens.isNotEmpty()) {
+        if (poTokens.isNotEmpty() && sharedPreferences.getBoolean("use_cookies", false)) {
             extractorArgs.add("po_token=${poTokens.joinToString(",")}")
         }
 
