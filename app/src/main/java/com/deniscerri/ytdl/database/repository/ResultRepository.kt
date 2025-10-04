@@ -17,7 +17,7 @@ import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
-import com.deniscerri.ytdl.util.extractors.YTDLPUtil
+import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

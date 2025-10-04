@@ -12,7 +12,6 @@ import com.google.gson.reflect.TypeToken
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.processNextEventInCurrentThread
 import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
 import java.net.HttpURLConnection

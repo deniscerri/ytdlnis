@@ -195,7 +195,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         }else {
             FileUtil.convertFileSize(cacheSize)
         }
-        clearCache!!.summary = "(${filesize}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${filesize}) "
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 lifecycleScope.launch {
@@ -224,7 +224,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                         }else {
                             FileUtil.convertFileSize(cacheSize)
                         }
-                        clearCache!!.summary = "(${filesize}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${filesize})"
                     }else{
                         Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
                     }
@@ -252,7 +252,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
                         if (list.first().state == WorkInfo.State.SUCCEEDED){
                             cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                            clearCache!!.summary = "(${FileUtil.convertFileSize(cacheSize)}) ${resources.getString(R.string.clear_temporary_files_summary)}"
+                            clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${FileUtil.convertFileSize(cacheSize)})"
                         }
                     }
 

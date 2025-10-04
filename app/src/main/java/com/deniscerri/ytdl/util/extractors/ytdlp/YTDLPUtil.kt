@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.util.extractors
+package com.deniscerri.ytdl.util.extractors.ytdlp
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -32,8 +32,8 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
+import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -111,7 +111,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (query.contains("http")){
             if (query.isYoutubeWatchVideosURL()) {
                 request = YoutubeDLRequest(emptyList())
-                val config = File(context.cacheDir.absolutePath + "/config" + System.currentTimeMillis() + "##url.txt")
+                val config =
+                    File(context.cacheDir.absolutePath + "/config" + System.currentTimeMillis() + "##url.txt")
                 config.writeText(query)
                 request.addOption("--config", config.absolutePath)
             }else{
@@ -182,7 +183,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
             if (playlistTitle.isNotBlank()){
                 playlistURL = jsonObject.getStringByAny("playlist_webpage_url").ifEmpty { query }
-                kotlin.runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
+                runCatching { playlistIndex = jsonObject.getInt("playlist_index") }
             }
             val url = if (jsonObject.has("url") && results.size > 1){
                 jsonObject.getString("url")
@@ -266,7 +267,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
             }
 
-            val res = ResultItem(0,
+            val res = ResultItem(
+                0,
                 url = url,
                 title = title,
                 author = author,
@@ -417,7 +419,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             e.message?.split(System.lineSeparator())?.onEach { line ->
                 println(line)
                 if (line.contains("unavailable")) {
-                    kotlin.runCatching {
+                    runCatching {
                         val id = Regex("""\[.*?\] (\w+):""").find(line)!!.groupValues[1]
                         val url = urls.first { it.contains(id) }
                         progress(
@@ -464,7 +466,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             arrayOf(res.out)
         }
         val json = results[0]
-        val jsonArray = kotlin.runCatching { JSONArray(json) }.getOrElse { JSONArray() }
+        val jsonArray = runCatching { JSONArray(json) }.getOrElse { JSONArray() }
 
         return parseYTDLFormats(jsonArray)
     }
@@ -475,19 +477,19 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (formatsInJSON != null) {
             for (f in formatsInJSON.length() - 1 downTo 0){
                 val format = formatsInJSON.getJSONObject(f)
-                kotlin.runCatching {
+                runCatching {
                     if (format.get("filesize").toString() == "None") {
                         format.remove("filesize")
                     }
                 }
 
-                kotlin.runCatching {
+                runCatching {
                     if (format.get("filesize_approx").toString() == "None") {
                         format.remove("filesize_approx")
                     }
                 }
 
-                kotlin.runCatching {
+                runCatching {
                     if(format.get("format_note").toString() == "null"){
                         format.remove("format_note")
                     }
@@ -686,8 +688,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
         if (useLanguageForMetadata) {
-            val lang = Locale.getDefault().language
-            val langTag = Locale.getDefault().toLanguageTag()
+            val lang = java.util.Locale.getDefault().language
+            val langTag = java.util.Locale.getDefault().toLanguageTag()
             if (context.getStringArray(R.array.subtitle_langs).contains(lang)) {
                 extractorArgs.add("lang=$lang")
             }else if (context.getStringArray(R.array.subtitle_langs).contains(langTag)) {
@@ -709,7 +711,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     private fun YoutubeDLRequest.addConfig(commandString: String) {
         this.addOption(
             "--config-locations",
-            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt").apply {
+            File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${java.util.UUID.randomUUID()}.txt").apply {
                 writeText(commandString)
             }.absolutePath
         )
@@ -956,7 +958,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 var abrSort = ""
 
                 var audioQualityId : String = downloadItem.format.format_id
-                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "", context.getString(R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
+                if (audioQualityId.isBlank() || listOf("0", context.getString(R.string.best_quality), "ba", "best", "", context.getString(
+                        R.string.worst_quality), "wa", "worst").contains(audioQualityId)){
                     audioQualityId = "ba/b"
                 }else if(audioQualityId.contains("kbps_ytdlnisgeneric")){
                     abrSort = audioQualityId.split("kbps")[0]
@@ -1134,7 +1137,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 var cont = ""
                 val outputContainer = downloadItem.container
-                if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(R.string.defaultValue) && supportedContainers.contains(outputContainer)){
+                if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(
+                        R.string.defaultValue) && supportedContainers.contains(outputContainer)){
                     cont = outputContainer
 
                     val cantRecode = listOf("avi")
@@ -1225,7 +1229,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         }
                     }
                 }else{
-                    if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best" || videoF == context.resources.getString(R.string.worst_quality) || videoF == "worst") {
+                    if (videoF == context.resources.getString(R.string.best_quality) || videoF == "best" || videoF == context.resources.getString(
+                            R.string.worst_quality) || videoF == "worst") {
                         videoF = "bv"
                     }else if (defaultFormats.contains(videoF)) {
                         hasGenericResulutionFormat = videoF.split("_")[0].dropLast(1)
@@ -1423,7 +1428,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             val cacheDirArg = """(--cache-dir (".*"))""".toRegex().find(downloadItem.extraCommands)
             if (cacheDirArg != null) {
                 ytDlRequest.addOption("--cache-dir", cacheDirArg.groupValues.last().replace("\"", ""))
-                kotlin.runCatching {
+                runCatching {
                     downloadItem.extraCommands = downloadItem.extraCommands.replace(cacheDirArg.value, "")
                 }
             }
@@ -1437,7 +1442,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val cache = File(FileUtil.getCachePath(context))
         cache.mkdirs()
-        val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
+        val conf =
+            File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
         conf.createNewFile()
         conf.writeText(request.toString())
         val tmp = mutableListOf<String>()

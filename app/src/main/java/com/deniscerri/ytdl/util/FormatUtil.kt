@@ -47,7 +47,7 @@ class FormatUtil(private var context: Context) {
 
             return orderPreferences
         }else {
-            val formatImportance = mutableListOf("id","codec", "container", "language")
+            val formatImportance = mutableListOf("id", "language", "codec", "container")
             if (preferredFormatSize == "smallest") {
                 formatImportance.add("smallsize")
             }else if (preferredFormatSize == "largest") {
@@ -122,13 +122,27 @@ class FormatUtil(private var context: Context) {
 
                         "language" -> {
                             if (audioLanguagePreference.isBlank()) {
-                                0
+                                (b.format_note.contains("default", true)).compareTo(
+                                    a.format_note.contains(
+                                        "default", true
+                                    )
+                                )
+                                //0
                             } else {
-                                (b.lang?.contains(audioLanguagePreference) == true).compareTo(
+                                val res = (b.lang?.contains(audioLanguagePreference) == true).compareTo(
                                     a.lang?.contains(
                                         audioLanguagePreference
                                     ) == true
                                 )
+                                if(res == 0) {
+                                    (b.format_note.contains("default", true)).compareTo(
+                                        a.format_note.contains(
+                                            "default", true
+                                        )
+                                    )
+                                }else {
+                                    res
+                                }
                             }
                         }
 

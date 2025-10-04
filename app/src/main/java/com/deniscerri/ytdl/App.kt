@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
+import com.deniscerri.ytdl.util.extractors.ytdlp.webview.YTDLPWebview
 import com.yausername.aria2c.Aria2c
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
@@ -15,7 +16,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.util.*
 
 
 class App : Application() {
@@ -30,8 +30,10 @@ class App : Application() {
         applicationScope.launch((Dispatchers.IO)) {
             try {
                 createNotificationChannels()
-
                 initLibraries()
+                //init js interp server
+                //val jsServer = YTDLPWebview(this@App, 65953)
+
                 val appVer = sharedPreferences.getString("version", "")!!
                 if(appVer.isEmpty() || appVer != BuildConfig.VERSION_NAME){
                     sharedPreferences.edit(commit = true){

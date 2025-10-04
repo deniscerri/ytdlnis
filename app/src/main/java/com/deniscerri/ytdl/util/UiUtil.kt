@@ -71,7 +71,7 @@ import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.util.extractors.YTDLPUtil
+import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils

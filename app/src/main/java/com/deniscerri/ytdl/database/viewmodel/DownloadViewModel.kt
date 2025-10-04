@@ -41,7 +41,7 @@ import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.util.extractors.YTDLPUtil
+import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker

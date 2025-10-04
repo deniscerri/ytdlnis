@@ -24,7 +24,7 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.util.extractors.YTDLPUtil
+import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
