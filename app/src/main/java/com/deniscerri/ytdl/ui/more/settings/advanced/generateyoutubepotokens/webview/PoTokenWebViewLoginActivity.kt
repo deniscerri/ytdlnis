@@ -150,7 +150,9 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                                     CookieItem(
                                         0,
                                         cookieURL,
-                                        it
+                                        it,
+                                        "",
+                                        true
                                     )
                                 )
                                 cookiesViewModel.updateCookiesFile()

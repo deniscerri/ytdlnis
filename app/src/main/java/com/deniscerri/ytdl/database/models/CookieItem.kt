@@ -8,5 +8,7 @@ data class CookieItem(
     @PrimaryKey(autoGenerate = true)
     var id: Long,
     var url: String,
-    var content: String
+    var content: String,
+    var description: String = "",
+    var enabled: Boolean = true
 )

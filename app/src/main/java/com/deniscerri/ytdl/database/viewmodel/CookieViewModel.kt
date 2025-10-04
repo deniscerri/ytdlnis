@@ -57,8 +57,12 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getByURL(url)
     }
 
+    private fun getByURLDescription(url: String, description: String): CookieItem? {
+        return repository.getByURLDescription(url, description)
+    }
+
     suspend fun insert(item: CookieItem) : Long {
-        val exists = getByURL(item.url)
+        val exists = getByURLDescription(item.url, item.description)
         if (exists != null) {
             exists.content = item.content
             repository.update(exists)
@@ -70,6 +74,11 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
 
     fun delete(item: CookieItem) = viewModelScope.launch(Dispatchers.IO) {
         repository.delete(item)
+        updateCookiesFile()
+    }
+
+    suspend fun changeCookieEnabledState(itemId: Long, isEnabled: Boolean) {
+        repository.changeCookieEnabledState(itemId, isEnabled)
         updateCookiesFile()
     }
 
@@ -141,7 +150,7 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     fun updateCookiesFile() = viewModelScope.launch(Dispatchers.IO) {
-        val cookies = repository.getAll()
+        val cookies = repository.getAllEnabled()
         val cookieTXT = StringBuilder(cookieHeader)
         FileUtil.getCookieFile(application, true){ c ->
             val cookieFile = File(c)
@@ -167,8 +176,10 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
                 clip = clip.removePrefix(cookieHeader)
                 val cookie = CookieItem(
                     0,
+                    "",
+                    clip.toString(),
                     "Cookie Import at [${Date()}]",
-                    clip.toString()
+                    true
                 )
                 insert(cookie)
                 updateCookiesFile()

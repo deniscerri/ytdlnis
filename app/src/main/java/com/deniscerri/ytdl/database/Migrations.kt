@@ -66,6 +66,16 @@ object Migrations {
         Migration(23, 24) { database ->
             //add available subtitles for download item
             database.execSQL("ALTER TABLE downloads ADD COLUMN rowNumber INTEGER NOT NULL DEFAULT 0")
+        },
+
+        //add enabled to cookies
+        Migration(24, 25) { database ->
+            database.execSQL("ALTER TABLE cookies ADD COLUMN enabled INTEGER NOT NULL DEFAULT 1")
+        },
+
+        //add description to cookies
+        Migration(25, 26) { database ->
+            database.execSQL("ALTER TABLE cookies ADD COLUMN description TEXT NOT NULL DEFAULT ''")
         }
     )
 

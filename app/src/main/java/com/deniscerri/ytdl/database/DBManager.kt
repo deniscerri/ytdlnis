@@ -41,7 +41,7 @@ import com.deniscerri.ytdl.database.models.TerminalItem
         TerminalItem::class,
         ObserveSourcesItem::class
    ],
-    version = 24,
+    version = 26,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -66,6 +66,8 @@ import com.deniscerri.ytdl.database.models.TerminalItem
         //AutoMigration(from = 21, to = 22) MANUALLY HANDLED
         //AutoMigration(from = 22, to = 23) MANUALLY HANDLED
         //AutoMigration(from = 23, to = 24) MANUALLY HANDLED
+        //AutoMigration(from = 24, to = 25) MANUALLY HANDLED
+        //AutoMigration(from = 25, to = 26) MANUALLY HANDLED
     ]
 )
 abstract class DBManager : RoomDatabase(){

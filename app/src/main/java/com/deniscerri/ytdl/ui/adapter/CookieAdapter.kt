@@ -13,6 +13,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.materialswitch.MaterialSwitch
 
 class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<CookieItem?, CookieAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -29,40 +30,50 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         val item: MaterialCardView
 
         init {
-            item = itemView.findViewById(R.id.command_card)
+            item = itemView.findViewById(R.id.cookie_card)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val cardView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.command_template_item, parent, false)
+            .inflate(R.layout.cookie_item, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
+        if (item == null) return
         val card = holder.item
         card.popup()
 
         val title = card.findViewById<TextView>(R.id.title)
-        title.text = item?.url
+        title.text = item.description.ifBlank { item.url }
 
         val content = card.findViewById<TextView>(R.id.content)
-        content.text = item?.content
+        content.text = item.content
+
+        val switch = card.findViewById<MaterialSwitch>(R.id.cookieEnabled)
+        switch.isChecked = item.enabled
 
         card.setOnClickListener {
-            onItemClickListener.onItemClick(item!!)
+            onItemClickListener.onItemClick(item, position)
         }
 
         card.setOnLongClickListener {
-            onItemClickListener.onDelete(item!!); true
+            onItemClickListener.onDelete(item); true
+        }
+
+        switch.setOnCheckedChangeListener { _, isEnabled ->
+            onItemClickListener.onItemEnabledChanged(item, isEnabled)
+            true
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(commandTemplate: CookieItem)
-        fun onSelected(commandTemplate: CookieItem)
-        fun onDelete(commandTemplate: CookieItem)
+        fun onItemClick(cookieItem: CookieItem, position: Int)
+        fun onSelected(cookieItem: CookieItem)
+        fun onDelete(cookieItem: CookieItem)
+        fun onItemEnabledChanged(cookieItem: CookieItem, isEnabled: Boolean)
     }
 
     companion object {
@@ -72,7 +83,7 @@ class CookieAdapter(onItemClickListener: OnItemClickListener, activity: Activity
             }
 
             override fun areContentsTheSame(oldItem: CookieItem, newItem: CookieItem): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem.id == newItem.id && oldItem.description == newItem.description
             }
         }
     }

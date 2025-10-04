@@ -44,9 +44,11 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 
@@ -173,16 +175,21 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
         }
     }
 
-    private fun showBottomSheet(item: CookieItem?){
+    private fun showBottomSheet(item: CookieItem?, position: Int = 0){
         lifecycleScope.launch {
             val layout = BottomSheetDialog(requireContext())
             layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
             layout.setContentView(R.layout.cookie_bottom_sheet)
 
-            val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
-            val text = item?.url ?: "https://"
-            editText.setText(text)
-            editText.setSelection(editText.text.length)
+            val urlEditText = layout.findViewById<EditText>(R.id.url_edittext)!!
+            val urlText = item?.url ?: "https://"
+            urlEditText.setText(urlText)
+            urlEditText.setSelection(urlEditText.text.length)
+
+            val descriptionEditText = layout.findViewById<EditText>(R.id.title_edittext)!!
+            descriptionEditText.setText(item?.description ?: "")
+            layout.findViewById<TextInputLayout>(R.id.description_input_layout)?.isVisible = item != null
+
             val current = layout.findViewById<MaterialCardView>(R.id.current)!!
             current.isVisible = item != null
             item?.apply {
@@ -195,12 +202,14 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             }
 
             val clipboard = layout.findViewById<MaterialButton>(R.id.clipboard)!!
-            clipboard.isVisible = item != null
-
+            val save = layout.findViewById<MaterialButton>(R.id.save)!!
+            save.isVisible = item != null
             val getCookies = layout.findViewById<MaterialButton>(R.id.getCookiesBtn)!!
+
             getCookies.setOnClickListener {
                 val myIntent = Intent(requireContext(), WebViewActivity::class.java)
-                myIntent.putExtra("url", editText.text.toString())
+                myIntent.putExtra("url", urlEditText.text.toString())
+                myIntent.putExtra("description", descriptionEditText.text.toString())
                 layout.dismiss()
                 startActivity(myIntent)
             }
@@ -212,16 +221,24 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 }
 
                 getCookies.text = getString(R.string.update)
+
+                save.setOnClickListener {
+                    item.description = descriptionEditText.text.toString()
+                    item.url = urlEditText.text.toString()
+                    cookiesViewModel.update(item)
+                    listAdapter.notifyItemChanged(position)
+                    layout.dismiss()
+                }
             }
 
-            editText.doOnTextChanged { text, start, before, count ->
-                getCookies.isEnabled = editText.text.isNotEmpty()
+            urlEditText.doOnTextChanged { text, start, before, count ->
+                getCookies.isEnabled = urlEditText.text.isNotEmpty()
             }
 
             val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            editText.postDelayed({
-                editText.requestFocus()
-                imm.showSoftInput(editText, 0)
+            urlEditText.postDelayed({
+                urlEditText.requestFocus()
+                imm.showSoftInput(urlEditText, 0)
             }, 300)
 
             layout.show()
@@ -231,24 +248,32 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-            getCookies.isEnabled = editText.text.isNotEmpty()
+            getCookies.isEnabled = urlEditText.text.isNotEmpty()
         }
 
     }
 
-    override fun onItemClick(cookie: CookieItem) {
-        showBottomSheet(cookie)
+    override fun onItemClick(cookieItem: CookieItem, position: Int) {
+        showBottomSheet(cookieItem, position)
     }
 
-    override fun onSelected(cookie: CookieItem) {
+    override fun onSelected(cookieItem: CookieItem) {
     }
 
-    override fun onDelete(cookie: CookieItem) {
+    override fun onItemEnabledChanged(cookieItem: CookieItem, isEnabled: Boolean) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                cookiesViewModel.changeCookieEnabledState(cookieItem.id, isEnabled)
+            }
+        }
+    }
+
+    override fun onDelete(cookieItem: CookieItem) {
         val deleteDialog = MaterialAlertDialogBuilder(requireContext())
-        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + cookie.url + "\"!")
+        deleteDialog.setTitle(getString(R.string.you_are_going_to_delete) + " \"" + cookieItem.url + "\"!")
         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-            cookiesViewModel.delete(cookie)
+            cookiesViewModel.delete(cookieItem)
         }
         deleteDialog.show()
     }

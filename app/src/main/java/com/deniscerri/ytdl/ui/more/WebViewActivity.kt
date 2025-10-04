@@ -40,6 +40,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.hamcrest.Description
 
 
 class WebViewActivity : BaseActivity() {
@@ -50,6 +51,7 @@ class WebViewActivity : BaseActivity() {
     private lateinit var generateBtn: MaterialButton
     private lateinit var cookieManager: CookieManager
     private lateinit var url: String
+    private lateinit var description: String
     private lateinit var cookies: String
     private lateinit var webViewClient: AccompanistWebViewClient
     private lateinit var preferences: SharedPreferences
@@ -61,6 +63,7 @@ class WebViewActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
         url = intent.extras!!.getString("url")!!
+        description = intent.extras!!.getString("description", "")
         incognito = intent.extras!!.getBoolean("incognito", false)
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
@@ -130,7 +133,9 @@ class WebViewActivity : BaseActivity() {
                                     CookieItem(
                                         0,
                                         url,
-                                        it
+                                        it,
+                                        description,
+                                        true
                                     )
                                 )
                                 cookiesViewModel.updateCookiesFile()
