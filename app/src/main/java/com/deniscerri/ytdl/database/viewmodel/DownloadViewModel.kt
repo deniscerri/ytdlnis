@@ -270,6 +270,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
+        val videoEmbedThumb = sharedPreferences.getBoolean("video_embed_thumbnail", false)
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
 
         var type = getDownloadType(givenType, resultItem.url)
@@ -310,7 +311,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             saveAutoSubs,
             subsLanguages,
             audioFormatIDs = preferredAudioFormats,
-            recodeVideo = recodeVideo
+            recodeVideo = recodeVideo,
+            embedThumbnail = videoEmbedThumb
         )
 
         val extraCommands = when(type){

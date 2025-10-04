@@ -644,6 +644,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach { it.videoPreferences.splitByChapters = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
+                                        embedThumbnailClicked = {checked ->
+                                            items.forEach { it.videoPreferences.embedThumbnail = checked }
+                                            CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                        },
                                         saveThumbnailClicked = {checked ->
                                             items.forEach { it.SaveThumb = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }

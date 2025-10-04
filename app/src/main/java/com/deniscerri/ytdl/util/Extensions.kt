@@ -297,9 +297,9 @@ object Extensions {
             val badge = BadgeDrawable.create(context).apply {
                 number = nr
                 backgroundColor = context.getColor(R.color.white)
-                verticalOffset = 25
+                verticalOffset = 30
                 horizontalOffset =
-                    if (nr < 10) dp(App.instance.resources,  17f)
+                    if (nr < 10) dp(App.instance.resources,  16f)
                     else if (nr < 100) dp(App.instance.resources,  19f)
                     else dp(App.instance.resources,  22f)
             }

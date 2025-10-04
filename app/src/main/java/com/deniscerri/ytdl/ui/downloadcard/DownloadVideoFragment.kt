@@ -363,6 +363,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             splitByChaptersClicked = {
                                 downloadItem.videoPreferences.splitByChapters = it
                             },
+                            embedThumbnailClicked = {
+                                downloadItem.videoPreferences.embedThumbnail = it
+                            },
                             saveThumbnailClicked = {
                                 downloadItem.SaveThumb = it
                             },

@@ -1306,6 +1306,7 @@ object UiUtil {
         embedSubsClicked : (Boolean) -> Unit,
         addChaptersClicked: (Boolean) -> Unit,
         splitByChaptersClicked: (Boolean) -> Unit,
+        embedThumbnailClicked: (Boolean) -> Unit,
         saveThumbnailClicked: (Boolean) -> Unit,
         sponsorBlockItemsSet: (values: Array<String>, checkedItems: List<Boolean>) -> Unit,
         cutClicked: (VideoCutListener) -> Unit,
@@ -1325,42 +1326,109 @@ object UiUtil {
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val addChapters = view.findViewById<Chip>(R.id.add_chapters)
-        addChapters!!.isChecked = items.all { it.videoPreferences.addChapters }
-        addChapters.setOnClickListener{
-            addChaptersClicked(addChapters.isChecked)
-        }
-
-        val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)
-        if(items.size == 1 && items[0].downloadSections.isNotBlank()){
-            splitByChapters.isEnabled = false
-            splitByChapters.isChecked = false
-        }else{
-            splitByChapters!!.isChecked = items.all { it.videoPreferences.splitByChapters }
-        }
-        if (splitByChapters.isChecked){
-            items.forEach { it.videoPreferences.addChapters = false }
-            addChapters.isChecked = false
-            addChapters.isEnabled = false
-            addChaptersClicked(false)
-        }
-        splitByChapters.setOnClickListener {
-            if (splitByChapters.isChecked){
-                addChapters.isEnabled = false
-                addChapters.isChecked = false
-                addChaptersClicked(false)
-            }else{
-                addChapters.isEnabled = true
+        val adjustThumbnail = view.findViewById<Chip>(R.id.thumbnail)
+        fun calculateAdjustThumbnailChangeCount() {
+            if (items.size == 1) {
+                val firstItem = items.first()
+                val count = listOf(
+                    firstItem.SaveThumb,
+                    firstItem.videoPreferences.embedThumbnail
+                )
+                adjustThumbnail.createBadge(context, count.filter { it }.size)
             }
-            splitByChaptersClicked(splitByChapters.isChecked)
+        }
+        calculateAdjustThumbnailChangeCount()
+        adjustThumbnail.setOnClickListener {
+            val adjustThumbnailView = context.layoutInflater.inflate(R.layout.video_thumbnail_download_preferences_dialog, null)
+            val embedThumb = adjustThumbnailView.findViewById<MaterialSwitch>(R.id.embed_thumbnail)
+            val saveThumb = adjustThumbnailView.findViewById<MaterialSwitch>(R.id.save_thumbnail)
+
+            embedThumb!!.isChecked = items.all { it.videoPreferences.embedThumbnail }
+            embedThumb.setOnClickListener {
+                embedThumbnailClicked(embedThumb.isChecked)
+                items.forEach { it.videoPreferences.embedThumbnail = embedThumb.isChecked }
+                calculateAdjustThumbnailChangeCount()
+            }
+
+            saveThumb!!.isChecked = items.all { it.SaveThumb }
+            saveThumb.setOnClickListener {
+                saveThumbnailClicked(saveThumb.isChecked)
+                items.forEach { it.SaveThumb = saveThumb.isChecked }
+                calculateAdjustThumbnailChangeCount()
+            }
+
+            val adjustThumbnailDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.thumbnail))
+                .setView(adjustThumbnailView)
+                .setIcon(R.drawable.ic_image)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+            adjustThumbnailDialog.show()
         }
 
-        val saveThumbnail = view.findViewById<Chip>(R.id.save_thumbnail)
-        saveThumbnail!!.isChecked = items.all { it.SaveThumb }
-        saveThumbnail.setOnClickListener {
-            saveThumbnailClicked(saveThumbnail.isChecked)
+
+        val adjustChapters = view.findViewById<Chip>(R.id.chapters)
+        fun calculateAdjustChaptersChangeCount() {
+            if (items.size == 1) {
+                val firstItem = items.first()
+                val count = listOf(
+                    firstItem.videoPreferences.addChapters,
+                    firstItem.videoPreferences.splitByChapters
+                )
+                adjustChapters.createBadge(context, count.filter { it }.size)
+            }
         }
 
+        if(items.size == 1 && items[0].downloadSections.isNotBlank()){
+            items.forEach { it.videoPreferences.splitByChapters = false }
+        }
+
+        calculateAdjustChaptersChangeCount()
+        adjustChapters.setOnClickListener {
+            val adjustChapterView = context.layoutInflater.inflate(R.layout.video_chapter_download_preferences_dialog, null)
+            val addChapters = adjustChapterView.findViewById<MaterialSwitch>(R.id.add_chapters)
+            addChapters!!.isChecked = items.all { it.videoPreferences.addChapters }
+            addChapters.setOnClickListener{
+                addChaptersClicked(addChapters.isChecked)
+                items.forEach { it.videoPreferences.addChapters = addChapters.isChecked }
+                calculateAdjustChaptersChangeCount()
+            }
+
+            val splitByChapters = adjustChapterView.findViewById<MaterialSwitch>(R.id.split_by_chapters)
+            if(items.size == 1 && items[0].downloadSections.isNotBlank()){
+                splitByChapters.isEnabled = false
+                splitByChapters.isChecked = false
+            }else{
+                splitByChapters!!.isChecked = items.all { it.videoPreferences.splitByChapters }
+            }
+            if (splitByChapters.isChecked){
+                items.forEach { it.videoPreferences.addChapters = false }
+                addChaptersClicked(false)
+
+                addChapters.isChecked = false
+                addChapters.isEnabled = false
+            }
+            splitByChapters.setOnClickListener {
+                if (splitByChapters.isChecked){
+                    addChapters.isEnabled = false
+                    addChapters.isChecked = false
+                    items.forEach { it.videoPreferences.addChapters = false }
+                    addChaptersClicked(false)
+                }else{
+                    addChapters.isEnabled = true
+                }
+                splitByChaptersClicked(splitByChapters.isChecked)
+                calculateAdjustChaptersChangeCount()
+            }
+
+            val adjustChapterDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.thumbnail))
+                .setView(adjustChapterView)
+                .setIcon(R.drawable.ic_chapters)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+            adjustChapterDialog.show()
+        }
 
         val adjustSubtitles = view.findViewById<Chip>(R.id.adjust_subtitles)
         fun calculateAdjustSubtitlesChangeCount() {
@@ -1538,6 +1606,13 @@ object UiUtil {
 
 
         val adjustLiveStream = view.findViewById<Chip>(R.id.adjust_live_stream)
+        fun calculateLiveStreamChanges() {
+            if (items.size == 1) {
+                val count = listOf(items.first().videoPreferences.waitForVideoMinutes > 0, items.first().videoPreferences.liveFromStart)
+                adjustLiveStream.createBadge(context, count.filter { it }.size)
+            }
+        }
+        calculateLiveStreamChanges()
         if (items.size == 1) {
             adjustLiveStream.setOnClickListener {
                 val adjustLiveStreamView = context.layoutInflater.inflate(R.layout.livestream_download_preferences_dialog, null)
@@ -1566,6 +1641,8 @@ object UiUtil {
 
                 liveFromStartSwitch.setOnCheckedChangeListener { compoundButton, b ->
                     liveFromStart(b)
+                    items.forEach { it.videoPreferences.liveFromStart = b }
+                    calculateLiveStreamChanges()
                 }
 
                 waitForVideoSwitch.setOnCheckedChangeListener { compoundButton, b ->
@@ -1577,6 +1654,8 @@ object UiUtil {
                     }
 
                     waitForVideo(b, number)
+                    items.forEach { it.videoPreferences.waitForVideoMinutes = if (b) number else 0 }
+                    calculateLiveStreamChanges()
                 }
 
                 liveFromStartSwitch.isChecked = item.videoPreferences.liveFromStart
@@ -1647,33 +1726,22 @@ object UiUtil {
             if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
                 val downloadItem = items[0]
                 cut.alpha = 1f
-                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
+                if (downloadItem.downloadSections.isNotBlank()) cut.createBadge(context, downloadItem.downloadSections.count())
                 val cutVideoListener = object : VideoCutListener {
 
                     override fun onChangeCut(list: List<String>) {
+                        cut.createBadge(context, list.size)
                         if (list.isEmpty()){
                             cutValueChanged("")
-                            cut.text = context.getString(R.string.cut)
-
-                            splitByChapters.isEnabled = true
-                            splitByChapters.isChecked = downloadItem.videoPreferences.splitByChapters
-                            if (splitByChapters.isChecked){
-                                addChapters.isEnabled = false
-                                addChapters.isChecked = false
-                            }else{
-                                addChapters.isEnabled = true
-                            }
                         }else{
                             var value = ""
                             list.forEach {
                                 value += "$it;"
                             }
                             cutValueChanged(value)
-                            cut.text = value.dropLast(1)
 
-                            splitByChapters.isEnabled = false
-                            splitByChapters.isChecked = false
-                            addChapters.isEnabled = true
+                            items.forEach { it.videoPreferences.splitByChapters = false }
+                            calculateAdjustChaptersChangeCount()
                         }
 
                     }
@@ -1856,12 +1924,15 @@ object UiUtil {
             val duration = downloadItem.duration
             if (duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
                 cut.alpha = 1f
-                if (downloadItem.downloadSections.isNotBlank()) cut.text = downloadItem.downloadSections
+                if (downloadItem.downloadSections.isNotBlank()) {
+                    cut.createBadge(context, downloadItem.downloadSections.count())
+                }
                 val cutVideoListener = object : VideoCutListener {
                     override fun onChangeCut(list: List<String>) {
+                        cut.createBadge(context, list.size)
                         if (list.isEmpty()){
                             cutValueChanged("")
-                            cut.text = context.getString(R.string.cut)
+
 
                             splitByChapters.isEnabled = true
                             splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters
@@ -1871,7 +1942,6 @@ object UiUtil {
                                 value += "$it;"
                             }
                             cutValueChanged(value)
-                            cut.text = value.dropLast(1)
 
                             splitByChapters.isEnabled = false
                             splitByChapters.isChecked = false

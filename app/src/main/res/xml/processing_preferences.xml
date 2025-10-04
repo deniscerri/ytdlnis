@@ -214,6 +214,14 @@
             app:summary="@string/save_thumb_summary"
             app:title="@string/save_thumb" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_image"
+            app:key="video_embed_thumbnail"
+            app:summary="@string/embed_thumb_summary"
+            app:title="@string/embed_thumb" />
+
         <ListPreference
             android:defaultValue="jpg"
             android:entries="@array/thumbnail_containers"

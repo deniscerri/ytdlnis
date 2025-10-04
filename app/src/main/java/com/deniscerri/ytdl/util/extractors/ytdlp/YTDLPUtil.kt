@@ -1155,8 +1155,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     }
 
                     if (!listOf("webm", "avi", "flv", "gif").contains(outputContainer.lowercase())) {
-                        val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
-                        if (embedThumb) {
+                        if (downloadItem.videoPreferences.embedThumbnail) {
                             metadataCommands.addOption("--embed-thumbnail")
                             if (!request.toString().contains("--convert-thumbnails")) request.addOption("--convert-thumbnails", thumbnailFormat!!)
                         }
