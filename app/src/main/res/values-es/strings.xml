@@ -11,7 +11,7 @@
     <string name="update_ytdl">Actualiza yt-dl a la última versión</string>
     <string name="about">Acerca de</string>
     <string name="source_code">Código Fuente</string>
-    <string name="search_hint">Buscar o Insertar URL</string>
+    <string name="search_hint">Buscar o insertar URL</string>
     <string name="failed_download">No se pudo descargar el archivo</string>
     <string name="download_notification_channel_name">Descargas de Archivos</string>
     <string name="download_notification_channel_description">Notificación que muestra el progreso de las descargas de archivos de audio y video</string>
@@ -28,11 +28,11 @@
     <string name="update_app">Buscar actualizaciones</string>
     <string name="version">Versión</string>
     <string name="command_directory">Directorio de comandos personalizados</string>
-    <string name="couldnt_find_apk">No se pudo encontrar un instalador APK correcto</string>
+    <string name="couldnt_find_apk">No se encontró un APK compatible</string>
     <string name="downloading_update">Descargando nueva versión</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
-    <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar a la vez</string>
+    <string name="concurrent_fragments_summary">Número de fragmentos de un video DASH/HLS nativo para descargar simultáneamente</string>
     <string name="url">URL</string>
     <string name="new_template">Nueva plantilla</string>
     <string name="adjust_templates">Ajustar plantillas</string>
@@ -61,7 +61,7 @@
     <string name="download">Descargar</string>
     <string name="save_thumb">Guardar miniatura</string>
     <string name="save_thumb_summary">Guarda la miniatura en el directorio de descarga</string>
-    <string name="cancel_task">Cancelar descarga</string>
+    <string name="cancel_task">Cancelar tarea</string>
     <string name="video_quality">Calidad de video</string>
     <string name="video_format">Formato de video</string>
     <string name="audio_quality">Calidad de audio</string>
@@ -70,7 +70,7 @@
     <string name="history_is_empty">El historial está vacío</string>
     <string name="api_key">Utilizar clave API</string>
     <string name="link_copied_to_clipboard">Vínculo copiado al portapapeles</string>
-    <string name="update_app_summary">Notificar nuevas versiones de la aplicación al abrirla. La información se obtiene del repositorio oficial de GitHub</string>
+    <string name="update_app_summary">Notificar sobre nuevas versiones de la aplicación al abrirla. Los datos son extraídos desde el repositorio oficial de GitHub</string>
     <string name="remove_downloading">Cancelar descargas</string>
     <string name="embed_subtitles">Insertar subtítulos</string>
     <string name="add_chapter">Agregar capítulos</string>
@@ -79,12 +79,12 @@
     <string name="title">Título</string>
     <string name="remove_duplicates">Quitar duplicados</string>
     <string name="sort_by">Organizar</string>
-    <string name="configure_download">Ajustar la descarga</string>
+    <string name="configure_download">Configurar descarga</string>
     <string name="incognito_summary">Descargar sin agregar al historial</string>
     <string name="author">Autor</string>
     <string name="Open_File">Abrir archivo</string>
     <string name="warning">Advertencia</string>
-    <string name="show_download_card">Mostrar la tarjeta de descarga</string>
+    <string name="show_download_card">Mostrar tarjeta de descarga</string>
     <string name="download_card_summary">Modifique la configuración de ese elemento antes de descargarlo. Deshabilitar esta opción inicia la descarga inmediatamente</string>
     <string name="delete_file_too">Eliminar el archivo del dispositivo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminación de varios elementos</string>
