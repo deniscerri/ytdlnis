@@ -17,6 +17,7 @@ import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
@@ -36,9 +37,10 @@ class ObserveSourceWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
-        val notificationUtil = NotificationUtil(App.instance)
         val sourceID = inputData.getLong("id", 0)
-        if (sourceID == 0L) return Result.failure()
+        if (sourceID == 0L) return Result.success()
+
+        val notificationUtil = NotificationUtil(App.instance)
         val dbManager = DBManager.getInstance(context)
         val workManager = WorkManager.getInstance(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -46,17 +48,18 @@ class ObserveSourceWorker(
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
-        val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
         val resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, context)
+
+        val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
 
         val item = repo.getByID(sourceID)
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){
-            return Result.failure()
+            return Result.success()
         }
 
         val workerID = System.currentTimeMillis().toInt()
         val notification = notificationUtil.createObserveSourcesNotification(item.name)
-        if (Build.VERSION.SDK_INT > 33) {
+        if (Build.VERSION.SDK_INT >= 33) {
             setForegroundAsync(ForegroundInfo(workerID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(workerID, notification))
@@ -68,7 +71,8 @@ class ObserveSourceWorker(
             Log.e("observe", it.toString())
         }.getOrElse { listOf() }
 
-        if (list.isNotEmpty() && item.syncWithSource && item.alreadyProcessedLinks.isNotEmpty()){
+        //delete downloaded items not present in source if sync is enabled
+        if (item.syncWithSource && item.alreadyProcessedLinks.isNotEmpty()){
             val processedLinks = item.alreadyProcessedLinks
             val incomingLinks = list.map { it.url }
 
@@ -81,37 +85,42 @@ class ObserveSourceWorker(
             }
         }
 
-
-        val res = list
-            .filter { result ->
-                //if first run and get new items only is preferred then dont get anything on first run
-                if (item.getOnlyNewUploads && item.runCount == 0){
-                    item.ignoredLinks.add(result.url)
-                    false
-                }else{
-                    true
-                }
-            }
-            .filter { result ->
-                val history = historyRepo.getAllByURL(result.url)
-
-                !item.ignoredLinks.contains(result.url) &&
-
-                if (item.retryMissingDownloads){
-                    //all items that are not present in history
-                    history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } }
-                }else{
-                    //all items that are not already processed
-                    if(item.alreadyProcessedLinks.isEmpty()){
-                        !history.map { it.url }.contains(result.url)
-                    }else{
-                        !item.alreadyProcessedLinks.contains(result.url)
-                    }
-                }
+        val toProcess = mutableListOf<ResultItem>()
+        //filter what results need to be downloaded, ignored
+        for (result in list) {
+            if (item.ignoredLinks.contains(result.url)) {
+                continue
             }
 
-        val items = mutableListOf<DownloadItem>()
-        res.forEach {
+            // if first run and get only new items, ignore
+            if (item.getOnlyNewUploads && item.runCount == 0) {
+                item.ignoredLinks.add(result.url)
+                continue
+            }
+
+            val history = historyRepo.getAllByURLAndType(result.url, item.downloadItemTemplate.type)
+            //if history is empty or all history items are deleted, add for retry
+            if (item.retryMissingDownloads && (history.isEmpty() || history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } })) {
+                toProcess.add(result)
+                continue
+            }
+
+            if (item.alreadyProcessedLinks.isEmpty()) {
+                if (history.isEmpty()) {
+                    toProcess.add(result)
+                    continue
+                }
+            }
+
+            if (item.alreadyProcessedLinks.contains(result.url)) {
+                continue
+            }
+
+            toProcess.add(result)
+        }
+
+        val downloadItems = mutableListOf<DownloadItem>()
+        toProcess.forEach {
             val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)
             val downloadItem = Gson().fromJson(string, DownloadItem::class.java)
             downloadItem.title = it.title
@@ -125,12 +134,11 @@ class ObserveSourceWorker(
             downloadItem.playlistURL = it.playlistURL
             downloadItem.playlistIndex = it.playlistIndex
             downloadItem.id = 0L
-            items.add(downloadItem)
+            downloadItems.add(downloadItem)
         }
 
 
-        if (items.isNotEmpty()){
-
+        if (downloadItems.isNotEmpty()){
             //QUEUE DOWNLOADS
             //COPY OF QUEUE DOWNLOADS IN DOWNLOAD VIEW MODEL. NEEDS TO BE UPDATED IF THAT IS UPDATED
             val context = App.instance
@@ -146,16 +154,18 @@ class ObserveSourceWorker(
 //                items.forEachIndexed { index, it -> it.playlistTitle = "Various[${index+1}]" }
 //            }
 
-            items.forEach {
+            downloadItems.forEach {
                 it.status = DownloadRepository.Status.Queued.toString()
                 val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
                 val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                 val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
-                    d.id = 0
-                    d.logID = null
-                    d.customFileNameTemplate = it.customFileNameTemplate
-                    d.status = DownloadRepository.Status.Queued.toString()
-                    d.toString() == it.toString()
+                    val normalized = d.copy(
+                        id = 0,
+                        logID = null,
+                        customFileNameTemplate = it.customFileNameTemplate,
+                        status = DownloadRepository.Status.Queued.toString()
+                    )
+                    normalized.toString() == it.toString()
                 }
                 if (existingDownload != null) {
                     it.id = existingDownload.id
@@ -191,14 +201,15 @@ class ObserveSourceWorker(
                 downloadRepo.startDownloadWorker(queuedItems, context)
             }
 
-            item.alreadyProcessedLinks.removeAll(items.map { it.url })
-            item.alreadyProcessedLinks.addAll(items.map { it.url })
+            item.alreadyProcessedLinks.addAll(downloadItems.map { it.url })
         }
 
         item.runCount += 1
-
         val currentTime = System.currentTimeMillis()
-        val isFinished = (item.endsAfterCount > 0 && item.runCount >= item.endsAfterCount) || item.endsDate >= currentTime
+        val isFinished =
+            (item.endsAfterCount > 0 && item.runCount >= item.endsAfterCount) ||
+            (item.endsDate > 0 && currentTime >= item.endsDate)
+
         if (isFinished) {
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED
             withContext(Dispatchers.IO){

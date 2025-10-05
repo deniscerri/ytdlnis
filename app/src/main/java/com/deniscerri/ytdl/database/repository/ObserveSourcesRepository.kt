@@ -11,6 +11,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.dao.ObserveSourcesDao
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
+import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.work.ObserveSourceWorker
 import kotlinx.coroutines.flow.Flow
 import java.util.Calendar

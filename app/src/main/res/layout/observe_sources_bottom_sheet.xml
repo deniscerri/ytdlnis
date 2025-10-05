@@ -224,6 +224,7 @@
                 app:chipSpacingVertical="0dp"
                 android:paddingVertical="5dp"
                 android:paddingHorizontal="10dp"
+                app:selectionRequired="true"
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
@@ -589,6 +590,7 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/resetProcessedLinksConstraint"
                     android:layout_width="match_parent"
                     android:layout_marginTop="10dp"
                     android:layout_height="wrap_content">

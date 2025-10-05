@@ -255,7 +255,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
         _noFreeSpace.emit(null)
         if (size > 10L) {
             File(FileUtil.formatPath(path)).apply {
-                if (size > this.freeSpace) {
+                if (size > this.freeSpace && this.freeSpace >= 10L) {
                     val warningTxt = application.getString(R.string.no_free_space_warning) +
                             "\n" + "${application.getString(R.string.file_size)}:\t${FileUtil.convertFileSize(size)}" +
                             "\n" + "${application.getString(R.string.freespace)}:\t${FileUtil.convertFileSize(this.freeSpace)}"

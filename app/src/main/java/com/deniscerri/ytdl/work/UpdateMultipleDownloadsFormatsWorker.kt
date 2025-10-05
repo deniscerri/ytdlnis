@@ -33,7 +33,7 @@ class UpdateMultipleDownloadsFormatsWorker(
 
         val notification = notificationUtil.createFormatsUpdateNotification()
 
-        if (Build.VERSION.SDK_INT > 33) {
+        if (Build.VERSION.SDK_INT >= 33) {
             setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(workID, notification))

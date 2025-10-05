@@ -9,6 +9,7 @@ import androidx.paging.filter
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.HistoryDao
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,10 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     fun getAllByURL(url: String) : List<HistoryItem> {
         return historyDao.getAllHistoryByURL(url)
+    }
+
+    fun getAllByURLAndType(url: String, type: DownloadViewModel.Type) : List<HistoryItem> {
+        return historyDao.getAllHistoryByURLAndType(url, type)
     }
 
     fun getAllByIDs(ids: List<Long>) : List<HistoryItem> {

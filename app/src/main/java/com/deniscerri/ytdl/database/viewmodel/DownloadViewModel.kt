@@ -1002,11 +1002,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
                         val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                         val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
-                            d.id = 0
-                            d.logID = null
-                            d.customFileNameTemplate = it.customFileNameTemplate
-                            d.status = DownloadRepository.Status.Queued.toString()
-                            d.toString() == it.toString()
+                            val normalized = d.copy(
+                                id = 0,
+                                logID = null,
+                                customFileNameTemplate = it.customFileNameTemplate,
+                                status = DownloadRepository.Status.Queued.toString()
+                            )
+                            normalized.toString() == it.toString()
                         }
 
                         if (existingDownload != null){

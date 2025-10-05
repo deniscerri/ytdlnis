@@ -9,6 +9,7 @@ import androidx.room.Update
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.repository.HistoryRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -82,6 +83,9 @@ interface HistoryDao {
 
     @Query("SELECT * FROM history WHERE url=:url")
     fun getAllHistoryByURL(url: String) : List<HistoryItem>
+
+    @Query("SELECT * FROM history WHERE url=:url and type=:type")
+    fun getAllHistoryByURLAndType(url: String, type: DownloadViewModel.Type) : List<HistoryItem>
 
     @Query("SELECT * FROM history WHERE id in (:ids)")
     fun getAllHistoryByIDs(ids: List<Long>) : List<HistoryItem>

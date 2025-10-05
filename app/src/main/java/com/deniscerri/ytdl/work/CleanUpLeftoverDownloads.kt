@@ -25,7 +25,7 @@ class CleanUpLeftoverDownloads(
         val id = System.currentTimeMillis().toInt()
 
         val notification = notificationUtil.createDeletingLeftoverDownloadsNotification()
-        if (Build.VERSION.SDK_INT > 33) {
+        if (Build.VERSION.SDK_INT >= 33) {
             setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(id, notification))

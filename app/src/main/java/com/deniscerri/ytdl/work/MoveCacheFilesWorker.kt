@@ -41,7 +41,7 @@ class MoveCacheFilesWorker(
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val notification = notificationUtil.createMoveCacheFilesNotification(pendingIntent, NotificationUtil.DOWNLOAD_MISC_CHANNEL_ID)
 
-        if (Build.VERSION.SDK_INT > 33) {
+        if (Build.VERSION.SDK_INT >= 33) {
             setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
         }else{
             setForegroundAsync(ForegroundInfo(id, notification))

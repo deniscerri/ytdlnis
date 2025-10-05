@@ -18,6 +18,7 @@ import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.edit
 import androidx.core.view.children
 import androidx.core.view.isVisible
@@ -53,6 +54,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -471,7 +473,8 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         retryMissingDownloads.isChecked = currentItem?.retryMissingDownloads ?: false
         getOnlyNewUploads.isChecked = currentItem?.getOnlyNewUploads ?: false
         syncWithSource.isChecked = currentItem?.syncWithSource ?: false
-        resetProcessedLinks.isVisible = currentItem != null
+
+        view.findViewById<ConstraintLayout>(R.id.resetProcessedLinksConstraint).isVisible = currentItem != null
 
         if (currentItem != null) okButton.text = getString(R.string.update)
         okButton.setOnClickListener {
@@ -489,7 +492,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                     endsAfterCount = endsAfterNr.editText!!.text.toString().toInt()
                 }
 
-                val category = ObserveSourcesRepository.EveryCategory.values()[categoryAdapter.getPosition(everyCat.text.toString())]
+                val category = ObserveSourcesRepository.EveryCategory.entries[categoryAdapter.getPosition(everyCat.text.toString())]
 
                 val observeItem = ObserveSourcesItem(
                     id = currentItem?.id ?: 0,
