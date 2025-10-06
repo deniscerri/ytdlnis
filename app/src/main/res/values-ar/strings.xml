@@ -39,7 +39,7 @@
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">فصول الفيديو</string>
     <string name="worst_quality">أقل جودة</string>
-    <string name="embed_thumb">الصورة المصغرة غلافًا للصوت</string>
+    <string name="embed_thumb">الصور المصغرة</string>
     <string name="downloading_update">يتم تحميل أحدث إصدار</string>
     <string name="audio">الصوت</string>
     <string name="video">الفيديو</string>
@@ -437,10 +437,10 @@
     <string name="data_fetching_extra_command_summary">فعّل قوالب الأوامر لاستخدامها في جلب البيانات كأوامر إضافية</string>
     <string name="disable_write_info_json">تعطيل كتابة معلومات Json</string>
     <string name="disable_write_info_json_summary">في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم (مكروه).</string>
-    <string name="ytdlp_watch_later">مشاهدة يوتيوب لاحقًا على yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
-    <string name="ytdlp_recommnedations">توصيات يوتيوب الخاصة بـyt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
-    <string name="ytdlp_liked">مقاطع الفيديو المعجب بها على يوتيوب yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
-    <string name="ytdlp_watch_history">سجل مشاهدة اليوتيوب yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_watch_later">المشاهدة لاحقًا الخاصة بيوتيوب على yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_recommnedations">التوصيات الخاصة بيوتيوب على yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_liked">الفيديوهات المعجب بها الخاصة بيوتيوب على yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
+    <string name="ytdlp_watch_history">سجل مشاهدة الخاصة اليوتيوب على yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="no_check_certificates">قمع التحقق من صحة شهادة HTTPS</string>
     <string name="live_from_start">مباشر من البداية</string>
     <string name="wait_for_video">انتظر الفيديو</string>
@@ -452,7 +452,7 @@
     <string name="use_app_language_for_metadata">استخدم لغة التطبيق للبيانات الوصفية</string>
     <string name="layout">التخطيط</string>
     <string name="grid">شبكة</string>
-    <string name="player_client">المشغل العميل</string>
+    <string name="player_client">عميل المشغل</string>
     <string name="list">قائمة</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
     <string name="cache_directory">مجلد الذاكرة المؤقتة</string>
@@ -477,7 +477,7 @@
     <string name="cut_unsupported">القص غير متاح لهذا العنصر</string>
     <string name="select_between_desc">حدد نطاق العناصر المراد تحديدها</string>
     <string name="potoken">رمز PO</string>
-    <string name="web_client_po_token">رمز عيمل الويب PO</string>
+    <string name="web_client_po_token">رمز عميل الويب PO</string>
     <string name="reverse">اعكس</string>
     <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
@@ -497,4 +497,5 @@
     <string name="url_regex">عنوان رابط Regex</string>
     <string name="disable_flat_playlist">عطّل قائمة التشغيل المسطحة</string>
     <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. جلب بيانات أبطأ، ولكنه أكثر ثراءً بالبيانات</string>
+    <string name="chapters">الفصول</string>
 </resources>
