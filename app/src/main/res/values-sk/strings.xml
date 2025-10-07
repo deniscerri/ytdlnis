@@ -188,7 +188,7 @@
     <string name="ignore_battery_optimization">Ignorovať optimalizáciu batérie</string>
     <string name="format">Formát</string>
     <string name="format_filtering_hint">Všetky položky musia byť rovnakého typu pre použitie tejto možnosti</string>
-    <string name="kill_app">Ukončiť aplikáciu</string>
+    <string name="kill_app">Uzavrieť aplikáciu</string>
     <string name="error_updating_formats">Chyba pri aktualizácii formátov!</string>
     <string name="purple">Fialový</string>
     <string name="invert_selected">Invertovať vybrané</string>
@@ -495,4 +495,7 @@
     <string name="get_data_sync_id">Údaje o návštevníkoch</string>
     <string name="desktop">Desktop</string>
     <string name="url_regex">URL Regex</string>
+    <string name="disable_flat_playlist">Vypnúť jednoduchý playlist</string>
+    <string name="disable_flat_playlist_summary">Nepoužívajte --jednoduchý-playlist. Pomalšie načítanie údajov, ale viac informácií</string>
+    <string name="chapters">Kapitoly</string>
 </resources>
