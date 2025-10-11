@@ -492,4 +492,9 @@
     <string name="potoken_player">Token PO (Lettore)</string>
     <string name="potoken_subs">Token PO (Iscrizioni)</string>
     <string name="visitor_data">Dati visitatore</string>
+    <string name="get_data_sync_id">Dati visitatore</string>
+    <string name="desktop">Desktop</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="disable_flat_playlist">Disabilita playlist piatta</string>
+    <string name="chapters">Capitoli</string>
 </resources>

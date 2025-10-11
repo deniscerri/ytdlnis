@@ -45,7 +45,7 @@
     <string name="settings">Innstillinger</string>
     <string name="source_code">Kildekode</string>
     <string name="Remove">Fjern</string>
-    <string name="download_all">Last ned alle</string>
+    <string name="download_all">Last ned alt</string>
     <string name="audio_format">Lydformat</string>
     <string name="video_format">Videoformat</string>
     <string name="video_quality">Videokvalitet</string>
@@ -228,4 +228,10 @@
     <string name="download_over_metered_networks_summary">La nedlasteren arbeide uansett nettverkstype. Venter ellers på nettverk uten kvote for å starte nedlasting</string>
     <string name="update_formats_summary">Auto-søk etter manglende formater når «Format» klikkes</string>
     <string name="material_you">Materiell deig</string>
+    <string name="chapters">Kapitler</string>
+    <string name="search_command_hint">Søk fra kommandoer</string>
+    <string name="orange">Oransje</string>
+    <string name="errored_downloads">Feilet Nedlastinger</string>
+    <string name="errored_download_notification_channel_description">Varsel om feilaktige nedlastinger</string>
+    <string name="quick_download">Rask nedlasting</string>
 </resources>
