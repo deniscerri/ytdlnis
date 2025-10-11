@@ -312,7 +312,7 @@
     <string name="ignore_battery_optimization">Ignorování optimalizace baterie</string>
     <string name="format">Formát</string>
     <string name="format_filtering_hint">Pro použití této možnosti musí být všechny položky stejného typu</string>
-    <string name="kill_app">Ukončení aplikace</string>
+    <string name="kill_app">Uzavření aplikace</string>
     <string name="length">Délka</string>
     <string name="incognito_summary">Stahování bez přidání do historie</string>
     <string name="error_updating_formats">Chyba aktualizace formátů!</string>
@@ -487,4 +487,15 @@
     <string name="preferred_format_size">Preferovaná velikost formátu</string>
     <string name="smallest">Nejmenší</string>
     <string name="largest">Největší</string>
+    <string name="no_prefer_drc_audio">Neupřednostňovat DRC Audio</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (Přehrávač)</string>
+    <string name="potoken_subs">PO Token (Titulky)</string>
+    <string name="visitor_data">Data o návštěvnících</string>
+    <string name="get_data_sync_id">Data návštěvníků</string>
+    <string name="desktop">Desktop</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="disable_flat_playlist">Vypnout jednoduchý playlist</string>
+    <string name="disable_flat_playlist_summary">Nepoužívejte --jednoduchý-playlist. Pomalejší načítání dat, ale bohatší obsah</string>
+    <string name="chapters">Kapitoly</string>
 </resources>

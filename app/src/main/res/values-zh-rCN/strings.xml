@@ -496,4 +496,5 @@
     <string name="url_regex">URL 正则表达式</string>
     <string name="disable_flat_playlist">禁用 flat 播放列表</string>
     <string name="disable_flat_playlist_summary">不使用 --flat-playlist。这样做获取数据速度会变慢，但数据会更丰富</string>
+    <string name="chapters">章节</string>
 </resources>
