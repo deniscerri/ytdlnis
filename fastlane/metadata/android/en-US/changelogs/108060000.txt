@@ -1,20 +1,11 @@
 # What's Changed
 
-## Upgraded dependencies
-
-Python 3.12.11
-FFmpeg 7.1.1
-16kb page size support
-
-## Changes:
-
 - Fix app sometimes giving you dubbed audio format instead of original audio
 - Fix app crashing sometimes when pasting a link to terminal, also btw u can enable color highlight if disabled, wont crash the app i guess
 - Make sponsorblock preference clear by default
 - For playlists app now uses --lazy-playlist to load large playlists continuously in pages like newpipe does, its faster
 - Enable / Disable certain cookie records instead of all at once
 - Add option to write cookie description or label
-- Add VORBIS to audio containers
 - Add GIF to video containers
 - Don't apply sponsorblock api url if sponsorblock is disabled
 - Add --no-check-certificates command when aria2 is applied

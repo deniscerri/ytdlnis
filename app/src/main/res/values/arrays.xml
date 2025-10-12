@@ -8,7 +8,6 @@
         <item>flac</item>
         <item>opus</item>
         <item>wav</item>
-        <item>vorbis</item>
     </string-array>
 
     <string-array name="audio_containers_values">
@@ -20,7 +19,6 @@
         <item>flac</item>
         <item>opus</item>
         <item>wav</item>
-        <item>vorbis</item>
     </string-array>
 
     <string-array name="video_containers">
