@@ -2,7 +2,6 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://dl.bintray.com/kodein-framework/Kodein-DI" }
@@ -12,7 +11,6 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url "https://dl.bintray.com/kodein-framework/Kodein-DI" }

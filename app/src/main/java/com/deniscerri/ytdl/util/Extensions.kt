@@ -290,6 +290,14 @@ object Extensions {
         animator.start()
     }
 
+    fun dpToPx(resources: Resources, dp: Float): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            resources.displayMetrics
+        ).toInt()
+    }
+
     @OptIn(ExperimentalBadgeUtils::class)
     fun Chip.createBadge(context: Context, nr: Int) {
         this.overlay.clear()
@@ -297,11 +305,11 @@ object Extensions {
             val badge = BadgeDrawable.create(context).apply {
                 number = nr
                 backgroundColor = context.getColor(R.color.white)
-                verticalOffset = 25
+                verticalOffset = dpToPx(context.resources, 20f)
                 horizontalOffset =
-                    if (nr < 10) dp(App.instance.resources,  16f)
-                    else if (nr < 100) dp(App.instance.resources,  19f)
-                    else dp(App.instance.resources,  22f)
+                    if (nr < 10) dpToPx(context.resources, 16f)
+                    else if (nr < 100) dpToPx(context.resources, 19f)
+                    else dpToPx(context.resources, 22f)
             }
             BadgeUtils.attachBadgeDrawable(badge, this)
         }

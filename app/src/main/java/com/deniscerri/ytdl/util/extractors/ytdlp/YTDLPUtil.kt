@@ -141,6 +141,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.addOption("--lazy-playlist")
         request.addOption(if (singleItem) "-J" else "-j")
         request.applyDefaultOptionsForFetchingData(if (query.isURL()) query else null)
+        val usePlaylistOriginalURL = sharedPreferences.getBoolean("use_original_url_playlist", false)
 
         val finalResults = mutableListOf<ResultItem>()
         var postedProgress = false
@@ -148,6 +149,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             runCatching {
                 val generatedResults = parseYTDLPListResults(listOf(line))
                 if (generatedResults.isNotEmpty()) {
+
+                    generatedResults.forEach {
+                        if (!it.playlistURL.isNullOrBlank() && usePlaylistOriginalURL) {
+                            it.playlistURL = query
+                        }
+                    }
+
                     finalResults.addAll(generatedResults)
                     if (!postedProgress) {
                         if (finalResults.size > 1) {

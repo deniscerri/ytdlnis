@@ -1677,7 +1677,7 @@ object UiUtil {
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
         sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
         if (items.size == 1 && sponsorBlock.isEnabled) {
-            sponsorBlock.createBadge(context, items.first().videoPreferences.sponsorBlockFilters.size)
+            sponsorBlock.createBadge(context, items.first().videoPreferences.sponsorBlockFilters.filter { it.isNotBlank() }.size)
         }
         sponsorBlock!!.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(context)
@@ -1875,7 +1875,7 @@ object UiUtil {
         val sponsorBlock = view.findViewById<Chip>(R.id.sponsorblock_filters)
         sponsorBlock.isEnabled = sharedPreferences.getBoolean("use_sponsorblock", true)
         if (items.size == 1 && sponsorBlock.isEnabled) {
-            sponsorBlock.createBadge(context, items.first().videoPreferences.sponsorBlockFilters.size)
+            sponsorBlock.createBadge(context, items.first().audioPreferences.sponsorBlockFilters.filter { it.isNotBlank() }.size)
         }
         sponsorBlock!!.setOnClickListener {
             val builder = MaterialAlertDialogBuilder(context)

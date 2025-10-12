@@ -91,6 +91,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             generateBtn = toolbar.findViewById(R.id.generate)
             webViewCompose = findViewById(R.id.webview_compose)
             cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookies(null)
+            cookieManager.flush()
 
             preferences = PreferenceManager.getDefaultSharedPreferences(this@PoTokenWebViewLoginActivity)
             preferences.edit().putString("genenerate_youtube_po_token_preferred_url", url).apply()

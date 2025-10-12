@@ -86,6 +86,14 @@
             android:key="no_flat_playlist"
             android:summary="@string/disable_flat_playlist_summary"
             android:title="@string/disable_flat_playlist" />
+
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            android:icon="@drawable/ic_lines"
+            android:key="use_original_url_playlist"
+            android:summary="@string/use_original_url_playlist_summary"
+            android:title="@string/use_original_url_playlist" />
     </PreferenceCategory>
 
     <Preference

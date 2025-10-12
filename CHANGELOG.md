@@ -1,5 +1,50 @@
 # YTDLnis Changelog
 
+> # 1.8.6 (2025-10)
+
+# What's Changed
+
+## Upgraded dependencies
+
+Python 3.12.11
+FFmpeg 7.1.1
+16kb page size support
+
+## Changes:
+
+- Fix app sometimes giving you dubbed audio format instead of original audio
+- Fix app crashing sometimes when pasting a link to terminal, also btw u can enable color highlight if disabled, wont crash the app i guess
+- Make sponsorblock preference clear by default
+- For playlists app now uses --lazy-playlist to load large playlists continuously in pages like newpipe does, its faster
+- Enable / Disable certain cookie records instead of all at once
+- Add option to write cookie description or label
+- Add VORBIS to audio containers
+- Add GIF to video containers
+- Don't apply sponsorblock api url if sponsorblock is disabled
+- Add --no-check-certificates command when aria2 is applied
+- Add embed thumbnail toggle in adjust video chips
+- Some video chips are combined into one with hidden dialog menu when clicked to save space
+- Add badges on the adjust audio/video chips with hidden menus so u can know how many settings are active on each of them
+- Don't apply generated po tokens when cookies are disabled
+- remove data sync id fetch from normal cookies webview, only in po token webview
+- Add filename template selection in the terminal screen
+- Add toggle to not prefer DRC Audio formats
+- Add ability to long press the terminate button to show the warning dialog even if u checked to not show it
+- Add warning in the download card if selected format is too big (if format size is known, also this is an approximate as format size could change in the final file)
+- Removed prefer smallest formats preference and instead u can select if u prefer small formats or large size formats
+- fix app deleting custom cache folder when clearing temporary data
+- apply proper autonumber metadata for each item when downloading multiple items
+- add ability to remove file from mediastore when deleting file
+- fix app crashing when sometimes yt-dlp results subtitles as null instead of an array
+- Other small details and changes i forgot to note idk
+
+## Advanced changes
+
+- Added toggle to disable --flat-playlist when data fetching
+- Add Subs PO Token support when generating po token
+- PO Token generation now has two modes, Auth and Non Auth
+- Added toggle to use the url user gave to the app as playlist url instead of the playlist_webpage_url tag from the json dump
+
 > # 1.8.5 (2025-07)
 
 # What's Changed

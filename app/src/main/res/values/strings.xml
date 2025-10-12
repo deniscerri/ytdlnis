@@ -500,4 +500,6 @@
     <string name="disable_flat_playlist">Disable flat playlist</string>
     <string name="disable_flat_playlist_summary">Don\'t use --flat-playlist. Slower data fetching, but more data rich</string>
     <string name="chapters">Chapters</string>
+    <string name="use_original_url_playlist">Use original url for playlist url</string>
+    <string name="use_original_url_playlist_summary">Use playlist url given by user instead of the playlist_webpage_url tag from the json dump</string>
 </resources>
