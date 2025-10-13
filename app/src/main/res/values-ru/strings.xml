@@ -492,10 +492,12 @@
     <string name="potoken_player">PO токен (Player)</string>
     <string name="potoken_subs">PO токен (Subs)</string>
     <string name="visitor_data">Данные посетителей</string>
-    <string name="get_data_sync_id">Данные посетителей</string>
+    <string name="get_data_sync_id">Получить идентификатор синхронизации данных</string>
     <string name="desktop">Рабочий стол</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Отключить плоский плейлист</string>
     <string name="disable_flat_playlist_summary">Не используйте --flat-playlist. Медленнее загрузка данных, но больше данных</string>
     <string name="chapters">Главы</string>
+    <string name="use_original_url_playlist">Использовать исходный URL для URL-адреса плейлиста</string>
+    <string name="use_original_url_playlist_summary">Используйте URL-адрес списка воспроизведения, указанный пользователем, вместо тега playlist_webpage_url из дампа json</string>
 </resources>
