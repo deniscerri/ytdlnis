@@ -492,10 +492,12 @@
     <string name="potoken_player">PO Token (Oynadıcı)</string>
     <string name="potoken_subs">PO Token (Titrlər)</string>
     <string name="visitor_data">Visitor Data</string>
-    <string name="get_data_sync_id">Visitor Data</string>
+    <string name="get_data_sync_id">Data Sync ID Əldə et</string>
     <string name="desktop">Masaüstü</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Düz pleylisti qapat</string>
     <string name="disable_flat_playlist_summary">--flat-playlist istifadə etməyin. Daha yavaş məlumat əldə edilir, lakin daha çox məlumat var</string>
     <string name="chapters">Bölümlər</string>
+    <string name="use_original_url_playlist">Pleylist url üçün orijinal url istifadə et</string>
+    <string name="use_original_url_playlist_summary">json dump-dan playlist_webpage_url etiketi əvəzinə istifadəçi tərəfindən verilən pleylist url-dan istifadə et</string>
 </resources>
