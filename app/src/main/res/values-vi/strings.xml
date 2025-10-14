@@ -226,7 +226,7 @@
     <string name="restore">Khôi phục</string>
     <string name="appearance">Giao diện</string>
     <string name="custom_audio_quality">Dùng chất lượng âm thanh tuỳ chỉnh</string>
-    <string name="material_you">Cá nhân hoá</string>
+    <string name="material_you">Material You</string>
     <string name="search_suggestions">Gợi ý tìm kiếm</string>
     <string name="resume">Tiếp tục</string>
     <string name="finished_download_notification_channel_description">Thông báo khi đã hoàn tất tải xuống</string>
@@ -242,7 +242,7 @@
     <string name="updating_download_data">Đang cập nhật dữ liệu mục tải xuống</string>
     <string name="swipe_gestures_summary">Vuốt các mục cho một số hành động nhất định</string>
     <string name="backup">Sao lưu</string>
-    <string name="backup_created_successfully">Đã lưu tệp sao lưu thành công!</string>
+    <string name="backup_created_successfully">Đã lưu tệp sao lưu thành công</string>
     <string name="downloaded">"Đã tải xuống: "</string>
     <string name="cache_first">Tải bộ nhớ đệm trước</string>
     <string name="undo">Hoàn tác</string>
@@ -481,4 +481,13 @@
     <string name="reverse">Đảo ngược</string>
     <string name="no_keep_subs">Xoá tệp phụ đề sau khi nhúng</string>
     <string name="no_keep_subs_summary">Khi dùng cả Phụ đề nhúng và Ghi phụ đề, không giữ các tệp phụ đề sau khi nhúng</string>
+    <string name="video_compatible">Video tương thích</string>
+    <string name="video_compatible_summary">Mã hóa lại video để tương thích với các ứng dụng khác</string>
+    <string name="no_free_space_warning">Không còn dung lượng trống cho cấu hình này.</string>
+    <string name="preferred_format_size">Kích thước định dạng ưa tiên</string>
+    <string name="smallest">Bé nhất</string>
+    <string name="largest">Lớn nhất</string>
+    <string name="no_prefer_drc_audio">Không dùng âm thanh DRC</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (Trình phát)</string>
 </resources>
