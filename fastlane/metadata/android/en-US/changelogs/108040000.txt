@@ -1,19 +1,9 @@
 # What's Changed
-
-
 ## Added ability to set custom url for home recommendations
-
-You can technically set anything like this and yt-dlp will process it just as how it can if you search it in the home screen.
-
 ## Formats list screen is reworked. Now it will open instantly and wont be prone to crashes and lag
 
 - Fixed app not continuously starting queued items
 - Fixed app not properly cancelling all downloads when cancel all is pressed
 - Fixed app not properly showing yt-dlp version sometimes in updating settings
 - Fixed app crashing sometimes when restoring settings with po token config
-- Added get data sync id in the po token webview screen
-- Added ability to set a custom youtube url when generating po tokens
-- Fixed container in observe sources item not saving if its chosen as "Default"
-- Prevented --no-cache-dir even though user set --cache-dir in extra commands
-- Fixed bottom app bar in multiple download card not showing properly when using old navigation bar
-- Other small visual bug fixes
+and more
