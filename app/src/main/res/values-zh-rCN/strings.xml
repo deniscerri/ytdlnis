@@ -491,10 +491,12 @@
     <string name="potoken_player">PO 令牌 （播放器）</string>
     <string name="potoken_subs">PO 令牌 （字幕）</string>
     <string name="visitor_data">访问者数据</string>
-    <string name="get_data_sync_id">访问者数据</string>
+    <string name="get_data_sync_id">获取数据同步 ID</string>
     <string name="desktop">桌面</string>
     <string name="url_regex">URL 正则表达式</string>
     <string name="disable_flat_playlist">禁用 flat 播放列表</string>
     <string name="disable_flat_playlist_summary">不使用 --flat-playlist。这样做获取数据速度会变慢，但数据会更丰富</string>
     <string name="chapters">章节</string>
+    <string name="use_original_url_playlist">播放列表url 使用原始 url</string>
+    <string name="use_original_url_playlist_summary">使用用户给予的播放列表 url 而非来自 json 转储的 playlist_webpage_url 标签</string>
 </resources>

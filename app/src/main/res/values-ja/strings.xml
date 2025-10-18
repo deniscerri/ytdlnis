@@ -497,4 +497,5 @@
     <string name="url_regex">URL 正規表現</string>
     <string name="disable_flat_playlist_summary">--flat-playlist を使用しない。データ取得は遅くなるが、より豊富なデータが得られます。</string>
     <string name="disable_flat_playlist">flat playlist を無効</string>
+    <string name="chapters">章</string>
 </resources>

@@ -153,7 +153,7 @@
     <string name="orange">Оранжев</string>
     <string name="monochrome">Монохромен</string>
     <string name="downloaded">"Изтеглено: "</string>
-    <string name="material_you">Material_you</string>
+    <string name="material_you">Material You</string>
     <string name="updating_download_data">Актуализиране на информацията за изтегляне</string>
     <string name="keep_cache">Запазете кеш-а</string>
     <string name="backup">Архивиране</string>
@@ -281,7 +281,7 @@
     <string name="sponsorblock">Блокира спонсори (SponsorBlock)</string>
     <string name="search_history">История на търсения</string>
     <string name="couldnt_parse_file">Файлът не може да бъде анализиран</string>
-    <string name="backup_created_successfully">Файлът с резервно копие е запазен!</string>
+    <string name="backup_created_successfully">Файлът с резервно копие е запазен</string>
     <string name="appearance">Външен вид на YTDLnis</string>
     <string name="backup_restore">Архивиране и възстановяване</string>
     <string name="socks5_proxy">URL Socks5-прокси</string>
@@ -477,4 +477,22 @@
     <string name="select_between_desc">Посочете диапазона от елементи за избор</string>
     <string name="potoken">PO Токен</string>
     <string name="web_client_po_token">Уеб -Клиент PO Токен</string>
+    <string name="no_keep_subs">Изтриване на файлове със субтитри след вграждане</string>
+    <string name="no_keep_subs_summary">Когато използвате „Вграждане на субтитри“ и „Записване на субтитри“, не запазвайте файловете със субтитри след вграждане</string>
+    <string name="video_compatible">Съвместимо видео</string>
+    <string name="video_compatible_summary">Прекодира видеото, което го прави съвместимо с други приложения</string>
+    <string name="no_free_space_warning">Няма свободно място за тази конфигурация.</string>
+    <string name="preferred_format_size">Предпочитан размер на формата</string>
+    <string name="smallest">Най-малкият</string>
+    <string name="largest">Най-големият</string>
+    <string name="no_prefer_drc_audio">Не предпочитане DRC Audio</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (Плеър)</string>
+    <string name="visitor_data">PO Token (Subs)</string>
+    <string name="get_data_sync_id">Получава идентификатор за синхронизация на данни</string>
+    <string name="desktop">Desktop</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="chapters">Глави</string>
+    <string name="use_original_url_playlist">Използвайте оригиналния URL адрес за URL адрес на плейлиста</string>
+    <string name="use_original_url_playlist_summary">Използвайте URL адреса на плейлиста, предоставен от потребителя, вместо тага playlist_webpage_url от JSON дъмпа</string>
 </resources>

@@ -492,10 +492,12 @@
     <string name="potoken_player">PO Token (Přehrávač)</string>
     <string name="potoken_subs">PO Token (Titulky)</string>
     <string name="visitor_data">Data o návštěvnících</string>
-    <string name="get_data_sync_id">Data návštěvníků</string>
+    <string name="get_data_sync_id">Získat ID synchronizace dat</string>
     <string name="desktop">Desktop</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Vypnout jednoduchý playlist</string>
     <string name="disable_flat_playlist_summary">Nepoužívejte --jednoduchý-playlist. Pomalejší načítání dat, ale bohatší obsah</string>
     <string name="chapters">Kapitoly</string>
+    <string name="use_original_url_playlist">Použít původní URL pro URL playlistu</string>
+    <string name="use_original_url_playlist_summary">Použije adresu URL playlistu zadanou uživatelem namísto tagu playlist_webpage_url z výpisu json</string>
 </resources>
