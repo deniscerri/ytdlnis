@@ -32,7 +32,7 @@
     <string name="embed_subs_summary">ভিডিওতে সাবটাইটেল যোগ করুন</string>
     <string name="embed_thumb">থাম্বনেইল কভার</string>
     <string name="embed_thumb_summary">কভার আর্ট হিসাবে থাম্বনেইল ব্যবহার করুন</string>
-    <string name="add_chapters">ভিডিওতে অধ্যায়</string>
+    <string name="add_chapters">ভিডিওতে অংশ</string>
     <string name="save_thumb">থাম্বনেইল সেভ করুন</string>
     <string name="video_format">ভিডিও ফরম্যাট</string>
     <string name="audio_quality">অডিও কোয়ালিটি</string>
@@ -46,10 +46,10 @@
     <string name="link_copied_to_clipboard">লিংক ক্লিপবোর্ডে কপি হয়েছে</string>
     <string name="api_key">API key ব্যবহার করুন</string>
     <string name="api_key_summary">YouTube API থেকে রেকমেন্ডেড ভিডিও</string>
-    <string name="update_app_summary">অ্যাপ চালু হলেই যদি কোনো নতুন ভার্সন থাকে, আপনাকে জানিয়ে দেওয়া হবে। এই তথ্য সরাসরি নেওয়া হয় অফিসিয়াল GitHub রিপোজিটরি থেকে</string>
+    <string name="update_app_summary">যদি কোনো নতুন ভার্সন থাকে তাইলে অ্যাপ চালু হলেই আপনাকে জানিয়ে দেওয়া হবে। এই তথ্য সরাসরি নেওয়া হয় অফিসিয়াল GitHub রিপোজিটরি থেকে</string>
     <string name="downloads">ডাউনলোডসমূহ</string>
     <string name="remove_deleted">ডিলেট হওয়া গুলো মুছে ফেলুন</string>
-    <string name="remove_duplicates">সাদৃশ্যগুলো অপসারণ</string>
+    <string name="remove_duplicates">ডুবলিকেট গুলো অপসারণ</string>
     <string name="sort_by">শ্রেণীবিভাজন</string>
     <string name="remove_downloading">ডাউনলোডগুলো বাতিল করুন</string>
     <string name="incognito_summary">ইতিহাসে যোগ না করে ডাউনলোড করুন</string>

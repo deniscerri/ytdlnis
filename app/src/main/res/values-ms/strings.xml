@@ -248,4 +248,18 @@
     <string name="dark">Gelap</string>
     <string name="light">Cahaya</string>
     <string name="quality">Kualiti</string>
+    <string name="system">Tetapan</string>
+    <string name="pure_theme_summary">Tema Hitam / Putih Tulen</string>
+    <string name="material_you">Bahan Anda</string>
+    <string name="blue">Biru</string>
+    <string name="red">Merah</string>
+    <string name="green">Hijau</string>
+    <string name="purple">Ungu</string>
+    <string name="yellow">Kuning</string>
+    <string name="orange">Jingga</string>
+    <string name="monochrome">Monokrom</string>
+    <string name="downloaded">"Dimuat turun: "</string>
+    <string name="finished_download_notification_channel_name">Muat Turun Selesai</string>
+    <string name="finished_download_notification_channel_description">Notifikasi untuk muat turun selesai</string>
+    <string name="quick_download">Muat turun pantas</string>
 </resources>
