@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search">Пошук</string>
+    <string name="search">Введіть заголовок/опис</string>
     <string name="more">Більше</string>
     <string name="url">URL</string>
     <string name="errored">Помилки</string>
     <string name="concurrent_fragments">Паралельні фрагменти</string>
-    <string name="worst_quality">Найгірша якість</string>
+    <string name="worst_quality">Висока якість</string>
     <string name="best_quality">Найкраща якість</string>
     <string name="remove_results">Очистити результати</string>
-    <string name="remove_all">Видалити все</string>
+    <string name="remove_all">Вилучити усі</string>
     <string name="directories">Папки</string>
-    <string name="home">Головна</string>
-    <string name="download_all">Завантажити все</string>
-    <string name="settings">Налаштування</string>
+    <string name="home">До домашньої сторінки</string>
+    <string name="download_all">Завантажити усі</string>
+    <string name="settings">Параметри</string>
     <string name="music_directory">Аудіо папка</string>
     <string name="video_directory">Відео папка</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
