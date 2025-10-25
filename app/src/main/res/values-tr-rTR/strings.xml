@@ -308,7 +308,7 @@
     <string name="sponsorblock_api_url">SponsorBlock API URL\'si</string>
     <string name="loading">Yükleniyor</string>
     <string name="export_file">Dosyayı dışa aktar</string>
-    <string name="schedule">Program</string>
+    <string name="schedule">Zamanla</string>
     <string name="update_ytdl_master">yt-dlp\'nin ana sürümü</string>
     <string name="user_agent_header">Kullanıcı-Aracı başlığı</string>
     <string name="search_command_hint">Komutlarda ara</string>
@@ -500,6 +500,6 @@
     <string name="disable_flat_playlist">Düz çalma listesini devre dışı bırak</string>
     <string name="disable_flat_playlist_summary">--flat-playlist kullanma. Veri alımı daha yavaş, ancak daha zengin veri</string>
     <string name="chapters">Bölümler</string>
-    <string name="use_original_url_playlist">Çalma listesi URL için orijinal URL\'yi kullan</string>
+    <string name="use_original_url_playlist">Çalma listesi URL\'si için orijinal URL\'yi kullan</string>
     <string name="use_original_url_playlist_summary">JSON dökümündeki playlist_webpage_url etiketi yerine kullanıcı tarafından verilen çalma listesi URL\'sini kullan</string>
 </resources>
