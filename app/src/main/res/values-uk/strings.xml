@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="search">Пошук</string>
+    <string name="search">Введіть заголовок/опис</string>
     <string name="more">Більше</string>
     <string name="url">URL</string>
     <string name="errored">Помилки</string>
     <string name="concurrent_fragments">Паралельні фрагменти</string>
-    <string name="worst_quality">Найгірша якість</string>
+    <string name="worst_quality">Висока якість</string>
     <string name="best_quality">Найкраща якість</string>
     <string name="remove_results">Очистити результати</string>
-    <string name="remove_all">Видалити все</string>
+    <string name="remove_all">Вилучити усі</string>
     <string name="directories">Папки</string>
-    <string name="home">Головна</string>
-    <string name="download_all">Завантажити все</string>
-    <string name="settings">Налаштування</string>
+    <string name="home">До домашньої сторінки</string>
+    <string name="download_all">Завантажити усі</string>
+    <string name="settings">Параметри</string>
     <string name="music_directory">Аудіо папка</string>
     <string name="video_directory">Відео папка</string>
     <string name="search_hint">Пошук або вставка URL-адреси</string>
@@ -492,9 +492,12 @@
     <string name="potoken_player">PO токен (Player)</string>
     <string name="potoken_subs">PO токен (Subs)</string>
     <string name="visitor_data">Дані відвідувачів</string>
-    <string name="get_data_sync_id">Дані відвідувачів</string>
+    <string name="get_data_sync_id">Отримати ідентифікатор синхронізації даних</string>
     <string name="desktop">Робочий стіл</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Вимкнути плоский плейлист</string>
     <string name="disable_flat_playlist_summary">Не використовуйте --flat-playlist. Повільніше отримання даних, але більш насичений даними</string>
+    <string name="chapters">Розділи</string>
+    <string name="use_original_url_playlist">Використовувати оригінальну URL-адресу для URL-адреси списку відтворення</string>
+    <string name="use_original_url_playlist_summary">Використовуваии URL-адресу списку відтворення, надану користувачем, замість тегу playlist_webpage_url зі скидання JSON</string>
 </resources>

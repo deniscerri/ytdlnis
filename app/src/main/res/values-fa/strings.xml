@@ -389,4 +389,5 @@
     <string name="other_youtube_extractor_args">سایر استدلال‌های استخراج یوتیوب</string>
     <string name="items">مورد(ها)</string>
     <string name="socket_timeout">زمان انقضای سوکت</string>
+    <string name="use_original_url_playlist_summary">استفاده از آدرس لیست پخش ارائه شده توسط کاربر به جای تگ playlist_webpage_url از json dump</string>
 </resources>

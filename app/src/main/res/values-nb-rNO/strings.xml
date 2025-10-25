@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="directories">Mapper</string>
-    <string name="music_directory">Musikkmappe</string>
+    <string name="music_directory">Lydmappe</string>
     <string name="video_directory">Videomappe</string>
-    <string name="ytdl_update_hint">Nyttig hvis du har nedlastingsproblemer</string>
+    <string name="ytdl_update_hint">Nyttig mens du laster ned oppdateringer</string>
     <string name="update_ytdl">Installer ny versjon av yt-dlp</string>
     <string name="failed_download">Kunne ikke laste ned filen</string>
     <string name="download_notification_channel_name">Filnedlastinger</string>
     <string name="ytld_update_success">Ny versjon installert</string>
     <string name="cancel">Avbryt</string>
-    <string name="no_results">Resultatløst</string>
+    <string name="no_results">Ingen resultater</string>
     <string name="more">Mer</string>
     <string name="confirm_delete_history_desc">Slett hele historikken for godt.</string>
     <string name="update_app">Se etter nye versjoner av programmet</string>
@@ -18,7 +18,7 @@
     <string name="downloading_update">Laster ned ny versjon …</string>
     <string name="aria2_summary">Bruk aria2c som nedlaster (istedenfor forvalget)</string>
     <string name="concurrent_fragments">Parallell nedlasting</string>
-    <string name="processing">Behandling</string>
+    <string name="processing">Behandler</string>
     <string name="add_chapters">Kapitler i videoer</string>
     <string name="add_chapters_summary">Marker YouTube/SponsorBlock-segmenter som kapitler for videoen</string>
     <string name="embed_thumb">Miniatyrbildeomslag</string>
@@ -79,12 +79,12 @@
     <string name="updating">Oppdatering</string>
     <string name="download_notification_channel_description">Merknad som viser nedlastingsframdrift for lyd- og videofiler</string>
     <string name="concurrent_fragments_summary">Antall fragmenter av DASH/HLS-video å laste ned samtidig</string>
-    <string name="downloading">Nedlasting</string>
-    <string name="embed_subs_summary">Legger til undertekster i videoer</string>
+    <string name="downloading">Laster ned</string>
+    <string name="embed_subs_summary">Legg til undertekster i videoen</string>
     <string name="command_download_notification_channel_name">Kommando-nedlastinger</string>
     <string name="show_download_card">Vis alternativer for nedlasting</string>
     <string name="incognito_summary">Last ned uten å legge i historikk</string>
-    <string name="embed_thumb_summary">Bruker miniatyrbilde som omslag</string>
+    <string name="embed_thumb_summary">Bruk miniatyrbilde som omslag</string>
     <string name="sponsorblock_nonmusic">Ikke-musikk og ikke-relevante deler</string>
     <string name="request_permission_desc">Dette programmet trenger filtilganger for å lagre nedlastninger på enheten</string>
     <string name="exit_app">Avslutt programmet</string>
@@ -211,7 +211,7 @@
     <string name="blue">Blå</string>
     <string name="red">Rød</string>
     <string name="monochrome">Ensfarget</string>
-    <string name="downloaded">"Nedlsatet: "</string>
+    <string name="downloaded">"Nedlastet: "</string>
     <string name="finished_download_notification_channel_name">Fullførte nedlastninger</string>
     <string name="finished_download_notification_channel_description">Merknad som viser når nedlastingen er fullført, eller avsluttet med feil</string>
     <string name="get_cookies">Hent informasjonskapsler</string>
@@ -234,4 +234,5 @@
     <string name="errored_downloads">Feilet Nedlastinger</string>
     <string name="errored_download_notification_channel_description">Varsel om feilaktige nedlastinger</string>
     <string name="quick_download">Rask nedlasting</string>
+    <string name="sync_with_source_desc">Slett nedlastede filer om de mangler i kilden</string>
 </resources>
