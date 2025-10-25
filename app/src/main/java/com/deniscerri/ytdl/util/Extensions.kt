@@ -655,7 +655,7 @@ object Extensions {
 
     fun String.getIDFromYoutubeURL() : String? {
         val regex = Regex(
-            "(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*?[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})"
+            "(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|(?:shorts)?)/|.*?[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})"
         )
         val match = regex.find(this)
         return if (match != null){
