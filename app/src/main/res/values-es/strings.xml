@@ -486,5 +486,14 @@
     <string name="no_free_space_warning">No hay espacio disponible para esta configuración.</string>
     <string name="preferred_format_size">Tamaño de formato preferido</string>
     <string name="smallest">Más pequeño</string>
-    <string name="largest">Más pequeño</string>
+    <string name="largest">Más grande</string>
+    <string name="no_prefer_drc_audio">No prefiero DRC Audio</string>
+    <string name="visitor_data">Datos de visitantes</string>
+    <string name="get_data_sync_id">Obtener ID de sincronización de datos</string>
+    <string name="desktop">Escritorio</string>
+    <string name="disable_flat_playlist">Desactivar lista de reproducción plana</string>
+    <string name="disable_flat_playlist_summary">No utilice --flat-playlist. Obtención de datos más lenta, pero más rica en datos</string>
+    <string name="chapters">Capítulos</string>
+    <string name="use_original_url_playlist">Utilice la URL original para la URL de la lista de reproducción</string>
+    <string name="use_original_url_playlist_summary">Utilice la URL de la lista de reproducción proporcionada por el usuario en lugar de la etiqueta playlist_webpage_url del volcado json</string>
 </resources>
