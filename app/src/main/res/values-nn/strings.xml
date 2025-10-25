@@ -141,7 +141,7 @@
     <string name="crop_thumb">Klipp til småbilete</string>
     <string name="crop_thumb_summary">Klipp småbilete til eit kvadrat ved henting av lyd</string>
     <string name="preferred_format_id_summary">Vel formatet du helst vil få når du henter noko</string>
-    <string name="worst_quality">Verste</string>
+    <string name="worst_quality">Laveste kvalitet</string>
     <string name="Remove">Ta bort</string>
     <string name="update_app">Sjå etter oppdateringar</string>
     <string name="about">Om</string>
