@@ -1,0 +1,84 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║        HOW TO CREATE YTD-lins WINDOWS EXE - SIMPLE WAY      ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+🚀 STEP 1: Open Terminal in web-app Folder
+============================================
+- Navigate to: E:\Cursor Play ground\ytdlnis\web-app
+- Open PowerShell or Command Prompt there
+
+
+🔨 STEP 2: Run This Command
+============================
+
+npx electron-builder --win --config.win.target=portable
+
+
+⏳ STEP 3: Wait (10-15 minutes)
+=================================
+- The build will download Electron
+- Package all files
+- Create the EXE
+
+This is NORMAL and takes time!
+
+
+✅ STEP 4: Get Your EXE
+========================
+After build completes, you'll find:
+
+📁 Location: web-app\dist\
+📄 File: YTD-lins Web-Portable-1.0.0.exe
+
+
+📦 WHAT YOU'LL GET:
+===================
+✅ Standalone Windows executable
+✅ No installation needed
+✅ ~150-200 MB size
+✅ Everything included!
+✅ Just double-click to run!
+
+
+🎯 HOW TO USE THE EXE:
+======================
+1. Double-click: YTD-lins Web-Portable-1.0.0.exe
+2. App opens automatically
+3. Paste video URL
+4. Click Download
+5. Done!
+
+
+💡 ALTERNATIVE: Use the Batch Launchers
+========================================
+Instead of building an EXE, users can use:
+
+✅ YTD-lins Web.bat (from project root)
+✅ START.bat (simple launcher)
+✅ web-app\start-windows.bat
+
+These work perfectly and are already ready!
+
+
+❓ WHY BUILD AN EXE?
+====================
+✓ No Node.js needed for users
+✓ More professional
+✓ Standalone application
+✓ Easier for end users
+
+But the batch files work great too!
+
+
+⚡ QUICK START (Use Batch Files)
+=================================
+
+1. Go to project root
+2. Double-click: YTD-lins Web.bat
+3. Browser opens
+4. Start downloading!
+
+This is ALREADY WORKING and doesn't need building!
+
