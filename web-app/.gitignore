@@ -1,0 +1,61 @@
+# Dependencies
+node_modules/
+client/node_modules/
+
+# Production builds
+client/build/
+dist/
+build/
+
+# Database
+*.db
+*.db-journal
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Downloaded files (for testing)
+downloads/
+*.mp4
+*.mp3
+*.webm
+
+# yt-dlp
+yt-dlp
+yt-dlp.exe
+
+# Build artifacts
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+
+# Temporary files
+tmp/
+temp/
+.cache/
+

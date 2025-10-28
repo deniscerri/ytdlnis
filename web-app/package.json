@@ -1,0 +1,64 @@
+{
+  "name": "ytdlnis-web",
+  "version": "1.0.0",
+  "description": "YTDLnis Web - Local video/audio downloader using yt-dlp",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server/index.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd client && npm install",
+    "electron": "electron .",
+    "package": "electron-builder"
+  },
+  "keywords": [
+    "ytdlp",
+    "downloader",
+    "video",
+    "audio"
+  ],
+  "author": "YTDLnis Team",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "node-pty": "^1.0.0",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.4",
+    "nodemon": "^3.0.1"
+  },
+  "build": {
+    "appId": "com.ytdlnis.web",
+    "productName": "YTDLnis Web",
+    "files": [
+      "server/**/*",
+      "client/build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    }
+  }
+}
