@@ -1,0 +1,110 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              🎉 HOW TO USE YTD-lins Web                         ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+📥 FOR NEW USERS (Windows 11):
+===============================
+
+✅ STEP 1: Download This Project
+----------------------------------
+Download the entire project folder to your computer.
+
+✅ STEP 2: Open the Project
+----------------------------
+Extract/unzip the folder and open it.
+
+✅ STEP 3: Navigate to web-app Folder
+--------------------------------------
+- Go to the project folder
+- Open the "web-app" folder
+
+✅ STEP 4: Start the App
+-------------------------
+Double-click: start-windows.bat
+
+✅ STEP 5: Use the App!
+------------------------
+- Browser opens automatically at http://localhost:3000
+- Paste any video URL
+- Click "Download"
+- Done!
+
+
+🚀 ALTERNATIVE: From Project Root
+==================================
+
+Just double-click: YTD-lins Web.bat
+
+This works from the main project folder!
+
+
+📦 WHAT YOU NEED:
+=================
+
+✅ Windows 10 or 11
+✅ Internet connection
+✅ Node.js (auto-installed if needed)
+
+That's it!
+
+
+💡 QUICK REFERENCE:
+====================
+
+Main Launcher: YTD-lins Web.bat (project root)
+Alternative: web-app\start-windows.bat
+URL: http://localhost:3000
+
+
+🎯 SUPPORTED SITES:
+===================
+
+YouTube, Twitter/X, Instagram, TikTok,
+Facebook, Reddit, SoundCloud, Twitch,
+and 1000+ more!
+
+
+❓ TROUBLESHOOTING:
+==================
+
+Problem: App won't start
+→ Make sure you're in the right folder
+→ Try double-clicking YTD-lins Web.bat
+
+Problem: Browser doesn't open
+→ Open browser manually: http://localhost:3000
+
+Problem: Downloads fail
+→ Check internet connection
+→ Make sure video is not private
+
+
+📂 FILE LOCATIONS:
+==================
+
+Download folder (default):
+C:\Users\YourName\Downloads\YTDLnis
+
+You can change this in Settings!
+
+
+✨ FEATURES:
+============
+
+✓ Download from 1000+ sites
+✓ Audio or Video format
+✓ Real-time progress
+✓ Download history
+✓ Beautiful interface
+✓ No installation needed!
+
+
+═══════════════════════════════════════════════════════════════════
+
+Made with ❤️ - Happy downloading! 🎉
+
+═══════════════════════════════════════════════════════════════════
+

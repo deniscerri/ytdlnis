@@ -54,9 +54,9 @@
       "output": "dist"
     },
     "win": {
-      "target": ["nsis", "portable"],
+      "target": "portable",
       "icon": "assets/icon.ico",
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "artifactName": "${productName}-Portable-${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
