@@ -1,7 +1,12 @@
 @echo off
+REM Change to the directory where this script is located
+cd /d "%~dp0"
+
 echo ============================================
 echo      YTDLnis Web - Starting...
 echo ============================================
+echo.
+echo Current directory: %CD%
 echo.
 
 REM Check if Node.js is installed
@@ -15,10 +20,19 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b 1
 )
 
+REM Verify we have package.json in current directory
+if not exist "package.json" (
+    echo ERROR: Cannot find package.json in current directory
+    echo Current directory: %CD%
+    echo.
+    echo Please run this script from the web-app folder
+    pause
+    exit /b 1
+)
+
 REM Check if dependencies are installed
 if not exist "node_modules\" (
-    echo Installing dependencies...
-    echo This may take a few minutes on first run...
+    echo Installing dependencies (this may take a few minutes)...
     echo.
     call npm run install-all
     if %ERRORLEVEL% NEQ 0 (
@@ -42,15 +56,6 @@ if not exist "client\build\" (
     )
 )
 
-REM Check if FFmpeg is installed
-if not exist "ffmpeg\ffmpeg.exe" (
-    echo.
-    echo Installing FFmpeg (required for video downloads)...
-    echo.
-    call install-ffmpeg.bat
-    echo.
-)
-
 REM Start the server
 echo.
 echo ============================================
@@ -65,10 +70,9 @@ echo ============================================
 echo.
 
 REM Open browser after a delay
-start "" timeout /t 3 /nobreak >nul && start http://localhost:3000
+start "" cmd /c "timeout /t 3 /nobreak >nul && start http://localhost:3000"
 
 REM Start server
 call npm start
 
 pause
-

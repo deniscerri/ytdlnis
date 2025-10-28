@@ -1,0 +1,66 @@
+===============================================
+    HOW TO START YTDLnis WEB - SUPER EASY
+===============================================
+
+METHOD 1 (EASIEST):
+-------------------
+1. Double-click the file: START-APP.bat
+2. Wait for browser to open (about 5 seconds)
+3. Done! You can now download videos!
+
+
+METHOD 2 (If Method 1 doesn't work):
+--------------------------------------
+1. Go to the web-app folder
+2. Double-click: start-windows.bat
+3. Wait for browser to open
+4. Done!
+
+
+METHOD 3 (Advanced):
+--------------------
+1. Open Command Prompt
+2. Type: cd "e:\Cursor Play ground\ytdlnis\web-app"
+3. Type: npm start
+4. Open browser: http://localhost:3000
+
+
+REQUIREMENTS:
+------------
+- Node.js must be installed
+- If not installed, download from: https://nodejs.org
+
+
+TO STOP THE APP:
+----------------
+Press Ctrl+C in the terminal window
+
+
+HOW TO DOWNLOAD VIDEOS:
+-----------------------
+1. Open the app in browser (should open automatically)
+2. Paste a YouTube/Twitter/TikTok URL
+3. Click "Get Info"
+4. Choose Audio or Video
+5. Click Download!
+
+
+TROUBLESHOOTING:
+---------------
+Problem: "Node.js not found"
+Solution: Install Node.js from https://nodejs.org
+
+Problem: Port 3000 in use
+Solution: Close other apps or restart computer
+
+Problem: Browser doesn't open
+Solution: Manually go to http://localhost:3000
+
+
+SUPPORT:
+--------
+Check the README.md files for more help
+
+
+HAVE FUN DOWNLOADING! 🎉
+
