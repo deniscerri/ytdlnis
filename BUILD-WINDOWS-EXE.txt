@@ -1,0 +1,108 @@
+╔════════════════════════════════════════════════════════════╗
+║                                                            ║
+║        HOW TO BUILD YTD-lins Web WINDOWS EXECUTABLE         ║
+║                                                            ║
+╚════════════════════════════════════════════════════════════╝
+
+📦 WHAT YOU'LL GET:
+-------------------
+A professional Windows EXE file that users can:
+✅ Double-click to run
+✅ No installation needed (portable version)
+✅ OR install with installer (NSIS version)
+✅ No Node.js needed - everything included!
+
+
+🚀 HOW TO BUILD:
+----------------
+
+Option 1: EASY WAY (Double-click this!)
+-----------------------------------------
+1. Go to web-app folder
+2. Double-click: BUILD-EXE.bat
+3. Wait 5-10 minutes
+4. Get EXE from 'dist' folder
+
+
+Option 2: MANUAL WAY (Terminal)
+---------------------------------
+1. Open terminal in web-app folder
+2. Run: npm run build (builds client)
+3. Run: npm run build-exe (builds EXE)
+4. EXE will be in 'dist' folder
+
+
+📁 OUTPUT FILES:
+----------------
+
+The build will create TWO versions in the 'dist' folder:
+
+1. **Installer Version:** YTD-lins Web-Setup-1.0.0.exe
+   → Full installer with shortcuts and uninstaller
+   → Best for end users
+
+2. **Portable Version:** YTD-lins Web-Portable-1.0.0.exe
+   → No installation needed - just double-click!
+   → Perfect for trying out
+
+Both work the same - users just double-click and start downloading!
+
+
+⚙️ REQUIREMENTS:
+----------------
+- Node.js installed
+- All dependencies installed (npm install)
+- Windows OS (for building Windows EXE)
+- Internet connection (to download tools)
+
+
+📦 WHAT'S INCLUDED:
+-------------------
+The EXE includes EVERYTHING:
+✓ Node.js runtime (embedded)
+✓ All dependencies
+✓ Web server
+✓ yt-dlp (auto-installed on first run)
+✓ FFmpeg (auto-installed)
+✓ Beautiful web interface
+✓ Everything needed to download videos!
+
+
+🎯 HOW USERS WILL USE IT:
+-------------------------
+1. Download the EXE file
+2. Double-click it
+3. App opens with download interface
+4. Paste video URL
+5. Click Download
+6. Done!
+
+No installation, no setup, no complexity!
+
+
+💡 TIPS:
+--------
+- First build takes longer (downloads tools)
+- Build output is in 'dist' folder
+- EXE size: ~100-200 MB (includes everything!)
+- Users don't need Node.js or anything else!
+
+
+🔧 TROUBLESHOOTING:
+-------------------
+Problem: "electron-builder not found"
+Solution: npm install -g electron-builder
+
+Problem: Build fails
+Solution: Make sure all dependencies installed (npm install)
+
+Problem: EXE too large
+Solution: Normal - includes Node.js, all modules, etc.
+
+
+✨ READY TO BUILD?
+------------------
+Just double-click: web-app\BUILD-EXE.bat
+
+Then share the EXE from the 'dist' folder! 🎉
+

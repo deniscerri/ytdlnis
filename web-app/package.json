@@ -2,7 +2,7 @@
   "name": "ytdlnis-web",
   "version": "1.0.0",
   "description": "YTDLnis Web - Local video/audio downloader using yt-dlp",
-  "main": "server/index.js",
+  "main": "electron.js",
   "scripts": {
     "start": "node server/index.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -11,6 +11,7 @@
     "build": "cd client && npm run build",
     "install-all": "npm install && cd client && npm install",
     "electron": "electron .",
+    "build-exe": "npm run build && electron-builder --win",
     "package": "electron-builder"
   },
   "keywords": [
@@ -39,18 +40,32 @@
   },
   "build": {
     "appId": "com.ytdlnis.web",
-    "productName": "YTDLnis Web",
+    "productName": "YTD-lins Web",
     "files": [
+      "electron.js",
       "server/**/*",
       "client/build/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "!node_modules/**/*.{md,txt,log}",
+      "!**/*.{md,txt}"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": ".",
+      "output": "dist"
     },
     "win": {
-      "target": "nsis",
-      "icon": "assets/icon.ico"
+      "target": ["nsis", "portable"],
+      "icon": "assets/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.${ext}"
     },
     "mac": {
       "target": "dmg",
