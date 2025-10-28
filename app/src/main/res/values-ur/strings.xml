@@ -41,7 +41,7 @@
     <string name="audio">‬آڈیو</string>
     <string name="video">ویڈیو</string>
     <string name="limit_rate_summary">زیادہ سے زیادہ ڈاؤن لوڈ کی شرح (بائٹس فی سیکنڈ میں)، جیسے 50K یا 4.2M</string>
-    <string name="aria2_summary">ڈیفالٹ کے بجائے aria2c کو بطور ڈاؤنلوڈر استعمال کریں۔</string>
+    <string name="aria2_summary">ڈیفالٹ کے بجائے aria2c کو بطور ڈاؤنلوڈر استعمال کریں</string>
     <string name="processing">کارروائی ہو رہی ہے</string>
     <string name="embed_subs_summary">ویڈیو میں سب ٹائٹلز شامل کریں</string>
     <string name="concurrent_fragments_summary">DASH/HLS ویڈیو کے حصوں کی تعداد جو بیک وقت ڈاؤنلوڈ کیے جا سکتے ہیں</string>
@@ -53,4 +53,27 @@
     <string name="add_chapters">ویڈیوز کے حصے</string>
     <string name="add_chapters_summary">یوٹیوب/اسپانسر بلاک سیگمنٹس کو ویڈیو کے چیپٹرز کے طور پر نشان زد کریں</string>
     <string name="save_thumb">تمبھنیل محفوظ کریں</string>
+    <string name="save_thumb_summary">تھمب نیل کو ڈاؤن لوڈ فولڈر میں محفوظ کریں</string>
+    <string name="audio_format">آڈیو فارمیٹ</string>
+    <string name="video_format">ویڈیو فارمیٹ</string>
+    <string name="audio_quality">آڈیو کوالٹی</string>
+    <string name="audio_quality_summary">0 (بہترین) 10 (بدترین)</string>
+    <string name="cancel_task">کام منسوخ کریں</string>
+    <string name="run_command">کمانڈ چلائیں</string>
+    <string name="command_download_notification_channel_name">کمانڈ ڈاؤن لوڈز</string>
+    <string name="command_download_notification_channel_description">نوٹیفکیشن yt-dlp کمانڈ کا استعمال کرتے ہوئے ڈاؤن لوڈ کرنے کی پیشرفت دکھا رہا ہے</string>
+    <string name="items_left">آئٹم باقی</string>
+    <string name="history_is_empty">تاریخ خالی ہے</string>
+    <string name="you_are_going_to_delete">حذف کرنا</string>
+    <string name="url">URL</string>
+    <string name="link_copied_to_clipboard">لنک کلپ بورڈ پر کاپی ہو گیا</string>
+    <string name="api_key">API استعمال کریں</string>
+    <string name="api_key_summary">YouTube API سے ویڈیو کی تجاویز</string>
+    <string name="update_app_summary">ایپ کے کھلنے پر اس کے نئے ورژنز کا اعلان کریں۔ ڈیٹا سرکاری GitHub Repository سے نکالا جاتا ہے</string>
+    <string name="downloads">ڈاؤن لوڈز</string>
+    <string name="remove_deleted">حذف شدہ کو ہٹا دیں</string>
+    <string name="remove_duplicates">ڈپلیکیٹس کو ہٹا دیں</string>
+    <string name="sort_by">چھانٹنا</string>
+    <string name="remove_downloading">ڈاؤن لوڈز منسوخ کریں</string>
+    <string name="incognito_summary">تاریخ میں شامل کیے بغیر ڈاؤن لوڈ کریں</string>
 </resources>
