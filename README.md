@@ -42,46 +42,96 @@ ytdlnis/
 
 ---
 
-## 🚀 Quick Start
+## ⚡ DOWNLOAD & USE - SUPER SIMPLE!
 
-### For Android App
+### 🌐 For Web App Users:
+
+**📥 Step 1: Download This Repository**
 ```bash
-cd android/
-# Follow the Android app build instructions
-./gradlew assembleDebug
+git clone https://github.com/mkshaonexe/ytdlnis.git
+cd ytdlnis
 ```
 
-### For Web App
+**🚀 Step 2: Start the App**
+```
+Just double-click: YTD-lins Web.bat
+```
+
+**🎉 Step 3: Start Downloading!**
+- Browser opens automatically
+- Paste any video URL
+- Click "Download"
+- Done!
+
+**✅ No installation, no complexity, just download and use!**
+
+---
+
+## 🚀 Quick Start (Alternative)
+
+### 🌐 Web App
 ```bash
-cd web-app/
-# Follow the web app setup instructions
+cd web-app
 npm install
 npm start
 ```
+Then open: http://localhost:3000
+
+### 📱 Android App
+```bash
+cd android/
+./gradlew assembleDebug
+```
+
+---
+
+## 📋 Requirements
+
+**For Web App:**
+- Windows/Mac/Linux
+- Node.js (auto-installed)
+- Internet connection
+
+**For Android App:**
+- Android Studio
+- Android SDK
 
 ---
 
 ## 💡 Features
 
-### 🤖 Android App Features
-- Download audio/video from 1000+ websites using yt-dlp
-- Playlist processing and batch downloads
-- Schedule downloads by date/time
+### 🌐 Web App (NEW!) - **START HERE!**
+
+✨ **One-Click Launch** - Just double-click `YTD-lins Web.bat`
+
+🎯 **How to Use:**
+1. Double-click `YTD-lins Web.bat`
+2. Browser opens automatically
+3. Paste any video URL (YouTube, Twitter, TikTok, etc.)
+4. Click "Download" - Done!
+
+✅ **Features:**
+- Download from 1000+ sites (YouTube, Twitter, Instagram, TikTok, etc.)
+- Audio or Video format
+- Real-time progress tracking
+- Beautiful modern interface
+- Cross-platform (Windows, Mac, Linux)
+- Local-only - your data stays on your PC
+
+👉 **[Full Web App Docs](web-app/README.md)**
+
+---
+
+### 📱 Android App
+
+- Download from 1000+ websites
+- Playlist and batch downloads
+- Schedule downloads
 - Custom commands and templates
 - SponsorBlock support
 - Material You interface
-- And much more...
 
-👉 **[See full Android app features](android/README.md)**
-
-### 🌐 Web App Features (New!)
-- **Web-based UI** - Access from any device via browser
-- **RESTful API** - Programmatic access to download features
-- **WebSocket support** - Real-time download updates
-- **Modern React interface** - Clean and intuitive design
-- **Cross-platform** - Works on Windows, Mac, Linux
-
-👉 **[See web app documentation](web-app/README.md)**
+👉 **[Full Android App Docs](android/README.md)**
 
 ---
 

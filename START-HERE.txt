@@ -1,0 +1,102 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║              👋 WELCOME TO YTD-lins Web!                        ║
+║                                                                  ║
+║           Video/Audio Downloader from 1000+ Sites              ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+
+
+🚀 HOW TO START (3 STEPS):
+===========================
+
+1️⃣  Double-click: YTD-lins Web.bat
+
+2️⃣  Browser opens automatically
+
+3️⃣  Start downloading videos!
+
+
+📥 HOW TO DOWNLOAD VIDEOS:
+============================
+
+1. Paste a video URL (YouTube, Twitter, TikTok, Instagram, etc.)
+2. Click "Get Info" button
+3. Choose Audio or Video
+4. Click "Download"
+5. Done! Your file is ready!
+
+
+✅ WHAT YOU GET:
+================
+
+✓ Download from 1000+ websites
+✓ Audio or Video format  
+✓ Choose quality and format
+✓ Real-time progress
+✓ Download history
+✓ Beautiful modern interface
+✓ No installation needed!
+✓ Free and open source!
+
+
+📱 SUPPORTED SITES:
+===================
+
+YouTube, Twitter/X, Instagram, TikTok, 
+Facebook, Reddit, SoundCloud, Twitch, 
+Vimeo, and 1000+ more!
+
+
+❓ TROUBLESHOOTING:
+===================
+
+Problem: App won't start
+→ Make sure you're in the project folder
+→ Try double-clicking YTD-lins Web.bat again
+
+Problem: Browser doesn't open
+→ Manually go to: http://localhost:3000
+
+Problem: Downloads fail
+→ Check your internet connection
+→ Make sure the video is not private
+
+
+📂 FILES IN THIS PROJECT:
+==========================
+
+YTD-lins Web.bat      ← USE THIS to start!
+START.bat             ← Alternative launcher
+web-app/              ← Web app source code
+android/              ← Android app source code
+README.md             ← Full documentation
+
+
+🎯 QUICK START:
+===============
+
+Just double-click: YTD-lins Web.bat
+
+That's it! Start downloading videos now! 🎉
+
+
+💡 TIP:
+=======
+
+Keep the terminal window open while using the app.
+Close it to stop the server.
+
+
+📄 MORE INFO:
+==============
+
+Read README.md for full documentation!
+
+
+═══════════════════════════════════════════════════════════════════
+
+Made with ❤️ - Happy downloading! 🎉
+
+═══════════════════════════════════════════════════════════════════
+
