@@ -491,10 +491,12 @@
     <string name="potoken_player">Chave de acesso PO (Player)</string>
     <string name="potoken_subs">Chave de acesso PO (inscrições)</string>
     <string name="visitor_data">Dados do visitante</string>
-    <string name="get_data_sync_id">Dados do visitante</string>
+    <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
     <string name="desktop">Computador</string>
     <string name="url_regex">Regex da URL</string>
     <string name="disable_flat_playlist">Desativar playlist plana</string>
     <string name="disable_flat_playlist_summary">Não use --flat-playlist. A busca por dados será mais lenta, os dados serão mais precisos</string>
     <string name="chapters">Capítulos</string>
+    <string name="use_original_url_playlist">Usar URL original para o URL da playlist</string>
+    <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do arquivo JSON</string>
 </resources>
