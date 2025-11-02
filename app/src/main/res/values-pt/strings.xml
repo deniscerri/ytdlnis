@@ -497,6 +497,8 @@
     <string name="disable_flat_playlist">Desativar playlist plana</string>
     <string name="disable_flat_playlist_summary">Não use --flat-playlist. A busca por dados será mais lenta, os dados serão mais precisos</string>
     <string name="chapters">Capítulos</string>
-    <string name="use_original_url_playlist">Usar URL original para o URL da playlist</string>
-    <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do arquivo JSON</string>
+    <string name="use_original_url_playlist">Usar URL original para a URL da playlist</string>
+    <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do dump json</string>
+    <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
+    <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
 </resources>
