@@ -6,6 +6,8 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.UserHandle
+import android.os.UserManager
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -103,7 +105,7 @@ object FileUtil {
         val pieces = dataValue.split("/").toTypedArray()
         val formattedPath = StringBuilder("/storage/")
         if (pieces[0] == "primary"){
-            formattedPath.append("emulated/0/")
+            formattedPath.append("emulated/${android.os.Binder.getCallingUserHandle().hashCode()}/")
         }else{
             formattedPath.append(pieces[0]).append("/")
         }
