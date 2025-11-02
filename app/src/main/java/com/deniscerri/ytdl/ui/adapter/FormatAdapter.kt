@@ -54,12 +54,8 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     }
 
     override fun getItemViewType(position: Int): Int {
-        try {
-            val isLabel = formats[position]!!.label != null
-            return if (isLabel) 0 else 1
-        }catch (err: Exception) {
-            return 1
-        }
+        val item = formats.getOrNull(position)
+        return if (item?.label != null) 0 else 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -92,8 +88,8 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
             return
         }
 
-        val item = itm.format!!
-        val card = holder.item!!
+        val item = itm.format ?: return
+        val card = holder.item ?: return
         //card.popup()
         UiUtil.populateFormatCard(activity, card, item)
         card.isChecked = selectedVideoFormat == item || selectedAudioFormats.any { it == item }

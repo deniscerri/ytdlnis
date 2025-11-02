@@ -2,10 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Preference
-        app:icon="@drawable/ic_info"
-        app:key="version"
-        app:title="@string/version"/>
 
     <PreferenceCategory android:title="@string/source">
 
@@ -34,9 +30,22 @@
             android:key="auto_update_ytdlp"
             app:title="@string/auto_update_ytdlp" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            android:icon="@drawable/ic_update"
+            android:defaultValue="true"
+            android:key="update_ytdlp_while_downloading"
+            android:summary="@string/update_ytdlp_while_downloading_summary"
+            android:title="@string/update_ytdlp_while_downloading" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/app">
+
+        <Preference
+            app:icon="@drawable/ic_info"
+            app:key="version"
+            app:title="@string/version"/>
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
@@ -64,7 +73,6 @@
             app:key="changelog"
             app:title="@string/changelog" />
     </PreferenceCategory>
-
 
     <PreferenceCategory android:title="@string/format">
         <ListPreference

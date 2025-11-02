@@ -688,11 +688,16 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         if (playerClients.isNotEmpty()){
             extractorArgs.add("player_client=${playerClients.joinToString(",")}")
+        }else{
+            //TODO DISCUSS
+            //extractorArgs.add("player_client=default,-web,-web-safari,-android,-ios,-tv")
         }
 
         if (poTokens.isNotEmpty() && sharedPreferences.getBoolean("use_cookies", false)) {
             extractorArgs.add("po_token=${poTokens.joinToString(",")}")
         }
+
+        //extractorArgs.add("skip=translated_subs")
 
         val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
         if (useLanguageForMetadata) {
@@ -851,6 +856,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val proxy = sharedPreferences.getString("proxy", "")
         if (proxy!!.isNotBlank()){
             request.addOption("--proxy", proxy)
+        }
+
+        val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
+        if (updateYTDLP) {
+            request.addOption("-U")
         }
 
         val keepCache = sharedPreferences.getBoolean("keep_cache", false)
