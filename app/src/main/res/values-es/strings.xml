@@ -123,7 +123,7 @@
     <string name="download_queue">Cola de descargas</string>
     <string name="running">Ejecutando</string>
     <string name="command">Comando</string>
-    <string name="import_from_clipboard">Importar del Portapapeles</string>
+    <string name="import_from_clipboard">Importar del portapapeles</string>
     <string name="shortcuts">Atajos</string>
     <string name="create_template">Crear plantilla</string>
     <string name="shortcuts_desc">Usa comandos comunes para crear plantillas</string>
@@ -133,7 +133,7 @@
     <string name="please_wait">Por favor, espere</string>
     <string name="update_formats">Actualizar formatos</string>
     <string name="error_updating_formats">¡Error al actualizar formatos!</string>
-    <string name="export_from_clipboard">Exportar al Portapapeles</string>
+    <string name="export_from_clipboard">Exportar al portapapeles</string>
     <string name="edit">Editar</string>
     <string name="select">Seleccionar</string>
     <string name="preferred_download_type_summary">Pestaña predeterminada en la que se abrirá la tarjeta de descarga</string>
