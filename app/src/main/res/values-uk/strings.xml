@@ -500,4 +500,6 @@
     <string name="chapters">Розділи</string>
     <string name="use_original_url_playlist">Використовувати оригінальну URL-адресу для URL-адреси списку відтворення</string>
     <string name="use_original_url_playlist_summary">Використовуваии URL-адресу списку відтворення, надану користувачем, замість тегу playlist_webpage_url зі скидання JSON</string>
+    <string name="update_ytdlp_while_downloading">Оновити yt-dlp під час завантаження</string>
+    <string name="update_ytdlp_while_downloading_summary">Додайте -U до yt-dlp, щоб оновити його до останньої версії перед завантаженням</string>
 </resources>
