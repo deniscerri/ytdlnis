@@ -169,7 +169,7 @@
     <string name="update">Actualizar</string>
     <string name="downloads_running_try_later">El trabajador de descarga se está ejecutando. Vuelva a intentarlo más tarde</string>
     <string name="link_you_copied">Enlace que copiaste</string>
-    <string name="best_quality">Mejor calidad</string>
+    <string name="best_quality">Best quality</string>
     <string name="worst_quality">Calidad más baja</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
     <string name="restrict_filenames_summary">Restringe los nombres de archivo a sólo caracteres ASCII. Evita \"&amp;\" y espacios en los nombres de archivo</string>
