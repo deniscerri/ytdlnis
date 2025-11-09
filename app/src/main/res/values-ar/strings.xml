@@ -500,4 +500,6 @@
     <string name="chapters">الفصول</string>
     <string name="use_original_url_playlist_summary">استخدم عنوان URL لقائمة التشغيل الذي قدمه المستخدم بدلاً من علامة playlist_webpage_url من ملف json dump</string>
     <string name="use_original_url_playlist">استخدم عنوان URL الأصلي لعنوان URL لقائمة التشغيل</string>
+    <string name="update_ytdlp_while_downloading">حدِّث yt-dlp أثناء التنزيل</string>
+    <string name="update_ytdlp_while_downloading_summary">أضف -U إلى yt-dlp لتحديثه إلى آخر إصدار قبل التنزيل</string>
 </resources>
