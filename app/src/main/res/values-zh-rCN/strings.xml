@@ -499,4 +499,6 @@
     <string name="chapters">章节</string>
     <string name="use_original_url_playlist">播放列表url 使用原始 url</string>
     <string name="use_original_url_playlist_summary">使用用户给予的播放列表 url 而非来自 json 转储的 playlist_webpage_url 标签</string>
+    <string name="update_ytdlp_while_downloading">下载时更新 yt-dlp</string>
+    <string name="update_ytdlp_while_downloading_summary">yt-dlp 添加 -U 参数将其在下载前更新到最新版</string>
 </resources>

@@ -500,4 +500,6 @@
     <string name="chapters">Bölümlər</string>
     <string name="use_original_url_playlist">Pleylist url üçün orijinal url istifadə et</string>
     <string name="use_original_url_playlist_summary">json dump-dan playlist_webpage_url etiketi əvəzinə istifadəçi tərəfindən verilən pleylist url-dan istifadə et</string>
+    <string name="update_ytdlp_while_downloading">Yükləyərkən yt-dlp-nı yenilə</string>
+    <string name="update_ytdlp_while_downloading_summary">Yükləməzdən əvvəl onu ən son versiyaya yeniləmək üçün yt-dlp-yə -U əlavə edin</string>
 </resources>

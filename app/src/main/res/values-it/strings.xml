@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="music_directory">Cartella audio</string>
-    <string name="search">Cerca</string>
+    <string name="search">YouTube premium</string>
     <string name="remove_all">Rimuovi tutto</string>
     <string name="remove_results">Cancella risultati</string>
     <string name="updating">Aggiornamento in corso</string>

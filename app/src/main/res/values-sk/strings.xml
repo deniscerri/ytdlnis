@@ -500,4 +500,6 @@
     <string name="chapters">Kapitoly</string>
     <string name="use_original_url_playlist">Použiť pôvodnú URL pre URL playlistu</string>
     <string name="use_original_url_playlist_summary">Použije URL playlistu zadanúpoužívateľom namiesto štítku playlist_webpage_url z výpisu json</string>
+    <string name="update_ytdlp_while_downloading">Aktualizovať yt-dlp počas sťahovania</string>
+    <string name="update_ytdlp_while_downloading_summary">Pridajte -U k yt-dlp, aby ste ho pred stiahnutím aktualizovali na najnovšiu verziu</string>
 </resources>
