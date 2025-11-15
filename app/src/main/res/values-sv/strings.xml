@@ -462,4 +462,21 @@
     <string name="use_only_po_token">Använd endast PO-token (ignorera spelarklienten)</string>
     <string name="cache_directory">Cache-mapp</string>
     <string name="app_icon_change">Ikonen kan ändras och applikationen kommer att stängas</string>
+    <string name="chapters">Kapitel</string>
+    <string name="reset_preferences_in_screen">Återställ alla inställningar på den här skärmen</string>
+    <string name="automatic_backup">Automatisk säkerhetskopia</string>
+    <string name="backup_path">Sökväg till säkerhetskopia</string>
+    <string name="automatic_backup_summary">Säkerhetskopiera allt automatiskt när en ny version av programvaran hittas</string>
+    <string name="custom">Anpassad</string>
+    <string name="generate_potokens_warning">Genom att aktivera detta måste du inaktivera kakor</string>
+    <string name="reverse">Bakåt</string>
+    <string name="no_keep_subs">Radera undertextfiler efter inbäddning</string>
+    <string name="video_compatible">Kompatibel Video</string>
+    <string name="video_compatible_summary">Omkodar videon för kompatibilitet med andra program</string>
+    <string name="no_free_space_warning">Det finns inget ledigt utrymme för den här konfigurationen</string>
+    <string name="smallest">Minsta</string>
+    <string name="largest">Största</string>
+    <string name="visitor_data">Besöks Data</string>
+    <string name="get_data_sync_id">Hämta Data Sync ID</string>
+    <string name="desktop">Skrivbord</string>
 </resources>

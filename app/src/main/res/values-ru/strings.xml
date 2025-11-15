@@ -500,4 +500,6 @@
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Использовать исходный URL для URL-адреса плейлиста</string>
     <string name="use_original_url_playlist_summary">Используйте URL-адрес списка воспроизведения, указанный пользователем, вместо тега playlist_webpage_url из дампа json</string>
+    <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
+    <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
 </resources>

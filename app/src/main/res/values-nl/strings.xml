@@ -450,4 +450,6 @@
     <string name="wait_for_video">Wacht op video</string>
     <string name="retry_every">alles opnieuw proberen</string>
     <string name="minutes">Minuten</string>
+    <string name="grid">Raster</string>
+    <string name="list">Lijst</string>
 </resources>
