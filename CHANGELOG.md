@@ -1,5 +1,19 @@
 # YTDLnis Changelog
 
+> # 1.8.7 (2025-11)
+
+# What's Changed
+
+## Add QuickJS runtime
+
+Implements yt-dlp's --js-runtimes command to help with many website challenges while fetching data and downloading.
+Hopefully with this many of the current issues are resolved
+
+- Upgrade to ffmpeg 7.1.1
+- Fix hardcoded user id in path so it supports multiple users
+- fix --cache-dir not properly formatted when used as command template
+- Add toggle to always update yt-dlp before downloading
+
 > # 1.8.6 (2025-10)
 
 # What's Changed
