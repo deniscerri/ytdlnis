@@ -499,4 +499,6 @@
     <string name="chapters">Bagian</string>
     <string name="use_original_url_playlist">Gunakan url asli untuk url playlist</string>
     <string name="use_original_url_playlist_summary">Gunakan url daftar putar yang diberikan oleh pengguna alih-alih tag playlist_webpage_url dari json dump</string>
+    <string name="update_ytdlp_while_downloading">Perbarui yt-dlp ketika sedang mengunduh</string>
+    <string name="update_ytdlp_while_downloading_summary">Tambah -U ke yt-dlp untuk memperbaruinya ke versi terbaru sebelum mengunduh</string>
 </resources>
