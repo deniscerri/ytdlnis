@@ -6,8 +6,8 @@
     <string name="download_all">Alles herunterladen</string>
     <string name="settings">Einstellungen</string>
     <string name="directories">Ordner</string>
-    <string name="music_directory">Musik-Ordner</string>
-    <string name="video_directory">Video Ordner</string>
+    <string name="music_directory">Audio-Ordner</string>
+    <string name="video_directory">Video-Ordner</string>
     <string name="updating">Aktualisieren</string>
     <string name="update_ytdl">Neuste Version von youtube-dl installieren</string>
     <string name="source_code">Quellcode</string>
