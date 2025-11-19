@@ -768,7 +768,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }else{
             isPlaylistItem = true
             YoutubeDLRequest(downloadItem.playlistURL!!).apply {
-                if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL()){
+                if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() != null){
                     request.addOption("--match-filter", "id~='${downloadItem.url.getIDFromYoutubeURL()}'")
                 }else{
                     request.addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
@@ -1384,7 +1384,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (downloadItem.videoPreferences.embedSubs) {
-                    if (sharedPreferences.getBoolean("no_keep_subs", false) && !downloadItem.videoPreferences.writeSubs && !downloadItem.videoPreferences.writeAutoSubs) {
+                    if (sharedPreferences.getBoolean("no_keep_subs", false)) {
                         request.addOption("--compat-options", "no-keep-subs")
                     }
 

@@ -174,7 +174,14 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val res = if (newpipeExtractorResult.isSuccess) {
             newpipeExtractorResult.getOrNull()!!
         }else{
-            ytdlpUtil.getFromYTDL("https://youtu.be/${inputQuery.getIDFromYoutubeURL()}", resultsGenerated = {})
+            val youtubeID = inputQuery.getIDFromYoutubeURL()
+            val url = if (youtubeID == null) {
+                inputQuery
+            } else {
+                "https://youtu.be/${youtubeID}"
+            }
+
+            ytdlpUtil.getFromYTDL( url, resultsGenerated = {})
         }
 
         if (resetResults) {
