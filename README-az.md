@@ -12,6 +12,9 @@
 <h3 align="center">
 	YTDLnis Android 7.0 və yuxarı üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/səs yükləyicidir.
 </h3>
+<h4 align="center">
+	Denis Çerri tərəfindən yaradılmışdır
+</h4>
 
 <div align="center">
 
