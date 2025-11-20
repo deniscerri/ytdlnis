@@ -26,9 +26,9 @@
 [![icma](https://img.shields.io/badge/Discord-YTDLnis-blueviolet?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm) 
 [![icma](https://img.shields.io/badge/Telegram-YTDLnis-blue?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
 [![icma](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
+![GitHub Sponsor](https://img.shields.io/github/sponsors/deniscerri?label=Sponsor&logo=GitHub)
 
-
-
+### Yalnız yuxarıdakı keçidlər YTDLnis-in yeganə etibarlı mənbələridir. Qalan hər şey mənimlə əlaqəli deyil. 
 
 </div>
 
@@ -95,9 +95,9 @@
 
 Müzakirə, elanlar və buraxılışlar üçün [Telegram Kanalımıza](https://t.me/ytdlnis) və ya [Discord](https://discord.gg/WW3KYWxAPm) qoşulun!
 
-## 🔑 ReVanced və LibreTube ilə bağlantı yarat
+## 😇 Töhfə
 
-Tətbiqin paket adı "com.deniscerri.ytdl"
+Əgər töhfə vermək istəyirsinizsə xahiş olunur, [Töhfə vermə](CONTRIBUTING.MD) bölməsin oxuyun.
 
 ## 📝 Weblate-də Tərcümə Etməyə Kömək Et
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
@@ -109,17 +109,39 @@ Tətbiqin paket adı "com.deniscerri.ytdl"
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Tərcümə vəziyyəti" />
 </a>
 
-## 😇 Töhfə
+## 🔑 Paket adın istifadə edərək üçüncü tərəf tətbiqləri əlaqə qurun
 
-Əgər töhfə vermək istəyirsinizsə xahiş olunur, [Töhfə vermə](CONTRIBUTING.MD) bölməsin oxuyun.
+Tətbiqin paket adı "com.deniscerri.ytdl"-dir.
+
+
+## 🤖 İntent-lər istifadə edərək üçüncü tərəf tətbiqləri ilə əlaqə qurun
+
+Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün tətbiqə əmrlər göndərmək niyyətin (İntent) istifadə edə bilərsiniz. Qəbul edilən dəyişgənliklər:
+
+<b>TYPE</b> -> bu ola bilər: səs,video,əmr <br/>
+<b>BACKGROUND</b> -> bu ola bilər: true,false. Əgər bu true olarsa, tətbiq istənilən halda yükləmə kartını göstərməyəcək və yükləməni arxa planda həyata keçirəcək <br/>
+
+### Tasker ilə fonda səs elementin yüklənilməsi nümunəsi
+1. Göndərmə Intent tapşırığı yaradın 
+2. Action (Fəaliyyət): android.intent.action.SEND
+3. Cat: İlkin (default)
+4. Mime Type: text/*
+5. Əlavə (Extra): android.intent.extra.TEXT:url ("url" əvəzinə yükləmək istədiyiniz videonun URL-ni yazın)
+6. Əlavə(Extra): TYPE:audio
+7. Əlavə(Extra): BACKGROUND:true
 
 ## 📄 Lisenziya
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-⚠️  Xəbərdarlıq <br>
-
 GPLv3 lisenziyası ilə lisenziyalaşdırılan mənbə kodu istisna olmaqla, bütün digər tərəflərə "YTDLnis" adın yükləyici tətbiq kimi istifadə etmək qadağandır və eynisi onun törəmələri üçün də keçərlidir. Törəmələrə çəngəllər və qeyri-rəsmi quruluşlar daxildir, lakin bunlarla məhdudlaşmır.
+
+## 😁 İanə Edin
+
+
+[<img src="https://raw.githubusercontent.com/WSTxda/WSTxda/main/images/BMC.svg"
+alt='Donate with BMC'
+height="80">](https://www.buymeacoffee.com/deniscerri)
 
 ## 🙏 Təşəkkürlər
 
