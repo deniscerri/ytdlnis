@@ -85,7 +85,7 @@
     <string name="video_format">Videoformat</string>
     <string name="update_app_summary">Neue Versionen der App ankündigen, wenn sie geöffnet wird. Die Daten werden vom offiziellen GitHub Repository extrahiert.</string>
     <string name="Open_File">Datei öffnen</string>
-    <string name="best_quality">Beste Qualität</string>
+    <string name="best_quality">Höchste Qualität</string>
     <string name="warning">Warnung</string>
     <string name="sponsorblock_nonmusic">Bereiche ohne Musik und Off-Topic</string>
     <string name="new_template">Neue Vorlage</string>
@@ -136,7 +136,7 @@
     <string name="clear_temporary_files_summary">Löschen von zwischengespeicherten Dateien aus abgestürzten/fehlgeschlagenen/abgebrochenen Downloads</string>
     <string name="cache_cleared">Temporäre Dateien gelöscht</string>
     <string name="freespace">Freier Platz</string>
-    <string name="worst_quality">Niedrigste Qualität</string>
+    <string name="worst_quality">Schlechteste Qualität</string>
     <string name="request_permission_desc">Diese App benötigt Dateiberechtigungen, um Downloads auf dem Gerät zu speichern</string>
     <string name="create_template">Vorlage erstellen</string>
     <string name="shortcuts_desc">Häufig verwendete Befehle zur Erstellung von Vorlagen verwenden</string>
