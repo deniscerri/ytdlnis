@@ -81,6 +81,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/run_command"
+            android:elevation="0dp"
+            app:elevation="0dp"
+            android:stateListAnimator="@null"
             app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
             app:layout_anchor="@id/bottomAppBar" />
 

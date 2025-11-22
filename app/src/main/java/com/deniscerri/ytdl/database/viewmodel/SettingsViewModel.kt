@@ -89,7 +89,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
 
         val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
             Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
-            Calendar.DAY_OF_MONTH)}.json")
+            Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json")
 
         saveFile.delete()
         withContext(Dispatchers.IO) {
