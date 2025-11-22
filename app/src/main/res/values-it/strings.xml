@@ -492,9 +492,14 @@
     <string name="potoken_player">Token PO (Lettore)</string>
     <string name="potoken_subs">Token PO (Iscrizioni)</string>
     <string name="visitor_data">Dati visitatore</string>
-    <string name="get_data_sync_id">Dati visitatore</string>
+    <string name="get_data_sync_id">Ottieni ID sincronizzazione dati</string>
     <string name="desktop">Desktop</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Disabilita playlist piatta</string>
     <string name="chapters">Capitoli</string>
+    <string name="disable_flat_playlist_summary">Non usare --flat-playlist. Recupero dei dati più lento, ma più ricco di dati</string>
+    <string name="use_original_url_playlist">Usa l\'url originale per l\'url della playlist</string>
+    <string name="use_original_url_playlist_summary">Utilizzare l\'URL della playlist fornito dall\'utente anziché il tag playlist_webpage_url dal dump JSON</string>
+    <string name="update_ytdlp_while_downloading">Aggiorna yt-dlp durante il download</string>
+    <string name="update_ytdlp_while_downloading_summary">Aggiungi -U a yt-dlp per aggiornare prima di scaricare</string>
 </resources>
