@@ -495,4 +495,8 @@
     <string name="chapters">Глави</string>
     <string name="use_original_url_playlist">Използвайте оригиналния URL адрес за URL адрес на плейлиста</string>
     <string name="use_original_url_playlist_summary">Използвайте URL адреса на плейлиста, предоставен от потребителя, вместо тага playlist_webpage_url от JSON дъмпа</string>
+    <string name="layout">Оформление</string>
+    <string name="potoken_subs">PO токен (Subs)</string>
+    <string name="update_ytdlp_while_downloading">Обновяване yt-dlp по време на изтегляне</string>
+    <string name="update_ytdlp_while_downloading_summary">Добавете -U към yt-dlp, за да го актуализирате до най-новата версия преди изтегляне</string>
 </resources>
