@@ -93,4 +93,10 @@
     <string name="command_directory">مجلد اوامر مخصص</string>
     <string name="couldnt_find_apk">مقدرتش الاقي APK مناسب</string>
     <string name="downloading_update">إصدار جديد بيتحمل</string>
+    <string name="purple">وردي</string>
+    <string name="green">أخضر</string>
+    <string name="yellow">أصفر</string>
+    <string name="orange">برتقالي</string>
+    <string name="monochrome">رمادي</string>
+    <string name="downloaded">"تم التنزيل: "</string>
 </resources>
