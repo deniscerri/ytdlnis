@@ -316,7 +316,7 @@ object FileUtil {
 
     fun getCachePath(context: Context) : String {
         val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("cache_path", "")
-        if (preference.isNullOrBlank() || !File(formatPath(preference)).canWrite()) {
+        if (preference.isNullOrBlank()) {
             val externalPath = context.getExternalFilesDir(null)
             return if (externalPath == null){
                 context.cacheDir.absolutePath + "/downloads/"
