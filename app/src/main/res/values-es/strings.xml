@@ -89,7 +89,7 @@
     <string name="delete_file_too">Eliminar el archivo del dispositivo</string>
     <string name="you_are_going_to_delete_multiple_items">Eliminación de varios elementos</string>
     <string name="delete_files_too">Eliminar los archivos del dispositivo</string>
-    <string name="request_permission_desc">La aplicación requiere permisos de archivos para poder guardar descargas en el dispositivo.</string>
+    <string name="request_permission_desc">La aplicación requiere permisos de archivos para poder guardar descargas en el dispositivo</string>
     <string name="exit_app">Cerrar aplicación</string>
     <string name="sponsorblock_sponsors">Patrocinadores</string>
     <string name="sponsorblock_outro">Cierre</string>
@@ -169,7 +169,7 @@
     <string name="update">Actualizar</string>
     <string name="downloads_running_try_later">El trabajador de descarga se está ejecutando. Vuelva a intentarlo más tarde</string>
     <string name="link_you_copied">Enlace que copiaste</string>
-    <string name="best_quality">Best quality</string>
+    <string name="best_quality">Mejor calidad</string>
     <string name="worst_quality">Calidad más baja</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
     <string name="restrict_filenames_summary">Restringe los nombres de archivo a sólo caracteres ASCII. Evita \"&amp;\" y espacios en los nombres de archivo</string>
@@ -436,7 +436,7 @@
     <string name="data_fetching_extra_command">Comando adicional de obtención de datos</string>
     <string name="data_fetching_extra_command_summary">Habilitar plantillas de comandos que se utilizarán para la obtención de datos como comandos adicionales</string>
     <string name="disable_write_info_json">Deshabilitar escribir información Json</string>
-    <string name="disable_write_info_json_summary">(No recomendado) Cada vez que reinicie/reanude la descarga, yt-dlp volverá a descargar los datos json desde los servidores.</string>
+    <string name="disable_write_info_json_summary">Cada vez que reinicie/reanude la descarga, yt-dlp volverá a descargar los datos json desde los servidores (no recomendado)</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Ver más tarde (necesita cookies )</string>
     <string name="ytdlp_recommnedations">Recomendaciones de Youtube de YT-DLP (necesita cookies )</string>
     <string name="ytdlp_liked">Vídeos que me gustan en Youtube de YT-DLP (necesita cookies )</string>
@@ -496,4 +496,10 @@
     <string name="chapters">Capítulos</string>
     <string name="use_original_url_playlist">Utilice la URL original para la URL de la lista de reproducción</string>
     <string name="use_original_url_playlist_summary">Utilice la URL de la lista de reproducción proporcionada por el usuario en lugar de la etiqueta playlist_webpage_url del volcado json</string>
+    <string name="potoken_gvs">Token PO (GVS)</string>
+    <string name="potoken_player">Token PO (Reproductor)</string>
+    <string name="potoken_subs">Token PO (Subtítulos)</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="update_ytdlp_while_downloading">Actualizar yt-dlp mientras se descarga</string>
+    <string name="update_ytdlp_while_downloading_summary">Añadir -U a yt-dlp para actualizar a la última versión antes de descargar</string>
 </resources>

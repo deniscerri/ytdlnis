@@ -362,7 +362,7 @@
     <string name="select_between">Seleziona elementi tra</string>
     <string name="reset_processed_links">Ripristina link già processati</string>
     <string name="observe_sources">Osserva sorgenti</string>
-    <string name="new_source">Nuovo sorgente</string>
+    <string name="new_source">Nuova sorgente</string>
     <string name="confirm_delete_sources_desc">Cancella tutti i sorgenti, permanentemente</string>
     <string name="copy_urls">Copia URLs</string>
     <string name="never">Mai</string>
@@ -442,7 +442,7 @@
     <string name="grid">Griglia</string>
     <string name="cache_directory_warning">Cambiare la cartella della cache potrebbe provocare malfunzionamenti. Se l\'app non può scrivere nel percorso configurato, utilizzerà il percorso della cartella della cache predefinito</string>
     <string name="no_check_certificates">Sopprimi la validazione del certificato HTTPS</string>
-    <string name="disable_write_info_json">Disattiva la scrittura di informazioni json</string>
+    <string name="disable_write_info_json">Disattiva la scrittura del file .info.json</string>
     <string name="ytdlp_watch_later">Guarda più tardi di YouTube yt-dlp (richiede cookie)</string>
     <string name="ytdlp_recommnedations">Consigliati di YouTube yt-dlp (richiede cookie)</string>
     <string name="ytdlp_watch_history">Cronologia di YouTube yt-dlp (richiede cookie)</string>
