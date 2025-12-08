@@ -555,7 +555,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.applyDefaultOptionsForFetchingData(url)
             if (url.isYoutubeURL()) {
                 request.setYoutubeExtractorArgs(url)
-                request.addOption("--extractor-args", "youtube:player_skip=webpage,configs,js;player_client=android,web")
             }
 
             val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
