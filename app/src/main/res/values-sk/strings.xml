@@ -313,7 +313,6 @@
     <string name="buffer_size_summary">Veľkosť vyrovnávacej pamäte na sťahovanie, napr. 1024 alebo 16K (predvolená hodnota je 1024)</string>
     <string name="ytdl_source">Zdroj yt-dlp</string>
     <string name="remember_download_type">Zapamätať si typ sťahovania</string>
-    <string name="piped_instance_summary">Uveďte server API PIPED, ktorý môže aplikácia používať na dotazy a formáty YouTube</string>
     <string name="buffer_size">Veľkosť vyrovnávacej pamäte</string>
     <string name="remember_download_type_summary">Vyberie naposledy otvorený typ sťahovania pre aktuálnu položku</string>
     <string name="length">Dĺžka</string>
@@ -324,7 +323,6 @@
     <string name="app">Aplikácia</string>
     <string name="modify_download_card">Upraviť kartu sťahovania</string>
     <string name="source">Zdroj</string>
-    <string name="piped_instance">Inštancia Piped</string>
     <string name="use_scheduler">Sťahovať podľa rozvrhu</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="force_keyframes">Vynútiť kľúčové snímky pri orezaní</string>

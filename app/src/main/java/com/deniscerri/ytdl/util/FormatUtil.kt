@@ -99,90 +99,79 @@ class FormatUtil(private var context: Context) {
     fun sortAudioFormats(formats: List<Format>) : List<Format> {
         val orderPreferences = getAudioFormatImportance()
 
-        val fieldSorter: Comparator<Format> = object : Comparator<Format> {
-            override fun compare(a: Format, b: Format): Int {
-                for (order in orderPreferences) {
-                    val comparison = when (order) {
-                        "smallsize" -> {
-                            (a.filesize).compareTo(b.filesize)
-                        }
-                        "file_size" -> {
-                            val result = b.filesize.compareTo(a.filesize)
-                            result
-                        }
-                        "id" -> {
-                            if (audioFormatIDPreference.isEmpty()) {
-                                0
-                            }else {
-                                (audioFormatIDPreference.contains(b.format_id)).compareTo(
-                                    audioFormatIDPreference.contains(a.format_id)
-                                )
-                            }
-                        }
+        val comparator = Comparator<Format> { a, b ->
+            if ("no_drc" in orderPreferences) {
+                val aHasDrc = a.format_note.contains("drc", ignoreCase = true)
+                val bHasDrc = b.format_note.contains("drc", ignoreCase = true)
+                if (aHasDrc != bHasDrc)
+                    return@Comparator aHasDrc.compareTo(bHasDrc)
+            }
 
-                        "language" -> {
-                            if (audioLanguagePreference.isBlank()) {
+            for (order in orderPreferences) {
+                val comparison = when (order) {
+                    "smallsize" -> {
+                        (a.filesize).compareTo(b.filesize)
+                    }
+                    "file_size" -> {
+                        b.filesize.compareTo(a.filesize)
+                    }
+                    "id" -> {
+                        if (audioFormatIDPreference.isNotEmpty()) {
+                            (audioFormatIDPreference.contains(b.format_id)).compareTo(
+                                audioFormatIDPreference.contains(a.format_id)
+                            )
+                        } else 0
+                    }
+                    "language" -> {
+                        if (audioLanguagePreference.isBlank()) {
+                            (b.format_note.contains("default", true)).compareTo(
+                                a.format_note.contains(
+                                    "default", true
+                                )
+                            )
+                        } else {
+                            val res = (b.lang?.contains(audioLanguagePreference) == true).compareTo(
+                                a.lang?.contains(
+                                    audioLanguagePreference
+                                ) == true
+                            )
+                            if(res == 0) {
                                 (b.format_note.contains("default", true)).compareTo(
                                     a.format_note.contains(
                                         "default", true
                                     )
                                 )
-                                //0
-                            } else {
-                                val res = (b.lang?.contains(audioLanguagePreference) == true).compareTo(
-                                    a.lang?.contains(
-                                        audioLanguagePreference
-                                    ) == true
-                                )
-                                if(res == 0) {
-                                    (b.format_note.contains("default", true)).compareTo(
-                                        a.format_note.contains(
-                                            "default", true
-                                        )
-                                    )
-                                }else {
-                                    res
-                                }
-                            }
-                        }
-
-                        "codec" -> {
-                            if (audioCodecPreference.isBlank()) {
-                                0
                             }else {
-                                ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
-                                    .matches(b.acodec))
-                                    .compareTo(
-                                        "^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
-                                            .matches(a.acodec)
-                                    )
+                                res
                             }
                         }
-
-                        "container" -> {
-                            if (audioContainerPreference.isBlank()) {
-                                0
-                            }else {
-                                (audioContainerPreference == b.container).compareTo(
-                                    audioContainerPreference == a.container
-                                )
-                            }
-
-                        }
-                        "no_drc" -> {
-                            val aHasDrc = a.format_note.contains("drc", ignoreCase = true)
-                            val bHasDrc = b.format_note.contains("drc", ignoreCase = true)
-                            aHasDrc.compareTo(bHasDrc)
-                        }
-
-                        else -> 0
                     }
-                    if (comparison != 0) return comparison
+
+                    "codec" -> {
+                        if (audioCodecPreference.isNotBlank()) {
+                            ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
+                                .matches(b.acodec))
+                                .compareTo(
+                                    "^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)
+                                        .matches(a.acodec)
+                                )
+                        } else 0
+                    }
+
+                    "container" -> {
+                        if (audioContainerPreference.isNotBlank()) {
+                            (audioContainerPreference == b.container).compareTo(
+                                audioContainerPreference == a.container
+                            )
+                        } else 0
+                    }
+                    else -> 0
                 }
-                return 0
+                if (comparison != 0) return@Comparator comparison
             }
+            return@Comparator 0
         }
-        return formats.sortedWith(fieldSorter)
+        return formats.sortedWith(comparator)
     }
 
     @SuppressLint("RestrictedApi")

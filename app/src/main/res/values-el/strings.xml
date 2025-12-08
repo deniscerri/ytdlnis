@@ -263,9 +263,7 @@
     <string name="socks5_proxy_summary">Χρησιμοποίησε τον καθορισμένο διακομιστή μεσολάβησης HTTP/HTTPS/SOCKS</string>
     <string name="preferred_format_id_summary">Επίλεξε τη μορφή με αυτό το αναγνωριστικό στην κάρτα λήψης</string>
     <string name="crop_thumb">Περικοπή Μικρογραφίας</string>
-    <string name="piped_instance">Παρουσία Piped</string>
     <string name="custom_audio_quality">Χρήση Προσαρμοσμένης Ποιότητας Ήχου</string>
-    <string name="piped_instance_summary">Γράψε έναν διακομιστή API PIPED που η εφαρμογή μπορεί να χρησιμοποιήσει για ερωτήματα και μορφές YouTube</string>
     <string name="clear_temporary_files_summary">Διαγραφή προσωρινά αποθηκευμένων αρχείων από λήψεις που έχουν καταρρεύσει/έχουν σφάλματα/έχουν ακυρωθεί</string>
     <string name="retries">Επανάληψη</string>
     <string name="fragment_retries">Προσπάθειες Θραυσμάτων</string>

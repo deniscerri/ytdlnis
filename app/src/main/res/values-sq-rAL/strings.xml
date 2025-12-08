@@ -268,8 +268,6 @@
     <string name="move_temporary_files">Zhvendos skedarët e përkohshëm</string>
     <string name="move_temporary_files_summary">Transfero skedarët e përkohshëm në dosjen e shkarkimeve</string>
     <string name="custom_audio_quality">Përdor cilësinë e personalizuar të audios</string>
-    <string name="piped_instance">Instanca e PIPED</string>
-    <string name="piped_instance_summary">Shkruani një Server API PIPED, aplikacioni mund të përdorë për kërkimet dhe formatet në youtube</string>
     <string name="retries">Riprovimet</string>
     <string name="fragment_retries">Riprovimet e fragmentit</string>
     <string name="format_order">Renditja e formatit</string>

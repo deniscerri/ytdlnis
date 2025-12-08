@@ -250,8 +250,6 @@
     <string name="audio_only_item">Ta element vsebuje samo zvočne formate</string>
     <string name="move_temporary_files">Premakni začasne datoteke</string>
     <string name="move_temporary_files_summary">Prenesite predpomnjene datoteke v mapo za prenose</string>
-    <string name="piped_instance">Instanca Piped</string>
-    <string name="piped_instance_summary">Pripravite API strežnik Piped, ki ga bo aplikacija uporabljala za poizvedbe in formate na YouTubu</string>
     <string name="custom_audio_quality">Uporabi kakovost zvoka po meri</string>
     <string name="retries">Poskusi ponovno</string>
     <string name="fragment_retries">Ponovni poskusi fragmentov</string>

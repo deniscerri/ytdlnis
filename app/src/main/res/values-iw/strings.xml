@@ -217,7 +217,6 @@
     <string name="quick_download_summary">אל תביא נתונים בכרטיס ההורדה</string>
     <string name="save_subs">שמירת כתוביות</string>
     <string name="sponsorblock_nonmusic">קטעים שאינם מוזיקה ומחוץ לנושא</string>
-    <string name="piped_instance">Piped Instance</string>
     <string name="select_sponsorblock_filtering">בחירת סינון חסימת חסות</string>
     <string name="clear_temporary_files">נקה קבצים זמניים</string>
     <string name="search_suggestions_summary">קבל הצעות חיפוש מגוגל</string>
@@ -289,7 +288,6 @@
     <string name="remember_download_type">זכור סוג הורדה</string>
     <string name="cut">חתוך</string>
     <string name="ytdl_version">גרסת yt-dlp</string>
-    <string name="piped_instance_summary">כתוב שרת API PIPED, האפליקציה יכולה להשתמש עבור שאילתות ופורמטים של YouTube</string>
     <string name="access_all_directories_summary">אפשר ליישום להוריד בספריות המוגבלות כברירת מחדל</string>
     <string name="restrict_filenames">הגבלת שמות קבצים</string>
     <string name="share">שתף</string>

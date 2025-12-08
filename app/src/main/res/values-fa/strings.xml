@@ -179,7 +179,6 @@
     <string name="crop_thumb">برش تصویر وصف کننده</string>
     <string name="preferred_format_id_summary">انتخاب فرمت با این شناسه در کارت دانلود</string>
     <string name="general">عمومی</string>
-    <string name="piped_instance">محل نمونه‌ای Piped</string>
     <string name="crop_thumb_summary">برای بارگیری صدا، تصویر کوچک را به یک مربع برش دهید</string>
     <string name="search_command_hint">جستجو در کامند ها</string>
     <string name="sponsorblock_intro">اینترو</string>
@@ -278,7 +277,6 @@
     <string name="download_now">هم اکنون دانلود کن</string>
     <string name="download_already_exists">دانلود از قبل هست</string>
     <string name="move_temporary_files_summary">انتقال فایل‌های نهان به پوشه‌ی دانلودها</string>
-    <string name="piped_instance_summary">یک سرور PIPED API بنویسید که برنامه از آن برای جستارها و فرمتهای یوتیوب استفاده کند</string>
     <string name="use_extra_commands_summary">برای دانلودهای صوتی/تصویری، دستورات اضافی را همراه با پیکربندی رابط کاربری گرافیکی (GUI) اضافه کنید.</string>
     <string name="save_for_later">ذخیرهٔ دریافتی برای بعد؟</string>
     <string name="hide_thumbnails">مخفی کردن تصاویر بندانگشتی</string>

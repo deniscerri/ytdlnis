@@ -249,7 +249,6 @@
     <string name="backup_created_successfully">बैकअप फ़ाइल डाउनलोड फ़ोल्डर में सहेजी गई</string>
     <string name="updating_download_data">डाउनलोड आइटम डेटा अपडेट कर रहा है</string>
     <string name="custom_audio_quality">कस्टम ऑडियो गुणवत्ता का उपयोग करें</string>
-    <string name="piped_instance">पाइप्ड इंस्टेंस</string>
     <string name="sponsorblock_outro">किया</string>
     <string name="sponsorblock_nonmusic">गैर-संगीत और ऑफटॉपिक भाग</string>
     <string name="sponsorblock_sponsors">प्रायोजक</string>
@@ -263,7 +262,6 @@
     <string name="swipe_gestures_summary">कुछ कार्यों के लिए आइटम स्वाइप करें</string>
     <string name="crop_thumb">थंबनेल क्रॉप करें</string>
     <string name="crop_thumb_summary">ऑडियो डाउनलोड के लिए थंबनेल को एक वर्ग में क्रॉप करें</string>
-    <string name="piped_instance_summary">एक पाइप्ड एपीआई सर्वर डालें, ऐप यूट्यूब प्रश्नों और फार्मेटस के लिए उपयोग कर सकता है</string>
     <string name="audio_quality">ऑडियो गुणवत्ता</string>
     <string name="select_sponsorblock_filtering">प्रायोजक ब्लॉक फ़िल्टरिंग का चयन करें</string>
     <string name="import_from_clipboard">क्लिपबोर्ड से आयात करें</string>

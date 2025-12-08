@@ -267,8 +267,6 @@
     <string name="move_temporary_files_summary">Перенесіть кешовані файли в папку завантажень</string>
     <string name="move_temporary_files">Перемістити тимчасові файли</string>
     <string name="custom_audio_quality">Вибір якості аудіо</string>
-    <string name="piped_instance">Piped екземпляр</string>
-    <string name="piped_instance_summary">Напишіть сервер Piped API, який програма може використовувати для запитів і форматів YouTube</string>
     <string name="retries">Повторні спроби</string>
     <string name="format_order">Порядок форматів</string>
     <string name="fragment_retries">Повторні спроби фрагмента</string>

@@ -273,8 +273,6 @@
     <string name="audio_only_item">This item only contains audio formats</string>
     <string name="move_temporary_files">Move temporary files</string>
     <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
-    <string name="piped_instance">Piped instance</string>
-    <string name="piped_instance_summary">Write a PIPED API server the app can use for YouTube queries and formats</string>
     <string name="custom_audio_quality">Use custom audio quality</string>
     <string name="retries">Retries</string>
     <string name="fragment_retries">Fragment retries</string>

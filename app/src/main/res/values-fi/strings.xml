@@ -108,7 +108,6 @@
     <string name="misc">Muut</string>
     <string name="swipe_gestures">Pyyhkäisyeleet</string>
     <string name="crop_thumb_summary">Rajaa pienoiskuva neliöksi äänilatauksille</string>
-    <string name="piped_instance">Piped instanssi</string>
     <string name="concurrent_fragments">Yhtäaikaisia osioita</string>
     <string name="video">Video</string>
     <string name="downloading_update">Ladataan uutta versiota</string>
@@ -270,7 +269,6 @@
     <string name="search_hint">Hae tai Liitä URL</string>
     <string name="format_source">Formaattien lähde</string>
     <string name="material_you">Material You</string>
-    <string name="piped_instance_summary">Kirjoita PIPED API-palvelin, jota sovellus voi käyttää YouTube-kyselyihin ja -formaatteihin.</string>
     <string name="fragment_retries">Osion uudestaanyritykset</string>
     <string name="format_order">Formaattien järjestys</string>
     <string name="enable_mtime_summary">Aseta HTTP-Last-Modified otsike tiedoston viimeisimmäksi muokkauspäiväksi</string>

@@ -29,7 +29,6 @@
     <string name="general">பொது</string>
     <string name="misc">மற்றவை</string>
     <string name="move_temporary_files_summary">சேமித்த கோப்புகளை பதிவிறக்கங்கள் கோப்புறையில் மாற்றவும்</string>
-    <string name="piped_instance">குழாய் நிகழ்வு</string>
     <string name="observe_sources">ஆதாரங்களைக் கவனியுங்கள்</string>
     <string name="new_source">புதிய மூல</string>
     <string name="delete_all_sources">அனைத்து ஆதாரங்களையும் நீக்கு</string>
@@ -171,7 +170,6 @@
     <string name="socks5_proxy">சாக்ச்5 பதிலாள் முகவரி</string>
     <string name="swipe_gestures">சைகைகள் செய்</string>
     <string name="move_temporary_files">தற்காலிக கோப்புகளை நகர்த்து</string>
-    <string name="piped_instance_summary">குழாய் பநிஇ சேவையகத்தை எழுதுங்கள், பயன்பாடு யூடியூப் வினவல்கள் மற்றும் வடிவங்களுக்குப் பயன்படுத்தலாம்</string>
     <string name="custom_audio_quality">தனிப்பயன் இசை தரத்தைப் பயன்படுத்து</string>
     <string name="retries">மறுமுயற்சிகள்</string>
     <string name="fragment_retries">துண்டு மறுமுயற்சிகள்</string>

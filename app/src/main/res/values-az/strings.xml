@@ -266,8 +266,6 @@
     <string name="audio_only_item">Bu element yalnız səs formatları ehtiva edir</string>
     <string name="move_temporary_files">Müvəqqəti faylları köçür</string>
     <string name="move_temporary_files_summary">Toplanan faylları yükləmələr qovluğuna köçür</string>
-    <string name="piped_instance">Piped instansiya</string>
-    <string name="piped_instance_summary">PIPED API server yazın tətbiq YouTube sorğuları və formatları üçün işlədə bilər</string>
     <string name="custom_audio_quality">Fərdi səs keyfiyyəti işlət</string>
     <string name="retries">Təkrar cəhdlər</string>
     <string name="fragment_retries">Fraqment təkrar cəhdləri</string>

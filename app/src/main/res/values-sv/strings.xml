@@ -83,7 +83,6 @@
     <string name="custom_audio_quality">Använd anpassad ljudkvalitet</string>
     <string name="use_extra_commands">Lägg till extra kommandon</string>
     <string name="preferred_format_id_summary">Välj formatet med detta ID i nerladdningskortet</string>
-    <string name="piped_instance_summary">Skriv en PIPED API-server som appen kan använda för YouTube-frågor och YouTube-format</string>
     <string name="retries">Omförsök</string>
     <string name="force_keyframes_summary">Långsammare process, men mer exakta klipp</string>
     <string name="use_extra_commands_summary">För nerladdning av ljud/video. Lägg till extra kommandon tillsammans med GUI-konfigurationen</string>
@@ -260,7 +259,6 @@
     <string name="crop_thumb_summary">Beskär miniatyrbilden till en kvadrat för nerladdning av ljud</string>
     <string name="audio_only_item">Det här objektet innehåller endast ljudformat</string>
     <string name="move_temporary_files">Flytta tillfälliga filer</string>
-    <string name="piped_instance">Piped Instance</string>
     <string name="fragment_retries">Fragmentomförsök</string>
     <string name="format_order">Formatordning</string>
     <string name="force_keyframes">Tvinga nyckelbildrutor vid klipp</string>

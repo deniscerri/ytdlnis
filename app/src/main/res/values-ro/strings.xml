@@ -139,8 +139,6 @@
     <string name="crop_thumb_summary">Decupați miniatura într-un pătrat pentru descărcări audio</string>
     <string name="move_temporary_files">Mutați fișierele temporare</string>
     <string name="move_temporary_files_summary">Transferați fișierele din cache în folderul de descărcări</string>
-    <string name="piped_instance">Instanță Piped</string>
-    <string name="piped_instance_summary">Scrieți un server API PIPED care aplicația poate folosi pentru interogări și formate YouTube</string>
     <string name="custom_audio_quality">Utilizați calitate audio personalizată</string>
     <string name="use_extra_commands">Adăugați comenzi suplimentare</string>
     <string name="use_extra_commands_summary">Pentru descărcări audio / video. Adăugați comenzi suplimentare împreună cu configurația interfeței grafice</string>

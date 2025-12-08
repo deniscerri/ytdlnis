@@ -72,7 +72,6 @@
     <string name="items_left">предмет(а) преостало</string>
     <string name="save_subs">Сачувај титлове</string>
     <string name="sponsorblock_nonmusic">Немузички и неповезани сегменти</string>
-    <string name="piped_instance">Piped инстанца</string>
     <string name="save_thumb">Сачувај сличицу</string>
     <string name="update_formats_background">Ажурирај формате у позадини</string>
     <string name="sponsorblock_sponsors">Спонзори</string>
@@ -277,7 +276,6 @@
     <string name="cut">Сечење</string>
     <string name="create_shortcut">Направи пречицу</string>
     <string name="ytdl_version">yt-dlp верзија</string>
-    <string name="piped_instance_summary">Додајте PIPED API сервер, апликација то може да користи за YouTube упите и формате</string>
     <string name="ytdl_update_hint">Корисни савет приликом преузимања ажурирања</string>
     <string name="command">Команда</string>
     <string name="remove_audio">Уклони аудио снимак</string>

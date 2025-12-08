@@ -248,7 +248,6 @@
     <string name="sponsorblock">SponsorBlock</string>
     <string name="network_error">Ağ hatası</string>
     <string name="audio_only_item">Bu öge yalnızca ses formatlarını içerir</string>
-    <string name="piped_instance">Piped oluşumu</string>
     <string name="socks5_proxy_summary">Belirtilen HTTP/HTTPS/SOCKS proxy\'sini kullan</string>
     <string name="restore_complete">Uygulama geri yükleme tamamlandı. Aşağıdaki ögeler geri yüklendi:</string>
     <string name="incognito">Gizli mod</string>
@@ -270,7 +269,6 @@
     <string name="swipe_gestures_summary">Belirli eylemler için ögeleri kaydır</string>
     <string name="crop_thumb">Küçük resmi kırp</string>
     <string name="crop_thumb_summary">Ses indirmeleri için küçük resmi kare şeklinde kırp</string>
-    <string name="piped_instance_summary">Uygulamanın YouTube sorguları ve formatları için kullanabileceği bir PIPED API sunucusu yaz</string>
     <string name="search_suggestions_summary">Google\'dan arama önerileri al</string>
     <string name="retries">Yeniden denemeler</string>
     <string name="fragment_retries">Parça tekrarları</string>

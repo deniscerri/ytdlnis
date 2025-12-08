@@ -266,8 +266,6 @@
     <string name="crop_thumb_summary">Recortar miniatura em formato quadrado para downloads de áudio</string>
     <string name="audio_only_item">Este item contém apenas formatos de áudio</string>
     <string name="move_temporary_files">Mover arquivos temporários</string>
-    <string name="piped_instance">Instância Piped</string>
-    <string name="piped_instance_summary">Insira a API do servidor Piped, o aplicativo pode usar para consultas e formatos do YouTube</string>
     <string name="custom_audio_quality">Usar qualidade de áudio personalizada</string>
     <string name="retries">Novas tentativas</string>
     <string name="fragment_retries">Novas tentativas de fragmento</string>

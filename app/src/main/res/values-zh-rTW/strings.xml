@@ -141,7 +141,6 @@
     <string name="crop_thumb">裁剪縮圖</string>
     <string name="move_temporary_files">移動暫存檔案</string>
     <string name="move_temporary_files_summary">將快取檔案轉移至下載資料夾</string>
-    <string name="piped_instance_summary">撰寫可用於 YouTube 查詢與格式的 PIPED API 伺服器，</string>
     <string name="fragment_retries">片段重試次數</string>
     <string name="format_order">格式順序</string>
     <string name="remove_all">移除全部</string>
@@ -264,7 +263,6 @@
     <string name="misc">其他</string>
     <string name="general">一般</string>
     <string name="audio_only_item">此項目僅包含音訊格式</string>
-    <string name="piped_instance">Piped 實例</string>
     <string name="network_error">網路錯誤</string>
     <string name="backup_restore">備份與還原</string>
     <string name="search_suggestions">搜尋建議</string>

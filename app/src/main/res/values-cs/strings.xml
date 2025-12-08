@@ -127,7 +127,6 @@
     <string name="add_chapter">Přidání kapitol</string>
     <string name="save_subs">Uložení titulků</string>
     <string name="sponsorblock_nonmusic">Nehudební a nedůležité části</string>
-    <string name="piped_instance">Instance Piped</string>
     <string name="update_formats_background">Aktualizace formátů na pozadí</string>
     <string name="sponsorblock_sponsors">Sponzoři</string>
     <string name="changelog">Seznam změn</string>
@@ -294,7 +293,6 @@
     <string name="cut">Střih</string>
     <string name="create_shortcut">Vytvoření zkratky</string>
     <string name="ytdl_version">Verze yt-dlp</string>
-    <string name="piped_instance_summary">Uveďte server API PIPED, který může aplikace používat pro dotazy a formáty YouTube</string>
     <string name="command">Příkaz</string>
     <string name="remove_audio">Odstranění audia</string>
     <string name="system">Systém</string>

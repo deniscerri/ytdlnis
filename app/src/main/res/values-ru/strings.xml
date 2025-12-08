@@ -267,8 +267,6 @@
     <string name="move_temporary_files">Переместить кэш</string>
     <string name="move_temporary_files_summary">Переместить кэш в папку загрузок</string>
     <string name="custom_audio_quality">Выбор качества аудио</string>
-    <string name="piped_instance">Экземпляр Piped</string>
-    <string name="piped_instance_summary">Напишите PIPED API-сервер, который приложение сможет использовать для запросов и форматов YouTube</string>
     <string name="fragment_retries">Число повторов для фрагмента</string>
     <string name="retries">Число повторов</string>
     <string name="format_order">Порядок форматов</string>

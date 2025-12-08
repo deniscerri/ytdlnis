@@ -354,9 +354,7 @@
     <string name="video">वीडियो</string>
     <string name="version">संस्करण</string>
     <string name="command_directory">विशिष्ट आदेश पिटिका</string>
-    <string name="piped_instance_summary">युज्यते एषः API सर्वरः लिखतु यः अनुप्रयोगेन यूट्यूब् अनुरोधानां च रूपाणां कृते उपयोग्यते।</string>
     <string name="move_temporary_files_summary">सङ्केतितजालानि अवगच्छताम्</string>
-    <string name="piped_instance">नलिका विवरण</string>
     <string name="cut_unsupported">अस्य वस्तूनां कर्तनं अनुपलब्धम्</string>
     <string name="cut_unavailable_please_update_item">तव आवश्यकं सम्पातविधिम् उपयोक्तुं वस्तुप्रवृत्तिं अद्यतनं कर्तुम्।</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube पश्चात् पश्यन्तु (कुकीजस्य आवश्यकता अस्ति)</string>

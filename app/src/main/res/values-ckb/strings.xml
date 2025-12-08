@@ -161,7 +161,6 @@
     <string name="create">درۆستکردن</string>
     <string name="misc">میسک</string>
     <string name="save_subs">پاشەکەوتی ژێرنووس</string>
-    <string name="piped_instance">نموونەی Piped</string>
     <string name="update_formats_background">نوێکردنەوەی فۆرماتەکان لە پشت شاشە</string>
     <string name="changelog">گۆڕانکاریەکان</string>
     <string name="clear_temporary_files">سڕینەوەی فایلە کاتیەکان</string>
@@ -297,7 +296,6 @@
     <string name="cut">بڕین</string>
     <string name="create_shortcut">دروستکردنی کورتەڕێ</string>
     <string name="ytdl_version">yt-dlp وەشان</string>
-    <string name="piped_instance_summary">نوسینی سێرڤەری PIPED API ، ئەپەکە دەتوانێت بۆ پرسیار و فۆرماتەکانی یوتیوب بەکاری بهێنێت</string>
     <string name="command">فەرمان</string>
     <string name="remove_audio">لابردنی دەنگ</string>
     <string name="system">سیستەم</string>

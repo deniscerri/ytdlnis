@@ -294,7 +294,6 @@
     <string name="schedule">Calendrier</string>
     <string name="update_ytdl_master">Version master de yt-dlp</string>
     <string name="user_agent_header">En-tête de l\'agent utilisateur</string>
-    <string name="piped_instance">Instance Piped</string>
     <string name="changelog">Journal des modifications</string>
     <string name="format_order">Ordre des formats</string>
     <string name="fragment_retries">Essais pour les fragments</string>
@@ -318,7 +317,6 @@
     <string name="buffer_size_summary">Taille du tampon de téléchargement, par ex. 1024 ou 16K (la valeur par défaut est 1024)</string>
     <string name="ytdl_source">Source de yt-dlp</string>
     <string name="remember_download_type">Mémoriser le type de téléchargement</string>
-    <string name="piped_instance_summary">Renseigner un serveur API Piped que l\'application peut utiliser pour les requêtes et les formats YouTube</string>
     <string name="buffer_size">Taille du tampon</string>
     <string name="source">Source</string>
     <string name="remember_download_type_summary">Sélectionner le dernier type de téléchargement ouvert pour l\'élément actuel</string>

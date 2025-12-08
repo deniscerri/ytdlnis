@@ -235,8 +235,6 @@
     <string name="subtitle_languages">Języki napisów</string>
     <string name="save_subs_desc">Zapisz plik z napisami</string>
     <string name="custom_audio_quality">Użyj niestandardowej jakości dźwięku</string>
-    <string name="piped_instance">Instancja Piped</string>
-    <string name="piped_instance_summary">Zapisz serwer PIPED API, którego aplikacja może używać do zapytań i formatów YouTube</string>
     <string name="socks5_proxy_summary">Użyj określonego serwera proxy HTTP/HTTPS/SOCKS</string>
     <string name="socks5_proxy">Adres URL serwera proxy SOCKS5</string>
     <string name="retries">Ponowne próby</string>

@@ -266,9 +266,7 @@
     <string name="misc">Lain-lain</string>
     <string name="move_temporary_files_summary">Transfer berkas singgahan (cache) ke folder unduhan</string>
     <string name="move_temporary_files">Pindahkan berkas sementara</string>
-    <string name="piped_instance">Instansi piped</string>
     <string name="custom_audio_quality">Gunakan kualitas audio khusus</string>
-    <string name="piped_instance_summary">Tulis server API PIPED aplikasi dapat digunakan untuk kueri dan format YouTube</string>
     <string name="retries">Percobaan Kembali</string>
     <string name="fragment_retries">Percobaan ulang fragmen</string>
     <string name="format_order">Urutan format</string>

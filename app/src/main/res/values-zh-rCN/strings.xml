@@ -282,8 +282,6 @@
     <string name="sponsorblock_promos">自我推广</string>
     <string name="sponsorblock_fillers">补充</string>
     <string name="enable_mtime_summary">将 HTTP Last-Modified 标头设置为最近修改时间</string>
-    <string name="piped_instance">PIPED 实例</string>
-    <string name="piped_instance_summary">添加 PIPED API 服务器，用于 YouTube 查询和格式</string>
     <string name="format_order">格式排序</string>
     <string name="cookies">Cookies</string>
     <string name="format_id">格式 ID</string>

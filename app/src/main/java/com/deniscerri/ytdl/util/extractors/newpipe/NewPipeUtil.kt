@@ -266,8 +266,7 @@ class NewPipeUtil(context: Context) {
             val kioskList = NewPipe.getService(ServiceList.YouTube.serviceId).kioskList
             kioskList.forceContentCountry(ContentCountry(countryCode))
 
-            val kioskId = "trending_music"
-            val extractor = kioskList.getExtractorById(kioskId, null)
+            val extractor = kioskList.getExtractorById("trending_music", null)
             extractor.fetchPage()
 
             val info = KioskInfo.getInfo(extractor)

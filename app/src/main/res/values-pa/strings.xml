@@ -41,9 +41,7 @@
     <string name="format_order">ਫਾਰਮੈਟ ਆਰਡਰ</string>
     <string name="fragment_retries">ਫ੍ਰੈਗਮੈਂਟ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ਾਂ</string>
     <string name="retries">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ਾਂ</string>
-    <string name="piped_instance_summary">ਇੱਕ PIPED API ਸਰਵਰ ਭਰੋ, ਐਪ YouTube ਸਵਾਲਾਂ ਅਤੇ ਫਾਰਮੈਟਾਂ ਲਈ ਵਰਤ ਸਕਦਾ ਹੈ</string>
     <string name="custom_audio_quality">ਕਸਟਮ ਆਡੀਓ ਗੁਣਵੱਤਾ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
-    <string name="piped_instance">Piped ਇੰਸਟੈਂਸ</string>
     <string name="move_temporary_files">ਅਸਥਾਈ ਫ਼ਾਈਲਾਂ ਨੂੰ ਸਥਾਨਾਂਤਰਿਤ ਕਰੋ</string>
     <string name="move_temporary_files_summary">ਕੈਸ਼ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਫ਼ੋਲਡਰ ਵਿੱਚ ਸਥਾਨਾਂਤਰਿਤ ਕਰੋ</string>
     <string name="music_directory">ਆਡੀਓ ਫ਼ੋਲਡਰ</string>

@@ -267,8 +267,6 @@
     <string name="move_temporary_files">임시 파일 이동</string>
     <string name="move_temporary_files_summary">캐시된 파일을 다운로드 폴더로 전송</string>
     <string name="custom_audio_quality">사용자 지정 오디오 품질 사용</string>
-    <string name="piped_instance">파이프 인스턴스</string>
-    <string name="piped_instance_summary">앱이 YouTube 쿼리 및 형식에 사용할 수 있는 PIPED API 서버 설정</string>
     <string name="orange">주황색</string>
     <string name="save_for_later">나중에 다운로드를 저장하시겠습니까?</string>
     <string name="retries">재시도</string>

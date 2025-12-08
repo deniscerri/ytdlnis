@@ -135,7 +135,6 @@
     <string name="swipe_gestures_summary">Scorri gli elementi per determinate azioni</string>
     <string name="crop_thumb">Ritaglia miniatura</string>
     <string name="crop_thumb_summary">Ritaglia la miniatura in un quadrato per i download audio</string>
-    <string name="piped_instance">Istanza convogliata</string>
     <string name="custom_audio_quality">Usa qualità audio personalizzata</string>
     <string name="use_extra_commands">Aggiungi comandi extra</string>
     <string name="fragment_retries">Tentativi frammento</string>
@@ -244,7 +243,6 @@
     <string name="light">Chiaro</string>
     <string name="quick_download">Download rapido</string>
     <string name="misc">Miscellanea</string>
-    <string name="piped_instance_summary">Scrivi un server API PIPED utilizzabile dall\'app per query e formati di YouTube</string>
     <string name="swipe_gestures">Gesti di scorrimento</string>
     <string name="retries">Tentativi</string>
     <string name="show_terminal">Mostra terminale nel menu condividi</string>

@@ -251,7 +251,6 @@
     <string name="preferred_format_id">Bevorzugte Format-ID</string>
     <string name="custom_audio_quality">Benutzerdefinierte Audioqualität verwenden</string>
     <string name="socks5_proxy_summary">Den angegebenen HTTP/HTTPS/SOCKS-Proxy verwenden</string>
-    <string name="piped_instance">Piped Instanz</string>
     <string name="socks5_proxy">Socks5 Proxy Adresse (URL)</string>
     <string name="move_temporary_files">Temporäre Dateien bewegen</string>
     <string name="move_temporary_files_summary">Zwischengespeicherte Dateien in den Download-Ordner übertragen</string>
@@ -268,7 +267,6 @@
     <string name="swipe_gestures">Wischgesten</string>
     <string name="swipe_gestures_summary">Streichen von Elementen für bestimmte Aktionen</string>
     <string name="crop_thumb">Vorschaubild zuschneiden</string>
-    <string name="piped_instance_summary">Schreiben eines PIPED API Servers, den die App für YouTube Abfragen und Formate nutzen kann</string>
     <string name="retries">Wiederholungen</string>
     <string name="fragment_retries">Fragmentwiederholungen</string>
     <string name="format_order">Formatreihenfolge</string>

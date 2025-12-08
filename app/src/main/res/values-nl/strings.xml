@@ -283,7 +283,6 @@
     <string name="search_suggestions">Zoek­suggesties</string>
     <string name="swipe_gestures">Veeg­gebaren</string>
     <string name="crop_thumb">Miniatuur bĳsnĳden</string>
-    <string name="piped_instance">Piped-instantie</string>
     <string name="fragment_retries">Fragment­pogingen</string>
     <string name="format_order">Formaat­volgorde</string>
     <string name="current">Huidige opdracht</string>
@@ -385,7 +384,6 @@
     <string name="preferred_format_id_summary">Selecteer het formaat met deze ID op de download­kaart</string>
     <string name="move_temporary_files_summary">Breng in de cache opgeslagen bestanden over naar de download­map</string>
     <string name="use_extra_commands_summary">Voor audio-/video­downloads. Voeg extra opdrachten toe samen met de GUI-configuratie</string>
-    <string name="piped_instance_summary">Voer een Piped-API-server in die de app kan gebruiken voor YouTube-query\'s en -indelingen</string>
     <string name="changed_path_for_everyone_to">Download­pad van alle items aangepast naar:</string>
     <string name="cut_unavailable_please_update_item">U moet de item­gegevens bĳwerken om de knip­functie te kunnen gebruiken</string>
     <string name="audio_only_item">Dit item bevat enkel audio­formaten</string>

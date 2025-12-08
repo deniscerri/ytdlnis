@@ -400,8 +400,6 @@
     <string name="download_now">ดาวน์โหลดตอนนี้เลย</string>
     <string name="preferred_locale">ตำแหน่งที่ตั้งที่ต้องการ</string>
     <string name="updating_download_data">กำลังอัปเดตข้อมูลรายการดาวน์โหลด</string>
-    <string name="piped_instance">ท่อของอินสแตนซ์</string>
-    <string name="piped_instance_summary">เขียนเซิร์ฟเวอร์ของ PIPED API, แอปจะสามารถใช้สำหรับการค้นหาใน Youtube และฟอร์แมต</string>
     <string name="retries">ลองอีกครั้ง</string>
     <string name="fragment_retries">การตรวจสอบส่วนต่อชิ้นส่วน</string>
     <string name="show_terminal">แสดงเทอร์มินัลในหน้าเมนูแชร์</string>

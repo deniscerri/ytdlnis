@@ -217,7 +217,6 @@
     <string name="high_contrast">Độ tương phản cao</string>
     <string name="quick_download_summary">Không tìm nạp dữ liệu trong thẻ tải xuống</string>
     <string name="misc">Khác</string>
-    <string name="piped_instance">Phiên bản Piped</string>
     <string name="update_formats_background">Cập nhật định dạng trong nền</string>
     <string name="search_suggestions_summary">Nhận gợi ý tìm kiếm từ Google</string>
     <string name="search_history">Lịch sử tìm kiếm</string>
@@ -270,7 +269,6 @@
     <string name="download_now">Tải ngay</string>
     <string name="finished_download_notification_channel_name">Đã hoàn tất tải xuống</string>
     <string name="preferred_home_screen">Màn hình chính ưa tiên</string>
-    <string name="piped_instance_summary">Tạo máy chủ API Piped để ứng dụng truy vấn và định dạng YouTube</string>
     <string name="remove_audio">Loại bỏ âm thanh</string>
     <string name="system">Hệ thống</string>
     <string name="restore_complete">Khôi phục ứng dụng hoàn tất. Các mục sau đây đã được khôi phục:</string>

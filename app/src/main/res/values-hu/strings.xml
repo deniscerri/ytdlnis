@@ -283,8 +283,6 @@
     <string name="audio_only_item">Ez a tétel csak hangformátumokat tartalmaz</string>
     <string name="move_temporary_files">Ideiglenes fájlok áthelyezése</string>
     <string name="move_temporary_files_summary">A gyorsítótárazott fájlok átvitele a letöltések mappába</string>
-    <string name="piped_instance">Mentett példány</string>
-    <string name="piped_instance_summary">Egy PIPED API szerver, amelyet az alkalmazás használhat YouTube-lekérdezésekhez és formátumokhoz</string>
     <string name="custom_audio_quality">Egyéni/saját hangminőség használata</string>
     <string name="retries">Újrapróbálkozás</string>
     <string name="fragment_retries">Töredék újrapróbálása/újraprobálkozások</string>

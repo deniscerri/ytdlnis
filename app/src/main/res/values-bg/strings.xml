@@ -318,7 +318,6 @@
     <string name="crop_thumb_summary">Изрежете миниизображението в квадрат за изтегляне на аудио</string>
     <string name="force_keyframes">Ключови кадри при изрязване на видео</string>
     <string name="force_keyframes_summary">По-бавен процес, но по-прецизен монтаж</string>
-    <string name="piped_instance_summary">Посочете PIPED API сървър, който приложението може да използва за заявки и формати в YouTube</string>
     <string name="custom_audio_quality">Използвайте персонализирано качество на звука</string>
     <string name="retries">Брой повторения</string>
     <string name="prefer_smaller_formats">Предпочитан формати с по-малък размер</string>
@@ -367,7 +366,6 @@
     <string name="restrict_filenames">Ограничени имена на файловете</string>
     <string name="restrict_filenames_summary"><![CDATA[Ограничете имената на файлове само до ASCII знаци и избягвайте \"&\" и интервалите в имената на файловете]]></string>
     <string name="delete_files_too">Изтрийте файловете от устройството</string>
-    <string name="piped_instance">Piped екземпляр</string>
     <string name="confirm_terminate">Спира всички изтегляния и принудително затваря приложението</string>
     <string name="create_shortcut">Създай пряк път</string>
     <string name="items_left">оставащ/и</string>

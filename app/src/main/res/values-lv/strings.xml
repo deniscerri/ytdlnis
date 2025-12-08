@@ -266,7 +266,5 @@
     <string name="finished_download_notification_channel_description">Paziņojums par pabeigtām vai kļūdainām lejupielādēm</string>
     <string name="move_temporary_files">Pārvietot Pagaidu Failus</string>
     <string name="move_temporary_files_summary">Kešatmiņā esošo failu pārvietošana uz lejupielādes mapi</string>
-    <string name="piped_instance">Piped Instance</string>
-    <string name="piped_instance_summary">Izmanto PIPED API Serveri, ko lietotne var izmantot YouTube vaicājumiem un formātiem</string>
     <string name="custom_audio_quality">Izmantot Pielāgotu Audio Kvalitāti</string>
 </resources>
