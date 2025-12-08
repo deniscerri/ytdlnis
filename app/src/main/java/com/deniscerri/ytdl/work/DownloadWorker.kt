@@ -169,6 +169,12 @@ class DownloadWorker(
                     val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
                     val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
+
+                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
+                    if (updateYTDLP) {
+                        request.addOption("-U")
+                    }
+
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {
                         delay(1500)
@@ -374,7 +380,6 @@ class DownloadWorker(
                             val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
                             FileUtil.deleteFile("${cachePath}/${infoJsonName}.info.json")
                         }
-
 
                         if (logDownloads){
                             logRepo.update(it.message ?: "", logItem.id)

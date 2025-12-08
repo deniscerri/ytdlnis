@@ -17,6 +17,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -35,6 +36,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.PopupMenu
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -105,6 +107,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
+import java.util.logging.Handler
 
 
 object UiUtil {
@@ -1302,6 +1305,7 @@ object UiUtil {
     fun configureVideo(
         view: View,
         context: Activity,
+        ytdlpViewModel: YTDLPViewModel,
         items: List<DownloadItem>,
         embedSubsClicked : (Boolean) -> Unit,
         addChaptersClicked: (Boolean) -> Unit,
@@ -1764,7 +1768,8 @@ object UiUtil {
             }else {
                 ""
             }
-            showFilenameTemplateDialog(context, currentFilename) {
+            val itemContext = if (items.size == 1) items.first() else null
+            showFilenameTemplateDialog(context, currentFilename, ytdlpViewModel = ytdlpViewModel, itemContext = itemContext) {
                 filenameTemplateSet(it)
             }
         }
@@ -1791,6 +1796,7 @@ object UiUtil {
     fun configureAudio(
         view: View,
         context: Activity,
+        ytdlpViewModel: YTDLPViewModel,
         items: List<DownloadItem>,
         embedThumbClicked: (Boolean) -> Unit,
         cropThumbClicked: (Boolean) -> Unit,
@@ -1867,7 +1873,8 @@ object UiUtil {
             }else {
                 ""
             }
-            showFilenameTemplateDialog(context, currentFilename) {
+            val itemContext = if (items.size == 1) items.first() else null
+            showFilenameTemplateDialog(context, currentFilename, ytdlpViewModel = ytdlpViewModel, itemContext = itemContext) {
                 filenameTemplateSet(it)
             }
         }
@@ -2103,7 +2110,7 @@ object UiUtil {
     }
 
     @SuppressLint("RestrictedApi")
-    fun showFilenameTemplateDialog(context: Activity, currentFilename: String, dialogTitle: String = context.getString(R.string.file_name_template), filenameSelected: (f: String) -> Unit){
+    fun showFilenameTemplateDialog(context: Activity, currentFilename: String, dialogTitle: String = context.getString(R.string.file_name_template), ytdlpViewModel: YTDLPViewModel? = null, itemContext: DownloadItem? = null, filenameSelected: (f: String) -> Unit){
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(dialogTitle)
         val view = context.layoutInflater.inflate(R.layout.filename_template_dialog, null)
@@ -2174,6 +2181,42 @@ object UiUtil {
             myTemplatesView.isVisible = true
         }
 
+        view.findViewById<MaterialCardView>(R.id.filename_template_preview).isVisible = itemContext != null
+        val previewTemplateBtn = view.findViewById<MaterialButton>(R.id.filename_template_preview_btn)
+        val previewTemplateLoading = view.findViewById<ProgressBar>(R.id.filename_template_preview_loading)
+        val previewTemplateText = view.findViewById<TextView>(R.id.filename_template_preview_text)
+
+        previewTemplateBtn.setOnClickListener {
+            previewTemplateLoading.isVisible = true
+            previewTemplateBtn.isVisible = false
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val preview = ytdlpViewModel!!.getFilenameTemplatePreview(itemContext!!, editText.text.toString())
+
+                withContext(Dispatchers.Main) {
+                    previewTemplateLoading.isVisible = false
+                    previewTemplateText.isVisible = true
+                    previewTemplateText.text = preview
+                }
+            }
+        }
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                previewTemplateText.isVisible = false
+                previewTemplateLoading.isVisible = false
+                previewTemplateBtn.isVisible = true
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        if (currentFilename.isNotBlank() && itemContext != null) {
+            previewTemplateBtn.isVisible = true
+            previewTemplateBtn.performClick()
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             //handle personal template chips
             val mychips = mutableListOf<Chip>()
@@ -2219,7 +2262,6 @@ object UiUtil {
 
                 chips.add(tmp)
             }
-
 
             withContext(Dispatchers.Main){
                 if (mychips.isNotEmpty()){

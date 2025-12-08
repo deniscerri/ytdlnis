@@ -504,4 +504,5 @@
     <string name="use_original_url_playlist_summary">Use playlist url given by user instead of the playlist_webpage_url tag from the json dump</string>
     <string name="update_ytdlp_while_downloading">Update yt-dlp while downloading</string>
     <string name="update_ytdlp_while_downloading_summary">Add -U to yt-dlp to update it to latest before downloading</string>
+    <string name="preview_filename">Preview filename</string>
 </resources>

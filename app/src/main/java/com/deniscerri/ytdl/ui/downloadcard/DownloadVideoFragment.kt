@@ -32,6 +32,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
@@ -59,6 +60,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var formatViewModel : FormatViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var ytdlpViewModel: YTDLPViewModel
     private lateinit var preferences: SharedPreferences
     private lateinit var shownFields: List<String>
     lateinit var title : TextInputLayout
@@ -85,6 +87,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         val formatUtil = FormatUtil(requireContext())
         genericVideoFormats = formatUtil.getGenericVideoFormats(requireContext().resources)
         genericAudioFormats = formatUtil.getGenericAudioFormats(requireContext().resources)
@@ -353,6 +356,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         UiUtil.configureVideo(
                             view,
                             requireActivity(),
+                            ytdlpViewModel,
                             listOf(downloadItem),
                             embedSubsClicked = {
                                 downloadItem.videoPreferences.embedSubs = it

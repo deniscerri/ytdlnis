@@ -174,7 +174,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         audioFilenameTemplate?.summary = preferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
 
         videoFilenameTemplate?.setOnPreferenceClickListener {
-            UiUtil.showFilenameTemplateDialog(requireActivity(), videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {
+            UiUtil.showFilenameTemplateDialog(requireActivity(),videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {
                 editor.putString("file_name_template", it).apply()
                 videoFilenameTemplate?.summary = it
             }

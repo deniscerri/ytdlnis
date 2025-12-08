@@ -32,6 +32,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
@@ -57,6 +58,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var resultViewModel : ResultViewModel
+    private lateinit var ytdlpViewModel : YTDLPViewModel
     private lateinit var formatViewModel : FormatViewModel
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
@@ -80,6 +82,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         genericAudioFormats = FormatUtil(requireContext()).getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -310,6 +313,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         UiUtil.configureAudio(
                             view,
                             requireActivity(),
+                            ytdlpViewModel,
                             listOf(downloadItem),
                             embedThumbClicked = {
                                 downloadItem.audioPreferences.embedThumb = it

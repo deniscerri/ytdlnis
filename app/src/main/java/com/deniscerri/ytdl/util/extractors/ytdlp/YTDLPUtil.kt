@@ -41,6 +41,8 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
+import java.security.MessageDigest
+import java.util.Base64
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
@@ -118,6 +120,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }else{
                 request = YoutubeDLRequest(query)
             }
+            request.addWriteInfoJson(query)
         }else{
             request = YoutubeDLRequest(emptyList())
             when (searchEngine){
@@ -374,6 +377,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         return parseYTDLPListResults(results)
     }
 
+
     suspend fun getFormatsForAll(urls: List<String>, progress: (progress: ResultViewModel.MultipleFormatProgress) -> Unit) : Result<MutableList<MutableList<Format>>>  {
         val formatCollection = mutableListOf<MutableList<Format>>()
 
@@ -455,7 +459,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         return Result.success(formatCollection)
     }
-
 
     fun getFormats(url: String) : List<Format> {
         val request = YoutubeDLRequest(url)
@@ -583,7 +586,51 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             return Result.failure(e)
         }
     }
+    fun getVersion(context: Context, channel: String) : String {
+        if (listOf("stable", "nightly", "master").contains(channel)) {
+            return YoutubeDL.version(context) ?: ""
+        }
 
+        val req = YoutubeDLRequest(emptyList())
+        req.addOption("--version")
+        return YoutubeDL.getInstance().execute(req).out.trim()
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun YoutubeDLRequest.addWriteInfoJson(url: String) {
+        val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+        val infoJsonName = MessageDigest.getInstance("MD5").digest(url.toByteArray()).toHexString()
+        this.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
+    }
+
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun getInfoJsonPath(url: String): String? {
+        val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+        val infoJsonName = MessageDigest.getInstance("MD5").digest(url.toByteArray()).toHexString()
+        val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
+        return infoJsonFile?.absolutePath
+    }
+
+    fun getFilenameTemplatePreview(item: DownloadItem, filenameTemplate: String): String {
+        item.customFileNameTemplate = filenameTemplate
+        val request = buildYoutubeDLRequest(item)
+        request.addOption("--print", "%(filename)s")
+        request.addOption("--skip-download")
+
+        val infoJsonPath = getInfoJsonPath(item.url)
+        if (infoJsonPath == null) {
+            request.addWriteInfoJson(item.url)
+        } else {
+            request.addOption("--load-info-json", infoJsonPath)
+        }
+
+        try {
+            val response = YoutubeDL.execute(request)
+            return response.out.replace(FileUtil.getCachePath(context) + "${item.id}/", "").trim()
+        } catch (ex: Exception) {
+            return ex.message ?: ""
+        }
+    }
 
     fun parseYTDLRequestString(request : YoutubeDLRequest) : String {
         val arr = request.buildCommand().toMutableList()
@@ -616,15 +663,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
     }
 
-    fun getVersion(context: Context, channel: String) : String {
-        if (listOf("stable", "nightly", "master").contains(channel)) {
-            return YoutubeDL.version(context) ?: ""
-        }
-
-        val req = YoutubeDLRequest(emptyList())
-        req.addOption("--version")
-        return YoutubeDL.getInstance().execute(req).out.trim()
-    }
 
     private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
         val extractorArgs = mutableListOf<String>()
@@ -856,11 +894,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val proxy = sharedPreferences.getString("proxy", "")
         if (proxy!!.isNotBlank()){
             request.addOption("--proxy", proxy)
-        }
-
-        val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
-        if (updateYTDLP) {
-            request.addOption("-U")
         }
 
         val keepCache = sharedPreferences.getBoolean("keep_cache", false)

@@ -50,6 +50,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.adapter.ConfigureMultipleDownloadsAdapter
@@ -83,6 +84,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var historyViewModel: HistoryViewModel
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var ytdlpViewModel: YTDLPViewModel
     private lateinit var formatViewModel: FormatViewModel
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
@@ -121,6 +123,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+        ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -539,6 +542,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     UiUtil.configureAudio(
                                         sheetView,
                                         requireActivity(),
+                                        ytdlpViewModel,
                                         items,
                                         embedThumbClicked = {enabled ->
                                             items.forEach {
@@ -631,6 +635,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     UiUtil.configureVideo(
                                         sheetView,
                                         requireActivity(),
+                                        ytdlpViewModel,
                                         items,
                                         embedSubsClicked = {checked ->
                                             items.forEach { it.videoPreferences.embedSubs = checked }

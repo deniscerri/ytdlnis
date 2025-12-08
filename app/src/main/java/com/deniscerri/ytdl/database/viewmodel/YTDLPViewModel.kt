@@ -27,4 +27,8 @@ class YTDLPViewModel(private val application: Application) : AndroidViewModel(ap
     fun getVersion(channel: String) : String {
         return ytdlpUtil.getVersion(application, channel)
     }
+
+    fun getFilenameTemplatePreview(item: DownloadItem, filenameTemplate: String) : String {
+        return ytdlpUtil.getFilenameTemplatePreview(item, filenameTemplate)
+    }
 }
