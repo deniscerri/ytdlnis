@@ -208,7 +208,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
             val authorTags = mutableListOf("uploader", "channel", "playlist_uploader", "uploader_id")
             if (url.isYoutubeURL()) {
-                authorTags.addAll(0, listOf("artists", "artist"))
+                authorTags.addAll(0, listOf("artists", "artist", "creators"))
             }
             var author = jsonObject.getStringByAny(*authorTags.map { it }.toTypedArray()).removeSuffix(" - Topic")
             var duration = jsonObject.getIntByAny("duration").toString()
