@@ -499,4 +499,8 @@
     <string name="use_original_url_playlist_summary">Përdor url e playlist të dhënë nga përdoruesi në vend të tagut playlist_webpage_url nga json dump</string>
     <string name="update_ytdlp_while_downloading">Përditëso yt-dlp duke shkarkuar</string>
     <string name="update_ytdlp_while_downloading_summary">Shto -U te yt-dlp që ta përditësosh te versioni i fundit përpara shkarkimit</string>
+    <string name="preview_filename">Kontrollo titullin</string>
+    <string name="potoken_guide">Auth\n-----------------------\n1. Kliko \'Auth\' për të hapur faqen e hyrjes në WebView.\n2. Hyr me llogarine e Google.\n3. Hap një video që suporton titra automatike.\n4. Aktivizo titrat automatike dhe shiko nëse funksionon.\n\t4.1 Nëse titrat automatike nuk punojnë, kalo në një video tjeter dhe provo hapin 4 sërisht.\n5. Kliko OK.\n\nPa Auth\n-----------------------\n1. Kliko \'Pa Auth\'.\n2. Shkruaj një url nga youtube.\n3. Prit që videoja të ngarkohet dhe luaje videon për të paktën 3 sekonda.\n3. Kliko OK.</string>
+    <string name="no_auth">Pa Auth</string>
+    <string name="auth">Auth</string>
 </resources>
