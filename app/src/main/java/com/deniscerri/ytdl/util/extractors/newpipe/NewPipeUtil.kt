@@ -21,6 +21,7 @@ import org.schabi.newpipe.extractor.channel.ChannelInfo
 import org.schabi.newpipe.extractor.channel.tabs.ChannelTabInfo
 import org.schabi.newpipe.extractor.kiosk.KioskInfo
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler
+import org.schabi.newpipe.extractor.localization.ContentCountry
 import org.schabi.newpipe.extractor.localization.Localization
 import org.schabi.newpipe.extractor.playlist.PlaylistInfo
 import org.schabi.newpipe.extractor.search.SearchInfo
@@ -262,7 +263,14 @@ class NewPipeUtil(context: Context) {
     fun getTrending(): ArrayList<ResultItem> {
         try {
             val items = arrayListOf<ResultItem>()
-            val info = KioskInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId), "https://www.youtube.com/feed/trending")
+            val kioskList = NewPipe.getService(ServiceList.YouTube.serviceId).kioskList
+            kioskList.forceContentCountry(ContentCountry(countryCode))
+
+            val kioskId = "trending_music"
+            val extractor = kioskList.getExtractorById(kioskId, null)
+            extractor.fetchPage()
+
+            val info = KioskInfo.getInfo(extractor)
             if (info.relatedItems.isEmpty()) return arrayListOf()
 
             for (i in 0 until info.relatedItems.size) {

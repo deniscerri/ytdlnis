@@ -202,25 +202,9 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             val dialog = MaterialAlertDialogBuilder(requireContext())
             dialog.setTitle(getString(R.string.generate_potokens))
 
-            val text = """
-                Auth
-                -----------------------
-                1. Click 'Auth' to open the sign in page in WebView.
-                2. Sign in to your Google Account.
-                3. Play any video that supports auto-translated subtitles.
-                4. Turn on auto-translated subtitles and see if it works.
-                    4.1 If auto-translated subtitles don't work, switch to another video that supports auto-translated subtitles and try step 4 again.
-                5. Click OK.
-
-                No Auth
-                -----------------------
-                1. Click 'No Auth'.
-                2. Write any youtube video url
-                3. Wait for the video to load and play the video for at least 3 seconds.
-                3. Click OK.
-            """.trimIndent()
+            val text = getString(R.string.potoken_guide)
             dialog.setMessage(text)
-            dialog.setNegativeButton("No Auth") { dialogInterface: DialogInterface, _: Int ->
+            dialog.setNegativeButton(getString(R.string.no_auth)) { dialogInterface: DialogInterface, _: Int ->
 
                 val layout = BottomSheetDialog(requireContext())
                 layout.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -260,7 +244,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 )
             }
 
-            dialog.setPositiveButton("Auth") { dialogInterface: DialogInterface, _: Int ->
+            dialog.setPositiveButton(getString(R.string.auth)) { dialogInterface: DialogInterface, _: Int ->
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                 intent.putExtra("url", "https://www.youtube.com/account")
                 webPoTokenResultLauncher.launch(intent)
