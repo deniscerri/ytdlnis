@@ -486,4 +486,19 @@
     <string name="preferred_format_size">Prednostna velikost formata</string>
     <string name="smallest">Najmanjše</string>
     <string name="largest">Največje</string>
+    <string name="no_prefer_drc_audio">Ne preferiraj DRC zvoka</string>
+    <string name="potoken_gvs">PO Žeton (GVS)</string>
+    <string name="potoken_player">PO Žeton (Predvajalnik)</string>
+    <string name="potoken_subs">PO Žeton (Podnapisi)</string>
+    <string name="visitor_data">Podatki obiskovalca</string>
+    <string name="get_data_sync_id">Pridobi ID sinhronizacije podatkov</string>
+    <string name="desktop">Namizje</string>
+    <string name="url_regex">URL regularni izraz</string>
+    <string name="disable_flat_playlist">Onemogoči ravni seznam predvajanja</string>
+    <string name="disable_flat_playlist_summary">Ne uporabljaj --flat-playlist. Počasnejše pridobivanje podatkov, a z več informacijami</string>
+    <string name="chapters">Poglavja</string>
+    <string name="use_original_url_playlist">Uporabi originalni URL kot URL seznama predvajanja</string>
+    <string name="use_original_url_playlist_summary">Uporabi URL seznama predvajanja, ki ga poda uporabnik, namesto oznake playlist_webpage_url iz json datoteke</string>
+    <string name="update_ytdlp_while_downloading">Posodobi yt-dlp med prenosom</string>
+    <string name="update_ytdlp_while_downloading_summary">Dodaj -U k yt-dlp, za posodobitev na najnovejšo različico pred prenosom</string>
 </resources>
