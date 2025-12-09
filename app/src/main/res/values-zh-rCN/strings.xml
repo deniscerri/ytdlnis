@@ -499,4 +499,8 @@
     <string name="use_original_url_playlist_summary">使用用户给予的播放列表 url 而非来自 json 转储的 playlist_webpage_url 标签</string>
     <string name="update_ytdlp_while_downloading">下载时更新 yt-dlp</string>
     <string name="update_ytdlp_while_downloading_summary">yt-dlp 添加 -U 参数将其在下载前更新到最新版</string>
+    <string name="preview_filename">预览文件名</string>
+    <string name="potoken_guide">授权\n-----------------------\n1. 单击“授权”以在 WebView 中打开登录页面。\n2. 登录您的 Google 账户。\n3. 播放任何支持自动翻译字幕的视频。\n4. 打开自动翻译字幕功能，查看是否有效。\n 4.1 如果自动翻译字幕无效，请切换到另一个支持自动翻译字幕的视频，然后再次尝试步骤 4。\n5. 单击“确定”。\n\n不授权\n-----------------------\n1. 点击“不授权”。\n2. 输入任意YouTube视频网址。\n3. 等待视频加载，并播放视频至少3秒。\n4. 单击“确定”。</string>
+    <string name="no_auth">不授权</string>
+    <string name="auth">授权</string>
 </resources>

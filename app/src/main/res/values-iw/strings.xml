@@ -204,7 +204,7 @@
     <string name="copied_to_clipboard">הועתק ללוח הגזירים</string>
     <string name="keep_cache_summary">אל תמחק קבצים זמניים לאחר סיום ההורדה</string>
     <string name="dont_ask_again">אל תשאל שוב</string>
-    <string name="video_recommendations_summary">קבל סרטונים מומלצים במסך הבית</string>
+    <string name="video_recommendations_summary">קבלת סרטונים מומלצים במסך הבית</string>
     <string name="codec">מקודד</string>
     <string name="select_backup_categories">בחר קטגוריות גיבוי</string>
     <string name="downloads_running_try_later">הורדה פועלת. נסה שוב מאוחר יותר</string>
@@ -237,7 +237,7 @@
     <string name="network_error">שגיאת רשת</string>
     <string name="cookies">עוגיות</string>
     <string name="save_subs_desc">צור קובץ כתוביות</string>
-    <string name="end">סיים</string>
+    <string name="end">סיום</string>
     <string name="freespace">שטח פנוי</string>
     <string name="start">התחל</string>
     <string name="backup_restore">גיבוי ושחזור</string>
@@ -260,7 +260,7 @@
     <string name="update_template">עדכון תבנית</string>
     <string name="downloaded">"הורדו: "</string>
     <string name="undo">בטל</string>
-    <string name="restart">אתחול</string>
+    <string name="restart">הפעלה מחדש</string>
     <string name="retries">מנסה שוב</string>
     <string name="sponsorblock_outro">סיומת</string>
     <string name="new_cut">חיתוך חדש</string>
@@ -332,7 +332,7 @@
     <string name="always">תמיד</string>
     <string name="sync_with_source">סנכרון עם מקור</string>
     <string name="queue">תור</string>
-    <string name="reset">אתחול</string>
+    <string name="reset">איפוס</string>
     <string name="restore_info">לחץ על \'שחזר\' כדי למזג את הנתונים השמורים עם הנתונים הנוכחיים שלך.
 \nלחץ על \'איפוס\' כדי למחוק ולהשתמש רק בנתונים השמורים בקובץ.</string>
     <string name="my_filename_templates">תבניות שמות הקובץ שלי</string>
@@ -340,7 +340,7 @@
     <string name="display_over_apps">הצג מעל אפליקציות</string>
     <string name="hour">שעה</string>
     <string name="update_ytdl_stable">גרסה יציבה של yt-dlp</string>
-    <string name="preferred_audio_language">שפת אודיו מועדפת</string>
+    <string name="preferred_audio_language">שפת שמע מועדפת</string>
     <string name="minute">דקה</string>
     <string name="second">שנייה</string>
     <string name="milliseconds">אלפיות שניות</string>
@@ -348,7 +348,7 @@
     <string name="confirm_delete_sources_desc">מחק את כל המקורות, לצמיתות</string>
     <string name="force_ipv4">כפה IPv4</string>
     <string name="copy_urls">‬העתק קישור</string>
-    <string name="ends">סיים</string>
+    <string name="ends">מסתיים</string>
     <string name="on_time">על</string>
     <string name="day">יום</string>
     <string name="week">שבוע</string>
@@ -420,7 +420,7 @@
     <string name="list">רשימה</string>
     <string name="no_check_certificates">התעלמות מאימות תעודת HTTPS</string>
     <string name="pause_all">השהה הכל</string>
-    <string name="resume_all">המשך הכל</string>
+    <string name="resume_all">להמשיך הכול</string>
     <string name="package_name">שם חבילה</string>
     <string name="preferred_command_template">תבנית פקודה מועדפת</string>
     <string name="deleted">נמחק</string>
@@ -431,7 +431,7 @@
     <string name="socket_timeout">תם הזמן המוקצב לחיבור Socket</string>
     <string name="socket_timeout_description">זמן המתנה לפני שתוותר, בשניות</string>
     <string name="disable_write_info_json">השבת כתיבת מידע לjson</string>
-    <string name="disable_write_info_json_summary">(לא מומלץ) בכל פעם שתפעיל מחדש / תחדש את ההורדה, yt-dlp יוריד מחדש נתוני json מהשרתים.</string>
+    <string name="disable_write_info_json_summary">בכל פעם שההורדה תופעל מחדש / תמשיך, yt-dlp יוריד מחדש נתוני json מהשרתים (לא מומלץ)</string>
     <string name="ytdlp_recommnedations">YT-DLP המלצות יוטיוב (מצריך עוגיות)</string>
     <string name="write_subs_when_embed_subs_summary">זה יחיל את שמירת כתוביות ושמירת כתוביות אוטומטיות כדי להוריד את קבצי הכתוביות וימחק אותם לאחר ההטמעה</string>
     <string name="cache_directory_warning">שינוי תיקיית המטמון עלול לגרום לבעיות בלתי צפויות. אם האפליקציה לא יכולה לכתוב לנתיב המוגדר, היא תפנה לספריית המטמון הפנימית המוגדרת כברירת מחדל</string>
@@ -472,4 +472,12 @@
     <string name="app_icon_change">הסמל עשוי להשתנות והיישום ייסגר</string>
     <string name="generate_potokens_warning">* כאשר אתה מפעיל את זה, עליך להשבית קובצי Cookie</string>
     <string name="custom">מותאם אישית</string>
+    <string name="auth">אימות</string>
+    <string name="cut_unsupported">גזירה לא נתמכת לפריט הזה</string>
+    <string name="select_between_desc">נא לציין טווח פריטים לבחירה</string>
+    <string name="potoken">אסימון PO</string>
+    <string name="web_client_po_token">אסימון PO ללקוח דפדפן</string>
+    <string name="reverse">היפוך</string>
+    <string name="no_keep_subs">למחוק את הכתוביות לאחר ההטמעה</string>
+    <string name="video_compatible">סרטון תואם</string>
 </resources>

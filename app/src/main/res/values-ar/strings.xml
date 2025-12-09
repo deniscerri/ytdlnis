@@ -500,4 +500,8 @@
     <string name="use_original_url_playlist">استخدم عنوان URL الأصلي لعنوان URL لقائمة التشغيل</string>
     <string name="update_ytdlp_while_downloading">حدِّث yt-dlp أثناء التنزيل</string>
     <string name="update_ytdlp_while_downloading_summary">أضف -U إلى yt-dlp لتحديثه إلى آخر إصدار قبل التنزيل</string>
+    <string name="preview_filename">معاينة اسم الملف</string>
+    <string name="potoken_guide">استيثاق\n-----------------------\n1. انقر على \"استيثاق\" لفتح صفحة تسجيل الدخول في WebView.\n2. سجل الدخول إلى حساب Google الخاص بك.\n3. شغل أي فيديو يدعم الترجمة التلقية للترجمات.\n4. شغّل الترجمة التلقية للترجمات وتحقق من عملها.\n\t4.1 إذا لم تعمل الترجمة التلقية للترجمات، انتقل إلى فيديو آخر يدعمها وحاول الخطوة 4 مرة أخرى.\n5. انقر على موافق.\n\nبدون استيثاق\n-----------------------\n1. انقر على \"بدون استيثاق\".\n2. اكتب أي رابط فيديو يوتيوب\n3. انتظر تحميل الفيديو وشغله لمدة 3 ثوانٍ على الأقل.\n4. انقر على موافق.</string>
+    <string name="no_auth">لا استيثاق</string>
+    <string name="auth">استيثاق</string>
 </resources>
