@@ -500,4 +500,5 @@
     <string name="use_original_url_playlist_summary">Utilizzare l\'URL della playlist fornito dall\'utente anziché il tag playlist_webpage_url dal dump JSON</string>
     <string name="update_ytdlp_while_downloading">Aggiorna yt-dlp durante il download</string>
     <string name="update_ytdlp_while_downloading_summary">Aggiungi -U a yt-dlp per aggiornare prima di scaricare</string>
+    <string name="preview_filename">Mostra il nome del file in anteprima</string>
 </resources>
