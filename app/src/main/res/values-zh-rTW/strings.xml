@@ -485,4 +485,23 @@
     <string name="preferred_format_size">偏好的格式大小</string>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
+    <string name="potoken_guide">"驗證授權\n-----------------------\n1. 點選「驗證」開啟 WebView 的登入頁面\n2. 使用您的 Google 帳戶登入\n3. 播放支援自動翻譯字幕的影片\n4. 開啟自動翻譯字幕並檢查是否正常運作\n   4.1 若自動翻譯字幕無效，請切換至另一支支援自動翻譯字幕的影片，並重試步驟 4\n5. 點選「確認」完成\n\n略過驗證\n-----------------------\n1. 點選「略過驗證」\n2. 輸入任一 YouTube 影片網址\n3. 等待影片載入並播放至少 3 秒\n4. 點選「確認」完成"</string>
+    <string name="no_prefer_drc_audio">不優先使用 DRC 音訊</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (播放器)</string>
+    <string name="potoken_subs">PO Token (字幕)</string>
+    <string name="visitor_data">訪客資料</string>
+    <string name="get_data_sync_id">取得資料同步 ID</string>
+    <string name="desktop">桌面版</string>
+    <string name="url_regex">URL 正規表達式</string>
+    <string name="disable_flat_playlist">停用扁平播放清單</string>
+    <string name="disable_flat_playlist_summary">不使用 --flat-playlist。資料抓取較慢，但資料更豐富</string>
+    <string name="chapters">章節</string>
+    <string name="use_original_url_playlist">使用原始 URL 作為播放清單網址</string>
+    <string name="use_original_url_playlist_summary">使用使用者提供的播放清單網址，而非 JSON 傾印中的 playlist_webpage_url 標籤</string>
+    <string name="update_ytdlp_while_downloading">下載時更新 yt-dlp</string>
+    <string name="update_ytdlp_while_downloading_summary">在下載前使用 -U 更新 yt-dlp 到最新版本</string>
+    <string name="preview_filename">預覽檔案名稱</string>
+    <string name="no_auth">略過驗證</string>
+    <string name="auth">驗證</string>
 </resources>
