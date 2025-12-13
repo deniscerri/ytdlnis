@@ -112,7 +112,7 @@
     <string name="container">Lalagyan</string>
     <string name="template">Modelo</string>
     <string name="logs">Mga log</string>
-    <string name="date_added">Petsa ng paglagay</string>
+    <string name="date_added">Petsa ng pagdagdag</string>
     <string name="adjust_audio">I-adjust ang audio</string>
     <string name="language">Wika</string>
     <string name="command_templates">Mga template ng command</string>
@@ -122,4 +122,6 @@
     <string name="please_wait">Maghintay</string>
     <string name="update_ytdl_nightly">Nightly na bersyon ng yt-dlp</string>
     <string name="remove_search_history">I-clear ang kasaysayan ng paghahanap</string>
+    <string name="file_name_template">Modelo ng pangalan ng file</string>
+    <string name="enable_mtime">I-on ang mtime</string>
 </resources>
