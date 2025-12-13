@@ -481,4 +481,17 @@
     <string name="no_keep_subs_summary">W przypadku korzystania z opcji Osadzanie napisów i Tworzenie napisów nie należy zachowywać plików napisów po osadzeniu</string>
     <string name="video_compatible">Kompatybilne video</string>
     <string name="video_compatible_summary">Przekodowuje video, czyniąc je kompatybilnym z innymi aplikacjami</string>
+    <string name="no_free_space_warning">Nie ma wolnego miejsca dla tej konfiguracji.</string>
+    <string name="smallest">Najmniejszy</string>
+    <string name="largest">Największy</string>
+    <string name="no_prefer_drc_audio">Nie preferuj DRC Audio</string>
+    <string name="visitor_data">Dane odwiedzających</string>
+    <string name="get_data_sync_id">Uzyskaj ID synchronizacji danych</string>
+    <string name="desktop">Pulpit</string>
+    <string name="disable_flat_playlist_summary">Nie używaj --flat-playlist. Wolniejsze pobieranie danych, ale więcej danych.</string>
+    <string name="chapters">Rozdziały</string>
+    <string name="use_original_url_playlist">Użyj oryginalnego adresu URL jako adresu URL listy odtwarzania</string>
+    <string name="update_ytdlp_while_downloading">Zaktualizuj yt-dlp podczas pobierania</string>
+    <string name="update_ytdlp_while_downloading_summary">Dodaj -U do yt-dlp, aby zaktualizować go do najnowszej wersji przed pobraniem</string>
+    <string name="preview_filename">Podgląd nazwy pliku</string>
 </resources>
