@@ -31,7 +31,7 @@
     <string name="confirm_delete_history">تصدیق کریں</string>
     <string name="search_history_hint">ماضی میں تلاش کریں</string>
     <string name="search_command_hint">احکامات سے تلاش کریں</string>
-    <string name="no_results">کوئی نتیجہ نہیں</string>
+    <string name="no_results">کوئی نتائج نہیں</string>
     <string name="more">زیادہ</string>
     <string name="update_app">اپدیٹ چیک کریں</string>
     <string name="version">ورژن</string>
@@ -76,4 +76,9 @@
     <string name="sort_by">چھانٹنا</string>
     <string name="remove_downloading">ڈاؤن لوڈز منسوخ کریں</string>
     <string name="incognito_summary">تاریخ میں شامل کیے بغیر ڈاؤن لوڈ کریں</string>
+    <string name="configure_download">تحمیل کو موافق بنائیں</string>
+    <string name="title">عنوان</string>
+    <string name="author">مصنف</string>
+    <string name="download">تحمیل</string>
+    <string name="video_quality">ویڈیو کا معیار</string>
 </resources>
