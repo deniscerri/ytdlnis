@@ -499,4 +499,8 @@
     <string name="use_original_url_playlist_summary">Gunakan url daftar putar yang diberikan oleh pengguna alih-alih tag playlist_webpage_url dari json dump</string>
     <string name="update_ytdlp_while_downloading">Perbarui yt-dlp ketika sedang mengunduh</string>
     <string name="update_ytdlp_while_downloading_summary">Tambah -U ke yt-dlp untuk memperbaruinya ke versi terbaru sebelum mengunduh</string>
+    <string name="preview_filename">Pratinjau nama berkas</string>
+    <string name="potoken_guide">Otentikasi\n-----------------------\n1. Klik \'Otentikasi\' untuk membuka halaman masuk di WebView.\n2. Masuk ke akun Google Anda.\n3. Putar video apa pun yang mendukung subtitle terjemahan otomatis.\n4. Aktifkan subtitle terjemahan otomatis dan lihat apakah berfungsi.\n\t4.1 Jika subtitle terjemahan otomatis tidak berfungsi, beralih ke video lain yang mendukung subtitle terjemahan otomatis dan ulangi langkah 4.\n5. Klik OK.\n\nTanpa Otentikasi\n-----------------------\n1. Klik ‘Tanpa Otentikasi’.\n2. Tulis URL video YouTube apa pun.\n3. Tunggu video dimuat dan putar video setidaknya selama 3 detik.\n3. Klik OK.</string>
+    <string name="no_auth">Tanpa Otentikasi</string>
+    <string name="auth">Otentikasi</string>
 </resources>
