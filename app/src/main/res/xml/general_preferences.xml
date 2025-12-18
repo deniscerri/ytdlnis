@@ -72,7 +72,7 @@
         <ListPreference
             android:icon="@drawable/baseline_recommend_24"
             android:key="recommendations_home"
-            android:defaultValue="newpipe"
+            android:defaultValue=""
             android:entries="@array/video_recommendations"
             android:entryValues="@array/video_recommnedations_values"
             app:summary="@string/video_recommendations_summary"

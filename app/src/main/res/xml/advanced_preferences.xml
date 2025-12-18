@@ -70,7 +70,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/downloading" android:enabled="false" app:isPreferenceVisible="false">
+    <PreferenceCategory android:title="@string/downloading">
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/if_file_rename"

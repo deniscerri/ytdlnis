@@ -598,16 +598,24 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     @OptIn(ExperimentalStdlibApi::class)
     private fun YoutubeDLRequest.addWriteInfoJson(url: String) {
         val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-        val infoJsonName = MessageDigest.getInstance("MD5").digest(url.toByteArray()).toHexString()
+
+        val id = if (url.isYoutubeURL()) {
+            url.getIDFromYoutubeURL() ?: url
+        } else url
+
+        val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
         this.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun getInfoJsonPath(url: String): String? {
+    private fun getInfoJsonFile(url: String): File? {
         val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-        val infoJsonName = MessageDigest.getInstance("MD5").digest(url.toByteArray()).toHexString()
+        val id = if (url.isYoutubeURL()) {
+            url.getIDFromYoutubeURL() ?: url
+        } else url
+        val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
         val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
-        return infoJsonFile?.absolutePath
+        return infoJsonFile
     }
 
     fun getFilenameTemplatePreview(item: DownloadItem, filenameTemplate: String): String {
@@ -615,13 +623,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val request = buildYoutubeDLRequest(item)
         request.addOption("--print", "%(filename)s")
         request.addOption("--skip-download")
-
-        val infoJsonPath = getInfoJsonPath(item.url)
-        if (infoJsonPath == null) {
-            request.addWriteInfoJson(item.url)
-        } else {
-            request.addOption("--load-info-json", infoJsonPath)
-        }
+        request.addOption("--simulate")
+        request.addOption("--no-check-certificates")
+        request.addOption("--no-check-formats")
+        request.addOption("--quiet")
 
         try {
             val response = YoutubeDL.execute(request)
@@ -978,19 +983,24 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 ytDlRequest.setYoutubeExtractorArgs(downloadItem.url)
             }
 
-            //TODO REVIEW TO ADD THIS AGAIN LATER?
-//            if (!sharedPreferences.getBoolean("disable_write_info_json", false)) {
-//                val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-//                val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
-//
-//                val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
-//                //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
-//                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
-//                    request.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
-//                }else {
-//                    request.addOption("--load-info-json", infoJsonFile.absolutePath)
-//                }
-//            }
+            /*
+            * https://github.com/yt-dlp/yt-dlp/issues/11947
+            * Cant use info json when using download sections
+            * */
+            val canUseWriteInfoJson =
+                !sharedPreferences.getBoolean("disable_write_info_json", false) &&
+                !request.toString().contains("--download-sections")
+
+            if (canUseWriteInfoJson) {
+                val infoJsonURL = if (useItemURL) downloadItem.url else downloadItem.playlistURL ?: downloadItem.url
+                val infoJsonFile = getInfoJsonFile(infoJsonURL)
+                //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
+                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
+                    ytDlRequest.addWriteInfoJson(infoJsonURL)
+                } else {
+                    request.addOption("--load-info-json", infoJsonFile.absolutePath)
+                }
+            }
         }
 
         if (sharedPreferences.getString("prevent_duplicate_downloads", "")!! == "download_archive"){
