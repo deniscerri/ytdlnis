@@ -501,4 +501,8 @@
     <string name="use_original_url_playlist_summary">Utiliser l\'URL de la playlist fournie par l\'utilisateur au lieu du tag playlist_webpage_url du dump JSON</string>
     <string name="update_ytdlp_while_downloading">Mettre à jour yt-dlp pendant le téléchargement</string>
     <string name="update_ytdlp_while_downloading_summary">Ajoute -U à yt-dlp pour le mettre à jour avant de télécharger</string>
+    <string name="preview_filename">Aperçu du nom de fichier</string>
+    <string name="potoken_guide">Authentification\n-----------------------\n1. Cliquez sur « Authentification » pour ouvrir la page de connexion dans WebView.\n\n2. Connectez-vous à votre compte Google.\n\n3. Lancez une vidéo compatible avec la traduction automatique des sous-titres.\n\n4. Activez la traduction automatique des sous-titres et vérifiez si cela fonctionne.\n\n4.1 Si la traduction automatique des sous-titres ne fonctionne pas, choisissez une autre vidéo compatible et répétez l\'étape 4.\n\n5. Cliquez sur OK.\n\nAucune authentification\n-----------------------\n1. Cliquez sur « Aucune authentification ».\n\n2. Saisissez l\'URL d\'une vidéo YouTube.\n\n3. Attendez le chargement de la vidéo et lancez la lecture pendant au moins 3 secondes.\n\n4. Cliquez sur OK.</string>
+    <string name="no_auth">Aucune authentification</string>
+    <string name="auth">Authentification</string>
 </resources>

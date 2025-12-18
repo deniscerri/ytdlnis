@@ -500,4 +500,8 @@
     <string name="use_original_url_playlist_summary">Použije URL playlistu zadanúpoužívateľom namiesto štítku playlist_webpage_url z výpisu json</string>
     <string name="update_ytdlp_while_downloading">Aktualizovať yt-dlp počas sťahovania</string>
     <string name="update_ytdlp_while_downloading_summary">Pridajte -U k yt-dlp, aby ste ho pred stiahnutím aktualizovali na najnovšiu verziu</string>
+    <string name="preview_filename">Názov ukážky</string>
+    <string name="potoken_guide">Overenie\n-----------------------\n1. Kliknite na „Overenie“, aby sa otvorila prihlasovacia stránka vo WebView.\n2. Prihláste sa do svojho účtu Google.\n3. Prehrajte ľubovoľné video, ktoré podporuje automaticky preložené titulky.\n4. Zapnite automaticky preložené titulky a skontrolujte, či fungujú.\n\t4.1 Ak automaticky preložené titulky nefungujú, prejdite na iné video, ktoré podporuje automaticky preložené titulky, a skúste krok 4 znova.\n5. Kliknite na OK.\n\nBez overenia\n-----------------------\n1. Kliknite na „Bez overenia“.\n2. Napíšte ľubovoľnú URL adresu videa na YouTube.\n3. Počkajte, kým sa video načíta, a prehrajte ho aspoň 3 sekundy.\n4. Kliknite na OK.</string>
+    <string name="no_auth">Bez overenia</string>
+    <string name="auth">Overenie</string>
 </resources>
