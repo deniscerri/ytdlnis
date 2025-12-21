@@ -173,7 +173,7 @@
     <string name="new_cookie">Новый Cookie</string>
     <string name="get_cookies">Получить Cookies</string>
     <string name="delete_all_cookies">Удалить все Cookies</string>
-    <string name="log_downloads">Сохранять логи загрузок</string>
+    <string name="log_downloads">Загрузка журналов</string>
     <string name="cut">Обрезать</string>
     <string name="new_cut">Новая обрезка</string>
     <string name="share">Поделиться</string>
@@ -464,7 +464,7 @@
     <string name="backup_path">Папка резервных копий</string>
     <string name="automatic_backup_summary">Автоматически создавать резервную копию всех параметров при обнаружении новой версии приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
-    <string name="write_subs_when_embed_subs_summary">Это применит опции «Сохранять субтитры» и «Сохранять автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания в видеофайл</string>
+    <string name="write_subs_when_embed_subs_summary">Это применит функции «Сохранять субтитры» и «Сохранять автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Пользовательский приоритет форматов</string>
@@ -474,7 +474,7 @@
     <string name="custom">Другой</string>
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
-    <string name="potoken">PO Token</string>
+    <string name="potoken">PO Токен</string>
     <string name="web_client_po_token">PO Token веб-клиента</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
@@ -500,4 +500,8 @@
     <string name="use_original_url_playlist_summary">Используйте URL-адрес списка воспроизведения, указанный пользователем, вместо тега playlist_webpage_url из дампа json</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
+    <string name="preview_filename">Предварительный просмотр имени файла</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Нажмите \'Авторизация\' чтобы открыть страницу входа в WebView.\n2. Войдите в свою учетную запись Google.\n3. Воспроизводите любое видео, поддерживающее субтитры с автоматическим переводом.\n4. Включите субтитры с автоматическим переводом и посмотрите, работает ли это.\n\t4.1 Если субтитры с автоматическим переводом не работают, переключитесь на другое видео, поддерживающее субтитры с автоматическим переводом, и повторите шаг 4.\n5. Нажмите ОК.\n\nБез авторизации\n-----------------------\n1. Нажмите \'Без авторизации\'.\n2. Введите URL любого видео с YouTube.\n3. Подождите, пока видео загрузится, и воспроизведите его не менее 3 секунд.\n4. Нажмите ОК.</string>
+    <string name="no_auth">Без авторизации</string>
+    <string name="auth">Авторизация</string>
 </resources>
