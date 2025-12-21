@@ -103,10 +103,6 @@ class WebViewActivity : BaseActivity() {
                 true
             }
 
-            cookieManager = CookieManager.getInstance()
-            cookieManager.removeAllCookies(null)
-            cookieManager.flush()
-
             preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
             webViewClient = object : AccompanistWebViewClient() {
@@ -157,6 +153,9 @@ class WebViewActivity : BaseActivity() {
                 }
             }
 
+            cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookies(null)
+            cookieManager.flush()
             webViewCompose.apply {
                 setContent { WebViewView() }
             }

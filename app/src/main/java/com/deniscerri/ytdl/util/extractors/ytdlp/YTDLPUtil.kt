@@ -598,23 +598,40 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     @OptIn(ExperimentalStdlibApi::class)
     private fun YoutubeDLRequest.addWriteInfoJson(url: String) {
         val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+        File(cachePath).mkdirs()
 
-        val id = if (url.isYoutubeURL()) {
-            url.getIDFromYoutubeURL() ?: url
-        } else url
+        var id = url
+        if (url.isYoutubeURL()) {
+            id = url.getIDFromYoutubeURL() ?: url
+        }
 
         val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
-        this.addCommands(listOf("--print-to-file", "video:%()#j", "${cachePath}/${infoJsonName}.info.json"))
+        //yt-dlp doesnt overwrite info json, so delete manually
+        File("${cachePath}/${infoJsonName}video.info.json").delete()
+        this.addCommands(listOf("--print-to-file", "video:%()j", "${cachePath}/${infoJsonName}video.info.json"))
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun getInfoJsonFile(url: String): File? {
         val cachePath = "${FileUtil.getCachePath(context)}infojsons"
-        val id = if (url.isYoutubeURL()) {
-            url.getIDFromYoutubeURL() ?: url
-        } else url
+
+        var id = url
+        if (url.isYoutubeURL()) {
+            id = url.getIDFromYoutubeURL() ?: url
+        }
+
         val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
-        val infoJsonFile = File(cachePath).walkTopDown().firstOrNull { it.name == "${infoJsonName}.info.json" }
+        var infoJsonFile : File? = null
+        File(cachePath).walkBottomUp().filter { it.name.startsWith(infoJsonName) }.forEach {
+            if (it.name == "${infoJsonName}playlist.info.json") {
+                infoJsonFile = it
+                return@forEach
+            }
+
+            if (it.name == "${infoJsonName}video.info.json") {
+                infoJsonFile = it
+            }
+        }
         return infoJsonFile
     }
 
@@ -629,7 +646,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.addOption("--quiet")
 
         try {
-            val response = YoutubeDL.execute(request)
+            val response = YoutubeDL.getInstance().execute(request)
             return response.out.replace(FileUtil.getCachePath(context) + "${item.id}/", "").trim()
         } catch (ex: Exception) {
             return ex.message ?: ""
@@ -991,14 +1008,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 !sharedPreferences.getBoolean("disable_write_info_json", false) &&
                 !request.toString().contains("--download-sections")
 
-            if (canUseWriteInfoJson) {
-                val infoJsonURL = if (useItemURL) downloadItem.url else downloadItem.playlistURL ?: downloadItem.url
+            if (canUseWriteInfoJson && downloadItem.playlistURL.isNullOrBlank()) {
+                val infoJsonURL = downloadItem.url
                 val infoJsonFile = getInfoJsonFile(infoJsonURL)
                 //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
-                if (infoJsonFile == null || System.currentTimeMillis() - infoJsonFile.lastModified() > (1000 * 60 * 60 * 5)) {
-                    ytDlRequest.addWriteInfoJson(infoJsonURL)
-                } else {
+                if (infoJsonFile != null && System.currentTimeMillis() - infoJsonFile.lastModified() <= (1000 * 60 * 60 * 5)) {
                     request.addOption("--load-info-json", infoJsonFile.absolutePath)
+                }else {
+                    ytDlRequest.addWriteInfoJson(infoJsonURL)
                 }
             }
         }
