@@ -217,7 +217,7 @@
     <string name="socks5_proxy_summary">A megadott HTTP/HTTPS/SOCKS proxy használata</string>
     <string name="socks5_proxy">Socks5 Proxy URL cím</string>
     <string name="search_suggestions">Keresési javaslatok</string>
-    <string name="misc">Egyéb.</string>
+    <string name="misc">Egyéb</string>
     <string name="saved">Mentve</string>
     <string name="extra_command">Extra parancs</string>
     <string name="delete_file_too">A fájl törlése az eszközről</string>
@@ -231,7 +231,7 @@
     <string name="sponsorblock_promos">Önpromóció</string>
     <string name="sponsorblock_previews">Előnézetek</string>
     <string name="please_wait">Kérlek, várjál má\'</string>
-    <string name="cancelled">Törölt</string>
+    <string name="cancelled">Eltörölt</string>
     <string name="copy_log">Napló másolása</string>
     <string name="errored">Hibás</string>
     <string name="create_shortcut">Shortcut(rövidút) létrehozása</string>
@@ -271,7 +271,7 @@
     <string name="restore_complete">Az alkalmazás visszaállítása befejeződött. A következő elemek kerültek visszaállításra:</string>
     <string name="select_backup_categories">Biztonsági mentési kategóriák kiválasztása</string>
     <string name="search_history">Keresés előzmények</string>
-    <string name="backup_created_successfully">Sikeres biztonsági mentés!</string>
+    <string name="backup_created_successfully">Sikeres biztonsági mentés</string>
     <string name="appearance">Megjelenés</string>
     <string name="search_suggestions_summary">Keresési javaslatok a Google-tól</string>
     <string name="preferred_format_id_summary">Válaszd ki a formátumot ezzel az ID-val a letöltési kártyán</string>
@@ -361,7 +361,7 @@
     <string name="reset_processed_links">Már feldolgozott linkek visszaállítása</string>
     <string name="swipe_gestures_download_card">Lapozási gesztusok a letöltőkártyán</string>
     <string name="thumbnail_format">Indexkép formátum</string>
-    <string name="get_new_uploads">Csak új feltöltéseket</string>
+    <string name="get_new_uploads">Csak a jövőbeli feltöltések (a meglévő elemeket figyelmen kívül hagyja)</string>
     <string name="also_download_audio">Továbbá töltse le hangként is</string>
     <string name="wrap_text">Szöveg tördelése</string>
     <string name="scroll_down">Görgetés legalulra</string>
@@ -419,7 +419,7 @@
 \nNyomja meg a \'Reset\' gombot ha csak a lementett adatokat kívánja megtartani.</string>
     <string name="use_item_url_not_playlist_summary">Ennek bekapcsolásával a playlistek metadatája nem fog beágyazódni</string>
     <string name="retry_missing_downloads_desc">A letöltési előzményekben nem szereplő elemek újbóli letöltés</string>
-    <string name="reset_processed_links_desc">Összes tárgy újbóli letöltése</string>
+    <string name="reset_processed_links_desc">Az összes újbóli letöltése</string>
     <string name="sync_with_source_desc">A letöltött elemek törlése, ha azok hiányoznak a forrásból</string>
     <string name="pause_all">Összes leállítása</string>
     <string name="resume_all">Összes folytatása</string>
@@ -479,4 +479,29 @@
     <string name="no_keep_subs">Feliratfájlok törlése beágyazás után</string>
     <string name="no_keep_subs_summary">„Ha egyszerre használja a „Feliratok beágyazása” és „Feliratok mentése” opciókat, a feliratfájlokat ne tartsa meg beágyazás után</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="video_compatible">Kompatibilis videó</string>
+    <string name="video_compatible_summary">Átkódolja a videót, hogy kompatibilis legyen más alkalmazásokkal</string>
+    <string name="no_free_space_warning">Nincs szabad hely ehhez a konfigurációhoz.</string>
+    <string name="preferred_format_size">Preferált formátumméret</string>
+    <string name="smallest">Legkisebb</string>
+    <string name="largest">Legnagyobb</string>
+    <string name="no_prefer_drc_audio">Ne részesítsd előnyben a DRC Audio-t</string>
+    <string name="potoken_gvs">PO zseton (GVS)</string>
+    <string name="potoken_player">PO zseton (Lejátszó)</string>
+    <string name="potoken_subs">PO zseton (Feliratok)</string>
+    <string name="visitor_data">Látogató adat</string>
+    <string name="get_data_sync_id">Adatszinkronizálási azonosító lekérése</string>
+    <string name="desktop">Asztal</string>
+    <string name="disable_flat_playlist">Lapos lejátszási lista letiltása</string>
+    <string name="disable_flat_playlist_summary">Ne használd a --flat-playlist kapcsolót. Lassabb adatlehívás, de adatban gazdagabb.</string>
+    <string name="chapters">Fejezetek</string>
+    <string name="use_original_url_playlist">Az eredeti URL használata lejátszási lista URL helyet.</string>
+    <string name="use_original_url_playlist_summary">A felhasználó által megadott lejátszási lista URL-címének használata a JSON dump fájlból származó playlist_webpage_url címke helyett</string>
+    <string name="update_ytdlp_while_downloading">Yt-dlp frissítése letöltés közben</string>
+    <string name="update_ytdlp_while_downloading_summary">Add hozzá az -U kapcsolót az yt-dlp-hez, hogy a letöltés előtt frissítsd a legújabb verzióra.</string>
+    <string name="preview_filename">Fájlnév előnézette</string>
+    <string name="potoken_guide">Hitelesítés\n-------------------------\n1. Kattintson az „Hitelesítés” gombra a WebView bejelentkezési oldalának megnyitásához.\n2. Jelentkezzen be Google-fiókjába.\n3. Játsszon le egy olyan videót, amely támogatja az automatikusan lefordított feliratokat.\n4. Kapcsolja be az automatikusan lefordított feliratokat, és nézze meg, hogy működnek-e.\n4.1 Ha az automatikusan lefordított feliratok nem működnek, váltson egy másik videóra, amely támogatja az automatikusan lefordított feliratokat, és próbálja meg újra a 4. lépést.\n5. Kattintson az OK gombra.\n\nNincs hitelesítés\n-------------------------\n1. Kattintson a „Nincs hitelesítés” gombra.\n2. Írjon be egy tetszőleges YouTube-videó URL-jét.\n3. Várja meg, amíg a videó betöltődik, és játssza le legalább 3 másodpercig.\n4. Kattintson az OK gombra.</string>
+    <string name="no_auth">Nincs hitelesítés</string>
+    <string name="auth">Hitelesítés</string>
+    <string name="url_regex">URL Regex (Reguláris kifejezés)</string>
 </resources>
