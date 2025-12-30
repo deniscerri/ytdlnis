@@ -21,6 +21,10 @@
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh-Hans.md">Chinese Simplified</a>
+    &nbsp;&nbsp;| &nbsp;&nbsp;
+    <a href="https://github.com/deniscerri/ytdlnis/blob/main/README-bn-IN.md">Bengali India</a>
 </div>
 
 <h3 align="center">
