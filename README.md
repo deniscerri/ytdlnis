@@ -21,6 +21,10 @@
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh-Hans.md">Chinese Simplified</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-bn-IN.md">Bengali India</a>
 </div>
 
 <h3 align="center">
@@ -46,7 +50,7 @@
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 ![GitHub Sponsor](https://img.shields.io/github/sponsors/deniscerri?label=Sponsor&logo=GitHub)
 
-### Only the links above are the only trusted sources of YTDLnis. Everything else is not related to me.
+### Only the links above are trusted sources for YTDLnis. Anything else is unrelated.
 
 </div>
 
@@ -74,7 +78,7 @@
 - Split item into separate files depending on its chapters
 - Select different download formats
 - Bottom card right from the share menu, no need to open the app 
-	- You can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
+	- You can create a txt file and fill it with links/playlists/search queries separated by a new line and the app will process them
 - Search or insert a link from the app
 	- You can stack searches so you can process them at the same time
 - Log downloads in case of problems
