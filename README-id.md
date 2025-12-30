@@ -6,7 +6,25 @@
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
 	Indonesia
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh-Hans.md">Chinese Simplified</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-bn-IN.md">Bengali India</a>
 </div>
 
 <h3 align="center">
@@ -99,9 +117,9 @@
 
 Bergabunglah dengan [Kanal Telegram](https://t.me/ytdlnis) atau [Discord](https://discord.gg/WW3KYWxAPm) kami untuk berdiskusi, pengumuman, dan rilis!
 
-## 🔑 Hubungkan dengan ReVanced
+## 😇 Berkontribusi
 
-Nama paket Aplikasinya adalah "com.deniscerri.ytdl"
+Jika Anda ingin berkontribusi.l, silakan baca bagian [Berkontribusi](CONTRIBUTING.MD).
 
 ## 📝 Bantu Menerjemahkan di Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
@@ -113,24 +131,48 @@ Nama paket Aplikasinya adalah "com.deniscerri.ytdl"
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
-## 😇 Berkontribusi
+## 🔑 Hubungkan ke aplikasi pihak ketiga menggunakan nama paket
 
-Jika kamu ingin berkontribusi. Silakan baca bagian [Berkontribusi](CONTRIBUTING.MD).
+Nama paket Aplikasinya adalah "com.deniscerri.ytdl"
+
+
+## 🤖 Terhubung dengan aplikasi pihak ketiga menggunakan intent
+
+Anda dapat menggunakan intent untuk mengirimkan perintah ke aplikasi agar menjalankan pengunduhan tanpa interaksi pengguna.
+Variabel yang diterima:
+
+<b>TYPE</b> -> bisa berupa: audio, video, command <br/>
+<b>BACKGROUND</b> -> bisa berupa: true, false. Jika bernilai true, aplikasi tidak akan menampilkan kartu unduhan apa pun dan akan menjalankan proses unduh di latar belakang <br/>
+
+### Contoh mengunduh audio di latar belakang menggunakan Tasker
+1. Create Send Intent task
+2. Action: android.intent.action.SEND
+3. Cat: Default
+4. Mime Type: text/*
+5. Extra: android.intent.extra.TEXT:url (instead of "url" write the URL of the video you want to download)
+6. Extra: TYPE:audio
+7. Extra: BACKGROUND:true
 
 ## 📄 Lisensi
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-⚠️  Peringatan <br>
-
 Pengecualian untuk kode sumber yang dilisensikan di bawah lisensi GPLv3, semua pihak lain dilarang menggunakan nama 'YTDLnis' sebagai aplikasi pengunduh, begitu pula dengan turunannya (derivatif). Turunannya (derivatif) termasuk, tetapi tidak terbatas pada percabangan (fork) dan build tidak resmi.
+
+## 😁 Donasi
+
+
+[<img src="https://raw.githubusercontent.com/WSTxda/WSTxda/main/images/BMC.svg"
+alt='Donasi melalui BMC'
+height="80">](https://www.buymeacoffee.com/deniscerri)
 
 ## 🙏 Ucapan Terima Kasih
 
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) dan kontributornya karena memungkinkan alat ini ada. Tanpanya, aplikasi ini tidak akan demikian.
-- [youtubedl-android](https://github.com/yausername/youtubedl-android) karena mem-porting yt-dlp ke Android
-- [dvd](https://github.com/yausername/dvd) karena memperlihatkan bagaimana caranya mengimplementasikan youtubedl-android
-- [seal](https://github.com/JunkFood02/Seal) atas elemen desain dan fitur tertentu yang ingin aku gunakan juga pada aplikasi ini
 - [decipher3114](https://github.com/decipher3114) atas ikon aplikasinya
+- [dvd](https://github.com/yausername/dvd) karena menjadi contoh implementasi youtubedl-android
+- [seal](https://github.com/JunkFood02/Seal) atas elemen desain dan fitur tertentu yang ingin aku gunakan juga pada aplikasi ini saat mulai mengembangkannya
+- [youtubedl-android](https://github.com/yausername/youtubedl-android) karena mem-porting yt-dlp ke Android
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) dan para kontributornya karena membuat alat ini menjadi mungkin. Tanpa itu, aplikasi ini tidak akan ada
 
-dan banyak lagi orang asing lainnya yang ada di forum internet.
+
+dan kepada banyak orang lain, seperti para kontributor.
