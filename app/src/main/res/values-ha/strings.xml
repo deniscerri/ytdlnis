@@ -1,3 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="run_command">Gudanar da umarni</string>
+    <string name="aria2_summary">Yi amfani da aria2c azaman mai saukewa maimakon tsoho</string>
+    <string name="processing">Sarrafawa</string>
+    <string name="embed_subs_summary">Ƙara ƙananan kalmomi a cikin bidiyon</string>
+    <string name="embed_thumb">Ƙananan murfin</string>
 </resources>

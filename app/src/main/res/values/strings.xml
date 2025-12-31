@@ -13,7 +13,7 @@
     <string name="video_directory">Video folder</string>
     <string name="updating">Updating</string>
     <string name="ytdl_update_hint">Useful tip while downloading updates</string>
-    <string name="update_ytdl">Update yt-dl to the new version</string>
+    <string name="update_ytdl">Update yt-dlp to the new version</string>
     <string name="about">About</string>
     <string name="source_code">Source code</string>
     <string name="search_hint">Search or insert URL</string>

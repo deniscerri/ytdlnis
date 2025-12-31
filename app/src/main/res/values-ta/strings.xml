@@ -2,7 +2,7 @@
 <resources>
     <string name="search">தேடு</string>
     <string name="home">வீடு</string>
-    <string name="update_ytdl">ஒய்டி-ட்எல்பி இன் புதிய பதிப்பை நிறுவவும்</string>
+    <string name="update_ytdl">yt-dl ஐ புதிய பதிப்பிற்கு புதுப்பி</string>
     <string name="failed_download">கோப்பைப் பதிவிறக்க முடியவில்லை</string>
     <string name="worst_quality">மோசமான தரம்</string>
     <string name="best_quality">சிறந்த தரம்</string>
@@ -14,7 +14,7 @@
     <string name="music_directory">இசை கோப்புறை</string>
     <string name="video_directory">காணொளி கோப்புறை</string>
     <string name="updating">புதுப்பிக்கிறது</string>
-    <string name="ytdl_update_hint">பதிவிறக்கம் செய்வதில் ஏதேனும் சிக்கல் இருந்தால் இது பயனுள்ளதாக இருக்கும்</string>
+    <string name="ytdl_update_hint">புதுப்பிப்புகளைப் பதிவிறக்கும்போது பயனுள்ள உதவிக்குறிப்பு</string>
     <string name="about">பற்றி</string>
     <string name="source_code">மூல குறியீடு</string>
     <string name="search_hint">தேடு அல்லது முகவரியைத் பதிவிடு</string>
@@ -163,7 +163,7 @@
     <string name="backup">காப்புப்பிரதி</string>
     <string name="incognito">மறைநிலை</string>
     <string name="restore_complete">பயன்பாட்டு மீட்டமை முடிந்தது. பின்வரும் உருப்படிகள் மீட்டமைக்கப்பட்டுள்ளன:</string>
-    <string name="backup_created_successfully">காப்புப்பிரதி கோப்பு வெற்றிகரமாக சேமிக்கப்பட்டது!</string>
+    <string name="backup_created_successfully">Backup கோப்பு saved successfully</string>
     <string name="socks5_proxy_summary">குறிப்பிட்ட HTTP/HTTPS/SOCKS பதிலாளைப் பயன்படுத்து</string>
     <string name="appearance">தோற்றம்</string>
     <string name="backup_restore">காப்பு மற்றும் மீட்பு</string>
@@ -432,7 +432,7 @@
     <string name="data_fetching_extractor_youtube">தரவு பெறுதல் பிரித்தெடுத்தல் (யூடியூப்)</string>
     <string name="data_fetching_extra_command">தரவு பெறுதல் கூடுதல் கட்டளை</string>
     <string name="disable_write_info_json">எழுதும் செய்தி சாதொபொகு ஐ முடக்கு</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player வாடிக்கையாளர்கள் & PO டோக்கன்]]></string>
     <string name="use_code_highlighter">குறியீடு வண்ண ஐலைட்டரைப் பயன்படுத்தவும்</string>
     <string name="automatic_backup">தானியங்கி காப்புப்பிரதி</string>
     <string name="regenerate">மீண்டும் உருவாக்கவும்</string>
@@ -473,4 +473,34 @@
     <string name="custom">தனிப்பயன்</string>
     <string name="select_between_desc">தேர்ந்தெடுக்க பொருட்களின் வரம்பைக் குறிப்பிடவும்</string>
     <string name="cut_unsupported">இந்த உருப்படிக்கு வெட்டு கிடைக்கவில்லை</string>
+    <string name="potoken">போடோ மாகாணம்</string>
+    <string name="web_client_po_token">வலை வாங்கி PO கிள்ளாக்கு</string>
+    <string name="reverse">தலைகீழ்</string>
+    <string name="no_keep_subs">உட்பொதித்த பிறகு வசன கோப்புகளை நீக்கவும்</string>
+    <string name="no_keep_subs_summary">உட்பொதிக்கப்பட்ட வசனங்கள் மற்றும் எழுதும் வசனங்கள் இரண்டையும் பயன்படுத்தும் போது, உட்பொதித்த பிறகு வசனக் கோப்புகளை வைத்திருக்க வேண்டாம்</string>
+    <string name="video_compatible">இணக்கமான வீடியோ</string>
+    <string name="video_compatible_summary">மற்ற பயன்பாடுகளுடன் இணக்கமாக வீடியோவை மறுகுறியீடு செய்கிறது</string>
+    <string name="no_free_space_warning">இந்த உள்ளமைவுக்கு இலவச இடம் இல்லை.</string>
+    <string name="preferred_format_size">விருப்பமான வடிவமைப்பு அளவு</string>
+    <string name="smallest">மிகச் சிறியது</string>
+    <string name="largest">மிகப் பெரியது</string>
+    <string name="no_prefer_drc_audio">DRC ஆடியோவை விரும்ப வேண்டாம்</string>
+    <string name="potoken_gvs">PO கிள்ளாக்கு (GVS)</string>
+    <string name="potoken_player">PO கிள்ளாக்கு (பிளேயர்)</string>
+    <string name="potoken_subs">PO கிள்ளாக்கு (துணைகள்)</string>
+    <string name="visitor_data">பார்வையாளர் தரவு</string>
+    <string name="get_data_sync_id">தரவு ஒத்திசைவு ஐடியைப் பெறுங்கள்</string>
+    <string name="desktop">டெச்க்டாப்</string>
+    <string name="url_regex">முகவரி வழக்கவெளி</string>
+    <string name="disable_flat_playlist">பிளாட் பிளேலிச்ட்டை முடக்கு</string>
+    <string name="disable_flat_playlist_summary">--flat-playlist ஐப் பயன்படுத்த வேண்டாம். மெதுவாக தரவு பெறுதல், ஆனால் அதிக தரவு வளம்</string>
+    <string name="chapters">பாடங்கள்</string>
+    <string name="use_original_url_playlist">பிளேலிச்ட் urlக்கு அசல் முகவரி ஐப் பயன்படுத்தவும்</string>
+    <string name="use_original_url_playlist_summary">சாதொபொகு dump இலிருந்து playlist_webpage_url குறிச்சொல்லுக்குப் பதிலாக பயனர் வழங்கிய பிளேலிச்ட் முகவரி ஐப் பயன்படுத்தவும்</string>
+    <string name="update_ytdlp_while_downloading">பதிவிறக்கும் போது yt-dlp ஐப் புதுப்பிக்கவும்</string>
+    <string name="update_ytdlp_while_downloading_summary">yt-dlp இல் -U ஐச் சேர்ப்பதன் மூலம் பதிவிறக்குவதற்கு முன் அதை சமீபத்தியதாகப் புதுப்பிக்கவும்</string>
+    <string name="preview_filename">கோப்பு பெயர் முன்னோட்டம்</string>
+    <string name="potoken_guide">ஏற்பு \n------------------------- \n1. WebView இல் உள்நுழைவுப் பக்கத்தைத் திறக்க, \'Auth\' என்பதைக் சொடுக்கு செய்யவும். \n2. உங்கள் Google கணக்கில் உள்நுழையவும். \n3. தானாக மொழிபெயர்க்கப்பட்ட வசனங்களை ஆதரிக்கும் எந்த வீடியோவையும் இயக்கவும். \n4. தானாக மொழிபெயர்க்கப்பட்ட வசனங்களை இயக்கி, அது செயல்படுகிறதா என்று பார்க்கவும். \n4.1 தானாக மொழிபெயர்க்கப்பட்ட வசனங்கள் வேலை செய்யவில்லை என்றால், தானாக மொழிபெயர்க்கப்பட்ட வசனங்களை ஆதரிக்கும் மற்றொரு வீடியோவிற்கு மாறி, படி 4 ஐ மீண்டும் முயற்சிக்கவும். \n5. சரி என்பதைக் சொடுக்கு செய்யவும். \n\nஅங்கீகாரம் இல்லை \n------------------------- \n1. \'இல்லை ஏற்பு\' என்பதைக் சொடுக்கு செய்யவும். \n2. ஏதேனும் யூடியூப் வீடியோ முகவரி ஐ எழுதவும் \n3. வீடியோ ஏற்றப்படும் வரை காத்திருந்து குறைந்தது 3 வினாடிகள் வீடியோவை இயக்கவும். \n4. சரி என்பதைக் சொடுக்கு செய்யவும்.</string>
+    <string name="no_auth">ஏற்பு இல்லை</string>
+    <string name="auth">ஏற்பு</string>
 </resources>

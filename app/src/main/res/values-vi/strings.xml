@@ -486,6 +486,7 @@
     <string name="smallest">Bé nhất</string>
     <string name="largest">Lớn nhất</string>
     <string name="no_prefer_drc_audio">Không dùng âm thanh DRC</string>
-    <string name="potoken_gvs">PO Token (GVS)</string>
-    <string name="potoken_player">PO Token (Trình phát)</string>
+    <string name="potoken_gvs">Mã PO (GVS)</string>
+    <string name="potoken_player">Mã PO (Trình phát)</string>
+    <string name="potoken_subs">Mã PO (Phụ đề)</string>
 </resources>

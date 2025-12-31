@@ -35,7 +35,7 @@
     <string name="remove_all">移除所有</string>
     <string name="concurrent_fragments">同时下载片段数</string>
     <string name="run_command">运行命令</string>
-    <string name="update_ytdl">更新 yt-dl 到新版本</string>
+    <string name="update_ytdl">更新 yt-dlp 到新版本</string>
     <string name="about">相关信息</string>
     <string name="search_hint">搜索或插入URL</string>
     <string name="download_notification_channel_description">音频和视频文件下载进度的通知</string>
