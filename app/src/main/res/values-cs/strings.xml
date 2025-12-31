@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="music_directory">Audio složka</string>
-    <string name="update_ytdl">Aktualizovat yt-dl na novou verzi</string>
+    <string name="update_ytdl">Aktualizovat yt-dlp na novou verzi</string>
     <string name="directories">Složky</string>
     <string name="search_hint">Hledat nebo vložit URL adresu</string>
     <string name="source_code">Zdrojový kód</string>
@@ -499,7 +499,7 @@
     <string name="use_original_url_playlist">Použít původní URL pro URL playlistu</string>
     <string name="use_original_url_playlist_summary">Použije adresu URL playlistu zadanou uživatelem namísto tagu playlist_webpage_url z výpisu json</string>
     <string name="update_ytdlp_while_downloading">Aktualizace yt-dlp během stahování</string>
-    <string name="update_ytdlp_while_downloading_summary">Přidejte -U k yt-dlp, aby se před stažením aktualizoval na nejnovější verzi</string>
+    <string name="update_ytdlp_while_downloading_summary">Přidejte -U k yt-dlp, aby se aktualizoval na nejnovější verzi před stahováním</string>
     <string name="preview_filename">Název náhledu</string>
     <string name="potoken_guide">"Ověření\n-----------------------\n1. Klikněte na „Ověření“ a otevřete přihlašovací stránku ve WebView.\n2. Přihlaste se ke svému účtu Google.\n3. Přehrajte libovolné video, které podporuje automaticky přeložené titulky.\n4. Zapněte automaticky přeložené titulky a zkontrolujte, zda fungují.\n    4.1 Pokud automaticky přeložené titulky nefungují, přepněte na jiné video, které podporuje automaticky přeložené titulky, a zkuste krok 4 znovu.\n5. Klikněte na OK.\n\nBez ověření\n-----------------------\n1. Klikněte na „Bez ověření“.\n2. Zadejte libovolnou adresu URL videa na YouTube.\n3. Počkejte, až se video načte, a přehrávejte ho alespoň 3 sekundy.\n4. Klikněte na OK."</string>
     <string name="no_auth">Bez ověření</string>
