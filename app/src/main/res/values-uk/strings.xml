@@ -20,7 +20,7 @@
     <string name="ytdl_already_updating">Встановлення нової версії</string>
     <string name="ytdl_update_hint">Корисна порада при завантаженні оновлень</string>
     <string name="source_code">Вихідний код</string>
-    <string name="update_ytdl">Оновіть yt-dl до нової версії</string>
+    <string name="update_ytdl">Оновіть yt-dlp до нової версії</string>
     <string name="about">Про нас</string>
     <string name="failed_download">Не вдалося завантажити файл</string>
     <string name="download_notification_channel_name">Завантаження файлів</string>
