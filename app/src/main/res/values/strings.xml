@@ -506,4 +506,5 @@
     <string name="potoken_guide">Auth\n-----------------------\n1. Click \'Auth\' to open the sign in page in WebView.\n2. Sign in to your Google Account.\n3. Play any video that supports auto-translated subtitles.\n4. Turn on auto-translated subtitles and see if it works.\n\t4.1 If auto-translated subtitles don\'t work, switch to another video that supports auto-translated subtitles and try step 4 again.\n5. Click OK.\n\nNo Auth\n-----------------------\n1. Click \'No Auth\'.\n2. Write any youtube video url\n3. Wait for the video to load and play the video for at least 3 seconds.\n4. Click OK.</string>
     <string name="no_auth">No Auth</string>
     <string name="auth">Auth</string>
+    <string name="app_icon">App Icon</string>
 </resources>

@@ -21,6 +21,13 @@
             app:summary="@string/defaultValue"
             app:title="@string/Theme" />
 
+        <Preference
+            android:defaultValue="default"
+            android:icon="@drawable/ic_frame"
+            android:title="@string/app_icon"
+            android:summary="@string/defaultValue"
+            app:key="ytdlnis_icon" />
+
         <ListPreference
             android:entries="@array/accents"
             android:entryValues="@array/accents_values"

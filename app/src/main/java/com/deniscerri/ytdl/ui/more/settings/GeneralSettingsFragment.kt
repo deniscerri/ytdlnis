@@ -12,6 +12,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import android.util.DisplayMetrics
+import android.view.ViewGroup
+import android.view.Window
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -24,6 +27,7 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,11 +36,13 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.databinding.NavOptionsItemBinding
+import com.deniscerri.ytdl.ui.adapter.IconsSheetAdapter
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -198,6 +204,33 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
 
 
 
+                false
+            }
+        }
+
+        findPreference<Preference>("ytdlnis_icon")?.apply {
+            val currentValue = preferences.getString("ytdlnis_icon", "default")
+            IconsSheetAdapter.availableIcons.firstOrNull { it.activityAlias == currentValue }?.let {
+                summary = getString(it.nameResource)
+            }
+
+            setOnPreferenceClickListener {
+                val bottomSheet = BottomSheetDialog(context)
+                bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                bottomSheet.setContentView(R.layout.generic_list)
+
+                val recycler = bottomSheet.findViewById<RecyclerView>(R.id.download_recyclerview)!!
+                recycler.layoutManager = GridLayoutManager(context, 3)
+                recycler.adapter = IconsSheetAdapter(requireActivity())
+
+                bottomSheet.show()
+                val displayMetrics = DisplayMetrics()
+                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                bottomSheet.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
                 false
             }
         }
