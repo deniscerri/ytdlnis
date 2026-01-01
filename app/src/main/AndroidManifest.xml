@@ -438,8 +438,7 @@
             android:name=".ui.more.cookies.WebViewActivity"
             android:configChanges="locale"
             android:exported="true"
-            android:excludeFromRecents="true"
-            android:parentActivityName=".MainActivity"
+            android:launchMode="standard"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="ytdlnis.WebViewActivity" />
@@ -452,9 +451,8 @@
             android:name=".ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity"
             android:configChanges="locale"
             android:exported="true"
-            android:excludeFromRecents="true"
             android:noHistory="true"
-            android:parentActivityName=".ui.more.settings.SettingsActivity"
+            android:launchMode="standard"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="ytdlnis.PoTokenWebViewLoginActivity" />
