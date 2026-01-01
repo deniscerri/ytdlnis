@@ -507,4 +507,5 @@
     <string name="no_auth">No Auth</string>
     <string name="auth">Auth</string>
     <string name="app_icon">App Icon</string>
+    <string name="show_quick_download_share_menu">Show Quick Download in share menu</string>
 </resources>

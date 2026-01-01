@@ -368,6 +368,25 @@
         </activity-alias>
 
         <activity-alias
+            android:name=".quickDownloadShareAlias"
+            android:targetActivity=".receiver.ShareActivity"
+            android:enabled="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/quick_download"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <meta-data
+                android:name="quick_run_background"
+                android:value="true" />
+        </activity-alias>
+
+        <activity-alias
             android:name=".Default"
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"

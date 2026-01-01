@@ -267,6 +267,23 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
             }
         }
 
+        findPreference<SwitchPreferenceCompat>("show_quick_download_share")?.apply {
+            setOnPreferenceChangeListener { pref, _ ->
+                val packageManager = requireContext().packageManager
+                val aliasComponentName = ComponentName(requireContext(), "com.deniscerri.ytdl.quickDownloadShareAlias")
+                if ((pref as SwitchPreferenceCompat).isChecked){
+                    packageManager.setComponentEnabledSetting(aliasComponentName,
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                        PackageManager.DONT_KILL_APP)
+                }else{
+                    packageManager.setComponentEnabledSetting(aliasComponentName,
+                        PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                        PackageManager.DONT_KILL_APP)
+                }
+                true
+            }
+        }
+
         findPreference<SwitchPreferenceCompat>("display_over_apps")?.apply {
             isChecked = Settings.canDrawOverlays(requireContext())
             setOnPreferenceChangeListener { _, _ ->

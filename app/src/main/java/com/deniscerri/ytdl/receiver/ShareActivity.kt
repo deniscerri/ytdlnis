@@ -174,9 +174,10 @@ class ShareActivity : BaseActivity() {
             }
 
             val inputQuery = data.extractURL()
+            val ai = packageManager.getActivityInfo(componentName, PackageManager.GET_META_DATA)
 
             val type = intent.getStringExtra("TYPE")
-            val background = intent.getBooleanExtra("BACKGROUND", false)
+            val background = intent.getBooleanExtra("BACKGROUND", ai.metaData?.getBoolean("quick_run_background", false) == true)
 
             lifecycleScope.launch {
                 val result: ResultItem
