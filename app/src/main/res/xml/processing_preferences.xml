@@ -150,8 +150,8 @@
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
             app:icon="@drawable/baseline_audio_file_24"
-            app:key="no_prefer_drc_audio"
-            app:title="@string/no_prefer_drc_audio" />
+            app:key="prefer_drc_audio"
+            app:title="@string/prefer_drc_audio" />
 
     </PreferenceCategory>
 

@@ -487,7 +487,6 @@
     <string name="smallest">En küçük</string>
     <string name="largest">En büyük</string>
     <string name="no_free_space_warning">Bu configürasyon için yeterli alan yok.</string>
-    <string name="no_prefer_drc_audio">DRC Audio\'yu tercih etme</string>
     <string name="potoken_gvs">PO Jetonu (GVS)</string>
     <string name="potoken_player">PO Jetonu (Oynatıcı)</string>
     <string name="potoken_subs">PO Jetonu (Altyazılar)</string>

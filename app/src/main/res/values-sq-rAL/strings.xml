@@ -484,7 +484,6 @@
     <string name="preferred_format_size">Madhësia e preferuar e formatit</string>
     <string name="smallest">Më i vogli</string>
     <string name="largest">Më i madhi</string>
-    <string name="no_prefer_drc_audio">Mos prefero Audio DRC</string>
     <string name="potoken_gvs">Po Token (GVS)</string>
     <string name="potoken_player">Po Token (Player)</string>
     <string name="potoken_subs">Po Token (Subs)</string>

@@ -485,7 +485,6 @@
     <string name="preferred_format_size">推奨形式サイズ</string>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
-    <string name="no_prefer_drc_audio">DRCオーディオを推奨しない</string>
     <string name="potoken_gvs">PO トークン (GVS)</string>
     <string name="potoken_player">PO トークン (プレーヤー)</string>
     <string name="potoken_subs">PO トークン (字幕)</string>

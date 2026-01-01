@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Üstünlük verilən Format Həcmi</string>
     <string name="smallest">Ən kiçik</string>
     <string name="largest">Ən böyük</string>
-    <string name="no_prefer_drc_audio">DRC Səsə üstünlük vermə</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Oynadıcı)</string>
     <string name="potoken_subs">PO Token (Titrlər)</string>

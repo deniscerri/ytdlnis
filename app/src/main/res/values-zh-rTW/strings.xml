@@ -486,7 +486,6 @@
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
     <string name="potoken_guide">"驗證授權\n-----------------------\n1. 點選「驗證」開啟 WebView 的登入頁面\n2. 使用您的 Google 帳戶登入\n3. 播放支援自動翻譯字幕的影片\n4. 開啟自動翻譯字幕並檢查是否正常運作\n   4.1 若自動翻譯字幕無效，請切換至另一支支援自動翻譯字幕的影片，並重試步驟 4\n5. 點選「確認」完成\n\n略過驗證\n-----------------------\n1. 點選「略過驗證」\n2. 輸入任一 YouTube 影片網址\n3. 等待影片載入並播放至少 3 秒\n4. 點選「確認」完成"</string>
-    <string name="no_prefer_drc_audio">不優先使用 DRC 音訊</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (播放器)</string>
     <string name="potoken_subs">PO Token (字幕)</string>

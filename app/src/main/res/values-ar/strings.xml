@@ -485,7 +485,6 @@
     <string name="preferred_format_size">حجم التنسيق المفضل</string>
     <string name="smallest">الأصغر</string>
     <string name="largest">الأكبر</string>
-    <string name="no_prefer_drc_audio">لا تفضل صوت DRC</string>
     <string name="potoken_gvs">رمز PO (GVS)</string>
     <string name="potoken_player">رمز PO (مشغّل)</string>
     <string name="potoken_subs">رمز PO (الاشتراكات)</string>

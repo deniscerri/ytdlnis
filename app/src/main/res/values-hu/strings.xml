@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Preferált formátumméret</string>
     <string name="smallest">Legkisebb</string>
     <string name="largest">Legnagyobb</string>
-    <string name="no_prefer_drc_audio">Ne részesítsd előnyben a DRC Audio-t</string>
     <string name="potoken_gvs">PO zseton (GVS)</string>
     <string name="potoken_player">PO zseton (Lejátszó)</string>
     <string name="potoken_subs">PO zseton (Feliratok)</string>

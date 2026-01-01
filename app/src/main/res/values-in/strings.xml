@@ -484,7 +484,6 @@
     <string name="preferred_format_size">Ukuran Format yang Disukai</string>
     <string name="smallest">Paling Kecil</string>
     <string name="largest">Terbesar</string>
-    <string name="no_prefer_drc_audio">Jangan pilih Audio DRC</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Pemutar)</string>
     <string name="potoken_subs">PO Token (Subtitel)</string>

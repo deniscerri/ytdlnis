@@ -59,9 +59,9 @@ class FormatUtil(private var context: Context) {
                 formatImportance.remove("codec")
             }
 
-            val noDRC = sharedPreferences.getBoolean("no_prefer_drc_audio", false)
-            if (noDRC) {
-                formatImportance.add(0,"no_drc")
+            val preferDRC = sharedPreferences.getBoolean("prefer_drc_audio", false)
+            if (preferDRC) {
+                formatImportance.add(0,"prefer_drc")
             }
 
             return formatImportance
@@ -100,11 +100,12 @@ class FormatUtil(private var context: Context) {
         val orderPreferences = getAudioFormatImportance()
 
         val comparator = Comparator<Format> { a, b ->
-            if ("no_drc" in orderPreferences) {
-                val aHasDrc = a.format_note.contains("drc", ignoreCase = true)
-                val bHasDrc = b.format_note.contains("drc", ignoreCase = true)
-                if (aHasDrc != bHasDrc)
-                    return@Comparator aHasDrc.compareTo(bHasDrc)
+            if ("prefer_drc" in orderPreferences) {
+                val comparison = (b.format_note.contains("drc", ignoreCase = true)).compareTo(
+                    a.format_note.contains("drc", ignoreCase = true)
+                )
+
+                if (comparison != 0) return@Comparator comparison
             }
 
             for (order in orderPreferences) {
@@ -146,7 +147,6 @@ class FormatUtil(private var context: Context) {
                             }
                         }
                     }
-
                     "codec" -> {
                         if (audioCodecPreference.isNotBlank()) {
                             ("^(${audioCodecPreference}).*$".toRegex(RegexOption.IGNORE_CASE)

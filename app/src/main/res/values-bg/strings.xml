@@ -483,7 +483,6 @@
     <string name="preferred_format_size">Предпочитан размер на формата</string>
     <string name="smallest">Най-малкият</string>
     <string name="largest">Най-големият</string>
-    <string name="no_prefer_drc_audio">Не предпочитане DRC Audio</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Плеър)</string>
     <string name="visitor_data">PO Token (Subs)</string>

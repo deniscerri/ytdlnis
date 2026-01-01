@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Бажаний розмір формату</string>
     <string name="smallest">Найменший</string>
     <string name="largest">Найбільший</string>
-    <string name="no_prefer_drc_audio">Не надавати перевагу DRC Audio</string>
     <string name="potoken_gvs">PO токен (GVS)</string>
     <string name="potoken_player">PO токен (Player)</string>
     <string name="potoken_subs">PO токен (Subs)</string>

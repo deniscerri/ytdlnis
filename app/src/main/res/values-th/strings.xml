@@ -484,7 +484,6 @@
     <string name="video_compatible_summary">ถอดรหัสของวิดีโอเพื่อให้เข้ากันได้กับแอปอื่นๆ</string>
     <string name="no_free_space_warning">ไม่มีพื้นที่ว่างสำหรับการกำหนดค่านี้</string>
     <string name="preferred_format_size">ขนาดฟอร์แมตไฟล์ที่ต้องการ</string>
-    <string name="no_prefer_drc_audio">ไม่ต้องการเสียงแบบ DRC</string>
     <string name="potoken_gvs">โทเค็น PO (GVS)</string>
     <string name="potoken_player">โทเค็น PO (ตัวเล่น)</string>
     <string name="potoken_subs">โทเค็น PO (Subs)</string>

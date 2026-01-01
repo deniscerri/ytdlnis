@@ -486,7 +486,6 @@
     <string name="preferred_format_size">Taille du format préféré</string>
     <string name="smallest">Plus petit</string>
     <string name="largest">Plus grand</string>
-    <string name="no_prefer_drc_audio">Ne pas préférer l\'audio DRC</string>
     <string name="potoken_gvs">Token PO (GVS)</string>
     <string name="potoken_player">Token PO (Lecteur)</string>
     <string name="potoken_subs">Token PO (Sous-titres)</string>

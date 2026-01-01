@@ -484,7 +484,6 @@
     <string name="no_free_space_warning">Nie ma wolnego miejsca dla tej konfiguracji.</string>
     <string name="smallest">Najmniejszy</string>
     <string name="largest">Największy</string>
-    <string name="no_prefer_drc_audio">Nie preferuj DRC Audio</string>
     <string name="visitor_data">Dane odwiedzających</string>
     <string name="get_data_sync_id">Uzyskaj ID synchronizacji danych</string>
     <string name="desktop">Pulpit</string>

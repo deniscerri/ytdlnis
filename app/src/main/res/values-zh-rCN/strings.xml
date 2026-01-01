@@ -484,7 +484,6 @@
     <string name="preferred_format_size">首选的格式大小</string>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
-    <string name="no_prefer_drc_audio">不偏好 DRC 音频</string>
     <string name="potoken_gvs">PO 令牌 (GVS)</string>
     <string name="potoken_player">PO 令牌 （播放器）</string>
     <string name="potoken_subs">PO 令牌 （字幕）</string>

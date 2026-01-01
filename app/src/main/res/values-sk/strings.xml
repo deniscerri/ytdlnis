@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Preferovaná veľkosť formátu</string>
     <string name="smallest">Najmenšia</string>
     <string name="largest">Najväčšia</string>
-    <string name="no_prefer_drc_audio">Nepoužívať DRC Audio</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Prehrávač)</string>
     <string name="potoken_subs">PO Token (Titulky)</string>

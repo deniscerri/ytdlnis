@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Kích thước định dạng ưa tiên</string>
     <string name="smallest">Bé nhất</string>
     <string name="largest">Lớn nhất</string>
-    <string name="no_prefer_drc_audio">Không dùng âm thanh DRC</string>
     <string name="potoken_gvs">Mã PO (GVS)</string>
     <string name="potoken_player">Mã PO (Trình phát)</string>
     <string name="potoken_subs">Mã PO (Phụ đề)</string>

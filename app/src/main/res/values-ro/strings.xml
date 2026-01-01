@@ -483,7 +483,6 @@
     <string name="preferred_format_size">Dimensiunea preferată a formatului</string>
     <string name="smallest">Cel mai mic</string>
     <string name="largest">Cel mai mare</string>
-    <string name="no_prefer_drc_audio">Nu prefer DRC Audio</string>
     <string name="chapters">Capitole</string>
     <string name="use_original_url_playlist">Folosește URL-ul original pentru ULR-ul playlist-ului</string>
     <string name="update_ytdlp_while_downloading">Actualizează yt-dlp în timpul descărcării</string>

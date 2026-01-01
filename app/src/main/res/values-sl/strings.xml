@@ -484,7 +484,6 @@
     <string name="preferred_format_size">Prednostna velikost formata</string>
     <string name="smallest">Najmanjše</string>
     <string name="largest">Največje</string>
-    <string name="no_prefer_drc_audio">Ne preferiraj DRC zvoka</string>
     <string name="potoken_gvs">PO Žeton (GVS)</string>
     <string name="potoken_player">PO Žeton (Predvajalnik)</string>
     <string name="potoken_subs">PO Žeton (Podnapisi)</string>

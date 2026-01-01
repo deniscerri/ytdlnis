@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Tamanho do formato preferido</string>
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
-    <string name="no_prefer_drc_audio">Não prefiro áudio DRC</string>
     <string name="potoken_gvs">Chave de acesso PO (GVS)</string>
     <string name="potoken_player">Chave de acesso PO (Player)</string>
     <string name="potoken_subs">Chave de acesso PO (inscrições)</string>

@@ -485,7 +485,6 @@
     <string name="preferred_format_size">Tamaño de formato preferido</string>
     <string name="smallest">Más pequeño</string>
     <string name="largest">Más grande</string>
-    <string name="no_prefer_drc_audio">No prefiero DRC Audio</string>
     <string name="visitor_data">Datos de visitantes</string>
     <string name="get_data_sync_id">Obtener ID de sincronización de datos</string>
     <string name="desktop">Escritorio</string>
