@@ -170,10 +170,11 @@ class DownloadWorker(
 
                     val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
 
-                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
-                    if (updateYTDLP) {
-                        request.addOption("-U")
-                    }
+                    // DISABLED BECAUSE YT_DLP CONSIDERS DOWNLOAD FAILURE IF -U PART FAILS, ytdlnis #1043
+//                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
+//                    if (updateYTDLP) {
+//                        request.addOption("-U")
+//                    }
 
                     downloadItem.status = DownloadRepository.Status.Active.toString()
                     CoroutineScope(Dispatchers.IO).launch {

@@ -31,6 +31,7 @@
             app:title="@string/auto_update_ytdlp" />
 
         <SwitchPreferenceCompat
+            app:isPreferenceVisible="false"
             android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/ic_update"
             android:defaultValue="true"
