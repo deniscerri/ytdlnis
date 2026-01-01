@@ -11,7 +11,7 @@
     <string name="video_directory">Video qovluq</string>
     <string name="updating">Yenilənmə</string>
     <string name="ytdl_update_hint">Yeniləmələri yükləyərkən faydalı tövsiyə</string>
-    <string name="update_ytdl">yt-dl-nı yeni versiyasına yenilə</string>
+    <string name="update_ytdl">yt-dlp-nı yeni versiyasına yenilə</string>
     <string name="source_code">Mənbə kodu</string>
     <string name="search_hint">Axtar və ya URL əlavə et</string>
     <string name="failed_download">Faylı yükləmək mümkün olmadı</string>

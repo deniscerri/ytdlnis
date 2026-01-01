@@ -13,7 +13,7 @@
     <string name="video_directory">चलचित्र फोल्डर</string>
     <string name="updating">अपडेट हो रहा है</string>
     <string name="ytdl_update_hint">अगर आपको डाउनलोडिंग मैं समस्या है तो यह उपयोगी हो सकता है</string>
-    <string name="update_ytdl">Yt-dlp का नया संस्करण स्थापित करें</string>
+    <string name="update_ytdl">Yt-dlp को नए संस्करण से अपडेट करें</string>
     <string name="about">ऐप के बारे में</string>
     <string name="download_notification_channel_name">फ़ाइल डाउनलोडस</string>
     <string name="download_notification_channel_description">ऑडियो और वीडियो फ़ाइलों को डाउनलोड करने की प्रगति दिखाने वाली अधिसूचना</string>

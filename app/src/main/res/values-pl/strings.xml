@@ -494,4 +494,5 @@
     <string name="update_ytdlp_while_downloading">Zaktualizuj yt-dlp podczas pobierania</string>
     <string name="update_ytdlp_while_downloading_summary">Dodaj -U do yt-dlp, aby zaktualizować go do najnowszej wersji przed pobraniem</string>
     <string name="preview_filename">Podgląd nazwy pliku</string>
+    <string name="potoken_gvs">V</string>
 </resources>
