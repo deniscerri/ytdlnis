@@ -470,7 +470,6 @@
             android:name=".ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity"
             android:configChanges="locale"
             android:exported="true"
-            android:noHistory="true"
             android:launchMode="standard"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
