@@ -89,7 +89,7 @@
         tools:layout="@layout/fragment_terminal" />
     <fragment
         android:id="@+id/cookiesFragment"
-        android:name="com.deniscerri.ytdl.ui.more.CookiesFragment"
+        android:name="com.deniscerri.ytdl.ui.more.cookies.CookiesFragment"
         tools:layout="@layout/fragment_cookies"
         android:label="CookiesFragment" />
     <fragment

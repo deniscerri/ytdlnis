@@ -1,7 +1,7 @@
-package com.deniscerri.ytdl.ui.more
+package com.deniscerri.ytdl.ui.more.cookies
 
 import android.annotation.SuppressLint
-import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
@@ -32,6 +32,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.adapter.CookieAdapter
+import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -50,7 +51,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-
 
 class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -136,7 +136,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         cookiesViewModel.deleteAll()
-                        kotlin.runCatching {
+                        runCatching {
                             FileUtil.getCookieFile(requireContext(), true){
                                 File(it).apply { writeText("") }
                             }
@@ -235,7 +235,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 getCookies.isEnabled = urlEditText.text.isNotEmpty()
             }
 
-            val imm = mainActivity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             urlEditText.postDelayed({
                 urlEditText.requestFocus()
                 imm.showSoftInput(urlEditText, 0)
@@ -262,7 +262,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
     override fun onItemEnabledChanged(cookieItem: CookieItem, isEnabled: Boolean) {
         lifecycleScope.launch {
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 cookiesViewModel.changeCookieEnabledState(cookieItem.id, isEnabled)
             }
         }
@@ -280,7 +280,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
-            override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
             }

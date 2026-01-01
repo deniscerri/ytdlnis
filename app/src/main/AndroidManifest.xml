@@ -435,10 +435,10 @@
         </activity-alias>
 
         <activity
-            android:name=".ui.more.WebViewActivity"
+            android:name=".ui.more.cookies.WebViewActivity"
             android:configChanges="locale"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
             android:parentActivityName=".MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -452,7 +452,7 @@
             android:name=".ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity"
             android:configChanges="locale"
             android:exported="true"
-            android:launchMode="singleTask"
+            android:excludeFromRecents="true"
             android:noHistory="true"
             android:parentActivityName=".ui.more.settings.SettingsActivity"
             android:windowSoftInputMode="adjustResize">

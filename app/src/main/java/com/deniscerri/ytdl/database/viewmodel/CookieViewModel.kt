@@ -16,7 +16,7 @@ import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.repository.CookieRepository
-import com.deniscerri.ytdl.ui.more.WebViewActivity
+import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

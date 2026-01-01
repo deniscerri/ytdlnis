@@ -42,7 +42,7 @@ import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
-import com.deniscerri.ytdl.ui.more.WebViewActivity
+import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.NotificationUtil

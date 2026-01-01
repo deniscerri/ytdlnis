@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more
+package com.deniscerri.ytdl.ui.more.cookies
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
@@ -9,7 +9,6 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebStorage
 import android.webkit.WebView
-import android.webkit.WebViewDatabase
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,29 +18,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
-import com.deniscerri.ytdl.util.UiUtil
 import com.google.accompanist.web.AccompanistWebChromeClient
 import com.google.accompanist.web.AccompanistWebViewClient
-import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.hamcrest.Description
-
 
 class WebViewActivity : BaseActivity() {
     private lateinit var cookiesViewModel: CookieViewModel
@@ -109,7 +101,7 @@ class WebViewActivity : BaseActivity() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     webView = view
                     super.onPageFinished(view, url)
-                    kotlin.runCatching {
+                    runCatching {
                         toolbar.title = view?.title ?: ""
                         cookies = cookieManager.getCookie(view?.url)
                     }
@@ -124,9 +116,9 @@ class WebViewActivity : BaseActivity() {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO) {
                         cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
-                            kotlin.runCatching {
+                            runCatching {
                                 cookiesViewModel.insert(
-                                    CookieItem(
+                                    com.deniscerri.ytdl.database.models.CookieItem(
                                         0,
                                         url,
                                         it,
@@ -154,8 +146,12 @@ class WebViewActivity : BaseActivity() {
             }
 
             cookieManager = CookieManager.getInstance()
-            cookieManager.removeAllCookies(null)
-            cookieManager.flush()
+
+            if (savedInstanceState == null) {
+                cookieManager.removeAllCookies(null)
+                cookieManager.flush()
+            }
+
             webViewCompose.apply {
                 setContent { WebViewView() }
             }
@@ -186,20 +182,23 @@ class WebViewActivity : BaseActivity() {
             }
         }
 
-        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-            WebView(
-                state = rememberWebViewState(url), client = webViewClient, chromeClient = webViewChromeClient,
-                modifier = Modifier
+        Scaffold(modifier = Modifier.Companion.fillMaxSize()) { paddingValues ->
+            com.google.accompanist.web.WebView(
+                state = rememberWebViewState(url),
+                client = webViewClient,
+                chromeClient = webViewChromeClient,
+                modifier = Modifier.Companion
                     .padding(paddingValues)
                     .fillMaxSize(),
-                captureBackPresses = false, factory = { context ->
+                captureBackPresses = false,
+                factory = { context ->
                     WebView(context).apply {
                         settings.run {
                             if (!incognito) {
                                 cacheMode = WebSettings.LOAD_DEFAULT
                                 domStorageEnabled = true
                                 setGeolocationEnabled(true)
-                            }else {
+                            } else {
                                 cacheMode = WebSettings.LOAD_NO_CACHE
                                 domStorageEnabled = false
                                 setGeolocationEnabled(false)
@@ -215,7 +214,8 @@ class WebViewActivity : BaseActivity() {
                             if (Build.VERSION.SDK_INT >= 26) {
                                 safeBrowsingEnabled = true
                             }
-                            preferences.edit().putString("useragent_header", userAgentString).apply()
+                            preferences.edit().putString("useragent_header", userAgentString)
+                                .apply()
                         }
                         cookieManager.setAcceptCookie(true)
                         cookieManager.setAcceptThirdPartyCookies(this, true)

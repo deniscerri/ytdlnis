@@ -27,7 +27,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
-import com.deniscerri.ytdl.ui.more.WebViewActivity
+import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
