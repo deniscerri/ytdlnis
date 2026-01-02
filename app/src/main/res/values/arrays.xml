@@ -110,6 +110,7 @@
         <item>@string/sponsorblock_previews</item>
         <item>@string/sponsorblock_fillers</item>
         <item>@string/sponsorblock_reminders</item>
+        <item>@string/sponsorblock_hook</item>
     </string-array>
 
     <string-array name="sponsorblock_settings_values">
@@ -1589,4 +1590,5 @@
         <item>largest</item>
     </string-array>
 
+    <string name="sponsorblock_hook">Hook</string>
 </resources>
