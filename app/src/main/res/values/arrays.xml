@@ -121,6 +121,7 @@
         <item>preview</item>
         <item>filler</item>
         <item>interaction</item>
+        <item>hook</item>
     </string-array>
 
     <string-array name="sponsorblock_settings_default">

@@ -1,6 +1,6 @@
 # YTDLnis Changelog
 
-> # 1.8.8 (2026-01)
+> # 1.8.7.1 (2026-01)
 
 # What's Changed
 
