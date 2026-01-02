@@ -503,4 +503,7 @@
     <string name="potoken_guide">Təsdiqlənmə\n-----------------------\n1. WebView-də giriş səhifəsin açmaq üçün \"Təsdiqlə\"-yə klikləyin.\n2. Google Hesabınıza daxil olun.\n3. Avtomatik tərcümə olunan titrləri dəstəkləyən istənilən videonu oynadın.\n4. Avtomatik tərcümə olunan titrləri açın və onun işlədiyinə əmin olun.\n4.1 Avtomatik tərcümə olunan titrlər işləmirsə, avtomatik tərcümə olunan titrləri dəstəkləyən başqa videoya keçin və 4-cü addımı təkrar cəhd edin.\n5. Oldu-ya klikləyin. \n\nTəsdiqləməsiz\n----------------------- \n1. \'Təsdiqləməsiz\"-ə klikləyin. \n2. İstənilən youtube video url-ni yazın \n3. Videonun yüklənilməsini gözləyin və videonu ən azı 3 saniyə oynadın. \n4. Oldu-ya klikləyin.</string>
     <string name="no_auth">Təsdiqləməsiz</string>
     <string name="auth">Təsdiqlə</string>
+    <string name="prefer_drc_audio">DRC Səsə Üstünlük Ver</string>
+    <string name="app_icon">Tətbiq Simvolu</string>
+    <string name="show_quick_download_share_menu">Paylaş menyusunda Sürətli Yükləməni göstər</string>
 </resources>
