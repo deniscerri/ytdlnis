@@ -236,7 +236,7 @@
     <string name="errored_downloads">Errored downloads</string>
     <string name="errored_download_notification_channel_description">Notification for faulty downloads</string>
     <string name="quick_download">Quick download</string>
-    <string name="quick_download_summary">Don\'t fetch data in the download card</string>
+    <string name="quick_download_summary">Continue with the download process immediately, without fetching data beforehand</string>
     <string name="remove_audio">Remove audio</string>
     <string name="preferred_format_id">Preferred format ID</string>
     <string name="download_now">Download now</string>
@@ -507,5 +507,6 @@
     <string name="no_auth">No Auth</string>
     <string name="auth">Auth</string>
     <string name="app_icon">App Icon</string>
-    <string name="show_quick_download_share_menu">Show Quick Download in share menu</string>
+    <string name="show_quick_download_share_menu">Show option to download immediately in the share menu</string>
+    <string name="quick_download_title">Don\'t fetch data</string>
 </resources>

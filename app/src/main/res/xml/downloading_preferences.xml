@@ -26,7 +26,7 @@
             android:icon="@drawable/ic_speed"
             android:key="quick_download"
             app:summary="@string/quick_download_summary"
-            app:title="@string/quick_download" />
+            app:title="@string/quick_download_title" />
         
         <ListPreference
             android:defaultValue="url_type"
