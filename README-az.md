@@ -4,31 +4,13 @@
 </h1>
 
 <div align="center">
-    <a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	Azərbaycanca
-    &nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
-    &nbsp;&nbsp;| &nbsp;&nbsp;
-    <a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh-Hans.md">Chinese Simplified</a>
-    &nbsp;&nbsp;| &nbsp;&nbsp;
-    <a href="https://github.com/deniscerri/ytdlnis/blob/main/README-bn-IN.md">Bengali India</a>
 </div>
 
 <h3 align="center">
-	YTDLnis, Android 7.0 və daha yuxarı versiyalar üçün yt-dlp istifadə edən, pulsuz və açıq mənbəli video/səs yükləyicisidir.
+	YTDLnis Android 7.0 və yuxarı üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/səs yükləyicidir.
 </h3>
 <h4 align="center">
 	Denis Çerri tərəfindən yaradılmışdır
@@ -36,64 +18,63 @@
 
 <div align="center">
 
-[![Official website](https://custom-icon-badges.herokuapp.com/badge/Official%20Website-violet?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.org)
-[![GitHub Releases](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
-[![IzzyOnDroid repository](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
-[![Uptodown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
+[![Github Yükləyicisi](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
+[![IzzyOnDroid Anbarı](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
+[![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
 ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull)
-[![Preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
-[![Downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) 
-[![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) 
-[![community](https://img.shields.io/badge/Discord-YTDLnis-blueviolet?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm) 
-[![community](https://img.shields.io/badge/Telegram-YTDLnis-blue?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
-[![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
+[![önizləmə buraxılışı](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
+[![yükləyici](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) 
+[![Tərcümə vəziyyəti](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) 
+[![icma](https://img.shields.io/badge/Discord-YTDLnis-blueviolet?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm) 
+[![icma](https://img.shields.io/badge/Telegram-YTDLnis-blue?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
+[![icma](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
 ![GitHub Sponsor](https://img.shields.io/github/sponsors/deniscerri?label=Sponsor&logo=GitHub)
 
-### Yuxarıdakı keçidlər YTDLnis-in yeganə etibarlı mənbələridir. Digər mənbələrin mənimlə heç bir əlaqəsi yoxdur. 
+### Yalnız yuxarıdakı keçidlər YTDLnis-in yeganə etibarlı mənbələridir. Qalan hər şey mənimlə əlaqəli deyil. 
 
 </div>
 
 ## 💡 Xüsusiyyətlər:
 
-- [1000-dən çox veb-saytdan](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) səs/video faylları yükləyin
-- Mahnı siyahılarını (pleylistləri) emal edin:
-	- Normal yükləmə elementindəki kimi hər pleylist elementini ayrıca redaktə edin
-	- Bütün elementlər üçün ümumi format seçin və video kimi endirərkən birdən çox səs formatı seçin
-	- Bütün elementlər üçün yükləmə yolu seçin
-	- Bütün elementlər üçün fayl adı şablonunu seçin
-	- Bir kliklə səs/video/fərdi əmr üçün yükləmə növünü toplu şəkildə yeniləyin
-- Yükləmələri növbəyə qoyun və onları tarix və vaxta görə planlaşdırın
-	- Eyni vaxtda birdən çox elementi planlaşdıra bilərsiniz
-- Eyni vaxtda birdən çox elementi yükləyin
-- Fərdi əmrlər və şablonlardan istifadə edin və ya quraşdırılmış terminal ilə tam yt-dlp rejiminə keçin
-	- Dostlarınızla paylaşmaq üçün şablonları nüsxələyə və bərpa edə bilərsiniz
-- Məlumatlar bazası (Cookies) dəstəyi. Hesablarınızla daxil olun, şəxsi/əlçatmaz videoları yükləyin, premium formatları kiliddən çıxarın və s.
-- Vaxt ştampları və video bölmələri əsasında videoları kəsin (Bu yt-dlp xüsusiyyəti orijinal layihədə təcrübidir)
-	- Limitsiz sayda kəsik edə bilərsiniz
-- Elementdən SponsorBlock hissələrini təmizləyin
-	- Onları videonuzda bölmələr kimi yerləşdirin 
-- Altyazıları/metaməlumatları/bölmələri və s. yerləşdirin
-- Başlıq və müəllif kimi metaməlumatları dəyişdirin
-- Bölmələrdən asılı olaraq elementi ayrı fayllara bölün
-- Müxtəlif yükləmə formatları seçin
-- Paylaş menyusundan birbaşa alt panel (tətbiqi açmağa ehtiyac yoxdur)
-	- Txt faylı yarada və onu yeni sətirlə ayrılmış bağlantılar/pleylistlər/axtarış sorğuları ilə doldura bilərsiniz, tətbiq onları emal edəcək
-- Tətbiqdən bağlantı axtarın və ya yerləşdirin
-	- Eyni vaxtda emal etmək üçün axtarışları toplaya bilərsiniz
-- Problem yarandıqda yükləmə jurnalları (logs)
-- Ləğv edilən və ya uğursuz yükləmələri yenidən yükləyin
-	- Yenidən yükləmək üçün sola, silmək üçün isə sağa sürüşdürmə jestlərindən istifadə edə bilərsiniz
-	- Daha çox funksionallığa malik yükləmə panelini göstərmək üçün təfərrüatlar vərəqindəki "yenidən yüklə" düyməsini uzun sıxa bilərsiniz
-- Yükləmə tarixçəsini və ya jurnalları saxlamaq istəmədiyinizdə Gizli rejim (Incognito)
-- Sürətli yükləmə rejimi
-	- Məlumatı emal etməyi gözləmədən dərhal yükləyin. Alt paneli bağlayın və yükləmə dərhal başlayacaq
-- Yüklənən faylları birbaşa bitmə bildirişindən açın / paylaşın
-- Əksər yt-dlp xüsusiyyətləri həyata keçirilir, təkliflər arzuolunandır
-- Material You interfeysi
+- [1000-dən çox veb-saytdan ](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) səs/video faylları yüklə
+- mahnı siyahıların emal et
+	- normal yükləmə elementindəki kimi hər pleylist elementin ayrıca redaktə edin.
+	- bütün elementlər üçün ümumi format seçin və/yaxud onları video kimi endirəndə çoxlu səs formatı seçin
+	- bütün elementlər üçün yükləmə yolu seç
+	- bütün elementlər üçün fayl adı şablonun seçin
+	- bir kliklə səs/video/fərdi əmr üçün toplu yeniləmə yükləmə növü
+- yükləmələri növbəyə qoyun və onları tarix və vaxta görə planlaşdırın
+	- eyni vaxtda çoxlu elementi planlaşdıra bilərsiniz
+- eyni vaxtda çoxlu elementi yüklə
+- fərdi əmrlər və şablonlar istifadə edin və ya quraşdırılan sıxac ilə tam yt-dlp rejiminə keçin
+	- Siz şablonları nüsxələyə və bərpa edə bilərsiniz, beləcə dostlarınızla paylaşa bilərsiniz
+- Məlumatlar bazası dəstəyi.Hesablarınızla daxil olun və şəxsi/əlçatmaz videoları yüklə, premium formatları kiliddən açın və s.
+- vaxt ştampları və video bölmələri əsasında videoları kəsin (Bu yt-dlp xüsusiyyəti orijinal layihədə təcrübidir)
+	- limitsiz kəsiklər hazırlaya bilərsiniz
+- elementdən SponsorBlock elementlərin təmizlə
+	- onları videonuzda bölmələr kimi yerləşdirin 
+- titrləri/üst məlumatı/bölmələri yerləşdirmək və s
+- başlıq və müəllif kimi üst məlumatı dəyişdir
+- onun bölmələrindən asılı olaraq elementi ayrı fayllara bölmək
+- müxtəlif yükləmə formatları seçin
+- Paylaş menyusundan düz alt kart, tətbiqi açmağa ehtiyac yoxdur 
+	- siz txt faylı yarada və onu yeni sətirlə ayrıca bağlantılar/pleylistlər/axtarış sorğuları ilə doldura bilərsiniz və tətbiq onları emal edəcək
+- tətbiqdən bağlantı axtar və ya yerləşdir
+	- siz eyni vaxtda onları emal etmək üçün axtarışları toplaya bilərsiniz
+- problemlər olduqda yükləmələr jurnalı
+- ləğv edilən yaxud uğursuz yükləmələri yenidən yüklə
+	- yenidən yükləmək üçün sola və silmək üçün sağa sürüşdürmək jestləri istifadə edə bilərsiniz
+	- daha çox funksionallıqla yükləmə kartın göstərmək üçün təfərrüatlar vərəqindəki yenidən yükləmə düyməsin uzun klikləyə bilərsiniz
+- yükləmə tarixçəsin və ya jurnalları saxlamaq istəmədiyinizdə gizlincə rejimi
+- sürətli yükləmə rejimi
+	- məlumatı emal etməyi gözləmədən dərhal yüklə. Alt kartı bağla və bu, dərhal başlayacaq
+- bitmiş bildirişdən yüklənən faylları aç / paylaş
+- əksər yt-dlp xüsusiyyətləri həyata keçirilir, təkliflər arzu ediləndir
+- Material You görünüşü
 - Tema seçimləri
-- Nüsxələmə və bərpa xüsusiyyətləri (Demək olar ki, hər şey nüsxələnə bilər)
-- WorkManager ilə MVVM Arxitekturası
+- Nüsxələmə və bərpa xüsusiyyətləri. (Təqribən, hər şey nüsxələnə bilər)
+- MVVM Architecture w/ WorkManager
 
 ## 📲 Ekran görüntüləri
 
@@ -115,13 +96,13 @@
 
 ## 💬 Əlaqə
 
-Müzakirə, elanlar və buraxılışlar üçün [Discord](https://discord.gg/WW3KYWxAPm) və ya [Telegram Kanalımıza](https://t.me/ytdlnis) qoşulun!
+Müzakirə, elanlar və buraxılışlar üçün [Telegram Kanalımıza](https://t.me/ytdlnis) və ya [Discord](https://discord.gg/WW3KYWxAPm) qoşulun!
 
 ## 😇 Töhfə
 
-Əgər töhfə vermək istəyirsinizsə, xahiş olunur [Töhfə vermə](CONTRIBUTING.MD) bölməsini oxuyun.
+Əgər töhfə vermək istəyirsinizsə xahiş olunur, [Töhfə vermə](CONTRIBUTING.MD) bölməsin oxuyun.
 
-## 📝 Weblate-də Tərcümə Etməyə Kömək Edin
+## 📝 Weblate-də Tərcümə Etməyə Kömək Et
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png" alt="Tərcümə vəziyyəti" />
 </a>
@@ -131,33 +112,32 @@ Müzakirə, elanlar və buraxılışlar üçün [Discord](https://discord.gg/WW3
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Tərcümə vəziyyəti" />
 </a>
 
-## 🔑 Paket adını istifadə edərək üçüncü tərəf tətbiqləri ilə əlaqə qurun
+## 🔑 Paket adın istifadə edərək üçüncü tərəf tətbiqləri əlaqə qurun
 
 Tətbiqin paket adı "com.deniscerri.ytdl"-dir.
 
 
 ## 🤖 İntent-lər istifadə edərək üçüncü tərəf tətbiqləri ilə əlaqə qurun
 
-Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün tətbiqə əmrlər göndərmək niyyətindən (İntent) istifadə edə bilərsiniz.
-Qəbul edilən dəyişənlər:
+Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün tətbiqə əmrlər göndərmək niyyətin (İntent) istifadə edə bilərsiniz. Qəbul edilən dəyişgənliklər:
 
-<b>TYPE</b> -> bu ola bilər: səs, video, əmr (audio, video, command) <br/>
-<b>BACKGROUND</b> -> bu ola bilər: true, false. Əgər bu true olarsa, tətbiq heç bir halda yükləmə kartını göstərməyəcək və yükləməni arxa planda həyata keçirəcək <br/>
+<b>TYPE</b> -> bu ola bilər: səs,video,əmr <br/>
+<b>BACKGROUND</b> -> bu ola bilər: true,false. Əgər bu true olarsa, tətbiq istənilən halda yükləmə kartını göstərməyəcək və yükləməni arxa planda həyata keçirəcək <br/>
 
-### Tasker ilə arxa planda səs elementinin yüklənilməsi nümunəsi
-1. "Send Intent" (İntent Göndər) tapşırığı yaradın 
+### Tasker ilə fonda səs elementin yüklənilməsi nümunəsi
+1. Göndərmə Intent tapşırığı yaradın 
 2. Action (Fəaliyyət): android.intent.action.SEND
-3. Cat: İlkin (Default)
+3. Cat: İlkin (default)
 4. Mime Type: text/*
 5. Əlavə (Extra): android.intent.extra.TEXT:url ("url" əvəzinə yükləmək istədiyiniz videonun URL-ni yazın)
-6. Əlavə (Extra): TYPE:audio
-7. Əlavə (Extra): BACKGROUND:true
+6. Əlavə(Extra): TYPE:audio
+7. Əlavə(Extra): BACKGROUND:true
 
 ## 📄 Lisenziya
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-GPLv3 lisenziyası ilə lisenziyalaşdırılan mənbə kodu istisna olmaqla, bütün digər tərəflərə "YTDLnis" adını yükləyici tətbiq kimi istifadə etmək qadağandır və eynisi onun törəmələri üçün də keçərlidir. Törəmələrə "fork"-lar və qeyri-rəsmi quruluşlar daxildir, lakin bunlarla məhdudlaşmır.
+GPLv3 lisenziyası ilə lisenziyalaşdırılan mənbə kodu istisna olmaqla, bütün digər tərəflərə "YTDLnis" adın yükləyici tətbiq kimi istifadə etmək qadağandır və eynisi onun törəmələri üçün də keçərlidir. Törəmələrə fork-lar və qeyri-rəsmi quruluşlar daxildir, lakin bunlarla məhdudlaşmır.
 
 ## 😁 İanə Edin
 
@@ -168,11 +148,10 @@ height="80">](https://www.buymeacoffee.com/deniscerri)
 
 ## 🙏 Təşəkkürlər
 
-- [decipher3114](https://github.com/decipher3114) Tətbiq ikonu üçün
-- [dvd](https://github.com/yausername/dvd) Sizə youtubedl-android alətini göstərmək üçün
-- [seal](https://github.com/JunkFood02/Seal) Dizayn və xüsusiyyətlər üçün; bu tətbiqi yaradarkən müəyyən elementlərdən ilham aldım
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) və bu aləti mümkün etmək üçün töhfəçiləri. Bunsuz bu tətbiq mövcud olmazdı.
 - [youtubedl-android](https://github.com/yausername/youtubedl-android) yt-dlp-ni Android-ə köçürmək üçün
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) və bu aləti mümkün etmək üçün töhfəçilərə. Onlar olmasaydı, bu tətbiq mövcud olmazdı.
+- [dvd](https://github.com/yausername/dvd) Sizə youtubedl-android alətin göstərmək üçün
+- [seal](https://github.com/JunkFood02/Seal) müəyyən dizayn elementləri və xüsusiyyətləri üçün bu tətbiqdə də istifadə etmək istədim
+- [decipher3114](https://github.com/decipher3114) tətbiq simvolu üçün
 
-
-və bir çox başqa insana, həmçinin töhfə verənlərə.
+və bir çox başqa internet forum yad adamlar.
