@@ -19,7 +19,7 @@
     <string name="music_directory">Folder audio</string>
     <string name="ytdl_update_hint">Tips berguna saat mengunduh pembaruan</string>
     <string name="video_directory">Folder video</string>
-    <string name="update_ytdl">Perbarui yt-dl ke versi baru</string>
+    <string name="update_ytdl">Perbarui yt-dlp ke versi baru</string>
     <string name="source_code">Kode sumber</string>
     <string name="search_hint">Telusuri atau sisipkan URL</string>
     <string name="ytld_update_success">Versi yang baru terpasang</string>
@@ -502,4 +502,7 @@
     <string name="potoken_guide">Otentikasi\n-----------------------\n1. Klik \'Otentikasi\' untuk membuka halaman masuk di WebView.\n2. Masuk ke akun Google Anda.\n3. Putar video apa pun yang mendukung subtitle terjemahan otomatis.\n4. Aktifkan subtitle terjemahan otomatis dan lihat apakah berfungsi.\n\t4.1 Jika subtitle terjemahan otomatis tidak berfungsi, beralih ke video lain yang mendukung subtitle terjemahan otomatis dan ulangi langkah 4.\n5. Klik OK.\n\nTanpa Otentikasi\n-----------------------\n1. Klik ‘Tanpa Otentikasi’.\n2. Tulis URL video YouTube apa pun.\n3. Tunggu video dimuat dan putar video setidaknya selama 3 detik.\n3. Klik OK.</string>
     <string name="no_auth">Tanpa Otentikasi</string>
     <string name="auth">Otentikasi</string>
+    <string name="prefer_drc_audio">Pilih Audio DRC</string>
+    <string name="app_icon">Ikon Aplikasi</string>
+    <string name="show_quick_download_share_menu">Tampilkan Unduh Cepat di menu bagikan</string>
 </resources>
