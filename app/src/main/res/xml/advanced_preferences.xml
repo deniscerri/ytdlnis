@@ -77,6 +77,13 @@
             android:key="disable_write_info_json"
             android:summary="@string/disable_write_info_json_summary"
             android:title="@string/disable_write_info_json" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/baseline_note_24"
+            android:key="no_check_certificates"
+            app:title="@string/no_check_certificates" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/misc">

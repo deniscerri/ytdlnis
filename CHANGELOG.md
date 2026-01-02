@@ -1,5 +1,32 @@
 # YTDLnis Changelog
 
+> # 1.8.8 (2026-01)
+
+# What's Changed
+
+## Filename Template Live Preview & Info JSON
+
+Brought back info json feature to prevent the app from calling servers twice. Also with all the metadata stored in a file, i added the feature to preview the filename template.
+You can turn off using info json if you'd like in advanced settings.
+
+## Icon Picker
+
+You can select the icon and not have it update depending on theme. I am open to custom icons if you'd like, ill add them to the app.
+Looking at you decipher :P
+
+## Other stuff
+
+- Fix app closing webview when leaving the app. You have to return from recents and not relaunch the app.
+- Add time to the backup filename
+- Reversed don't prefer DRC audio to prefer DRC audio preference
+- Fix items in navigation rail in landscape being cut off
+- Fix youtube playlist link fetching being null
+- Add Hausa language
+- Add intent for quick download in the share menu. You can enable it in the general settings. This ignores the download card and downloads immediately.
+- Consider "creators" field when parsing author in the app
+- Add youtube charts support for newpipe home recommendations
+- Fix observe sources items not showing properly in light mode
+
 > # 1.8.7 (2025-11)
 
 # What's Changed

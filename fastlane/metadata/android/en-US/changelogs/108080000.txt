@@ -1,0 +1,10 @@
+# What's Changed
+
+- Filename template live Preview
+- Icon Picker
+- Fix app closing webview when leaving the app.
+- Reversed don't prefer DRC audio to prefer DRC audio preference
+- Fix items in navigation rail in landscape being cut off
+- Fix youtube playlist link fetching being null
+- Add Hausa language
+- And other stuff
