@@ -102,6 +102,64 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         toolbar.title = view?.title ?: ""
                     }
 
+                    //finish generation
+                    if (url?.contains("robots.txt") == true) {
+                        lifecycleScope.launch {
+                            val generator = NewPipePoTokenGenerator()
+                            val res = withContext(Dispatchers.IO) {
+                                generator.getWebClientPoToken(sampleVideoID)
+                            }
+
+                            if (res == null) {
+                                setResult(RESULT_CANCELED)
+                            }else {
+                                val intent = Intent()
+                                intent.putExtra("visitor_data", res.visitorData)
+                                intent.putExtra("player_potoken", res.playerRequestPoToken)
+                                intent.putExtra("subs_potoken", res.playerRequestPoToken)
+                                intent.putExtra("streaming_potoken", res.streamingDataPoToken)
+                                setResult(RESULT_OK, intent)
+                            }
+
+
+                            //update cookies
+                            withContext(Dispatchers.IO) {
+                                val cookieURL = "Po Token Generated Cookies"
+                                cookiesViewModel.getCookiesFromDB(cookieURL).getOrNull()?.let {
+                                    kotlin.runCatching {
+                                        cookiesViewModel.insert(
+                                            CookieItem(
+                                                0,
+                                                cookieURL,
+                                                it,
+                                                "",
+                                                true
+                                            )
+                                        )
+                                        cookiesViewModel.updateCookiesFile()
+                                        preferences.edit().putBoolean("use_cookies", true).apply()
+                                    }.onFailure {
+                                        withContext(Dispatchers.Main) {
+                                            Toast.makeText(
+                                                this@PoTokenWebViewLoginActivity,
+                                                "Tokens were generated but cookies were not updated",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                }
+                            }
+
+                            webView.clearCache(true)
+                            // ensures that the WebView isn't doing anything when destroying it
+                            webView.loadUrl("about:blank")
+                            webView.onPause()
+                            webView.removeAllViews()
+                            webView.destroy()
+                            finish()
+                        }
+                    }
+
                     webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
                         if (value?.trim('"') == "complete") {
                             Handler(Looper.getMainLooper()).postDelayed({
@@ -122,61 +180,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
             generateBtn.setOnClickListener {
                 generateBtn.isEnabled = false
-
-                lifecycleScope.launch {
-                    val generator = NewPipePoTokenGenerator()
-                    val res = withContext(Dispatchers.IO) {
-                        generator.getWebClientPoToken(sampleVideoID)
-                    }
-
-                    if (res == null) {
-                        setResult(RESULT_CANCELED)
-                    }else {
-                        val intent = Intent()
-                        intent.putExtra("visitor_data", res.visitorData)
-                        intent.putExtra("player_potoken", res.playerRequestPoToken)
-                        intent.putExtra("subs_potoken", res.playerRequestPoToken)
-                        intent.putExtra("streaming_potoken", res.streamingDataPoToken)
-                        setResult(RESULT_OK, intent)
-                    }
-
-
-                    //update cookies
-                    withContext(Dispatchers.IO) {
-                        val cookieURL = "Po Token Generated Cookies"
-                        cookiesViewModel.getCookiesFromDB(cookieURL).getOrNull()?.let {
-                            kotlin.runCatching {
-                                cookiesViewModel.insert(
-                                    CookieItem(
-                                        0,
-                                        cookieURL,
-                                        it,
-                                        "",
-                                        true
-                                    )
-                                )
-                                cookiesViewModel.updateCookiesFile()
-                                preferences.edit().putBoolean("use_cookies", true).apply()
-                            }.onFailure {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@PoTokenWebViewLoginActivity,
-                                        "Tokens were generated but cookies were not updated",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                    }
-
-                    webView.clearCache(true)
-                    // ensures that the WebView isn't doing anything when destroying it
-                    webView.loadUrl("about:blank")
-                    webView.onPause()
-                    webView.removeAllViews()
-                    webView.destroy()
-                    finish()
-                }
+                webView.loadUrl("https://www.youtube.com/robots.txt")
             }
 
             webViewCompose.apply {
