@@ -137,7 +137,7 @@ Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün t�
 
 [GNU GPL v3.0](https://github.com/deniscerri/ytdlnis/blob/main/LICENSE)
 
-GPLv3 lisenziyası ilə lisenziyalaşdırılan mənbə kodu istisna olmaqla, bütün digər tərəflərə "YTDLnis" adın yükləyici tətbiq kimi istifadə etmək qadağandır və eynisi onun törəmələri üçün də keçərlidir. Törəmələrə çəngəllər və qeyri-rəsmi quruluşlar daxildir, lakin bunlarla məhdudlaşmır.
+GPLv3 lisenziyası ilə lisenziyalaşdırılan mənbə kodu istisna olmaqla, bütün digər tərəflərə "YTDLnis" adın yükləyici tətbiq kimi istifadə etmək qadağandır və eynisi onun törəmələri üçün də keçərlidir. Törəmələrə fork-lar və qeyri-rəsmi quruluşlar daxildir, lakin bunlarla məhdudlaşmır.
 
 ## 😁 İanə Edin
 
