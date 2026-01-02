@@ -484,7 +484,6 @@
     <string name="preferred_format_size">ਪਸੰਦੀਦਾ ਫ਼ਾਰਮੈਟ ਆਕਾਰ</string>
     <string name="smallest">ਸਭ ਤੋਂ ਛੋਟਾ</string>
     <string name="largest">ਸਭ ਤੋਂ ਵੱਡਾ</string>
-    <string name="no_prefer_drc_audio">DRC ਆਡੀਓ ਨੂੰ ਤਰਜੀਹ ਨਾ ਦਿਓ</string>
     <string name="potoken_gvs">PO ਟੋਕਨ (GVS)</string>
     <string name="potoken_player">PO ਟੋਕਨ (Player)</string>
     <string name="potoken_subs">PO ਟੋਕਨ (Subs)</string>
