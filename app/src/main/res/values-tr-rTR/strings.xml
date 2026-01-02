@@ -505,4 +505,7 @@
     <string name="no_auth">Auth Yok</string>
     <string name="auth">Auth</string>
     <string name="potoken_guide">Doğrulama (Auth)\n-----------------------\n1. WebView\'da oturum açma sayfasını açmak için \'Doğrulamaya (Auth) tıklayın. \n2. Google Hesabınıza giriş yapın. \n3. Otomatik çevrilmiş altyazıları destekleyen herhangi bir videoyu oynatın.\n4. Otomatik çevrilmiş altyazıları açın ve çalışıp çalışmadığını kontrol edin.\n4.1 Otomatik çevrilmiş altyazılar çalışmıyorsa, otomatik çevrilmiş altyazıları destekleyen başka bir videoya geçin ve 4. adımı tekrar deneyin. \n5. Tamam\'a tıklayın. \n\nDoğrulama Yok (No_auth)\n-----------------------\n1. \'Doğrulama Yok\' (no_auth) tıklayın. \n2. Herhangi bir YouTube video URL\'si yazın.\n3. Videonun yüklenmesini bekleyin ve videoyu en az 3 saniye oynatın.\n4. Tamam\'a tıklayın.</string>
+    <string name="prefer_drc_audio">DRC Sesi Tercih Et</string>
+    <string name="app_icon">Uygulama Simgesi</string>
+    <string name="show_quick_download_share_menu">Paylaş menüsünde Hızlı İndir\'i göster</string>
 </resources>
