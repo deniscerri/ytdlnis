@@ -11,7 +11,7 @@
     <string name="video_directory">Video klasörü</string>
     <string name="updating">Güncellemeler</string>
     <string name="ytdl_update_hint">Güncellemeleri indirirken faydalı ipucu</string>
-    <string name="update_ytdl">yt-dl\'yi yeni sürüme güncelle</string>
+    <string name="update_ytdl">yt-dlp\'yi yeni sürüme güncelle</string>
     <string name="source_code">Kaynak kodu</string>
     <string name="search_hint">Ara veya URL ekle</string>
     <string name="failed_download">Dosya indirilemedi</string>
@@ -499,4 +499,10 @@
     <string name="chapters">Bölümler</string>
     <string name="use_original_url_playlist">Çalma listesi URL\'si için orijinal URL\'yi kullan</string>
     <string name="use_original_url_playlist_summary">JSON dökümündeki playlist_webpage_url etiketi yerine kullanıcı tarafından verilen çalma listesi URL\'sini kullan</string>
+    <string name="update_ytdlp_while_downloading">İndirme işleminde yt-dlp\'yi güncelleyin</string>
+    <string name="update_ytdlp_while_downloading_summary">İndirmeden önce en son sürüme güncellemek için yt-dlp\'ye -U ekleyin</string>
+    <string name="preview_filename">Önizleme dosya adı</string>
+    <string name="no_auth">Auth Yok</string>
+    <string name="auth">Auth</string>
+    <string name="potoken_guide">Doğrulama (Auth)\n-----------------------\n1. WebView\'da oturum açma sayfasını açmak için \'Doğrulamaya (Auth) tıklayın. \n2. Google Hesabınıza giriş yapın. \n3. Otomatik çevrilmiş altyazıları destekleyen herhangi bir videoyu oynatın.\n4. Otomatik çevrilmiş altyazıları açın ve çalışıp çalışmadığını kontrol edin.\n4.1 Otomatik çevrilmiş altyazılar çalışmıyorsa, otomatik çevrilmiş altyazıları destekleyen başka bir videoya geçin ve 4. adımı tekrar deneyin. \n5. Tamam\'a tıklayın. \n\nDoğrulama Yok (No_auth)\n-----------------------\n1. \'Doğrulama Yok\' (no_auth) tıklayın. \n2. Herhangi bir YouTube video URL\'si yazın.\n3. Videonun yüklenmesini bekleyin ve videoyu en az 3 saniye oynatın.\n4. Tamam\'a tıklayın.</string>
 </resources>
