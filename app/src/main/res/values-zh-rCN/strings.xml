@@ -251,7 +251,7 @@
     <string name="monochrome">黑白</string>
     <string name="finished_download_notification_channel_name">已完成下载</string>
     <string name="quick_download">快速下载</string>
-    <string name="quick_download_summary">不获取下载卡片中的数据</string>
+    <string name="quick_download_summary">不事先获取数据立即继续下载过程</string>
     <string name="download_now">现在下载</string>
     <string name="keep_cache">保留分段</string>
     <string name="keep_cache_summary">下载完成后不删除临时文件</string>
@@ -504,5 +504,6 @@
     <string name="auth">授权</string>
     <string name="prefer_drc_audio">偏好 DRC 音频</string>
     <string name="app_icon">应用标签</string>
-    <string name="show_quick_download_share_menu">在分享菜单中显示快速下载</string>
+    <string name="show_quick_download_share_menu">在分享菜单中显示立即下载选项</string>
+    <string name="quick_download_title">不获取数据</string>
 </resources>
