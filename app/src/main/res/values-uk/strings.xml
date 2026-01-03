@@ -229,7 +229,7 @@
     <string name="downloaded">"Завантажено: "</string>
     <string name="finished_download_notification_channel_description">Сповіщення про завершення завантажень</string>
     <string name="quick_download">Швидке завантаження</string>
-    <string name="quick_download_summary">Не завантажувати дані заздалегідь</string>
+    <string name="quick_download_summary">Негайно продовжіть процес завантаження, не завантажуючи дані попередньо</string>
     <string name="remove_audio">Видалити аудіо</string>
     <string name="preferred_format_id">ID, якому надається перевага</string>
     <string name="download_now">Завантажити зараз</string>
@@ -506,4 +506,5 @@
     <string name="prefer_drc_audio">Віддати перевагу DRC Audio</string>
     <string name="app_icon">Значок застосунку</string>
     <string name="show_quick_download_share_menu">Показати швидке завантаження в меню спільного доступу</string>
+    <string name="quick_download_title">Не отримувати дані</string>
 </resources>
