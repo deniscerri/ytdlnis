@@ -227,7 +227,7 @@
     <string name="scheduling">Planification</string>
     <string name="quick_download">Téléchargement rapide</string>
     <string name="saved">Enregistré</string>
-    <string name="quick_download_summary">Ne pas récupérer les données dans la carte de téléchargement</string>
+    <string name="quick_download_summary">Poursuivez immédiatement le processus de téléchargement, sans récupérer les données au préalable.</string>
     <string name="update_formats_background">Mettre à jour les formats en arrière-plan</string>
     <string name="pause">Pause</string>
     <string name="search_command_hint">Rechercher dans les commandes</string>
@@ -506,5 +506,6 @@
     <string name="auth">Authentification</string>
     <string name="prefer_drc_audio">Préférez l\'audio DRC</string>
     <string name="app_icon">Icône de l\'application</string>
-    <string name="show_quick_download_share_menu">Afficher le téléchargement rapide dans le menu de partage</string>
+    <string name="show_quick_download_share_menu">Afficher l\'option de téléchargement immédiat dans le menu de partage</string>
+    <string name="quick_download_title">Ne pas récupérer de données</string>
 </resources>
