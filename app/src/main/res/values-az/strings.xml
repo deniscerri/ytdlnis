@@ -229,7 +229,7 @@
     <string name="finished_download_notification_channel_name">Bitmiş yükləmələr</string>
     <string name="finished_download_notification_channel_description">Tamamlanmış yükləmələr üçün bildiriş</string>
     <string name="quick_download">Sürətli yükləmə</string>
-    <string name="quick_download_summary">Yükləmə kartında məlumat əldə etmə</string>
+    <string name="quick_download_summary">Əvvəldən məlumat almadan, dərhal yükləmə prosesi ilə davam edin</string>
     <string name="remove_audio">Səsi sil</string>
     <string name="download_now">İndi yüklə</string>
     <string name="preferred_format_id">Üstünlük verilən format ID</string>
@@ -505,5 +505,6 @@
     <string name="auth">Təsdiqlə</string>
     <string name="prefer_drc_audio">DRC Səsə Üstünlük Ver</string>
     <string name="app_icon">Tətbiq Simvolu</string>
-    <string name="show_quick_download_share_menu">Paylaş menyusunda Sürətli Yükləməni göstər</string>
+    <string name="show_quick_download_share_menu">Paylaş menyusunda dərhal yükləmək üçün seçim göstər</string>
+    <string name="quick_download_title">Məlumatları almayın</string>
 </resources>
