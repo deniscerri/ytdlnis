@@ -214,7 +214,7 @@
     <string name="purple">Mor</string>
     <string name="yellow">Sarı</string>
     <string name="quick_download">Hızlı indir</string>
-    <string name="quick_download_summary">İndirme kartında verileri getirme</string>
+    <string name="quick_download_summary">Verini önceden almadan, hemen indirme işlemine devam edin</string>
     <string name="codec">Kodek</string>
     <string name="audio_samplerate">Ses örnek hızı</string>
     <string name="Theme">Tema</string>
@@ -462,7 +462,7 @@
     <string name="reset_preferences_in_screen">Bu ekrandaki tüm tercihleri sıfırla</string>
     <string name="backup_path">Yedekleme yolu</string>
     <string name="write_subs_when_embed_subs">Altyazıları gömme sırasında yaz</string>
-    <string name="generate_potokens">PO jetonları oluştur</string>
+    <string name="generate_potokens">PO Tokens Oluştur</string>
     <string name="regenerate">Yeniden oluştur</string>
     <string name="use_format_sorting">Format öncelik sıralamasını kullan</string>
     <string name="automatic_backup">Otomatik yedekleme</string>
@@ -476,7 +476,7 @@
     <string name="write_subs_when_embed_subs_summary">Altyazı dosyalarını indirmek için Altyazıları Kaydet ve Otomatik Altyazıları Kaydet\'i uygulayacak ve gömdükten sonra dosyaları silecektir</string>
     <string name="cut_unsupported">Bu öge için kesme işlemi mevcut değil</string>
     <string name="select_between_desc">Seçilecek öge aralığını belirtin</string>
-    <string name="potoken">PO Jetonu</string>
+    <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Web İstemcisi PO Jetonu</string>
     <string name="reverse">Tersine çevir</string>
     <string name="no_keep_subs">Gömme işleminden sonra altyazı dosyalarını sil</string>
@@ -487,9 +487,9 @@
     <string name="smallest">En küçük</string>
     <string name="largest">En büyük</string>
     <string name="no_free_space_warning">Bu configürasyon için yeterli alan yok.</string>
-    <string name="potoken_gvs">PO Jetonu (GVS)</string>
-    <string name="potoken_player">PO Jetonu (Oynatıcı)</string>
-    <string name="potoken_subs">PO Jetonu (Altyazılar)</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (Oynatıcı)</string>
+    <string name="potoken_subs">PO Token (Altyazılar)</string>
     <string name="visitor_data">Ziyaretçi Verileri</string>
     <string name="get_data_sync_id">Veri Senkronizasyon Kimliğini Al</string>
     <string name="desktop">Masaüstü</string>
@@ -505,4 +505,8 @@
     <string name="no_auth">Auth Yok</string>
     <string name="auth">Auth</string>
     <string name="potoken_guide">Doğrulama (Auth)\n-----------------------\n1. WebView\'da oturum açma sayfasını açmak için \'Doğrulamaya (Auth) tıklayın. \n2. Google Hesabınıza giriş yapın. \n3. Otomatik çevrilmiş altyazıları destekleyen herhangi bir videoyu oynatın.\n4. Otomatik çevrilmiş altyazıları açın ve çalışıp çalışmadığını kontrol edin.\n4.1 Otomatik çevrilmiş altyazılar çalışmıyorsa, otomatik çevrilmiş altyazıları destekleyen başka bir videoya geçin ve 4. adımı tekrar deneyin. \n5. Tamam\'a tıklayın. \n\nDoğrulama Yok (No_auth)\n-----------------------\n1. \'Doğrulama Yok\' (no_auth) tıklayın. \n2. Herhangi bir YouTube video URL\'si yazın.\n3. Videonun yüklenmesini bekleyin ve videoyu en az 3 saniye oynatın.\n4. Tamam\'a tıklayın.</string>
+    <string name="prefer_drc_audio">DRC Sesi Tercih Et</string>
+    <string name="app_icon">Uygulama Simgesi</string>
+    <string name="show_quick_download_share_menu">Paylaş menüsünde hemen indirmek için seçeneği göster</string>
+    <string name="quick_download_title">Veri toplamayın</string>
 </resources>

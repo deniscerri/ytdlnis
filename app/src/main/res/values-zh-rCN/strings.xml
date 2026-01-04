@@ -251,7 +251,7 @@
     <string name="monochrome">黑白</string>
     <string name="finished_download_notification_channel_name">已完成下载</string>
     <string name="quick_download">快速下载</string>
-    <string name="quick_download_summary">不获取下载卡片中的数据</string>
+    <string name="quick_download_summary">不事先获取数据立即继续下载过程</string>
     <string name="download_now">现在下载</string>
     <string name="keep_cache">保留分段</string>
     <string name="keep_cache_summary">下载完成后不删除临时文件</string>
@@ -502,4 +502,8 @@
     <string name="potoken_guide">授权\n-----------------------\n1. 单击“授权”以在 WebView 中打开登录页面。\n2. 登录您的 Google 账户。\n3. 播放任何支持自动翻译字幕的视频。\n4. 打开自动翻译字幕功能，查看是否有效。\n 4.1 如果自动翻译字幕无效，请切换到另一个支持自动翻译字幕的视频，然后再次尝试步骤 4。\n5. 单击“确定”。\n\n不授权\n-----------------------\n1. 点击“不授权”。\n2. 输入任意YouTube视频网址。\n3. 等待视频加载，并播放视频至少3秒。\n4. 单击“确定”。</string>
     <string name="no_auth">不授权</string>
     <string name="auth">授权</string>
+    <string name="prefer_drc_audio">偏好 DRC 音频</string>
+    <string name="app_icon">应用标签</string>
+    <string name="show_quick_download_share_menu">在分享菜单中显示立即下载选项</string>
+    <string name="quick_download_title">不获取数据</string>
 </resources>

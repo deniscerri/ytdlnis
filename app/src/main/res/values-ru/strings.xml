@@ -197,7 +197,7 @@
     <string name="shortcuts_desc">Используйте часто применяемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
     <string name="sponsorblock">SponsorBlock</string>
-    <string name="quick_download_summary">Не получать данные автоматически в карточке загрузки</string>
+    <string name="quick_download_summary">Немедленно продолжите процесс загрузки, не загружая данные предварительно</string>
     <string name="keep_cache">Хранить фрагменты</string>
     <string name="remove_audio">Удалить аудио</string>
     <string name="downloaded">"Скачано: "</string>
@@ -503,4 +503,8 @@
     <string name="potoken_guide">Авторизация\n-----------------------\n1. Нажмите \'Авторизация\' чтобы открыть страницу входа в WebView.\n2. Войдите в свою учетную запись Google.\n3. Воспроизводите любое видео, поддерживающее субтитры с автоматическим переводом.\n4. Включите субтитры с автоматическим переводом и посмотрите, работает ли это.\n\t4.1 Если субтитры с автоматическим переводом не работают, переключитесь на другое видео, поддерживающее субтитры с автоматическим переводом, и повторите шаг 4.\n5. Нажмите ОК.\n\nБез авторизации\n-----------------------\n1. Нажмите \'Без авторизации\'.\n2. Введите URL любого видео с YouTube.\n3. Подождите, пока видео загрузится, и воспроизведите его не менее 3 секунд.\n4. Нажмите ОК.</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
+    <string name="prefer_drc_audio">Предпочитаю DRC Audio</string>
+    <string name="app_icon">Значок приложения</string>
+    <string name="show_quick_download_share_menu">Показать немедленную загрузку в меню общего доступа</string>
+    <string name="quick_download_title">Не получать данные</string>
 </resources>

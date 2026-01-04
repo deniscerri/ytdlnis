@@ -121,7 +121,7 @@
     <string name="suggested">Doporučené</string>
     <string name="high_contrast">Vysoký kontrast</string>
     <string name="remove_duplicates">Odstranit duplicitní</string>
-    <string name="quick_download_summary">Nenačte data na kartě pro stahování</string>
+    <string name="quick_download_summary">Pokračovat v procesu stahování okamžitě, bez předchozího načtení dat</string>
     <string name="create">Vytvořit</string>
     <string name="misc">Různé</string>
     <string name="add_chapter">Přidání kapitol</string>
@@ -503,4 +503,8 @@
     <string name="potoken_guide">"Ověření\n-----------------------\n1. Klikněte na „Ověření“ a otevřete přihlašovací stránku ve WebView.\n2. Přihlaste se ke svému účtu Google.\n3. Přehrajte libovolné video, které podporuje automaticky přeložené titulky.\n4. Zapněte automaticky přeložené titulky a zkontrolujte, zda fungují.\n    4.1 Pokud automaticky přeložené titulky nefungují, přepněte na jiné video, které podporuje automaticky přeložené titulky, a zkuste krok 4 znovu.\n5. Klikněte na OK.\n\nBez ověření\n-----------------------\n1. Klikněte na „Bez ověření“.\n2. Zadejte libovolnou adresu URL videa na YouTube.\n3. Počkejte, až se video načte, a přehrávejte ho alespoň 3 sekundy.\n4. Klikněte na OK."</string>
     <string name="no_auth">Bez ověření</string>
     <string name="auth">Ověření</string>
+    <string name="prefer_drc_audio">Upřednostnit DRC Audio</string>
+    <string name="app_icon">Ikona aplikace</string>
+    <string name="show_quick_download_share_menu">Zobrazit možnost okamžitého stažení v menu sdílení</string>
+    <string name="quick_download_title">Nenačítat data</string>
 </resources>

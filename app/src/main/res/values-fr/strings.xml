@@ -227,7 +227,7 @@
     <string name="scheduling">Planification</string>
     <string name="quick_download">Téléchargement rapide</string>
     <string name="saved">Enregistré</string>
-    <string name="quick_download_summary">Ne pas récupérer les données dans la carte de téléchargement</string>
+    <string name="quick_download_summary">Poursuivez immédiatement le processus de téléchargement, sans récupérer les données au préalable.</string>
     <string name="update_formats_background">Mettre à jour les formats en arrière-plan</string>
     <string name="pause">Pause</string>
     <string name="search_command_hint">Rechercher dans les commandes</string>
@@ -504,4 +504,8 @@
     <string name="potoken_guide">Authentification\n-----------------------\n1. Cliquez sur « Authentification » pour ouvrir la page de connexion dans WebView.\n\n2. Connectez-vous à votre compte Google.\n\n3. Lancez une vidéo compatible avec la traduction automatique des sous-titres.\n\n4. Activez la traduction automatique des sous-titres et vérifiez si cela fonctionne.\n\n4.1 Si la traduction automatique des sous-titres ne fonctionne pas, choisissez une autre vidéo compatible et répétez l\'étape 4.\n\n5. Cliquez sur OK.\n\nAucune authentification\n-----------------------\n1. Cliquez sur « Aucune authentification ».\n\n2. Saisissez l\'URL d\'une vidéo YouTube.\n\n3. Attendez le chargement de la vidéo et lancez la lecture pendant au moins 3 secondes.\n\n4. Cliquez sur OK.</string>
     <string name="no_auth">Aucune authentification</string>
     <string name="auth">Authentification</string>
+    <string name="prefer_drc_audio">Préférez l\'audio DRC</string>
+    <string name="app_icon">Icône de l\'application</string>
+    <string name="show_quick_download_share_menu">Afficher l\'option de téléchargement immédiat dans le menu de partage</string>
+    <string name="quick_download_title">Ne pas récupérer de données</string>
 </resources>

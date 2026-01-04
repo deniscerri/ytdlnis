@@ -214,7 +214,7 @@
     <string name="user_agent_header">כותרת סוכן-משתמש</string>
     <string name="suggested">מוּצָע</string>
     <string name="high_contrast">ניגודיות גבוהה</string>
-    <string name="quick_download_summary">אל תביא נתונים בכרטיס ההורדה</string>
+    <string name="quick_download_summary">להמשיך בתהליך ההורדה מיידית מבלי למשוך נתונים מראש</string>
     <string name="save_subs">שמירת כתוביות</string>
     <string name="sponsorblock_nonmusic">קטעים שאינם מוזיקה ומחוץ לנושא</string>
     <string name="select_sponsorblock_filtering">בחירת סינון חסימת חסות</string>
