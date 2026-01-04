@@ -145,7 +145,7 @@
             app:title="@string/preferred_home_screen" />
 
         <Preference
-            android:defaultValue="Home,History,More"
+            android:defaultValue="Home,History,Queue,More"
             android:icon="@drawable/baseline_home_filled_24"
             android:key="navigation_bar"
             android:title="@string/preferred_home_screen" />

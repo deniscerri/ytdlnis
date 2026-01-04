@@ -1,0 +1,8 @@
+# What's Changed
+
+## F-Droid integration
+
+- disabled auto-update of the app. (I will try to make build flavors in the following release so i can re-enable it for just github releases)
+- Added Queue as default tab in the bottom navigation
+- Add Hook in sponsorblock categories
+- More translations

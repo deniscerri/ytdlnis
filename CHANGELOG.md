@@ -1,5 +1,16 @@
 # YTDLnis Changelog
 
+> # 1.8.7.2 (2026-01)
+
+# What's Changed
+
+## F-Droid integration
+
+- disabled auto-update of the app. (I will try to make build flavors in the following release so i can re-enable it for just github releases)
+- Added Queue as default tab in the bottom navigation
+- Add Hook in sponsorblock categories
+- More translations
+
 > # 1.8.7.1 (2026-01)
 
 # What's Changed
