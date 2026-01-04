@@ -500,4 +500,5 @@
     <string name="update_ytdlp_while_downloading">Aggiorna yt-dlp durante il download</string>
     <string name="update_ytdlp_while_downloading_summary">Aggiungi -U a yt-dlp per aggiornare prima di scaricare</string>
     <string name="preview_filename">Mostra il nome del file in anteprima</string>
+    <string name="prefer_drc_audio">Preferisci audio DRC</string>
 </resources>
