@@ -19,6 +19,11 @@
 <div align="center">
 
 [![Github Yükləyicisi](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
+
+
+[<img alt="F-Droid-də əldə edin" height="60" src="https://raw.githubusercontent.com/mueller-ma/android-common/main/assets/get-it-on-fdroid.png"/>](https://f-droid.org/packages/com.deniscerri.ytdl)
+
+
 [![IzzyOnDroid Anbarı](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
 [![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
