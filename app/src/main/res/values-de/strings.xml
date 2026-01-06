@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remove_all">Alles entfernen</string>
-    <string name="ytdl_update_hint">Nützlich, wenn du Probleme beim Herunterladen hast</string>
+    <string name="ytdl_update_hint">Nützliche Tipps beim Herunterladen von Updates</string>
     <string name="remove_results">Ergebnisse löschen</string>
     <string name="download_all">Alles herunterladen</string>
     <string name="settings">Einstellungen</string>
@@ -9,7 +9,7 @@
     <string name="music_directory">Audio-Ordner</string>
     <string name="video_directory">Video-Ordner</string>
     <string name="updating">Aktualisieren</string>
-    <string name="update_ytdl">Neuste Version von youtube-dl installieren</string>
+    <string name="update_ytdl">yt-dlp auf neuste Version aktualisieren</string>
     <string name="source_code">Quellcode</string>
     <string name="search_hint">URL suchen oder einfügen</string>
     <string name="download_notification_channel_description">Benachrichtigung über den Fortschritt des Herunterladens von Audio- und Videodateien</string>
@@ -67,7 +67,7 @@
     <string name="downloading_update">Neuste Version wird heruntergeladen</string>
     <string name="concurrent_fragments_summary">Anzahl der Fragmente eines nativen DASH/HLS-Videos, die gleichzeitig heruntergeladen werden sollen</string>
     <string name="concurrent_fragments">Gleichzeitige Fragmente</string>
-    <string name="limit_rate">Grenzrate</string>
+    <string name="limit_rate">Geschwindigkeitsbegrenzung</string>
     <string name="embed_thumb">Vorschaubilder</string>
     <string name="processing">Verarbeitung</string>
     <string name="downloading">Herunterladen</string>
@@ -79,7 +79,7 @@
     <string name="add_chapters">Kapitel in Videos</string>
     <string name="embed_thumb_summary">Verwende das Vorschaubild als Cover-Art</string>
     <string name="save_thumb">Vorschaubild speichern</string>
-    <string name="cancel_task">Herunterladen abbrechen</string>
+    <string name="cancel_task">Vorgang abbrechen</string>
     <string name="you_are_going_to_delete">Löschen</string>
     <string name="incognito_summary">Herunterladen ohne es zum Verlauf hinzuzufügen</string>
     <string name="video_format">Videoformat</string>
@@ -128,8 +128,8 @@
     <string name="confirm_delete_logs_desc">Die gesamte Protokollliste dauerhaft löschen.</string>
     <string name="all_items_selected">Alle Elemente ausgewählt</string>
     <string name="in_queue">In Warteschlange</string>
-    <string name="clear_cancelled">Abgebrochenes löschen</string>
-    <string name="clear_errored">Fehlgeschlagenes löschen</string>
+    <string name="clear_cancelled">Abgebrochene löschen</string>
+    <string name="clear_errored">Fehlgeschlagene löschen</string>
     <string name="split_by_chapters">Nach Kapiteln aufteilen</string>
     <string name="items_imported">Elemente importiert</string>
     <string name="restart">Neustarten</string>
@@ -229,7 +229,7 @@
     <string name="finished_download_notification_channel_name">Abgeschlossene Downloads</string>
     <string name="finished_download_notification_channel_description">Benachrichtigung für abgeschlossene oder fehlerhafte Downloads</string>
     <string name="quick_download">Schneller Download</string>
-    <string name="quick_download_summary">Daten in der Download-Karte nicht abrufen</string>
+    <string name="quick_download_summary">Fahre sofort mit dem Downloadvorgang fort, ohne zuvor Daten abzurufen</string>
     <string name="download_already_exists">Download bereits vorhanden</string>
     <string name="pause">Pause</string>
     <string name="backup">Sichern</string>
@@ -499,4 +499,8 @@
     <string name="use_original_url_playlist_summary">Verwende die vom Benutzer eingegebene Playlist-URL anstelle des Tags \"playlist_webpage_url\" aus dem JSON-Dump</string>
     <string name="update_ytdlp_while_downloading">yt-dlp während des Downloads aktualisieren</string>
     <string name="update_ytdlp_while_downloading_summary">Füge -U zu yt-dlp hinzu, um es vor dem Download auf die neueste Version zu aktualisieren</string>
+    <string name="prefer_drc_audio">DRC Audio bevorzugen</string>
+    <string name="preview_filename">Vorschau Dateiname</string>
+    <string name="app_icon">App Icon</string>
+    <string name="show_quick_download_share_menu">Download im Teilen-Menü anbieten</string>
 </resources>
