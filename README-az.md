@@ -18,6 +18,7 @@
 
 <div align="center">
 
+[![Rəsmi Veb-saytı](https://custom-icon-badges.herokuapp.com/badge/Official%20Website-violet?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.org)
 [![Github Yükləyicisi](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 
 
