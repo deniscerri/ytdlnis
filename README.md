@@ -34,6 +34,11 @@
 
 [![Official website](https://custom-icon-badges.herokuapp.com/badge/Official%20Website-violet?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.org)
 [![GitHub Releases](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
+
+
+[<img alt="Get it on F-Droid" height="60" src="https://raw.githubusercontent.com/mueller-ma/android-common/main/assets/get-it-on-fdroid.png"/>](https://f-droid.org/packages/com.deniscerri.ytdl) 
+
+
 [![IzzyOnDroid repository](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
 [![Uptodown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
