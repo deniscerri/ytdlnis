@@ -3,7 +3,7 @@
     <string name="updating">更新</string>
     <string name="remove_all">すべて削除</string>
     <string name="remove_results">結果を消去</string>
-    <string name="settings">設定</string>
+    <string name="settings">セッティング</string>
     <string name="home">ホーム</string>
     <string name="directories">フォルダ</string>
     <string name="music_directory">音声用フォルダ</string>
@@ -69,7 +69,7 @@
     <string name="source_code">ソースコード</string>
     <string name="update_app">更新を確認</string>
     <string name="search">検索</string>
-    <string name="download_all">すべてダウンロード</string>
+    <string name="download_all">全ファイルダウンロード</string>
     <string name="search_hint">検索または URL を入力</string>
     <string name="ytdl_update_hint">アップデートのダウンロード中に役立つヒント</string>
     <string name="download_notification_channel_description">音声や動画ファイルのダウンロードの進捗状況を通知で表示</string>
@@ -97,7 +97,7 @@
     <string name="request_permission_desc">ダウンロードし保存するには、このアプリにファイルのアクセス権限の許可が必要です</string>
     <string name="exit_app">アプリを終了</string>
     <string name="warning">警告</string>
-    <string name="worst_quality">最低品質</string>
+    <string name="worst_quality">最優先品質</string>
     <string name="best_quality">最高品質</string>
     <string name="about">アプリについて</string>
     <string name="container">コンテナ</string>
@@ -234,7 +234,7 @@
     <string name="downloaded">"ダウンロード完了: "</string>
     <string name="finished_download_notification_channel_description">完了したダウンロードの通知</string>
     <string name="quick_download">クイックダウンロード</string>
-    <string name="quick_download_summary">ダウンロードカードのデータを取得しない</string>
+    <string name="quick_download_summary">ダウンロードカードのデータを取得せずすぐにダウンロードを開始する</string>
     <string name="remove_audio">音声を削除</string>
     <string name="download_already_exists">ダウンロードに既に存在します</string>
     <string name="pause">一時停止</string>
@@ -476,11 +476,11 @@
     <string name="select_between_desc">選択する項目の範囲を指定</string>
     <string name="web_client_po_token">ウェブクライアントPOトークン</string>
     <string name="potoken">POトークン</string>
-    <string name="reverse">逆順</string>
+    <string name="reverse">リバース</string>
     <string name="no_keep_subs_summary">「字幕の埋め込み」と「字幕の書き込み」を併用する時、埋め込み後に字幕ファイルを残さない</string>
     <string name="no_keep_subs">字幕ファイルを埋め込み後に削除する</string>
     <string name="video_compatible_summary">動画を再エンコードし、ほかのアプリと互換性のある形式に変換</string>
-    <string name="video_compatible">より互換性が高い動画</string>
+    <string name="video_compatible">対応動画（形式）</string>
     <string name="no_free_space_warning">この構成用の空き領域がありません。</string>
     <string name="preferred_format_size">推奨形式サイズ</string>
     <string name="smallest">最小</string>
@@ -489,10 +489,22 @@
     <string name="potoken_player">PO トークン (プレーヤー)</string>
     <string name="potoken_subs">PO トークン (字幕)</string>
     <string name="visitor_data">訪問者データ</string>
-    <string name="get_data_sync_id">訪問者データ</string>
+    <string name="get_data_sync_id">訪問者データの同期IDを取得</string>
     <string name="desktop">デスクトップ</string>
     <string name="url_regex">URL 正規表現</string>
-    <string name="disable_flat_playlist_summary">--flat-playlist を使用しない。データ取得は遅くなるが、より豊富なデータが得られます。</string>
-    <string name="disable_flat_playlist">flat playlist を無効</string>
+    <string name="disable_flat_playlist_summary">--flat-playlist を使用しない。データ取得は遅くなりますが、より豊富なデータが得られます。</string>
+    <string name="disable_flat_playlist">flat playlist を無効化</string>
     <string name="chapters">章</string>
+    <string name="prefer_drc_audio">オーディオDRCを優先</string>
+    <string name="use_original_url_playlist">プレイリストのURLにオリジナルのURLを使用する</string>
+    <string name="use_original_url_playlist_summary">JSONダンプのplaylist_webpage_urlタグの代わりに、ユーザーが指定したプレイリストURLを使用する</string>
+    <string name="update_ytdlp_while_downloading">ダウンロード中にyt-dlpを更新</string>
+    <string name="update_ytdlp_while_downloading_summary">ダウンロードする前に yt-dlp に -U を追加して最新版に更新</string>
+    <string name="preview_filename">プレビューファイル名</string>
+    <string name="potoken_guide">認証\n-----------------------\n1. 「認証」をクリックして、WebView でログインページを開きます。\n\n2. Google アカウントにログインします。\n\n3. 自動翻訳字幕に対応した動画を再生します。\n\n4. 自動翻訳字幕をオンにして、機能するかどうかを確認します。\n\n\t 4.1 自動翻訳字幕が機能しない場合は、自動翻訳字幕に対応した別の動画に切り替えて、手順 4 を再試行してください。\n\n5. [OK] をクリックします。\n\n認証なし\n\n1. 「認証なし」をクリックします。\n\n2. 任意の YouTube 動画の URL を入力します。\n\n3. 動画が読み込まれるまで待ち、3 秒以上再生します。\n\n4. [OK] をクリックします。</string>
+    <string name="no_auth">認証なし</string>
+    <string name="auth">認証</string>
+    <string name="app_icon">アプリアイコン</string>
+    <string name="show_quick_download_share_menu">共有メニューに「すぐにダウンロード」のオプションを追加する</string>
+    <string name="quick_download_title">データを取得しない</string>
 </resources>

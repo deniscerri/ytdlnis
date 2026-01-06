@@ -220,7 +220,7 @@
     <string name="download_already_exists">التنزيل موجود بالفعل</string>
     <string name="quick_download">تنزيل سريع</string>
     <string name="preferred_locale">المنطقة المفضلة</string>
-    <string name="quick_download_summary">عدم الجلب المسبق لبيانات التنزيل</string>
+    <string name="quick_download_summary">استمر في عملية التنزيل فورًا، دون جلب البيانات مسبقًا</string>
     <string name="system">تبعًا للنظام</string>
     <string name="accents">التلوين</string>
     <string name="high_contrast">تباين عالي</string>
@@ -503,4 +503,8 @@
     <string name="potoken_guide">"مع المصادقة\n-----------------------\n1. انقر على \'Auth\' لفتح صفحة تسجيل الدخول في WebView.\n2. سجل الدخول إلى حساب Google الخاص بك.\n3. شغل أي فيديو يدعم الترجمة التلقائية للترجمات.\n4. شغل الترجمة التلقائية للترجمات وتحقق مما إذا كانت تعمل.\n   4.1 إذا لم تعمل الترجمة التلقائية للترجمات، انتقل إلى فيديو آخر يدعم هذه الميزة وحاول تنفيذ الخطوة 4 مرة أخرى.\n5. انقر على موافق (OK).\n\nبدون مصادقة\n-----------------------\n1. انقر على \'No Auth\'.\n2. اكتب أي رابط لفيديو على YouTube.\n3. انتظر حتى يتم تحميل الفيديو وشغله لمدة 3 ثوانٍ على الأقل.\n4. انقر على موافق (OK)."</string>
     <string name="no_auth">بدون مصادقة</string>
     <string name="auth">مصادقة</string>
+    <string name="prefer_drc_audio">تفضيل صوت DRC</string>
+    <string name="app_icon">ايقونة التطبيق</string>
+    <string name="show_quick_download_share_menu">أظهِر خيار التنزيل الفوري في قائمة المشاركة</string>
+    <string name="quick_download_title">لا تجلب البيانات</string>
 </resources>

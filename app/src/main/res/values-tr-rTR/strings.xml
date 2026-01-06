@@ -225,7 +225,7 @@
     <string name="accents">Tonlar</string>
     <string name="high_contrast">Yüksek kontrast</string>
     <string name="pure_theme_summary">Saf siyah / beyaz tema</string>
-    <string name="material_you">Uyumlu tasarım</string>
+    <string name="material_you">Material You</string>
     <string name="blue">Mavi</string>
     <string name="red">Kırmızı</string>
     <string name="green">Yeşil</string>
@@ -490,7 +490,7 @@
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Oynatıcı)</string>
     <string name="potoken_subs">PO Token (Altyazılar)</string>
-    <string name="visitor_data">Ziyaretçi Verileri</string>
+    <string name="visitor_data">Visitor Data</string>
     <string name="get_data_sync_id">Veri Senkronizasyon Kimliğini Al</string>
     <string name="desktop">Masaüstü</string>
     <string name="url_regex">URL Regex</string>
