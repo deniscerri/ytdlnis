@@ -141,7 +141,7 @@
     <string name="preferred_audio_codec">מפענח שמע מועדף</string>
     <string name="use_cookies">להשתמש בעוגיות</string>
     <string name="use_extra_commands">הוספת פקודות נוספת</string>
-    <string name="update_app_beta">עדכוני בטא</string>
+    <string name="update_app_beta">מהדורות בטא</string>
     <string name="scheduling">תזמון הורדה</string>
     <string name="clear_saved">ניקוי השמורים</string>
     <string name="saved">שמורים</string>
@@ -301,7 +301,7 @@
     <string name="invert_selected">היפוך הנבחרים</string>
     <string name="download_over_metered_networks_summary">הורד עם כל סוגי הרשת, או שתמתין לרשת לא סלולרית</string>
     <string name="confirm_delete_logs_desc">מחק את כל רשימת היומן, לצמיתות.</string>
-    <string name="force_keyframes">לכפות מסגרות מפתח בחיתוכים</string>
+    <string name="force_keyframes">לכפות תמוניות מפתח בחיתוכים</string>
     <string name="preferred_format_id">מזהה תבנית מועדף</string>
     <string name="preferred_search_engine">מנוע חיפוש מועדף</string>
     <string name="couldnt_parse_file">לא ניתן לנתח את הקובץ</string>
@@ -328,7 +328,7 @@
     <string name="bitrate">קצב סיביות</string>
     <string name="not_deleted">לא נמחק</string>
     <string name="navigation_bar">סרגל ניווט</string>
-    <string name="label_visibility">עיצוב התווית</string>
+    <string name="label_visibility">חשיפת התווית</string>
     <string name="always">תמיד</string>
     <string name="sync_with_source">סנכרון עם מקור</string>
     <string name="queue">תור</string>
@@ -374,9 +374,9 @@
     <string name="changelog">יומן שינויים</string>
     <string name="source">מקור</string>
     <string name="app">אפליקציה</string>
-    <string name="use_alarm_manager">השתמש ב-AlarmManager במקום ב-WorkManager לתזמון</string>
+    <string name="use_alarm_manager">להשתמש ב־AlarmManager במקום ב־WorkManager לתזמון</string>
     <string name="use_alarm_manager_summary">הפעל זאת אם WorkManager מוגבל על ידי ספק המכשיר שלך או שהעבודות המתוזמנות אינן מדויקות מדי</string>
-    <string name="archive">הורדת ארכיון [השתמש בקובץ הארכיון להורדה של yt-dlp כדי למנוע הורדות כפולות במקום בפונקציונליות המובנית]</string>
+    <string name="archive">הורדת ארכיון [יש להשתמש בקובץ הארכיון להורדה של yt-dlp כדי למנוע הורדות כפולות במקום ביכולת המובנית]</string>
     <string name="disabled">מושבת</string>
     <string name="subtitles">כתוביות</string>
     <string name="prevent_duplicate_downloads">מניעת הורדות כפולות</string>
@@ -390,9 +390,9 @@
     <string name="errored_downloads">הורדות שנכשלו</string>
     <string name="ytdl_source">מקור yt-dlp</string>
     <string name="update_ytdl_master">גרסה ראשית של yt-dlp</string>
-    <string name="format_importance">עיצוב סדר החשיבות</string>
+    <string name="format_importance">סדר חשיבות תסדיר</string>
     <string name="format_importance_note">התאם את חשיבות רכיב הפורמט. הזמנה זו תשמש רק כאשר האפליקציה תביא את הפורמטים בכרטיס ההורדה ותבחר אוטומטית את הפורמט!</string>
-    <string name="download_archive_folder">הורד את תיקיית הארכיון</string>
+    <string name="download_archive_folder">הורדת תיקיית ארכיון</string>
     <string name="location">מיקום</string>
     <string name="enable_alarm_permission">עליך להפעיל את הרשאת SCHEDULE_EXACT_ALARM בהגדרות האפליקציה.</string>
     <string name="process_downloads_background">"ההורדות עדיין נטענות. להמשיך לעבד אותם ברקע ולהתחיל להוריד? "</string>
@@ -407,9 +407,9 @@
     <string name="format_filter">מסנן תסדירים</string>
     <string name="format_smallest">התסדיר הקטן ביותר (לכל רזולוציה)</string>
     <string name="cut_unavailable_please_update_item">עליך לעדכן את נתוני הפריט כדי שתוכל להשתמש בתכונת החיתוך</string>
-    <string name="use_item_url_not_playlist">השתמש בקישור של פריט במקום בקישור של רשימת ההשמעה</string>
+    <string name="use_item_url_not_playlist">להשתמש בכתובת של פריט במקום בכתובת של רשימת נגינה</string>
     <string name="recode_video_summary">מקודד מחדש את קובץ הוידאו לפורמט הוידאו שצוין</string>
-    <string name="recode_video">קודד מחדש את הוידאו</string>
+    <string name="recode_video">קידוד וידאו מחדש</string>
     <string name="daily">יום יומי</string>
     <string name="weekly">שבועי</string>
     <string name="monthly">חודשי</string>
@@ -447,7 +447,7 @@
     <string name="data_fetching_extra_command_summary">אפשר להשתמש בתבניות פקודות לאחזור נתונים כפקודות נוספות</string>
     <string name="live_from_start">שידור חי מהתחלה</string>
     <string name="live_stream">שידור חי</string>
-    <string name="wait_for_video">המתן לסרטון</string>
+    <string name="wait_for_video">להמתין לסרטון</string>
     <string name="retry_every">נסה שוב כל</string>
     <string name="minutes">דקות</string>
     <string name="prefer_container_over_codec_audio">העדף קונטיינר על פני Codec להורדות אודיו</string>
@@ -456,7 +456,7 @@
     <string name="retry_missing_downloads_desc">הורד מחדש פריטים שאינם קיימים בהיסטוריית ההורדות</string>
     <string name="reset_processed_links_desc">הורד שוב את כל הפריטים</string>
     <string name="sync_with_source_desc">מחק פריטים שהורדת אם הם חסרים במקור</string>
-    <string name="continue_anyway">המשך בכל מקרא</string>
+    <string name="continue_anyway">להמשיך בכל זאת</string>
     <string name="playlist_as_album">השתמש בשם רשימת ההשמעה כמטא נתונים של האלבום</string>
     <string name="playlist_as_album_summary">אם מטא נתונים של אלבום אינם קיימים, השתמש במקום זאת בשם רשימת ההשמעה</string>
     <string name="other_youtube_extractor_args">טיעונים נוספים של YouTube Extractor</string>
@@ -464,7 +464,7 @@
     <string name="advanced">מתקדם</string>
     <string name="data_fetching_extra_command">פקודה נוספת לאחזור נתונים</string>
     <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (מצריך עוגיות)</string>
-    <string name="ytdlp_watch_history">YT-DLP היסטוריית צפייה ב-YouTube (מצריך עוגיות)</string>
+    <string name="ytdlp_watch_history">היסטוריית צפייה ב־YouTube של yt-dlp (מצריך עוגיות)</string>
     <string name="player_client">לקוח מפעיל</string>
     <string name="grid">רשת</string>
     <string name="use_only_po_token">השתמש רק ב-PO Token (התעלם מלקוח הנגן)</string>
