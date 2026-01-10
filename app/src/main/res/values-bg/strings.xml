@@ -33,7 +33,7 @@
     <string name="confirm_delete_history_desc">Изтрийте цялата история за постоянно</string>
     <string name="confirm_delete_history">Потвърдете</string>
     <string name="search_history_hint">Търсене в историята</string>
-    <string name="no_results">Няма резултат</string>
+    <string name="no_results">Няма открити</string>
     <string name="audio">Аудио</string>
     <string name="more">Още</string>
     <string name="command_directory">Папка с персонализирани команди</string>
@@ -266,7 +266,7 @@
     <string name="errored_downloads">Неуспешни изтегляния</string>
     <string name="quick_download">Бързо сваляне</string>
     <string name="errored_download_notification_channel_description">Известие за грешни изтегляния</string>
-    <string name="quick_download_summary">Не извлича данни в картата за изтегляне</string>
+    <string name="quick_download_summary">Продължете процеса на изтегляне веднага, без предварително извличане на данни</string>
     <string name="remove_audio">Премахване на аудио</string>
     <string name="preferred_format_id">Предпочитан ID формат</string>
     <string name="download_now">Свали сега</string>
@@ -500,6 +500,8 @@
     <string name="preview_filename">Предварителен преглед на име на файл</string>
     <string name="no_auth">Без авторизация</string>
     <string name="auth">Авторизация</string>
-    <string name="app_icon">Икона на приложение</string>
+    <string name="app_icon">Икона на приложението</string>
     <string name="show_quick_download_share_menu">Показване на опция изтегляне в менюто за споделяне</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Кликнете върху „Авторизация“, за да отворите страницата за вход в WebView.\n2. Влезте в профила си в Google.\n3. Пуснете всяко видео, което поддържа автоматично преведени субтитри.\n4. Включете автоматично преведените субтитри и вижте дали работят.\n4.1 Ако автоматично преведените субтитри не работят, преминете към друго видео, което поддържа автоматично преведени субтитри, и опитайте стъпка 4 отново.\n5. Кликнете върху OK.\n\nБез авторизация\n-----------------------\n1. Кликнете върху „Без авторизация“.\n2. Въведете URL адреса на произволен видеоклип в YouTube.\n3. Изчакайте видеоклипът да се зареди и го пуснете поне 3 секунди.\n4. Кликнете върху OK.</string>
+    <string name="quick_download_title">Без извличане на данни</string>
 </resources>
