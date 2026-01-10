@@ -463,7 +463,7 @@
     <string name="backup_path">Путь резервного копирования</string>
     <string name="automatic_backup_summary">Автоматически создавать резервную копию всех параметров при обнаружении новой версии приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
-    <string name="write_subs_when_embed_subs_summary">Это применит «Сохранять Субтитры» и «Сохранять Автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания</string>
+    <string name="write_subs_when_embed_subs_summary">Это применит Сохранять Субтитры и Сохранять Автосубтитры файлы субтитров будут загружены, а затем удалены после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Пользовательский приоритет форматов</string>
