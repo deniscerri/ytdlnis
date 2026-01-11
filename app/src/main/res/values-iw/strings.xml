@@ -430,7 +430,7 @@
     <string name="thumbnail">תמונה ממוזערת</string>
     <string name="socket_timeout">תום זמן שהוקצב לשקע</string>
     <string name="socket_timeout_description">זמן המתנה לפני שתוותר, בשניות</string>
-    <string name="disable_write_info_json">השבת כתיבת מידע לjson</string>
+    <string name="disable_write_info_json">השבתת כתיבת פרטים ל־json</string>
     <string name="disable_write_info_json_summary">בכל פעם שההורדה תופעל מחדש / תמשיך, yt-dlp יוריד מחדש נתוני json מהשרתים (לא מומלץ)</string>
     <string name="ytdlp_recommnedations">YT-DLP המלצות יוטיוב (מצריך עוגיות)</string>
     <string name="write_subs_when_embed_subs_summary">זה יחיל את שמירת כתוביות ושמירת כתוביות אוטומטיות כדי להוריד את קבצי הכתוביות וימחק אותם לאחר ההטמעה</string>
