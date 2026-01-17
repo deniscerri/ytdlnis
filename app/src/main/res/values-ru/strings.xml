@@ -129,7 +129,7 @@
     <string name="preferred_download_type">Предпочитаемый тип загрузки</string>
     <string name="confirm_delete_logs_desc">Удалите весь список журналов навсегда.</string>
     <string name="select">Выбрать</string>
-    <string name="selected">Выбрано</string>
+    <string name="selected">Показывать при выборе раздела</string>
     <string name="restart">Перезагрузить</string>
     <string name="download_rescheduled_to">Загрузка отложена до:</string>
     <string name="file_size">Размер файла</string>
@@ -155,7 +155,7 @@
     <string name="items_imported">Импортированные элементы</string>
     <string name="log_downloads_summary">Создавать файл журнала для каждой загрузки</string>
     <string name="cancelled">Отменено</string>
-    <string name="help_translate_summary">Переведите это приложение на свой язык с помощью Weblate</string>
+    <string name="help_translate_summary">Переведите приложение на свой язык через Weblate</string>
     <string name="enable_mtime">Включить время модификации</string>
     <string name="enable_mtime_summary">Устанавливать HTTP-заголовок Last-Modified как время последнего изменения</string>
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
@@ -219,7 +219,7 @@
     <string name="system">Системная</string>
     <string name="updating_download_data">Обновление данных загружаемого контента</string>
     <string name="backup">Резервная копия</string>
-    <string name="pure_theme_summary">Чистые чёрная / белая темы</string>
+    <string name="pure_theme_summary">Чёрно-белая тема</string>
     <string name="accents">Акценты</string>
     <string name="network_error">Ошибка сети</string>
     <string name="select_backup_categories">Выберите категории резервного копирования</string>
@@ -240,7 +240,7 @@
     <string name="download_already_exists">Загрузка уже существует</string>
     <string name="pause">Пауза</string>
     <string name="preferred_locale">Предпочитаемый регион</string>
-    <string name="video_recommendations">Видео рекомендации</string>
+    <string name="video_recommendations">Рекомендации видео</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
     <string name="backup_created_successfully">Файл резервной копии успешно сохранён</string>
@@ -297,7 +297,7 @@
     <string name="cache_first_summary">Кэш загружается во внутреннюю память, а затем перемещается в выбранный каталог. Используйте это, когда нельзя записывать непосредственно в память</string>
     <string name="update_app_beta_summary">Примите участие в бета-тестировании. В нём могут содержаться ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
-    <string name="auto">Авто</string>
+    <string name="auto">По умолчанию</string>
     <string name="preferred_audio_codec">Предпочтительный аудиокодек</string>
     <string name="preferred_video_codec">Предпочтительный видеокодек</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
@@ -339,7 +339,7 @@
     <string name="copy_urls">Копировать URL-адреса</string>
     <string name="every">Каждый</string>
     <string name="set_time">Установить время</string>
-    <string name="never">Никогда</string>
+    <string name="never">Не показывать</string>
     <string name="starts">Начинается</string>
     <string name="on_time">Включено</string>
     <string name="day">День</string>
@@ -397,8 +397,8 @@
     <string name="enable_alarm_permission">Вам необходимо включить разрешение SCHEDULE_EXACT_ALARM в настройках приложения.</string>
     <string name="process_downloads_background">"Загрузка всё ещё продолжается. Продолжить обработку в фоновом режиме и начать загрузку?. "</string>
     <string name="navigation_bar">Панель навигации</string>
-    <string name="label_visibility">Видимость метки</string>
-    <string name="always">Всегда</string>
+    <string name="label_visibility">Название раздела</string>
+    <string name="always">Показывать</string>
     <string name="sync_with_source">Синхронизировать с источником</string>
     <string name="queue">Очередь</string>
     <string name="reset">Cбросить</string>
@@ -463,7 +463,7 @@
     <string name="backup_path">Путь резервного копирования</string>
     <string name="automatic_backup_summary">Автоматически создавать резервную копию всех параметров при обнаружении новой версии приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
-    <string name="write_subs_when_embed_subs_summary">Это применит «Сохранять Субтитры» и «Сохранять Автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания</string>
+    <string name="write_subs_when_embed_subs_summary">Это применит Сохранять Субтитры и Сохранять Автосубтитры файлы субтитров будут загружены, а затем удалены после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Пользовательский приоритет форматов</string>
@@ -503,7 +503,7 @@
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитаю DRC Audio</string>
-    <string name="app_icon">Значок приложения</string>
+    <string name="app_icon">Иконка приложения</string>
     <string name="show_quick_download_share_menu">Показать немедленную загрузку в меню общего доступа</string>
     <string name="quick_download_title">Не получать данные</string>
 </resources>

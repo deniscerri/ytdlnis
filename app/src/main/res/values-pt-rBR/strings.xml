@@ -504,7 +504,7 @@
     <string name="potoken_guide">Autenticação\n-----------------------\n1. Clique em “Autenticar” para abrir a página de login no WebView.\n2. Faça login na sua conta do Google.\n3. Reproduza qualquer vídeo que suporte legendas traduzidas automaticamente.\n4. Ative as legendas traduzidas automaticamente e veja se funcionam.\n\t4.1 Se as legendas traduzidas automaticamente não funcionarem, mude para outro vídeo que suporte legendas traduzidas automaticamente e tente o passo 4 novamente.\n5. Clique em OK.\n\nSem autenticação\n-----------------------\n1. Clique em “Sem autenticação”.\n2. Digite qualquer URL de vídeo do YouTube.\n3. Aguarde o carregamento do vídeo e reproduza-o por pelo menos 3 segundos.\n4. Clique em OK.</string>
     <string name="no_auth">Sem autenticação</string>
     <string name="auth">Autenticar</string>
-    <string name="app_icon">ícone do aplicativo</string>
+    <string name="app_icon">Estilo de ícone (app)</string>
     <string name="show_quick_download_share_menu">Mostrar opção para fazer download imediatamente no menu de compartilhamento</string>
     <string name="quick_download_title">Não buscar por dados</string>
 </resources>
