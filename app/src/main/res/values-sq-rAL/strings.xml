@@ -505,4 +505,5 @@
     <string name="prefer_drc_audio">Prefero Audio DRC</string>
     <string name="app_icon">Ikona e Aplikacionit</string>
     <string name="show_quick_download_share_menu">Shfaq Shkarkimin e Shpejtë te menuja e shpërndarjes</string>
+    <string name="quick_download_title">Mos tërhiq të dhëna</string>
 </resources>
