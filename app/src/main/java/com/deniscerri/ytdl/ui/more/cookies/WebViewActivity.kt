@@ -6,17 +6,22 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebStorage
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -45,7 +50,7 @@ class WebViewActivity : BaseActivity() {
     private lateinit var url: String
     private lateinit var description: String
     private lateinit var cookies: String
-    private lateinit var webViewClient: AccompanistWebViewClient
+    private lateinit var webViewClient: WebViewClient
     private lateinit var preferences: SharedPreferences
 
     private var incognito: Boolean = false
@@ -97,7 +102,7 @@ class WebViewActivity : BaseActivity() {
 
             preferences = PreferenceManager.getDefaultSharedPreferences(this@WebViewActivity)
 
-            webViewClient = object : AccompanistWebViewClient() {
+            webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     webView = view
                     super.onPageFinished(view, url)
@@ -153,7 +158,7 @@ class WebViewActivity : BaseActivity() {
             }
 
             webViewCompose.apply {
-                setContent { WebViewView() }
+                setContent { WebViewView(incognito, webViewClient) }
             }
         }
 
@@ -176,56 +181,57 @@ class WebViewActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     @Composable
-    fun WebViewView() {
-        val webViewChromeClient = remember {
-            object : AccompanistWebChromeClient() {
+    fun WebViewView(
+        incognito: Boolean,
+        webViewClient: WebViewClient,
+    ) {
+        val context = LocalContext.current
+        val cookieManager = remember { CookieManager.getInstance() }
+
+        val webView = remember {
+            WebView(context).apply {
+                settings.run {
+                    javaScriptEnabled = true
+                    javaScriptCanOpenWindowsAutomatically = true
+
+                    if (!incognito) {
+                        cacheMode = WebSettings.LOAD_DEFAULT
+                        domStorageEnabled = true
+                        setGeolocationEnabled(true)
+                    } else {
+                        cacheMode = WebSettings.LOAD_NO_CACHE
+                        domStorageEnabled = false
+                        setGeolocationEnabled(false)
+                        WebStorage.getInstance().deleteAllData()
+
+                        clearHistory()
+                        clearCache(true)
+                        clearFormData()
+                    }
+
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        safeBrowsingEnabled = true
+                    }
+                }
+
+                cookieManager.setAcceptCookie(true)
+                cookieManager.setAcceptThirdPartyCookies(this, true)
+
+                this.webViewClient = webViewClient
+                this.webChromeClient = object : WebChromeClient() {}
             }
         }
 
-        Scaffold(modifier = Modifier.Companion.fillMaxSize()) { paddingValues ->
-            com.google.accompanist.web.WebView(
-                state = rememberWebViewState(url),
-                client = webViewClient,
-                chromeClient = webViewChromeClient,
-                modifier = Modifier.Companion
-                    .padding(paddingValues)
+        Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+            AndroidView(
+                modifier = Modifier
+                    .padding(padding)
                     .fillMaxSize(),
-                captureBackPresses = false,
-                factory = { context ->
-                    WebView(context).apply {
-                        settings.run {
-                            if (!incognito) {
-                                cacheMode = WebSettings.LOAD_DEFAULT
-                                domStorageEnabled = true
-                                setGeolocationEnabled(true)
-                            } else {
-                                cacheMode = WebSettings.LOAD_NO_CACHE
-                                domStorageEnabled = false
-                                setGeolocationEnabled(false)
-                                WebStorage.getInstance().deleteAllData()
-
-                                this@apply.clearHistory()
-                                this@apply.clearCache(true)
-                                this@apply.clearFormData()
-                            }
-
-                            javaScriptEnabled = true
-                            javaScriptCanOpenWindowsAutomatically = true
-                            if (Build.VERSION.SDK_INT >= 26) {
-                                safeBrowsingEnabled = true
-                            }
-                            preferences.edit().putString("useragent_header", userAgentString)
-                                .apply()
-                        }
-                        cookieManager.setAcceptCookie(true)
-                        cookieManager.setAcceptThirdPartyCookies(this, true)
-                    }
-                }
+                factory = { webView },
             )
-
-
         }
     }
+
 
     companion object {
         const val TAG = "WebViewActivity"

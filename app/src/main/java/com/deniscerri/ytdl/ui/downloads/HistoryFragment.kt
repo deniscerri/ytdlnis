@@ -38,10 +38,10 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager.SORTING
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
@@ -127,7 +127,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         recyclerView.enableFastScroll()
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("history")){
+        if (preferences.getStringSet("swipe_gesture", requireContext().resources.getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("history")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
@@ -468,7 +468,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         val audio = fragmentView.findViewById<Chip>(R.id.audio_chip)
         audio.setOnClickListener {
             if (audio.isChecked) {
-                historyViewModel.setTypeFilter(DownloadViewModel.Type.audio.toString())
+                historyViewModel.setTypeFilter(DownloadType.audio.toString())
                 audio.isChecked = true
             } else {
                 historyViewModel.setTypeFilter("")
@@ -478,7 +478,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         val video = fragmentView.findViewById<Chip>(R.id.video_chip)
         video.setOnClickListener {
             if (video.isChecked) {
-                historyViewModel.setTypeFilter(DownloadViewModel.Type.video.toString())
+                historyViewModel.setTypeFilter(DownloadType.video.toString())
                 video.isChecked = true
             } else {
                 historyViewModel.setTypeFilter("")
@@ -488,7 +488,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         val command = fragmentView.findViewById<Chip>(R.id.command_chip)
         command.setOnClickListener {
             if (command.isChecked) {
-                historyViewModel.setTypeFilter(DownloadViewModel.Type.command.toString())
+                historyViewModel.setTypeFilter(DownloadType.command.toString())
                 command.isChecked = true
             } else {
                 historyViewModel.setTypeFilter("")

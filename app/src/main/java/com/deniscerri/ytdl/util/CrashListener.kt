@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.util
 import android.content.Context
 import android.util.Log
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -29,7 +30,7 @@ class CrashListener(private val context: Context) : Thread.UncaughtExceptionHand
                 title = "APP CRASH",
                 content = message,
                 format = Format("", "", "", "", "", 0, "", "", "", "", "", ""),
-                downloadType = DownloadViewModel.Type.command,
+                downloadType = DownloadType.command,
                 downloadTime = System.currentTimeMillis()
             ))
         }

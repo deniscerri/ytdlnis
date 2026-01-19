@@ -23,6 +23,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -113,7 +114,7 @@ class ObserveSourcesFragment : Fragment(), ObserveSourcesAdapter.OnItemClickList
         lifecycleScope.launch {
             val bundle = Bundle()
             bundle.putSerializable("type", downloadViewModel.getDownloadType(
-                DownloadViewModel.Type.valueOf(preferences.getString("download_type", "auto")!!), "")
+                DownloadType.valueOf(preferences.getString("download_type", "auto")!!), "")
             )
 
             if (url != null){

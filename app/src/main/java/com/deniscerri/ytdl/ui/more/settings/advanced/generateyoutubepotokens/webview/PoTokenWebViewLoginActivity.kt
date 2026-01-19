@@ -9,9 +9,11 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebStorage
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
@@ -49,7 +53,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
     private lateinit var toolbar: MaterialToolbar
     private lateinit var generateBtn: MaterialButton
     private lateinit var cookieManager: CookieManager
-    private lateinit var webViewClient: AccompanistWebViewClient
+    private lateinit var webViewClient: WebViewClient
     private lateinit var cookiesViewModel: CookieViewModel
     private lateinit var preferences: SharedPreferences
 
@@ -95,7 +99,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             preferences = PreferenceManager.getDefaultSharedPreferences(this@PoTokenWebViewLoginActivity)
             preferences.edit().putString("genenerate_youtube_po_token_preferred_url", url).apply()
 
-            webViewClient = object : AccompanistWebViewClient() {
+            webViewClient = object : WebViewClient() {
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     kotlin.runCatching {
@@ -184,7 +188,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             }
 
             webViewCompose.apply {
-                setContent { WebViewView(url) }
+                setContent { WebViewView(url, webViewClient) }
             }
         }
 
@@ -208,38 +212,36 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     @Composable
-    fun WebViewView(url: String) {
-        val webViewChromeClient = remember {
-            object : AccompanistWebChromeClient() {
+    fun WebViewView(url: String, webViewClient: WebViewClient) {
+        val context = LocalContext.current
+        val cookieManager = remember { CookieManager.getInstance() }
+
+        val webView = remember {
+            WebView(context).apply {
+                webView = this
+                clearHistory()
+                clearCache(true)
+                clearFormData()
+                settings.run {
+                    cacheMode = WebSettings.LOAD_NO_CACHE
+                    domStorageEnabled = false
+                    setGeolocationEnabled(false)
+                    javaScriptEnabled = true
+                    javaScriptCanOpenWindowsAutomatically = true
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        safeBrowsingEnabled = true
+                    }
+                }
+                cookieManager.setAcceptThirdPartyCookies(this, true)
             }
         }
 
-        Scaffold(modifier = Modifier.fillMaxSize()) { paddingValues ->
-            WebView(
-                state = rememberWebViewState(url), client = webViewClient, chromeClient = webViewChromeClient,
+        Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
+            AndroidView(
                 modifier = Modifier
-                    .padding(paddingValues)
+                    .padding(padding)
                     .fillMaxSize(),
-                captureBackPresses = false, factory = { context ->
-                    WebStorage.getInstance().deleteAllData()
-                    WebView(context).apply {
-                        webView = this
-                        clearHistory()
-                        clearCache(true)
-                        clearFormData()
-                        settings.run {
-                            cacheMode = WebSettings.LOAD_NO_CACHE
-                            domStorageEnabled = false
-                            setGeolocationEnabled(false)
-                            javaScriptEnabled = true
-                            javaScriptCanOpenWindowsAutomatically = true
-                            if (Build.VERSION.SDK_INT >= 26) {
-                                safeBrowsingEnabled = true
-                            }
-                        }
-                        cookieManager.setAcceptThirdPartyCookies(this, true)
-                    }
-                }
+                factory = { webView },
             )
         }
     }

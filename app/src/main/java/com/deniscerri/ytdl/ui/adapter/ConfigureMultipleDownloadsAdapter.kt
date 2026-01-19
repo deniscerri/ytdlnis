@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
@@ -185,7 +186,7 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         container.text = item.container.uppercase()
 
         val fileSize = card.findViewById<TextView>(R.id.file_size)
-        val fileSizeReadable = if(item.type != DownloadViewModel.Type.video){
+        val fileSizeReadable = if(item.type != DownloadType.video){
             FileUtil.convertFileSize(item.format.filesize)
         }else{
             if (item.format.filesize < 10L) {
@@ -219,11 +220,11 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
         }
 
         when(item.type) {
-            DownloadViewModel.Type.audio -> {
+            DownloadType.audio -> {
                 btn.setIconResource(R.drawable.ic_music)
                 btn.contentDescription = activity.getString(R.string.audio)
             }
-            DownloadViewModel.Type.video -> {
+            DownloadType.video -> {
                 btn.setIconResource(R.drawable.ic_video)
                 btn.contentDescription = activity.getString(R.string.video)
             }

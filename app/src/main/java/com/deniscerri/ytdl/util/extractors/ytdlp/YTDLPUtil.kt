@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.anggrayudi.storage.extension.count
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -46,6 +47,7 @@ import java.util.Base64
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
+import java.util.zip.CRC32
 
 class YTDLPUtil(private val context: Context, private val commandTemplateDao: CommandTemplateDao) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -605,10 +607,16 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             id = url.getIDFromYoutubeURL() ?: url
         }
 
-        val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
+        val infoJsonName = hash(id)
         //yt-dlp doesnt overwrite info json, so delete manually
         File("${cachePath}/${infoJsonName}video.info.json").delete()
-        this.addCommands(listOf("--print-to-file", "video:%()j", "${cachePath}/${infoJsonName}video.info.json"))
+        this.addCommands(listOf("--print-to-file", "video:%()j", "${cachePath}/${infoJsonName}${System.currentTimeMillis()}video.info.json"))
+    }
+
+    fun hash(text: String): String {
+        val crc = CRC32()
+        crc.update(text.toByteArray())
+        return crc.value.toString(16) // 8 hex chars max
     }
 
     @OptIn(ExperimentalStdlibApi::class)
@@ -620,18 +628,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             id = url.getIDFromYoutubeURL() ?: url
         }
 
-        val infoJsonName = MessageDigest.getInstance("MD5").digest(id.toByteArray()).toHexString()
-        var infoJsonFile : File? = null
-        File(cachePath).walkBottomUp().filter { it.name.startsWith(infoJsonName) }.forEach {
-            if (it.name == "${infoJsonName}playlist.info.json") {
-                infoJsonFile = it
-                return@forEach
-            }
+        val infoJsonName = hash(id)
+        val infoJsonFile : File? =
+            File(cachePath)
+                .walkBottomUp()
+                .sortedByDescending { it.lastModified() }
+                .filter { it.name.startsWith(infoJsonName) }
+                .firstOrNull()
 
-            if (it.name == "${infoJsonName}video.info.json") {
-                infoJsonFile = it
-            }
-        }
         return infoJsonFile
     }
 
@@ -853,7 +857,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val downDir : File
         val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
-        val writtenPath = type == DownloadViewModel.Type.command && downloadItem.format.format_note.contains("-P ")
+        val writtenPath = type == DownloadType.command && downloadItem.format.format_note.contains("-P ")
 
         if (writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite)){
             downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
@@ -926,7 +930,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val thumbnailFormat = sharedPreferences.getString("thumbnail_format", "jpg")
         var filenameTemplate = downloadItem.customFileNameTemplate
 
-        if(downloadItem.type != DownloadViewModel.Type.command){
+        if(downloadItem.type != DownloadType.command){
             if (sharedPreferences.getBoolean("no_part", false)){
                 request.addOption("--no-part")
             }
@@ -944,7 +948,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             val sponsorBlockFilters : ArrayList<String> = when(downloadItem.type) {
-                DownloadViewModel.Type.audio -> {
+                DownloadType.audio -> {
                     downloadItem.audioPreferences.sponsorBlockFilters
                 }
                 //video
@@ -971,6 +975,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
+            val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist,creators," else ""
+            metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
 
             if (downloadItem.author.isNotBlank()){
                 metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author.replace("""\""", """\\"""))
@@ -1029,9 +1035,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         var aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
 
         when(type){
-            DownloadViewModel.Type.audio -> {
+            DownloadType.audio -> {
                 val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
                 val preferredLanguage = sharedPreferences.getString("audio_language","")!!
+                val formatImportance = formatUtil.getAudioFormatImportance()
+
                 var abrSort = ""
 
                 var audioQualityId : String = downloadItem.format.format_id
@@ -1046,7 +1054,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && preferredLanguage.isNotBlank()) {
-                    audioQualityId = "ba[language^=$preferredLanguage]/ba/b"
+                    audioQualityId = "ba[language^=$preferredLanguage]/${audioQualityId.ifEmpty { "ba/b" }}"
+                }
+
+                if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && formatImportance.contains("prefer_drc")) {
+                    audioQualityId = "ba[format_id$=-drc]/${audioQualityId.ifEmpty { "ba/b" }}"
                 }
 
                 if (audioQualityId.isNotBlank()) {
@@ -1065,7 +1077,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 val ext = downloadItem.container
 
                 val formatSorting = mutableListOf<String>()
-                val formatImportance = formatUtil.getAudioFormatImportance()
                 val useCustomFormatSorting = sharedPreferences.getBoolean("use_format_sorting", false)
                 if (useCustomFormatSorting) {
                     formatSorting.add("hasaud")
@@ -1119,12 +1130,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 request.addOption("-P", downDir.absolutePath)
-
-
-                val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
-                if (downloadItem.author.isBlank()) {
-                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
-                }
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
@@ -1196,12 +1201,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
             }
-            DownloadViewModel.Type.video -> {
-                val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist," else ""
-                if (downloadItem.author.isBlank()) {
-                    metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|null)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
-                }
-
+            DownloadType.video -> {
                 val supportedContainers = context.resources.getStringArray(R.array.video_containers)
 
                 if (downloadItem.videoPreferences.addChapters) {
@@ -1486,7 +1486,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
             }
-            DownloadViewModel.Type.command -> {
+            DownloadType.command -> {
                 if (!writtenPath) {
                     request.addOption("-P", downDir.absolutePath)
                 }
@@ -1499,15 +1499,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         request.merge(metadataCommands)
 
-        if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadViewModel.Type.command){
-            // check for cache dir as extra command and add it as an actual option to prevent --no-cache-dir in youtubedl_android
-            val cacheDirArg = """--cache-dir\s+(?:"([^"]+)"|(\S+))""".toRegex().find(downloadItem.extraCommands)
-            if (cacheDirArg != null) {
-                ytDlRequest.addOption("--cache-dir", cacheDirArg.groupValues.last().replace("\"", ""))
-                runCatching {
-                    downloadItem.extraCommands = downloadItem.extraCommands.replace(cacheDirArg.value, "")
-                }
-            }
+        if (downloadItem.extraCommands.isNotBlank() && downloadItem.type != DownloadType.command){
             request.addOption(downloadItem.extraCommands)
         }
 
@@ -1518,13 +1510,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val cache = File(FileUtil.getCachePath(context))
         cache.mkdirs()
-        val conf =
-            File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
+        val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
         conf.createNewFile()
         conf.writeText(request.toString())
         val tmp = mutableListOf<String>()
         tmp.addOption("--config-locations", conf.absolutePath)
         ytDlRequest.addCommands(tmp)
+
+        ytDlRequest.addOption("--cache-dir", cache.absolutePath)
         return ytDlRequest
     }
 }

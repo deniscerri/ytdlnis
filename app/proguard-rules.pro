@@ -126,6 +126,8 @@
 -dontwarn jdk.dynalink.linker.support.CompositeTypeBasedGuardingDynamicLinker
 -dontwarn jdk.dynalink.linker.support.Guards
 -dontwarn jdk.dynalink.support.ChainedCallSite
+-dontwarn com.google.re2j.Matcher
+-dontwarn com.google.re2j.Pattern
 
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
 -dontobfuscate

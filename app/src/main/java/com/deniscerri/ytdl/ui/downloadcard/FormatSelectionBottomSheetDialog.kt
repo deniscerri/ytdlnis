@@ -23,11 +23,11 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.FormatAdapter
@@ -214,7 +214,7 @@ class FormatSelectionBottomSheetDialog(
                                 val res = resultViewModel.getFormats(items.first().url, currentFormatSource)
                                 if (!isActive) return@launch
                                 res.filter { it.format_note != "storyboard" }
-                                val chosenFormats = if (items.first().type == Type.audio) {
+                                val chosenFormats = if (items.first().type == DownloadType.audio) {
                                     res.filter { it.format_note.contains("audio", ignoreCase = true) }
                                 } else {
                                     res
@@ -408,7 +408,7 @@ class FormatSelectionBottomSheetDialog(
         if (_listener != null){
             //simple video format selection
             listener.onFormatClick(FormatTuple(adapter.selectedVideoFormat, adapter.selectedAudioFormats.ifEmpty {
-                listOf(downloadViewModel.getFormat(formats.filter { it.label == null }.map { it.format!! }, Type.audio))
+                listOf(downloadViewModel.getFormat(formats.filter { it.label == null }.map { it.format!! }, DownloadType.audio))
             }))
         }else{
             val res = formatViewModel.getFormatsForItemsBasedOnFormat(adapter.selectedVideoFormat!!, adapter.selectedAudioFormats)

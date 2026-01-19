@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
@@ -87,13 +88,13 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         val musicBtn = card.findViewById<MaterialButton>(R.id.download_music)
         musicBtn.tag = "$videoURL##audio"
         musicBtn.setTag(R.id.cancelDownload, "false")
-        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.audio) }
-        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.audio); true}
+        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadType.audio) }
+        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadType.audio); true}
         val videoBtn = card.findViewById<MaterialButton>(R.id.download_video)
         videoBtn.tag = "$videoURL##video"
         videoBtn.setTag(R.id.cancelDownload, "false")
-        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadViewModel.Type.video) }
-        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadViewModel.Type.video); true}
+        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadType.video) }
+        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadType.video); true}
 
 
         // PROGRESS BAR ----------------------------------------------------
@@ -166,8 +167,8 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     }
 
     interface OnItemClickListener {
-        fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?)
-        fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?)
+        fun onButtonClick(videoURL: String, type: DownloadType?)
+        fun onLongButtonClick(videoURL: String, type: DownloadType?)
         fun onCardClick(videoURL: String, add: Boolean)
         fun onCardDetailsClick(videoURL: String)
     }

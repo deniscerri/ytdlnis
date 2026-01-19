@@ -30,14 +30,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
@@ -84,7 +83,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
 
     private lateinit var result: ResultItem
-    private lateinit var type: Type
+    private lateinit var type: DownloadType
     private var ignoreDuplicates: Boolean = false
     private var disableUpdateData : Boolean = false
     private var currentDownloadItem: DownloadItem? = null
@@ -107,7 +106,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             res = arguments?.getParcelable<ResultItem>("result")
             dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
         }
-        type = arguments?.getSerializable("type") as Type
+        type = arguments?.getSerializable("type") as DownloadType
         disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
         ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true
 
@@ -208,11 +207,11 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         view.post {
             when(type) {
-                Type.audio -> {
+                DownloadType.audio -> {
                     tabLayout.getTabAt(0)!!.select()
                     viewPager2.setCurrentItem(0, false)
                 }
-                Type.video -> {
+                DownloadType.video -> {
                     if (isAudioOnly){
                         tabLayout.getTabAt(0)!!.select()
                         viewPager2.setCurrentItem(0, false)
@@ -231,7 +230,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
 
             //check if the item is coming from a text file
-            val isCommandOnly = (type == Type.command && !Patterns.WEB_URL.matcher(result.url).matches())
+            val isCommandOnly = (type == DownloadType.command && !Patterns.WEB_URL.matcher(result.url).matches())
             if (isCommandOnly){
                 (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(0)?.isClickable = false
                 (tabLayout.getChildAt(0) as? ViewGroup)?.getChildAt(0)?.alpha = 0.3f
@@ -294,7 +293,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 runCatching {
                     sharedPreferences.edit(commit = true) {
                         putString("last_used_download_type",
-                            listOf(Type.audio, Type.video, Type.command)[position].toString())
+                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
                     }
                     fragmentAdapter.updateWhenSwitching(viewPager2.currentItem)
                 }
@@ -303,7 +302,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         viewPager2.setPageTransformer(BackgroundToForegroundPageTransformer())
 
-        val shownFields = sharedPreferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
+        val shownFields = sharedPreferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
 
         val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.visibility = if(shownFields.contains("schedule")){
@@ -464,7 +463,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         //update in the background if there is no data
         if (!disableUpdateData) {
-            if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != Type.command){
+            if(result.title.isEmpty() && currentDownloadItem == null && !sharedPreferences.getBoolean("quick_download", false) && type != DownloadType.command){
                 initUpdateData()
             }else {
                 val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }

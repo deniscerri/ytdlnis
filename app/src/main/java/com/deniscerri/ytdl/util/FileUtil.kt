@@ -6,8 +6,6 @@ import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.UserHandle
-import android.os.UserManager
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -28,7 +26,6 @@ import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
-import okhttp3.internal.lowercase
 import java.io.File
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets

@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
@@ -202,7 +203,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                             showSingleDownloadSheet(
                                 it[0],
-                                DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
                         }
                     }
@@ -277,14 +278,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                                         withContext(Dispatchers.Main){
                                             showSingleDownloadSheet(
                                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                                type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
+                                                type = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
                                                 disableUpdateData = true
                                             )
                                         }
                                     } else {
                                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
                                             result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                            givenType = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                                         )
                                         downloadViewModel.queueDownloads(listOf(downloadItem))
                                     }
@@ -691,13 +692,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         withContext(Dispatchers.Main){
                             showSingleDownloadSheet(
                                 resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                type = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                                type = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
                         }
                     } else {
                         val downloadItem = downloadViewModel.createDownloadItemFromResult(
                             result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                            givenType = DownloadViewModel.Type.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+                            givenType = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                         )
                         downloadViewModel.queueDownloads(listOf(downloadItem))
                     }
@@ -717,7 +718,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     @SuppressLint("ResourceType")
-    override fun onButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
+    override fun onButtonClick(videoURL: String, type: DownloadType?) {
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
@@ -736,7 +737,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
     }
 
-    override fun onLongButtonClick(videoURL: String, type: DownloadViewModel.Type?) {
+    override fun onLongButtonClick(videoURL: String, type: DownloadType?) {
         Log.e(TAG, type.toString() + " " + videoURL)
         val item = resultsList!!.find { it?.url == videoURL }
         showSingleDownloadSheet(item!!, type!!)
@@ -745,7 +746,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
-        type: DownloadViewModel.Type,
+        type: DownloadType,
         disableUpdateData : Boolean = false
     ){
         if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&

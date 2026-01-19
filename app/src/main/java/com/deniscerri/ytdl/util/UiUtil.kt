@@ -56,6 +56,7 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -376,7 +377,7 @@ object UiUtil {
                 val chip = context.layoutInflater.inflate(R.layout.suggestion_chip, shortcutsChipGroup, false) as Chip
                 chip.text = shortcut.content
                 chip.setOnClickListener {
-                    content.editText!!.text.insert(content.editText!!.selectionStart, shortcut.content + " ")
+                    content.editText!!.text.insert(content.editText!!.selectionStart, shortcut.content)
                 }
                 shortcutsChipGroup.addView(chip)
             }
@@ -590,10 +591,10 @@ object UiUtil {
         val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
         val typeImageResource: Int =
             when (item.type) {
-                DownloadViewModel.Type.audio -> {
+                DownloadType.audio -> {
                     R.drawable.ic_music
                 }
-                DownloadViewModel.Type.video -> {
+                DownloadType.video -> {
                     R.drawable.ic_video
                 }
                 else -> {
@@ -637,7 +638,7 @@ object UiUtil {
             }
         }
 
-        if (item.type != DownloadViewModel.Type.command){
+        if (item.type != DownloadType.command){
             if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
                 View.GONE
             else formatNote!!.text = item.format.format_note
@@ -731,7 +732,7 @@ object UiUtil {
                     bottomSheet.cancel()
                 }
                 download?.setOnLongClickListener {
-                    longClickDownloadButton(item)
+                    downloadItem(item)
                     bottomSheet.cancel()
                     true
                 }
@@ -794,13 +795,13 @@ object UiUtil {
         val btn = bottomSheet.findViewById<FloatingActionButton>(R.id.download_button_type)
 
         val typeImageResource: Int =
-        if (item!!.type == DownloadViewModel.Type.audio) {
+        if (item!!.type == DownloadType.audio) {
             if (isPresent) {
                 R.drawable.ic_music_downloaded
             } else {
                 R.drawable.ic_music
             }
-        } else if (item.type == DownloadViewModel.Type.video) {
+        } else if (item.type == DownloadType.video) {
             if (isPresent) {
                 R.drawable.ic_video_downloaded
             } else {
@@ -857,7 +858,7 @@ object UiUtil {
             }
         }
 
-        if (item.type != DownloadViewModel.Type.command){
+        if (item.type != DownloadType.command){
             if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
                 View.GONE
             else formatNote!!.text = item.format.format_note

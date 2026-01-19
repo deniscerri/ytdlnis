@@ -33,7 +33,7 @@ interface ResultDao {
     suspend fun insert(item: ResultItem) : Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMultiple(items: List<ResultItem?>) : List<Long>
+    suspend fun insertMultiple(items: List<ResultItem>) : List<Long>
 
     @Transaction
     suspend fun insertMultipleNoDuplicates(items: List<ResultItem>) : List<Long> {

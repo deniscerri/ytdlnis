@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.popup
@@ -63,15 +64,15 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
 
         val downloadTypeIcon = card.findViewById<MaterialButton>(R.id.download_type)
         when(item.downloadType){
-            DownloadViewModel.Type.audio -> {
+            DownloadType.audio -> {
                 downloadTypeIcon.setIconResource(R.drawable.ic_music)
                 downloadTypeIcon.contentDescription = activity.getString(R.string.audio)
             }
-            DownloadViewModel.Type.video -> {
+            DownloadType.video -> {
                 downloadTypeIcon.setIconResource(R.drawable.ic_video)
                 downloadTypeIcon.contentDescription = activity.getString(R.string.video)
             }
-            DownloadViewModel.Type.command -> {
+            DownloadType.command -> {
                 downloadTypeIcon.setIconResource(R.drawable.ic_terminal)
                 downloadTypeIcon.contentDescription = activity.getString(R.string.command)
             }

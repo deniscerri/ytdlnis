@@ -34,6 +34,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -193,7 +194,7 @@ class ShareActivity : BaseActivity() {
                     result = existingResults.first()
                 }
 
-                val downloadType = DownloadViewModel.Type.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
+                val downloadType = DownloadType.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
                 if (sharedPreferences.getBoolean("download_card", true) && !background){
                     val bundle = Bundle()
                     bundle.putParcelable("result", result)

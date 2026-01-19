@@ -33,6 +33,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -400,13 +401,13 @@ class MainActivity : BaseActivity() {
                     intent.getParcelableExtra(Intent.EXTRA_STREAM)
                 }
 
-                var downloadType = DownloadViewModel.Type.valueOf(preferences.getString("preferred_download_type", "video")!!)
-                if (preferences.getBoolean("quick_download", false) || downloadType == DownloadViewModel.Type.command) {
+                var downloadType = DownloadType.valueOf(preferences.getString("preferred_download_type", "video")!!)
+                if (preferences.getBoolean("quick_download", false) || downloadType == DownloadType.command) {
                     val docFile = DocumentFile.fromSingleUri(this, uri!!)
                     if (docFile?.exists() == true){
                         val bundle = Bundle()
                         val path = docFile.getAbsolutePath(this)
-                        if (downloadType == DownloadViewModel.Type.auto) {
+                        if (downloadType == DownloadType.auto) {
                             downloadType = downloadViewModel.getDownloadType(null, path)
                         }
 

@@ -21,6 +21,7 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.CancelWorkReceiver
@@ -230,20 +231,20 @@ class NotificationUtil(var context: Context) {
     fun createDownloadFinished(
         id: Long,
         title: String?,
-        downloadType: DownloadViewModel.Type,
+        downloadType: DownloadType,
         filepath: List<String>?,
         res: Resources
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
         val iconType = when(downloadType){
-            DownloadViewModel.Type.audio -> {
+            DownloadType.audio -> {
                 R.drawable.ic_music
             }
-            DownloadViewModel.Type.video -> {
+            DownloadType.video -> {
                 R.drawable.ic_video
             }
-            DownloadViewModel.Type.command -> {
+            DownloadType.command -> {
                 R.drawable.ic_terminal
             }
 

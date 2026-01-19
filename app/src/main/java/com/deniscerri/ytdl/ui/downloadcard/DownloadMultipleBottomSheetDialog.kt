@@ -38,9 +38,9 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager.SORTING
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
@@ -171,7 +171,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        if (preferences.getStringSet("swipe_gesture", requireContext().getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("multipledownloadcard")){
+        if (preferences.getStringSet("swipe_gesture", requireContext().resources.getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("multipledownloadcard")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
         }
@@ -230,13 +230,13 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     updateBottomAppBarMenuItemsVisibility(firstItem)
                     val type = items.first().type
                     when(type){
-                        DownloadViewModel.Type.audio -> {
+                        DownloadType.audio -> {
                             preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
                         }
-                        DownloadViewModel.Type.video -> {
+                        DownloadType.video -> {
                             preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
                         }
-                        DownloadViewModel.Type.command -> {
+                        DownloadType.command -> {
                             preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
                             setContainerText("")
                         }
@@ -403,7 +403,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         audio!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch {
-                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.audio)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.audio)
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -412,7 +412,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         video!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.video)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.video)
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -421,7 +421,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                         command!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
-                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadViewModel.Type.command)
+                                downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.command)
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -449,7 +449,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             Toast.makeText(requireContext(), getString(R.string.format_filtering_hint), Toast.LENGTH_SHORT).show()
                         }else{
 
-                            if (res.second == DownloadViewModel.Type.command){
+                            if (res.second == DownloadType.command){
                                 UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel) {
                                     val format  = Format(
                                         it.first().title,
@@ -528,7 +528,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             val padding = (40*scale*0.5f).toInt()
 
                             when(res.second){
-                                DownloadViewModel.Type.audio -> {
+                                DownloadType.audio -> {
                                     val bottomSheet = BottomSheetDialog(requireContext())
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_audio)
@@ -621,7 +621,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                     )
 
                                 }
-                                DownloadViewModel.Type.video -> {
+                                DownloadType.video -> {
                                     val bottomSheet = BottomSheetDialog(requireContext())
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_video)
@@ -732,7 +732,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         ViewGroup.LayoutParams.MATCH_PARENT
                                     )
                                 }
-                                DownloadViewModel.Type.command -> {
+                                DownloadType.command -> {
                                     val bottomSheet = BottomSheetDialog(requireContext())
                                     bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                                     bottomSheet.setContentView(R.layout.adjust_command)
@@ -834,7 +834,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 }else{
                     val popup = PopupMenu(activity, containerTextView)
                     when(res.second) {
-                        DownloadViewModel.Type.audio -> resources.getStringArray(R.array.audio_containers)
+                        DownloadType.audio -> resources.getStringArray(R.array.audio_containers)
                         //video
                         else -> resources.getStringArray(R.array.video_containers)
                     }.forEach {
@@ -1015,7 +1015,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private fun updateFileSize(items: List<DownloadItemConfigureMultiple>){
         val fileSizes = mutableListOf<Long>()
         items.forEach {
-            if (it.type == DownloadViewModel.Type.video){
+            if (it.type == DownloadType.video){
                 println(it.format.filesize)
                 if (it.format.filesize <= 5L) {
                     fileSizes.add(0)
@@ -1030,7 +1030,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                     }
                     fileSizes.add(it.format.filesize + audioFormatSize)
                 }
-            }else if (it.type == DownloadViewModel.Type.audio){
+            }else if (it.type == DownloadType.audio){
                 fileSizes.add(it.format.filesize)
             }
         }
@@ -1095,7 +1095,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             audio!!.setOnClickListener {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.audio).first()
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadType.audio).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()
@@ -1105,7 +1105,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             video!!.setOnClickListener {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.video).first()
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadType.video).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()
@@ -1115,7 +1115,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             command!!.setOnClickListener {
                 lifecycleScope.launch {
                     withContext(Dispatchers.IO){
-                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadViewModel.Type.command).first()
+                        item = downloadViewModel.switchDownloadType(listOf(item), DownloadType.command).first()
                         downloadViewModel.updateDownload(item)
                     }
                     bottomSheet.cancel()
@@ -1339,7 +1339,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                 }else {
                     setContainerText("")
                 }
-                containerBtn.isVisible = haveSameContainer.first && haveSameType.first && haveSameType.second != DownloadViewModel.Type.command
+                containerBtn.isVisible = haveSameContainer.first && haveSameType.first && haveSameType.second != DownloadType.command
             }
         }
     }

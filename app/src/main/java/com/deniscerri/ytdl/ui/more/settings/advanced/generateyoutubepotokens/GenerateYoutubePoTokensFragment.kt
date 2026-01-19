@@ -22,7 +22,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
@@ -117,7 +116,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         visitorData.setOnClickListener(clicker)
 
         playerClientDiv.setOnClickListener {
-            val webClients = requireContext().getStringArray(R.array.web_player_clients)
+            val webClients = requireContext().resources.getStringArray(R.array.web_player_clients)
 
             val selectedItems = webClients.map {
                 conf.clients.contains(it)

@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.database.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 
 @Entity(tableName = "downloads")
@@ -19,7 +20,7 @@ data class DownloadItemSimple(
     @ColumnInfo(defaultValue = "Queued")
     var status: String,
     var logID: Long?,
-    var type: DownloadViewModel.Type,
+    var type: DownloadType,
     @ColumnInfo(defaultValue = "0")
     var downloadStartTime: Long,
     var incognito: Boolean = false

@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.repository.HistoryRepository
@@ -85,7 +86,7 @@ interface HistoryDao {
     fun getAllHistoryByURL(url: String) : List<HistoryItem>
 
     @Query("SELECT * FROM history WHERE url=:url and type=:type")
-    fun getAllHistoryByURLAndType(url: String, type: DownloadViewModel.Type) : List<HistoryItem>
+    fun getAllHistoryByURLAndType(url: String, type: DownloadType) : List<HistoryItem>
 
     @Query("SELECT * FROM history WHERE id in (:ids)")
     fun getAllHistoryByIDs(ids: List<Long>) : List<HistoryItem>

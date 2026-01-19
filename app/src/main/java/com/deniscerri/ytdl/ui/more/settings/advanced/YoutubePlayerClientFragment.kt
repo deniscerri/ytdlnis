@@ -27,7 +27,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
@@ -134,7 +133,7 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
 
         val contentLinear : LinearLayout = bottomSheet.findViewById(R.id.contentLinear)!!
 
-        val defaultChips = requireContext().getStringArray(R.array.youtube_player_clients).toMutableSet()
+        val defaultChips = requireContext().resources.getStringArray(R.array.youtube_player_clients).toMutableSet()
 
         title.isEndIconVisible = false
         title.editText!!.addTextChangedListener(object : TextWatcher {

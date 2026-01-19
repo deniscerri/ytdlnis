@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -92,9 +93,9 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
 
         val type = card.findViewById<MaterialButton>(R.id.download_type)
         when(item.type){
-            DownloadViewModel.Type.audio -> type.setIconResource(R.drawable.ic_music)
-            DownloadViewModel.Type.video -> type.setIconResource(R.drawable.ic_video)
-            DownloadViewModel.Type.command -> type.setIconResource(R.drawable.ic_terminal)
+            DownloadType.audio -> type.setIconResource(R.drawable.ic_music)
+            DownloadType.video -> type.setIconResource(R.drawable.ic_video)
+            DownloadType.command -> type.setIconResource(R.drawable.ic_terminal)
             else -> {}
         }
 

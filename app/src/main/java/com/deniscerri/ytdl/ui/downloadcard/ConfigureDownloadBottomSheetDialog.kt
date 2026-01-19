@@ -20,10 +20,10 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -118,11 +118,11 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
 
         view.post {
             when(currentDownloadItem.type) {
-                Type.audio -> {
+                DownloadType.audio -> {
                     tabLayout.selectTab(tabLayout.getTabAt(0))
                     viewPager2.setCurrentItem(0, false)
                 }
-                Type.video -> {
+                DownloadType.video -> {
                     if (isAudioOnly){
                         tabLayout.getTabAt(0)!!.select()
                         viewPager2.setCurrentItem(0, false)
@@ -183,7 +183,7 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
                 runCatching {
                     sharedPreferences.edit(commit = true) {
                         putString("last_used_download_type",
-                            listOf(Type.audio, Type.video, Type.command)[position].toString())
+                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
                     }
                     fragmentAdapter.updateWhenSwitching(viewPager2.currentItem)
                 }

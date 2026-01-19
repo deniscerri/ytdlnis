@@ -22,8 +22,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -66,7 +66,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView
     }
 
@@ -78,15 +78,15 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
             downloadItem = withContext(Dispatchers.IO){
                 if (currentDownloadItem != null){
                     currentDownloadItem?.apply {
-                        if (type != DownloadViewModel.Type.command){
-                            type = DownloadViewModel.Type.command
+                        if (type != DownloadType.command){
+                            type = DownloadType.command
                         }
                     }
 
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
-                    downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadViewModel.Type.command)
+                    downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadType.command)
                 }
             }
 

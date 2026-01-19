@@ -15,6 +15,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.LogRepository
@@ -107,7 +108,7 @@ class TerminalDownloadWorker(
             "Terminal Task",
             initialLogDetails,
             Format(),
-            DownloadViewModel.Type.command,
+            DownloadType.command,
             System.currentTimeMillis(),
         )
 

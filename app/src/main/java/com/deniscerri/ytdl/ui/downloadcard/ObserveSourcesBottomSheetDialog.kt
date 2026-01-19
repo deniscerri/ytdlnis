@@ -29,6 +29,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.ResultItem
@@ -37,7 +38,6 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesWeeklyCo
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -74,7 +74,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var sharedPreferences : SharedPreferences
     private lateinit var view: View
 
-    private lateinit var type: Type
+    private lateinit var type: DownloadType
     private var currentItem: ObserveSourcesItem? = null
 
 
@@ -115,7 +115,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
             arguments?.getParcelable<ObserveSourcesItem>("item")
         }
 
-        type = currentItem?.downloadItemTemplate?.type ?: arguments?.getSerializable("type") as Type
+        type = currentItem?.downloadItemTemplate?.type ?: arguments?.getSerializable("type") as DownloadType
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -164,7 +164,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         fragmentAdapter = DownloadFragmentAdapter(
             fragmentManager,
             lifecycle,
-            ResultItem(0, "", "", "", "", "", "", "", mutableListOf(), "", null, null, null, 0),
+            ResultItem(0, "", "", "", "", "", "", "", mutableListOf(), "", listOf(), null, null, 0),
             currentItem?.downloadItemTemplate,
             true
         )
@@ -173,11 +173,11 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         viewPager2.isSaveFromParentEnabled = false
 
         when(type) {
-            Type.audio -> {
+            DownloadType.audio -> {
                 tabLayout.getTabAt(0)!!.select()
                 viewPager2.setCurrentItem(0, false)
             }
-            Type.video -> {
+            DownloadType.video -> {
                 tabLayout.getTabAt(1)!!.select()
                 viewPager2.setCurrentItem(1, false)
             }
@@ -235,7 +235,7 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
                 runCatching {
                     sharedPreferences.edit(commit = true) {
                         putString("last_used_download_type",
-                            listOf(Type.audio, Type.video, Type.command)[position].toString())
+                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
                     }
                 }
             }

@@ -4,6 +4,7 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import kotlinx.parcelize.Parcelize
 
@@ -17,7 +18,7 @@ data class DownloadItem(
     var author: String,
     var thumb: String,
     var duration: String,
-    var type: DownloadViewModel.Type,
+    var type: DownloadType,
     var format: Format,
     @ColumnInfo(defaultValue = "Default")
     var container: String,

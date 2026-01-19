@@ -1,12 +1,12 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 26,
-    "identityHash": "02198e1008f0874d9f7367c178f2343e",
+    "version": 27,
+    "identityHash": "7b692ac1bf86bc716a36bc1c0bf9ff85",
     "entities": [
       {
         "tableName": "results",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `website` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `formats` TEXT NOT NULL, `urls` TEXT NOT NULL DEFAULT '', `chapters` TEXT NOT NULL, `playlistURL` TEXT DEFAULT '', `playlistIndex` INTEGER, `creationTime` INTEGER NOT NULL, `availableSubtitles` TEXT NOT NULL DEFAULT '[]')",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `url` TEXT NOT NULL, `title` TEXT NOT NULL, `author` TEXT NOT NULL, `duration` TEXT NOT NULL, `thumb` TEXT NOT NULL, `website` TEXT NOT NULL, `playlistTitle` TEXT NOT NULL, `formats` TEXT NOT NULL, `urls` TEXT NOT NULL DEFAULT '', `chapters` TEXT, `playlistURL` TEXT DEFAULT '', `playlistIndex` INTEGER, `creationTime` INTEGER NOT NULL, `availableSubtitles` TEXT NOT NULL DEFAULT '[]')",
         "fields": [
           {
             "fieldPath": "id",
@@ -72,8 +72,7 @@
           {
             "fieldPath": "chapters",
             "columnName": "chapters",
-            "affinity": "TEXT",
-            "notNull": true
+            "affinity": "TEXT"
           },
           {
             "fieldPath": "playlistURL",
@@ -763,7 +762,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '02198e1008f0874d9f7367c178f2343e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7b692ac1bf86bc716a36bc1c0bf9ff85')"
     ]
   }
 }

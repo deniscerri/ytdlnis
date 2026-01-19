@@ -57,8 +57,7 @@ class UpdateMultipleDownloadsFormatsWorker(
                         d.allFormats.addAll(resultRepo.getFormats(d.url))
                         d.format = vm.getFormat(d.allFormats,d.type)
 
-                        r?.formats?.clear()
-                        r?.formats?.addAll(d.allFormats)
+                        r?.formats = d.allFormats
 
                         runBlocking {
                             r?.apply { resDao.update(this) }

@@ -71,7 +71,7 @@ class NewPipeUtil(context: Context) {
                 val streamInfo = StreamInfo.getInfo(url)
                 createVideoFromStream(streamInfo, url, true).apply {
                     if (this!!.formats.isEmpty()) return Result.failure(Throwable())
-                    formatCollection.add(this.formats)
+                    formatCollection.add(this.formats.toMutableList())
                     progress(ResultViewModel.MultipleFormatProgress(url, this.formats))
                 }
             }

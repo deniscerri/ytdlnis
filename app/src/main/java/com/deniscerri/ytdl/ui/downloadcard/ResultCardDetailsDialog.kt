@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -251,18 +252,18 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         bottomInfo.text = item.author
 
         downloadMusic.setOnClickListener {
-            onButtonClick(DownloadViewModel.Type.audio)
+            onButtonClick(DownloadType.audio)
         }
         downloadMusic.setOnLongClickListener {
-            onButtonClick(DownloadViewModel.Type.audio)
+            onButtonClick(DownloadType.audio)
             true
         }
 
         downloadVideo.setOnClickListener {
-            onButtonClick(DownloadViewModel.Type.video)
+            onButtonClick(DownloadType.video)
         }
         downloadVideo.setOnLongClickListener {
-            onButtonClick(DownloadViewModel.Type.video)
+            onButtonClick(DownloadType.video)
             true
         }
 
@@ -308,7 +309,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         }
     }
 
-    private fun onButtonClick(type: DownloadViewModel.Type){
+    private fun onButtonClick(type: DownloadType){
         if (sharedPreferences.getBoolean("download_card", true)) {
             val bundle = Bundle()
             bundle.putParcelable("result", item)

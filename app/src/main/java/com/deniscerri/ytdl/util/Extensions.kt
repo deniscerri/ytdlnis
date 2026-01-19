@@ -55,7 +55,6 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
 import com.neoutils.highlight.core.Highlight
 import com.neoutils.highlight.core.scheme.TextColorScheme
-import com.neoutils.highlight.core.util.Match
 import com.neoutils.highlight.core.util.UiColor
 import com.neoutils.highlight.view.extension.applyTo
 import com.neoutils.highlight.view.extension.removeAllSpans
@@ -73,6 +72,7 @@ import java.io.File
 import java.net.HttpCookie
 import java.util.Calendar
 import java.util.Locale
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.hours
@@ -88,10 +88,18 @@ object Extensions {
     }
 
     private var textHighlightSchemes = listOf(
-        TextColorScheme(regex = "([\"'])(?:\\\\1|.)*?\\1".toRegex(), match = Match.fully(UiColor.Hex("#FC8500"))),
-        TextColorScheme(regex = "yt-dlp".toRegex(), match = Match.fully(UiColor.Hex("#77eb09"))),
-        TextColorScheme(regex = "(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex(), match = Match.fully(UiColor.Hex("#b5942f"))),
-        TextColorScheme(regex = "\\d+(\\.\\d)?%".toRegex(), match = Match.fully(UiColor.Hex("#43a564"))),
+        TextColorScheme(
+            regex = "([\"'])(?:\\\\1|.)*?\\1".toRegex(),
+            matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#FC8500"))),
+        TextColorScheme(
+            regex = "yt-dlp".toRegex(),
+            matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#77eb09"))),
+        TextColorScheme(
+            regex = "(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex(),
+            matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#b5942f"))),
+        TextColorScheme(
+            regex = "\\d+(\\.\\d)?%".toRegex(),
+            matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#43a564"))),
     )
 
     fun View.enableTextHighlight(){
@@ -304,6 +312,7 @@ object Extensions {
         if (nr > 0) {
             val badge = BadgeDrawable.create(context).apply {
                 number = nr
+                badgeTextColor = context.getColor(R.color.black)
                 backgroundColor = context.getColor(R.color.white)
                 verticalOffset = dpToPx(context.resources, 20f)
                 horizontalOffset =
@@ -347,12 +356,14 @@ object Extensions {
 
 
             return lines.distinct().filterNot {
-                it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find()
+                (it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find())
+                || it.contains("does not pass filter (id")
             }.joinToString("\n") + newline
         }
 
         return lines.filterNot {
-            it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find()
+            (it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find())
+            || it.contains("does not pass filter (id")
         }.joinToString("\n")
     }
 

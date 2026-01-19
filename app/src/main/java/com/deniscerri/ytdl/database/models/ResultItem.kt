@@ -18,10 +18,10 @@ data class ResultItem(
     val thumb: String,
     val website: String,
     var playlistTitle: String,
-    var formats: MutableList<Format>,
+    var formats: List<Format> = emptyList(),
     @ColumnInfo(defaultValue = "")
     var urls: String,
-    var chapters: MutableList<ChapterItem>?,
+    var chapters: List<ChapterItem>?,
     @ColumnInfo(defaultValue = "")
     var playlistURL: String? = "",
     @ColumnInfo(defaultValue = "")

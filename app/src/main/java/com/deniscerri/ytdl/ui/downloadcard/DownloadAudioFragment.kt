@@ -23,13 +23,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
@@ -86,7 +85,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         genericAudioFormats = FormatUtil(requireContext()).getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView
     }
 
@@ -97,8 +96,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     downloadItem.apply {
                         title = resultItem!!.title
                         author = resultItem!!.author
-                        allFormats = resultItem!!.formats
-                        format = downloadViewModel.getFormat(allFormats, Type.audio)
+                        allFormats = resultItem!!.formats.toMutableList()
+                        format = downloadViewModel.getFormat(allFormats, DownloadType.audio)
                         duration = resultItem!!.duration
                         playlistIndex = resultItem!!.playlistIndex
                         playlistURL = resultItem!!.playlistURL
@@ -112,7 +111,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
-                    downloadViewModel.createDownloadItemFromResult(resultItem, url, Type.audio)
+                    downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadType.audio)
                 }
             }
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
@@ -200,10 +199,10 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     formats.addAll(resultItem?.formats?.filter { it.format_note.contains("audio", ignoreCase = true) } ?: listOf())
                 }else{
                     //if its updating a present downloaditem and its the wrong category
-                    if (currentDownloadItem!!.type != Type.audio){
-                        downloadItem.type = Type.audio
+                    if (currentDownloadItem!!.type != DownloadType.audio){
+                        downloadItem.type = DownloadType.audio
                         runCatching {
-                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, Type.audio)
+                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, DownloadType.audio)
                         }.onFailure {
                             downloadItem.format = genericAudioFormats.last()
                         }
@@ -246,8 +245,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     override fun onFormatsUpdated(allFormats: List<Format>) {
                         lifecycleScope.launch(Dispatchers.IO) {
                             resultItem?.apply {
-                                this.formats.removeAll(formats.toSet())
-                                this.formats.addAll(allFormats.filter { !genericAudioFormats.contains(it) })
+                                this.formats = allFormats.filter { !genericAudioFormats.contains(it) }
                                 resultViewModel.update(this)
                             }
 
@@ -257,7 +255,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         }
                         formats = allFormats.filter { !genericAudioFormats.contains(it) }.toMutableList()
                         formats.removeAll(genericAudioFormats)
-                        val preferredFormat = downloadViewModel.getFormat(formats, Type.audio)
+                        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.audio)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null, showSize = downloadItem.downloadSections.isEmpty())

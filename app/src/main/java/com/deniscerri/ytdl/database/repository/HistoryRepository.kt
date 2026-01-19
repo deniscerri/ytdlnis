@@ -8,6 +8,7 @@ import androidx.paging.PagingSource
 import androidx.paging.filter
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.HistoryDao
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
@@ -38,7 +39,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return historyDao.getAllHistoryByURL(url)
     }
 
-    fun getAllByURLAndType(url: String, type: DownloadViewModel.Type) : List<HistoryItem> {
+    fun getAllByURLAndType(url: String, type: DownloadType) : List<HistoryItem> {
         return historyDao.getAllHistoryByURLAndType(url, type)
     }
 

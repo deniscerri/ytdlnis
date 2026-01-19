@@ -5,9 +5,6 @@ buildscript {
     ext {
         abiCodes = ['armeabi-v7a': 1, 'x86': 2, 'x86_64': 3, 'arm64-v8a': 4]
         // dependency versions
-        appCompatVer = '1.7.0'
-        junitVer = '4.13.2'
-        androidJunitVer = '1.1.5'
         espressoVer = '3.6.1'
         jacksonVer = '2.9.8'
         // supports java 1.6
@@ -18,17 +15,10 @@ buildscript {
         youtubedlAndroidVerNoPyCrypto   = "97bee6c0e8"
         youtubedlAndroidVerMine         = "8831745ea3"
         oldytdlAndroidVer = "0.14.0"
-        workVer = "2.10.0"
-        composeVer = '1.4.2'
-        kotlinVer = "1.7.21"
-        coroutineVer = '1.7.3'
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
-        navVer = "2.8.9"
-        media3_version = "1.6.0"
         agp_version = '8.1.0'
         agp_version1 = '7.4.2'
-        roomVer = '2.5.2'
     }
     repositories {
         mavenCentral()
@@ -39,13 +29,13 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.5.2' apply false
-    id 'com.android.library' version '8.5.2' apply false
-    id 'org.jetbrains.kotlin.android' version '2.0.21' apply false
-    id "org.jetbrains.kotlin.plugin.serialization" version "2.0.21" apply false
-    id "org.jetbrains.kotlin.plugin.parcelize" version "2.0.21" apply false
-    id 'com.android.test' version '8.5.2' apply false
-    id 'com.google.devtools.ksp' version '2.0.21-1.0.28' apply false
+    id 'com.android.application' version '8.13.2' apply false
+    id 'com.android.library' version '8.13.2' apply false
+    id 'org.jetbrains.kotlin.android' version '2.3.0' apply false
+    id "org.jetbrains.kotlin.plugin.serialization" version "2.3.0" apply false
+    id "org.jetbrains.kotlin.plugin.parcelize" version "2.3.0" apply false
+    id 'com.android.test' version '8.13.2' apply false
+    id 'com.google.devtools.ksp' version '2.3.4' apply false
 }
 
 tasks.register('clean', Delete) {

@@ -12,7 +12,6 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.adapter.SortableTextItemAdapter
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
@@ -43,8 +42,8 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
 
         formatImportanceAudio?.apply {
             title = "${getString(R.string.format_importance)} [${getString(R.string.audio)}]"
-            val items = requireContext().getStringArray(R.array.format_importance_audio)
-            val itemValues = requireContext().getStringArray(R.array.format_importance_audio_values).toSet()
+            val items = requireContext().resources.getStringArray(R.array.format_importance_audio)
+            val itemValues = requireContext().resources.getStringArray(R.array.format_importance_audio_values).toSet()
             val prefVideo = prefs.getString("format_importance_audio", itemValues.joinToString(","))!!
             summary = prefVideo.split(",").mapIndexed { index, s -> "${index + 1}. ${items[itemValues.indexOf(s)]}" }.joinToString("\n")
 
@@ -65,8 +64,8 @@ class AdvancedSettingsFragment : BaseSettingsFragment() {
 
         formatImportanceVideo?.apply {
             title = "${getString(R.string.format_importance)} [${getString(R.string.video)}]"
-            val items = requireContext().getStringArray(R.array.format_importance_video)
-            val itemValues = requireContext().getStringArray(R.array.format_importance_video_values).toSet()
+            val items = requireContext().resources.getStringArray(R.array.format_importance_video)
+            val itemValues = requireContext().resources.getStringArray(R.array.format_importance_video_values).toSet()
             val prefVideo = prefs.getString("format_importance_video", itemValues.joinToString(","))!!
             summary = prefVideo.split(",").mapIndexed { index, s -> "${index + 1}. ${items[itemValues.indexOf(s)]}" }.joinToString("\n")
 

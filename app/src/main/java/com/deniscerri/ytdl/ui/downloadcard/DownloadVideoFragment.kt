@@ -23,13 +23,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
@@ -92,7 +91,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         genericVideoFormats = formatUtil.getGenericVideoFormats(requireContext().resources)
         genericAudioFormats = formatUtil.getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        shownFields = preferences.getStringSet("modify_download_card", requireContext().getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
+        shownFields = preferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
         return fragmentView
     }
 
@@ -106,8 +105,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     downloadItem.apply {
                         title = resultItem!!.title
                         author = resultItem!!.author
-                        allFormats = resultItem!!.formats
-                        format = downloadViewModel.getFormat(allFormats, Type.video)
+                        allFormats = resultItem!!.formats.toMutableList()
+                        format = downloadViewModel.getFormat(allFormats, DownloadType.video)
                         duration = resultItem!!.duration
                         playlistIndex = resultItem!!.playlistIndex
                         playlistURL = resultItem!!.playlistURL
@@ -123,7 +122,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     val string = Gson().toJson(currentDownloadItem, DownloadItem::class.java)
                     Gson().fromJson(string, DownloadItem::class.java)
                 }else{
-                    downloadViewModel.createDownloadItemFromResult(resultItem, url, Type.video)
+                    downloadViewModel.createDownloadItemFromResult(resultItem, url, DownloadType.video)
                 }
             }
 
@@ -211,13 +210,13 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     formats.addAll(resultItem?.formats ?: listOf())
                 }else{
                     //if its updating a present downloaditem and its the wrong category
-                    if (currentDownloadItem!!.type != Type.video){
-                        downloadItem.type = Type.video
+                    if (currentDownloadItem!!.type != DownloadType.video){
+                        downloadItem.type = DownloadType.video
                         runCatching {
-                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, Type.video)
+                            downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, DownloadType.video)
                             if (downloadItem.videoPreferences.audioFormatIDs.isEmpty()){
                                 downloadItem.videoPreferences.audioFormatIDs.add(
-                                    downloadViewModel.getFormat(downloadItem.allFormats, Type.audio).format_id
+                                    downloadViewModel.getFormat(downloadItem.allFormats, DownloadType.audio).format_id
                                 )
                             }
                         }.onFailure {
@@ -279,8 +278,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         lifecycleScope.launch {
                             withContext(Dispatchers.IO){
                                 resultItem?.apply {
-                                    this.formats.removeAll(formats)
-                                    this.formats.addAll(allFormats.filter { !genericVideoFormats.contains(it) })
+                                    this.formats = allFormats.filter { !genericVideoFormats.contains(it) }
                                     resultViewModel.update(this)
                                 }
 
@@ -290,7 +288,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             }
                         }
                         formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
-                        val preferredFormat = downloadViewModel.getFormat(formats, Type.video)
+                        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.video)
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats

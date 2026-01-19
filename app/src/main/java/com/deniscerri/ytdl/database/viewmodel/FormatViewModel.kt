@@ -9,14 +9,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
-import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.repository.DownloadRepository
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel.Type
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatCategory
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatSorting
 import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
@@ -94,7 +93,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                     if (!isMissingFormats.value) {
                         chosenFormats = formats.mapTo(mutableListOf()) {it.copy()}
                         chosenFormats = when(items.first().type){
-                            Type.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
+                            DownloadType.audio -> chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
                             else -> chosenFormats
                         }
                         chosenFormats.forEach {
@@ -106,7 +105,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                 }else{
                     chosenFormats = formats
                     if(!isMissingFormats.value){
-                        if(items.first().type == Type.audio){
+                        if(items.first().type == DownloadType.audio){
                             chosenFormats = chosenFormats.filter { it.format_note.contains("audio", ignoreCase = true) }
                         }
                     }
@@ -126,7 +125,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                     FormatSorting.container -> chosenFormats.groupBy { it.container }.flatMap { it.value }
                     FormatSorting.id -> chosenFormats.sortedBy { it.format_id }
                     FormatSorting.codec -> {
-                        val codecOrder = application.getStringArray(R.array.video_codec_values).toMutableList()
+                        val codecOrder = application.resources.getStringArray(R.array.video_codec_values).toMutableList()
                         codecOrder.removeAt(0)
                         chosenFormats.groupBy { format -> codecOrder.indexOfFirst { format.vcodec.matches("^(${it})(.+)?$".toRegex()) } }
 
@@ -141,7 +140,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                 when(filterBy.value){
                     FormatCategory.ALL -> {}
                     FormatCategory.SUGGESTED -> {
-                        finalFormats = if (items.first().type == Type.audio){
+                        finalFormats = if (items.first().type == DownloadType.audio){
                             formatUtil.sortAudioFormats(finalFormats)
                         }else{
                             val audioFormats = finalFormats.filter {  it.vcodec.isBlank() || it.vcodec == "none" }
@@ -182,13 +181,13 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                 }
 
                 canMultiSelectAudio.apply {
-                    val vl = items.first().type == Type.video && finalFormats.find { it.vcodec.isBlank() || it.vcodec == "none" } != null
+                    val vl = items.first().type == DownloadType.video && finalFormats.find { it.vcodec.isBlank() || it.vcodec == "none" } != null
                     value = vl
                     emit(vl)
                 }
 
                 if (finalFormats.isEmpty()) {
-                    finalFormats = if (items.first().type == Type.audio){
+                    finalFormats = if (items.first().type == DownloadType.audio){
                         genericAudioFormats
                     }else{
                         genericVideoFormats

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
@@ -81,7 +82,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         return 0
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         val item = getItem(position) ?: return
         val card = holder.cardView
         holder.itemView.tag = item.id.toString()
@@ -136,11 +137,11 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
             btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorPrimaryContainer, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
         }
 
-        if (item.type == DownloadViewModel.Type.audio) {
+        if (item.type == DownloadType.audio) {
             if (filesPresent) btn.setImageResource(R.drawable.ic_music_downloaded) else {
                 btn.setImageResource(R.drawable.ic_music)
             }
-        } else if (item.type == DownloadViewModel.Type.video) {
+        } else if (item.type == DownloadType.video) {
             if (filesPresent) btn.setImageResource(R.drawable.ic_video_downloaded) else btn.setImageResource(R.drawable.ic_video)
         }else{
             if (filesPresent) btn.setImageResource(R.drawable.ic_terminal) else btn.setImageResource(R.drawable.baseline_code_off_24)
