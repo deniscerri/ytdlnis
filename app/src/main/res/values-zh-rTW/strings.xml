@@ -7,7 +7,7 @@
     <string name="music_directory">音樂資料夾</string>
     <string name="video_directory">影片資料夾</string>
     <string name="ytdl_update_hint">下載更新時可點擊此選項</string>
-    <string name="update_ytdl">更新 yt-dl 至最新版</string>
+    <string name="update_ytdl">更新 yt-dlp 至最新版</string>
     <string name="about">關於</string>
     <string name="source_code">原始碼</string>
     <string name="search_hint">搜尋或插入網址</string>
@@ -116,7 +116,7 @@
     <string name="finished_download_notification_channel_name">已完成的下載</string>
     <string name="finished_download_notification_channel_description">已完成的下載通知</string>
     <string name="quick_download">快速下載</string>
-    <string name="quick_download_summary">請勿在下載區塊中取得資料</string>
+    <string name="quick_download_summary">立即繼續下載, 不需預先擷取資料</string>
     <string name="remove_audio">移除音訊</string>
     <string name="preferred_format_id">首選格式 ID</string>
     <string name="download_now">立即下載</string>
@@ -178,7 +178,7 @@
     <string name="url">網址</string>
     <string name="update_app_summary">當應用程式開啟時，會顯示新版本公告。此資料來自官方 GitHub 儲存庫</string>
     <string name="remove_downloading">取消下載</string>
-    <string name="incognito_summary">下載而不將其添加到歷史記錄中</string>
+    <string name="incognito_summary">無痕下載</string>
     <string name="show_download_card">顯示下載卡片</string>
     <string name="warning">警告</string>
     <string name="Open_File">開啟檔案</string>
@@ -485,7 +485,7 @@
     <string name="preferred_format_size">偏好的格式大小</string>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
-    <string name="potoken_guide">"驗證授權\n-----------------------\n1. 點選「驗證」開啟 WebView 的登入頁面\n2. 使用您的 Google 帳戶登入\n3. 播放支援自動翻譯字幕的影片\n4. 開啟自動翻譯字幕並檢查是否正常運作\n   4.1 若自動翻譯字幕無效，請切換至另一支支援自動翻譯字幕的影片，並重試步驟 4\n5. 點選「確認」完成\n\n略過驗證\n-----------------------\n1. 點選「略過驗證」\n2. 輸入任一 YouTube 影片網址\n3. 等待影片載入並播放至少 3 秒\n4. 點選「確認」完成"</string>
+    <string name="potoken_guide">需要驗證\n-----------------------\n1. 點擊「驗證」,在 WebView 中開啟登入頁面。\n2. 登入你的 Google 帳號。\n3. 播放任何支援自動翻譯字幕的影片。\n4. 開啟自動翻譯字幕並確認是否正常運作。\n\t4.1 若自動翻譯字幕無法運作,請切換至其他支援自動翻譯字幕的影片,重新執行步驟 4。\n5. 點擊「確定」。\n\n無需驗證\n-----------------------\n1. 點擊「無需驗證」。\n2. 輸入任何 YouTube 影片網址。\n3. 等待影片載入,並播放至少 3 秒。\n4. 點擊「確定」。</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (播放器)</string>
     <string name="potoken_subs">PO Token (字幕)</string>
@@ -503,4 +503,8 @@
     <string name="preview_filename">預覽檔案名稱</string>
     <string name="no_auth">略過驗證</string>
     <string name="auth">驗證</string>
+    <string name="app_icon">應用程式圖示</string>
+    <string name="prefer_drc_audio">優先使用 DRC 音訊</string>
+    <string name="show_quick_download_share_menu">在分享選單中顯示立即下載選項</string>
+    <string name="quick_download_title">不擷取資料</string>
 </resources>

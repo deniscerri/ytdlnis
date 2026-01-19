@@ -120,7 +120,7 @@
     <string name="orange">Arancione</string>
     <string name="finished_download_notification_channel_name">Download terminati</string>
     <string name="finished_download_notification_channel_description">Notifica dei download terminati</string>
-    <string name="quick_download_summary">Non recuperare i dati nella scheda di download</string>
+    <string name="quick_download_summary">Continua immediatamente con il processo di download, senza recuperare i dati preventivamente</string>
     <string name="remove_audio">Rimuovi l\'audio</string>
     <string name="preferred_format_id">ID formato preferito</string>
     <string name="download_now">Scarica ora</string>
@@ -500,4 +500,11 @@
     <string name="update_ytdlp_while_downloading">Aggiorna yt-dlp durante il download</string>
     <string name="update_ytdlp_while_downloading_summary">Aggiungi -U a yt-dlp per aggiornare prima di scaricare</string>
     <string name="preview_filename">Mostra il nome del file in anteprima</string>
+    <string name="prefer_drc_audio">Preferisci audio DRC</string>
+    <string name="potoken_guide">Con Autenticazione (Autenticazione)\n-----------------------\n1. Clicca su \"Autenticazione\" per aprire la pagina di accesso in WebView.\n2. Accedi al tuo account Google.\n3. Riproduci un video qualsiasi che supporti i sottotitoli tradotti automaticamente.\n4. Attiva i sottotitoli tradotti automaticamente e verifica se funzionano.\n\t4.1 Se i sottotitoli non funzionano, passa a un altro video che supporti la traduzione automatica e riprova il passaggio 4.\n5. Clicca su OK.\n\nSenza Autenticazione (Senza autenticazione)\n-----------------------\n1. Clicca su \"Senza autenticaziond\".\n2. Inserisci l\'URL di un video YouTube.\n3. Attendi il caricamento del video e riproducilo per almeno 3 secondi.\n4. Clicca su OK.</string>
+    <string name="no_auth">Senza autenticazione</string>
+    <string name="auth">Autenticazione</string>
+    <string name="app_icon">Icona app</string>
+    <string name="show_quick_download_share_menu">Mostra l\'opzione per scaricare nel menu di condivisione</string>
+    <string name="quick_download_title">Non recuperare i dati</string>
 </resources>

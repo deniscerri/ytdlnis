@@ -67,7 +67,7 @@
     <string name="worst_quality">Pior qualidade</string>
     <string name="music_directory">Pasta de áudio</string>
     <string name="download_notification_channel_description">Mostrar notificações do progresso de download dos arquivos</string>
-    <string name="update_ytdl">Atualizar yt-dl para a nova versão</string>
+    <string name="update_ytdl">Atualizar yt-dlp para a nova versão</string>
     <string name="update_app">Buscar atualizações</string>
     <string name="version">Versão</string>
     <string name="ytdl_already_updating">Instalando nova versão</string>
@@ -206,7 +206,7 @@
     <string name="yellow">Amarelo</string>
     <string name="purple">Roxo</string>
     <string name="green">Verde</string>
-    <string name="quick_download_summary">Não buscar dados no cartão de download</string>
+    <string name="quick_download_summary">Continue com o processo de download imediatamente, sem buscar os dados antecipadamente</string>
     <string name="quick_download">Download rápido</string>
     <string name="finished_download_notification_channel_description">Notificação para downloads concluídos</string>
     <string name="remove_audio">Remover áudio</string>
@@ -499,4 +499,12 @@
     <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do dump json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
     <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
+    <string name="prefer_drc_audio">Preferir áudio DRC</string>
+    <string name="preview_filename">Visualizar nome do arquivo</string>
+    <string name="potoken_guide">Autenticação\n-----------------------\n1. Clique em “Autenticar” para abrir a página de login no WebView.\n2. Faça login na sua conta do Google.\n3. Reproduza qualquer vídeo que suporte legendas traduzidas automaticamente.\n4. Ative as legendas traduzidas automaticamente e veja se funcionam.\n\t4.1 Se as legendas traduzidas automaticamente não funcionarem, mude para outro vídeo que suporte legendas traduzidas automaticamente e tente o passo 4 novamente.\n5. Clique em OK.\n\nSem autenticação\n-----------------------\n1. Clique em “Sem autenticação”.\n2. Digite qualquer URL de vídeo do YouTube.\n3. Aguarde o carregamento do vídeo e reproduza-o por pelo menos 3 segundos.\n4. Clique em OK.</string>
+    <string name="no_auth">Sem autenticação</string>
+    <string name="auth">Autenticar</string>
+    <string name="app_icon">Estilo de ícone (app)</string>
+    <string name="show_quick_download_share_menu">Mostrar opção para fazer download imediatamente no menu de compartilhamento</string>
+    <string name="quick_download_title">Não buscar por dados</string>
 </resources>

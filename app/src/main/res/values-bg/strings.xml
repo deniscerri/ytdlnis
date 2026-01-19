@@ -33,7 +33,7 @@
     <string name="confirm_delete_history_desc">Изтрийте цялата история за постоянно</string>
     <string name="confirm_delete_history">Потвърдете</string>
     <string name="search_history_hint">Търсене в историята</string>
-    <string name="no_results">Няма резултат</string>
+    <string name="no_results">Няма открити</string>
     <string name="audio">Аудио</string>
     <string name="more">Още</string>
     <string name="command_directory">Папка с персонализирани команди</string>
@@ -266,7 +266,7 @@
     <string name="errored_downloads">Неуспешни изтегляния</string>
     <string name="quick_download">Бързо сваляне</string>
     <string name="errored_download_notification_channel_description">Известие за грешни изтегляния</string>
-    <string name="quick_download_summary">Не извлича данни в картата за изтегляне</string>
+    <string name="quick_download_summary">Продължете процеса на изтегляне веднага, без предварително извличане на данни</string>
     <string name="remove_audio">Премахване на аудио</string>
     <string name="preferred_format_id">Предпочитан ID формат</string>
     <string name="download_now">Свали сега</string>
@@ -398,7 +398,7 @@
     <string name="sync_with_source">Синхронизация с източник</string>
     <string name="queue">Опашка</string>
     <string name="reset">Reset</string>
-    <string name="use_alarm_manager">Исползвайте AlarmManager вместо WorkManager за планирания</string>
+    <string name="use_alarm_manager">Използвайте AlarmManager вместо WorkManager за планирания</string>
     <string name="use_alarm_manager_summary">Включете това, само ако WorkManager е ограничен от издаделя на Вашето устройства или планираните задачи не са твърде точни</string>
     <string name="restore_info">Натиснете \'Възстанови\', за да обедините запазените с Вашите данни.
 \nНатиснете \'Reset\', за да изтриете и да използвате само съхранените във файла данни.</string>
@@ -412,7 +412,7 @@
     <string name="cleanup_leftover_downloads">Почистване на остатъците от изтегляния (отменени, с грешки)</string>
     <string name="format_importance">Ред на важност на формата</string>
     <string name="download_archive_folder">Изтегляне архивна папка</string>
-    <string name="use_item_url_not_playlist">Исползвайте URL-адреса на елемента вместо URL-адреса на плейлиста</string>
+    <string name="use_item_url_not_playlist">Използвайте URL-адреса на елемента вместо URL-адреса на плейлиста</string>
     <string name="recode_video">Прекодиране на видео</string>
     <string name="recode_video_summary">Перекодира видео файлът в указания видеоформат</string>
     <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
@@ -496,4 +496,12 @@
     <string name="potoken_subs">PO токен (Subs)</string>
     <string name="update_ytdlp_while_downloading">Обновяване yt-dlp по време на изтегляне</string>
     <string name="update_ytdlp_while_downloading_summary">Добавете -U към yt-dlp, за да го актуализирате до най-новата версия преди изтегляне</string>
+    <string name="prefer_drc_audio">Предпочитам DRC Audio</string>
+    <string name="preview_filename">Предварителен преглед на име на файл</string>
+    <string name="no_auth">Без авторизация</string>
+    <string name="auth">Авторизация</string>
+    <string name="app_icon">Икона на приложението</string>
+    <string name="show_quick_download_share_menu">Показване на опция изтегляне в менюто за споделяне</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Кликнете върху „Авторизация“, за да отворите страницата за вход в WebView.\n2. Влезте в профила си в Google.\n3. Пуснете всяко видео, което поддържа автоматично преведени субтитри.\n4. Включете автоматично преведените субтитри и вижте дали работят.\n4.1 Ако автоматично преведените субтитри не работят, преминете към друго видео, което поддържа автоматично преведени субтитри, и опитайте стъпка 4 отново.\n5. Кликнете върху OK.\n\nБез авторизация\n-----------------------\n1. Кликнете върху „Без авторизация“.\n2. Въведете URL адреса на произволен видеоклип в YouTube.\n3. Изчакайте видеоклипът да се зареди и го пуснете поне 3 секунди.\n4. Кликнете върху OK.</string>
+    <string name="quick_download_title">Без извличане на данни</string>
 </resources>

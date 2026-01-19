@@ -221,11 +221,11 @@
     <string name="yellow">Kuning</string>
     <string name="green">Hijau</string>
     <string name="blue">Biru</string>
-    <string name="material_you">Materi Anda</string>
+    <string name="material_you">Material You</string>
     <string name="purple">Ungu</string>
     <string name="monochrome">Monokrom</string>
     <string name="red">Merah</string>
-    <string name="quick_download_summary">Jangan mengambil data di kartu unduhan</string>
+    <string name="quick_download_summary">Lanjutkan proses unduhan dengan segera, tanpa mengambil data terlebih dahulu</string>
     <string name="downloaded">"Terunduh: "</string>
     <string name="finished_download_notification_channel_name">Unduhan selesai</string>
     <string name="finished_download_notification_channel_description">Notifikasi unduhan yang selesai</string>
@@ -504,5 +504,6 @@
     <string name="auth">Otentikasi</string>
     <string name="prefer_drc_audio">Pilih Audio DRC</string>
     <string name="app_icon">Ikon Aplikasi</string>
-    <string name="show_quick_download_share_menu">Tampilkan Unduh Cepat di menu bagikan</string>
+    <string name="show_quick_download_share_menu">Tampilkan pilihan untuk mengunduh secara langsung di menu bagikan</string>
+    <string name="quick_download_title">Jangan mengambil data</string>
 </resources>
