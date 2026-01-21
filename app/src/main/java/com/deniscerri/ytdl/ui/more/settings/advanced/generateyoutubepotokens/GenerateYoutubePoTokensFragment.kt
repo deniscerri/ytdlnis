@@ -225,6 +225,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                     val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                     intent.putExtra("url", "https://www.youtube.com")
                     intent.putExtra("redirect_url", "https://www.youtube.com/embed/${editText.text.toString().getIDFromYoutubeURL()}")
+                    intent.putExtra("no_auth", true)
                     webPoTokenResultLauncher.launch(intent)
                 }
 
@@ -246,6 +247,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             dialog.setPositiveButton(getString(R.string.auth)) { dialogInterface: DialogInterface, _: Int ->
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                 intent.putExtra("url", "https://www.youtube.com/account")
+                intent.putExtra("no_auth", false)
                 webPoTokenResultLauncher.launch(intent)
             }
 

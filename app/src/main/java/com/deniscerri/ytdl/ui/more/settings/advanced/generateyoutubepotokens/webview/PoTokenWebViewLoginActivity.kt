@@ -66,6 +66,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
         val url = intent.getStringExtra("url")!!
         var redirectUrl = intent.getStringExtra("redirect_url")
+        val noAuth = intent.getBooleanExtra("no_auth", false)
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
@@ -187,6 +188,11 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                 webView.loadUrl("https://www.youtube.com/robots.txt")
             }
 
+            if (savedInstanceState == null && noAuth) {
+                cookieManager.removeAllCookies(null)
+                cookieManager.flush()
+            }
+
             webViewCompose.apply {
                 setContent { WebViewView(url, webViewClient) }
             }
@@ -233,6 +239,9 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     }
                 }
                 cookieManager.setAcceptThirdPartyCookies(this, true)
+
+                this.webViewClient = webViewClient
+                this.webChromeClient = object : WebChromeClient() {}
             }
         }
 
@@ -242,6 +251,11 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     .padding(padding)
                     .fillMaxSize(),
                 factory = { webView },
+                update = {
+                    if (it.url != url) {
+                        it.loadUrl(url)
+                    }
+                }
             )
         }
     }

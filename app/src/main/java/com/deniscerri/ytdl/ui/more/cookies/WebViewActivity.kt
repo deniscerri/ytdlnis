@@ -158,7 +158,7 @@ class WebViewActivity : BaseActivity() {
             }
 
             webViewCompose.apply {
-                setContent { WebViewView(incognito, webViewClient) }
+                setContent { WebViewView(incognito, webViewClient, url) }
             }
         }
 
@@ -184,6 +184,7 @@ class WebViewActivity : BaseActivity() {
     fun WebViewView(
         incognito: Boolean,
         webViewClient: WebViewClient,
+        url: String
     ) {
         val context = LocalContext.current
         val cookieManager = remember { CookieManager.getInstance() }
@@ -228,6 +229,11 @@ class WebViewActivity : BaseActivity() {
                     .padding(padding)
                     .fillMaxSize(),
                 factory = { webView },
+                update = {
+                    if (it.url != url) {
+                        it.loadUrl(url)
+                    }
+                }
             )
         }
     }
