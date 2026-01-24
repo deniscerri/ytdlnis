@@ -313,7 +313,7 @@
     <string name="modify_download_card">התאמת כרטיס הורדה</string>
     <string name="security">אבטחה</string>
     <string name="length">אורך</string>
-    <string name="observe_sources">שים לב למקורות</string>
+    <string name="observe_sources">מעקב אחר מקורות</string>
     <string name="new_source">מקור חדש</string>
     <string name="delete_all_sources">מחיקת כל המקורות</string>
     <string name="force_ipv4_desc">בצע את כל החיבורים עם IPv4</string>
@@ -403,7 +403,7 @@
     <string name="dismiss">לסלק</string>
     <string name="all">הכול</string>
     <string name="generic">כללי</string>
-    <string name="multiple_download_card">כרטיס הורדה מרובה</string>
+    <string name="multiple_download_card">כרטיס ריבוי הורדות</string>
     <string name="format_filter">מסנן תסדירים</string>
     <string name="format_smallest">התסדיר הקטן ביותר (לכל רזולוציה)</string>
     <string name="cut_unavailable_please_update_item">יש לעדכן את נתוני הפריט כדי להשתמש ביכולת החיתוך</string>
@@ -495,4 +495,15 @@
     <string name="chapters">פרקים</string>
     <string name="update_ytdlp_while_downloading">לעדכן את yt-dlp בזמן ההורדה</string>
     <string name="preview_filename">שם קובץ תצוגה מקדימה</string>
+    <string name="use_original_url_playlist_summary">להשתמש בכתובת האתר של רשימת הנגינה שסופקה על ידי המשתמש במקום בתגית playlist_webpage_url מהיטל ה־json</string>
+    <string name="get_data_sync_id">קבלת מזהה סנכרון נתונים</string>
+    <string name="prefer_drc_audio">העדפת שמע DRC</string>
+    <string name="smallest">הקטן ביותר</string>
+    <string name="preferred_format_size">גודל תסדיר מועדף</string>
+    <string name="video_compatible_summary">קידוד הסרטון מחדש מתאים אותו ליישומים אחרים</string>
+    <string name="no_free_space_warning">אין נפח פנוי להגדרות האלה.</string>
+    <string name="potoken_player">אסימון PO (נגן)</string>
+    <string name="no_keep_subs_summary">בעת שימוש גם בהטמעת כתוביות וגם בכתיבת כתוביות, לא להשאיר את קובצי הכתוביות לאחר ההטמעה</string>
+    <string name="potoken_subs">אסימון PO (כתוביות)</string>
+    <string name="update_ytdlp_while_downloading_summary">יש להוסיף ‎-U ל־yt-dlp כדי לעדכן אותו לגרסה העדכנית ביותר לפני הורדה</string>
 </resources>

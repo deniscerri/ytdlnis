@@ -297,7 +297,7 @@
     <string name="cache_first_summary">Кэш загружается во внутреннюю память, а затем перемещается в выбранный каталог. Используйте это, когда нельзя записывать непосредственно в память</string>
     <string name="update_app_beta_summary">Примите участие в бета-тестировании. В нём могут содержаться ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
-    <string name="auto">По умолчанию</string>
+    <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочтительный аудиокодек</string>
     <string name="preferred_video_codec">Предпочтительный видеокодек</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
