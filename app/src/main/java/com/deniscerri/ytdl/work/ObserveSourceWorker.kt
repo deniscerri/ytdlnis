@@ -69,7 +69,7 @@ class ObserveSourceWorker(
             resultRepository.getResultsFromSource(item.url, resetResults = false, addToResults = false, singleItem = false)
         }.onFailure {
             Log.e("observe", it.toString())
-        }.getOrElse { listOf() }
+        }.getOrElse { listOf() }.reversed()
 
         //delete downloaded items not present in source if sync is enabled
         if (item.syncWithSource && item.alreadyProcessedLinks.isNotEmpty()){
@@ -88,31 +88,30 @@ class ObserveSourceWorker(
         val toProcess = mutableListOf<ResultItem>()
         //filter what results need to be downloaded, ignored
         for (result in list) {
+            val url = result.url
+
             if (item.ignoredLinks.contains(result.url)) {
                 continue
             }
 
-            // if first run and get only new items, ignore
-            if (item.getOnlyNewUploads && item.runCount == 0) {
+            val history = historyRepo.getAllByURLAndType(result.url, item.downloadItemTemplate.type)
+            val hasHistory = history.isNotEmpty()
+            val hasExistingFile = history.any { h -> h.downloadPath.any { path -> FileUtil.exists(path) }}
+
+            // First-run "only new uploads" — ONLY if truly new (no history exists)
+            if (item.getOnlyNewUploads && item.runCount == 0 && !hasHistory) {
                 item.ignoredLinks.add(result.url)
                 continue
             }
 
-            val history = historyRepo.getAllByURLAndType(result.url, item.downloadItemTemplate.type)
-            //if history is empty or all history items are deleted, add for retry
-            if (item.retryMissingDownloads && (history.isEmpty() || history.none { hi -> hi.downloadPath.any { path -> FileUtil.exists(path) } })) {
+
+            // Retry missing downloads overrides everything except ignoredLinks
+            if (item.retryMissingDownloads && (!hasHistory || !hasExistingFile)) {
                 toProcess.add(result)
                 continue
             }
 
-            if (item.alreadyProcessedLinks.isEmpty()) {
-                if (history.isEmpty()) {
-                    toProcess.add(result)
-                    continue
-                }
-            }
-
-            if (item.alreadyProcessedLinks.contains(result.url)) {
+            if (item.alreadyProcessedLinks.contains(url)) {
                 continue
             }
 

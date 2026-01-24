@@ -411,7 +411,7 @@ class FormatSelectionBottomSheetDialog(
                 listOf(downloadViewModel.getFormat(formats.filter { it.label == null }.map { it.format!! }, DownloadType.audio))
             }))
         }else{
-            val res = formatViewModel.getFormatsForItemsBasedOnFormat(adapter.selectedVideoFormat!!, adapter.selectedAudioFormats)
+            val res = formatViewModel.getFormatsForItemsBasedOnFormat(adapter.selectedVideoFormat, adapter.selectedAudioFormats)
             multipleFormatsListener.onFormatClick(res)
         }
 

@@ -307,7 +307,7 @@ object FileUtil {
         return if (preference.isNullOrBlank() || !File(formatPath(preference)).canWrite()) {
             getDefaultApplicationPath() + "/Backups"
         }else {
-            formatPath(preference)
+            preference
         }
     }
 

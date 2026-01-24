@@ -216,7 +216,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 regenerateBtn.isEnabled = false
 
                 editText.doOnTextChanged { text, start, before, count ->
-                    regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
+                    regenerateBtn.isEnabled = editText.text.toString().getIDFromYoutubeURL() != null
                 }
 
                 regenerateBtn.setOnClickListener {

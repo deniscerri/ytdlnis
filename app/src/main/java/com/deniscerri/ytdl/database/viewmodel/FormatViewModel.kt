@@ -229,7 +229,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     }
 
 
-    fun getFormatsForItemsBasedOnFormat(item: Format, audioFormats: List<Format>? = null) : MutableList<MultipleItemFormatTuple> {
+    fun getFormatsForItemsBasedOnFormat(item: Format?, audioFormats: List<Format>? = null) : MutableList<MultipleItemFormatTuple> {
         val formatsToReturn = mutableListOf<MultipleItemFormatTuple>()
         val f = if (genericAudioFormats.contains(item) || genericVideoFormats.contains(item)) item else null
 
@@ -238,7 +238,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                 MultipleItemFormatTuple(
                     it.url,
                     FormatTuple(
-                        f ?: it.allFormats.firstOrNull { af -> af.format_id == item.format_id },
+                        f ?: it.allFormats.firstOrNull { af -> af.format_id == item?.format_id },
                         audioFormats?.map { sa ->
                             it.allFormats.first { a -> a.format_id == sa.format_id }
                         }?.ifEmpty { null }
