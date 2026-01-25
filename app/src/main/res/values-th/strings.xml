@@ -495,4 +495,6 @@
     <string name="disable_flat_playlist_summary">อย่าใช้งาน --flat-playlist. การดึงข้อมูลช้าลงแต่ข้อมูลนั้นจะดีขึ้น</string>
     <string name="chapters">บทตอน</string>
     <string name="use_original_url_playlist">ใช้ยูอาร์แอลต้นฉบับสำหรับยูอาร์แอลของเพลย์ลิสต์</string>
+    <string name="prefer_drc_audio">เลือกเสียงแบบ DRC</string>
+    <string name="app_icon">ไอคอนแอป</string>
 </resources>
