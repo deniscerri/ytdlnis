@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.PagingData
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -48,8 +49,10 @@ import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryPaginatedAdapter
+import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.toListString
+import com.deniscerri.ytdl.util.Extensions.updateMenuItemBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -140,6 +143,12 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         lifecycleScope.launch {
             historyViewModel.paginatedItems.collectLatest {
                 historyAdapter.submitData(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            historyViewModel.filterCount.collectLatest {
+                topAppBar.updateMenuItemBadge(R.id.filters, it)
             }
         }
 
@@ -288,6 +297,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         deleteDialog.setMessage(getString(R.string.confirm_delete_history_desc))
                         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                            historyAdapter.submitData(lifecycle, PagingData.empty())
                             historyViewModel.clearDeleted()
                         }
                         deleteDialog.show()
@@ -302,6 +312,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         deleteDialog.setMessage(getString(R.string.confirm_delete_history_desc))
                         deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                         deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
+                            historyAdapter.submitData(lifecycle, PagingData.empty())
                             historyViewModel.deleteDuplicates()
                         }
                         deleteDialog.show()

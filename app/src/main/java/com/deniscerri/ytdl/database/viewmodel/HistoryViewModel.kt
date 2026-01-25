@@ -24,6 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.cache
 import kotlinx.coroutines.flow.combine
@@ -32,6 +34,7 @@ import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -44,6 +47,21 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     val statusFilter = MutableStateFlow(HistoryStatus.ALL)
     private val queryFilter = MutableStateFlow("")
     private val typeFilter = MutableStateFlow("")
+
+    var filterCount : StateFlow<Int> = combine(
+        websiteFilter,
+        statusFilter
+    ) { website, status ->
+        val activeFilters = listOf(
+            website.isNotEmpty(),
+            status != HistoryStatus.ALL
+        )
+        activeFilters.count { it }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = 0
+    )
 
     enum class HistoryStatus {
         UNSET, DELETED, NOT_DELETED, ALL

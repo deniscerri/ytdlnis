@@ -21,6 +21,7 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.annotation.Px
+import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
@@ -46,6 +48,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -67,7 +70,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
+import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 import java.io.File
 import java.net.HttpCookie
 import java.util.Calendar
@@ -257,9 +262,9 @@ object Extensions {
             runCatching {
                 val tmp = this.getString(it)
                 if (tmp != "null") {
-                    return if (tmp.startsWith("[") && tmp.endsWith("]")) {
+                    return try {
                         Json.decodeFromString<List<String>>(tmp).joinToString(", ")
-                    }else{
+                    } catch (e: Exception) {
                         tmp
                     }
                 }
@@ -321,6 +326,25 @@ object Extensions {
                     else dpToPx(context.resources, 22f)
             }
             BadgeUtils.attachBadgeDrawable(badge, this)
+        }
+    }
+
+    @OptIn(ExperimentalBadgeUtils::class)
+    fun MaterialToolbar.updateMenuItemBadge(menuItemId: Int, nr: Int) {
+        this.findViewById<View>(menuItemId).overlay.clear()
+
+        val badge = BadgeDrawable.create(context).apply {
+            number = nr
+            backgroundColor = ContextCompat.getColor(context, R.color.white)
+            badgeTextColor = ContextCompat.getColor(context, R.color.black)
+            verticalOffset = dpToPx(resources, 4f)
+            horizontalOffset = dpToPx(resources, 4f)
+        }
+
+        if (nr > 0) {
+            BadgeUtils.attachBadgeDrawable(badge, this, menuItemId)
+        } else {
+            BadgeUtils.detachBadgeDrawable(badge, this, menuItemId)
         }
     }
 

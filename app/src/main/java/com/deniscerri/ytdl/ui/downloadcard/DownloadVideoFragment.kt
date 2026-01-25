@@ -324,9 +324,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
-                if (downloadItem.videoPreferences.compatibilityMode) {
-                    container.editText?.setText("mkv")
-                }
                 containerAutoCompleteTextView!!.setText(
                     downloadItem.container.ifEmpty { getString(R.string.defaultValue) },
                     false)
@@ -347,7 +344,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             downloadItem.videoPreferences.recodeVideo = false
                         }
                     }
-
+                if (downloadItem.videoPreferences.compatibilityMode) {
+                    containerAutoCompleteTextView.setText("mkv",false)
+                }
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
                     visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
                     if (isVisible){

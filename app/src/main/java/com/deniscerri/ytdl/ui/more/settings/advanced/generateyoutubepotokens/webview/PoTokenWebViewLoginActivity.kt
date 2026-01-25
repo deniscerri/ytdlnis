@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebChromeClient
 import android.webkit.WebSettings
-import android.webkit.WebStorage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
@@ -25,7 +24,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -35,10 +33,6 @@ import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
-import com.google.accompanist.web.AccompanistWebChromeClient
-import com.google.accompanist.web.AccompanistWebViewClient
-import com.google.accompanist.web.WebView
-import com.google.accompanist.web.rememberWebViewState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -127,29 +121,32 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                             }
 
 
-                            //update cookies
-                            withContext(Dispatchers.IO) {
-                                val cookieURL = "Po Token Generated Cookies"
-                                cookiesViewModel.getCookiesFromDB(cookieURL).getOrNull()?.let {
-                                    kotlin.runCatching {
-                                        cookiesViewModel.insert(
-                                            CookieItem(
-                                                0,
-                                                cookieURL,
-                                                it,
-                                                "",
-                                                true
+
+                            if (!noAuth) {
+                                //update cookies
+                                withContext(Dispatchers.IO) {
+                                    val cookieURL = "Po Token Generated Cookies"
+                                    cookiesViewModel.getCookiesFromDB(cookieURL).getOrNull()?.let {
+                                        kotlin.runCatching {
+                                            cookiesViewModel.insert(
+                                                CookieItem(
+                                                    0,
+                                                    cookieURL,
+                                                    it,
+                                                    "",
+                                                    true
+                                                )
                                             )
-                                        )
-                                        cookiesViewModel.updateCookiesFile()
-                                        preferences.edit().putBoolean("use_cookies", true).apply()
-                                    }.onFailure {
-                                        withContext(Dispatchers.Main) {
-                                            Toast.makeText(
-                                                this@PoTokenWebViewLoginActivity,
-                                                "Tokens were generated but cookies were not updated",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            cookiesViewModel.updateCookiesFile()
+                                            preferences.edit().putBoolean("use_cookies", true).apply()
+                                        }.onFailure {
+                                            withContext(Dispatchers.Main) {
+                                                Toast.makeText(
+                                                    this@PoTokenWebViewLoginActivity,
+                                                    "Tokens were generated but cookies were not updated",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                         }
                                     }
                                 }
@@ -169,7 +166,10 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         if (value?.trim('"') == "complete") {
                             Handler(Looper.getMainLooper()).postDelayed({
                                 redirectUrl?.apply {
-                                    webView.loadUrl(this)
+                                    val extraHeaders: MutableMap<String?, String?> =
+                                        HashMap()
+                                    extraHeaders["Referer"] = url
+                                    webView.loadUrl(this, extraHeaders)
                                 }
                                 redirectUrl = null
                             }, 2500)
