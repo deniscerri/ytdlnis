@@ -294,6 +294,20 @@
             app:summary="@string/preferred_format_id_summary"
             app:title="@string/preferred_format_id" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_delete_24"
+            app:key="remove_audio"
+            app:title="@string/remove_audio" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_plus"
+            app:key="also_download_audio"
+            app:title="@string/also_download_audio" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/format">

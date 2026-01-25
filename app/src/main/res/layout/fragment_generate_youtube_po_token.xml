@@ -276,8 +276,7 @@
                 android:checked="true"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:text="Use Visitor Data"
-                tools:ignore="HardcodedText" />
+                android:text="@string/visitor_data" />
 
 <!--            <TextView-->
 <!--                android:layout_width="wrap_content"-->

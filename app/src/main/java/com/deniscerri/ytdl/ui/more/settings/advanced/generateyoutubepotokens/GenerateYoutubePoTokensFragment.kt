@@ -216,7 +216,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 regenerateBtn.isEnabled = false
 
                 editText.doOnTextChanged { text, start, before, count ->
-                    regenerateBtn.isEnabled = editText.text.toString().getIDFromYoutubeURL() != null
+                    regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
                 }
 
                 regenerateBtn.setOnClickListener {
@@ -224,7 +224,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                     val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                     intent.putExtra("url", "https://www.youtube.com")
-                    intent.putExtra("redirect_url", "https://www.youtube.com/embed/${editText.text.toString().getIDFromYoutubeURL()}")
+                    //intent.putExtra("redirect_url", "https://www.youtube.com/embed/${editText.text.toString().getIDFromYoutubeURL()}")
                     intent.putExtra("no_auth", true)
                     webPoTokenResultLauncher.launch(intent)
                 }

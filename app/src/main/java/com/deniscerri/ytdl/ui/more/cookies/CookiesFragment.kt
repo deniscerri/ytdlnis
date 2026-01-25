@@ -125,7 +125,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
     }
 
     private fun initMenu() {
-        topAppBar.menu.getItem(1).isChecked = preferences.getBoolean("use_header", false)
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_cookies -> {
@@ -142,10 +141,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                         }
                     }
                     deleteDialog.show()
-                }
-                R.id.use_header -> {
-                    m.isChecked = !m.isChecked
-                    preferences.edit().putBoolean("use_header", m.isChecked).apply()
                 }
                 R.id.import_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){

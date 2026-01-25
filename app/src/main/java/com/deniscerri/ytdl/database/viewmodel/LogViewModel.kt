@@ -28,11 +28,11 @@ class LogViewModel(private val application: Application) : AndroidViewModel(appl
     }
 
 
-    fun getLogFlowByID(id: Long) : LiveData<LogItem> {
+    fun getLogFlowByID(id: Long) : LiveData<LogItem?> {
         return repository.getLogFlowByID(id).asLiveData()
     }
 
-    fun getItemById(id: Long): LogItem{
+    fun getItemById(id: Long): LogItem? {
         return repository.getItem(id)
     }
 

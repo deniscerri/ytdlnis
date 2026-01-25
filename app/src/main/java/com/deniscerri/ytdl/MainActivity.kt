@@ -156,7 +156,7 @@ class MainActivity : BaseActivity() {
                             navController.navigate(R.id.downloadQueueMainFragment)
                         }else{
                             kotlin.runCatching {
-                                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).scrollToTop()
+                                (navHostFragment.childFragmentManager.primaryNavigationFragment!! as HistoryFragment).openSearchView()
                             }
                         }
                     }

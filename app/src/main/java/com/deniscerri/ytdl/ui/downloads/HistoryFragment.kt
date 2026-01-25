@@ -218,10 +218,17 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         }
     }
 
+    fun openSearchView() {
+        topAppBar.menu.performIdentifierAction(R.id.search_history, 0)
+    }
+
     private fun initMenu() {
+        val searchView = topAppBar.menu.findItem(R.id.search_history).actionView as SearchView?
+
         val onActionExpandListener: MenuItem.OnActionExpandListener =
             object : MenuItem.OnActionExpandListener {
                 override fun onMenuItemActionExpand(menuItem: MenuItem): Boolean {
+                    searchView?.requestFocus()
                     return true
                 }
 
@@ -231,7 +238,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
             }
         topAppBar.menu.findItem(R.id.search_history)
             .setOnActionExpandListener(onActionExpandListener)
-        val searchView = topAppBar.menu.findItem(R.id.search_history).actionView as SearchView?
+
         searchView!!.inputType = InputType.TYPE_CLASS_TEXT
         searchView.queryHint = getString(R.string.search_history_hint)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

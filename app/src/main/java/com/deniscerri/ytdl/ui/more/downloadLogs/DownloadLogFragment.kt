@@ -113,7 +113,7 @@ class DownloadLogFragment : Fragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             runCatching {
-                val logItem = logViewModel.getItemById(logID!!)
+                val logItem = logViewModel.getItemById(logID!!) ?: throw Exception()
                 withContext(Dispatchers.Main){
                     topAppBar.title = logItem.title
                 }

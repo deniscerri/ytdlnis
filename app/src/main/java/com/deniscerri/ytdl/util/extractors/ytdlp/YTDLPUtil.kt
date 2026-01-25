@@ -472,6 +472,19 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
         if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
+        val canUseWriteInfoJson =
+            !sharedPreferences.getBoolean("disable_write_info_json", false) &&
+                    !request.toString().contains("--download-sections")
+        if (canUseWriteInfoJson) {
+            val infoJsonFile = getInfoJsonFile(url)
+            //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases
+            if (infoJsonFile != null && System.currentTimeMillis() - infoJsonFile.lastModified() <= (1000 * 60 * 60 * 5)) {
+                request.addOption("--load-info-json", infoJsonFile.absolutePath)
+            }else {
+                request.addWriteInfoJson(url)
+            }
+        }
+
         val res = YoutubeDL.getInstance().execute(request)
         val results: Array<String?> = try {
             res.out.split(System.lineSeparator()).toTypedArray()
@@ -610,6 +623,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val infoJsonName = hash(id)
         //yt-dlp doesnt overwrite info json, so delete manually
         File("${cachePath}/${infoJsonName}video.info.json").delete()
+        this.addOption("--no-clean-info-json")
         this.addCommands(listOf("--print-to-file", "video:%()j", "${cachePath}/${infoJsonName}${System.currentTimeMillis()}video.info.json"))
     }
 
@@ -645,7 +659,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.addOption("--print", "%(filename)s")
         request.addOption("--skip-download")
         request.addOption("--simulate")
-        request.addOption("--no-check-certificates")
         request.addOption("--no-check-formats")
         request.addOption("--quiet")
 
@@ -1161,8 +1174,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
 
                         metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
-                        metadataCommands.addOption("--parse-metadata", "description:(?:.+?Released\\ on\\s*:\\s*(?P<dscrptn_year>\\d{4}))?")
-                        metadataCommands.addOption("--parse-metadata", "%(dscrptn_year,release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
+                        metadataCommands.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (isPlaylistItem) {
                             metadataCommands.addOption("--parse-metadata", "%(track_number,playlist_index)d:(?P<track_number>\\d+)")
@@ -1214,6 +1226,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 var cont = ""
                 val outputContainer = downloadItem.container
+                if (downloadItem.videoPreferences.compatibilityMode) {
+                    request.addOption("--recode-video", "mp4")
+                    request.addOption("--merge-output-format", "mp4/mkv")
+                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-c:v libx264 -c:a aac -profile:v baseline")
+                }
+
                 if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(
                         R.string.defaultValue) && supportedContainers.contains(outputContainer)){
                     cont = outputContainer
@@ -1221,14 +1239,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     val cantRecode = listOf("avi")
                     if (downloadItem.videoPreferences.recodeVideo && !cantRecode.contains(cont)) {
                         request.addOption("--recode-video", outputContainer.lowercase())
-                    }else{
-                        if (downloadItem.videoPreferences.compatibilityMode) {
-                            request.addOption("--recode-video", "mp4")
-                            request.addOption("--merge-output-format", "mp4/mkv")
-                        }
-                        else {
-                            request.addOption("--merge-output-format", outputContainer.lowercase())
-                        }
+                    }else if (!downloadItem.videoPreferences.compatibilityMode){
+                        request.addOption("--merge-output-format", outputContainer.lowercase())
                     }
 
                     if (!listOf("webm", "avi", "flv", "gif").contains(outputContainer.lowercase())) {
@@ -1258,6 +1270,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     } ?: f
                 }.ifBlank { "ba" }
                 val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
+                val preferDRCAudio = sharedPreferences.getBoolean("prefer_drc_audio", false)
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
                 var abrSort = ""
@@ -1293,6 +1306,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         if (!f.contains("$videoF+ba")) {
                             if (preferredAudioLanguage.isNotEmpty()) {
                                 f.append("$videoF+ba[language^=$preferredAudioLanguage]/")
+                            } else if (preferDRCAudio) {
+                                f.append("$videoF+ba[format_id$=-drc]/")
                             }else {
                                 f.append("$videoF+ba/")
                             }
@@ -1328,6 +1343,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         .filter { it.isNotBlank() }
                         .ifEmpty {
                             val list = mutableListOf<String>()
+                            if (preferDRCAudio) list.add("ba[format_id$=-drc]")
                             if (preferredAudioLanguage.isNotEmpty() && !downloadItem.videoPreferences.removeAudio) list.add("ba[language^=$preferredAudioLanguage]")
                             list.add(audioF)
                             list

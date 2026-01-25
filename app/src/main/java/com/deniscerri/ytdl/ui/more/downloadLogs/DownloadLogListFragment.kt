@@ -236,16 +236,19 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
                 when (direction) {
                     ItemTouchHelper.LEFT -> {
                         lifecycleScope.launch {
-                            val deletedItem = withContext(Dispatchers.IO){
+                            val toDelete = withContext(Dispatchers.IO){
                                 logViewModel.getItemById(items[position].id)
                             }
-                            logViewModel.delete(deletedItem)
-                            Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + deletedItem.title, Snackbar.LENGTH_INDEFINITE)
-                                .setAction(getString(R.string.undo)) {
-                                    lifecycleScope.launch(Dispatchers.IO){
-                                        logViewModel.insert(deletedItem)
-                                    }
-                                }.show()
+
+                            toDelete?.apply {
+                                logViewModel.delete(this)
+                                Snackbar.make(recyclerView, getString(R.string.you_are_going_to_delete) + ": " + this.title, Snackbar.LENGTH_INDEFINITE)
+                                    .setAction(getString(R.string.undo)) {
+                                        lifecycleScope.launch(Dispatchers.IO){
+                                            logViewModel.insert(this@apply)
+                                        }
+                                    }.show()
+                            }
                         }
                     }
 

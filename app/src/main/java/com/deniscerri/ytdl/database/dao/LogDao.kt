@@ -19,7 +19,7 @@ interface LogDao {
     fun getAllLogsFlow() : Flow<List<LogItem>>
 
     @Query("SELECT * FROM logs WHERE id=:id LIMIT 1")
-    fun getLogFlowByID(id: Long) : Flow<LogItem>
+    fun getLogFlowByID(id: Long) : Flow<LogItem?>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(item: LogItem) : Long
@@ -56,5 +56,5 @@ interface LogDao {
     suspend fun update(item: LogItem)
 
     @Query("SELECT * FROM logs WHERE id=:id LIMIT 1")
-    fun getByID(id: Long) : LogItem
+    fun getByID(id: Long) : LogItem?
 }

@@ -84,6 +84,14 @@
             android:icon="@drawable/baseline_note_24"
             android:key="no_check_certificates"
             app:title="@string/no_check_certificates" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/if_file_rename"
+            android:key="use_header"
+            app:title="@string/user_agent_header" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/misc">

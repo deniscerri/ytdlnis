@@ -6,11 +6,6 @@
         android:title="@string/delete_all_cookies"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/use_header"
-        android:title="@string/user_agent_header"
-        android:checkable="true"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/import_clipboard"

@@ -133,7 +133,7 @@
 
 
     <string-array name="language_entries">
-        <item>System</item>
+        <item>@string/system</item>
         <item>English</item>
         <item>العربية</item>
         <item>Azərbaycanca</item>
@@ -1591,6 +1591,4 @@
         <item>smallest</item>
         <item>largest</item>
     </string-array>
-
-    <string name="sponsorblock_hook">Hook</string>
 </resources>

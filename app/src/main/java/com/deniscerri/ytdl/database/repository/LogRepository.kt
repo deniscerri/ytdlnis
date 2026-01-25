@@ -11,7 +11,7 @@ class LogRepository(private val logDao: LogDao) {
         return logDao.getAllLogs()
     }
 
-    fun getLogFlowByID(id: Long) : Flow<LogItem> {
+    fun getLogFlowByID(id: Long) : Flow<LogItem?> {
         return logDao.getLogFlowByID(id)
     }
 
@@ -33,7 +33,7 @@ class LogRepository(private val logDao: LogDao) {
         logDao.deleteAll()
     }
 
-    fun getItem(id: Long) : LogItem{
+    fun getItem(id: Long) : LogItem? {
         return logDao.getByID(id)
     }
 

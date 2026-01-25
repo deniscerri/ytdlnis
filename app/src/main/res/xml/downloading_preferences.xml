@@ -213,11 +213,6 @@
 
     <Preference
         app:defaultValue=""
-        android:key="use_header"
-        app:isPreferenceVisible="false" />
-
-    <Preference
-        app:defaultValue=""
         android:key="useragent_header"
         app:isPreferenceVisible="false" />
 

@@ -264,6 +264,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
         val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
+        val compatibilityMode = sharedPreferences.getBoolean("compatible_video", false)
+        val removeAudio = sharedPreferences.getBoolean("remove_audio", false)
+        val alsoDownloadAudio = sharedPreferences.getBoolean("also_download_audio", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -309,7 +312,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             subsLanguages,
             audioFormatIDs = preferredAudioFormats,
             recodeVideo = recodeVideo,
-            embedThumbnail = videoEmbedThumb
+            compatibilityMode = compatibilityMode,
+            embedThumbnail = videoEmbedThumb,
+            removeAudio = removeAudio,
+            alsoDownloadAsAudio = alsoDownloadAudio
         )
 
         val extraCommands = when(type){
@@ -448,6 +454,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
         val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
+        val removeAudio = sharedPreferences.getBoolean("remove_audio", false)
+        val compatibilityMode = sharedPreferences.getBoolean("compatible_video", false)
+        val alsoDownloadAudio = sharedPreferences.getBoolean("also_download_audio", false)
         val addChapters = sharedPreferences.getBoolean("add_chapters", false)
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
@@ -486,8 +495,25 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }.joinToString(" ") { it.content }
 
-        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!), audioBitrate!!)
-        val videoPreferences = VideoPreferences(embedSubs, addChapters, false, ArrayList(sponsorblock), saveSubs, saveAutoSubs, subsLanguages, recodeVideo = recodeVideo)
+        val audioPreferences = AudioPreferences(
+            embedThumb = embedThumb,
+            cropThumb = cropThumb,
+            splitByChapters = false,
+            sponsorBlockFilters = ArrayList(sponsorblock!!),
+            bitrate = audioBitrate!!
+        )
+        val videoPreferences = VideoPreferences(
+            embedSubs = embedSubs,
+            addChapters = addChapters,
+            splitByChapters = false,
+            sponsorBlockFilters = ArrayList(sponsorblock),
+            writeSubs = saveSubs,
+            writeAutoSubs = saveAutoSubs,
+            subsLanguages = subsLanguages,
+            recodeVideo = recodeVideo,
+            compatibilityMode = compatibilityMode,
+            removeAudio = removeAudio,
+            alsoDownloadAsAudio = alsoDownloadAudio)
         var path = defaultPath
         historyItem.downloadPath.first().apply {
             File(this).parent?.apply {
