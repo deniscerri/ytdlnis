@@ -398,7 +398,7 @@
     <string name="process_downloads_background">"Загрузка всё ещё продолжается. Продолжить обработку в фоновом режиме и начать загрузку?. "</string>
     <string name="navigation_bar">Панель навигации</string>
     <string name="label_visibility">Видимость метки</string>
-    <string name="always">Показывать</string>
+    <string name="always">Всегда</string>
     <string name="sync_with_source">Синхронизировать с источником</string>
     <string name="queue">Очередь</string>
     <string name="reset">Cбросить</string>
