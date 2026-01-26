@@ -508,4 +508,5 @@
     <string name="app_icon">Icône de l\'application</string>
     <string name="show_quick_download_share_menu">Afficher l\'option de téléchargement immédiat dans le menu de partage</string>
     <string name="quick_download_title">Ne pas récupérer de données</string>
+    <string name="sponsorblock_hook">Crochet/Salutations</string>
 </resources>
