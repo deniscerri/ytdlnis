@@ -3,7 +3,7 @@
     <string name="directories">폴더</string>
     <string name="music_directory">오디오 폴더</string>
     <string name="video_directory">비디오 폴더</string>
-    <string name="update_ytdl">yt-dl을 새 버전으로 업데이트</string>
+    <string name="update_ytdl">yt-dlp를 새 버전으로 업데이트</string>
     <string name="search_hint">검색 또는 URL 입력</string>
     <string name="download_notification_channel_description">오디오 및 비디오 파일 다운로드 진행률을 보여주는 알림</string>
     <string name="you_are_in_latest_version">현재 최신버전 사용중</string>
@@ -244,7 +244,7 @@
     <string name="green">녹색</string>
     <string name="blue">파란색</string>
     <string name="purple">보라색</string>
-    <string name="quick_download_summary">다운로드전에 데이터를 미리 가져오지 않음</string>
+    <string name="quick_download_summary">미리 데이터를 가져오지 않고, 다운로드 과정으로 즉시 넘어갑니다</string>
     <string name="yellow">노란색</string>
     <string name="monochrome">단색화</string>
     <string name="remove_audio">오디오 제거</string>
@@ -484,4 +484,27 @@
     <string name="no_keep_subs">자막을 내장한 뒤 자막 파일 삭제</string>
     <string name="no_keep_subs_summary">자막 내장과 자막 파일 저장 설정을 모두 켠 경우, 자막을 내장한 뒤 파일을 남기지 않고 지우기</string>
     <string name="reverse">역순</string>
+    <string name="prefer_drc_audio">DRC 오디오 선호</string>
+    <string name="potoken_gvs">PO 토큰 (GVS)</string>
+    <string name="potoken_player">PO 토큰 (플레이어)</string>
+    <string name="visitor_data">방문자 데이터</string>
+    <string name="get_data_sync_id">데이터 동기화 ID 받기</string>
+    <string name="desktop">데스크탑</string>
+    <string name="url_regex">URL 정규표현식</string>
+    <string name="chapters">챕터</string>
+    <string name="use_original_url_playlist">재생목록 URL로 원본 URL 사용</string>
+    <string name="update_ytdlp_while_downloading">다운로드 시 yt-dlp 업데이트</string>
+    <string name="update_ytdlp_while_downloading_summary">yt-dlp에 -U 매개변수를 추가해 다운로드 전 최신 버전으로 업데이트</string>
+    <string name="preview_filename">파일 이름 미리보기</string>
+    <string name="no_auth">인증 없음</string>
+    <string name="auth">인증</string>
+    <string name="app_icon">앱 아이콘</string>
+    <string name="show_quick_download_share_menu">공유 메뉴에 즉시 다운로드 옵션 표시</string>
+    <string name="sponsorblock_hook">후킹/인사말</string>
+    <string name="potoken_subs">PO 토큰 (자막)</string>
+    <string name="disable_flat_playlist">재생목록 평면화 끄기</string>
+    <string name="disable_flat_playlist_summary">--flat-playlist를 사용하지 않습니다. 데이터 처리가 오래 걸리지만, 더 풍부한 데이터를 가져옵니다</string>
+    <string name="use_original_url_playlist_summary">JSON 덤프의 playlist_webpage_url 태그 대신 사용자가 지정한 재생목록 URL을 사용합니다</string>
+    <string name="potoken_guide">인증\n-----------------------\n1. \'인증\'을 눌러 WebView에서 로그인 페이지를 엽니다.\n2. Google 계정으로 로그인합니다.\n3. 자동 번역 자막을 지원하는 아무 동영상이나 재생합니다.\n4. 자동 번역 자막을 켜고 잘 되는지 확인합니다.\n\t4.1 자동 번역 자막 기능이 동작하지 않으면, 자동 번역 자막을 지원하는 다른 동영상으로 이동해 4단계를 다시 반복해 봅니다.\n5. 확인을 누릅니다.\n\n인증 없음\n-----------------------\n1. \'인증 없음\'을 누릅니다.\n2. 아무 YouTube 동영상 URL이나 입력합니다\n3. 동영상을 불러올 때까지 기다렸다가 최소 3초 이상 동영상을 재생합니다.\n4. 확인을 누릅니다.</string>
+    <string name="quick_download_title">데이터를 가져오지 않음</string>
 </resources>
