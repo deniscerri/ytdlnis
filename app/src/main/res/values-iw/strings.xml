@@ -426,13 +426,13 @@
     <string name="deleted">נמחק</string>
     <string name="websites">אתרי אינטרנט</string>
     <string name="status">מצב</string>
-    <string name="ytdlp_liked">YT-DLP סרטונים שאהבתי (מצריך עוגיות)</string>
+    <string name="ytdlp_liked">סרטונים שסומנו ב־YouTube כאהובים ב־yt-dlp (דורש עוגיות)</string>
     <string name="thumbnail">תמונה ממוזערת</string>
     <string name="socket_timeout">תום זמן שהוקצב לשקע</string>
     <string name="socket_timeout_description">זמן המתנה לפני שתוותר, בשניות</string>
     <string name="disable_write_info_json">השבתת כתיבת פרטים ל־json</string>
     <string name="disable_write_info_json_summary">בכל פעם שההורדה תופעל מחדש / תמשיך, yt-dlp יוריד מחדש נתוני json מהשרתים (לא מומלץ)</string>
-    <string name="ytdlp_recommnedations">YT-DLP המלצות יוטיוב (מצריך עוגיות)</string>
+    <string name="ytdlp_recommnedations">המלצות YouTube ב־yt-dlp (דורש עוגיות)</string>
     <string name="write_subs_when_embed_subs_summary">זה יחיל את שמירת כתוביות ושמירת כתוביות אוטומטיות כדי להוריד את קבצי הכתוביות וימחק אותם לאחר ההטמעה</string>
     <string name="cache_directory_warning">שינוי תיקיית המטמון עלול לגרום לבעיות בלתי צפויות. אם היישומון לא יכול לכתוב לנתיב המוגדר, הוא יפנה לתיקיית המטמון הפנימית המוגדרת כברירת מחדל</string>
     <string name="use_code_highlighter">להשתמש בהדגשת קוד בצבע</string>
@@ -463,7 +463,7 @@
     <string name="items">פריט(ים)</string>
     <string name="advanced">מתקדם</string>
     <string name="data_fetching_extra_command">פקודה נוספת למשיכת נתונים</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (מצריך עוגיות)</string>
+    <string name="ytdlp_watch_later">לצפייה אחר כך ב־YouTube ב־yt-dlp (דורש עוגיות)</string>
     <string name="ytdlp_watch_history">היסטוריית צפייה ב־YouTube של yt-dlp (מצריך עוגיות)</string>
     <string name="player_client">לקוח נגן</string>
     <string name="grid">רשת</string>
@@ -506,4 +506,6 @@
     <string name="no_keep_subs_summary">בעת שימוש גם בהטמעת כתוביות וגם בכתיבת כתוביות, לא להשאיר את קובצי הכתוביות לאחר ההטמעה</string>
     <string name="potoken_subs">אסימון PO (כתוביות)</string>
     <string name="update_ytdlp_while_downloading_summary">יש להוסיף ‎-U ל־yt-dlp כדי לעדכן אותו לגרסה העדכנית ביותר לפני הורדה</string>
+    <string name="potoken_guide">עם אימות\n-----------------------\n1. יש ללחוץ על ‚אימות’ כדי לפתוח את עמוד הכניסה למערכת בחלון אתר.\n2. להיכנס עם חשבון ה־Google שלך.\n3. לנגן סרטון כלשהו שתומך בכתוביות שתורגמו אוטומטית.\n4. להפעיל כתוביות שתורגמו אוטומטית ולראות אם הן עובדות.\n\t4.1 אם הכתוביות שתורגמו אוטומטית לא עובדות, יש לעבור לסרטון אחר שתומך בכתוביות שתורגמו אוטומטית ולנסות את שלב 4 שוב.\n5. ללחוץ על אישור.\n\nללא אימות\n-----------------------\n1. יש ללחוץ על ‚ללא אימות’.\n2. לכתובת כתובת סרטון youtube כלשהי\n3. להמתין לטעינת הסרטון ולנגן לפחות 3 שניות מהסרטון.\n4. ללחוץ על אישור.</string>
+    <string name="sponsorblock_hook">מושך עניין/ברכות ואיחולים</string>
 </resources>
