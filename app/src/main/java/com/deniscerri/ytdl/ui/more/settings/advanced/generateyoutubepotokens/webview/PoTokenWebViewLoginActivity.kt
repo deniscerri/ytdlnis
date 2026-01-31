@@ -33,6 +33,9 @@ import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
+import com.google.accompanist.web.AccompanistWebChromeClient
+import com.google.accompanist.web.AccompanistWebViewClient
+import com.google.accompanist.web.rememberWebViewState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
@@ -47,7 +50,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
     private lateinit var toolbar: MaterialToolbar
     private lateinit var generateBtn: MaterialButton
     private lateinit var cookieManager: CookieManager
-    private lateinit var webViewClient: WebViewClient
+    private lateinit var webViewClient: AccompanistWebViewClient
     private lateinit var cookiesViewModel: CookieViewModel
     private lateinit var preferences: SharedPreferences
 
@@ -94,8 +97,8 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             preferences = PreferenceManager.getDefaultSharedPreferences(this@PoTokenWebViewLoginActivity)
             preferences.edit().putString("genenerate_youtube_po_token_preferred_url", url).apply()
 
-            webViewClient = object : WebViewClient() {
-                override fun onPageFinished(view: WebView?, url: String?) {
+            webViewClient = object : AccompanistWebViewClient() {
+                override fun onPageFinished(view: WebView, url: String?) {
                     super.onPageFinished(view, url)
                     kotlin.runCatching {
                         toolbar.title = view?.title ?: ""
@@ -168,7 +171,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                                 redirectUrl?.apply {
                                     val extraHeaders: MutableMap<String?, String?> =
                                         HashMap()
-                                    extraHeaders["Referer"] = url
+                                    extraHeaders["Referer"] = "https://www.google.com/"
                                     webView.loadUrl(this, extraHeaders)
                                 }
                                 redirectUrl = null
@@ -218,9 +221,15 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
 
     @SuppressLint("SetJavaScriptEnabled", "JavascriptInterface")
     @Composable
-    fun WebViewView(url: String, webViewClient: WebViewClient) {
+    fun WebViewView(url: String, webViewClient: AccompanistWebViewClient) {
         val context = LocalContext.current
         val cookieManager = remember { CookieManager.getInstance() }
+
+        val webViewChromeClient = remember {
+            object : AccompanistWebChromeClient() {
+
+            }
+        }
 
         val webView = remember {
             WebView(context).apply {
@@ -239,23 +248,19 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                     }
                 }
                 cookieManager.setAcceptThirdPartyCookies(this, true)
-
-                this.webViewClient = webViewClient
-                this.webChromeClient = object : WebChromeClient() {}
             }
         }
 
         Scaffold(modifier = Modifier.fillMaxSize()) { padding ->
-            AndroidView(
+            com.google.accompanist.web.WebView(
+                state = rememberWebViewState(url),
+                client = webViewClient,
+                chromeClient = webViewChromeClient,
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize(),
-                factory = { webView },
-                update = {
-                    if (it.url != url) {
-                        it.loadUrl(url)
-                    }
-                }
+                captureBackPresses = false,
+                factory = { webView}
             )
         }
     }
