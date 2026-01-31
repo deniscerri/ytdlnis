@@ -3,7 +3,6 @@ package com.deniscerri.ytdl.ui.downloadcard
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
 import android.text.method.DigitsKeyListener
 import android.util.DisplayMetrics
@@ -24,7 +23,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel

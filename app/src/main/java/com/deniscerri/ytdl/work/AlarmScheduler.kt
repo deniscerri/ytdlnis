@@ -7,15 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.preference.PreferenceManager
-import androidx.work.Constraints
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import com.deniscerri.ytdl.receiver.CancelScheduleAlarmReceiver
 import com.deniscerri.ytdl.receiver.ScheduleAlarmReceiver
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 class AlarmScheduler(private val context: Context) {
 

@@ -5,9 +5,9 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.DownloadRepository
-import com.yausername.youtubedl_android.YoutubeDL
 
 
 class CancelScheduledDownloadWorker(
@@ -23,7 +23,7 @@ class CancelScheduledDownloadWorker(
         val runningDownloads = dao.getActiveDownloadsList()
         WorkManager.getInstance(context).cancelAllWorkByTag("download")
         runningDownloads.forEach {
-            YoutubeDL.getInstance().destroyProcessById(it.id.toString())
+            RuntimeManager.getInstance().destroyProcessById(it.id.toString())
             it.status = DownloadRepository.Status.Queued.toString()
             dao.update(it)
         }

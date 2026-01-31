@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
@@ -23,7 +24,6 @@ import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -166,7 +166,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                     try {
                         res.addAll(repository.getResultsFromSource(inputQuery, resetResults))
                     } catch (e: Exception) {
-                        if (updateResultDataJob?.isCancelled == false || e is YoutubeDLException){
+                        if (updateResultDataJob?.isCancelled == false || e is ExecuteException){
                             uiState.update {it.copy(
                                 processing = false,
                                 errorMessage = e.message.toString(),

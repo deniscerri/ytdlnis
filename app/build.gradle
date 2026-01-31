@@ -226,4 +226,7 @@ dependencies {
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
     implementation("com.github.teamnewpipe:newpipeextractor:v0.25.0")
+
+    implementation("commons-io:commons-io:2.5")
+    implementation("org.apache.commons:commons-compress:1.12")
 }

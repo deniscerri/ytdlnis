@@ -20,6 +20,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.DownloadDao
@@ -47,7 +48,6 @@ import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -1022,7 +1022,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         }
                     }
                     "config" -> {
-                        val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
+                        val currentCommand = ytdlpUtil.buildYTDLRequest(it)
                         val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                         val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
                             val normalized = d.copy(
@@ -1381,7 +1381,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelDownloadOnly(id : Long) {
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        RuntimeManager.getInstance().destroyProcessById(id.toString())
         notificationUtil.cancelDownloadNotification(id.toInt())
     }
 

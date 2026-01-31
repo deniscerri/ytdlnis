@@ -142,7 +142,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             requireContext().getString(R.string.ytdl_updating_started),
             Snackbar.LENGTH_LONG).show()
         runCatching {
-            val res = updateUtil!!.updateYoutubeDL(channel)
+            val res = updateUtil!!.updateYTDL(channel)
             when (res.status) {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
                     Snackbar.make(requireView(), res.message, Snackbar.LENGTH_LONG).show()

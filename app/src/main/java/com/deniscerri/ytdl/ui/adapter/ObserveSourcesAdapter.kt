@@ -20,7 +20,6 @@ import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat

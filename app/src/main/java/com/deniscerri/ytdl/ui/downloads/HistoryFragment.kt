@@ -43,15 +43,11 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.enums.DownloadType
-import com.deniscerri.ytdl.database.models.HistoryItem
-import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryPaginatedAdapter
-import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
-import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.Extensions.updateMenuItemBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NavbarUtil

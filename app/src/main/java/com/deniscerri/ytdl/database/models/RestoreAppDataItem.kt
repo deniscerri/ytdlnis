@@ -1,7 +1,6 @@
 package com.deniscerri.ytdl.database.models
 
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
-import com.google.gson.JsonArray
 
 data class RestoreAppDataItem(
     var settings : List<BackupSettingsItem>? = null,

@@ -3,10 +3,10 @@ package com.deniscerri.ytdl.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +21,7 @@ class PauseDownloadNotificationReceiver : BroadcastReceiver() {
                 val title = intent.getStringExtra("title")
                 val notificationUtil = NotificationUtil(c)
                 notificationUtil.cancelDownloadNotification(id)
-                YoutubeDL.getInstance().destroyProcessById(id.toString())
+                RuntimeManager.getInstance().destroyProcessById(id.toString())
                 val dbManager = DBManager.getInstance(c)
                 CoroutineScope(Dispatchers.IO).launch{
                     try {

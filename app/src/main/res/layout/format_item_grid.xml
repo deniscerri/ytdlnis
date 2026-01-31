@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/format_card_constraintLayout"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"

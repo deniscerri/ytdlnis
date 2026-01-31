@@ -11,7 +11,6 @@ import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.google.android.material.navigation.NavigationBarView
 
 

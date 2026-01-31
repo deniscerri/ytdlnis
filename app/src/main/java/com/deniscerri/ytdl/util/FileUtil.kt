@@ -22,7 +22,7 @@ import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
-import com.yausername.youtubedl_android.YoutubeDLRequest
+import com.deniscerri.ytdl.core.models.YTDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
@@ -325,7 +325,7 @@ object FileUtil {
         }
     }
 
-    fun deleteConfigFiles(request: YoutubeDLRequest) {
+    fun deleteConfigFiles(request: YTDLRequest) {
         runCatching {
             request.getArguments("--config")?.forEach {
                 if (it != null) File(it).delete()

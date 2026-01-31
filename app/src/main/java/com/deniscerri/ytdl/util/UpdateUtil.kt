@@ -6,11 +6,11 @@ import android.util.Log
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.models.YTDLRequest
 import com.deniscerri.ytdl.database.models.GithubRelease
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.InputStreamReader
@@ -23,9 +23,9 @@ class UpdateUtil(var context: Context) {
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     private val channelMap = mapOf(
-        Pair<String, YoutubeDL.UpdateChannel>("stable", YoutubeDL.UpdateChannel.STABLE),
-        Pair<String, YoutubeDL.UpdateChannel>("nightly", YoutubeDL.UpdateChannel.NIGHTLY),
-        Pair<String, YoutubeDL.UpdateChannel>("master", YoutubeDL.UpdateChannel.MASTER)
+        Pair<String, RuntimeManager.UpdateChannel>("stable", RuntimeManager.UpdateChannel.STABLE),
+        Pair<String, RuntimeManager.UpdateChannel>("nightly", RuntimeManager.UpdateChannel.NIGHTLY),
+        Pair<String, RuntimeManager.UpdateChannel>("master", RuntimeManager.UpdateChannel.MASTER)
     )
 
     private fun String.tagNameToVersionNumber() : Int {
@@ -114,7 +114,7 @@ class UpdateUtil(var context: Context) {
         DONE, ALREADY_UP_TO_DATE, PROCESSING, ERROR
     }
 
-    suspend fun updateYoutubeDL(c: String? = null) : YTDLPUpdateResponse =
+    suspend fun updateYTDL(c: String? = null) : YTDLPUpdateResponse =
         withContext(Dispatchers.IO){
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             if (updatingYTDL) {
@@ -127,19 +127,19 @@ class UpdateUtil(var context: Context) {
 
             when(channel) {
                 "stable", "nightly", "master" -> {
-                    val res = YoutubeDL.updateYoutubeDL(context, channelMap[channel]!!)
-                    if (res != YoutubeDL.UpdateStatus.DONE) {
+                    val res = RuntimeManager.getInstance().updateYTDL(context, channelMap[channel]!!)
+                    if (res != RuntimeManager.UpdateStatus.DONE) {
                         YTDLPUpdateResponse(YTDLPUpdateStatus.ALREADY_UP_TO_DATE)
                     }else {
-                        val version = YoutubeDL.version(context)
+                        val version = RuntimeManager.getInstance().version(context)
                         YTDLPUpdateResponse(YTDLPUpdateStatus.DONE, "Updated yt-dlp to ${channel}@${version}")
                     }
                 }
                 else -> {
-                    val request = YoutubeDLRequest(emptyList())
+                    val request = YTDLRequest(emptyList())
                     request.addOption("--update-to", "${channel}@latest")
 
-                    val res = YoutubeDL.getInstance().execute(request)
+                    val res = RuntimeManager.getInstance().execute(request)
                     val out = res.out.lines().last { it.isNotBlank() }
 
                     if (out.contains("ERROR")) YTDLPUpdateResponse(YTDLPUpdateStatus.ERROR, out)

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/download_card_view"
+<com.google.android.material.card.MaterialCardView android:id="@+id/download_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@android:color/transparent"

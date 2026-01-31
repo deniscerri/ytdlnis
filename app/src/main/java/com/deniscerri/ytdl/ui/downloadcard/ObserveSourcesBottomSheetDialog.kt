@@ -31,8 +31,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.ResultItem
+import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesMonthlyConfig
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesWeeklyConfig
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
@@ -54,7 +54,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar

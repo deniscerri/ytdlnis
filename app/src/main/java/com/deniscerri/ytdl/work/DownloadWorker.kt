@@ -22,6 +22,7 @@ import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
@@ -33,7 +34,6 @@ import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -168,7 +168,7 @@ class DownloadWorker(
                     val writtenPath = downloadItem.format.format_note.contains("-P ")
                     val noCache = writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
-                    val request = ytdlpUtil.buildYoutubeDLRequest(downloadItem)
+                    val request = ytdlpUtil.buildYTDLRequest(downloadItem)
 
                     // DISABLED BECAUSE YT_DLP CONSIDERS DOWNLOAD FAILURE IF -U PART FAILS, ytdlnis #1043
 //                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
@@ -224,8 +224,13 @@ class DownloadWorker(
                     val eventBus = EventBus.getDefault()
 
                     runCatching {
-                        YoutubeDL.getInstance().destroyProcessById(downloadItem.id.toString())
-                        YoutubeDL.getInstance().execute(request, downloadItem.id.toString(), true){ progress, _, line ->
+                        RuntimeManager.getInstance().destroyProcessById(downloadItem.id.toString())
+                        RuntimeManager.getInstance().execute(
+                            request = request,
+                            processId = downloadItem.id.toString(),
+                            redirectErrorStream = true,
+                            usingCacheDir = true
+                        ){ progress, _, line ->
                             eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
@@ -375,7 +380,7 @@ class DownloadWorker(
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                         }
                         if (this@DownloadWorker.isStopped) return@onFailure
-                        if (it is YoutubeDL.CanceledException) return@onFailure
+                        if (it is RuntimeManager.CanceledException) return@onFailure
                         if (it.message?.contains("JSONDecodeError") == true) {
                             val cachePath = "${FileUtil.getCachePath(context)}infojsons"
                             val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()

@@ -1,6 +1,5 @@
 package com.deniscerri.ytdl.database.dao
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert

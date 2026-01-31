@@ -1,21 +1,14 @@
 package com.deniscerri.ytdl.database.repository
 
-import androidx.compose.runtime.internal.isLiveLiteralsEnabled
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.PagingSource
-import androidx.paging.filter
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.HistoryDao
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.map
 import java.io.File
 
 class HistoryRepository(private val historyDao: HistoryDao) {

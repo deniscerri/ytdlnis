@@ -32,6 +32,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -57,7 +58,6 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.snackbar.Snackbar
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -271,8 +271,8 @@ class MainActivity : BaseActivity() {
             CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                 kotlin.runCatching {
                     if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                        if (UpdateUtil(this@MainActivity).updateYoutubeDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
-                            val version = YoutubeDL.getInstance().version(context)
+                        if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
+                            val version = RuntimeManager.getInstance().version(context)
                             val snack = Snackbar.make(findViewById(R.id.frame_layout),
                                 this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
                                 Snackbar.LENGTH_LONG)

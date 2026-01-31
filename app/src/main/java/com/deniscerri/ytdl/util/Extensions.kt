@@ -21,11 +21,9 @@ import android.text.Spanned
 import android.text.TextWatcher
 import android.util.DisplayMetrics
 import android.util.TypedValue
-import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroupOverlay
 import android.view.ViewOutlineProvider
 import android.view.animation.Interpolator
 import android.widget.EditText
@@ -34,7 +32,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.annotation.Px
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.text.HtmlCompat
@@ -62,7 +59,6 @@ import com.neoutils.highlight.core.util.UiColor
 import com.neoutils.highlight.view.extension.applyTo
 import com.neoutils.highlight.view.extension.removeAllSpans
 import com.neoutils.highlight.view.extension.toSpannedString
-import com.neoutils.highlight.view.text.HighlightTextWatcher
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.BlurTransformation
 import kotlinx.coroutines.flow.Flow
@@ -70,14 +66,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
-import org.json.JSONArray
 import org.json.JSONObject
-import org.json.JSONTokener
 import java.io.File
 import java.net.HttpCookie
 import java.util.Calendar
 import java.util.Locale
-import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.hours

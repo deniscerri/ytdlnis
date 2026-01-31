@@ -21,7 +21,6 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
-import java.util.*
 
 
 class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, PlaylistAdapter.ViewHolder>(AsyncDifferConfig.Builder(

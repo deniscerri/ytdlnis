@@ -14,17 +14,16 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.models.YTDLRequest
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.LogRepository
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -59,7 +58,7 @@ class TerminalDownloadWorker(
             setForegroundAsync(ForegroundInfo(itemId, notification))
         }
 
-        val request = YoutubeDLRequest(emptyList())
+        val request = YTDLRequest(emptyList())
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context)
 
         val downloadLocation = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
@@ -121,7 +120,7 @@ class TerminalDownloadWorker(
                 }
             }
 
-            YoutubeDL.getInstance().execute(request, itemId.toString(), true){ progress, _, line ->
+            RuntimeManager.getInstance().execute(request, itemId.toString(), true){ progress, _, line ->
                 runBlocking {
                     eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }

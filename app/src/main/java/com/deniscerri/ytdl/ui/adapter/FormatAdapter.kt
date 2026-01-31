@@ -5,19 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.FormatRecyclerView
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.databinding.FormatItemBinding
-import com.deniscerri.ytdl.ui.adapter.HistoryPaginatedAdapter.ViewHolder
-import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 

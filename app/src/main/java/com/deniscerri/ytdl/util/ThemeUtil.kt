@@ -9,13 +9,10 @@ import android.os.Bundle
 import android.text.Spanned
 import android.util.TypedValue
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
 import androidx.preference.PreferenceManager
-import androidx.test.runner.lifecycle.ActivityLifecycleCallback
-import androidx.test.runner.lifecycle.Stage
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.google.android.material.color.DynamicColors

@@ -12,6 +12,8 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.anggrayudi.storage.extension.count
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.models.YTDLRequest
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ChapterItem
@@ -20,7 +22,6 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
@@ -33,8 +34,6 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.yausername.youtubedl_android.YoutubeDLRequest
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -42,8 +41,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.lang.reflect.Type
-import java.security.MessageDigest
-import java.util.Base64
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
@@ -54,7 +51,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     private val formatUtil = FormatUtil(context)
     private val handler = Handler(Looper.getMainLooper())
 
-    private fun YoutubeDLRequest.applyDefaultOptionsForFetchingData(url: String?) {
+    private fun YTDLRequest.applyDefaultOptionsForFetchingData(url: String?) {
         addOption("--skip-download")
         addOption("--quiet")
         addOption("--ignore-errors")
@@ -111,20 +108,20 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     fun getFromYTDL(query: String, singleItem: Boolean = false, resultsGenerated: (results: List<ResultItem>) -> Unit): List<ResultItem> {
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
 
-        val request : YoutubeDLRequest
+        val request : YTDLRequest
         if (query.contains("http")){
             if (query.isYoutubeWatchVideosURL()) {
-                request = YoutubeDLRequest(emptyList())
+                request = YTDLRequest(emptyList())
                 val config =
                     File(context.cacheDir.absolutePath + "/config" + System.currentTimeMillis() + "##url.txt")
                 config.writeText(query)
                 request.addOption("--config", config.absolutePath)
             }else{
-                request = YoutubeDLRequest(query)
+                request = YTDLRequest(query)
             }
             request.addWriteInfoJson(query)
         }else{
-            request = YoutubeDLRequest(emptyList())
+            request = YTDLRequest(emptyList())
             when (searchEngine){
                 "ytsearchmusic" -> {
                     request.addOption("--default-search", "https://music.youtube.com/search?q=")
@@ -150,7 +147,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val finalResults = mutableListOf<ResultItem>()
         var postedProgress = false
-        YoutubeDL.getInstance().execute(request) { progress, _, line ->
+        RuntimeManager.getInstance().execute(request) { progress, _, line ->
             runCatching {
                 val generatedResults = parseYTDLPListResults(listOf(line))
                 if (generatedResults.isNotEmpty()) {
@@ -304,18 +301,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     fun getYoutubeWatchLater() : ArrayList<ResultItem> {
-        val request = YoutubeDLRequest(listOf())
+        val request = YTDLRequest(listOf())
         request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytwatchlater")
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val ytdlResponse = RuntimeManager.getInstance().execute(request)
         val results: List<String?> = try {
             val lineSeparator = System.getProperty("line.separator")
-            youtubeDLResponse.out.split(lineSeparator!!)
+            ytdlResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
-            listOf(youtubeDLResponse.out)
+            listOf(ytdlResponse.out)
         }.filter { it.isNotBlank() }.apply {
             if (this.isEmpty()) return arrayListOf()
         }
@@ -323,18 +320,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     fun getYoutubeRecommendations() : ArrayList<ResultItem> {
-        val request = YoutubeDLRequest(listOf())
+        val request = YTDLRequest(listOf())
         request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytrec")
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val ytdlResponse = RuntimeManager.getInstance().execute(request)
         val results: List<String?> = try {
             val lineSeparator = System.getProperty("line.separator")
-            youtubeDLResponse.out.split(lineSeparator!!)
+            ytdlResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
-            listOf(youtubeDLResponse.out)
+            listOf(ytdlResponse.out)
         }.filter { it.isNotBlank() }.apply {
             if (this.isEmpty()) return arrayListOf()
         }
@@ -342,18 +339,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     fun getYoutubeLikedVideos() : ArrayList<ResultItem> {
-        val request = YoutubeDLRequest(listOf())
+        val request = YTDLRequest(listOf())
         request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ytfav")
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val ytdlResponse = RuntimeManager.getInstance().execute(request)
         val results: List<String?> = try {
             val lineSeparator = System.getProperty("line.separator")
-            youtubeDLResponse.out.split(lineSeparator!!)
+            ytdlResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
-            listOf(youtubeDLResponse.out)
+            listOf(ytdlResponse.out)
         }.filter { it.isNotBlank() }.apply {
             if (this.isEmpty()) return arrayListOf()
         }
@@ -361,18 +358,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     fun getYoutubeWatchHistory() : ArrayList<ResultItem> {
-        val request = YoutubeDLRequest(listOf())
+        val request = YTDLRequest(listOf())
         request.setYoutubeExtractorArgs(null)
         request.addOption( "-j")
         request.addOption("--flat-playlist")
         request.applyDefaultOptionsForFetchingData(null)
         request.addOption(":ythis")
-        val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
+        val ytdlResponse = RuntimeManager.getInstance().execute(request)
         val results: List<String?> = try {
             val lineSeparator = System.getProperty("line.separator")
-            youtubeDLResponse.out.split(lineSeparator!!)
+            ytdlResponse.out.split(lineSeparator!!)
         } catch (e: Exception) {
-            listOf(youtubeDLResponse.out)
+            listOf(ytdlResponse.out)
         }.filter { it.isNotBlank() }.apply {
             if (this.isEmpty()) return arrayListOf()
         }
@@ -393,7 +390,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         try {
-            val request = YoutubeDLRequest(emptyList())
+            val request = YTDLRequest(emptyList())
             request.addOption("--print", "formats")
             request.addOption("-a", urlsFile.absolutePath)
             request.applyDefaultOptionsForFetchingData(urls.firstOrNull { it.isURL() })
@@ -406,7 +403,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             println(txt)
 
             var urlIdx = 0
-            YoutubeDL.getInstance().execute(request){ progress, _, line ->
+            RuntimeManager.getInstance().execute(request){ progress, _, line ->
                 try{
                     if (line.isNotBlank()){
                         val url = urls[urlIdx]
@@ -463,7 +460,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     fun getFormats(url: String) : List<Format> {
-        val request = YoutubeDLRequest(url)
+        val request = YTDLRequest(url)
         request.addOption("--print", "%(formats)s")
         request.addOption("--print", "%(duration)s")
         request.applyDefaultOptionsForFetchingData(url)
@@ -485,7 +482,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
-        val res = YoutubeDL.getInstance().execute(request)
+        val res = RuntimeManager.getInstance().execute(request)
         val results: Array<String?> = try {
             res.out.split(System.lineSeparator()).toTypedArray()
         } catch (e: Exception) {
@@ -563,7 +560,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
-            val request = YoutubeDLRequest(url)
+            val request = YTDLRequest(url)
             //request.addOption("--get-url")
             request.addOption("--print", "%(.{urls,chapters})s")
             request.addOption("-S", "res:720,+proto:m3u8")
@@ -572,8 +569,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 request.setYoutubeExtractorArgs(url)
             }
 
-            val youtubeDLResponse = YoutubeDL.getInstance().execute(request)
-            val json = JSONObject(youtubeDLResponse.out)
+            val ytdlResponse = RuntimeManager.getInstance().execute(request)
+            val json = JSONObject(ytdlResponse.out)
             val urls = if (json.has("urls")) {
                 json.getString("urls").split("\n")
             }else{
@@ -602,16 +599,16 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
     fun getVersion(context: Context, channel: String) : String {
         if (listOf("stable", "nightly", "master").contains(channel)) {
-            return YoutubeDL.version(context) ?: ""
+            return RuntimeManager.getInstance().version(context) ?: ""
         }
 
-        val req = YoutubeDLRequest(emptyList())
+        val req = YTDLRequest(emptyList())
         req.addOption("--version")
-        return YoutubeDL.getInstance().execute(req).out.trim()
+        return RuntimeManager.getInstance().execute(req).out.trim()
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun YoutubeDLRequest.addWriteInfoJson(url: String) {
+    private fun YTDLRequest.addWriteInfoJson(url: String) {
         val cachePath = "${FileUtil.getCachePath(context)}infojsons"
         File(cachePath).mkdirs()
 
@@ -655,7 +652,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     fun getFilenameTemplatePreview(item: DownloadItem, filenameTemplate: String): String {
         item.customFileNameTemplate = filenameTemplate
-        val request = buildYoutubeDLRequest(item)
+        val request = buildYTDLRequest(item)
         request.addOption("--print", "%(filename)s")
         request.addOption("--skip-download")
         request.addOption("--simulate")
@@ -663,14 +660,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         request.addOption("--quiet")
 
         try {
-            val response = YoutubeDL.getInstance().execute(request)
+            val response = RuntimeManager.getInstance().execute(request)
             return response.out.replace(FileUtil.getCachePath(context) + "${item.id}/", "").trim()
         } catch (ex: Exception) {
             return ex.message ?: ""
         }
     }
 
-    fun parseYTDLRequestString(request : YoutubeDLRequest) : String {
+    fun parseYTDLRequestString(request : YTDLRequest) : String {
         val arr = request.buildCommand().toMutableList()
         for (i in arr.indices) {
             if (!arr[i].startsWith("-")) {
@@ -702,7 +699,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
 
-    private fun YoutubeDLRequest.setYoutubeExtractorArgs(url: String?) {
+    private fun YTDLRequest.setYoutubeExtractorArgs(url: String?) {
         val extractorArgs = mutableListOf<String>()
         val playerClients = mutableSetOf<String>()
         val poTokens = mutableListOf<String>()
@@ -797,7 +794,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
     }
 
-    private fun YoutubeDLRequest.addConfig(commandString: String) {
+    private fun YTDLRequest.addConfig(commandString: String) {
         this.addOption(
             "--config-locations",
             File(context.cacheDir.absolutePath + "/${System.currentTimeMillis()}${java.util.UUID.randomUUID()}.txt").apply {
@@ -820,7 +817,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     @SuppressLint("RestrictedApi")
-    fun buildYoutubeDLRequest(downloadItem: DownloadItem) : YoutubeDLRequest {
+    fun buildYTDLRequest(downloadItem: DownloadItem) : YTDLRequest {
         var useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
         // for /releases youtube channel playlists that have playlists inside of them, cant use indexing or match filter id, so download on its own
         if (downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() == null) {
@@ -832,18 +829,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val request = StringJoiner(" ")
 
         val ytDlRequest = if (downloadItem.url.endsWith(".txt")) {
-            YoutubeDLRequest(listOf()).apply {
+            YTDLRequest(listOf()).apply {
                 request.addOption("-a", downloadItem.url)
             }
         }else if (downloadItem.playlistURL.isNullOrBlank() || downloadItem.playlistTitle.isBlank() || useItemURL){
             if (downloadItem.url.isBlank()) {
-                YoutubeDLRequest(listOf())
+                YTDLRequest(listOf())
             }else{
-                YoutubeDLRequest(downloadItem.url)
+                YTDLRequest(downloadItem.url)
             }
         }else{
             isPlaylistItem = true
-            YoutubeDLRequest(downloadItem.playlistURL!!).apply {
+            YTDLRequest(downloadItem.playlistURL!!).apply {
                 if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() != null){
                     request.addOption("--match-filter", "id~='${downloadItem.url.getIDFromYoutubeURL()}'")
                 }else{

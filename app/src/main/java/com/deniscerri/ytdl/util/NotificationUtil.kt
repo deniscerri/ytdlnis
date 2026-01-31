@@ -22,7 +22,6 @@ import androidx.navigation.NavDeepLinkBuilder
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.receiver.CancelDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.CancelWorkReceiver
 import com.deniscerri.ytdl.receiver.PauseDownloadNotificationReceiver

@@ -7,12 +7,10 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
-import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.google.android.material.snackbar.Snackbar
 import java.io.File
 
 

@@ -1,17 +1,14 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
-import android.content.pm.ServiceInfo
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ResultRepository
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.runBlocking
 

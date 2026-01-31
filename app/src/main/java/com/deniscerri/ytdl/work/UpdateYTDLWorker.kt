@@ -11,7 +11,7 @@ class UpdateYTDLWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
-        UpdateUtil(context).updateYoutubeDL()
+        UpdateUtil(context).updateYTDL()
         return Result.success()
     }
 

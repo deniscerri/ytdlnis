@@ -1,7 +1,6 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
-import android.os.Environment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData

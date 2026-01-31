@@ -155,7 +155,7 @@ class ObserveSourceWorker(
 
             downloadItems.forEach {
                 it.status = DownloadRepository.Status.Queued.toString()
-                val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
+                val currentCommand = ytdlpUtil.buildYTDLRequest(it)
                 val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                 val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
                     val normalized = d.copy(
