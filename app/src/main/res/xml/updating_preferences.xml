@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <PreferenceCategory android:title="@string/source">
@@ -73,6 +74,32 @@
             app:icon="@drawable/ic_chapters"
             app:key="changelog"
             app:title="@string/changelog" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/packages">
+        <Preference
+            app:icon="@drawable/outline_data_object_24"
+            app:key="package_python"
+            app:title="Python"
+            tools:summary="@string/not_installed" />
+
+        <Preference
+            app:icon="@drawable/outline_data_object_24"
+            app:key="package_ffmpeg"
+            app:title="FFmpeg"
+            tools:summary="@string/not_installed" />
+
+        <Preference
+            app:icon="@drawable/outline_data_object_24"
+            app:key="package_aria2c"
+            app:title="Aria2c"
+            tools:summary="@string/not_installed" />
+
+        <Preference
+            app:icon="@drawable/outline_data_object_24"
+            app:key="package_nodejs"
+            app:title="NodeJS"
+            tools:summary="@string/not_installed" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/format">

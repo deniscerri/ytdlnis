@@ -9,6 +9,7 @@ import com.deniscerri.ytdl.core.ZipUtils
 import org.apache.commons.io.FileUtils
 import org.json.JSONObject
 import java.io.File
+import java.net.HttpURLConnection
 import java.net.URL
 
 abstract class BaseRuntime {
@@ -51,30 +52,92 @@ abstract class BaseRuntime {
         }
     }
 
-    fun downloadAndInstall(context: Context, zipUrl: String, versionTag: String) {
-        val downloadDir = File(context.noBackupFilesDir, "runtimes/$runtimeName")
-        FileUtils.deleteQuietly(downloadDir)
-        downloadDir.mkdirs()
+    fun downloadAndInstall(context: Context, zipUrl: String, versionTag: String, onProgress: (Long, Long) -> Unit) : Boolean {
+        // 1. Clean up old installation
+        val runtimeDir = File(context.noBackupFilesDir, "runtimes/$runtimeName")
+        FileUtils.deleteQuietly(runtimeDir)
+        runtimeDir.mkdirs()
 
-        val tempZip = File(context.cacheDir, "${runtimeName}_tmp.zip")
+        var success = false
+
+        val tempZip = File(context.cacheDir, "${runtimeName}_bundle_tmp.zip")
         try {
-            URL(zipUrl).openStream().use { input ->
-                tempZip.outputStream().use { output -> input.copyTo(output) }
+            // 2. Download the bundle (handles GitHub 302 redirects)
+            downloadWithRedirects(zipUrl, tempZip, onProgress)
+            // 3. Unzip the main Bundle (contains libnode.so and libnode.zip.so)
+            ZipUtils.unzip(tempZip, runtimeDir)
+            // 4. Handle the Bootstrap Zip (Double Unzip)
+            // Look for any .zip.so file in the extracted directory
+            runtimeDir.listFiles()?.forEach { file ->
+                if (file.name.endsWith(".zip.so")) {
+                    ZipUtils.unzip(file, runtimeDir)
+                    file.delete() // Remove the internal zip to save space
+                }
             }
+            // 5. Global Permission Fix
+            // Scan for all files in any 'bin' folder and make them executable
+            applyExecutablePermissions(runtimeDir)
+            // 6. Save installation state
+            saveState(context, versionTag)
+            success = true
+        } catch (ex: Exception) {
+            success = false
+        }
+        if (tempZip.exists()) tempZip.delete()
+        return success
+    }
 
-            ZipUtils.unzip(tempZip, downloadDir)
+    private fun downloadWithRedirects(url: String, dest: File, onProgress: (Long, Long) -> Unit) {
+        var currentUrl = url
+        var connection: HttpURLConnection
+        var redirectCount = 0
 
-            // Recursive function to set executable permissions on everything in bin/
-            File(downloadDir, "bin").listFiles()?.forEach {
-                it.setExecutable(true, false)
+        while (true) {
+            connection = URL(currentUrl).openConnection() as HttpURLConnection
+            connection.instanceFollowRedirects = true
+
+            val status = connection.responseCode
+            if (status == HttpURLConnection.HTTP_MOVED_TEMP ||
+                status == HttpURLConnection.HTTP_MOVED_PERM ||
+                status == HttpURLConnection.HTTP_SEE_OTHER) {
+
+                currentUrl = connection.getHeaderField("Location")
+                redirectCount++
+                if (redirectCount > 5) throw Exception("Too many redirects")
+                continue
             }
+            break
+        }
 
-            PreferenceManager.getDefaultSharedPreferences(context).edit {
-                putBoolean(installedKey, true)
-                putString(versionKey, versionTag)
+        val fileSize = connection.contentLength.toLong()
+        var bytesCopied = 0L
+        val buffer = ByteArray(8192)
+
+        connection.inputStream.use { input ->
+            dest.outputStream().use { output ->
+                var bytes = input.read(buffer)
+                while (bytes >= 0) {
+                    output.write(buffer, 0, bytes)
+                    bytesCopied += bytes
+                    // Trigger the callback
+                    onProgress?.invoke(bytesCopied, fileSize)
+                    bytes = input.read(buffer)
+                }
             }
-        } finally {
-            tempZip.delete()
+        }
+    }
+
+    private fun applyExecutablePermissions(file: File) {
+        if (file.isDirectory) {
+            // Check if this folder is a 'bin' folder
+            if (file.name == "bin") {
+                file.listFiles()?.forEach { it.setExecutable(true, false) }
+            }
+            // Recurse into subdirectories
+            file.listFiles()?.forEach { applyExecutablePermissions(it) }
+        } else if (file.name == "libnode.so") {
+            // Specifically ensure our renamed main binary is executable
+            file.setExecutable(true, false)
         }
     }
 
@@ -84,6 +147,14 @@ abstract class BaseRuntime {
             prefs.getString(versionKey, "unknown") ?: "unknown"
         } else {
             "PRE-BUNDLED"
+        }
+    }
+
+    private fun saveState(context: Context, version: String) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        prefs.edit(commit = true) {
+            putBoolean(installedKey, true)
+            putString(versionKey, version)
         }
     }
 

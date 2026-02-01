@@ -9,3 +9,4 @@
 .externalNativeBuild
 /benchmark
 *.png
+app/src/main/jniLibs

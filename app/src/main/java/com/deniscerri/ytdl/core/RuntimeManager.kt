@@ -103,6 +103,11 @@ object RuntimeManager {
         initialized = true
     }
 
+    fun reInit(context: Context) {
+        initialized = false
+        init(context)
+    }
+
     private fun assertInit() {
         check(initialized) { "instance not initialized" }
     }

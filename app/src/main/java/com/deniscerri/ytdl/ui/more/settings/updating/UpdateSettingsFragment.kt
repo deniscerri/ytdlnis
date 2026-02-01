@@ -11,6 +11,12 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.runtimes.Aria2c
+import com.deniscerri.ytdl.core.runtimes.BaseRuntime
+import com.deniscerri.ytdl.core.runtimes.FFmpeg
+import com.deniscerri.ytdl.core.runtimes.NodeJS
+import com.deniscerri.ytdl.core.runtimes.Python
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
@@ -110,6 +116,21 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+        //packages
+        findPreference<Preference>("package_python")?.apply {
+            val instance = Python.getInstance()
+            summary = instance.getVersion(requireContext())
+        }
+        findPreference<Preference>("package_ffmpeg")?.apply {
+            val instance = FFmpeg.getInstance()
+            summary = instance.getVersion(requireContext())
+        }
+        findPreference<Preference>("package_aria2c")?.apply {
+            val instance = Aria2c.getInstance()
+            summary = instance.getVersion(requireContext())
+        }
+
+        handlePackage(NodeJS.getInstance(), findPreference<Preference>("package_nodejs"))
 
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
@@ -184,5 +205,40 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
         }
     }
 
+
+    private fun handlePackage(instance: BaseRuntime, preference: Preference?) {
+        //TODO REWRITE THIS LOL
+        preference?.apply {
+            summary = instance.getVersion(requireContext())
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                summary = getString(R.string.loading)
+                val response = instance.checkForUpdates(requireContext())
+                if (response == null) {
+                    Snackbar.make(requireView(), getString(R.string.failed_download), Snackbar.LENGTH_SHORT).show()
+                } else {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                            val success = instance.downloadAndInstall(requireContext(), response.downloadUrl, response.version) { progress, total ->
+                                val downloadedMB = progress / 1048576
+                                val totalMB = total / 1048576
+
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.Main) {
+                                        summary = "${getString(R.string.downloading)} $downloadedMB MB / $totalMB MB"
+                                    }
+                                }
+                            }
+
+                            if (success) {
+                                RuntimeManager.reInit(requireContext())
+                            }
+                        }
+                    }
+                }
+                summary = instance.getVersion(requireContext())
+                true
+            }
+        }
+    }
 
 }
