@@ -172,4 +172,4 @@ height="80">](https://www.buymeacoffee.com/deniscerri)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) 及其贡献者使得这个工具成为可能。没有它就不会有这个应用
 
 
-以及很多其他人，包括贡献者。
+以及很多包括贡献者在内的其他人
