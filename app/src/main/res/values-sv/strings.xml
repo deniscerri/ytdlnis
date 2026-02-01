@@ -477,4 +477,5 @@
     <string name="visitor_data">Besöks Data</string>
     <string name="get_data_sync_id">Hämta Data Sync ID</string>
     <string name="desktop">Skrivbord</string>
+    <string name="use_code_highlighter">Markera med färg</string>
 </resources>

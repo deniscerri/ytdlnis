@@ -506,4 +506,5 @@
     <string name="app_icon">应用标签</string>
     <string name="show_quick_download_share_menu">在分享菜单中显示立即下载选项</string>
     <string name="quick_download_title">不获取数据</string>
+    <string name="sponsorblock_hook">噱头/问候</string>
 </resources>

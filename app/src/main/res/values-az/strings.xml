@@ -507,4 +507,5 @@
     <string name="app_icon">Tətbiq Simvolu</string>
     <string name="show_quick_download_share_menu">Paylaş menyusunda dərhal yükləmək üçün seçim göstər</string>
     <string name="quick_download_title">Məlumatları almayın</string>
+    <string name="sponsorblock_hook">Qarşılıqlı əlaqə/Salamlaşma</string>
 </resources>

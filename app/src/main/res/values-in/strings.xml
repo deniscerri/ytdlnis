@@ -506,4 +506,5 @@
     <string name="app_icon">Ikon Aplikasi</string>
     <string name="show_quick_download_share_menu">Tampilkan pilihan untuk mengunduh secara langsung di menu bagikan</string>
     <string name="quick_download_title">Jangan mengambil data</string>
+    <string name="sponsorblock_hook">Pengantar/Sapaan</string>
 </resources>

@@ -63,7 +63,7 @@
     <string name="help_translate">Bantuan Terjemahan</string>
     <string name="enable_mtime_summary">Setel header HTTP Last Modified minangka wektu pungkasan sing diowahi</string>
     <string name="save_dir">Direktori Panyimpenan</string>
-    <string name="remove_all">Resik kabeh</string>
+    <string name="remove_all">Resik i kabeh</string>
     <string name="defaultValue">Asli</string>
     <string name="preferred_download_type_summary">Tab kertu download bakal mbukak kanthi gawan</string>
     <string name="redownload">Unduh ulang</string>
@@ -86,13 +86,13 @@
     <string name="log_downloads">Log Downloads</string>
     <string name="terminal">Terminal</string>
     <string name="concurrent_fragments">Fragmen bebarengan</string>
-    <string name="home">Kaca ngarep</string>
+    <string name="home">Latar</string>
     <string name="cancel">Batal</string>
     <string name="download_notification_channel_name">Ngundhuh file</string>
     <string name="delete_files_too">Mbusak file saka piranti</string>
     <string name="download_queue">Download Antrian</string>
     <string name="please_wait">Mangga ngenteni</string>
-    <string name="remove_results">asil cetha</string>
+    <string name="remove_results">Asil cetha</string>
     <string name="error_restarting_download">Kesalahan nalika nyoba miwiti download maneh</string>
     <string name="help_translate_summary">Terjemahake aplikasi iki menyang basa sampeyan nggunakake Weblate</string>
     <string name="remove_search_history">Mbusak Riwayat Browsing</string>
@@ -108,7 +108,7 @@
     <string name="all_items_selected">Kabeh butir dipilih</string>
     <string name="language">Basa</string>
     <string name="download_rescheduled_to">Download dijadwal maneh menyang:</string>
-    <string name="search">Browse</string>
+    <string name="search">Golek</string>
     <string name="file_size">Ukuran berkas</string>
     <string name="restrict_filenames_summary">Batesi jeneng berkas kanggo karakter ASCII, lan supaya \"&amp;\" lan spasi ing jeneng berkas</string>
     <string name="shortcuts">Trabasan</string>

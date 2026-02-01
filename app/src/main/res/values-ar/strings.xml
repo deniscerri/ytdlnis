@@ -507,4 +507,5 @@
     <string name="app_icon">ايقونة التطبيق</string>
     <string name="show_quick_download_share_menu">أظهِر خيار التنزيل الفوري في قائمة المشاركة</string>
     <string name="quick_download_title">لا تجلب البيانات</string>
+    <string name="sponsorblock_hook">ترحيبات/خطاف</string>
 </resources>
