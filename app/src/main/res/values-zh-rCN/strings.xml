@@ -151,7 +151,7 @@
     <string name="backup_created_successfully">成功保存了备份文件</string>
     <string name="appearance">外观</string>
     <string name="pause">暂停</string>
-    <string name="configure_download">调整下载</string>
+    <string name="configure_download">配置下载</string>
     <string name="show_terminal">在分享菜单中显示终端</string>
     <string name="socks5_proxy">Socks5 代理网址</string>
     <string name="retries">任务重试次数</string>
@@ -218,7 +218,7 @@
     <string name="ytdl_version">yt-dlp 版本</string>
     <string name="link_you_copied">您复制的链接</string>
     <string name="restrict_filenames_summary">将文件名限制为仅 ASCII 字符，并避免在文件名中使用\"&amp;\"和空格</string>
-    <string name="kill_app">结束应用</string>
+    <string name="kill_app">关闭app</string>
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
     <string name="new_cut">新剪辑</string>
     <string name="new_cookie">新 Cookie</string>
@@ -339,7 +339,7 @@
     <string name="copy_urls">复制 URL</string>
     <string name="never">从不</string>
     <string name="on_time">在</string>
-    <string name="observe_sources">观察源</string>
+    <string name="observe_sources">自动订阅</string>
     <string name="week">周</string>
     <string name="new_source">新源</string>
     <string name="force_ipv4">强制使用 IPv4</string>
