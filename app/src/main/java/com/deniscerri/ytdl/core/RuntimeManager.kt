@@ -7,10 +7,10 @@ import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.core.models.ExecuteResponse
 import com.deniscerri.ytdl.core.models.RuntimeLocation
 import com.deniscerri.ytdl.core.models.YTDLRequest
-import com.deniscerri.ytdl.core.runtimes.Aria2c
-import com.deniscerri.ytdl.core.runtimes.FFmpeg
-import com.deniscerri.ytdl.core.runtimes.NodeJS
-import com.deniscerri.ytdl.core.runtimes.Python
+import com.deniscerri.ytdl.core.plugins.Aria2c
+import com.deniscerri.ytdl.core.plugins.FFmpeg
+import com.deniscerri.ytdl.core.plugins.NodeJS
+import com.deniscerri.ytdl.core.plugins.Python
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
 import org.apache.commons.io.FileUtils

@@ -76,28 +76,28 @@
             app:title="@string/changelog" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/packages">
+    <PreferenceCategory android:title="@string/plugins">
         <Preference
             app:icon="@drawable/outline_data_object_24"
-            app:key="package_python"
+            app:key="plugin_python"
             app:title="Python"
             tools:summary="@string/not_installed" />
 
         <Preference
             app:icon="@drawable/outline_data_object_24"
-            app:key="package_ffmpeg"
+            app:key="plugin_ffmpeg"
             app:title="FFmpeg"
             tools:summary="@string/not_installed" />
 
         <Preference
             app:icon="@drawable/outline_data_object_24"
-            app:key="package_aria2c"
+            app:key="plugin_aria2c"
             app:title="Aria2c"
             tools:summary="@string/not_installed" />
 
         <Preference
             app:icon="@drawable/outline_data_object_24"
-            app:key="package_nodejs"
+            app:key="plugin_nodejs"
             app:title="NodeJS"
             tools:summary="@string/not_installed" />
     </PreferenceCategory>

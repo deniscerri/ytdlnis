@@ -12,11 +12,11 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
-import com.deniscerri.ytdl.core.runtimes.Aria2c
-import com.deniscerri.ytdl.core.runtimes.BaseRuntime
-import com.deniscerri.ytdl.core.runtimes.FFmpeg
-import com.deniscerri.ytdl.core.runtimes.NodeJS
-import com.deniscerri.ytdl.core.runtimes.Python
+import com.deniscerri.ytdl.core.plugins.Aria2c
+import com.deniscerri.ytdl.core.plugins.PluginBase
+import com.deniscerri.ytdl.core.plugins.FFmpeg
+import com.deniscerri.ytdl.core.plugins.NodeJS
+import com.deniscerri.ytdl.core.plugins.Python
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
@@ -92,6 +92,11 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             false
         }
 
+        findPreference<Preference>("plugins")?.setOnPreferenceClickListener {
+            findNavController().navigate(R.id.pluginsFragment)
+            false
+        }
+
 
         version = findPreference("version")
         val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
@@ -116,21 +121,21 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        //packages
-        findPreference<Preference>("package_python")?.apply {
+        //plugins
+        findPreference<Preference>("plugin_python")?.apply {
             val instance = Python.getInstance()
             summary = instance.getVersion(requireContext())
         }
-        findPreference<Preference>("package_ffmpeg")?.apply {
+        findPreference<Preference>("plugin_ffmpeg")?.apply {
             val instance = FFmpeg.getInstance()
             summary = instance.getVersion(requireContext())
         }
-        findPreference<Preference>("package_aria2c")?.apply {
+        findPreference<Preference>("plugin_aria2c")?.apply {
             val instance = Aria2c.getInstance()
             summary = instance.getVersion(requireContext())
         }
 
-        handlePackage(NodeJS.getInstance(), findPreference<Preference>("package_nodejs"))
+        handlePlugin(NodeJS.getInstance(), findPreference<Preference>("plugin_nodejs"))
 
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
@@ -206,7 +211,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
     }
 
 
-    private fun handlePackage(instance: BaseRuntime, preference: Preference?) {
+    private fun handlePlugin(instance: PluginBase, preference: Preference?) {
         //TODO REWRITE THIS LOL
         preference?.apply {
             summary = instance.getVersion(requireContext())

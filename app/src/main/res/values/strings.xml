@@ -510,6 +510,7 @@
     <string name="show_quick_download_share_menu">Show option to download immediately in the share menu</string>
     <string name="quick_download_title">Don\'t fetch data</string>
     <string name="sponsorblock_hook">Hook/Greetings</string>
-    <string name="packages">Packages</string>
+    <string name="plugins">Plugins</string>
     <string name="not_installed">Not installed</string>
+    <string name="import_zip">Import ZIP</string>
 </resources>
