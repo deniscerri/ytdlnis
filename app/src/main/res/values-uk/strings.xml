@@ -506,5 +506,5 @@
     <string name="app_icon">Значок застосунку</string>
     <string name="show_quick_download_share_menu">Показати швидке завантаження в меню спільного доступу</string>
     <string name="quick_download_title">Не отримувати дані</string>
-    <string name="sponsorblock_hook">Гачок/Привітання</string>
+    <string name="sponsorblock_hook">Спливаючі/Привітання</string>
 </resources>
