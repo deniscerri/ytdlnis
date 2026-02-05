@@ -506,5 +506,5 @@
     <string name="app_icon">Значок приложения</string>
     <string name="show_quick_download_share_menu">Показать немедленную загрузку в меню общего доступа</string>
     <string name="quick_download_title">Не получать данные</string>
-    <string name="sponsorblock_hook">Крючок/Приветствия</string>
+    <string name="sponsorblock_hook">Всплывающие/Приветствия</string>
 </resources>
