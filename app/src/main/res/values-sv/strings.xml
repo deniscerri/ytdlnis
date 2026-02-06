@@ -483,4 +483,7 @@
     <string name="generate_potokens">Generera PO-tokens</string>
     <string name="regenerate">Regenerera</string>
     <string name="cut_unsupported">Klippning är inte tillgängligt för detta objekt</string>
+    <string name="select_between_desc">Bestäm urvalet av objekt att välja</string>
+    <string name="potoken">PO-nyckel</string>
+    <string name="web_client_po_token">Webbklients PO-nyckel</string>
 </resources>
