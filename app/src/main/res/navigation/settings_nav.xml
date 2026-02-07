@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_updateSettingsFragment_to_changeLogFragment"
             app:destination="@id/changeLogFragment" />
+        <action
+            android:id="@+id/action_updateSettingsFragment_to_pluginsFragment"
+            app:destination="@id/pluginsFragment" />
     </fragment>
     <fragment
         android:id="@+id/downloadSettingsFragment"
@@ -72,4 +75,8 @@
         android:id="@+id/generateYoutubePoTokensFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.GenerateYoutubePoTokensFragment"
         android:label="GenerateYoutubePoTokensFragment" />
+    <fragment
+        android:id="@+id/pluginsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.updating.PluginsFragment"
+        android:label="PluginsFragment" />
 </navigation>

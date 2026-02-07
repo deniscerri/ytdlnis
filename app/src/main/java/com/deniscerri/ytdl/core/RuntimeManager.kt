@@ -5,12 +5,13 @@ import android.os.Build
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.core.models.ExecuteResponse
-import com.deniscerri.ytdl.core.models.RuntimeLocation
 import com.deniscerri.ytdl.core.models.YTDLRequest
 import com.deniscerri.ytdl.core.plugins.Aria2c
 import com.deniscerri.ytdl.core.plugins.FFmpeg
 import com.deniscerri.ytdl.core.plugins.NodeJS
+import com.deniscerri.ytdl.core.plugins.PluginBase
 import com.deniscerri.ytdl.core.plugins.Python
+import com.deniscerri.ytdl.core.plugins.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
 import org.apache.commons.io.FileUtils
@@ -20,18 +21,16 @@ import java.util.Collections
 
 object RuntimeManager {
     val idProcessMap = Collections.synchronizedMap(HashMap<String, Process>())
-    lateinit var pythonLocation: RuntimeLocation
-    lateinit var ffmpegLocation: RuntimeLocation
-    lateinit var aria2Location: RuntimeLocation
-    lateinit var nodeLocation : RuntimeLocation
-    lateinit var quickJsLocation : RuntimeLocation
+    lateinit var pythonLocation: PluginBase.PluginLocation
+    lateinit var ffmpegLocation: PluginBase.PluginLocation
+    lateinit var aria2Location: PluginBase.PluginLocation
+    lateinit var nodeLocation : PluginBase.PluginLocation
+    lateinit var quickJsLocation : PluginBase.PluginLocation
     var ytdlpPath: File? = null
 
     const val PREFS_NAME = "runtime_prefs"
 
     private var initialized = false
-    private const val RUNTIME_ROOT = "runtimes"
-    private const val PACKAGES_ROOT = "packages"
     const val BASENAME = "ytdlnis"
     const val ytdlpDirName = "yt-dlp"
     const val ytdlpBin = "yt-dlp"
@@ -39,6 +38,7 @@ object RuntimeManager {
     private var ENV_LD_LIBRARY_PATH: String? = null
     private var PATH: String? = null
     private var ENV_SSL_CERT_FILE: String? = null
+    private var OPEN_SSL_CONF: String? = null
     private var ENV_PYTHONHOME: String? = null
     private var TMPDIR: String = ""
 
@@ -46,22 +46,28 @@ object RuntimeManager {
         if (initialized) return
         val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
 
-        //extract bundled libraries if present
-        Python.getInstance().init(appContext)
-        FFmpeg.getInstance().init(appContext)
-        Aria2c.getInstance().init(appContext)
-        NodeJS.getInstance().init(appContext)
+        val python = Python.getInstance()
+        val ffmpeg = FFmpeg.getInstance()
+        val aria2c = Aria2c.getInstance()
+        val nodeJS = NodeJS.getInstance()
+        val quickJS = QuickJS.getInstance()
+
+        python.init(appContext)
+        ffmpeg.init(appContext)
+        aria2c.init(appContext)
+        nodeJS.init(appContext)
+        quickJS.init(appContext)
 
         //find location of libraries either from bundled or downloaded paths
-        pythonLocation = getLocation(appContext, baseDir, "python", "python")
-        ffmpegLocation = getLocation(appContext, baseDir, "ffmpeg", "ffmpeg")
-        aria2Location = getLocation(appContext, baseDir, "aria2", "aria2")
-        nodeLocation = getLocation(appContext, baseDir, "node", "node")
-        quickJsLocation = getLocation(appContext, baseDir, "quickjs", "qjs")
+        pythonLocation = python.location
+        ffmpegLocation = ffmpeg.location
+        aria2Location = aria2c.location
+        nodeLocation = nodeJS.location
+        quickJsLocation = quickJS.location
 
         val ytdlpDir = File(baseDir, ytdlpDirName)
         ytdlpPath = File(ytdlpDir, ytdlpBin)
-        init_ytdlp(appContext, ytdlpDir)
+        initYTDLP(appContext, ytdlpDir)
 
         val locations = listOf(
             pythonLocation,
@@ -73,30 +79,39 @@ object RuntimeManager {
 
         val ldPaths = mutableListOf<String>()
         locations.forEach {
-            val usrLib = File(it.ldLibraryDir, "usr/lib")
+            val usrLib = File(it.ldDir, "usr/lib")
             if (usrLib.exists()) {
                 ldPaths.add(usrLib.absolutePath)
-            } else if (it.ldLibraryDirExists) {
-                ldPaths.add(it.ldLibraryDir.absolutePath)
+            } else if (it.ldDir.exists()) {
+                ldPaths.add(it.ldDir.absolutePath)
             }
         }
         ldPaths.add(appContext.applicationInfo.nativeLibraryDir)
         ENV_LD_LIBRARY_PATH = ldPaths.distinct().joinToString(":")
 
-        val binPaths = locations.filter { it.binDirExists }.map { it.binDir.absolutePath }.toMutableList()
+        val binPaths = locations.filter { it.binDir.exists() }.map { it.binDir.absolutePath }.toMutableList()
         binPaths.add(System.getenv("PATH") ?: "/system/bin")
         PATH = binPaths.distinct().joinToString(":")
 
         ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
-            File(pythonLocation.ldLibraryDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
+            File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
         } else {
-            pythonLocation.ldLibraryDir.absolutePath + "/usr/etc/tls/cert.pem"
+            pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
+        }
+
+        OPEN_SSL_CONF = ""
+        if (nodeLocation.ldDir.exists()) {
+            OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
+                File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
+            } else {
+                nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
+            }
         }
 
         ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
-            pythonLocation.ldLibraryDir.parent
+            pythonLocation.ldDir.parent
         } else {
-            pythonLocation.ldLibraryDir.absolutePath + "/usr"
+            pythonLocation.ldDir.absolutePath + "/usr"
         }
         TMPDIR = appContext.cacheDir.absolutePath
 
@@ -112,42 +127,8 @@ object RuntimeManager {
         check(initialized) { "instance not initialized" }
     }
 
-    fun getLocation(context: Context, baseDir: File, libName: String, exeName: String): RuntimeLocation {
-
-        val isDownloaded = isDownloaded(context, libName)
-        val binDir: File
-        val ldLibDir: File
-        val potentialExe: File
-
-        if (isDownloaded(context, libName)) {
-            val downloadedDir = File(context.noBackupFilesDir, "$RUNTIME_ROOT/$libName")
-            binDir = File(downloadedDir, "bin")
-            ldLibDir = downloadedDir
-            potentialExe = File(binDir, exeName)
-        } else {
-            val packagesDir = File(baseDir, PACKAGES_ROOT)
-            binDir = File(context.applicationInfo.nativeLibraryDir)
-            ldLibDir = File(packagesDir, libName)
-            potentialExe = File(binDir, "lib$exeName.so")
-        }
-
-        return RuntimeLocation(
-            binDir = binDir,
-            binDirExists = binDir.exists(),
-            ldLibraryDir = ldLibDir,
-            ldLibraryDirExists = ldLibDir.exists(),
-            isDownloaded = isDownloaded,
-            // Only store the path if the file exists and is a file
-            exePath = if (potentialExe.exists() && potentialExe.isFile) {
-                potentialExe.absolutePath
-            } else {
-                null
-            }
-        )
-    }
-
     @Throws(ExecuteException::class)
-    fun init_ytdlp(appContext: Context, ytdlpDir: File) {
+    fun initYTDLP(appContext: Context, ytdlpDir: File) {
         if (!ytdlpDir.exists()) ytdlpDir.mkdirs()
         val ytdlpBinary = File(ytdlpDir, ytdlpBin)
         if (!ytdlpBinary.exists()) {
@@ -205,14 +186,16 @@ object RuntimeManager {
             throw ExecuteException("Process ID already exists")
         }
 
-        ffmpegLocation.exePath?.apply {
-            request.addOption("--ffmpeg-location", this)
+        if (ffmpegLocation.isAvailable) {
+            request.addOption("--ffmpeg-location", ffmpegLocation.executable.absolutePath)
         }
 
-        if (nodeLocation.exePath != null) {
-            request.addOption("--js-runtimes", "node:${nodeLocation.exePath}")
-        } else if (quickJsLocation.exePath != null) {
-            request.addOption("--js-runtimes", "quickjs:${quickJsLocation.exePath}")
+        if (nodeLocation.isAvailable) {
+            request.addOption("--js-runtimes", "node:${nodeLocation.executable.absolutePath}")
+        }
+
+        if (quickJsLocation.isAvailable) {
+            request.addOption("--js-runtimes", "quickjs:${quickJsLocation.executable.absolutePath}")
         }
 
         if (!usingCacheDir) {
@@ -220,12 +203,15 @@ object RuntimeManager {
         }
 
         val startTime = System.currentTimeMillis()
-        val fullCommand = mutableListOf<String>(pythonLocation.exePath!!, ytdlpPath!!.absolutePath) + request.buildCommand()
+        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
 
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
         processBuilder.environment().apply {
             this["LD_LIBRARY_PATH"] = ENV_LD_LIBRARY_PATH
+            if (OPEN_SSL_CONF != "") {
+                this["OPENSSL_CONF"] = OPEN_SSL_CONF
+            }
             this["SSL_CERT_FILE"] = ENV_SSL_CERT_FILE
             this["PATH"] = PATH
             this["PYTHONHOME"] = ENV_PYTHONHOME
@@ -320,11 +306,6 @@ object RuntimeManager {
         }
     }
 
-    //private helpers
-    private fun isDownloaded(context: Context, libName: String): Boolean {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getBoolean("${libName}_installed", false)
-    }
     @JvmStatic
     fun getInstance() = this
 }

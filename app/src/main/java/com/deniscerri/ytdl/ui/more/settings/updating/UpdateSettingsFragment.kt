@@ -121,22 +121,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        //plugins
-        findPreference<Preference>("plugin_python")?.apply {
-            val instance = Python.getInstance()
-            summary = instance.getVersion(requireContext())
-        }
-        findPreference<Preference>("plugin_ffmpeg")?.apply {
-            val instance = FFmpeg.getInstance()
-            summary = instance.getVersion(requireContext())
-        }
-        findPreference<Preference>("plugin_aria2c")?.apply {
-            val instance = Aria2c.getInstance()
-            summary = instance.getVersion(requireContext())
-        }
-
-        handlePlugin(NodeJS.getInstance(), findPreference<Preference>("plugin_nodejs"))
-
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(preferences.edit(), R.xml.updating_preferences)
@@ -209,41 +193,4 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
         }
     }
-
-
-    private fun handlePlugin(instance: PluginBase, preference: Preference?) {
-        //TODO REWRITE THIS LOL
-        preference?.apply {
-            summary = instance.getVersion(requireContext())
-            onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                summary = getString(R.string.loading)
-                val response = instance.checkForUpdates(requireContext())
-                if (response == null) {
-                    Snackbar.make(requireView(), getString(R.string.failed_download), Snackbar.LENGTH_SHORT).show()
-                } else {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO) {
-                            val success = instance.downloadAndInstall(requireContext(), response.downloadUrl, response.version) { progress, total ->
-                                val downloadedMB = progress / 1048576
-                                val totalMB = total / 1048576
-
-                                lifecycleScope.launch {
-                                    withContext(Dispatchers.Main) {
-                                        summary = "${getString(R.string.downloading)} $downloadedMB MB / $totalMB MB"
-                                    }
-                                }
-                            }
-
-                            if (success) {
-                                RuntimeManager.reInit(requireContext())
-                            }
-                        }
-                    }
-                }
-                summary = instance.getVersion(requireContext())
-                true
-            }
-        }
-    }
-
 }

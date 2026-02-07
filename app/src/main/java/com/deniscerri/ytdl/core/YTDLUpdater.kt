@@ -53,7 +53,7 @@ internal object YTDLUpdater {
             FileUtils.copyFile(file, binary)
         } catch (e: Exception) {
             FileUtils.deleteQuietly(ytdlpDir)
-            getInstance().init_ytdlp(appContext, ytdlpDir)
+            getInstance().initYTDLP(appContext, ytdlpDir)
             throw ExecuteException(e)
         } finally {
             file.delete()

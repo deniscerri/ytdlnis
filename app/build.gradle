@@ -46,7 +46,12 @@ android {
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdk 24
-        targetSdk 36
+        /*
+        KEEP 28 TO ALLOW THE APP TO EXECUTE DOWNLOADABLE PLUGINS, IF PLAN TO UPGRADE PRE-BUNDLE plugins in jniLibs
+        OR LOOK INTO PLUGINS as APK and put the files in their respective jniLibs
+        * */
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk 28
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}${versionExt}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

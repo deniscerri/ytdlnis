@@ -5,7 +5,7 @@ import android.os.Build
 import androidx.core.content.edit
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
-import com.anggrayudi.storage.file.openInputStream
+import com.anggrayudi.storage.file.toRawFile
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.ZipUtils
 import kotlinx.coroutines.Dispatchers
@@ -17,11 +17,16 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.apache.commons.io.FileUtils
 import java.io.File
+import java.time.LocalDate
 
 abstract class PluginBase {
-    protected abstract val pluginName: String      // e.g., "ffmpeg"
+    protected abstract val executableName: String      // e.g., "ffmpeg"
+    protected abstract val pluginFolderName: String      // e.g., "ffmpeg"
     protected abstract val bundledZipName: String   // e.g., "libffmpeg.zip.so"
-    protected abstract val bundledVersion: String   // e.g., "v7.1"
+    fun getInstance(): PluginBase = this
+
+    abstract val bundledVersion: String?
+    var downloadedVersion: String? = null
     protected abstract val githubRepositoryPackageURL: String  // github repository package url
 
     @Serializable
@@ -35,12 +40,24 @@ abstract class PluginBase {
         var isInstalled: Boolean
     )
 
-    // Preferences Keys
-    private val installedKey get() = "${pluginName}_installed"
-    private val versionKey get() = "${pluginName}_version"
-    private val bundledVerKey get() = "${pluginName}_bundled_ver"
+    data class PluginLocation(
+        val binDir: File,
+        val ldDir: File,
+        val executable: File,
+        val isDownloaded: Boolean,
+        val isBundled: Boolean,
+        val isAvailable: Boolean
+    )
 
-    lateinit var currentVersion : String
+    // Preferences Keys
+    private val downloadedVersionKey get() = "${executableName}_downloaded_ver"
+    private val bundledVerKey get() = "${executableName}_bundled_ver"
+
+    private val packagesRoot = "packages"
+    private val downloadedPackagesRoot = "downloaded_packages"
+
+
+    lateinit var location: PluginLocation
 
     companion object {
         val sharedClient: OkHttpClient by lazy {
@@ -51,17 +68,16 @@ abstract class PluginBase {
 
     fun init(context: Context) {
         val baseDir = File(context.noBackupFilesDir, RuntimeManager.BASENAME)
-        val packageDir = File(baseDir, "packages/$pluginName")
-
-        if (!isDownloaded(context)) {
-            initBundled(context, packageDir)
-        }
-
+        val packageDir = File(baseDir, "$packagesRoot/$pluginFolderName")
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        currentVersion = if (prefs.getBoolean(installedKey, false)) {
-            prefs.getString(versionKey, "unknown") ?: "unknown"
+        //try init bundled
+        initBundled(context, packageDir)
+
+        location = getLocation(context, baseDir)
+        downloadedVersion = if (location.isDownloaded) {
+            prefs.getString(downloadedVersionKey, null)
         } else {
-            bundledVersion
+            ""
         }
     }
 
@@ -84,18 +100,45 @@ abstract class PluginBase {
         }
     }
 
-    private fun getRuntimeDir(context: Context) : File {
-        return File(context.noBackupFilesDir, "runtimes/$pluginName")
+    private fun getDownloadedDir(context: Context) : File {
+        val baseDir = File(context.noBackupFilesDir, RuntimeManager.BASENAME)
+        return File(baseDir, "$downloadedPackagesRoot/$pluginFolderName")
     }
 
-    suspend fun downloadRelease(context: Context, release: PluginRelease, onProgress: (Int) -> Unit) : File? {
-        val runtimeDir = getRuntimeDir(context)
+    fun getLocation(context: Context, baseDir: File): PluginLocation {
+        //downloaded
+        val downloadedDir = getDownloadedDir(context)
+        val downloadedBinDir = downloadedDir
+        val downloadedLDLibDir = downloadedDir
+        val downloadedExe = File(downloadedDir, "lib$executableName.so")
+
+        //bundled
+        val bundledDir = File(baseDir, packagesRoot)
+        val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
+        val bundledLDLibDir = File(bundledDir, pluginFolderName)
+        val bundledExe = File(bundledBinDir, "lib$executableName.so")
+
+        val isDownloaded = downloadedExe.exists()
+        val isBundled = bundledExe.exists()
+
+        return PluginLocation(
+            binDir = if (isDownloaded) downloadedBinDir else bundledBinDir,
+            ldDir = if (isDownloaded) downloadedLDLibDir else bundledLDLibDir,
+            executable = if (isDownloaded) downloadedExe else bundledExe,
+            isDownloaded,
+            isBundled,
+            isDownloaded || isBundled
+        )
+    }
+
+    suspend fun downloadRelease(context: Context, release: PluginRelease, onProgress: (Int) -> Unit) : DocumentFile? {
+        val runtimeDir = getDownloadedDir(context)
         FileUtils.deleteQuietly(runtimeDir)
         runtimeDir.mkdirs()
 
         return withContext(Dispatchers.IO) {
             try {
-                val tempZipFile = File(context.cacheDir, "${pluginName}_tmp.zip")
+                val tempZipFile = File(context.cacheDir, "${pluginFolderName}_tmp.zip")
 
                 //download
                 val request = Request.Builder().url(release.downloadUrl).build()
@@ -122,7 +165,7 @@ abstract class PluginBase {
                     }
                 }
 
-                tempZipFile
+                DocumentFile.fromFile(tempZipFile)
             } catch (e: Exception) {
                 null
             }
@@ -131,11 +174,13 @@ abstract class PluginBase {
 
     fun installFromZip(context: Context, zipFile: DocumentFile, versionTag: String? = null) : Result<String> {
         return kotlin.runCatching {
-            val runtimeDir = getRuntimeDir(context)
+            val runtimeDir = getDownloadedDir(context)
+            runtimeDir.deleteRecursively()
+            runtimeDir.createNewFile()
             // 3. Unzip the main Bundle (contains libnode.so and libnode.zip.so)
-            val inputStream = zipFile.openInputStream(context)
-            ZipUtils.unzip(inputStream, runtimeDir)
-            inputStream?.close()
+            context.contentResolver.openInputStream(zipFile.uri).use { inputStream ->
+                ZipUtils.unzip(inputStream, runtimeDir)
+            }
             // 4. Handle the Bootstrap Zip (Double Unzip)
             // Look for any .zip.so file in the extracted directory
             runtimeDir.listFiles()?.forEach { file ->
@@ -144,8 +189,7 @@ abstract class PluginBase {
                     file.delete() // Remove the internal zip to save space
                 }
             }
-            // 5. Global Permission Fix
-            // Scan for all files in any 'bin' folder and make them executable
+
             applyExecutablePermissions(runtimeDir)
             // 6. Save installation state
             val version = versionTag ?: "IMPORTED"
@@ -161,29 +205,47 @@ abstract class PluginBase {
         }
     }
 
-    private fun applyExecutablePermissions(file: File) {
-        if (file.isDirectory) {
-            // Check if this folder is a 'bin' folder
-            if (file.name == "bin") {
-                file.listFiles()?.forEach { it.setExecutable(true, false) }
+    fun uninstall(context: Context): Result<Unit> {
+        return kotlin.runCatching {
+            val runtimeDir = getDownloadedDir(context)
+
+            if (runtimeDir.exists()) {
+                val deleted = runtimeDir.deleteRecursively()
+                if (!deleted) {
+                    throw Exception("Failed to delete runtime directory at ${runtimeDir.path}")
+                }
             }
-            // Recurse into subdirectories
-            file.listFiles()?.forEach { applyExecutablePermissions(it) }
-        } else if (file.name == "libnode.so") {
-            // Specifically ensure our renamed main binary is executable
-            file.setExecutable(true, false)
+
+            Result.success(Unit)
+        }.getOrElse {
+            Result.failure(it)
         }
+    }
+
+    private fun applyExecutablePermissions(file: File) {
+        Runtime.getRuntime().exec(arrayOf("chmod", "-R", "755", file.absolutePath)).waitFor()
     }
 
     private fun saveState(context: Context, version: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         prefs.edit(commit = true) {
-            putBoolean(installedKey, true)
-            putString(versionKey, version)
+            putString(downloadedVersionKey, version)
         }
     }
 
-    suspend fun getReleases(context: Context) : List<PluginRelease> {
+    suspend fun getReleases() : List<PluginRelease> {
+//
+//        return listOf(
+//            PluginRelease(
+//                version = "1.0",
+//                downloadUrl = "http://192.168.1.144:8080/x86_64/x86_64.zip",
+//                createdAt = LocalDate.now().toString(),
+//                isInstalled = downloadedVersion == "1.0"
+//            )
+//        )
+
+        if (githubRepositoryPackageURL.isEmpty()) return listOf()
+
         val request = Request.Builder()
             .url(githubRepositoryPackageURL)
             .header("Accept", "application/vnd.github+json")
@@ -200,7 +262,7 @@ abstract class PluginBase {
                     json.decodeFromString<List<PluginRelease>>(jsonString)
                         .filter { it.version.contains(supportedArch) }
                         .onEach {
-                            it.isInstalled = currentVersion == it.version
+                            it.isInstalled = downloadedVersion == it.version
                         }
                 } else {
                     emptyList()
@@ -211,8 +273,6 @@ abstract class PluginBase {
         }
     }
 
-    fun isDownloaded(context: Context) =
-        PreferenceManager.getDefaultSharedPreferences(context).getBoolean(installedKey, false)
 
     fun getArchSuffix(): String {
         val abi = Build.SUPPORTED_ABIS[0]

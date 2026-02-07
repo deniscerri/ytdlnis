@@ -27,6 +27,7 @@
 
 
     <application
+        android:usesCleartextTraffic="true"
         android:name=".App"
         android:allowBackup="false"
         android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
