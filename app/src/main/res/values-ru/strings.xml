@@ -432,7 +432,7 @@
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
     <string name="disable_write_info_json">Отключить запись информации в формате Json</string>
-    <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки, yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
+    <string name="disable_write_info_json_summary">Каждый раз, когда вы перезапускаете / возобновляете загрузку, yt-dlp повторно загружает данные json с серверов (не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Разрешите использовать шаблоны команд для получения данных в качестве дополнительных команд</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube рекомендации (нужны файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp YouTube лайкнул видео (нужны файлы cookie)</string>
@@ -494,8 +494,8 @@
     <string name="disable_flat_playlist">Отключить плоский плейлист</string>
     <string name="disable_flat_playlist_summary">Не используйте --плоский-плейлист. Медленнее загрузка данных, но больше данных</string>
     <string name="chapters">Главы</string>
-    <string name="use_original_url_playlist">Использовать исходный URL для URL-адреса плейлиста</string>
-    <string name="use_original_url_playlist_summary">Используйте URL-адрес списка воспроизведения, указанный пользователем, вместо тега playlist_webpage_url из дампа json</string>
+    <string name="use_original_url_playlist">Используйте оригинальный url для url плейлиста</string>
+    <string name="use_original_url_playlist_summary">Используйте url списка воспроизведения, предоставленную пользователем, вместо тега playlist_webpage_url из дампа json</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предварительный просмотр имени файла</string>
@@ -506,5 +506,5 @@
     <string name="app_icon">Значок приложения</string>
     <string name="show_quick_download_share_menu">Показать немедленную загрузку в меню общего доступа</string>
     <string name="quick_download_title">Не получать данные</string>
-    <string name="sponsorblock_hook">Крючок/Приветствия</string>
+    <string name="sponsorblock_hook">Всплывающие/Приветствия</string>
 </resources>
