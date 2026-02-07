@@ -883,9 +883,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
-            request.addOption("--downloader", "libaria2c.so")
+            ytDlRequest.addOption("--downloader", "libaria2c.so")
             //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-            request.addOption("--no-check-certificates")
+            ytDlRequest.addOption("--no-check-certificates")
             //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 

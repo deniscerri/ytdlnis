@@ -198,6 +198,15 @@ object RuntimeManager {
             request.addOption("--js-runtimes", "quickjs:${quickJsLocation.executable.absolutePath}")
         }
 
+        if (request.buildCommand().contains("libaria2c.so")) {
+            request
+                .addOption("--external-downloader-args", "aria2c:--summary-interval=1")
+                .addOption(
+                    "--external-downloader-args",
+                    "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
+                )
+        }
+
         if (!usingCacheDir) {
             request.addOption("--no-cache-dir")
         }

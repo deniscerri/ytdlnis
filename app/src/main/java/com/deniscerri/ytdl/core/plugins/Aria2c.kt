@@ -5,5 +5,6 @@ object Aria2c : PluginBase() {
     override val pluginFolderName: String get() = "aria2c"
     override val bundledZipName: String get() = "libaria2c.zip.so"
     override val bundledVersion: String get() = "v1.37.0"
-    override val githubRepositoryPackageURL: String  get() = ""
+    override val packageGithubRepo: String  get() = ""
+    override val githubPackageName: String  get() = ""
 }

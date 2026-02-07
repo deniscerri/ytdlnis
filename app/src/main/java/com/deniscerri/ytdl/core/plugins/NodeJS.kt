@@ -4,6 +4,7 @@ object NodeJS : PluginBase() {
     override val executableName: String get() = "node"
     override val pluginFolderName: String get() = "node"
     override val bundledZipName: String get() = "libnode.zip.so"
-    override val bundledVersion: String get() = "v25.3.0"
-    override val githubRepositoryPackageURL: String  get() = ""
+    override val bundledVersion: String get() = ""
+    override val packageGithubRepo: String  get() = "deniscerri/ytdlnis-plugins"
+    override val githubPackageName: String  get() = "nodejs"
 }

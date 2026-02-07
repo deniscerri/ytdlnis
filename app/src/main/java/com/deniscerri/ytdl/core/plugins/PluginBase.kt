@@ -9,6 +9,7 @@ import com.anggrayudi.storage.file.toRawFile
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.ZipUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -18,26 +19,30 @@ import okhttp3.Request
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.time.LocalDate
+import kotlin.coroutines.cancellation.CancellationException
 
 abstract class PluginBase {
     protected abstract val executableName: String      // e.g., "ffmpeg"
     protected abstract val pluginFolderName: String      // e.g., "ffmpeg"
     protected abstract val bundledZipName: String   // e.g., "libffmpeg.zip.so"
+    protected abstract val packageGithubRepo: String  // e.g deniscerri/ytdlnis-plugins
+    protected abstract val githubPackageName: String  // e.g ffmpeg
     fun getInstance(): PluginBase = this
 
     abstract val bundledVersion: String?
     var downloadedVersion: String? = null
-    protected abstract val githubRepositoryPackageURL: String  // github repository package url
 
     @Serializable
     data class PluginRelease(
         @SerialName("name")
-        val version: String,
-        @SerialName("package_html_url")
-        val downloadUrl: String,
+        var version: String,
         @SerialName("created_at")
         val createdAt: String,
-        var isInstalled: Boolean
+        var downloadUrl: String = "",
+        var isInstalled: Boolean = false,
+        var isBundled: Boolean = false,
+        var isDownloading: Boolean = false,
+        var downloadProgress: Int = 0
     )
 
     data class PluginLocation(
@@ -131,19 +136,20 @@ abstract class PluginBase {
         )
     }
 
-    suspend fun downloadRelease(context: Context, release: PluginRelease, onProgress: (Int) -> Unit) : DocumentFile? {
-        val runtimeDir = getDownloadedDir(context)
-        FileUtils.deleteQuietly(runtimeDir)
-        runtimeDir.mkdirs()
-
+    suspend fun downloadRelease(context: Context, release: PluginRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
         return withContext(Dispatchers.IO) {
             try {
                 val tempZipFile = File(context.cacheDir, "${pluginFolderName}_tmp.zip")
 
                 //download
-                val request = Request.Builder().url(release.downloadUrl).build()
+                val request = Request.Builder()
+                    .url(release.downloadUrl)
+                    .build()
+
                 val response = sharedClient.newCall(request).execute()
-                if (!response.isSuccessful) return@withContext null
+                if (!response.isSuccessful) {
+                    return@withContext Result.failure(Throwable(response.body.string()))
+                }
 
                 val body = response.body
                 val totalBytes = body.contentLength()
@@ -155,6 +161,8 @@ abstract class PluginBase {
                         var bytesRead: Int
 
                         while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            if (!isActive) throw CancellationException("Download cancelled by user")
+
                             outputStream.write(buffer, 0, bytesRead)
                             bytesDownloaded += bytesRead
 
@@ -165,9 +173,9 @@ abstract class PluginBase {
                     }
                 }
 
-                DocumentFile.fromFile(tempZipFile)
+                Result.success(DocumentFile.fromFile(tempZipFile))
             } catch (e: Exception) {
-                null
+                Result.failure(e)
             }
         }
     }
@@ -175,8 +183,9 @@ abstract class PluginBase {
     fun installFromZip(context: Context, zipFile: DocumentFile, versionTag: String? = null) : Result<String> {
         return kotlin.runCatching {
             val runtimeDir = getDownloadedDir(context)
-            runtimeDir.deleteRecursively()
-            runtimeDir.createNewFile()
+            FileUtils.deleteQuietly(runtimeDir)
+            runtimeDir.mkdirs()
+
             // 3. Unzip the main Bundle (contains libnode.so and libnode.zip.so)
             context.contentResolver.openInputStream(zipFile.uri).use { inputStream ->
                 ZipUtils.unzip(inputStream, runtimeDir)
@@ -234,20 +243,10 @@ abstract class PluginBase {
     }
 
     suspend fun getReleases() : List<PluginRelease> {
-//
-//        return listOf(
-//            PluginRelease(
-//                version = "1.0",
-//                downloadUrl = "http://192.168.1.144:8080/x86_64/x86_64.zip",
-//                createdAt = LocalDate.now().toString(),
-//                isInstalled = downloadedVersion == "1.0"
-//            )
-//        )
-
-        if (githubRepositoryPackageURL.isEmpty()) return listOf()
+        if (packageGithubRepo.isEmpty()) return listOf()
 
         val request = Request.Builder()
-            .url(githubRepositoryPackageURL)
+            .url("https://api.github.com/users/${packageGithubRepo.split("/").first()}/packages/maven/${githubPackageName}/versions")
             .header("Accept", "application/vnd.github+json")
             .build()
 
@@ -260,9 +259,11 @@ abstract class PluginBase {
                     val supportedArch = getArchSuffix()
 
                     json.decodeFromString<List<PluginRelease>>(jsonString)
-                        .filter { it.version.contains(supportedArch) }
                         .onEach {
-                            it.isInstalled = downloadedVersion == it.version
+                            it.version = it.version
+                            it.isInstalled = downloadedVersion == "v${it.version}"
+                            it.isBundled = bundledVersion == "v${it.version}"
+                            it.downloadUrl = "https://maven.pkg.github.com/${packageGithubRepo}/${githubPackageName}/${it.version}/${githubPackageName}-${it.version}-${supportedArch}.zip"
                         }
                 } else {
                     emptyList()

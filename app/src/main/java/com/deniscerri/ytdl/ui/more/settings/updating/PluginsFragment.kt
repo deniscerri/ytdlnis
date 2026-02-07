@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import junit.runner.Version
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -52,6 +54,7 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
     private lateinit var preferences: SharedPreferences
 
     private var tmpItem: PluginItem? = null
+    private var tmpDownloadJob: Job? = null
     private var plugins: List<PluginItem> = mutableListOf()
     private var pluginReleases: List<PluginBase.PluginRelease> = mutableListOf()
 
@@ -192,22 +195,61 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
         deleteDownloadedVersion(item, currentVersion)
     }
 
+    override fun onCancelDownloadReleaseClick(item: PluginBase.PluginRelease) {
+        tmpDownloadJob?.cancel()
+        val idx = pluginReleases.indexOf(item)
+        val list = pluginReleases.toMutableList()
+        list[idx] = list[idx].copy(isDownloading = false)
+        releaseAdapter.submitList(list.toList())
+    }
+
     override fun onDownloadReleaseClick(item: PluginBase.PluginRelease) {
-        lifecycleScope.launch {
-            val instance = tmpItem!!.getInstance()
+        val instance = tmpItem!!.getInstance()
+        val idx = pluginReleases.indexOf(item)
+        val list = pluginReleases.toMutableList()
+        list[idx] = list[idx].copy(isDownloading = true)
+        releaseAdapter.submitList(list.toList())
 
-            val file = instance.downloadRelease(requireContext(), item) {
+        tmpDownloadJob = lifecycleScope.launch {
+            val fileResp = instance.downloadRelease(requireContext(), item) { progress ->
+                lifecycleScope.launch {
+                    withContext(Dispatchers.Main) {
+                        list[idx] = list[idx].copy(downloadProgress = progress)
+                        releaseAdapter.submitList(list.toList())
+                        //releaseAdapter.notifyItemChanged(idx, progress.toString())
+                    }
+                }
             }
 
-            val resp = instance.installFromZip(requireContext(), file!!, item.version)
-            resp.onFailure {
-                Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+            fileResp.onFailure {
+                lifecycleScope.launch {
+                    withContext(Dispatchers.Main) {
+                        bottomSheet?.dismiss()
+                        Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+                    }
+                }
             }
-            resp.onSuccess {
-                bottomSheet?.dismiss()
-                listAdapter.notifyDataSetChanged()
-                RuntimeManager.reInit(requireContext())
+            fileResp.onSuccess { file ->
+                val resp = instance.installFromZip(requireContext(), file, "v${item.version}")
+                resp.onFailure {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            bottomSheet?.dismiss()
+                            Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                resp.onSuccess {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            bottomSheet?.dismiss()
+                            listAdapter.notifyDataSetChanged()
+                            RuntimeManager.reInit(requireContext())
+                        }
+                    }
+                }
             }
+
         }
     }
 }

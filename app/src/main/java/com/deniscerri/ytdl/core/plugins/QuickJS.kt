@@ -5,5 +5,6 @@ object QuickJS : PluginBase() {
     override val pluginFolderName: String get() = "quickjs"
     override val bundledZipName: String get() = "libqjs.zip.so"
     override val bundledVersion: String get() = "2025-04-26"
-    override val githubRepositoryPackageURL: String  get() = ""
+    override val packageGithubRepo: String  get() = ""
+    override val githubPackageName: String  get() = ""
 }

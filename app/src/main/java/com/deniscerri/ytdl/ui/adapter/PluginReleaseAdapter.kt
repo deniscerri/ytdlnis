@@ -1,37 +1,24 @@
 package com.deniscerri.ytdl.ui.adapter
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.core.plugins.PluginBase
 import com.deniscerri.ytdl.core.plugins.PluginBase.PluginRelease
-import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.models.GithubRelease
-import com.deniscerri.ytdl.database.models.PluginItem
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.Markwon
-import io.noties.markwon.MarkwonConfiguration
-import java.sql.Date
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.text.SimpleDateFormat
-import java.time.Instant
 import java.util.Locale
+import java.util.TimeZone
 
 class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<PluginRelease?, PluginReleaseAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
@@ -65,26 +52,58 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
         val item = getItem(position) ?: return
         val card = holder.itemView
 
-        card.findViewById<TextView>(R.id.title).text = item.version
-        card.findViewById<TextView>(R.id.createdAt).text = item.createdAt
+        card.findViewById<TextView>(R.id.title).text = "v${item.version}"
+
+        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
+        parser.timeZone = TimeZone.getTimeZone("UTC")
+        val date = parser.parse(item.createdAt)
+
+        val parser2 = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault())
+        card.findViewById<TextView>(R.id.createdAt).text = parser2.format(date.time)
 
         val actionBtn = card.findViewById<MaterialButton>(R.id.actionBtn)
-        if (item.isInstalled) {
+        actionBtn.isVisible = !item.isBundled && item.downloadProgress < 100
+
+        val progress = card.findViewById<CircularProgressIndicator>(R.id.progress)
+        progress.isVisible = item.isDownloading
+
+        if (item.isDownloading) {
+            actionBtn.setIconResource(R.drawable.ic_cancel)
+        } else if (item.isInstalled) {
             actionBtn.setIconResource(R.drawable.ic_baseline_delete_outline_24)
         } else {
             actionBtn.setIconResource(R.drawable.ic_down)
         }
 
-        card.setOnClickListener {
-            if (item.isInstalled) {
-                onItemClickListener.onDeleteReleaseClick(item)
-            } else {
-                onItemClickListener.onDownloadReleaseClick(item)
+        actionBtn.setOnClickListener {
+            if (!item.isBundled) {
+                if (item.isDownloading && item.downloadProgress < 100) {
+                    onItemClickListener.onCancelDownloadReleaseClick(item)
+                } else if (item.isInstalled) {
+                    onItemClickListener.onDeleteReleaseClick(item)
+                } else {
+                    onItemClickListener.onDownloadReleaseClick(item)
+                }
             }
         }
 
     }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            val card = holder.itemView
+            val progress = card.findViewById<CircularProgressIndicator>(R.id.progress)
+
+            val progressValue = payloads.last().toString().toInt()
+            progress.progress = progressValue
+            progress.isIndeterminate = progressValue == 0 || progressValue == 100
+        }
+    }
+
     interface OnItemClickListener {
+        fun onCancelDownloadReleaseClick(item: PluginRelease)
         fun onDownloadReleaseClick(item: PluginRelease)
         fun onDeleteReleaseClick(item: PluginRelease)
     }
@@ -96,7 +115,9 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
             }
 
             override fun areContentsTheSame(oldItem: PluginRelease, newItem: PluginRelease): Boolean {
-                return oldItem.isInstalled == newItem.isInstalled
+                return oldItem.isInstalled == newItem.isInstalled &&
+                        oldItem.isDownloading == newItem.isDownloading &&
+                        oldItem.downloadProgress == newItem.downloadProgress
             }
         }
     }
