@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.util.UiUtil
 
@@ -100,8 +102,14 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
             }
         }
 
+        val audioCodecPref = findPreference<ListPreference>("audio_codec")
+        val videoCodecPref = findPreference<ListPreference>("video_codec")
+
         val recodeVideoPreference = findPreference<SwitchPreferenceCompat>("recode_video")!!
         val compatibleVideoPreference = findPreference<SwitchPreferenceCompat>("compatible_video")!!
+
+        audioCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
+        videoCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
 
         recodeVideoPreference.setOnPreferenceClickListener {
             if (compatibleVideoPreference.isChecked && recodeVideoPreference.isChecked) {
@@ -111,8 +119,25 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
         }
 
         compatibleVideoPreference.setOnPreferenceClickListener {
-            if (compatibleVideoPreference.isChecked && recodeVideoPreference.isChecked) {
-                recodeVideoPreference.performClick()
+            audioCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
+            videoCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
+
+            if (compatibleVideoPreference.isChecked) {
+                if (recodeVideoPreference.isChecked) {
+                    recodeVideoPreference.performClick()
+                }
+
+                val audioCodecs = requireContext().getStringArray(R.array.audio_codec)
+                val audioCodecValues = requireContext().getStringArray(R.array.audio_codec_values)
+                val videoCodecs = requireContext().getStringArray(R.array.video_codec)
+                val videoCodecValues = requireContext().getStringArray(R.array.video_codec_values)
+
+                val newAudioCodec = "M4A"
+                val newVideoCodec = "AVC (H264)"
+
+                editor.putString("audio_codec", audioCodecValues[audioCodecs.indexOf(newAudioCodec)]).apply()
+                editor.putString("video_codec", videoCodecValues[videoCodecs.indexOf(newVideoCodec)]).apply()
+                requireActivity().recreate()
             }
             true
         }

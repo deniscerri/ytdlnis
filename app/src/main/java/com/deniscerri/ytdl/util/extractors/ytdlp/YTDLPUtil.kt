@@ -1280,12 +1280,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
-
-                if (downloadItem.videoPreferences.compatibilityMode) {
-                    vCodecPref = "h264"
-                    aCodecPref = "aac"
-                }
+                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == formatUtil.getGenericVideoFormats(context.resources)
