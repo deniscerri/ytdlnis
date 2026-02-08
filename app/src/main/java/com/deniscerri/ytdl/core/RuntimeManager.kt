@@ -109,7 +109,7 @@ object RuntimeManager {
         }
 
         ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
-            pythonLocation.ldDir.parent
+            pythonLocation.ldDir.absolutePath + "/usr"
         } else {
             pythonLocation.ldDir.absolutePath + "/usr"
         }

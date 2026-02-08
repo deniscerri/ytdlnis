@@ -92,9 +92,13 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             false
         }
 
-        findPreference<Preference>("plugins")?.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.pluginsFragment)
-            false
+        findPreference<Preference>("plugins")?.apply {
+            summary = "Python, FFmpeg, Aria2c, NodeJS"
+
+            setOnPreferenceClickListener {
+                findNavController().navigate(R.id.pluginsFragment)
+                false
+            }
         }
 
 

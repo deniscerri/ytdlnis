@@ -2,11 +2,20 @@ package com.deniscerri.ytdl.ui.more.settings.updating
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,15 +43,20 @@ import com.deniscerri.ytdl.ui.adapter.PluginReleaseAdapter
 import com.deniscerri.ytdl.ui.adapter.PluginsAdapter
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.snackbar.Snackbar
-import junit.runner.Version
+import io.noties.markwon.AbstractMarkwonPlugin
+import io.noties.markwon.Markwon
+import io.noties.markwon.MarkwonConfiguration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginReleaseAdapter.OnItemClickListener {
@@ -119,7 +133,15 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
         lifecycleScope.launch {
             val instance = tmpItem!!.getInstance()
             instance.getReleases().apply {
-                pluginReleases = this.toMutableList()
+                this.onFailure {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), it.message ?: getString(R.string.errored), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+
+                pluginReleases = this.getOrElse { listOf() }
                 releaseAdapter.submitList(pluginReleases)
                 releaseRecyclerView.isVisible = pluginReleases.isNotEmpty()
                 loader?.isVisible = false
@@ -204,52 +226,75 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
     }
 
     override fun onDownloadReleaseClick(item: PluginBase.PluginRelease) {
-        val instance = tmpItem!!.getInstance()
-        val idx = pluginReleases.indexOf(item)
-        val list = pluginReleases.toMutableList()
-        list[idx] = list[idx].copy(isDownloading = true)
-        releaseAdapter.submitList(list.toList())
+        var positiveButton: Button? = null
+        val updateDialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
+            .setMessage(item.body)
+            .setIcon(R.drawable.ic_update_app)
+            .setNegativeButton(requireContext().getString(R.string.cancel)) { _: DialogInterface?, _: Int ->
+                tmpDownloadJob?.cancel()
+            }
+            .setPositiveButton(requireContext().getString(R.string.download), null)
+        val view = updateDialog.show()
+        val textView = view.findViewById<TextView>(android.R.id.message)
+        textView!!.movementMethod = LinkMovementMethod.getInstance()
+        val mw = Markwon.builder(requireContext()).usePlugin(object: AbstractMarkwonPlugin() {
 
-        tmpDownloadJob = lifecycleScope.launch {
-            val fileResp = instance.downloadRelease(requireContext(), item) { progress ->
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main) {
-                        list[idx] = list[idx].copy(downloadProgress = progress)
-                        releaseAdapter.submitList(list.toList())
-                        //releaseAdapter.notifyItemChanged(idx, progress.toString())
-                    }
+            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                builder.linkResolver { view, link ->
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                    requireContext().startActivity(browserIntent)
                 }
             }
+        }).build()
+        mw.setMarkdown(textView, item.body)
 
-            fileResp.onFailure {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main) {
-                        bottomSheet?.dismiss()
-                        Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
-                    }
-                }
-            }
-            fileResp.onSuccess { file ->
-                val resp = instance.installFromZip(requireContext(), file, "v${item.version}")
-                resp.onFailure {
+        positiveButton = view.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton?.setOnClickListener {
+            positiveButton.isEnabled = false
+            positiveButton.text = "0%"
+
+            tmpDownloadJob = lifecycleScope.launch {
+                val instance = tmpItem!!.getInstance()
+                val fileResp = instance.downloadRelease(requireContext(), item) { progress ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            bottomSheet?.dismiss()
+                            positiveButton?.text = "$progress%"
+                        }
+                    }
+                }
+
+                fileResp.onFailure {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
                             Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
                         }
                     }
                 }
-                resp.onSuccess {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            bottomSheet?.dismiss()
-                            listAdapter.notifyDataSetChanged()
-                            RuntimeManager.reInit(requireContext())
+                fileResp.onSuccess { file ->
+                    val resp = instance.installFromZip(requireContext(), file, "v${item.version}")
+                    resp.onFailure {
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.Main) {
+                                bottomSheet?.dismiss()
+                                view.dismiss()
+                                Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                    resp.onSuccess {
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.Main) {
+                                bottomSheet?.dismiss()
+                                view.dismiss()
+                                listAdapter.notifyDataSetChanged()
+                                RuntimeManager.reInit(requireContext())
+                            }
                         }
                     }
                 }
             }
-
         }
     }
 }

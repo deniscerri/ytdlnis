@@ -52,11 +52,12 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
         val item = getItem(position) ?: return
         val card = holder.itemView
 
-        card.findViewById<TextView>(R.id.title).text = "v${item.version}"
+        val version = "v${item.version}"
+        card.findViewById<TextView>(R.id.title).text = version
 
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault())
         parser.timeZone = TimeZone.getTimeZone("UTC")
-        val date = parser.parse(item.createdAt)
+        val date = parser.parse(item.published_at)
 
         val parser2 = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault())
         card.findViewById<TextView>(R.id.createdAt).text = parser2.format(date.time)

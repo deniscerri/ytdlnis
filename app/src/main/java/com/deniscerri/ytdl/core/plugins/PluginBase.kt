@@ -5,9 +5,10 @@ import android.os.Build
 import androidx.core.content.edit
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
-import com.anggrayudi.storage.file.toRawFile
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.ZipUtils
+import com.deniscerri.ytdl.database.models.GithubReleaseAsset
+import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
@@ -17,15 +18,15 @@ import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.apache.commons.io.FileUtils
+import org.json.JSONObject
 import java.io.File
-import java.time.LocalDate
 import kotlin.coroutines.cancellation.CancellationException
 
 abstract class PluginBase {
     protected abstract val executableName: String      // e.g., "ffmpeg"
     protected abstract val pluginFolderName: String      // e.g., "ffmpeg"
     protected abstract val bundledZipName: String   // e.g., "libffmpeg.zip.so"
-    protected abstract val packageGithubRepo: String  // e.g deniscerri/ytdlnis-plugins
+    protected abstract val githubRepo: String  // e.g deniscerri/ytdlnis-plugins
     protected abstract val githubPackageName: String  // e.g ffmpeg
     fun getInstance(): PluginBase = this
 
@@ -34,11 +35,16 @@ abstract class PluginBase {
 
     @Serializable
     data class PluginRelease(
-        @SerialName("name")
-        var version: String,
-        @SerialName("created_at")
-        val createdAt: String,
-        var downloadUrl: String = "",
+        @SerializedName(value = "tag_name")
+        var tag_name: String,
+        @SerialName("published_at")
+        val published_at: String,
+        @SerializedName(value = "assets")
+        var assets: List<GithubReleaseAsset>,
+        @SerializedName(value = "body")
+        val body: String,
+        var version: String = "",
+        var downloadSize: Long = 0,
         var isInstalled: Boolean = false,
         var isBundled: Boolean = false,
         var isDownloading: Boolean = false,
@@ -143,7 +149,7 @@ abstract class PluginBase {
 
                 //download
                 val request = Request.Builder()
-                    .url(release.downloadUrl)
+                    .url(release.assets.first().browser_download_url)
                     .build()
 
                 val response = sharedClient.newCall(request).execute()
@@ -242,12 +248,11 @@ abstract class PluginBase {
         }
     }
 
-    suspend fun getReleases() : List<PluginRelease> {
-        if (packageGithubRepo.isEmpty()) return listOf()
+    suspend fun getReleases() : Result<List<PluginRelease>> {
+        if (githubRepo.isEmpty()) return Result.success(listOf())
 
         val request = Request.Builder()
-            .url("https://api.github.com/users/${packageGithubRepo.split("/").first()}/packages/maven/${githubPackageName}/versions")
-            .header("Accept", "application/vnd.github+json")
+            .url("https://api.github.com/repos/${githubRepo}/releases")
             .build()
 
         return withContext(Dispatchers.IO) {
@@ -258,18 +263,25 @@ abstract class PluginBase {
                 if (response.isSuccessful && jsonString.isNotEmpty()) {
                     val supportedArch = getArchSuffix()
 
-                    json.decodeFromString<List<PluginRelease>>(jsonString)
+                    val releases = json.decodeFromString<List<PluginRelease>>(jsonString)
+                        .filter {
+                            it.tag_name.contains(githubPackageName)
+                        }
                         .onEach {
-                            it.version = it.version
+                            // nodejs-1.0.0-arm64-v8a
+                            it.version = it.tag_name.split("-")[1]
+                            it.assets = it.assets.filter { a -> a.name.contains(supportedArch) }
+                            it.downloadSize = it.assets.first().size
                             it.isInstalled = downloadedVersion == "v${it.version}"
                             it.isBundled = bundledVersion == "v${it.version}"
-                            it.downloadUrl = "https://maven.pkg.github.com/${packageGithubRepo}/${githubPackageName}/${it.version}/${githubPackageName}-${it.version}-${supportedArch}.zip"
                         }
+
+                    Result.success(releases)
                 } else {
-                    emptyList()
+                    Result.failure(Throwable(JSONObject(jsonString).getString("message")))
                 }
             } catch (e: Exception) {
-                listOf()
+                Result.failure(e)
             }
         }
     }
