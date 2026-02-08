@@ -382,7 +382,7 @@ class DownloadWorker(
                         if (this@DownloadWorker.isStopped) return@onFailure
                         if (it is RuntimeManager.CanceledException) return@onFailure
                         if (it.message?.contains("JSONDecodeError") == true) {
-                            val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+                            val cachePath = FileUtil.getInfoJsonPath(context)
                             val infoJsonName = MessageDigest.getInstance("MD5").digest(downloadItem.url.toByteArray()).toHexString()
                             FileUtil.deleteFile("${cachePath}/${infoJsonName}.info.json")
                         }

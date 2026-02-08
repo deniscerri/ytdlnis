@@ -199,9 +199,7 @@ object RuntimeManager {
         }
 
         if (request.buildCommand().contains("libaria2c.so")) {
-            request
-                .addOption("--external-downloader-args", "aria2c:--summary-interval=1")
-                .addOption(
+            request.addOption(
                     "--external-downloader-args",
                     "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
                 )

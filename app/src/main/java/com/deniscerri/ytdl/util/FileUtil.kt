@@ -325,6 +325,10 @@ object FileUtil {
         }
     }
 
+    fun getInfoJsonPath(context: Context) : String {
+        return "${getCachePath(context)}infojsons"
+    }
+
     fun deleteConfigFiles(request: YTDLRequest) {
         runCatching {
             request.getArguments("--config")?.forEach {

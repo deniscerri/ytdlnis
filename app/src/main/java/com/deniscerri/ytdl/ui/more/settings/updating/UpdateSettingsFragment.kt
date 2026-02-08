@@ -14,12 +14,14 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class UpdateSettingsFragment : BaseSettingsFragment() {
@@ -155,6 +157,8 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
                     Snackbar.make(requireView(), res.message, Snackbar.LENGTH_LONG).show()
                     setYTDLPVersion()
+                    val infoJsonPath = FileUtil.getInfoJsonPath(requireContext())
+                    File(infoJsonPath).deleteRecursively()
                 }
                 UpdateUtil.YTDLPUpdateStatus.ALREADY_UP_TO_DATE -> Snackbar.make(requireView(),
                     requireContext().getString(R.string.you_are_in_latest_version),

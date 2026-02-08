@@ -609,7 +609,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun YTDLRequest.addWriteInfoJson(url: String) {
-        val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+        val cachePath = FileUtil.getInfoJsonPath(context)
         File(cachePath).mkdirs()
 
         var id = url
@@ -632,7 +632,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun getInfoJsonFile(url: String): File? {
-        val cachePath = "${FileUtil.getCachePath(context)}infojsons"
+        val cachePath = FileUtil.getInfoJsonPath(context)
 
         var id = url
         if (url.isYoutubeURL()) {
@@ -885,7 +885,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (aria2) {
             ytDlRequest.addOption("--downloader", "libaria2c.so")
             //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-            ytDlRequest.addOption("--no-check-certificates")
+            //ytDlRequest.addOption("--no-check-certificates")
             //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
