@@ -72,8 +72,8 @@
 
         <Preference
             app:icon="@drawable/ic_code"
-            app:key="plugins"
-            app:title="@string/plugins" />
+            app:key="packages"
+            app:title="@string/packages" />
 
         <Preference
             app:icon="@drawable/ic_chapters"

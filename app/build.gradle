@@ -12,8 +12,8 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 8
 def versionPatch = 7
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
-def isBeta = false
+def versionBuild = 3 // bump for dogfood builds, public betas, etc.
+def isBeta = true
 
 def versionExt = ""
 if (versionBuild > 0) {
@@ -47,8 +47,8 @@ android {
         applicationId "com.deniscerri.ytdl"
         minSdk 24
         /*
-        KEEP 28 TO ALLOW THE APP TO EXECUTE DOWNLOADABLE PLUGINS, IF PLAN TO UPGRADE PRE-BUNDLE plugins in jniLibs
-        OR LOOK INTO PLUGINS as APK and put the files in their respective jniLibs
+        KEEP 28 TO ALLOW THE APP TO EXECUTE DOWNLOADABLE PACKAGES, IF PLAN TO UPGRADE PRE-BUNDLE packages in jniLibs
+        OR LOOK INTO PACKAGES as APK and put the files in their respective jniLibs
         * */
         //noinspection ExpiredTargetSdkVersion
         targetSdk 28
@@ -230,7 +230,7 @@ dependencies {
     implementation 'androidx.compose.material3:material3-android:1.4.0'
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
-    implementation("com.github.teamnewpipe:newpipeextractor:v0.25.0")
+    implementation("com.github.teamnewpipe:newpipeextractor:v0.25.2")
 
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.commons:commons-compress:1.12")

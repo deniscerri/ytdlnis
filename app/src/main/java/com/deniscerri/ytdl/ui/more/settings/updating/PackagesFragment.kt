@@ -3,17 +3,11 @@ package com.deniscerri.ytdl.ui.more.settings.updating
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
@@ -33,14 +27,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
-import com.deniscerri.ytdl.core.plugins.Aria2c
-import com.deniscerri.ytdl.core.plugins.FFmpeg
-import com.deniscerri.ytdl.core.plugins.NodeJS
-import com.deniscerri.ytdl.core.plugins.PluginBase
-import com.deniscerri.ytdl.core.plugins.Python
-import com.deniscerri.ytdl.database.models.PluginItem
-import com.deniscerri.ytdl.ui.adapter.PluginReleaseAdapter
-import com.deniscerri.ytdl.ui.adapter.PluginsAdapter
+import com.deniscerri.ytdl.core.packages.Aria2c
+import com.deniscerri.ytdl.core.packages.FFmpeg
+import com.deniscerri.ytdl.core.packages.NodeJS
+import com.deniscerri.ytdl.core.packages.PackageBase
+import com.deniscerri.ytdl.core.packages.Python
+import com.deniscerri.ytdl.database.models.PackageItem
+import com.deniscerri.ytdl.ui.adapter.PackageReleaseAdapter
+import com.deniscerri.ytdl.ui.adapter.PackagesAdapter
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.FileUtil
@@ -56,21 +50,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 
-class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginReleaseAdapter.OnItemClickListener {
+class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, PackageReleaseAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var listAdapter: PluginsAdapter
-    private lateinit var releaseAdapter: PluginReleaseAdapter
+    private lateinit var listAdapter: PackagesAdapter
+    private lateinit var releaseAdapter: PackageReleaseAdapter
     private var bottomSheet: BottomSheetDialog? = null
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var preferences: SharedPreferences
 
-    private var tmpItem: PluginItem? = null
+    private var tmpItem: PackageItem? = null
     private var tmpDownloadJob: Job? = null
-    private var plugins: List<PluginItem> = mutableListOf()
-    private var pluginReleases: List<PluginBase.PluginRelease> = mutableListOf()
+    private var packages: List<PackageItem> = mutableListOf()
+    private var packageReleases: List<PackageBase.PackageRelease> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,31 +71,31 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
         savedInstanceState: Bundle?
     ): View? {
         settingsActivity = activity as SettingsActivity
-        settingsActivity.changeTopAppbarTitle(getString(R.string.plugins))
+        settingsActivity.changeTopAppbarTitle(getString(R.string.packages))
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        return inflater.inflate(R.layout.fragment_plugins, container, false)
+        return inflater.inflate(R.layout.fragment_packages, container, false)
     }
 
     @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listAdapter = PluginsAdapter(this, settingsActivity)
+        listAdapter = PackagesAdapter(this, settingsActivity)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = listAdapter
         recyclerView.enableFastScroll()
 
-        plugins = listOf(
-            PluginItem("Python", Python),
-            PluginItem("FFmpeg", FFmpeg),
-            PluginItem("Aria2c", Aria2c),
-            PluginItem("NodeJS", NodeJS)
+        packages = listOf(
+            PackageItem("Python", Python),
+            PackageItem("FFmpeg", FFmpeg),
+            PackageItem("Aria2c", Aria2c),
+            PackageItem("NodeJS", NodeJS)
         )
-        listAdapter.submitList(plugins)
+        listAdapter.submitList(packages)
     }
 
-    override fun onCardClick(item: PluginItem) {
+    override fun onCardClick(item: PackageItem, location: PackageBase.PackageLocation) {
         tmpItem = item
 
         val sheet = BottomSheetDialog(requireContext())
@@ -124,8 +117,9 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
 
         val loader = sheet.findViewById<CircularProgressIndicator>(R.id.loader)
         val noResults = sheet.findViewById<View>(R.id.no_results)
-        pluginReleases = mutableListOf()
-        releaseAdapter = PluginReleaseAdapter(this@PluginsFragment, requireActivity())
+        packageReleases = mutableListOf()
+        releaseAdapter = PackageReleaseAdapter(this@PackagesFragment, requireActivity())
+        releaseAdapter.setPackageLocation(location)
 
         val releaseRecyclerView = sheet.findViewById<RecyclerView>(R.id.recyclerView)!!
         releaseRecyclerView.adapter = releaseAdapter
@@ -141,11 +135,11 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
                     }
                 }
 
-                pluginReleases = this.getOrElse { listOf() }
-                releaseAdapter.submitList(pluginReleases)
-                releaseRecyclerView.isVisible = pluginReleases.isNotEmpty()
+                packageReleases = this.getOrElse { listOf() }
+                releaseAdapter.submitList(packageReleases)
+                releaseRecyclerView.isVisible = packageReleases.isNotEmpty()
                 loader?.isVisible = false
-                noResults?.isVisible = pluginReleases.isEmpty()
+                noResults?.isVisible = packageReleases.isEmpty()
             }
         }
 
@@ -191,13 +185,21 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
         }
     }
 
-    private fun deleteDownloadedVersion(item: PluginItem, version: String?) {
+    override fun onDeleteDownloadedPackageClick(item: PackageBase.PackageRelease) {
+        deleteDownloadedVersion(tmpItem!!, item.version)
+    }
+
+    override fun onDeleteDownloadedVersion(item: PackageItem, currentVersion: String?) {
+        deleteDownloadedVersion(item, currentVersion)
+    }
+
+    private fun deleteDownloadedVersion(item: PackageItem, version: String?) {
         UiUtil.showGenericDeleteDialog(
             requireContext(),
             "${item.title} (${version})"
         ) {
             val instance = item.getInstance()
-            val resp = instance.uninstall(requireContext())
+            val resp = instance.uninstallDownloaded(requireContext())
             resp.onFailure {
                 Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
             }
@@ -209,23 +211,7 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
         }
     }
 
-    override fun onDeleteReleaseClick(item: PluginBase.PluginRelease) {
-        deleteDownloadedVersion(tmpItem!!, item.version)
-    }
-
-    override fun onDeleteDownloadedVersion(item: PluginItem, currentVersion: String?) {
-        deleteDownloadedVersion(item, currentVersion)
-    }
-
-    override fun onCancelDownloadReleaseClick(item: PluginBase.PluginRelease) {
-        tmpDownloadJob?.cancel()
-        val idx = pluginReleases.indexOf(item)
-        val list = pluginReleases.toMutableList()
-        list[idx] = list[idx].copy(isDownloading = false)
-        releaseAdapter.submitList(list.toList())
-    }
-
-    override fun onDownloadReleaseClick(item: PluginBase.PluginRelease) {
+    override fun onDownloadReleaseClick(item: PackageBase.PackageRelease) {
         var positiveButton: Button? = null
         val updateDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
@@ -259,7 +245,7 @@ class PluginsFragment : Fragment(), PluginsAdapter.OnItemClickListener, PluginRe
                 val fileResp = instance.downloadRelease(requireContext(), item) { progress ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            positiveButton?.text = "$progress%"
+                            positiveButton.text = "$progress%"
                         }
                     }
                 }

@@ -1,9 +1,10 @@
-package com.deniscerri.ytdl.core.plugins
+package com.deniscerri.ytdl.core.packages
 
-object NodeJS : PluginBase() {
+object NodeJS : PackageBase() {
     override val executableName: String get() = "node"
-    override val pluginFolderName: String get() = "node"
+    override val packageFolderName: String get() = "node"
     override val bundledZipName: String get() = "libnode.zip.so"
+    override val canUninstall: Boolean = true
     override val bundledVersion: String get() = ""
     override val githubRepo: String  get() = "deniscerri/ytdlnis-plugins"
     override val githubPackageName: String  get() = "nodejs"

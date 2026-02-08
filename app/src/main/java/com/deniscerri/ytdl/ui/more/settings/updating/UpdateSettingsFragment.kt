@@ -11,12 +11,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.core.RuntimeManager
-import com.deniscerri.ytdl.core.plugins.Aria2c
-import com.deniscerri.ytdl.core.plugins.PluginBase
-import com.deniscerri.ytdl.core.plugins.FFmpeg
-import com.deniscerri.ytdl.core.plugins.NodeJS
-import com.deniscerri.ytdl.core.plugins.Python
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
@@ -92,11 +86,11 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             false
         }
 
-        findPreference<Preference>("plugins")?.apply {
+        findPreference<Preference>("packages")?.apply {
             summary = "Python, FFmpeg, Aria2c, NodeJS"
 
             setOnPreferenceClickListener {
-                findNavController().navigate(R.id.pluginsFragment)
+                findNavController().navigate(R.id.packagesFragment)
                 false
             }
         }

@@ -1,36 +1,21 @@
 package com.deniscerri.ytdl.ui.adapter
 
 import android.app.Activity
-import android.content.Intent
-import android.net.Uri
-import android.os.Bundle
-import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.collection.intSetOf
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.core.plugins.PluginBase
-import com.deniscerri.ytdl.database.models.DownloadItem
-import com.deniscerri.ytdl.database.models.GithubRelease
-import com.deniscerri.ytdl.database.models.PluginItem
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
-import io.noties.markwon.AbstractMarkwonPlugin
-import io.noties.markwon.Markwon
-import io.noties.markwon.MarkwonConfiguration
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.deniscerri.ytdl.core.packages.PackageBase
+import com.deniscerri.ytdl.database.models.PackageItem
 
-class PluginsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<PluginItem?, PluginsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+class PackagesAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<PackageItem?, PackagesAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
     private val activity: Activity
@@ -81,28 +66,30 @@ class PluginsAdapter(onItemClickListener: OnItemClickListener, activity: Activit
         card.findViewById<TextView>(R.id.bundledChip).isVisible = isBundled
 
         card.setOnClickListener { cl ->
-            onItemClickListener.onCardClick(it)
+            onItemClickListener.onCardClick(it, location)
         }
 
         card.setOnLongClickListener { c ->
-            if (location.isAvailable && location.isDownloaded) {
+            val canUninstall = location.isAvailable && isDownloaded
+
+            if (canUninstall) {
                 onItemClickListener.onDeleteDownloadedVersion(it, currentVersion)
             }
             true
         }
     }
     interface OnItemClickListener {
-        fun onCardClick(item: PluginItem)
-        fun onDeleteDownloadedVersion(item: PluginItem, currentVersion: String?)
+        fun onCardClick(item: PackageItem, location: PackageBase.PackageLocation)
+        fun onDeleteDownloadedVersion(item: PackageItem, currentVersion: String?)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PluginItem> = object : DiffUtil.ItemCallback<PluginItem>() {
-            override fun areItemsTheSame(oldItem: PluginItem, newItem: PluginItem): Boolean {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PackageItem> = object : DiffUtil.ItemCallback<PackageItem>() {
+            override fun areItemsTheSame(oldItem: PackageItem, newItem: PackageItem): Boolean {
                 return oldItem.title == newItem.title
             }
 
-            override fun areContentsTheSame(oldItem: PluginItem, newItem: PluginItem): Boolean {
+            override fun areContentsTheSame(oldItem: PackageItem, newItem: PackageItem): Boolean {
                 return oldItem.title == newItem.title
             }
         }

@@ -29,7 +29,7 @@
                 android:maxLines="2"
                 android:singleLine="false"
                 android:textSize="20sp"
-                android:text="@string/plugins"
+                android:text="@string/packages"
                 app:layout_constraintEnd_toStartOf="@+id/bottomsheet_import_zip"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

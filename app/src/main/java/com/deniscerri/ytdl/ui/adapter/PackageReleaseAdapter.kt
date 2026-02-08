@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.core.plugins.PluginBase.PluginRelease
+import com.deniscerri.ytdl.core.packages.PackageBase
+import com.deniscerri.ytdl.core.packages.PackageBase.PackageRelease
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
 
-class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<PluginRelease?, PluginReleaseAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+class PackageReleaseAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<PackageRelease?, PackageReleaseAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
     private val activity: Activity
+    private lateinit var location: PackageBase.PackageLocation
     private val onItemClickListener: OnItemClickListener
 
     init {
@@ -39,6 +41,10 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
             )
             layoutParams.setMargins(10, 10, 10, 0)
         }
+    }
+
+    fun setPackageLocation(location: PackageBase.PackageLocation) {
+        this.location = location
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -63,31 +69,19 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
         card.findViewById<TextView>(R.id.createdAt).text = parser2.format(date.time)
 
         val actionBtn = card.findViewById<MaterialButton>(R.id.actionBtn)
-        actionBtn.isVisible = !item.isBundled && item.downloadProgress < 100
+        actionBtn.isVisible = !item.isBundled
 
-        val progress = card.findViewById<CircularProgressIndicator>(R.id.progress)
-        progress.isVisible = item.isDownloading
-
-        if (item.isDownloading) {
-            actionBtn.setIconResource(R.drawable.ic_cancel)
-        } else if (item.isInstalled) {
+        if (item.isInstalled) {
             actionBtn.setIconResource(R.drawable.ic_baseline_delete_outline_24)
+            actionBtn.setOnClickListener {
+                onItemClickListener.onDeleteDownloadedPackageClick(item)
+            }
         } else {
             actionBtn.setIconResource(R.drawable.ic_down)
-        }
-
-        actionBtn.setOnClickListener {
-            if (!item.isBundled) {
-                if (item.isDownloading && item.downloadProgress < 100) {
-                    onItemClickListener.onCancelDownloadReleaseClick(item)
-                } else if (item.isInstalled) {
-                    onItemClickListener.onDeleteReleaseClick(item)
-                } else {
-                    onItemClickListener.onDownloadReleaseClick(item)
-                }
+            actionBtn.setOnClickListener {
+                onItemClickListener.onDownloadReleaseClick(item)
             }
         }
-
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
@@ -104,21 +98,18 @@ class PluginReleaseAdapter(onItemClickListener: OnItemClickListener, activity: A
     }
 
     interface OnItemClickListener {
-        fun onCancelDownloadReleaseClick(item: PluginRelease)
-        fun onDownloadReleaseClick(item: PluginRelease)
-        fun onDeleteReleaseClick(item: PluginRelease)
+        fun onDownloadReleaseClick(item: PackageRelease)
+        fun onDeleteDownloadedPackageClick(item: PackageRelease)
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PluginRelease> = object : DiffUtil.ItemCallback<PluginRelease>() {
-            override fun areItemsTheSame(oldItem: PluginRelease, newItem: PluginRelease): Boolean {
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<PackageRelease> = object : DiffUtil.ItemCallback<PackageRelease>() {
+            override fun areItemsTheSame(oldItem: PackageRelease, newItem: PackageRelease): Boolean {
                 return oldItem.version == newItem.version
             }
 
-            override fun areContentsTheSame(oldItem: PluginRelease, newItem: PluginRelease): Boolean {
-                return oldItem.isInstalled == newItem.isInstalled &&
-                        oldItem.isDownloading == newItem.isDownloading &&
-                        oldItem.downloadProgress == newItem.downloadProgress
+            override fun areContentsTheSame(oldItem: PackageRelease, newItem: PackageRelease): Boolean {
+                return oldItem.isInstalled == newItem.isInstalled
             }
         }
     }

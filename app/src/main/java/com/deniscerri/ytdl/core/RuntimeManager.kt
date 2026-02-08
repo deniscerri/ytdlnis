@@ -6,12 +6,12 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.core.models.ExecuteResponse
 import com.deniscerri.ytdl.core.models.YTDLRequest
-import com.deniscerri.ytdl.core.plugins.Aria2c
-import com.deniscerri.ytdl.core.plugins.FFmpeg
-import com.deniscerri.ytdl.core.plugins.NodeJS
-import com.deniscerri.ytdl.core.plugins.PluginBase
-import com.deniscerri.ytdl.core.plugins.Python
-import com.deniscerri.ytdl.core.plugins.QuickJS
+import com.deniscerri.ytdl.core.packages.Aria2c
+import com.deniscerri.ytdl.core.packages.FFmpeg
+import com.deniscerri.ytdl.core.packages.NodeJS
+import com.deniscerri.ytdl.core.packages.PackageBase
+import com.deniscerri.ytdl.core.packages.Python
+import com.deniscerri.ytdl.core.packages.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
 import org.apache.commons.io.FileUtils
@@ -21,11 +21,11 @@ import java.util.Collections
 
 object RuntimeManager {
     val idProcessMap = Collections.synchronizedMap(HashMap<String, Process>())
-    lateinit var pythonLocation: PluginBase.PluginLocation
-    lateinit var ffmpegLocation: PluginBase.PluginLocation
-    lateinit var aria2Location: PluginBase.PluginLocation
-    lateinit var nodeLocation : PluginBase.PluginLocation
-    lateinit var quickJsLocation : PluginBase.PluginLocation
+    lateinit var pythonLocation: PackageBase.PackageLocation
+    lateinit var ffmpegLocation: PackageBase.PackageLocation
+    lateinit var aria2Location: PackageBase.PackageLocation
+    lateinit var nodeLocation : PackageBase.PackageLocation
+    lateinit var quickJsLocation : PackageBase.PackageLocation
     var ytdlpPath: File? = null
 
     const val PREFS_NAME = "runtime_prefs"

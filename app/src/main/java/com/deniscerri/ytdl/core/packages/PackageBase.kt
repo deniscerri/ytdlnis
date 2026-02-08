@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.core.plugins
+package com.deniscerri.ytdl.core.packages
 
 import android.content.Context
 import android.os.Build
@@ -22,19 +22,20 @@ import org.json.JSONObject
 import java.io.File
 import kotlin.coroutines.cancellation.CancellationException
 
-abstract class PluginBase {
+abstract class PackageBase {
     protected abstract val executableName: String      // e.g., "ffmpeg"
-    protected abstract val pluginFolderName: String      // e.g., "ffmpeg"
+    protected abstract val packageFolderName: String      // e.g., "ffmpeg"
     protected abstract val bundledZipName: String   // e.g., "libffmpeg.zip.so"
-    protected abstract val githubRepo: String  // e.g deniscerri/ytdlnis-plugins
+    protected abstract val canUninstall: Boolean   // set false if library is essential
+    protected abstract val githubRepo: String  // e.g deniscerri/ytdlnis-packages
     protected abstract val githubPackageName: String  // e.g ffmpeg
-    fun getInstance(): PluginBase = this
+    fun getInstance(): PackageBase = this
 
     abstract val bundledVersion: String?
     var downloadedVersion: String? = null
 
     @Serializable
-    data class PluginRelease(
+    data class PackageRelease(
         @SerializedName(value = "tag_name")
         var tag_name: String,
         @SerialName("published_at")
@@ -46,18 +47,17 @@ abstract class PluginBase {
         var version: String = "",
         var downloadSize: Long = 0,
         var isInstalled: Boolean = false,
-        var isBundled: Boolean = false,
-        var isDownloading: Boolean = false,
-        var downloadProgress: Int = 0
+        var isBundled: Boolean = false
     )
 
-    data class PluginLocation(
+    data class PackageLocation(
         val binDir: File,
         val ldDir: File,
         val executable: File,
         val isDownloaded: Boolean,
         val isBundled: Boolean,
-        val isAvailable: Boolean
+        val isAvailable: Boolean,
+        val canUninstall: Boolean
     )
 
     // Preferences Keys
@@ -68,7 +68,7 @@ abstract class PluginBase {
     private val downloadedPackagesRoot = "downloaded_packages"
 
 
-    lateinit var location: PluginLocation
+    lateinit var location: PackageLocation
 
     companion object {
         val sharedClient: OkHttpClient by lazy {
@@ -79,7 +79,7 @@ abstract class PluginBase {
 
     fun init(context: Context) {
         val baseDir = File(context.noBackupFilesDir, RuntimeManager.BASENAME)
-        val packageDir = File(baseDir, "$packagesRoot/$pluginFolderName")
+        val packageDir = File(baseDir, "$packagesRoot/$packageFolderName")
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         //try init bundled
         initBundled(context, packageDir)
@@ -113,10 +113,10 @@ abstract class PluginBase {
 
     private fun getDownloadedDir(context: Context) : File {
         val baseDir = File(context.noBackupFilesDir, RuntimeManager.BASENAME)
-        return File(baseDir, "$downloadedPackagesRoot/$pluginFolderName")
+        return File(baseDir, "$downloadedPackagesRoot/$packageFolderName")
     }
 
-    fun getLocation(context: Context, baseDir: File): PluginLocation {
+    fun getLocation(context: Context, baseDir: File): PackageLocation {
         //downloaded
         val downloadedDir = getDownloadedDir(context)
         val downloadedBinDir = downloadedDir
@@ -126,26 +126,27 @@ abstract class PluginBase {
         //bundled
         val bundledDir = File(baseDir, packagesRoot)
         val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
-        val bundledLDLibDir = File(bundledDir, pluginFolderName)
+        val bundledLDLibDir = File(bundledDir, packageFolderName)
         val bundledExe = File(bundledBinDir, "lib$executableName.so")
 
         val isDownloaded = downloadedExe.exists()
         val isBundled = bundledExe.exists()
 
-        return PluginLocation(
+        return PackageLocation(
             binDir = if (isDownloaded) downloadedBinDir else bundledBinDir,
             ldDir = if (isDownloaded) downloadedLDLibDir else bundledLDLibDir,
             executable = if (isDownloaded) downloadedExe else bundledExe,
             isDownloaded,
             isBundled,
-            isDownloaded || isBundled
+            isDownloaded || isBundled,
+            canUninstall
         )
     }
 
-    suspend fun downloadRelease(context: Context, release: PluginRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
+    suspend fun downloadRelease(context: Context, release: PackageRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
         return withContext(Dispatchers.IO) {
             try {
-                val tempZipFile = File(context.cacheDir, "${pluginFolderName}_tmp.zip")
+                val tempZipFile = File(context.cacheDir, "${packageFolderName}_tmp.zip")
 
                 //download
                 val request = Request.Builder()
@@ -220,7 +221,7 @@ abstract class PluginBase {
         }
     }
 
-    fun uninstall(context: Context): Result<Unit> {
+    fun uninstallDownloaded(context: Context): Result<Unit> {
         return kotlin.runCatching {
             val runtimeDir = getDownloadedDir(context)
 
@@ -248,7 +249,7 @@ abstract class PluginBase {
         }
     }
 
-    suspend fun getReleases() : Result<List<PluginRelease>> {
+    suspend fun getReleases() : Result<List<PackageRelease>> {
         if (githubRepo.isEmpty()) return Result.success(listOf())
 
         val request = Request.Builder()
@@ -263,7 +264,7 @@ abstract class PluginBase {
                 if (response.isSuccessful && jsonString.isNotEmpty()) {
                     val supportedArch = getArchSuffix()
 
-                    val releases = json.decodeFromString<List<PluginRelease>>(jsonString)
+                    val releases = json.decodeFromString<List<PackageRelease>>(jsonString)
                         .filter {
                             it.tag_name.contains(githubPackageName)
                         }
