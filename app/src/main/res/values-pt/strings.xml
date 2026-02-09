@@ -28,7 +28,7 @@
     <string name="video_directory">Pasta de vídeos</string>
     <string name="updating">Atualização</string>
     <string name="ytdl_update_hint">Dica útil ao baixar atualizações</string>
-    <string name="update_ytdl">Atualizar yt-dl para a nova versão</string>
+    <string name="update_ytdl">Atualizar yt-dlp para a nova versão</string>
     <string name="about">Sobre</string>
     <string name="source_code">Código fonte</string>
     <string name="no_results">Nenhum resultado</string>
@@ -161,7 +161,7 @@
     <string name="finished_download_notification_channel_name">Downloads concluídos</string>
     <string name="finished_download_notification_channel_description">Notificação para downloads concluídos</string>
     <string name="quick_download">Download rápido</string>
-    <string name="quick_download_summary">Não buscar dados no cartão de download</string>
+    <string name="quick_download_summary">Continuar a descarregar imediatamente, sem pré-obtenção de dados</string>
     <string name="remove_audio">Remover áudio</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="download_now">Baixar agora</string>
@@ -498,4 +498,5 @@
     <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do dump json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
     <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
+    <string name="prefer_drc_audio">Preferir DRC Audio</string>
 </resources>
