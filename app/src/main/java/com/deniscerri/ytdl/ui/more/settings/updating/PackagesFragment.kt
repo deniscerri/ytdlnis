@@ -50,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.core.net.toUri
 
 
 class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, PackageReleaseAdapter.OnItemClickListener {
@@ -61,6 +62,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
     private lateinit var preferences: SharedPreferences
 
     private var tmpItem: PackageItem? = null
+    private var tmpInstance: PackageBase? = null
     private var tmpDownloadJob: Job? = null
     private var packages: List<PackageItem> = mutableListOf()
     private var packageReleases: List<PackageBase.PackageRelease> = mutableListOf()
@@ -185,6 +187,20 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         }
     }
 
+    val uninstallLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (tmpInstance?.isPackageAppInstalled(requireContext()) == false) {
+            val resp = tmpInstance?.uninstallDownloadedRuntimeDir(requireContext())
+            resp?.onFailure {
+                Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+            }
+            resp?.onSuccess {
+                bottomSheet?.dismiss()
+                listAdapter.notifyDataSetChanged()
+                RuntimeManager.reInit(requireContext())
+            }
+        }
+    }
+
     override fun onDeleteDownloadedPackageClick(item: PackageBase.PackageRelease) {
         deleteDownloadedVersion(tmpItem!!, item.version)
     }
@@ -199,15 +215,9 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
             "${item.title} (${version})"
         ) {
             val instance = item.getInstance()
-            val resp = instance.uninstallDownloaded(requireContext())
-            resp.onFailure {
-                Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
-            }
-            resp.onSuccess {
-                bottomSheet?.dismiss()
-                listAdapter.notifyDataSetChanged()
-                RuntimeManager.reInit(requireContext())
-            }
+            tmpInstance = instance
+            val intent = Intent(Intent.ACTION_DELETE, "package:${instance.apkPackage}".toUri())
+            uninstallLauncher.launch(intent)
         }
     }
 

@@ -249,8 +249,7 @@ object RuntimeManager {
             val err = errBuffer.toString()
 
             val successCodes = listOf(
-                0, //Everything is successful,
-                100, //yt-dlp -U fails but the downloads is successful
+                0, //Everything is successful
             )
 
             if (!successCodes.contains(exitCode)) {

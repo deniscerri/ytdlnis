@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.QueuedDownloadAdapter
@@ -59,6 +60,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
     private lateinit var queuedRecyclerView : RecyclerView
     private lateinit var adapter : QueuedDownloadAdapter
     private lateinit var noResults : RelativeLayout
@@ -79,6 +81,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         return fragmentView
     }
 
@@ -467,9 +470,9 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                         withContext(Dispatchers.IO){
                             downloadViewModel.updateToStatus(it.id, DownloadRepository.Status.Saved)
                         }
+                        downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
+                        downloadCardViewModel.setDownloadItem(it)
                         findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                Pair("downloadItem", it),
-                                Pair("result", downloadViewModel.createResultItemFromDownload(it)),
                                 Pair("type", it.type)
                             )
                         )

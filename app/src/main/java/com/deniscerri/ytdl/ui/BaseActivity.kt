@@ -26,10 +26,14 @@ open class BaseActivity : AppCompatActivity() {
 
     fun askPermissions() {
         val permissions = arrayListOf<String>()
-        val hasFilePerm = (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val hasFilePerm = if (Build.VERSION.SDK_INT >= 30) {
+            true
+        }else {
+            (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) &&
                     (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
                             == PackageManager.PERMISSION_GRANTED)
+        }
 
         if (!hasFilePerm){
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)

@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
@@ -59,6 +60,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
     private lateinit var erroredRecyclerView : RecyclerView
     private lateinit var preferences : SharedPreferences
     private lateinit var noResults : RelativeLayout
@@ -79,6 +81,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
         activity = getActivity()
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
@@ -188,9 +191,10 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                    }
                },
                longClickDownloadButton = {
+                   downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
+                   downloadCardViewModel.setDownloadItem(it)
+
                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                       Pair("downloadItem", it),
-                       Pair("result", downloadViewModel.createResultItemFromDownload(it)),
                        Pair("type", it.type)
                    ))
                },
@@ -298,10 +302,11 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                                     downloadViewModel.getItemByID(selectedObjects.first())
                                 }
 
+                                downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(itm))
+                                downloadCardViewModel.setDownloadItem(itm)
+
                                 withContext(Dispatchers.Main) {
                                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                        Pair("downloadItem", itm),
-                                        Pair("result", downloadViewModel.createResultItemFromDownload(itm)),
                                         Pair("type", itm.type)
                                     ))
                                 }
@@ -386,9 +391,10 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                                 downloadViewModel.getItemByID(itemID)
                             }
 
+                            downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(item))
+                            downloadCardViewModel.setDownloadItem(item)
+
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                Pair("downloadItem", item),
-                                Pair("result", downloadViewModel.createResultItemFromDownload(item)),
                                 Pair("type", item.type)
                             ))
                             

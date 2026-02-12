@@ -8,4 +8,5 @@ object QuickJS : PackageBase() {
     override val canUninstall: Boolean = false
     override val githubRepo: String  get() = ""
     override val githubPackageName: String  get() = ""
+    override val apkPackage: String get() = ""
 }

@@ -44,6 +44,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.repository.HistoryRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.ui.adapter.HistoryPaginatedAdapter
@@ -73,6 +74,7 @@ import kotlinx.coroutines.withContext
 class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     private lateinit var historyViewModel : HistoryViewModel
     private lateinit var downloadViewModel : DownloadViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
 
     private lateinit var fragmentView: View
     private var mainActivity: MainActivity? = null
@@ -195,6 +197,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         }
 
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         lifecycleScope.launch{
             downloadViewModel.alreadyExistsUiState.collectLatest { res ->
                 if (res.isNotEmpty()){
@@ -535,8 +538,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     historyViewModel.delete(it, false)
                 },
                 redownloadShowDownloadCard = {
+                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(it))
+                    downloadCardViewModel.setDownloadItem(null)
+
                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                        Pair("result", downloadViewModel.createResultItemFromHistory(it)),
                         Pair("type", it.type),
                         Pair("ignore_duplicates", true),
                     ))
@@ -660,8 +665,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                 historyViewModel.getByID(selectedObjects.first())
                             }
 
+                            downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(tmp))
+                            downloadCardViewModel.setDownloadItem(null)
+
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                Pair("result", downloadViewModel.createResultItemFromHistory(tmp)),
                                 Pair("type", tmp.type),
                                 Pair("ignore_duplicates", true)
                             ))
@@ -756,8 +763,11 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                 historyViewModel.getByID(itemID)
                             }
                             historyAdapter.notifyItemChanged(position)
+
+                            downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(item))
+                            downloadCardViewModel.setDownloadItem(null)
+
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                Pair("result", downloadViewModel.createResultItemFromHistory(item)),
                                 Pair("type", item.type),
                                 Pair("ignore_duplicates", true)
                             ))

@@ -51,6 +51,7 @@ import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -102,6 +103,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var historyViewModel : HistoryViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -153,6 +155,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
 
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
@@ -766,7 +769,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             ){
             //show the fragment if its not in the backstack
             val bundle = Bundle()
-            bundle.putParcelable("result", resultItem)
+            downloadCardViewModel.setResultItem(resultItem)
+            downloadCardViewModel.setDownloadItem(null)
             bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
             if (disableUpdateData) {
                 bundle.putBoolean("disableUpdateData", true)

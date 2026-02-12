@@ -36,6 +36,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -70,6 +71,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var historyViewModel: HistoryViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var commandTemplateViewModel : CommandTemplateViewModel
     private lateinit var sharedPreferences : SharedPreferences
@@ -95,17 +97,12 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         historyViewModel = ViewModelProvider(requireActivity())[HistoryViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        val res: ResultItem?
-        val dwl: DownloadItem?
 
-        if (Build.VERSION.SDK_INT >= 33){
-            res = arguments?.getParcelable("result", ResultItem::class.java)
-            dwl = arguments?.getParcelable("downloadItem", DownloadItem::class.java)
-        }else{
-            res = arguments?.getParcelable<ResultItem>("result")
-            dwl = arguments?.getParcelable<DownloadItem>("downloadItem")
-        }
+        val res = downloadCardViewModel.resultItem
+        val dwl = downloadCardViewModel.downloadItem
+
         type = arguments?.getSerializable("type") as DownloadType
         disableUpdateData = arguments?.getBoolean("disableUpdateData") == true
         ignoreDuplicates = arguments?.getBoolean("ignore_duplicates") == true

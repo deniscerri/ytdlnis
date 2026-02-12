@@ -13,7 +13,8 @@ def versionMajor = 1
 def versionMinor = 8
 def versionPatch = 7
 def versionBuild = 3 // bump for dogfood builds, public betas, etc.
-def isBeta = true
+//WHEN RELEASING BETA KEEP THE SAME VERSION AS LATEST STABLE, SO USERS CAN DOWNGRADE
+def isBeta = false
 
 def versionExt = ""
 if (versionBuild > 0) {
@@ -46,12 +47,7 @@ android {
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdk 24
-        /*
-        KEEP 28 TO ALLOW THE APP TO EXECUTE DOWNLOADABLE PACKAGES, IF PLAN TO UPGRADE PRE-BUNDLE packages in jniLibs
-        OR LOOK INTO PACKAGES as APK and put the files in their respective jniLibs
-        * */
-        //noinspection ExpiredTargetSdkVersion
-        targetSdk 28
+        targetSdk 36
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}${versionExt}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

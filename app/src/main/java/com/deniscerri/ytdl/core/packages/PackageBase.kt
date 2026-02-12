@@ -1,7 +1,10 @@
 package com.deniscerri.ytdl.core.packages
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.edit
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
@@ -29,6 +32,7 @@ abstract class PackageBase {
     protected abstract val canUninstall: Boolean   // set false if library is essential
     protected abstract val githubRepo: String  // e.g deniscerri/ytdlnis-packages
     protected abstract val githubPackageName: String  // e.g ffmpeg
+    abstract val apkPackage: String // e.g. com.deniscerri.ytdl.ffmpeg
     fun getInstance(): PackageBase = this
 
     abstract val bundledVersion: String?
@@ -82,7 +86,19 @@ abstract class PackageBase {
         val packageDir = File(baseDir, "$packagesRoot/$packageFolderName")
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         //try init bundled
-        initBundled(context, packageDir)
+        val bundledZip = File(context.applicationInfo.nativeLibraryDir, bundledZipName)
+        initBundled(context, bundledZip, packageDir)
+        if (apkPackage.isNotBlank()) {
+            //try init from package apk
+            try {
+                context.packageManager.getApplicationInfo(apkPackage, 0)
+            } catch(e: Exception) {
+                null
+            }?.apply {
+                val apkBundledZip = File(this.nativeLibraryDir, bundledZipName)
+                initBundled(context, apkBundledZip, getDownloadedDir(context), packageApkVersion = getDownloadedPackageAppVersion(context))
+            }
+        }
 
         location = getLocation(context, baseDir)
         downloadedVersion = if (location.isDownloaded) {
@@ -92,19 +108,29 @@ abstract class PackageBase {
         }
     }
 
-    private fun initBundled(context: Context, targetDir: File) {
-        val bundledZip = File(context.applicationInfo.nativeLibraryDir, bundledZipName)
+    private fun initBundled(context: Context, bundledZip: File, targetDir: File, packageApkVersion: String? = null) {
         if (!bundledZip.exists()) return
 
         val currentSize = bundledZip.length().toString()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-        if (!targetDir.exists() || prefs.getString(bundledVerKey, "") != currentSize) {
+        val bundledVerKey = prefs.getString(bundledVerKey, "")
+        val downloadedVerKey = prefs.getString(downloadedVersionKey, "")
+
+        val sizeMismatch = if (packageApkVersion != null) downloadedVerKey != packageApkVersion else bundledVerKey != currentSize
+
+        if (!targetDir.exists() || sizeMismatch) {
             FileUtils.deleteQuietly(targetDir)
             targetDir.mkdirs()
             try {
                 ZipUtils.unzip(bundledZip, targetDir)
-                prefs.edit(commit = true) { putString(bundledVerKey, currentSize) }
+                prefs.edit(commit = true) {
+                    if (packageApkVersion != null) {
+                        putString(downloadedVersionKey, packageApkVersion)
+                    } else {
+                        putString(bundledVerKey, currentSize)
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -117,28 +143,42 @@ abstract class PackageBase {
     }
 
     fun getLocation(context: Context, baseDir: File): PackageLocation {
-        //downloaded
-        val downloadedDir = getDownloadedDir(context)
-        val downloadedBinDir = downloadedDir
-        val downloadedLDLibDir = downloadedDir
-        val downloadedExe = File(downloadedDir, "lib$executableName.so")
+        val mainNativeDir = context.applicationInfo.nativeLibraryDir
 
-        //bundled
-        val bundledDir = File(baseDir, packagesRoot)
-        val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
-        val bundledLDLibDir = File(bundledDir, packageFolderName)
-        val bundledExe = File(bundledBinDir, "lib$executableName.so")
+        var packageBinDir: String? = null
+        if (apkPackage.isNotBlank()) {
+            try {
+                packageBinDir = context.packageManager.getApplicationInfo(apkPackage, 0).nativeLibraryDir
+            } catch (e: Exception) {}
+        }
 
-        val isDownloaded = downloadedExe.exists()
-        val isBundled = bundledExe.exists()
+        val packageExe = if (packageBinDir != null) File(packageBinDir, "lib$executableName.so") else null
+        val isPackageActive = packageExe?.exists() == true
+        var isBundleActive = false
+
+        val finalExe: File
+        val binDir: File
+        val ldDir: File
+
+        if (isPackageActive) {
+            finalExe = packageExe
+            binDir = File(packageBinDir!!)
+            ldDir = getDownloadedDir(context)
+        } else {
+            val bundledDir = File(baseDir, packagesRoot)
+            binDir = File(context.applicationInfo.nativeLibraryDir)
+            ldDir = File(bundledDir, packageFolderName)
+            finalExe = File(binDir, "lib$executableName.so")
+            isBundleActive = finalExe.exists()
+        }
 
         return PackageLocation(
-            binDir = if (isDownloaded) downloadedBinDir else bundledBinDir,
-            ldDir = if (isDownloaded) downloadedLDLibDir else bundledLDLibDir,
-            executable = if (isDownloaded) downloadedExe else bundledExe,
-            isDownloaded,
-            isBundled,
-            isDownloaded || isBundled,
+            binDir = binDir,
+            ldDir = ldDir,
+            executable = finalExe,
+            isDownloaded = isPackageActive,
+            isBundled = isBundleActive,
+            isPackageActive || isBundleActive,
             canUninstall
         )
     }
@@ -221,7 +261,7 @@ abstract class PackageBase {
         }
     }
 
-    fun uninstallDownloaded(context: Context): Result<Unit> {
+    fun uninstallDownloadedRuntimeDir(context: Context): Result<Unit> {
         return kotlin.runCatching {
             val runtimeDir = getDownloadedDir(context)
 
@@ -284,6 +324,32 @@ abstract class PackageBase {
             } catch (e: Exception) {
                 Result.failure(e)
             }
+        }
+    }
+
+    fun getDownloadedPackageAppVersion(context: Context): String? {
+        if (apkPackage.isBlank()) return null
+        return try {
+            val packageManager = context.packageManager
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val info = packageManager.getPackageInfo(apkPackage, PackageManager.PackageInfoFlags.of(0))
+                "v${info.versionName}"
+            } else {
+                @Suppress("DEPRECATION")
+                val info = packageManager.getPackageInfo(apkPackage, 0)
+                "v${info.versionName}"
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            null // Package not installed
+        }
+    }
+
+    fun isPackageAppInstalled(context: Context): Boolean {
+        return try {
+            context.packageManager.getPackageInfo(apkPackage, 0)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            false
         }
     }
 

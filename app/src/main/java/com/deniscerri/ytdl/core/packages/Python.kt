@@ -8,4 +8,5 @@ object Python : PackageBase() {
     override val canUninstall: Boolean = false
     override val githubRepo: String  get() = "deniscerri/ytdlnis-plugins"
     override val githubPackageName: String  get() = "python"
+    override val apkPackage: String get() = "com.deniscerri.ytdl.python"
 }

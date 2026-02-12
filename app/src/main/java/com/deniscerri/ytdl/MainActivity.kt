@@ -37,6 +37,7 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
@@ -82,6 +83,7 @@ class MainActivity : BaseActivity() {
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private var navigationView: NavigationView? = null
     private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
@@ -98,6 +100,7 @@ class MainActivity : BaseActivity() {
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(this)[DownloadCardViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         if (preferences.getBoolean("incognito", false)) {
@@ -411,7 +414,8 @@ class MainActivity : BaseActivity() {
                             downloadType = downloadViewModel.getDownloadType(null, path)
                         }
 
-                        bundle.putParcelable("result", downloadViewModel.createEmptyResultItem(path))
+                        downloadCardViewModel.setResultItem(downloadViewModel.createEmptyResultItem(path))
+                        downloadCardViewModel.setDownloadItem(null)
                         bundle.putSerializable("type", downloadType)
                         navController.navigate(R.id.downloadBottomSheetDialog, bundle)
                         return

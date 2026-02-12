@@ -8,4 +8,5 @@ object Aria2c : PackageBase() {
     override val bundledVersion: String get() = "v1.37.0"
     override val githubRepo: String  get() = "deniscerri/ytdlnis-plugins"
     override val githubPackageName: String  get() = "aria2c"
+    override val apkPackage: String get() = "com.deniscerri.ytdl.aria2c"
 }

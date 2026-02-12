@@ -8,4 +8,5 @@ object FFmpeg : PackageBase() {
     override val bundledVersion: String get() = "v7.0.1"
     override val githubRepo: String  get() = "deniscerri/ytdlnis-plugins"
     override val githubPackageName: String  get() = "ffmpeg"
+    override val apkPackage: String get() = "com.deniscerri.ytdl.ffmpeg"
 }
