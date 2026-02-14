@@ -105,17 +105,6 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         sheet.setContentView(R.layout.plugin_releases_bottom_sheet)
 
         sheet.findViewById<TextView>(R.id.bottom_sheet_subtitle)?.text = item.title
-        sheet.findViewById<Button>(R.id.bottomsheet_import_zip)?.setOnClickListener {
-            sheet.dismiss()
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "application/zip"
-            }
-            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-            importPluginZipLauncher.launch(intent)
-        }
 
         val loader = sheet.findViewById<CircularProgressIndicator>(R.id.loader)
         val noResults = sheet.findViewById<View>(R.id.no_results)
@@ -161,33 +150,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         bottomSheet = sheet
     }
 
-    private var importPluginZipLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.data?.let {
-                activity?.contentResolver?.takePersistableUriPermission(
-                    it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-                )
-
-                tmpItem?.let { item ->
-                    DocumentFile.fromSingleUri(requireContext(), it)?.apply {
-                        val instance = item.getInstance()
-                        val result = instance.installFromZip(requireContext(), this)
-                        if (result.isSuccess) {
-                            bottomSheet?.dismiss()
-                            listAdapter.notifyDataSetChanged()
-                            RuntimeManager.reInit(requireContext())
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    val uninstallLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var uninstallLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (tmpInstance?.isPackageAppInstalled(requireContext()) == false) {
             val resp = tmpInstance?.uninstallDownloadedRuntimeDir(requireContext())
             resp?.onFailure {
@@ -216,7 +179,9 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         ) {
             val instance = item.getInstance()
             tmpInstance = instance
-            val intent = Intent(Intent.ACTION_DELETE, "package:${instance.apkPackage}".toUri())
+            val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.parse("package:${instance.apkPackage}")
+            }
             uninstallLauncher.launch(intent)
         }
     }
@@ -252,7 +217,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
 
             tmpDownloadJob = lifecycleScope.launch {
                 val instance = tmpItem!!.getInstance()
-                val fileResp = instance.downloadRelease(requireContext(), item) { progress ->
+                val fileResp = instance.downloadReleaseApk(requireContext(), item) { progress ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             positiveButton.text = "$progress%"
@@ -269,26 +234,10 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
                     }
                 }
                 fileResp.onSuccess { file ->
-                    val resp = instance.installFromZip(requireContext(), file, "v${item.version}")
-                    resp.onFailure {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.Main) {
-                                bottomSheet?.dismiss()
-                                view.dismiss()
-                                Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                    resp.onSuccess {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.Main) {
-                                bottomSheet?.dismiss()
-                                view.dismiss()
-                                listAdapter.notifyDataSetChanged()
-                                RuntimeManager.reInit(requireContext())
-                            }
-                        }
-                    }
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.setDataAndType(file.uri, "application/vnd.android.package-archive");
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                 }
             }
         }

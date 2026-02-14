@@ -143,33 +143,37 @@ abstract class PackageBase {
     }
 
     fun getLocation(context: Context, baseDir: File): PackageLocation {
-        val mainNativeDir = context.applicationInfo.nativeLibraryDir
-
+        //downloaded apk location
         var packageBinDir: String? = null
         if (apkPackage.isNotBlank()) {
             try {
                 packageBinDir = context.packageManager.getApplicationInfo(apkPackage, 0).nativeLibraryDir
             } catch (e: Exception) {}
         }
+        val downloadedBinDir = File(packageBinDir ?: "")
+        val downloadedLDDir = getDownloadedDir(context)
+        val downloadedExe = File(packageBinDir, "lib$executableName.so")
 
-        val packageExe = if (packageBinDir != null) File(packageBinDir, "lib$executableName.so") else null
-        val isPackageActive = packageExe?.exists() == true
-        var isBundleActive = false
+        //bundled location
+        val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
+        val bundledLDDir = File(File(baseDir, packagesRoot), packageFolderName)
+        val bundledExe = File(bundledBinDir, "lib$executableName.so")
+
+        val isPackageActive = downloadedExe.exists()
+        val isBundleActive = bundledExe.exists()
 
         val finalExe: File
         val binDir: File
         val ldDir: File
 
         if (isPackageActive) {
-            finalExe = packageExe
-            binDir = File(packageBinDir!!)
-            ldDir = getDownloadedDir(context)
+            finalExe = downloadedExe
+            binDir = downloadedBinDir
+            ldDir = downloadedLDDir
         } else {
-            val bundledDir = File(baseDir, packagesRoot)
-            binDir = File(context.applicationInfo.nativeLibraryDir)
-            ldDir = File(bundledDir, packageFolderName)
-            finalExe = File(binDir, "lib$executableName.so")
-            isBundleActive = finalExe.exists()
+            finalExe = bundledExe
+            binDir = bundledBinDir
+            ldDir = bundledLDDir
         }
 
         return PackageLocation(
@@ -183,10 +187,10 @@ abstract class PackageBase {
         )
     }
 
-    suspend fun downloadRelease(context: Context, release: PackageRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
+    suspend fun downloadReleaseApk(context: Context, release: PackageRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
         return withContext(Dispatchers.IO) {
             try {
-                val tempZipFile = File(context.cacheDir, "${packageFolderName}_tmp.zip")
+                val tempApk = File(context.cacheDir, "${packageFolderName}_${release.version.replace(".", "")}.apk")
 
                 //download
                 val request = Request.Builder()
@@ -203,7 +207,7 @@ abstract class PackageBase {
                 var bytesDownloaded = 0L
 
                 body.byteStream().use { inputStream ->
-                    tempZipFile.outputStream().use { outputStream ->
+                    tempApk.outputStream().use { outputStream ->
                         val buffer = ByteArray(8192) // 8KB buffer
                         var bytesRead: Int
 
@@ -220,44 +224,10 @@ abstract class PackageBase {
                     }
                 }
 
-                Result.success(DocumentFile.fromFile(tempZipFile))
+                Result.success(DocumentFile.fromFile(tempApk))
             } catch (e: Exception) {
                 Result.failure(e)
             }
-        }
-    }
-
-    fun installFromZip(context: Context, zipFile: DocumentFile, versionTag: String? = null) : Result<String> {
-        return kotlin.runCatching {
-            val runtimeDir = getDownloadedDir(context)
-            FileUtils.deleteQuietly(runtimeDir)
-            runtimeDir.mkdirs()
-
-            // 3. Unzip the main Bundle (contains libnode.so and libnode.zip.so)
-            context.contentResolver.openInputStream(zipFile.uri).use { inputStream ->
-                ZipUtils.unzip(inputStream, runtimeDir)
-            }
-            // 4. Handle the Bootstrap Zip (Double Unzip)
-            // Look for any .zip.so file in the extracted directory
-            runtimeDir.listFiles()?.forEach { file ->
-                if (file.name.endsWith(".zip.so")) {
-                    ZipUtils.unzip(file, runtimeDir)
-                    file.delete() // Remove the internal zip to save space
-                }
-            }
-
-            applyExecutablePermissions(runtimeDir)
-            // 6. Save installation state
-            val version = versionTag ?: "IMPORTED"
-            saveState(context, version)
-
-            if (versionTag != null) {
-                zipFile.delete()
-            }
-
-            Result.success(version)
-        }.getOrElse {
-            Result.failure(it)
         }
     }
 

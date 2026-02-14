@@ -30,7 +30,7 @@
                 android:singleLine="false"
                 android:textSize="20sp"
                 android:text="@string/packages"
-                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_import_zip"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,24 +42,9 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 tools:text="Python"
-                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_import_zip"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title" />
-
-
-            <Button
-                android:id="@+id/bottomsheet_import_zip"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:outlineProvider="none"
-                android:stateListAnimator="@null"
-                android:text="@string/import_zip"
-                app:icon="@drawable/baseline_folder_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

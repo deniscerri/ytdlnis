@@ -512,6 +512,5 @@
     <string name="sponsorblock_hook">Hook/Greetings</string>
     <string name="packages">Packages</string>
     <string name="not_installed">Not installed</string>
-    <string name="import_zip">Import ZIP</string>
     <string name="bundled">Bundled</string>
 </resources>
