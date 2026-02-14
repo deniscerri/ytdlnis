@@ -119,8 +119,8 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val downloadItem = getDownloadItem()
-        arguments?.putParcelable("result", result)
-        arguments?.putParcelable("downloadItem", downloadItem)
+        downloadCardViewModel.setResultItem(result)
+        downloadCardViewModel.setDownloadItem(downloadItem)
         arguments?.putSerializable("type", downloadItem.type)
     }
 
@@ -587,7 +587,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                             shimmerLoadingSubtitle.stopShimmer()
 
                             val usingGenericFormatsOrEmpty = res.formats.isEmpty() || res.formats.any { it.format_note.contains("ytdlnisgeneric") }
-                            arguments?.putParcelable("result", res)
+                            downloadCardViewModel.setResultItem(res)
                             if (usingGenericFormatsOrEmpty && sharedPreferences.getBoolean("update_formats", false)){
                                 initUpdateFormats(res)
                             }

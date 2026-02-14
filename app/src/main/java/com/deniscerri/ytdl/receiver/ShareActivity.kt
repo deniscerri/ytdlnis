@@ -31,6 +31,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -53,6 +54,7 @@ class ShareActivity : BaseActivity() {
     private lateinit var historyViewModel: HistoryViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var cookieViewModel: CookieViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var navController: NavController
     private var quickDownload by Delegates.notNull<Boolean>()
@@ -117,6 +119,7 @@ class ShareActivity : BaseActivity() {
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(this)[DownloadCardViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         cookieViewModel.updateCookiesFile()
@@ -190,8 +193,10 @@ class ShareActivity : BaseActivity() {
 
                 val downloadType = DownloadType.valueOf(type ?: downloadViewModel.getDownloadType(url = result.url).toString())
                 if (sharedPreferences.getBoolean("download_card", true) && !background){
+
+                    downloadCardViewModel.setResultItem(result)
+                    downloadCardViewModel.setDownloadItem(null)
                     val bundle = Bundle()
-                    bundle.putParcelable("result", result)
                     bundle.putSerializable("type", downloadType)
                     navController.setGraph(R.navigation.share_nav_graph, bundle)
                 }else{
