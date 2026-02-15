@@ -103,8 +103,8 @@ class MainSettingsFragment : BaseSettingsFragment() {
     )
 
     private val categoryTitles = mapOf(
-        "appearance" to R.string.appearance,
-        "folders" to R.string.folders,
+        "appearance" to R.string.general,
+        "folders" to R.string.directories,
         "downloading" to R.string.downloads,
         "processing" to R.string.processing,
         "updating" to R.string.updating,
