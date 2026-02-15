@@ -187,7 +187,7 @@ abstract class PackageBase {
         )
     }
 
-    suspend fun downloadReleaseApk(context: Context, release: PackageRelease, onProgress: (Int) -> Unit) : Result<DocumentFile> {
+    suspend fun downloadReleaseApk(context: Context, release: PackageRelease, onProgress: (Int) -> Unit) : Result<File> {
         return withContext(Dispatchers.IO) {
             try {
                 val tempApk = File(context.cacheDir, "${packageFolderName}_${release.version.replace(".", "")}.apk")
@@ -224,7 +224,7 @@ abstract class PackageBase {
                     }
                 }
 
-                Result.success(DocumentFile.fromFile(tempApk))
+                Result.success(tempApk)
             } catch (e: Exception) {
                 Result.failure(e)
             }

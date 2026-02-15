@@ -18,6 +18,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
@@ -51,6 +52,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.net.toUri
+import com.anggrayudi.storage.file.toRawFile
+import java.io.File
 
 
 class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, PackageReleaseAdapter.OnItemClickListener {
@@ -91,8 +94,8 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         packages = listOf(
             PackageItem("Python", Python),
             PackageItem("FFmpeg", FFmpeg),
-            PackageItem("Aria2c", Aria2c),
-            PackageItem("NodeJS", NodeJS)
+            PackageItem("NodeJS", NodeJS),
+            PackageItem("Aria2c", Aria2c)
         )
         listAdapter.submitList(packages)
     }
@@ -162,6 +165,12 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
                 RuntimeManager.reInit(requireContext())
             }
         }
+    }
+
+    private var installLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        bottomSheet?.dismiss()
+        listAdapter.notifyDataSetChanged()
+        RuntimeManager.reInit(requireContext())
     }
 
     override fun onDeleteDownloadedPackageClick(item: PackageBase.PackageRelease) {
@@ -234,10 +243,14 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
                     }
                 }
                 fileResp.onSuccess { file ->
-                    val intent = Intent(Intent.ACTION_VIEW)
-                    intent.setDataAndType(file.uri, "application/vnd.android.package-archive");
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    view.dismiss()
+
+                    val contentUri = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", file)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(contentUri, "application/vnd.android.package-archive")
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    }
+                    installLauncher.launch(intent)
                 }
             }
         }
