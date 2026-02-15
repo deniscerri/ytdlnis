@@ -16,6 +16,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
     @SuppressLint("RestrictedApi")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.processing_preferences, rootKey)
+        buildPreferenceList(preferenceScreen)
         val prefs = PreferenceManager.getDefaultSharedPreferences(requireActivity())
         val editor = prefs.edit()
 

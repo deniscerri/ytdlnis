@@ -84,6 +84,10 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+        
+        // Build searchable preference list
+        buildPreferenceList(preferenceScreen)
+        
         val navController = findNavController()
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         editor = preferences.edit()

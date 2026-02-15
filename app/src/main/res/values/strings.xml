@@ -510,4 +510,5 @@
     <string name="show_quick_download_share_menu">Show option to download immediately in the share menu</string>
     <string name="quick_download_title">Don\'t fetch data</string>
     <string name="sponsorblock_hook">Hook/Greetings</string>
+    <string name="search_settings">Search settings</string>
 </resources>

@@ -21,8 +21,8 @@
         app:layout_constraintTop_toBottomOf="@+id/incognito_header"
         />
 
-
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -40,12 +40,44 @@
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll"
                 app:navigationIcon="@drawable/ic_back"
-            app:navigationContentDescription="@string/back"
+                app:navigationContentDescription="@string/back"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"/>
+                android:layout_height="?attr/actionBarSize">
+
+                <com.google.android.material.search.SearchBar
+                    android:id="@+id/settings_search_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/search_settings"
+                    android:visibility="gone"
+                    app:layout_scrollFlags="scroll|enterAlways"/>
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/settings_search_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:startIconDrawable="@drawable/ic_search"
+            app:endIconMode="clear_text"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/settings_search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                android:hint="@string/search_settings"
+                android:imeOptions="actionSearch" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

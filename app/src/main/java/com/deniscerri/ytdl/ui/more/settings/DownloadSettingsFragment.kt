@@ -34,6 +34,7 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.downloading_preferences, rootKey)
+        buildPreferenceList(preferenceScreen)
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         val rememberDownloadType = findPreference<SwitchPreferenceCompat>("remember_download_type")
         val downloadType = findPreference<ListPreference>("preferred_download_type")

@@ -36,6 +36,7 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.updating_preferences, rootKey)
+        buildPreferenceList(preferenceScreen)
         updateUtil = UpdateUtil(requireContext())
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         updateYTDL = findPreference("update_ytdl")
