@@ -1,4 +1,4 @@
-Add search functionality to main settings screenpackage com.deniscerri.ytdl.ui.more.settings
+package com.deniscerri.ytdl.ui.more.settings
 
 import android.annotation.SuppressLint
 import android.app.Activity
