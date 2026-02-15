@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.WorkInfo
@@ -69,7 +68,9 @@ import java.util.Calendar
 import java.util.Locale
 
 
-class MainSettingsFragment : PreferenceFragmentCompat() {
+class MainSettingsFragment : BaseSettingsFragment() {
+    override val title: Int = R.string.settings
+    
     private var backup : Preference? = null
     private var restore : Preference? = null
     private var backupPath : Preference? = null
