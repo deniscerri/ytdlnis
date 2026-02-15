@@ -102,7 +102,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
         allPreferences.forEach { it.preference.isVisible = false }
     }
     
-    private fun restoreAllPreferences() {
+    protected fun restoreAllPreferences() {
         allPreferences.forEach { it.preference.isVisible = true }
     }
     
