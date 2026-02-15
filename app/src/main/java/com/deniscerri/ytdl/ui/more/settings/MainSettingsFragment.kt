@@ -23,6 +23,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
+import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.WorkInfo
@@ -87,6 +89,10 @@ class MainSettingsFragment : BaseSettingsFragment() {
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var editor: SharedPreferences.Editor
 
+    // Store dynamically created search categories
+    private val searchCategories = mutableMapOf<String, PreferenceCategory>()
+    private var isSearchMode = false
+
     private val categoryFragmentMap = mapOf(
         "appearance" to R.xml.general_preferences,
         "folders" to R.xml.folders_preference,
@@ -94,6 +100,22 @@ class MainSettingsFragment : BaseSettingsFragment() {
         "processing" to R.xml.processing_preferences,
         "updating" to R.xml.updating_preferences,
         "advanced" to R.xml.advanced_preferences
+    )
+
+    private val categoryTitles = mapOf(
+        "appearance" to R.string.appearance,
+        "folders" to R.string.folders,
+        "downloading" to R.string.downloads,
+        "processing" to R.string.processing,
+        "updating" to R.string.updating,
+        "advanced" to R.string.advanced
+    )
+
+    // Data class to represent a preference with its hierarchy
+    private data class HierarchicalPreference(
+        val preference: Preference,
+        val parent: PreferenceGroup?,
+        val depth: Int = 0
     )
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -263,42 +285,95 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
     override fun filterPreferences(query: String) {
         if (query.isEmpty()) {
-            restoreAllPreferences()
-            appearance?.isVisible = true
-            folders?.isVisible = true
-            downloading?.isVisible = true
-            processing?.isVisible = true
-            updating?.isVisible = true
-            advanced?.isVisible = true
+            restoreNormalView()
             return
         }
 
-        val lowerQuery = query.lowercase()
+        enterSearchMode(query.lowercase())
+    }
 
-        categoryFragmentMap.forEach { (key, xmlRes) ->
-            val pref = findPreference<Preference>(key)
-            val hasMatch = checkXmlForMatches(xmlRes, lowerQuery) ||
-                    pref?.title?.toString()?.lowercase()?.contains(lowerQuery) == true ||
-                    pref?.summary?.toString()?.lowercase()?.contains(lowerQuery) == true
-            pref?.isVisible = hasMatch
+    private fun restoreNormalView() {
+        isSearchMode = false
+        
+        searchCategories.values.forEach { category ->
+            preferenceScreen.removePreference(category)
+        }
+        searchCategories.clear()
+
+        restoreAllPreferences()
+        appearance?.isVisible = true
+        folders?.isVisible = true
+        downloading?.isVisible = true
+        processing?.isVisible = true
+        updating?.isVisible = true
+        advanced?.isVisible = true
+        
+        findPreference<PreferenceCategory>("backup_restore")?.isVisible = true
+    }
+
+    private fun enterSearchMode(query: String) {
+        isSearchMode = true
+        
+        // Hide original category navigation preferences
+        appearance?.isVisible = false
+        folders?.isVisible = false
+        downloading?.isVisible = false
+        processing?.isVisible = false
+        updating?.isVisible = false
+        advanced?.isVisible = false
+        
+        // Clear existing search categories
+        searchCategories.values.forEach { category ->
+            preferenceScreen.removePreference(category)
+        }
+        searchCategories.clear()
+
+        // Search through each nested settings page and build hierarchical results
+        categoryFragmentMap.forEach { (categoryKey, xmlRes) ->
+            val hierarchicalResults = findMatchingPreferencesWithHierarchy(xmlRes, query)
+            
+            if (hierarchicalResults.isNotEmpty()) {
+                // Create a main category for this section
+                val mainCategory = PreferenceCategory(requireContext()).apply {
+                    title = getString(categoryTitles[categoryKey] ?: R.string.settings)
+                    key = "search_main_$categoryKey"
+                }
+                
+                preferenceScreen.addPreference(mainCategory)
+                
+                // Build the hierarchical structure
+                buildHierarchicalPreferences(hierarchicalResults, mainCategory, categoryKey)
+                
+                searchCategories[categoryKey] = mainCategory
+            }
         }
 
+        // Also search current screen preferences
         super.filterPreferences(query)
-
         hideEmptyCategoriesInMain()
     }
 
-    private fun checkXmlForMatches(xmlRes: Int, query: String): Boolean {
-        return try {
+    private fun findMatchingPreferencesWithHierarchy(xmlRes: Int, query: String): List<HierarchicalPreference> {
+        val results = mutableListOf<HierarchicalPreference>()
+        
+        try {
             val preferenceManager = PreferenceManager(requireContext())
             val tempScreen = preferenceManager.inflateFromResource(requireContext(), xmlRes, null)
-            scanPreferences(tempScreen, query)
+            collectMatchingWithHierarchy(tempScreen, query, results, null, 0)
         } catch (e: Exception) {
-            false
+            Log.e("MainSettings", "Error loading preferences from XML", e)
         }
+        
+        return results
     }
 
-    private fun scanPreferences(group: androidx.preference.PreferenceGroup, query: String): Boolean {
+    private fun collectMatchingWithHierarchy(
+        group: PreferenceGroup,
+        query: String,
+        results: MutableList<HierarchicalPreference>,
+        parent: PreferenceGroup?,
+        depth: Int
+    ) {
         for (i in 0 until group.preferenceCount) {
             val pref = group.getPreference(i)
 
@@ -306,30 +381,124 @@ class MainSettingsFragment : BaseSettingsFragment() {
             val summary = pref.summary?.toString() ?: ""
             val key = pref.key ?: ""
 
-            if (title.lowercase().contains(query) ||
-                summary.lowercase().contains(query) ||
-                key.lowercase().contains(query)) {
-                return true
-            }
+            val matches = title.lowercase().contains(query) ||
+                    summary.lowercase().contains(query) ||
+                    key.lowercase().contains(query)
 
-            if (pref is androidx.preference.PreferenceGroup) {
-                if (scanPreferences(pref, query)) {
-                    return true
+            if (pref is PreferenceGroup) {
+                // For groups (categories), check if they have any matching children
+                val childMatches = mutableListOf<HierarchicalPreference>()
+                collectMatchingWithHierarchy(pref, query, childMatches, pref, depth + 1)
+                
+                if (childMatches.isNotEmpty()) {
+                    // Add the parent category first
+                    results.add(HierarchicalPreference(pref, parent, depth))
+                    // Then add all matching children
+                    results.addAll(childMatches)
+                } else if (matches) {
+                    // Category itself matches but has no matching children
+                    results.add(HierarchicalPreference(pref, parent, depth))
+                }
+            } else {
+                // Regular preference
+                if (matches) {
+                    // Add the parent category if not already added
+                    if (parent != null && results.none { it.preference == parent }) {
+                        results.add(0, HierarchicalPreference(parent, null, depth - 1))
+                    }
+                    results.add(HierarchicalPreference(pref, parent, depth))
                 }
             }
         }
-        return false
+    }
+
+    private fun buildHierarchicalPreferences(
+        hierarchicalResults: List<HierarchicalPreference>,
+        mainCategory: PreferenceCategory,
+        categoryKey: String
+    ) {
+        val processedParents = mutableSetOf<String>()
+        var currentParentCategory: PreferenceCategory? = null
+        
+        hierarchicalResults.forEach { hierPref ->
+            val pref = hierPref.preference
+            
+            if (pref is PreferenceCategory) {
+                // This is a parent category - create a new subcategory
+                currentParentCategory = PreferenceCategory(requireContext()).apply {
+                    title = pref.title
+                    key = "search_sub_${pref.key}_${categoryKey}"
+                }
+                mainCategory.addPreference(currentParentCategory!!)
+                processedParents.add(pref.key ?: "")
+            } else {
+                // This is a child preference
+                val clonedPref = clonePreference(pref, categoryKey)
+                
+                if (currentParentCategory != null) {
+                    // Add to the current subcategory
+                    currentParentCategory!!.addPreference(clonedPref)
+                } else {
+                    // No parent category, add directly to main
+                    mainCategory.addPreference(clonedPref)
+                }
+            }
+        }
+    }
+
+    private fun clonePreference(original: Preference, categoryKey: String): Preference {
+        val cloned = try {
+            original.javaClass.getConstructor(
+                android.content.Context::class.java
+            ).newInstance(requireContext())
+        } catch (e: Exception) {
+            Preference(requireContext())
+        }
+
+        cloned.apply {
+            title = original.title
+            summary = original.summary
+            key = original.key
+            icon = original.icon
+            isEnabled = original.isEnabled
+            
+            setOnPreferenceClickListener {
+                showNestedSettingHint(categoryKey)
+                true
+            }
+        }
+
+        return cloned
+    }
+
+    private fun showNestedSettingHint(categoryKey: String) {
+        val categoryName = getString(categoryTitles[categoryKey] ?: R.string.settings)
+        Snackbar.make(
+            requireView(),
+            "This setting is in: $categoryName",
+            Snackbar.LENGTH_LONG
+        ).setAction("Go") {
+            val navController = findNavController()
+            when (categoryKey) {
+                "appearance" -> navController.navigate(R.id.action_mainSettingsFragment_to_appearanceSettingsFragment)
+                "folders" -> navController.navigate(R.id.action_mainSettingsFragment_to_folderSettingsFragment)
+                "downloading" -> navController.navigate(R.id.action_mainSettingsFragment_to_downloadSettingsFragment)
+                "processing" -> navController.navigate(R.id.action_mainSettingsFragment_to_processingSettingsFragment)
+                "updating" -> navController.navigate(R.id.action_mainSettingsFragment_to_updateSettingsFragment)
+                "advanced" -> navController.navigate(R.id.action_mainSettingsFragment_to_advancedSettingsFragment)
+            }
+        }.show()
     }
 
     private fun hideEmptyCategoriesInMain() {
-        findPreference<androidx.preference.PreferenceCategory>("backup_restore")?.let { category ->
+        findPreference<PreferenceCategory>("backup_restore")?.let { category ->
             val hasVisibleChildren = (0 until category.preferenceCount).any {
                 category.getPreference(it).isVisible
             }
             category.isVisible = hasVisibleChildren
         }
 
-        findPreference<androidx.preference.PreferenceCategory>("about")?.let { category ->
+        findPreference<PreferenceCategory>("about")?.let { category ->
             val hasVisibleChildren = (0 until category.preferenceCount).any {
                 category.getPreference(it).isVisible
             }
