@@ -58,6 +58,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.folders_preference, rootKey)
+        buildPreferenceList(preferenceScreen)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         editor = preferences.edit()
