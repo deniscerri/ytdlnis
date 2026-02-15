@@ -63,7 +63,18 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
         }
     }
     
-    fun filterPreferences(query: String) {
+    fun hasMatchingPreferences(query: String): Boolean {
+        if (query.isEmpty()) return true
+        
+        val lowerQuery = query.lowercase()
+        return allPreferences.any { data ->
+            data.title.lowercase().contains(lowerQuery) ||
+            data.summary.lowercase().contains(lowerQuery) ||
+            data.key.lowercase().contains(lowerQuery)
+        }
+    }
+    
+    open fun filterPreferences(query: String) {
         if (query.isEmpty()) {
             restoreAllPreferences()
             return
@@ -95,7 +106,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
         allPreferences.forEach { it.preference.isVisible = true }
     }
     
-    private fun hideEmptyCategories() {
+    protected fun hideEmptyCategories() {
         allPreferences.forEach { data ->
             if (data.preference is PreferenceGroup) {
                 val hasVisibleChildren = (0 until data.preference.preferenceCount).any {
