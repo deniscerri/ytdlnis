@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more.settings
+Add search functionality to main settings screenpackage com.deniscerri.ytdl.ui.more.settings
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -67,10 +67,16 @@ import java.io.InputStreamReader
 import java.util.Calendar
 import java.util.Locale
 
-
 class MainSettingsFragment : BaseSettingsFragment() {
     override val title: Int = R.string.settings
-    
+
+    private var appearance: Preference? = null
+    private var folders: Preference? = null
+    private var downloading: Preference? = null
+    private var processing: Preference? = null
+    private var updating: Preference? = null
+    private var advanced: Preference? = null
+
     private var backup : Preference? = null
     private var restore : Preference? = null
     private var backupPath : Preference? = null
@@ -79,21 +85,33 @@ class MainSettingsFragment : BaseSettingsFragment() {
     private var activeDownloadCount = 0
 
     private lateinit var settingsViewModel: SettingsViewModel
-
     private lateinit var editor: SharedPreferences.Editor
 
+    private val categoryFragmentMap = mapOf(
+        "appearance" to R.xml.general_preferences,
+        "folders" to R.xml.folders_preference,
+        "downloading" to R.xml.downloading_preferences,
+        "processing" to R.xml.processing_preferences,
+        "updating" to R.xml.updating_preferences,
+        "advanced" to R.xml.advanced_preferences
+    )
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
-        
-        // Build searchable preference list
+
         buildPreferenceList(preferenceScreen)
-        
+
         val navController = findNavController()
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         editor = preferences.edit()
 
-        val appearance = findPreference<Preference>("appearance")
+        appearance = findPreference("appearance")
+        folders = findPreference("folders")
+        downloading = findPreference("downloading")
+        processing = findPreference("processing")
+        updating = findPreference("updating")
+        advanced = findPreference("advanced")
+
         val separator = if (Locale(preferences.getString("app_language", "en")!!).layoutDirection == LayoutDirection.RTL) "،" else ","
         appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + "$separator " else ""}${getString(R.string.Theme)}$separator ${getString(R.string.accents)}$separator ${getString(R.string.preferred_search_engine)}"
         appearance?.setOnPreferenceClickListener {
@@ -101,42 +119,36 @@ class MainSettingsFragment : BaseSettingsFragment() {
             true
         }
 
-        val folders = findPreference<Preference>("folders")
         folders?.summary = "${getString(R.string.music_directory)}$separator ${getString(R.string.video_directory)}$separator ${getString(R.string.command_directory)}"
         folders?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_folderSettingsFragment)
             true
         }
 
-        val downloading = findPreference<Preference>("downloading")
         downloading?.summary = "${getString(R.string.quick_download)}$separator ${getString(R.string.concurrent_downloads)}$separator ${getString(R.string.limit_rate)}"
         downloading?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_downloadSettingsFragment)
             true
         }
 
-        val processing = findPreference<Preference>("processing")
         processing?.summary = "${getString(R.string.sponsorblock)}$separator ${getString(R.string.embed_subtitles)}$separator ${getString(R.string.add_chapters)}"
         processing?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_processingSettingsFragment)
             true
         }
 
-        val updating = findPreference<Preference>("updating")
         updating?.summary = "${getString(R.string.update_ytdl)}$separator ${getString(R.string.update_app)}"
         updating?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_updateSettingsFragment)
             true
         }
 
-        val advanced = findPreference<Preference>("advanced")
         advanced?.summary = "PO Token$separator ${getString(R.string.other_youtube_extractor_args)}"
         advanced?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_advancedSettingsFragment)
             true
         }
 
-        //about section -------------------------
         updateUtil = UpdateUtil(requireContext())
 
         WorkManager.getInstance(requireContext()).getWorkInfosByTagLiveData("download").observe(this){
@@ -215,11 +227,9 @@ class MainSettingsFragment : BaseSettingsFragment() {
                     }
                 }
 
-                // handle the negative button of the alert dialog
                 builder.setNegativeButton(
                     getString(R.string.cancel)
                 ) { _: DialogInterface?, _: Int -> }
-
 
                 val dialog = builder.create()
                 dialog.show()
@@ -251,6 +261,82 @@ class MainSettingsFragment : BaseSettingsFragment() {
         }
     }
 
+    override fun filterPreferences(query: String) {
+        if (query.isEmpty()) {
+            restoreAllPreferences()
+            appearance?.isVisible = true
+            folders?.isVisible = true
+            downloading?.isVisible = true
+            processing?.isVisible = true
+            updating?.isVisible = true
+            advanced?.isVisible = true
+            return
+        }
+
+        val lowerQuery = query.lowercase()
+
+        categoryFragmentMap.forEach { (key, xmlRes) ->
+            val pref = findPreference<Preference>(key)
+            val hasMatch = checkXmlForMatches(xmlRes, lowerQuery) ||
+                    pref?.title?.toString()?.lowercase()?.contains(lowerQuery) == true ||
+                    pref?.summary?.toString()?.lowercase()?.contains(lowerQuery) == true
+            pref?.isVisible = hasMatch
+        }
+
+        super.filterPreferences(query)
+
+        hideEmptyCategoriesInMain()
+    }
+
+    private fun checkXmlForMatches(xmlRes: Int, query: String): Boolean {
+        return try {
+            val preferenceManager = PreferenceManager(requireContext())
+            val tempScreen = preferenceManager.inflateFromResource(requireContext(), xmlRes, null)
+            scanPreferences(tempScreen, query)
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    private fun scanPreferences(group: androidx.preference.PreferenceGroup, query: String): Boolean {
+        for (i in 0 until group.preferenceCount) {
+            val pref = group.getPreference(i)
+
+            val title = pref.title?.toString() ?: ""
+            val summary = pref.summary?.toString() ?: ""
+            val key = pref.key ?: ""
+
+            if (title.lowercase().contains(query) ||
+                summary.lowercase().contains(query) ||
+                key.lowercase().contains(query)) {
+                return true
+            }
+
+            if (pref is androidx.preference.PreferenceGroup) {
+                if (scanPreferences(pref, query)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    private fun hideEmptyCategoriesInMain() {
+        findPreference<androidx.preference.PreferenceCategory>("backup_restore")?.let { category ->
+            val hasVisibleChildren = (0 until category.preferenceCount).any {
+                category.getPreference(it).isVisible
+            }
+            category.isVisible = hasVisibleChildren
+        }
+
+        findPreference<androidx.preference.PreferenceCategory>("about")?.let { category ->
+            val hasVisibleChildren = (0 until category.preferenceCount).any {
+                category.getPreference(it).isVisible
+            }
+            category.isVisible = hasVisibleChildren
+        }
+    }
+
     private var backupPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -269,8 +355,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
             editor.apply()
         }
     }
-
-
 
     private var appRestoreResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -293,7 +377,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
                         total.append(line).append('\n')
                     }
 
-                    //PARSE RESTORE JSON
                     val json = Gson().fromJson(total.toString(), JsonObject::class.java)
                     val restoreData = RestoreAppDataItem()
                     val parsedDataMessage = StringBuilder()
@@ -307,19 +390,16 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("downloads")) {
                         restoreData.downloads = json.getAsJsonArray("downloads").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), HistoryItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), HistoryItem::class.java)
                             item.id = 0L
                             item
                         }
                         parsedDataMessage.appendLine("${getString(R.string.downloads)}: ${restoreData.downloads!!.size}")
-
                     }
 
                     if (json.has("queued")) {
                         restoreData.queued = json.getAsJsonArray("queued").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -328,8 +408,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("scheduled")) {
                         restoreData.scheduled = json.getAsJsonArray("scheduled").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -338,8 +417,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("cancelled")) {
                         restoreData.cancelled = json.getAsJsonArray("cancelled").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -348,8 +426,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("errored")) {
                         restoreData.errored = json.getAsJsonArray("errored").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -358,8 +435,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("saved")) {
                         restoreData.saved = json.getAsJsonArray("saved").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), DownloadItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -368,8 +444,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
 
                     if (json.has("cookies")) {
                         restoreData.cookies = json.getAsJsonArray("cookies").map {
-                            val item =
-                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), CookieItem::class.java)
+                            val item = Gson().fromJson(it.toString().replace("^\"|\"$", ""), CookieItem::class.java)
                             item.id = 0L
                             item
                         }
@@ -397,9 +472,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
                             item.id = 0L
                             item
                         }
-
                         parsedDataMessage.appendLine("${getString(R.string.shortcuts)}: ${restoreData.shortcuts!!.size}")
-
                     }
 
                     if (json.has("search_history")) {
@@ -411,7 +484,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
                             item.id = 0L
                             item
                         }
-
                         parsedDataMessage.appendLine("${getString(R.string.search_history)}: ${restoreData.searchHistory!!.size}")
                     }
 
@@ -424,7 +496,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
                             item.id = 0L
                             item
                         }
-
                         parsedDataMessage.appendLine("${getString(R.string.observe_sources)}: ${restoreData.observeSources!!.size}")
                     }
 
@@ -464,8 +535,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
         }
     }
 
-
-
     @SuppressLint("RestrictedApi")
     private fun showAppRestoreInfoDialog(onMerge: () -> Unit, onReset: () -> Unit){
         val builder = MaterialAlertDialogBuilder(requireContext())
@@ -485,7 +554,6 @@ class MainSettingsFragment : BaseSettingsFragment() {
             onReset()
             dialog?.dismiss()
         }
-
 
         val dialog = builder.create()
         dialog.show()
