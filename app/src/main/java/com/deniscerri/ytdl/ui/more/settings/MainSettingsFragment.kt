@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -92,6 +93,9 @@ class MainSettingsFragment : BaseSettingsFragment() {
     // Store dynamically created search categories
     private val searchCategories = mutableMapOf<String, PreferenceCategory>()
     private var isSearchMode = false
+    
+    // Store the last search query for returning from navigation
+    private var lastSearchQuery: String = ""
 
     private val categoryFragmentMap = mapOf(
         "appearance" to R.xml.general_preferences,
@@ -110,13 +114,28 @@ class MainSettingsFragment : BaseSettingsFragment() {
         "updating" to R.string.updating,
         "advanced" to R.string.advanced
     )
+    
+    private val categoryNavigationActions = mapOf(
+        "appearance" to R.id.action_mainSettingsFragment_to_appearanceSettingsFragment,
+        "folders" to R.id.action_mainSettingsFragment_to_folderSettingsFragment,
+        "downloading" to R.id.action_mainSettingsFragment_to_downloadSettingsFragment,
+        "processing" to R.id.action_mainSettingsFragment_to_processingSettingsFragment,
+        "updating" to R.id.action_mainSettingsFragment_to_updateSettingsFragment,
+        "advanced" to R.id.action_mainSettingsFragment_to_advancedSettingsFragment
+    )
 
     // Data class to represent a preference with its hierarchy
     private data class HierarchicalPreference(
         val preference: Preference,
         val parent: PreferenceGroup?,
-        val depth: Int = 0
+        val depth: Int = 0,
+        val isParent: Boolean = false
     )
+
+    companion object {
+        const val ARG_HIGHLIGHT_KEY = "highlight_preference_key"
+        const val ARG_RETURN_TO_SEARCH = "return_to_search"
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
@@ -289,11 +308,13 @@ class MainSettingsFragment : BaseSettingsFragment() {
             return
         }
 
+        lastSearchQuery = query
         enterSearchMode(query.lowercase())
     }
 
     private fun restoreNormalView() {
         isSearchMode = false
+        lastSearchQuery = ""
         
         searchCategories.values.forEach { category ->
             preferenceScreen.removePreference(category)
@@ -341,8 +362,8 @@ class MainSettingsFragment : BaseSettingsFragment() {
                 
                 preferenceScreen.addPreference(mainCategory)
                 
-                // Build the hierarchical structure
-                buildHierarchicalPreferences(hierarchicalResults, mainCategory, categoryKey)
+                // Build the hierarchical structure with smart parent filtering
+                buildHierarchicalPreferences(hierarchicalResults, mainCategory, categoryKey, query)
                 
                 searchCategories[categoryKey] = mainCategory
             }
@@ -386,27 +407,24 @@ class MainSettingsFragment : BaseSettingsFragment() {
                     key.lowercase().contains(query)
 
             if (pref is PreferenceGroup) {
-                // For groups (categories), check if they have any matching children
+                // For groups (categories), check if they or their children match
                 val childMatches = mutableListOf<HierarchicalPreference>()
                 collectMatchingWithHierarchy(pref, query, childMatches, pref, depth + 1)
                 
+                // Only add parent if it matches OR has matching children
                 if (childMatches.isNotEmpty()) {
-                    // Add the parent category first
-                    results.add(HierarchicalPreference(pref, parent, depth))
+                    // Add the parent category
+                    results.add(HierarchicalPreference(pref, parent, depth, isParent = true))
                     // Then add all matching children
                     results.addAll(childMatches)
                 } else if (matches) {
-                    // Category itself matches but has no matching children
-                    results.add(HierarchicalPreference(pref, parent, depth))
+                    // Category itself matches but has no children - still add it
+                    results.add(HierarchicalPreference(pref, parent, depth, isParent = true))
                 }
             } else {
-                // Regular preference
+                // Regular preference - only add if it matches
                 if (matches) {
-                    // Add the parent category if not already added
-                    if (parent != null && results.none { it.preference == parent }) {
-                        results.add(0, HierarchicalPreference(parent, null, depth - 1))
-                    }
-                    results.add(HierarchicalPreference(pref, parent, depth))
+                    results.add(HierarchicalPreference(pref, parent, depth, isParent = false))
                 }
             }
         }
@@ -415,25 +433,38 @@ class MainSettingsFragment : BaseSettingsFragment() {
     private fun buildHierarchicalPreferences(
         hierarchicalResults: List<HierarchicalPreference>,
         mainCategory: PreferenceCategory,
-        categoryKey: String
+        categoryKey: String,
+        query: String
     ) {
-        val processedParents = mutableSetOf<String>()
         var currentParentCategory: PreferenceCategory? = null
+        var currentParentHasChildren = false
         
         hierarchicalResults.forEach { hierPref ->
             val pref = hierPref.preference
             
             if (pref is PreferenceCategory) {
-                // This is a parent category - create a new subcategory
+                // Save previous parent if it had children
+                if (currentParentCategory != null && currentParentHasChildren) {
+                    // Keep the parent
+                }
+                
+                // Start new parent category
                 currentParentCategory = PreferenceCategory(requireContext()).apply {
                     title = pref.title
                     key = "search_sub_${pref.key}_${categoryKey}"
                 }
-                mainCategory.addPreference(currentParentCategory!!)
-                processedParents.add(pref.key ?: "")
+                currentParentHasChildren = false
+                
+                // Don't add it yet - wait to see if it has matching children
             } else {
                 // This is a child preference
                 val clonedPref = clonePreference(pref, categoryKey)
+                
+                // If we have a pending parent and this is its first child, add the parent now
+                if (currentParentCategory != null && !currentParentHasChildren) {
+                    mainCategory.addPreference(currentParentCategory!!)
+                    currentParentHasChildren = true
+                }
                 
                 if (currentParentCategory != null) {
                     // Add to the current subcategory
@@ -463,7 +494,7 @@ class MainSettingsFragment : BaseSettingsFragment() {
             isEnabled = original.isEnabled
             
             setOnPreferenceClickListener {
-                showNestedSettingHint(categoryKey)
+                navigateToPreferenceLocation(original, categoryKey)
                 true
             }
         }
@@ -471,23 +502,53 @@ class MainSettingsFragment : BaseSettingsFragment() {
         return cloned
     }
 
-    private fun showNestedSettingHint(categoryKey: String) {
+    private fun navigateToPreferenceLocation(pref: Preference, categoryKey: String) {
         val categoryName = getString(categoryTitles[categoryKey] ?: R.string.settings)
-        Snackbar.make(
-            requireView(),
-            "This setting is in: $categoryName",
-            Snackbar.LENGTH_LONG
-        ).setAction("Go") {
-            val navController = findNavController()
-            when (categoryKey) {
-                "appearance" -> navController.navigate(R.id.action_mainSettingsFragment_to_appearanceSettingsFragment)
-                "folders" -> navController.navigate(R.id.action_mainSettingsFragment_to_folderSettingsFragment)
-                "downloading" -> navController.navigate(R.id.action_mainSettingsFragment_to_downloadSettingsFragment)
-                "processing" -> navController.navigate(R.id.action_mainSettingsFragment_to_processingSettingsFragment)
-                "updating" -> navController.navigate(R.id.action_mainSettingsFragment_to_updateSettingsFragment)
-                "advanced" -> navController.navigate(R.id.action_mainSettingsFragment_to_advancedSettingsFragment)
+        val prefTitle = pref.title?.toString() ?: "setting"
+        
+        // Show toast above keyboard
+        showToastAboveKeyboard("Go to $prefTitle")
+        
+        // Navigate with arguments to highlight the preference
+        val navController = findNavController()
+        val action = categoryNavigationActions[categoryKey]
+        
+        if (action != null) {
+            val bundle = Bundle().apply {
+                putString(ARG_HIGHLIGHT_KEY, pref.key)
+                putBoolean(ARG_RETURN_TO_SEARCH, true)
             }
-        }.show()
+            navController.navigate(action, bundle)
+        }
+    }
+
+    private fun showToastAboveKeyboard(message: String) {
+        try {
+            // Try Snackbar at top (more modern)
+            val snackbar = Snackbar.make(requireView(), message, Snackbar.LENGTH_SHORT)
+            val view = snackbar.view
+            
+            // Move to top of screen
+            val params = view.layoutParams as? androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
+            if (params != null) {
+                params.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+                params.topMargin = 100
+                view.layoutParams = params
+                snackbar.show()
+            } else {
+                // Fallback to toast if not in CoordinatorLayout
+                showSimpleTopToast(message)
+            }
+        } catch (e: Exception) {
+            // Fallback to simple toast
+            showSimpleTopToast(message)
+        }
+    }
+    
+    private fun showSimpleTopToast(message: String) {
+        val toast = Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.TOP or Gravity.CENTER_HORIZONTAL, 0, 150)
+        toast.show()
     }
 
     private fun hideEmptyCategoriesInMain() {
