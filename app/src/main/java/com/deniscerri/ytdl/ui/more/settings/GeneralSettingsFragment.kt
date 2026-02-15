@@ -61,6 +61,7 @@ class GeneralSettingsFragment : BaseSettingsFragment() {
     @SuppressLint("BatteryLife")
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.general_preferences, rootKey)
+        buildPreferenceList(preferenceScreen)
         NavbarUtil.init(requireContext())
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
