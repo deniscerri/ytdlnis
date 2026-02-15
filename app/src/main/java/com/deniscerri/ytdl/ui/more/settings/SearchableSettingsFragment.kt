@@ -81,7 +81,11 @@ abstract class SearchableSettingsFragment : BaseSettingsFragment() {
     }
     
     private fun animateHighlight(view: View) {
-        val highlightColor = ContextCompat.getColor(requireContext(), R.color.colorAccent)
+        // Use theme's primary color for highlight
+        val typedValue = android.util.TypedValue()
+        val theme = requireContext().theme
+        theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
+        val highlightColor = typedValue.data
         val transparentColor = Color.TRANSPARENT
         
         // Pulse animation: transparent -> highlight -> transparent
