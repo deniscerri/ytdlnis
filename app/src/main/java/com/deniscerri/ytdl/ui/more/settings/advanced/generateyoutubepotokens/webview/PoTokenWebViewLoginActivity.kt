@@ -158,20 +158,22 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         }
                     }
 
-                    webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
-                        if (value?.trim('"') == "complete") {
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                redirectUrl?.apply {
-                                    val extraHeaders: MutableMap<String?, String?> =
-                                        HashMap()
-                                    extraHeaders["Referer"] = "https://www.google.com/"
-                                    webView.loadUrl(this, extraHeaders)
-                                }
-                                redirectUrl = null
-                            }, 2500)
+                    val canRedirect = noAuth || url?.contains("youtube.com/account") == true
+                    if (canRedirect) {
+                        webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
+                            if (value?.trim('"') == "complete") {
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    redirectUrl?.apply {
+                                        val extraHeaders: MutableMap<String?, String?> =
+                                            HashMap()
+                                        extraHeaders["Referer"] = "https://www.google.com/"
+                                        webView.loadUrl(this, extraHeaders)
+                                    }
+                                    redirectUrl = null
+                                }, 2500)
+                            }
                         }
                     }
-
                 }
             }
 

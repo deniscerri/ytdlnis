@@ -104,12 +104,14 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
         val audioCodecPref = findPreference<ListPreference>("audio_codec")
         val videoCodecPref = findPreference<ListPreference>("video_codec")
+        val videoContainerPref = findPreference<ListPreference>("video_format")
 
         val recodeVideoPreference = findPreference<SwitchPreferenceCompat>("recode_video")!!
         val compatibleVideoPreference = findPreference<SwitchPreferenceCompat>("compatible_video")!!
 
         audioCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
         videoCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
+        videoContainerPref?.isEnabled = !compatibleVideoPreference.isChecked
 
         recodeVideoPreference.setOnPreferenceClickListener {
             if (compatibleVideoPreference.isChecked && recodeVideoPreference.isChecked) {
@@ -121,6 +123,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
         compatibleVideoPreference.setOnPreferenceClickListener {
             audioCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
             videoCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
+            videoContainerPref?.isEnabled = !compatibleVideoPreference.isChecked
 
             if (compatibleVideoPreference.isChecked) {
                 if (recodeVideoPreference.isChecked) {
@@ -137,6 +140,7 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
 
                 editor.putString("audio_codec", audioCodecValues[audioCodecs.indexOf(newAudioCodec)]).apply()
                 editor.putString("video_codec", videoCodecValues[videoCodecs.indexOf(newVideoCodec)]).apply()
+                editor.putString("video_format", "").apply()
                 requireActivity().recreate()
             }
             true

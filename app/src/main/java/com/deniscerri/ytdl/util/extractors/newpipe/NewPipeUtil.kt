@@ -328,6 +328,7 @@ class NewPipeUtil(context: Context) {
 
             if(sharedPreferences.getString("formats_source", "yt-dlp") == "newpipe" || ignoreFormatPreference){
                 if (stream.audioStreams.isNotEmpty()){
+                    stream.audioStreams = stream.audioStreams.sortedByDescending { it.bitrate }
                     for (f in 0 until stream.audioStreams.size){
                         val it = stream.audioStreams[f]
                         if (it.bitrate == 0 || listOf(599, 600).contains(it.itag)) continue
@@ -354,9 +355,9 @@ class NewPipeUtil(context: Context) {
                     }
                 }
 
-                if (stream.videoStreams.isNotEmpty()){
-                    for (f in 0 until stream.videoStreams.size){
-                        val it = stream.videoStreams[f]
+                if (stream.videoOnlyStreams.isNotEmpty()){
+                    for (f in 0 until stream.videoOnlyStreams.size){
+                        val it = stream.videoOnlyStreams[f]
                         if (it.bitrate == 0) continue
 
                         val formatObj = Format(
@@ -372,9 +373,9 @@ class NewPipeUtil(context: Context) {
                     }
                 }
 
-                if (stream.videoOnlyStreams.isNotEmpty()){
-                    for (f in 0 until stream.videoOnlyStreams.size){
-                        val it = stream.videoOnlyStreams[f]
+                if (stream.videoStreams.isNotEmpty()){
+                    for (f in 0 until stream.videoStreams.size){
+                        val it = stream.videoStreams[f]
                         if (it.bitrate == 0) continue
 
                         val formatObj = Format(

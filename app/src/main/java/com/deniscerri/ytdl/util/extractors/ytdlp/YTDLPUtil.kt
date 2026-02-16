@@ -1124,7 +1124,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
                     formatSorting.remove("size")
                     formatSorting.remove("+size")
-                    formatSorting.addAll(0,listOf("+br", "+res", "+fps"))
+                    formatSorting.addAll(0,listOf("+abr","+br", "+res", "+fps"))
                 }
 
                 if (abrSort.isNotBlank()){

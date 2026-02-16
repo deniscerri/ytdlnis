@@ -255,7 +255,7 @@ object RuntimeManager {
             if (!successCodes.contains(exitCode)) {
                 // Check if process was manually killed (removed from map)
                 if (processId != null && !idProcessMap.containsKey(processId)) throw CanceledException()
-                if (out.isEmpty()) throw ExecuteException(err)
+                throw ExecuteException(err)
             }
 
             ExecuteResponse(fullCommand, exitCode, System.currentTimeMillis() - startTime, out, err)

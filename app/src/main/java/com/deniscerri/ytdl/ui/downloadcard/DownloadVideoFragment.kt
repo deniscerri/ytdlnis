@@ -344,7 +344,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         }
                     }
                 if (downloadItem.videoPreferences.compatibilityMode) {
-                    containerAutoCompleteTextView.setText("mkv",false)
+                    containerAutoCompleteTextView.setText("mp4",false)
+                    downloadItem.container = "mp4"
                 }
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
                     visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
@@ -453,8 +454,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.compatibilityMode = it
                                 container.isEnabled = !it
                                 if (it) {
-                                    containerAutoCompleteTextView.setText("mkv",false)
-                                    downloadItem.container = "mkv"
+                                    containerAutoCompleteTextView.setText("mp4",false)
+                                    downloadItem.container = "mp4"
                                 }
                             },
                             alsoDownloadAsAudioClicked = {

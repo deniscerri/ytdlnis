@@ -698,7 +698,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach {
                                                 it.videoPreferences.compatibilityMode = checked
                                                 if(checked) {
-                                                    it.container = "mkv"
+                                                    it.container = "mp4"
                                                 }
                                             }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }

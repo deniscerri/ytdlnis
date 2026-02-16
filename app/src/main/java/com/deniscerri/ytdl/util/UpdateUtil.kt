@@ -137,7 +137,7 @@ class UpdateUtil(var context: Context) {
                 }
                 else -> {
                     val request = YTDLRequest(emptyList())
-                    request.addOption("--update-to", "${channel}@latest")
+                    request.addOption("--update-to", "$channel")
 
                     val res = RuntimeManager.getInstance().execute(request)
                     val out = res.out.lines().last { it.isNotBlank() }
