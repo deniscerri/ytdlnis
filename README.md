@@ -134,6 +134,17 @@ Please read the [contributing](CONTRIBUTING.MD) section if you would like to con
 
 The app's package name is "com.deniscerri.ytdl".
 
+## 🔍 Verify application signature
+
+The app should contain the signature below. The github workflow action uses it, and the releases are based on it to make it a reproducible build.
+If the signature is different, your third party distributor has modified the application. Please use the app with the original signature.
+```
+Signer #1 certificate DN: CN=Denis Cerri, OU=Personal, O=Personal, L=Albania, ST=Albania, C=AL
+Signer #1 certificate SHA-256 digest: 263645cb5272eb290759fe1f59149ae24df6ce171e9f6666eead981d3fc64c95
+Signer #1 certificate SHA-1 digest: 2fec9c2fcef68d29a60857e185c795fec5f56fb6
+Signer #1 certificate MD5 digest: 429d0c6315d2f99650f66cc44cf5a794
+```
+
 
 ## 🤖 Connect with third-party apps using intents
 
