@@ -10,6 +10,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -41,6 +42,8 @@ class NotificationUtil(var context: Context) {
 
     private val notificationManager: NotificationManagerCompat = NotificationManagerCompat.from(context)
     private val resources: Resources = context.resources
+
+    private val canPostPromotedNotifications = Build.VERSION.SDK_INT >= 36 && notificationManager.canPostPromotedNotifications()
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -434,13 +437,16 @@ class NotificationUtil(var context: Context) {
     fun updateDownloadNotification(
         id: Int,
         desc: String,
-        progress: Int,
+        progressRaw: Int,
         queue: Int,
         title: String?,
         channel : String
     ) {
+        var progress = 0
+        if (progressRaw >= 0) {
+            progress = progressRaw
+        }
 
-        val notificationBuilder = getBuilder(channel)
         var contentText = ""
         if (queue > 1) contentText += """${queue - 1} ${resources.getString(R.string.items_left)}""" + "\n"
         contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
@@ -465,14 +471,57 @@ class NotificationUtil(var context: Context) {
         )
 
         try {
-            notificationBuilder.setProgress(100, progress, (progress == 0 || progress == 100))
-                .setContentTitle(title)
-                .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
-                .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
-                .clearActions()
-                .addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
-                .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
-            notificationManager.notify(id, notificationBuilder.build())
+            if (canPostPromotedNotifications) {
+                val progressStyle = Notification.ProgressStyle()
+                    .setProgressPoints(listOf(
+                        Notification.ProgressStyle.Point(PROGRESS_CURR),
+                        Notification.ProgressStyle.Point(PROGRESS_MAX)
+                    ))
+                    .setProgressTrackerIcon(Icon.createWithResource(context, R.drawable.exomedia_ic_play_arrow_white))
+                    .setProgress(progress)
+                    .setProgressIndeterminate(progress == 0 || progress == 100)
+
+                val pauseAction = Notification.Action.Builder(
+                    Icon.createWithResource(context, android.R.drawable.ic_media_pause),
+                    context.getString(R.string.pause),
+                    pauseNotificationPendingIntent
+                ).build()
+
+                val cancelAction = Notification.Action.Builder(
+                    Icon.createWithResource(context, android.R.drawable.ic_menu_close_clear_cancel),
+                    context.getString(R.string.cancel),
+                    cancelNotificationPendingIntent
+                ).build()
+
+                val builder = Notification.Builder(context, channel)
+                    .setSmallIcon(R.drawable.ic_app_icon)
+                    .setContentTitle("$progress%")
+                    .setContentText(title)
+                    .setSubText(contentText)
+                    .setStyle(progressStyle)
+                    .setOngoing(true)
+                    .setOnlyAlertOnce(true)
+                    .setCategory(Notification.CATEGORY_PROGRESS)
+                    //.setRequestPromotedOngoing(true)
+                    .addExtras(Bundle().apply {
+                        // This is the manual flag for "Request Promoted Ongoing"
+                        putBoolean("android.requestPromotedOngoing", true)
+                    })
+                    .addAction(pauseAction)
+                    .addAction(cancelAction)
+
+                notificationManager.notify(id, builder.build())
+            } else {
+                val notificationBuilder = getBuilder(channel)
+                notificationBuilder.setProgress(100, progress, (progress == 0 || progress == 100))
+                    .setContentTitle(title)
+                    .setStyle(NotificationCompat.BigTextStyle().bigText(contentText))
+                    .setGroup(DOWNLOAD_RUNNING_NOTIFICATION_ID.toString())
+                    .clearActions()
+                    .addAction(0, resources.getString(R.string.pause), pauseNotificationPendingIntent)
+                    .addAction(0, resources.getString(R.string.cancel), cancelNotificationPendingIntent)
+                notificationManager.notify(id, notificationBuilder.build())
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
