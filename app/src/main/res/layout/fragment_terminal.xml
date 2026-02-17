@@ -6,15 +6,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
-        android:id="@+id/custom_command_scrollview"
-        android:layout_width="0dp"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/terminal_scroll_view"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,39 +21,39 @@
             android:orientation="vertical">
 
             <HorizontalScrollView
-                android:id="@+id/horizontalscroll_output"
+                android:id="@+id/horizontal_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appbarlayout">
 
-                <TextView
-                    android:id="@+id/custom_command_output"
-                    android:visibility="gone"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/log_recycler_view"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:gravity="bottom"
-                    android:scrollbars="horizontal|vertical"
-                    android:scrollHorizontally="true"
-                    android:textIsSelectable="true"
-                    android:textSize="15sp" />
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"/>
 
             </HorizontalScrollView>
 
             <EditText
                 android:id="@+id/command_edittext"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:fontFamily="monospace"
-                android:gravity="start"
+                android:paddingHorizontal="10dp"
                 android:inputType="textMultiLine|textNoSuggestions"
-                android:maxLines="10000"
                 android:text="yt-dlp "
+                android:paddingBottom="100dp"
                 android:textSize="15sp" />
-
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
+
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"

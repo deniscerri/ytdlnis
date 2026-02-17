@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -30,12 +31,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
+import com.deniscerri.ytdl.ui.adapter.LogAdapter
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
 import com.deniscerri.ytdl.util.FileUtil
@@ -57,16 +61,20 @@ class TerminalFragment : Fragment() {
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var terminalViewModel: TerminalViewModel
-    private lateinit var output: TextView
+    private lateinit var logRecyclerView: RecyclerView
+    private lateinit var horizontalScrollingView: HorizontalScrollView
+    private lateinit var logAdapter: LogAdapter
     private lateinit var input: EditText
     private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var scrollView: ScrollView
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private var downloadID by Delegates.notNull<Long>()
     private lateinit var imm : InputMethodManager
     private lateinit var metrics: DisplayMetrics
+
+    private var contentText: String = ""
+    private var contentLineCount: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,7 +90,7 @@ class TerminalFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("input", input.text.toString())
-        outState.putString("output", output.text.toString())
+        outState.putString("output", contentText)
         outState.putBoolean("run", fab.text == requireActivity().getString(R.string.run_command))
         outState.putLong("downloadID", downloadID)
     }
@@ -96,10 +104,24 @@ class TerminalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var bundle = savedInstanceState
         imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        scrollView = view.findViewById(R.id.custom_command_scrollview)
+
+        logRecyclerView = view.findViewById(R.id.log_recycler_view)
+        logAdapter = LogAdapter()
+        logRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        logRecyclerView.adapter = logAdapter
+        logRecyclerView.itemAnimator = null
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+        logAdapter.isWrapped = sharedPreferences.getBoolean("wrap_text_terminal", false)
+        logAdapter.textSize = sharedPreferences.getFloat("terminal_zoom", 2f) + 13f
+        logAdapter.highlight = sharedPreferences.getBoolean("use_code_color_highlighter", true)
+
+        horizontalScrollingView = view.findViewById(R.id.horizontal_container)
+
         topAppBar = requireActivity().findViewById(R.id.custom_command_toolbar)
         topAppBar.setNavigationOnClickListener { requireActivity().finish() }
-        topAppBar.setOnClickListener { scrollView.scrollTo(0,0) }
+        topAppBar.setOnClickListener { logRecyclerView.scrollTo(0,0) }
 
         input = view.findViewById(R.id.command_edittext)
         fab = view.findViewById(R.id.command_fab)
@@ -120,7 +142,6 @@ class TerminalFragment : Fragment() {
         }
 
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         metrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
 
@@ -203,21 +224,18 @@ class TerminalFragment : Fragment() {
             true
         }
 
-        output = view.findViewById(R.id.custom_command_output)
-        output.setTextIsSelectable(true)
-        output.layoutParams!!.width = LayoutParams.WRAP_CONTENT
         input.requestFocus()
         fab.setOnClickListener {
             if (fab.text == requireActivity().getString(R.string.run_command)){
                 input.visibility = View.GONE
-                val txt = "${output.text}\n~ $ ${input.text}\n"
-                output.text = txt
+                val commandLine = "~ $ ${input.text}"
+
                 showCancelFab()
                 imm.hideSoftInputFromWindow(input.windowToken, 0)
                 lifecycleScope.launch {
                     val command = input.text.toString().replaceFirst("yt-dlp", "")
                     downloadID = withContext(Dispatchers.IO){
-                        terminalViewModel.insert(TerminalItem(command = command, log = output.text.toString()))
+                        terminalViewModel.insert(TerminalItem(command = command, log = commandLine))
                     }
                     terminalViewModel.startTerminalDownloadWorker(TerminalItem(downloadID, command))
                     input.visibility = View.GONE
@@ -241,13 +259,55 @@ class TerminalFragment : Fragment() {
             input.append(bundle?.getString("input") ?: "")
             input.requestFocus()
             input.setSelection(input.text.length)
-            output.text = bundle?.getString("output") ?: output.text
-            output.isVisible = output.text.toString().isNotEmpty()
+
+            val list = (bundle?.getString("output")?.split("\r","\n") ?: contentText.split("\r","\n"))
+            contentLineCount = list.size
+            contentText = list.joinToString("\n")
+            logAdapter.submitList(list)
         }
 
         if (bundle?.getBoolean("run") == true){
             showCancelFab()
         }
+
+        logRecyclerView.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+            private var startX = 0f
+            private var startY = 0f
+
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                when (e.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        startX = e.x
+                        startY = e.y
+                        // Prevent parent from stealing the initial touch
+                        rv.parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        val dx = Math.abs(e.x - startX)
+                        val dy = Math.abs(e.y - startY)
+
+                        // If moving more vertically than horizontally, lock vertical scroll
+                        if (dy > dx) {
+                            rv.parent.requestDisallowInterceptTouchEvent(true)
+                        } else if (dx > dy && !logAdapter.isWrapped) {
+                            // If moving horizontally and wrap is OFF, let the parent take it
+                            rv.parent.requestDisallowInterceptTouchEvent(false)
+                        }
+                    }
+                }
+                return false
+            }
+
+            override fun onTouchEvent(
+                rv: RecyclerView,
+                e: MotionEvent
+            ) {
+            }
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+            }
+        })
+
         runWorkerListener()
     }
 
@@ -261,31 +321,15 @@ class TerminalFragment : Fragment() {
         topAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId){
                 R.id.wrap -> {
-                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
-                    if(scrollView != null){
-                        val parent = (scrollView.parent as ViewGroup)
-                        scrollView.removeAllViews()
-                        parent.removeView(scrollView)
-                        parent.addView(output, 0)
-                        sharedPreferences.edit().putBoolean("wrap_text_terminal", true).apply()
-                    }else{
-                        val parent = output.parent as ViewGroup
-                        parent.removeView(output)
-                        scrollView = HorizontalScrollView(requireContext())
-                        scrollView.layoutParams = LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        scrollView.addView(output)
-                        scrollView.id = R.id.horizontalscroll_output
-                        parent.addView(scrollView, 0)
-                        sharedPreferences.edit().putBoolean("wrap_text_terminal", false).apply()
-                    }
+                    val newState = !logAdapter.isWrapped
+                    logAdapter.isWrapped = newState
+                    sharedPreferences.edit(commit = true) { putBoolean("wrap_text_terminal", newState) }
+                    logAdapter.notifyDataSetChanged()
                 }
                 R.id.export_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
                         val clipboard: ClipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setText(output.text)
+                        clipboard.setText(contentText)
                     }
                 }
 
@@ -300,20 +344,18 @@ class TerminalFragment : Fragment() {
             this.valueFrom = 0f
             this.valueTo = 10f
             this.value = sharedPreferences.getFloat("terminal_zoom", 2f)
-            output.setCustomTextSize(this.value + 13f)
+
+            logAdapter.textSize = this.value + 13f
+            logAdapter.notifyDataSetChanged()
             input.setCustomTextSize(this.value + 13f)
+
             this.addOnChangeListener { slider, value, fromUser ->
-                output.setCustomTextSize(value + 13f)
+                logAdapter.textSize = value + 13f
+                logAdapter.notifyDataSetChanged()
                 input.setCustomTextSize(value + 13f)
                 sharedPreferences.edit(true){
                     putFloat("terminal_zoom", value)
                 }
-            }
-        }
-
-        sharedPreferences.getBoolean("wrap_text_terminal", false).apply {
-            if (this){
-                bottomAppBar.menu.performIdentifierAction(R.id.wrap, 0)
             }
         }
     }
@@ -352,11 +394,13 @@ class TerminalFragment : Fragment() {
                     requireActivity().runOnUiThread{
                         if (it != null){
                             if (!it.log.isNullOrBlank()) {
-                                output.isVisible = true
-                                output.text = it.log
+                                contentText = it.log!!
+                                val lines = contentText.split("\r","\n")
+                                contentLineCount = lines.size
+                                logAdapter.submitList(lines) {
+                                    logRecyclerView.scrollToPosition(lines.size - 1)
+                                }
                             }
-                            output.scrollTo(0, output.height)
-                            scrollView.fullScroll(View.FOCUS_DOWN)
                             input.visibility = View.GONE
                             showCancelFab()
                         }
