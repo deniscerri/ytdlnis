@@ -365,7 +365,8 @@ object Extensions {
             lines.addAll(newLines)
             if (newLines.isNotEmpty()) {
                 newLines.last().apply {
-                    if (this.contains("[download")) {
+                    //common text in yt-dlp and aria2c progress
+                    if (this.contains("[download") || this.contains(") CN:")) {
                         newline = "\n${this}"
                     }
                 }
@@ -373,13 +374,13 @@ object Extensions {
 
 
             return lines.distinct().filterNot {
-                (it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find())
+                ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
                 || it.contains("does not pass filter (id")
             }.joinToString("\n") + newline
         }
 
         return lines.filterNot {
-            (it.contains("[download") && !finishingProgressLinesRegex.matcher(it).find())
+            ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
             || it.contains("does not pass filter (id")
         }.joinToString("\n")
     }

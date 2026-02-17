@@ -18,6 +18,7 @@ import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -90,12 +91,19 @@ class MainActivity : BaseActivity() {
     private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+
         super.onCreate(savedInstanceState)
         CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
         context = baseContext
+
+        splashScreen.setKeepOnScreenCondition {
+            !RuntimeManager.initialized
+        }
+
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
@@ -108,8 +116,6 @@ class MainActivity : BaseActivity() {
                 resultViewModel.deleteAll()
             }
         }
-
-
 
         askPermissions()
         checkUpdate()
@@ -269,27 +275,7 @@ class MainActivity : BaseActivity() {
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
-
-        if (preferences.getBoolean("auto_update_ytdlp", false)){
-            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                kotlin.runCatching {
-                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                        if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
-                            val version = RuntimeManager.getInstance().version(context)
-                            val snack = Snackbar.make(findViewById(R.id.frame_layout),
-                                this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                                Snackbar.LENGTH_LONG)
-
-                            navigationBarView?.apply {
-                                snack.setAnchorView(this)
-                            }
-                            snack.show()
-                        }
-                    }
-                }
-
-            }
-        }
+        checkRuntimeReadyState()
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -501,6 +487,33 @@ class MainActivity : BaseActivity() {
                 }
 
             }
+        }
+    }
+
+    private fun checkRuntimeReadyState() {
+        if (RuntimeManager.initialized) {
+            if (preferences.getBoolean("auto_update_ytdlp", false)){
+                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                    kotlin.runCatching {
+                        if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                            if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
+                                val version = RuntimeManager.getInstance().version(context)
+                                val snack = Snackbar.make(findViewById(R.id.frame_layout),
+                                    this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
+                                    Snackbar.LENGTH_LONG)
+
+                                navigationBarView?.apply {
+                                    snack.setAnchorView(this)
+                                }
+                                snack.show()
+                            }
+                        }
+                    }
+
+                }
+            }
+        } else {
+            Handler(Looper.getMainLooper()).postDelayed({ checkRuntimeReadyState() }, 50)
         }
     }
 

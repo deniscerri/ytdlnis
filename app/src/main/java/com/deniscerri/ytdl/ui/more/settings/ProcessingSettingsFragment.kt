@@ -130,6 +130,10 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                     recodeVideoPreference.performClick()
                 }
 
+                editor.putString("audio_codec_tmp", audioCodecPref?.value ?: "").apply()
+                editor.putString("video_codec_tmp", videoCodecPref?.value ?: "").apply()
+                editor.putString("video_format_tmp", videoContainerPref?.value ?: "").apply()
+
                 val audioCodecs = requireContext().getStringArray(R.array.audio_codec)
                 val audioCodecValues = requireContext().getStringArray(R.array.audio_codec_values)
                 val videoCodecs = requireContext().getStringArray(R.array.video_codec)
@@ -141,6 +145,11 @@ class ProcessingSettingsFragment : BaseSettingsFragment() {
                 editor.putString("audio_codec", audioCodecValues[audioCodecs.indexOf(newAudioCodec)]).apply()
                 editor.putString("video_codec", videoCodecValues[videoCodecs.indexOf(newVideoCodec)]).apply()
                 editor.putString("video_format", "").apply()
+                requireActivity().recreate()
+            } else {
+                editor.putString("audio_codec", prefs.getString("audio_codec_tmp", "")).apply()
+                editor.putString("video_codec", prefs.getString("video_codec_tmp", "")).apply()
+                editor.putString("video_format", prefs.getString("video_format_tmp", "")).apply()
                 requireActivity().recreate()
             }
             true

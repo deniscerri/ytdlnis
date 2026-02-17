@@ -28,9 +28,9 @@ object RuntimeManager {
     lateinit var quickJsLocation : PackageBase.PackageLocation
     var ytdlpPath: File? = null
 
-    const val PREFS_NAME = "runtime_prefs"
+    var initialized = false
+        private set
 
-    private var initialized = false
     const val BASENAME = "ytdlnis"
     const val ytdlpDirName = "yt-dlp"
     const val ytdlpBin = "yt-dlp"

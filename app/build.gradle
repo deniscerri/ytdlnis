@@ -230,4 +230,5 @@ dependencies {
 
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.commons:commons-compress:1.12")
+    implementation("androidx.core:core-splashscreen:1.2.0")
 }

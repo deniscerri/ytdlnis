@@ -772,7 +772,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         //extractorArgs.add("skip=translated_subs")
 
-        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", true)
+        val useLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", false)
         if (useLanguageForMetadata) {
             val lang = java.util.Locale.getDefault().language
             val langTag = java.util.Locale.getDefault().toLanguageTag()
@@ -1063,12 +1063,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     audioQualityId += "/ba/b"
                 }
 
-                if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && preferredLanguage.isNotBlank()) {
-                    audioQualityId = "ba[language^=$preferredLanguage]/${audioQualityId.ifEmpty { "ba/b" }}"
-                }
-
                 if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && formatImportance.contains("prefer_drc")) {
                     audioQualityId = "ba[format_id$=-drc]/${audioQualityId.ifEmpty { "ba/b" }}"
+                }
+
+                if ((audioQualityId.isBlank() || audioQualityId == "ba/b") && preferredLanguage.isNotBlank()) {
+                    audioQualityId = "ba[language^=$preferredLanguage]/${audioQualityId.ifEmpty { "ba/b" }}"
                 }
 
                 if (audioQualityId.isNotBlank()) {
@@ -1124,7 +1124,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (downloadItem.format.format_id == context.resources.getString(R.string.worst_quality) || downloadItem.format.format_id == "wa" || downloadItem.format.format_id == "worst") {
                     formatSorting.remove("size")
                     formatSorting.remove("+size")
-                    formatSorting.addAll(0,listOf("+abr","+br", "+res", "+fps"))
+                    formatSorting.addAll(0,listOf("+abr"))
                 }
 
                 if (abrSort.isNotBlank()){
@@ -1298,7 +1298,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         if (!f.contains("$videoF+ba")) {
                             if (preferredAudioLanguage.isNotEmpty()) {
                                 f.append("$videoF+ba[language^=$preferredAudioLanguage]/")
-                            } else if (preferDRCAudio) {
+                            }else if (preferDRCAudio) {
                                 f.append("$videoF+ba[format_id$=-drc]/")
                             }else {
                                 f.append("$videoF+ba/")
@@ -1335,8 +1335,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         .filter { it.isNotBlank() }
                         .ifEmpty {
                             val list = mutableListOf<String>()
-                            if (preferDRCAudio) list.add("ba[format_id$=-drc]")
                             if (preferredAudioLanguage.isNotEmpty() && !downloadItem.videoPreferences.removeAudio) list.add("ba[language^=$preferredAudioLanguage]")
+                            if (preferDRCAudio) list.add("ba[format_id$=-drc]")
                             list.add(audioF)
                             list
                         }.apply {

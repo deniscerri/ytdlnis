@@ -96,6 +96,7 @@ class DownloadLogFragment : Fragment() {
         logAdapter = LogAdapter()
         logRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         logRecyclerView.adapter = logAdapter
+        logRecyclerView.itemAnimator = null
 
         logAdapter.isWrapped = sharedPreferences.getBoolean("wrap_text_log", false)
         logAdapter.textSize = sharedPreferences.getFloat("log_zoom", 2f) + 13f

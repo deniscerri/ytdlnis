@@ -513,4 +513,5 @@
     <string name="packages">Packages</string>
     <string name="not_installed">Not installed</string>
     <string name="bundled">Bundled</string>
+    <string name="use_app_language_for_metadata_summary">If enabled, metadata fields will follow your app language and even affect format selection by preferring dubbed versions instead of original</string>
 </resources>

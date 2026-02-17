@@ -33,9 +33,9 @@ class MoveCacheFilesWorker(
         val cachePath = FileUtil.getCachePath(context)
         val downloadFolders = File(cachePath)
         val allContent = downloadFolders.walk()
-        allContent.drop(1)
+
         val totalFiles = allContent.count()
-        val destination = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/CACHE_IMPORT")
+        val destination = File(FileUtil.getDefaultApplicationPath(), "CACHE_IMPORT")
 
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -50,6 +50,8 @@ class MoveCacheFilesWorker(
         var progress = 0
         allContent.forEach {
             progress++
+            if (progress == 1) return@forEach
+
             notificationUtil.updateCacheMovingNotification(id, progress, totalFiles)
             val destFile = File(destination.absolutePath + "/${it.absolutePath.removePrefix(cachePath)}")
             if (it.isDirectory) {
