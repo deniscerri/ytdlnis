@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl
 
 import android.app.ActionBar.LayoutParams
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
@@ -89,20 +91,15 @@ class MainActivity : BaseActivity() {
     private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
+    private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
         CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
         context = baseContext
-
-        splashScreen.setKeepOnScreenCondition {
-            !RuntimeManager.initialized
-        }
 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
@@ -275,6 +272,7 @@ class MainActivity : BaseActivity() {
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
+
         checkRuntimeReadyState()
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
@@ -491,7 +489,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun checkRuntimeReadyState() {
+        if (loadingRuntimeDialog == null) {
+            val builder = MaterialAlertDialogBuilder(this)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
+            builder.setView(dialogView)
+            loadingRuntimeDialog = builder.show()
+        }
+
         if (RuntimeManager.initialized) {
+            loadingRuntimeDialog?.dismiss()
+
             if (preferences.getBoolean("auto_update_ytdlp", false)){
                 CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                     kotlin.runCatching {
