@@ -658,11 +658,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             repository.deleteProcessing()
             processingItems.emit(true)
             try {
-                itemIDs.forEach {
+                itemIDs.forEachIndexed { index, it ->
                     val item = repository.getItemByID(it)
                     if (processingItemsJob?.isCancelled == true) throw CancellationException()
                     if (!deleteExisting) item.id = 0
                     item.status = DownloadRepository.Status.Processing.toString()
+                    item.rowNumber = index + 1
                     repository.update(item)
                 }
                 processingItems.emit(false)
@@ -680,10 +681,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             processingItems.emit(true)
             try {
                 val toInsert = mutableListOf<DownloadItem>()
-                itemIDs.forEach {
+                itemIDs.forEachIndexed { index, it ->
                     val item = historyRepository.getItem(it)
                     val downloadItem = createDownloadItemFromHistory(item)
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
+                    downloadItem.rowNumber = index + 1
 
                     if (processingItemsJob?.isCancelled == true) {
                         throw CancellationException()
@@ -717,13 +719,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             processingItems.emit(true)
             try {
                 val toInsert = mutableListOf<DownloadItem>()
-                itemIDs.forEach { id ->
-                    val item = resultRepository.getItemByID(id) ?: return@forEach
+                itemIDs.forEachIndexed { index, id ->
+                    val item = resultRepository.getItemByID(id) ?: return@forEachIndexed
                     val preferredType = getDownloadType(url = item.url).toString()
                     val downloadItem = createDownloadItemFromResult(result = item, givenType = DownloadType.valueOf(
                         preferredType
                     ))
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
+                    downloadItem.rowNumber = index + 1
 
                     if (processingItemsJob?.isCancelled == true) {
                         throw CancellationException()

@@ -919,6 +919,7 @@
     <string-array name="filename_templates">
         <item>%(uploader)s___(string): Full name of the video uploader)</item>
         <item>%(title)s___(string): Video title)</item>
+        <item>%(rownumber)s___(numeric): Row number of item, when downloading multiple items at once)</item>
         <item>%(id)s___(string): Video identifier)</item>
         <item>%(playlist_index,playlist_autonumber&amp;{}. |)s%(title)s___(string): Title with playlist index in front if its available</item>
         <item>%(fulltitle)s___(string): Video title ignoring live timestamp and generic title)</item>
