@@ -40,9 +40,6 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     private var formatUtil = FormatUtil(application)
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
 
-    val genericAudioFormats = formatUtil.getGenericAudioFormats(application.resources)
-    val genericVideoFormats = formatUtil.getGenericVideoFormats(application.resources)
-
     var sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
     var filterBy = MutableStateFlow(FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!))
 
@@ -175,9 +172,9 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
                 if (finalFormats.isEmpty()) {
                     finalFormats = if (items.first().type == DownloadType.audio){
-                        genericAudioFormats
+                        formatUtil.getGenericAudioFormats(application.resources)
                     }else{
-                        genericVideoFormats
+                        formatUtil.getGenericVideoFormats(application.resources)
                     }
                 }
 
@@ -218,6 +215,10 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
     fun getFormatsForItemsBasedOnFormat(item: Format?, audioFormats: List<Format>? = null) : MutableList<MultipleItemFormatTuple> {
         val formatsToReturn = mutableListOf<MultipleItemFormatTuple>()
+
+        val genericAudioFormats = formatUtil.getGenericAudioFormats(application.resources)
+        val genericVideoFormats = formatUtil.getGenericVideoFormats(application.resources)
+
         val f = if (genericAudioFormats.contains(item) || genericVideoFormats.contains(item)) item else null
 
         selectedItems.value.forEach {

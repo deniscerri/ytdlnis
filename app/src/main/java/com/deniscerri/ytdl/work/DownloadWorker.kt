@@ -188,7 +188,7 @@ class DownloadWorker(
                         }
                     }
 
-                    val cacheDir = FileUtil.getCachePath(context)
+                    val cacheDir = FileUtil.getCacheDownloadsPath(context)
                     val tempFileDir = File(cacheDir, downloadItem.id.toString())
                     tempFileDir.delete()
                     tempFileDir.mkdirs()

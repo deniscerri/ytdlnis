@@ -35,25 +35,52 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/horizontal_container"
+    <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true"
-        android:scrollbars="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appbarlayout">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/log_recycler_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:paddingBottom="100dp" />
+        <me.zhanghai.android.fastscroll.FastScrollScrollView
+            android:id="@+id/content_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false">
 
-    </HorizontalScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/horizontalscroll_output"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="monospace"
+                        android:gravity="bottom"
+                        android:padding="10dp"
+                        android:scrollbars="none"
+                        android:textIsSelectable="true"
+                        android:textSize="15sp" />
+
+                </HorizontalScrollView>
+
+
+
+            </LinearLayout>
+
+        </me.zhanghai.android.fastscroll.FastScrollScrollView>
+
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/progress"

@@ -169,7 +169,7 @@
     <string name="download_rescheduled_to">Download rescheduled to:</string>
     <string name="file_size">File size</string>
     <string name="clear_temporary_files">Clear temporary files</string>
-    <string name="clear_temporary_files_summary">Delete cached files from crashed/errored/cancelled downloads</string>
+    <string name="clear_temporary_files_summary">Delete cached files, infojsons and other temporary configurations</string>
     <string name="cache_cleared">Temporary files cleared</string>
     <string name="downloads_running_try_later">Download worker is running. Try again later</string>
     <string name="ytdl_version">yt-dlp version</string>
@@ -272,7 +272,7 @@
     <string name="crop_thumb_summary">Crop the thumbnail into a square for audio downloads</string>
     <string name="audio_only_item">This item only contains audio formats</string>
     <string name="move_temporary_files">Move temporary files</string>
-    <string name="move_temporary_files_summary">Transfer cached files to the downloads folder</string>
+    <string name="move_temporary_files_summary">Transfer cached download files to the downloads folder</string>
     <string name="custom_audio_quality">Use custom audio quality</string>
     <string name="retries">Retries</string>
     <string name="fragment_retries">Fragment retries</string>

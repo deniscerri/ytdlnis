@@ -661,7 +661,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         try {
             val response = RuntimeManager.getInstance().execute(request)
-            return response.out.replace(FileUtil.getCachePath(context) + "${item.id}/", "").trim()
+            return response.out.replace(FileUtil.getCacheDownloadsPath(context) + "/${item.id}/", "").trim()
         } catch (ex: Exception) {
             return ex.message ?: ""
         }
@@ -857,6 +857,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
         }
 
+        if (downloadItem.playlistTitle.isNotBlank() && useItemURL) {
+            metadataCommands.addOption("--replace-in-metadata", "playlist,playlist_title", "^.*$", downloadItem.playlistTitle)
+        }
+
+        if (downloadItem.playlistIndex != null) {
+            metadataCommands.addOption("--parse-metadata", "%(playlist_autonumber)s:playlist_autonumber")
+        }
+
         downloadItem.rowNumber.apply {
             if (this > 0) {
                 request.addOption("--autonumber-start", this.toString())
@@ -875,7 +883,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.addOption("--no-simulate")
             request.addOption("--print", "after_move:'%(filepath,_filename)s'")
         }else{
-            val cacheDir = FileUtil.getCachePath(context)
+            val cacheDir = FileUtil.getCacheDownloadsPath(context)
             downDir = File(cacheDir, downloadItem.id.toString())
             downDir.delete()
             downDir.mkdirs()
@@ -1263,11 +1271,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                                 altAudioF = this.format_id.split("-")[0]
                                 this.format_id
                             }
-                        } else this.format_id
-                    } ?: f
+                        } else {
+                            this.format_id
+                        }
+                    } ?: if (f == "wa") "" else f
                 }.ifBlank { "ba" }
                 val preferredAudioLanguage = sharedPreferences.getString("audio_language", "")!!
                 val preferDRCAudio = sharedPreferences.getBoolean("prefer_drc_audio", false)
+                val usingWorstAudio = downloadItem.videoPreferences.audioFormatIDs.any { it == "wa" }
+
                 if (downloadItem.videoPreferences.removeAudio) audioF = ""
 
                 var abrSort = ""
@@ -1337,7 +1349,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             val list = mutableListOf<String>()
                             if (preferredAudioLanguage.isNotEmpty() && !downloadItem.videoPreferences.removeAudio) list.add("ba[language^=$preferredAudioLanguage]")
                             if (preferDRCAudio) list.add("ba[format_id$=-drc]")
-                            list.add(audioF)
                             list
                         }.apply {
 
@@ -1345,6 +1356,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     if (!preferredAudioFormatIDs.contains(audioF) && audioF != "ba"){
                         preferredAudioFormatIDs.add(0, audioF)
                     }
+
+                    if (preferredAudioFormatIDs.contains("wa")) {
+                        preferredFormatIDs.remove("wa")
+                    }
+
                     // ^ [audioF, preferredAID1, preferredAID2, ....]
                     if (preferredAudioFormatIDs.any{it.contains("+")}){
                         request.addOption("--audio-multistreams")
@@ -1426,6 +1442,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 if (abrSort.isNotBlank()) {
                     formatSorting.add("abr:${abrSort}")
+                } else if (usingWorstAudio) {
+                    formatSorting.add("+abr")
                 }
 
 //                if (preferredLanguage.isNotBlank()) {
@@ -1516,7 +1534,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             if (sponsorBlockURL.isNotBlank()) request.addOption("--sponsorblock-api", sponsorBlockURL)
         }
 
-        val cache = File(FileUtil.getCachePath(context))
+        val cache = File(FileUtil.getCacheDownloadsPath(context))
         cache.mkdirs()
         val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
         conf.createNewFile()

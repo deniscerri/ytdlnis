@@ -36,7 +36,7 @@ class CleanUpLeftoverDownloads(
 
         val activeDownloadCount = downloadRepo.getActiveDownloadsCount()
         if (activeDownloadCount == 0){
-            File(FileUtil.getCachePath(context)).deleteRecursively()
+            File(FileUtil.getCacheDownloadsPath(context)).deleteRecursively()
         }
 
         return Result.success()

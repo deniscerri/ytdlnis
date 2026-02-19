@@ -316,13 +316,17 @@ object FileUtil {
         if (preference.isNullOrBlank()) {
             val externalPath = context.getExternalFilesDir(null)
             return if (externalPath == null){
-                context.cacheDir.absolutePath + "/downloads/"
+                context.cacheDir.absolutePath + "/ytdlnis_cache/"
             }else{
-                externalPath.absolutePath + "/downloads/"
+                externalPath.absolutePath + "/ytdlnis_cache/"
             }
         }else {
             return formatPath(preference)
         }
+    }
+
+    fun getCacheDownloadsPath(context: Context): String {
+        return "${getCachePath(context)}dl"
     }
 
     fun getInfoJsonPath(context: Context) : String {
