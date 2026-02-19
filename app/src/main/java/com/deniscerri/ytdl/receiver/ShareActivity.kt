@@ -59,6 +59,8 @@ class ShareActivity : BaseActivity() {
     private lateinit var navController: NavController
     private var quickDownload by Delegates.notNull<Boolean>()
 
+    private lateinit var wm: WindowManager
+    private lateinit var myView: View
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,22 +81,22 @@ class ShareActivity : BaseActivity() {
                 },
                 PixelFormat.TRANSLUCENT
             )
-            val wm = getSystemService(WINDOW_SERVICE) as WindowManager
+            wm = getSystemService(WINDOW_SERVICE) as WindowManager
 
             val inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val myView: View = inflater.inflate(R.layout.activity_share, null)
+            myView = inflater.inflate(R.layout.activity_share, null)
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             wm.addView(myView, params)
 
-//            window.addFlags(
-//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-//                        or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-//                        or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-//            )
-//
-//            val params = window.attributes
-//            params.alpha = 0f
-//            window.attributes = params
+            // window.addFlags(
+            //     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            //             or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            //             or WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            // )
+            //
+            // val params = window.attributes
+            // params.alpha = 0f
+            // window.attributes = params
             setContentView(R.layout.activity_share)
 
         }else{
@@ -217,5 +219,27 @@ class ShareActivity : BaseActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         startActivity(Intent(this, MainActivity::class.java))
         super.onConfigurationChanged(newConfig)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::wm.isInitialized && ::myView.isInitialized) {
+            try {
+                wm.removeView(myView)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        window.decorView.systemUiVisibility = (
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            or View.SYSTEM_UI_FLAG_FULLSCREEN
+            or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        )
     }
 }
