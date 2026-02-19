@@ -8,7 +8,6 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
-import kotlin.math.max
 import kotlin.math.min
 
 class FormatUtil(private var context: Context) {

@@ -18,6 +18,7 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.NavbarUtil
@@ -34,6 +35,7 @@ import kotlinx.coroutines.withContext
 
 class DownloadQueueMainFragment : Fragment(){
     private lateinit var downloadViewModel: DownloadViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var workManager: WorkManager
     private lateinit var tabLayout: TabLayout
@@ -58,6 +60,7 @@ class DownloadQueueMainFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         workManager = WorkManager.getInstance(requireContext())
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
 
         topAppBar = view.findViewById(R.id.downloads_toolbar)
         val isInNavBar = NavbarUtil.getNavBarItems(requireActivity()).any { n -> n.itemId == R.id.downloadQueueMainFragment && n.isVisible }
@@ -132,11 +135,11 @@ class DownloadQueueMainFragment : Fragment(){
                             val item = withContext(Dispatchers.IO){
                                 downloadViewModel.getItemByID(reconfigureID)
                             }
+                            downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(item))
+                            downloadCardViewModel.setDownloadItem(item)
                             findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                Pair("downloadItem", item),
-                                Pair("result", downloadViewModel.createResultItemFromDownload(item)),
                                 Pair("type", item.type)
-                            )
+                                )
                             )
                         }
                     }

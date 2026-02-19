@@ -14,12 +14,14 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.BaseSettingsFragment
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 class UpdateSettingsFragment : BaseSettingsFragment() {
@@ -86,6 +88,15 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             false
         }
 
+        findPreference<Preference>("packages")?.apply {
+            summary = "Python, FFmpeg, Aria2c, NodeJS"
+
+            setOnPreferenceClickListener {
+                findNavController().navigate(R.id.packagesFragment)
+                false
+            }
+        }
+
 
         version = findPreference("version")
         val nativeLibraryDir = context?.applicationInfo?.nativeLibraryDir
@@ -109,7 +120,6 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
                 }
                 true
             }
-
 
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
@@ -142,11 +152,13 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
             requireContext().getString(R.string.ytdl_updating_started),
             Snackbar.LENGTH_LONG).show()
         runCatching {
-            val res = updateUtil!!.updateYoutubeDL(channel)
+            val res = updateUtil!!.updateYTDL(channel)
             when (res.status) {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
                     Snackbar.make(requireView(), res.message, Snackbar.LENGTH_LONG).show()
                     setYTDLPVersion()
+                    val infoJsonPath = FileUtil.getInfoJsonPath(requireContext())
+                    File(infoJsonPath).deleteRecursively()
                 }
                 UpdateUtil.YTDLPUpdateStatus.ALREADY_UP_TO_DATE -> Snackbar.make(requireView(),
                     requireContext().getString(R.string.you_are_in_latest_version),
@@ -183,6 +195,4 @@ class UpdateSettingsFragment : BaseSettingsFragment() {
 
         }
     }
-
-
 }

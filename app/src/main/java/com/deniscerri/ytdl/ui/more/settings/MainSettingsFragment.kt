@@ -7,16 +7,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.LayoutDirection
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.core.text.layoutDirection
 import androidx.lifecycle.ViewModelProvider
@@ -25,11 +22,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreferenceCompat
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.BuildConfig
-import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.BackupSettingsItem
 import com.deniscerri.ytdl.database.models.CommandTemplate
@@ -37,17 +32,10 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.RestoreAppDataItem
-import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
-import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
-import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
-import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
-import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
-import com.deniscerri.ytdl.ui.more.settings.FolderSettingsFragment.Companion.COMMAND_PATH_CODE
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -55,17 +43,12 @@ import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStreamReader
-import java.util.Calendar
 import java.util.Locale
 
 

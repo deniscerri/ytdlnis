@@ -3,7 +3,6 @@ package com.deniscerri.ytdl.database.repository
 import com.deniscerri.ytdl.database.dao.CookieDao
 import com.deniscerri.ytdl.database.models.CookieItem
 import kotlinx.coroutines.flow.Flow
-import org.hamcrest.Description
 
 class CookieRepository(private val cookieDao: CookieDao) {
     val items : Flow<List<CookieItem>> = cookieDao.getAllCookiesFlow()

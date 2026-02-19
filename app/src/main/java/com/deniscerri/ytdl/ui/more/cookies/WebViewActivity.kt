@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -30,9 +29,6 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
-import com.google.accompanist.web.AccompanistWebChromeClient
-import com.google.accompanist.web.AccompanistWebViewClient
-import com.google.accompanist.web.rememberWebViewState
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton

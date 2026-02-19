@@ -1,7 +1,6 @@
 package com.deniscerri.ytdl.ui.more.settings
 
 import android.app.Activity
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -14,10 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
-import androidx.preference.PreferenceCategory
-import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
-import androidx.preference.PreferenceScreen
 import androidx.preference.SwitchPreferenceCompat
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder

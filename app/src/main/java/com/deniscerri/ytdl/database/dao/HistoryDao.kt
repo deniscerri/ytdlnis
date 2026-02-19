@@ -7,10 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.deniscerri.ytdl.database.enums.DownloadType
-import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.repository.HistoryRepository
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -125,13 +125,6 @@ class DownloadLogFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO){
-            content.isFocusable = true
-            if (sharedPreferences.getBoolean("use_code_color_highlighter", true)) {
-                content.enableTextHighlight()
-            }
-        }
-
         contentScrollView.enableFastScroll()
 
         scrollDownBtn = bottomAppBar?.menu?.children?.first { it.itemId == R.id.scroll_down }
@@ -272,9 +265,5 @@ class DownloadLogFragment : Fragment() {
             progressBar.isVisible = event.progress < 100
             progressBar.setProgressCompat(event.progress, true)
         }
-    }
-
-    companion object {
-        private const val TAG = "DownloadLogActivity"
     }
 }

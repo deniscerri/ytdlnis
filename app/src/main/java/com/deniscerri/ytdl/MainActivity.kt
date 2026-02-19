@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl
 
 import android.app.ActionBar.LayoutParams
+import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -12,12 +13,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -32,10 +35,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.getAbsolutePath
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
@@ -57,7 +62,6 @@ import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.snackbar.Snackbar
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -82,10 +86,12 @@ class MainActivity : BaseActivity() {
     private lateinit var cookieViewModel: CookieViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var settingsViewModel: SettingsViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private var navigationView: NavigationView? = null
     private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
+    private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,10 +100,12 @@ class MainActivity : BaseActivity() {
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
         setContentView(R.layout.activity_main)
         context = baseContext
+
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         cookieViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(this)[DownloadCardViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         if (preferences.getBoolean("incognito", false)) {
@@ -105,8 +113,6 @@ class MainActivity : BaseActivity() {
                 resultViewModel.deleteAll()
             }
         }
-
-
 
         askPermissions()
         checkUpdate()
@@ -267,26 +273,7 @@ class MainActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
 
-        if (preferences.getBoolean("auto_update_ytdlp", false)){
-            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                kotlin.runCatching {
-                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                        if (UpdateUtil(this@MainActivity).updateYoutubeDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
-                            val version = YoutubeDL.getInstance().version(context)
-                            val snack = Snackbar.make(findViewById(R.id.frame_layout),
-                                this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                                Snackbar.LENGTH_LONG)
-
-                            navigationBarView?.apply {
-                                snack.setAnchorView(this)
-                            }
-                            snack.show()
-                        }
-                    }
-                }
-
-            }
-        }
+        checkRuntimeReadyState()
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -411,7 +398,8 @@ class MainActivity : BaseActivity() {
                             downloadType = downloadViewModel.getDownloadType(null, path)
                         }
 
-                        bundle.putParcelable("result", downloadViewModel.createEmptyResultItem(path))
+                        downloadCardViewModel.setResultItem(downloadViewModel.createEmptyResultItem(path))
+                        downloadCardViewModel.setDownloadItem(null)
                         bundle.putSerializable("type", downloadType)
                         navController.navigate(R.id.downloadBottomSheetDialog, bundle)
                         return
@@ -497,6 +485,42 @@ class MainActivity : BaseActivity() {
                 }
 
             }
+        }
+    }
+
+    private fun checkRuntimeReadyState() {
+        if (loadingRuntimeDialog == null) {
+            val builder = MaterialAlertDialogBuilder(this)
+            val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
+            builder.setView(dialogView)
+            loadingRuntimeDialog = builder.show()
+        }
+
+        if (RuntimeManager.initialized) {
+            loadingRuntimeDialog?.dismiss()
+
+            if (preferences.getBoolean("auto_update_ytdlp", false)){
+                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                    kotlin.runCatching {
+                        if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                            if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
+                                val version = RuntimeManager.getInstance().version(context)
+                                val snack = Snackbar.make(findViewById(R.id.frame_layout),
+                                    this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
+                                    Snackbar.LENGTH_LONG)
+
+                                navigationBarView?.apply {
+                                    snack.setAnchorView(this)
+                                }
+                                snack.show()
+                            }
+                        }
+                    }
+
+                }
+            }
+        } else {
+            Handler(Looper.getMainLooper()).postDelayed({ checkRuntimeReadyState() }, 50)
         }
     }
 

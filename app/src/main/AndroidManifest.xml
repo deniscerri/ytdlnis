@@ -14,6 +14,7 @@
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -25,8 +26,17 @@
 <!--    foreground service permission for android 14 and up-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
 
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
+        tools:ignore="RequestInstallPackagesPolicy" />
+    <queries>
+        <package android:name="com.deniscerri.ytdl.python" />
+        <package android:name="com.deniscerri.ytdl.ffmpeg" />
+        <package android:name="com.deniscerri.ytdl.nodejs" />
+        <package android:name="com.deniscerri.ytdl.aria2c" />
+    </queries>
 
     <application
+        android:usesCleartextTraffic="true"
         android:name=".App"
         android:allowBackup="false"
         android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"

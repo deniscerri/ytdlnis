@@ -15,14 +15,11 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
@@ -30,7 +27,7 @@ import com.google.android.material.color.MaterialColors
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 
 class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<HistoryItem, HistoryPaginatedAdapter.ViewHolder>(

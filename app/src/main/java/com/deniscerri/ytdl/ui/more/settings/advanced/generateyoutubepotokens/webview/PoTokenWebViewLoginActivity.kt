@@ -9,10 +9,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MenuItem
 import android.webkit.CookieManager
-import android.webkit.WebChromeClient
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -22,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -133,7 +130,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                                                 0,
                                                 cookieURL,
                                                 it,
-                                                "",
+                                                "Po Token Generated Cookies",
                                                 true
                                             )
                                         )
@@ -161,20 +158,22 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
                         }
                     }
 
-                    webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
-                        if (value?.trim('"') == "complete") {
-                            Handler(Looper.getMainLooper()).postDelayed({
-                                redirectUrl?.apply {
-                                    val extraHeaders: MutableMap<String?, String?> =
-                                        HashMap()
-                                    extraHeaders["Referer"] = "https://www.google.com/"
-                                    webView.loadUrl(this, extraHeaders)
-                                }
-                                redirectUrl = null
-                            }, 2500)
+                    val canRedirect = noAuth || url?.contains("youtube.com/account") == true
+                    if (canRedirect) {
+                        webView.evaluateJavascript("(function(){return document.readyState;})()") { value ->
+                            if (value?.trim('"') == "complete") {
+                                Handler(Looper.getMainLooper()).postDelayed({
+                                    redirectUrl?.apply {
+                                        val extraHeaders: MutableMap<String?, String?> =
+                                            HashMap()
+                                        extraHeaders["Referer"] = "https://www.google.com/"
+                                        webView.loadUrl(this, extraHeaders)
+                                    }
+                                    redirectUrl = null
+                                }, 2500)
+                            }
                         }
                     }
-
                 }
             }
 

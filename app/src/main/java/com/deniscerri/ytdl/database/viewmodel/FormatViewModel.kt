@@ -1,21 +1,16 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
-import android.view.View
-import android.widget.Toast
-import androidx.compose.runtime.MutableState
-import androidx.core.view.isVisible
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.repository.DownloadRepository
-import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatCategory
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatSorting
 import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
@@ -23,21 +18,13 @@ import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
-import com.deniscerri.ytdl.util.UiUtil
-import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
-import java.text.Normalizer.Form
-import kotlin.text.compareTo
 
 class FormatViewModel(private val application: Application) : AndroidViewModel(application) {
     private val downloadRepository: DownloadRepository
@@ -52,9 +39,6 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
     private var formatUtil = FormatUtil(application)
     private val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-
-    val genericAudioFormats = formatUtil.getGenericAudioFormats(application.resources)
-    val genericVideoFormats = formatUtil.getGenericVideoFormats(application.resources)
 
     var sortBy = FormatSorting.valueOf(sharedPreferences.getString("format_order", "filesize")!!)
     var filterBy = MutableStateFlow(FormatCategory.valueOf(sharedPreferences.getString("format_filter", "ALL")!!))
@@ -188,9 +172,9 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
                 if (finalFormats.isEmpty()) {
                     finalFormats = if (items.first().type == DownloadType.audio){
-                        genericAudioFormats
+                        formatUtil.getGenericAudioFormats(application.resources)
                     }else{
-                        genericVideoFormats
+                        formatUtil.getGenericVideoFormats(application.resources)
                     }
                 }
 
@@ -231,6 +215,10 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
 
     fun getFormatsForItemsBasedOnFormat(item: Format?, audioFormats: List<Format>? = null) : MutableList<MultipleItemFormatTuple> {
         val formatsToReturn = mutableListOf<MultipleItemFormatTuple>()
+
+        val genericAudioFormats = formatUtil.getGenericAudioFormats(application.resources)
+        val genericVideoFormats = formatUtil.getGenericVideoFormats(application.resources)
+
         val f = if (genericAudioFormats.contains(item) || genericVideoFormats.contains(item)) item else null
 
         selectedItems.value.forEach {

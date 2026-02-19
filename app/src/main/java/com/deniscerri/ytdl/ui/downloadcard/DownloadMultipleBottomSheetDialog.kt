@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -39,7 +40,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -73,7 +73,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.abs
@@ -700,8 +699,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach {
                                                 it.videoPreferences.compatibilityMode = checked
                                                 if(checked) {
-                                                    it.container = "mkv"
+                                                    it.container = "mp4"
                                                 }
+                                                it.format = downloadViewModel.getFormat(it.allFormats,DownloadType.video)
                                             }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },

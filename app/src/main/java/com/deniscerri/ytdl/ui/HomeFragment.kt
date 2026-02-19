@@ -2,8 +2,12 @@ package com.deniscerri.ytdl.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.*
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -11,9 +15,18 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.Patterns
-import android.view.*
-import android.view.View.*
-import android.widget.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.view.View.GONE
+import android.view.View.OnClickListener
+import android.view.View.OnTouchListener
+import android.view.View.VISIBLE
+import android.view.ViewGroup
+import android.widget.HorizontalScrollView
+import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +51,7 @@ import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
@@ -68,7 +82,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
-import kotlin.collections.ArrayList
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
@@ -90,6 +103,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var historyViewModel : HistoryViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -141,6 +155,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
 
         downloadQueue = ArrayList()
         resultsList = mutableListOf()
@@ -754,7 +769,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             ){
             //show the fragment if its not in the backstack
             val bundle = Bundle()
-            bundle.putParcelable("result", resultItem)
+            downloadCardViewModel.setResultItem(resultItem)
+            downloadCardViewModel.setDownloadItem(null)
             bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
             if (disableUpdateData) {
                 bundle.putBoolean("disableUpdateData", true)

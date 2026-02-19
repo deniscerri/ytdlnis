@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.LogItem
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.android.material.button.MaterialButton

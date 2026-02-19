@@ -30,12 +30,13 @@ class MoveCacheFilesWorker(
         val notificationUtil = NotificationUtil(App.instance)
         val id = System.currentTimeMillis().toInt()
 
-        val cachePath = FileUtil.getCachePath(context)
+        val cachePath = FileUtil.getCacheDownloadsPath(context)
         val downloadFolders = File(cachePath)
         val allContent = downloadFolders.walk()
-        allContent.drop(1)
+
         val totalFiles = allContent.count()
-        val destination = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath + File.separator + "YTDLnis/CACHE_IMPORT")
+        val destination = File(FileUtil.getDefaultApplicationPath(), "CACHE_IMPORT")
+        destination.mkdirs()
 
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -50,6 +51,8 @@ class MoveCacheFilesWorker(
         var progress = 0
         allContent.forEach {
             progress++
+            if (progress == 1) return@forEach
+
             notificationUtil.updateCacheMovingNotification(id, progress, totalFiles)
             val destFile = File(destination.absolutePath + "/${it.absolutePath.removePrefix(cachePath)}")
             if (it.isDirectory) {
@@ -63,6 +66,11 @@ class MoveCacheFilesWorker(
                 it.renameTo(destFile)
             }
         }
+
+        downloadFolders.listFiles()?.forEach { child ->
+            child.deleteRecursively()
+        }
+
         val handler = Handler(Looper.getMainLooper())
         handler.post {
             Toast.makeText(context, context.getString(R.string.ok), Toast.LENGTH_SHORT).show()

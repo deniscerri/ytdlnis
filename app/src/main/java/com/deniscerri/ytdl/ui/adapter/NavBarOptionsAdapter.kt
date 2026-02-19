@@ -1,7 +1,6 @@
 package com.deniscerri.ytdl.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.Menu
 import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.core.view.isVisible

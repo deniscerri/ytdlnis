@@ -31,7 +31,6 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.adapter.CookieAdapter
-import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil

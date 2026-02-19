@@ -5,12 +5,10 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
-import com.yausername.aria2c.Aria2c
-import com.yausername.ffmpeg.FFmpeg
-import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -46,11 +44,9 @@ class App : Application() {
         }
         ThemeUtil.init(this)
     }
-    @Throws(YoutubeDLException::class)
+    @Throws(ExecuteException::class)
     private fun initLibraries() {
-        YoutubeDL.getInstance().init(this)
-        FFmpeg.getInstance().init(this)
-        Aria2c.getInstance().init(this)
+        RuntimeManager.getInstance().init(this)
     }
 
     private fun setDefaultValues(){

@@ -10,7 +10,6 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.VideoPreferences
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesMonthlyConfig
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesWeeklyConfig
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.google.gson.Gson
 
 

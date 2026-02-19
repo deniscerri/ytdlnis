@@ -22,7 +22,7 @@ import com.anggrayudi.storage.file.getAbsolutePath
 import com.anggrayudi.storage.file.moveFileTo
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
-import com.yausername.youtubedl_android.YoutubeDLRequest
+import com.deniscerri.ytdl.core.models.YTDLRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.internal.closeQuietly
@@ -316,16 +316,24 @@ object FileUtil {
         if (preference.isNullOrBlank()) {
             val externalPath = context.getExternalFilesDir(null)
             return if (externalPath == null){
-                context.cacheDir.absolutePath + "/downloads/"
+                context.cacheDir.absolutePath + "/ytdlnis_cache/"
             }else{
-                externalPath.absolutePath + "/downloads/"
+                externalPath.absolutePath + "/ytdlnis_cache/"
             }
         }else {
             return formatPath(preference)
         }
     }
 
-    fun deleteConfigFiles(request: YoutubeDLRequest) {
+    fun getCacheDownloadsPath(context: Context): String {
+        return "${getCachePath(context)}dl"
+    }
+
+    fun getInfoJsonPath(context: Context) : String {
+        return "${getCachePath(context)}infojsons"
+    }
+
+    fun deleteConfigFiles(request: YTDLRequest) {
         runCatching {
             request.getArguments("--config")?.forEach {
                 if (it != null) File(it).delete()

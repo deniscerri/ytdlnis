@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.database.models
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 import java.util.Date
 
 data class GithubRelease(
@@ -17,9 +18,12 @@ data class GithubRelease(
 )
 
 
+@Serializable
 data class GithubReleaseAsset(
     @SerializedName(value = "name")
     var name: String,
     @SerializedName(value = "browser_download_url")
-    var browser_download_url: String
+    var browser_download_url: String,
+    @SerializedName(value = "size")
+    var size: Long
 )

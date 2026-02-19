@@ -10,12 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import android.widget.Button
-import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.children
-import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -24,15 +21,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
-import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.FormatAdapter
-import com.deniscerri.ytdl.ui.adapter.HomeAdapter
-import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -40,17 +34,14 @@ import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Text
 
 
 class FormatSelectionBottomSheetDialog(

@@ -10,7 +10,6 @@ import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.JsonArray
-import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

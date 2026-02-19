@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/log_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@android:color/transparent"
+    android:checkable="true"
+    android:clickable="true"
+    android:focusable="true"
+    app:checkedIcon="@null"
+    app:strokeColor="?attr/colorPrimary"
+    app:cardPreventCornerOverlap="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+    app:strokeWidth="0dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/plugin_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_code"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:clickable="false"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="0.7"
+            app:layout_constraintStart_toEndOf="@+id/plugin_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingHorizontal="5dp"
+                android:scrollbars="none"
+                android:textSize="17sp"
+                android:textStyle="bold"
+                tools:text="v1.0"
+                app:layout_constraintEnd_toStartOf="@+id/actionBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/createdAt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingHorizontal="5dp"
+                android:scrollbars="none"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                tools:text="1st Jan 2000"
+                app:layout_constraintEnd_toStartOf="@+id/actionBtn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/actionBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:contentDescription="@string/preferred_download_type"
+                android:minHeight="0dp"
+                android:paddingHorizontal="10dp"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_down"
+                app:iconTint="?attr/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

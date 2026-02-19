@@ -163,6 +163,9 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
             cookieFile.apply { writeText(cookieTXT.toString()) }
         }
 
+        //clear info jsons after updating cookies
+        val infoJsonPath = FileUtil.getInfoJsonPath(application)
+        File(infoJsonPath).deleteRecursively()
     }
 
     suspend fun importFromClipboard() {

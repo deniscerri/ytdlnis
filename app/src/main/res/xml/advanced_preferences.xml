@@ -20,7 +20,8 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             android:icon="@drawable/ic_language"
-            android:defaultValue="true"
+            android:defaultValue="false"
+            android:summary="@string/use_app_language_for_metadata_summary"
             android:key="use_app_language_for_metadata"
             android:title="@string/use_app_language_for_metadata" />
 

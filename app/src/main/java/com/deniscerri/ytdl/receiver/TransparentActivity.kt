@@ -1,26 +1,18 @@
 package com.deniscerri.ytdl.receiver
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.PixelFormat
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.BaseActivity
-import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 

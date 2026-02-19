@@ -12,7 +12,8 @@ def properties = new Properties()
 def versionMajor = 1
 def versionMinor = 8
 def versionPatch = 7
-def versionBuild = 2 // bump for dogfood builds, public betas, etc.
+def versionBuild = 3 // bump for dogfood builds, public betas, etc.
+//WHEN RELEASING BETA KEEP THE SAME VERSION AS LATEST STABLE, SO USERS CAN DOWNGRADE
 def isBeta = false
 
 def versionExt = ""
@@ -155,7 +156,7 @@ dependencies {
     implementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
 
 //    implementation "io.github.junkfood02.youtubedl-android:library:0.17.4"
-    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1"
+    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
 //    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
 
     implementation "androidx.appcompat:appcompat:1.7.1"
@@ -225,5 +226,9 @@ dependencies {
     implementation 'androidx.compose.material3:material3-android:1.4.0'
     implementation "io.noties.markwon:core:4.6.2"
     implementation("org.greenrobot:eventbus:3.3.1")
-    implementation("com.github.teamnewpipe:newpipeextractor:v0.25.0")
+    implementation("com.github.teamnewpipe:newpipeextractor:v0.25.2")
+
+    implementation("commons-io:commons-io:2.5")
+    implementation("org.apache.commons:commons-compress:1.12")
+    implementation("androidx.core:core-splashscreen:1.2.0")
 }

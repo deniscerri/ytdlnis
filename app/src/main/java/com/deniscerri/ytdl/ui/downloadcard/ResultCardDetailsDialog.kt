@@ -41,6 +41,7 @@ import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
@@ -79,6 +80,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var ytdlpViewModel: YTDLPViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
 
     private lateinit var activeAdapter: ActiveDownloadMinifiedAdapter
     private lateinit var queuedAdapter: GenericDownloadAdapter
@@ -95,6 +97,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         downloadManager = requireContext().getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
     }
@@ -312,7 +315,8 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
     private fun onButtonClick(type: DownloadType){
         if (sharedPreferences.getBoolean("download_card", true)) {
             val bundle = Bundle()
-            bundle.putParcelable("result", item)
+            downloadCardViewModel.setResultItem(item)
+            downloadCardViewModel.setDownloadItem(null)
             bundle.putSerializable("type", type)
             findNavController().navigateUp()
             findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
@@ -463,9 +467,10 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                     }
                 },
                 longClickDownloadButton = {
+                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
+                    downloadCardViewModel.setDownloadItem(it)
+
                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                        Pair("downloadItem", it),
-                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
                         Pair("type", it.type)
                     )
                     )

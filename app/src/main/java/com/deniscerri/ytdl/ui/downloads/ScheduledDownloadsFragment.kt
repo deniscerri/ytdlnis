@@ -29,19 +29,16 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
-import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
 import com.deniscerri.ytdl.ui.adapter.ScheduledDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
-import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.work.AlarmScheduler
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -59,6 +56,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
     private lateinit var scheduledRecyclerView : RecyclerView
     private lateinit var preferences : SharedPreferences
     private lateinit var adapter : ScheduledDownloadAdapter
@@ -79,6 +77,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
@@ -195,9 +194,9 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                     }
                 },
                 longClickDownloadButton = {
+                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
+                    downloadCardViewModel.setDownloadItem(it)
                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                        Pair("downloadItem", it),
-                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
                         Pair("type", it.type)
                     )
                     )

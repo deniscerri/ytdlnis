@@ -17,8 +17,6 @@ import com.deniscerri.ytdl.database.repository.CommandTemplateRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class CommandTemplateViewModel(private val application: Application) : AndroidViewModel(application) {

@@ -6,12 +6,12 @@ import androidx.work.Data
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.TerminalDao
 import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.work.TerminalDownloadWorker
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -62,7 +62,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelTerminalDownload(id: Long) = CoroutineScope(Dispatchers.IO).launch{
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        RuntimeManager.getInstance().destroyProcessById(id.toString())
         WorkManager.getInstance(application).cancelUniqueWork(id.toString())
         Thread.sleep(200)
         notificationUtil.cancelDownloadNotification(id.toInt())

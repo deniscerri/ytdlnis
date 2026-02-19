@@ -3,14 +3,9 @@ package com.deniscerri.ytdl.database.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.preference.PreferenceManager
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.database.DBManager
@@ -23,14 +18,12 @@ import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.BackupSettingsUtil
 import com.deniscerri.ytdl.util.FileUtil
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 
 class SettingsViewModel(private val application: Application) : AndroidViewModel(application) {

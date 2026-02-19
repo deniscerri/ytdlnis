@@ -16,14 +16,11 @@ import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
+import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
-import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
@@ -128,7 +125,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
     private suspend fun getYoutubeWatchVideos(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem> {
         if (resetResults) deleteAll()
 
-        //throw YoutubeDLException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
+        //throw ExecuteException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
         val items = mutableListOf<ResultItem>()
         val newpipeExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
             newPipeUtil.getPlaylistData(inputQuery) {
@@ -174,14 +171,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val res = if (newpipeExtractorResult.isSuccess) {
             newpipeExtractorResult.getOrNull()!!
         }else{
-            val youtubeID = inputQuery.getIDFromYoutubeURL()
-            val url = if (youtubeID == null) {
-                inputQuery
-            } else {
-                "https://youtu.be/${youtubeID}"
-            }
-
-            ytdlpUtil.getFromYTDL( url, resultsGenerated = {})
+            ytdlpUtil.getFromYTDL( inputQuery, resultsGenerated = {})
         }
 
         if (resetResults) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <PreferenceCategory android:title="@string/source">
@@ -70,10 +71,17 @@
             app:title="@string/update_app_beta" />
 
         <Preference
+            app:icon="@drawable/ic_code"
+            app:key="packages"
+            app:title="@string/packages" />
+
+        <Preference
             app:icon="@drawable/ic_chapters"
             app:key="changelog"
             app:title="@string/changelog" />
+
     </PreferenceCategory>
+
 
     <PreferenceCategory android:title="@string/format">
         <ListPreference

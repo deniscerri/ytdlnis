@@ -3,7 +3,6 @@ package com.deniscerri.ytdl.database
 import android.content.Context
 import androidx.room.AutoMigration
 import androidx.room.Database
-import androidx.room.DeleteTable
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -21,11 +20,11 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
-import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.models.TerminalItem
+import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 
 @TypeConverters(Converters::class)
 @Database(

@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.database.models.ResultItem
 import org.json.JSONException
 import org.json.JSONObject
-import java.util.ArrayList
 import java.util.Locale
 
 class YoutubeApiUtil(context: Context) {

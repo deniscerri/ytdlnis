@@ -47,7 +47,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -345,7 +344,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         }
                     }
                 if (downloadItem.videoPreferences.compatibilityMode) {
-                    containerAutoCompleteTextView.setText("mkv",false)
+                    containerAutoCompleteTextView.setText("mp4",false)
+                    downloadItem.container = "mp4"
                 }
                 view.findViewById<LinearLayout>(R.id.adjust).apply {
                     visibility = if (shownFields.contains("adjust_video")) View.VISIBLE else View.GONE
@@ -454,8 +454,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.compatibilityMode = it
                                 container.isEnabled = !it
                                 if (it) {
-                                    containerAutoCompleteTextView.setText("mkv",false)
-                                    downloadItem.container = "mkv"
+                                    containerAutoCompleteTextView.setText("mp4",false)
+                                    downloadItem.container = "mp4"
                                 }
                             },
                             alsoDownloadAsAudioClicked = {

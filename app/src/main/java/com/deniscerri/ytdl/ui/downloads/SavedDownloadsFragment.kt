@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
@@ -58,6 +59,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
+    private lateinit var downloadCardViewModel : DownloadCardViewModel
     private lateinit var savedRecyclerView: RecyclerView
     private lateinit var adapter: GenericDownloadAdapter
     private lateinit var preferences: SharedPreferences
@@ -78,6 +80,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
         activity = getActivity()
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         return fragmentView
     }
@@ -196,9 +199,9 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                     }
                 },
                 longClickDownloadButton = { it: DownloadItem ->
+                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
+                    downloadCardViewModel.setDownloadItem(it)
                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                        Pair("downloadItem", it),
-                        Pair("result", downloadViewModel.createResultItemFromDownload(it)),
                         Pair("type", it.type),
                     ))
                 },
@@ -306,9 +309,9 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                                 }
 
                                 withContext(Dispatchers.Main) {
+                                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(itm))
+                                    downloadCardViewModel.setDownloadItem(itm)
                                     findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                        Pair("downloadItem", itm),
-                                        Pair("result", downloadViewModel.createResultItemFromDownload(itm)),
                                         Pair("type", itm.type)
                                     ))
                                 }

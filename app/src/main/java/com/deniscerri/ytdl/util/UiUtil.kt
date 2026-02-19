@@ -17,7 +17,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -63,18 +62,14 @@ import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.GithubRelease
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
-import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
-import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
-import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
@@ -92,10 +87,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.google.gson.Gson
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
@@ -108,7 +101,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
-import java.util.logging.Handler
 
 
 object UiUtil {

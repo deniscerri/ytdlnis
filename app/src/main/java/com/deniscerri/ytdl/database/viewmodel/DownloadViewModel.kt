@@ -20,6 +20,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.DownloadDao
@@ -47,7 +48,6 @@ import com.deniscerri.ytdl.work.AlarmScheduler
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
 import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -658,11 +658,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             repository.deleteProcessing()
             processingItems.emit(true)
             try {
-                itemIDs.forEach {
+                itemIDs.forEachIndexed { index, it ->
                     val item = repository.getItemByID(it)
                     if (processingItemsJob?.isCancelled == true) throw CancellationException()
                     if (!deleteExisting) item.id = 0
                     item.status = DownloadRepository.Status.Processing.toString()
+                    item.rowNumber = index + 1
                     repository.update(item)
                 }
                 processingItems.emit(false)
@@ -680,10 +681,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             processingItems.emit(true)
             try {
                 val toInsert = mutableListOf<DownloadItem>()
-                itemIDs.forEach {
+                itemIDs.forEachIndexed { index, it ->
                     val item = historyRepository.getItem(it)
                     val downloadItem = createDownloadItemFromHistory(item)
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
+                    downloadItem.rowNumber = index + 1
 
                     if (processingItemsJob?.isCancelled == true) {
                         throw CancellationException()
@@ -717,13 +719,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             processingItems.emit(true)
             try {
                 val toInsert = mutableListOf<DownloadItem>()
-                itemIDs.forEach { id ->
-                    val item = resultRepository.getItemByID(id) ?: return@forEach
+                itemIDs.forEachIndexed { index, id ->
+                    val item = resultRepository.getItemByID(id) ?: return@forEachIndexed
                     val preferredType = getDownloadType(url = item.url).toString()
                     val downloadItem = createDownloadItemFromResult(result = item, givenType = DownloadType.valueOf(
                         preferredType
                     ))
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
+                    downloadItem.rowNumber = index + 1
 
                     if (processingItemsJob?.isCancelled == true) {
                         throw CancellationException()
@@ -1022,7 +1025,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         }
                     }
                     "config" -> {
-                        val currentCommand = ytdlpUtil.buildYoutubeDLRequest(it)
+                        val currentCommand = ytdlpUtil.buildYTDLRequest(it)
                         val parsedCurrentCommand = ytdlpUtil.parseYTDLRequestString(currentCommand)
                         val existingDownload = activeAndQueuedDownloads.firstOrNull{d ->
                             val normalized = d.copy(
@@ -1381,7 +1384,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun cancelDownloadOnly(id : Long) {
-        YoutubeDL.getInstance().destroyProcessById(id.toString())
+        RuntimeManager.getInstance().destroyProcessById(id.toString())
         notificationUtil.cancelDownloadNotification(id.toInt())
     }
 

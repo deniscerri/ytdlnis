@@ -12,7 +12,10 @@ import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -22,7 +25,6 @@ import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.elevation.SurfaceColors

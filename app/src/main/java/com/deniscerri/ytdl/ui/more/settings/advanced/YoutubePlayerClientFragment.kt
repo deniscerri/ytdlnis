@@ -2,7 +2,6 @@ package com.deniscerri.ytdl.ui.more.settings.advanced
 
 import android.animation.AnimatorSet
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ClipboardManager
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -22,7 +21,6 @@ import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager

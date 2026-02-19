@@ -1,12 +1,10 @@
 package com.deniscerri.ytdl.util
 
 import android.content.Context
-import android.util.Log
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.LogItem
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
