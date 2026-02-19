@@ -127,7 +127,7 @@
     <string name="file_name_template">Mẫu tên</string>
     <string name="language">Ngôn ngữ</string>
     <string name="command_templates">Mẫu lệnh</string>
-    <string name="terminal">Terminal</string>
+    <string name="terminal">Hộp lệnh</string>
     <string name="enable_mtime">Bật mtime</string>
     <string name="update_formats">Cập nhật định dạng</string>
     <string name="error_updating_formats">Lỗi cập nhật định dạng!</string>
@@ -215,7 +215,7 @@
     <string name="quick_download">Tải nhanh</string>
     <string name="preferred_locale">Ngôn ngữ ưa tiên</string>
     <string name="high_contrast">Độ tương phản cao</string>
-    <string name="quick_download_summary">Không tìm nạp dữ liệu trong thẻ tải xuống</string>
+    <string name="quick_download_summary">Tiếp tục tải xuống ngay mà không cần lấy dữ liệu trước</string>
     <string name="misc">Khác</string>
     <string name="update_formats_background">Cập nhật định dạng trong nền</string>
     <string name="search_suggestions_summary">Nhận gợi ý tìm kiếm từ Google</string>
@@ -488,4 +488,24 @@
     <string name="potoken_gvs">Mã PO (GVS)</string>
     <string name="potoken_player">Mã PO (Trình phát)</string>
     <string name="potoken_subs">Mã PO (Phụ đề)</string>
+    <string name="prefer_drc_audio">Ưu tiên âm thanh DRC</string>
+    <string name="visitor_data">Dữ liệu khách</string>
+    <string name="get_data_sync_id">Lấy ID đồng bộ dữ liệu</string>
+    <string name="desktop">Máy tính bàn</string>
+    <string name="url_regex">Biểu thức chính quy URL</string>
+    <string name="disable_flat_playlist">Tắt danh sách phát phẳng</string>
+    <string name="disable_flat_playlist_summary">Không dùng --flat-playlist. Tốc độ lấy dữ liệu chậm hơn, nhưng dữ liệu phong phú</string>
+    <string name="chapters">Chương</string>
+    <string name="use_original_url_playlist">Dùng URL gốc đối với danh sách phát</string>
+    <string name="use_original_url_playlist_summary">Dùng URL danh sách phát mà bạn nhập, thay vì lấy từ thẻ playlist_webpage_url trong bản JSON dump</string>
+    <string name="update_ytdlp_while_downloading">Cập nhật yt-dlp trong khi tải xuống</string>
+    <string name="update_ytdlp_while_downloading_summary">Thêm -U vào yt-dlp để cập nhật lên phiên bản mới nhất trước khi tải xuống</string>
+    <string name="preview_filename">Xem trước tên tệp</string>
+    <string name="potoken_guide">Xác thực\n-----------------------\n1. Bấm \"Xác thực\" để mở trang đăng nhập trong WebView.\n2. Đăng nhập tài khoản Google.\n3. Phát bất kì video nào có hỗ trợ phụ đề tự động dịch.\n4. Bật phụ đề tự động dịch và kiểm tra xem có hoạt động không.\n\t4.1 Nếu phụ đề tự động dịch không chạy, hãy thử chuyển sang một video khác cũng hỗ trợ tính năng này và làm lại bước 4.\n5. Bấm OK.\n\nKhông xác thực\n-----------------------\n1. Bấm \"Không xác thực\".\n2. Nhập URL của bất kỳ video YouTube nào.\n3. Đợi video tải xong, sau đó phát video ít nhất 3 giây.\n4. Bấm OK.</string>
+    <string name="no_auth">Không xác thực</string>
+    <string name="auth">Xác thực</string>
+    <string name="app_icon">Biểu tượng ứng dụng</string>
+    <string name="show_quick_download_share_menu">Hiện tùy chọn tải xuống ngay trong menu chia sẻ</string>
+    <string name="quick_download_title">Không lấy dữ liệu</string>
+    <string name="sponsorblock_hook">Lời chào/Mở đầu</string>
 </resources>

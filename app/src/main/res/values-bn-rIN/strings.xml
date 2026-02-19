@@ -222,4 +222,8 @@
     <string name="high_contrast">উচ্চ বৈসাদৃশ্য</string>
     <string name="material_you">উপাদান আপনি</string>
     <string name="downloaded">"ডাউনলোড করা হয়েছে: "</string>
+    <string name="purple">বেগুনি</string>
+    <string name="yellow">হলুদ</string>
+    <string name="orange">কমলা</string>
+    <string name="monochrome">সাদা - কালো</string>
 </resources>
