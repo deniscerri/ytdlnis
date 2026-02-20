@@ -33,6 +33,7 @@ import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
+import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -294,12 +295,14 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         if (containers[index] == getString(R.string.defaultValue)) downloadItem.container = ""
                         if (downloadItem.container == "wav") {
                             downloadItem.audioPreferences.embedThumb = false
-                            view.findViewById<Chip>(R.id.embed_thumb).apply {
+                            downloadItem.audioPreferences.cropThumb = false
+                            view.findViewById<Chip>(R.id.thumbnail).apply {
                                 isEnabled = false
                                 isChecked = false
+                                createBadge(requireContext(), 0)
                             }
                         }else {
-                            view.findViewById<Chip>(R.id.embed_thumb).isEnabled = true
+                            view.findViewById<Chip>(R.id.thumbnail).isEnabled = true
                         }
                     }
 

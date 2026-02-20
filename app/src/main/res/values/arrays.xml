@@ -1567,15 +1567,16 @@
 
     <string-array name="audio_bitrate">
         <item>@string/defaultValue</item>
-        <item>320 kpbs</item>
-        <item>192 kpbs</item>
-        <item>128 kpbs</item>
-        <item>64 kpbs</item>
+        <item>968 kbps</item>
+        <item>320 kbps</item>
+        <item>192 kbps</item>
+        <item>128 kbps</item>
+        <item>64 kbps</item>
     </string-array>
 
     <string-array name="audio_bitrate_values">
         <item></item>
-        <item>320k</item>
+        <item>968k</item>
         <item>192k</item>
         <item>128k</item>
         <item>64k</item>
