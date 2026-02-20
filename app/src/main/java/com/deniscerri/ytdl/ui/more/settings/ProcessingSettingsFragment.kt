@@ -48,7 +48,7 @@ class ProcessingSettingsFragment : SearchableSettingsFragment() {
             true
         }
 
-        // Video format ID – show current value in summary and update on change.
+        // Video format ID – show current value in summary and update on changes.
         findPreference<EditTextPreference>("format_id")?.apply {
             val s = getString(R.string.preferred_format_id_summary)
             summary = if (text.isNullOrBlank()) s else "$s\n[$text]"
