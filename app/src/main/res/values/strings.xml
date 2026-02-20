@@ -119,6 +119,8 @@
     <string name="update_ytdl_nightly">Nightly version of yt-dlp</string>
     <string name="adjust_audio">Adjust audio</string>
     <string name="file_name_template">Filename template</string>
+    <string name="file_name_template_video">Filename template (Video)</string>
+    <string name="file_name_template_audio">Filename template (Audio)</string>
     <string name="language">Language</string>
     <string name="command_templates">Command templates</string>
     <string name="terminal">Terminal</string>
@@ -510,8 +512,9 @@
     <string name="show_quick_download_share_menu">Show option to download immediately in the share menu</string>
     <string name="quick_download_title">Don\'t fetch data</string>
     <string name="sponsorblock_hook">Hook/Greetings</string>
-    <string name="packages">Packages</string>
+    <string name="search_settings">Search settings</string>
     <string name="not_installed">Not installed</string>
     <string name="bundled">Bundled</string>
+    <string name="packages">Packages</string>
     <string name="use_app_language_for_metadata_summary">If enabled, metadata fields will follow your app language and even affect format selection by preferring dubbed versions instead of original</string>
 </resources>
