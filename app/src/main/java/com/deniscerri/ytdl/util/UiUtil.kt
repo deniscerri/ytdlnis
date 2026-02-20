@@ -1804,19 +1804,47 @@ object UiUtil {
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val embedThumb = view.findViewById<Chip>(R.id.embed_thumb)
-        val cropThumb = view.findViewById<Chip>(R.id.crop_thumb)
-
-        embedThumb!!.isChecked = items.all { it.audioPreferences.embedThumb }
-        cropThumb.isVisible = embedThumb.isChecked
-        embedThumb.setOnClickListener {
-            embedThumbClicked(embedThumb.isChecked)
-            cropThumb.isVisible = embedThumb.isChecked
+        val adjustThumbnail = view.findViewById<Chip>(R.id.thumbnail)
+        fun calculateAdjustThumbnailChangeCount() {
+            if (items.size == 1) {
+                val firstItem = items.first()
+                val count = listOf(
+                    firstItem.audioPreferences.embedThumb,
+                    firstItem.audioPreferences.cropThumb
+                )
+                adjustThumbnail.createBadge(context, count.filter { it == true }.size)
+            }
         }
+        calculateAdjustThumbnailChangeCount()
+        adjustThumbnail.setOnClickListener {
+            val adjustThumbnailView = context.layoutInflater.inflate(R.layout.audio_thumbnail_download_preferences_dialog, null)
+            val embedThumb = adjustThumbnailView.findViewById<MaterialSwitch>(R.id.embed_thumbnail)
+            val cropThumb = adjustThumbnailView.findViewById<MaterialSwitch>(R.id.crop_thumbnail)
 
-        cropThumb!!.isChecked = items.all { it.audioPreferences.cropThumb == true }
-        cropThumb.setOnClickListener {
-            cropThumbClicked(cropThumb.isChecked)
+            embedThumb!!.isChecked = items.all { it.audioPreferences.embedThumb }
+            cropThumb.isVisible = embedThumb.isChecked
+
+            embedThumb.setOnClickListener {
+                embedThumbClicked(embedThumb.isChecked)
+                cropThumb.isVisible = embedThumb.isChecked
+                items.forEach { it.audioPreferences.embedThumb = embedThumb.isChecked }
+                calculateAdjustThumbnailChangeCount()
+            }
+
+            cropThumb!!.isChecked = items.all { it.audioPreferences.cropThumb == true }
+            cropThumb.setOnClickListener {
+                cropThumbClicked(cropThumb.isChecked)
+                items.forEach { it.audioPreferences.cropThumb = cropThumb.isChecked }
+                calculateAdjustThumbnailChangeCount()
+            }
+
+            val adjustThumbnailDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.thumbnail))
+                .setView(adjustThumbnailView)
+                .setIcon(R.drawable.ic_image)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+
+            adjustThumbnailDialog.show()
         }
 
         val splitByChapters = view.findViewById<Chip>(R.id.split_by_chapters)

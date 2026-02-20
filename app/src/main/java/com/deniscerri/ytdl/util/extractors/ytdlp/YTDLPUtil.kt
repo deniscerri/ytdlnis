@@ -491,7 +491,16 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val json = results[0]
         val jsonArray = runCatching { JSONArray(json) }.getOrElse { JSONArray() }
 
-        return parseYTDLFormats(jsonArray)
+        val formats = parseYTDLFormats(jsonArray)
+        if (formats.isEmpty()) {
+            runCatching {
+                getInfoJsonFile(url)?.apply {
+                    this.delete()
+                }
+            }
+        }
+
+        return formats
     }
 
     private fun parseYTDLFormats(formatsInJSON: JSONArray?) : ArrayList<Format> {
@@ -862,7 +871,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         if (downloadItem.playlistIndex != null) {
-            metadataCommands.addOption("--parse-metadata", "%(playlist_autonumber)s:playlist_autonumber")
+            metadataCommands.addOption("--parse-metadata", "%(playlist_index)s:playlist_index")
         }
 
         downloadItem.rowNumber.apply {
