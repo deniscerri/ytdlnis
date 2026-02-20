@@ -273,7 +273,26 @@ class MainActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
 
-        checkRuntimeReadyState()
+        if (preferences.getBoolean("auto_update_ytdlp", false)){
+            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                kotlin.runCatching {
+                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
+                        if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
+                            val version = RuntimeManager.getInstance().version(context)
+                            val snack = Snackbar.make(findViewById(R.id.frame_layout),
+                                this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
+                                Snackbar.LENGTH_LONG)
+
+                            navigationBarView?.apply {
+                                snack.setAnchorView(this)
+                            }
+                            snack.show()
+                        }
+                    }
+                }
+
+            }
+        }
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -485,42 +504,6 @@ class MainActivity : BaseActivity() {
                 }
 
             }
-        }
-    }
-
-    private fun checkRuntimeReadyState() {
-        if (loadingRuntimeDialog == null) {
-            val builder = MaterialAlertDialogBuilder(this)
-            val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
-            builder.setView(dialogView)
-            loadingRuntimeDialog = builder.show()
-        }
-
-        if (RuntimeManager.initialized) {
-            loadingRuntimeDialog?.dismiss()
-
-            if (preferences.getBoolean("auto_update_ytdlp", false)){
-                CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                    kotlin.runCatching {
-                        if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                            if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
-                                val version = RuntimeManager.getInstance().version(context)
-                                val snack = Snackbar.make(findViewById(R.id.frame_layout),
-                                    this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                                    Snackbar.LENGTH_LONG)
-
-                                navigationBarView?.apply {
-                                    snack.setAnchorView(this)
-                                }
-                                snack.show()
-                            }
-                        }
-                    }
-
-                }
-            }
-        } else {
-            Handler(Looper.getMainLooper()).postDelayed({ checkRuntimeReadyState() }, 50)
         }
     }
 
