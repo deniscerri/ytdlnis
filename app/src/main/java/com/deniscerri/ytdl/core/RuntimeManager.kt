@@ -14,10 +14,18 @@ import com.deniscerri.ytdl.core.packages.Python
 import com.deniscerri.ytdl.core.packages.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
 import java.util.Collections
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 object RuntimeManager {
     val idProcessMap = Collections.synchronizedMap(HashMap<String, Process>())
@@ -30,6 +38,7 @@ object RuntimeManager {
 
     var initialized = false
         private set
+    private var initLatch = CountDownLatch(1)
 
     const val BASENAME = "ytdlnis"
     const val ytdlpDirName = "yt-dlp"
@@ -116,15 +125,20 @@ object RuntimeManager {
         TMPDIR = appContext.cacheDir.absolutePath
 
         initialized = true
+        initLatch.countDown()
     }
 
     fun reInit(context: Context) {
         initialized = false
+        initLatch = CountDownLatch(1)
         init(context)
     }
 
     private fun assertInit() {
-        check(initialized) { "instance not initialized" }
+        val success = initLatch.await(5, TimeUnit.SECONDS)
+        if (!success) {
+            throw IllegalStateException("Instance not initialized")
+        }
     }
 
     @Throws(ExecuteException::class)
