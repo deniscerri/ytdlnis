@@ -74,7 +74,6 @@
             app:boxCornerRadiusBottomEnd="50dp"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
-            app:boxBackgroundColor="?attr/colorSurfaceContainerHigh"
             app:layout_scrollFlags="noScroll"
             style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
