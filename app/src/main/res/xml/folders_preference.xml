@@ -41,7 +41,6 @@
         app:summary="@string/cache_first_summary"
         app:title="@string/cache_first" />
 
-
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="false"
@@ -49,7 +48,6 @@
         android:key="no_part"
         app:summary="@string/no_download_fragments_summary"
         app:title="@string/no_download_fragments" />
-
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
@@ -59,21 +57,19 @@
         app:summary="@string/keep_cache_summary"
         app:title="@string/keep_cache" />
 
-
-
     <Preference
-        android:icon="@drawable/ic_textformat"
+        android:icon="@drawable/baseline_video_file_24"
         app:key="file_name_template"
         app:useSimpleSummaryProvider="true"
         app:defaultValue="%(uploader).30B - %(title).170B"
-        app:title="@string/file_name_template" />
+        app:title="@string/file_name_template_video" />
 
     <Preference
-        android:icon="@drawable/ic_textformat"
+        android:icon="@drawable/baseline_audio_file_24"
         app:key="file_name_template_audio"
         app:useSimpleSummaryProvider="true"
         app:defaultValue="%(uploader).30B - %(title).170B"
-        app:title="@string/file_name_template" />
+        app:title="@string/file_name_template_audio" />
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
