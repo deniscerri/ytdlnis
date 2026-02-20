@@ -30,8 +30,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-
-class FolderSettingsFragment : BaseSettingsFragment() {
+// Fragment for directory/folder settings (music, video, command, cache paths)
+class FolderSettingsFragment : SearchableSettingsFragment() {
     override val title: Int = R.string.directories
 
     private var musicPath: Preference? = null
@@ -54,11 +54,13 @@ class FolderSettingsFragment : BaseSettingsFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.folders_preference, rootKey)
+        buildPreferenceList(preferenceScreen)
 
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         editor = preferences.edit()
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
 
+        // Find all preferences
         musicPath = findPreference("music_path")
         videoPath = findPreference("video_path")
         commandPath = findPreference("command_path")
@@ -72,6 +74,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
         clearCache = findPreference("clear_cache")
         moveCache = findPreference("move_cache")
 
+        // Set default paths if empty
         if (preferences.getString("music_path", "")!!.isEmpty()) {
             editor.putString("music_path", FileUtil.getDefaultAudioPath()).apply()
         }
@@ -85,14 +88,17 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             editor.putString("cache_path", FileUtil.getCachePath(requireContext())).apply()
         }
 
+        // If the app already has all files access, hide the "access all files" preference
+        // and enable cache downloads.
         if (FileUtil.hasAllFilesAccess()) {
             accessAllFiles!!.isVisible = false
             cacheDownloads!!.isEnabled = true
-        }else{
+        } else {
             editor.putBoolean("cache_downloads", true).apply()
             cacheDownloads!!.isEnabled = false
         }
 
+        // Music path picker
         musicPath!!.summary = FileUtil.formatPath(preferences.getString("music_path", "")!!)
         musicPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -103,6 +109,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 musicPathResultLauncher.launch(intent)
                 true
             }
+
+        // Video path picker
         videoPath!!.summary = FileUtil.formatPath(preferences.getString("video_path", "")!!)
         videoPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -113,6 +121,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 videoPathResultLauncher.launch(intent)
                 true
             }
+
+        // Command path picker
         commandPath!!.summary = FileUtil.formatPath(preferences.getString("command_path", "")!!)
         commandPath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -124,6 +134,7 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
+        // Cache path picker – shows a warning first because changing cache dir affects ongoing downloads.
         cachePath!!.summary = FileUtil.formatPath(preferences.getString("cache_path", FileUtil.getCachePath(requireContext()))!!)
         cachePath!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
@@ -137,7 +148,8 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 true
             }
 
-        if(VERSION.SDK_INT >= 30){
+        // "Access all files" preference (Android 10+)
+        if (VERSION.SDK_INT >= 30) {
             accessAllFiles!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener {
                     val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
@@ -148,29 +160,31 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                 }
         }
 
+        // no_fragments (don't use fragment files) – disables keep_cache
         if (noFragments!!.isChecked) {
             editor.putBoolean("keep_cache", false).apply()
             keepFragments!!.isChecked = false
             keepFragments!!.isEnabled = false
         }
         noFragments!!.setOnPreferenceChangeListener { _, newValue ->
-            if(newValue as Boolean){
+            if (newValue as Boolean) {
                 editor.putBoolean("keep_cache", false).apply()
                 keepFragments!!.isChecked = false
                 keepFragments!!.isEnabled = false
-            }else{
+            } else {
                 keepFragments!!.isEnabled = true
             }
             true
         }
 
+        // Filename templates – video and audio
         videoFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.video)}]"
         videoFilenameTemplate?.summary = preferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
         audioFilenameTemplate?.title = "${getString(R.string.file_name_template)} [${getString(R.string.audio)}]"
         audioFilenameTemplate?.summary = preferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
 
         videoFilenameTemplate?.setOnPreferenceClickListener {
-            UiUtil.showFilenameTemplateDialog(requireActivity(),videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {
+            UiUtil.showFilenameTemplateDialog(requireActivity(), videoFilenameTemplate?.summary.toString() ?: "", "${getString(R.string.file_name_template)} [${getString(R.string.video)}]") {
                 editor.putString("file_name_template", it).apply()
                 videoFilenameTemplate?.summary = it
             }
@@ -185,20 +199,18 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             false
         }
 
+        // Clear cache button – calculate current cache size and delete on click if no downloads active.
         var cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-        val filesize  = if (cacheSize < 10000) {
-            "0B"
-        }else {
-            FileUtil.convertFileSize(cacheSize)
-        }
-        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${filesize}) "
+        val filesize = if (cacheSize < 10000) "0B" else FileUtil.convertFileSize(cacheSize)
+        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${filesize})"
         clearCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 lifecycleScope.launch {
-                    activeDownloadCount = withContext(Dispatchers.IO){
+                    activeDownloadCount = withContext(Dispatchers.IO) {
                         downloadViewModel.getActiveDownloadsCount()
                     }
-                    if (activeDownloadCount == 0){
+                    if (activeDownloadCount == 0) {
+                        // Recursively delete everything in cache dir
                         fun clearCacheFolder(folder: File) {
                             if (folder.exists() && folder.isDirectory) {
                                 folder.listFiles()?.forEach { file ->
@@ -214,20 +226,18 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                         clearCacheFolder(File(FileUtil.getCachePath(requireContext())))
 
                         Snackbar.make(requireView(), getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
+                        // Update summary with new size
                         cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                        val filesize  = if (cacheSize < 10000) {
-                            "0B"
-                        }else {
-                            FileUtil.convertFileSize(cacheSize)
-                        }
-                        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${filesize})"
-                    }else{
+                        val newFilesize = if (cacheSize < 10000) "0B" else FileUtil.convertFileSize(cacheSize)
+                        clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${newFilesize})"
+                    } else {
                         Snackbar.make(requireView(), getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
                     }
                 }
                 true
             }
 
+        // Move cache files – starts a worker that moves files from old cache dir to new one.
         moveCache!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val workRequest = OneTimeWorkRequestBuilder<MoveCacheFilesWorker>()
@@ -240,47 +250,45 @@ class FolderSettingsFragment : BaseSettingsFragment() {
                     workRequest
                 ).enqueue()
 
+                // Observe worker completion to update cache size in clearCache summary.
                 WorkManager.getInstance(requireContext())
                     .getWorkInfosByTagLiveData("cacheFiles")
-                    .observe(viewLifecycleOwner){ list ->
-                        if (list == null) return@observe
-                        if (list.first() == null) return@observe
-
-                        if (list.first().state == WorkInfo.State.SUCCEEDED){
+                    .observe(viewLifecycleOwner) { list ->
+                        if (list == null || list.isEmpty()) return@observe
+                        if (list.first().state == WorkInfo.State.SUCCEEDED) {
                             cacheSize = File(FileUtil.getCachePath(requireContext())).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
                             clearCache!!.summary = "${resources.getString(R.string.clear_temporary_files_summary)} (${FileUtil.convertFileSize(cacheSize)})"
                         }
                     }
-
                 true
             }
 
-
+        // Reset all preferences in this screen
         findPreference<Preference>("reset_preferences")?.setOnPreferenceClickListener {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, R.xml.folders_preference)
                 requireActivity().recreate()
                 val fragmentId = findNavController().currentDestination?.id
-                findNavController().popBackStack(fragmentId!!,true)
+                findNavController().popBackStack(fragmentId!!, true)
                 findNavController().navigate(fragmentId)
             }
             true
         }
-
     }
 
+    // Update UI when returning to the fragment (e.g., after granting all files access)
     override fun onResume() {
-        if((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
-            VERSION.SDK_INT < 30) {
+        if ((VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) || VERSION.SDK_INT < 30) {
             accessAllFiles!!.isVisible = false
             cacheDownloads!!.isEnabled = true
-        }else{
+        } else {
             editor.putBoolean("cache_downloads", true).apply()
             cacheDownloads!!.isEnabled = false
         }
         super.onResume()
     }
 
+    // Result launcher for music path picker
     private var musicPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -288,13 +296,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             result.data?.data?.let {
                 activity?.contentResolver?.takePersistableUriPermission(
                     it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
             changePath(musicPath, result.data, MUSIC_PATH_CODE)
         }
     }
+
+    // Result launcher for video path picker
     private var videoPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -302,13 +311,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             result.data?.data?.let {
                 activity?.contentResolver?.takePersistableUriPermission(
                     it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
             changePath(videoPath, result.data, VIDEO_PATH_CODE)
         }
     }
+
+    // Result launcher for command path picker
     private var commandPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -316,13 +326,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             result.data?.data?.let {
                 activity?.contentResolver?.takePersistableUriPermission(
                     it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
             changePath(commandPath, result.data, COMMAND_PATH_CODE)
         }
     }
+
+    // Result launcher for cache path picker
     private var cachePathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -330,14 +341,14 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             result.data?.data?.let {
                 activity?.contentResolver?.takePersistableUriPermission(
                     it,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION or
-                            Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
             changePath(cachePath, result.data, CACHE_PATH_CODE)
         }
     }
 
+    // Helper to update the preference and SharedPreferences after folder picker returns.
     private fun changePath(p: Preference?, data: Intent?, requestCode: Int) {
         val path = data!!.data.toString()
         p!!.summary = FileUtil.formatPath(data.data.toString())
