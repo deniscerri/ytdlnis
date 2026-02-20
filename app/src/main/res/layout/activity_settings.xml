@@ -66,7 +66,14 @@
             android:layout_marginBottom="8dp"
             app:startIconDrawable="@drawable/ic_search"
             app:endIconMode="clear_text"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            app:boxCornerRadiusTopStart="50dp"
+            app:boxCornerRadiusTopEnd="50dp"
+            app:boxCornerRadiusBottomStart="50dp"
+            app:boxCornerRadiusBottomEnd="50dp"
+            app:boxStrokeWidth="0dp"
+            app:boxStrokeWidthFocused="0dp"
+            app:boxBackgroundColor="?attr/colorSurfaceContainerHigh"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/settings_search_edit_text"
@@ -75,7 +82,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:hint="@string/search_settings"
-                android:imeOptions="actionSearch" />
+                android:imeOptions="actionSearch"
+                android:background="@null" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
