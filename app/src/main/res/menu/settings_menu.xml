@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/BaseTheme">
+
+    <item
+        android:id="@+id/search"
+        android:visible="false"
+        android:title="@string/search"
+        android:icon="@drawable/ic_search"
+        app:showAsAction="always" />
+
+</menu>

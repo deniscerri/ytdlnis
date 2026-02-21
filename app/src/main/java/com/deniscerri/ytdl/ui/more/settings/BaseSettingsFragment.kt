@@ -1,26 +1,41 @@
 package com.deniscerri.ytdl.ui.more.settings
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
-import androidx.preference.MultiSelectListPreference
+import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
+import androidx.preference.PreferenceGroupAdapter
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
-import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.databinding.TextinputBinding
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 
 
-abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
+abstract class BaseSettingsFragment : PreferenceFragmentCompat(), SettingHost {
     abstract val title: Int
-
+    override fun findPref(key: String) = findPreference<Preference>(key)
+    @SuppressLint("NotifyDataSetChanged")
+    override fun refreshUI() {
+        listView.adapter?.notifyDataSetChanged()
+    }
+    override fun getHostContext() = requireActivity()
+    override val activityResultDelegate = PreferenceActivityResultDelegate(this)
+    override fun requestGetParentFragmentManager() = parentFragmentManager
+    override fun requestRecreateActivity() = requireActivity().recreate()
+    override fun requestNavigate(id: Int) = findNavController().navigate(id)
+    override val hostViewModelStoreOwner by lazy {
+        this
+    }
+    override val hostLifecycleOwner by lazy {
+        this
+    }
+    override val hostView by lazy {
+        requireView()
+    }
     override fun onStart() {
         super.onStart()
         (activity as? SettingsActivity)?.changeTopAppbarTitle(getString(title))
@@ -49,74 +64,35 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat() {
 
     //Thanks libretube
     override fun onDisplayPreferenceDialog(preference: Preference) {
-        when (preference) {
-            /**
-             * Show a [MaterialAlertDialogBuilder] when the preference is a [ListPreference]
-             */
-            is ListPreference -> {
-                // get the index of the previous selected item
-                val prefIndex = preference.entryValues.indexOf(preference.value)
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(preference.title)
-                    .setSingleChoiceItems(preference.entries, prefIndex) { dialog, index ->
-                        // get the new ListPreference value
-                        val newValue = preference.entryValues[index].toString()
-                        // invoke the on change listeners
-                        if (preference.callChangeListener(newValue)) {
-                            preference.value = newValue
+        val shownCustomDialog = DefaultPreferenceActions.onPreferenceDisplayDialog(requireActivity(), preference) {}
+        if (!shownCustomDialog) {
+            super.onDisplayPreferenceDialog(preference)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val keyToHighlight = arguments?.getString("highlight_key")
+        if (keyToHighlight != null) {
+            val adapter = listView.adapter as? PreferenceGroupAdapter
+            val position = adapter?.getPreferenceAdapterPosition(keyToHighlight) ?: -1
+
+            if (position != -1) {
+                listView.postDelayed({
+                    listView.smoothScrollToPosition(position + 1)
+
+                    listView.postDelayed({
+                        val holder = listView.findViewHolderForAdapterPosition(position)
+                        holder?.itemView?.let { itemView ->
+                            val originalColor = itemView.background
+                            itemView.setBackgroundColor(requireContext().getColor(android.R.color.system_control_highlight_light))
+                            itemView.postDelayed({
+                                itemView.background = originalColor
+                            }, 1000)
                         }
-                        dialog.dismiss()
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
+                    }, 300)
+                }, 200)
             }
-            is MultiSelectListPreference -> {
-                val selectedItems = preference.entryValues.map {
-                    preference.values.contains(it)
-                }.toBooleanArray()
-                MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(preference.title)
-                    .setMultiChoiceItems(preference.entries, selectedItems) { _, which, isChecked ->
-                        selectedItems[which] = isChecked
-                    }
-                    .setPositiveButton(R.string.ok) { _, _ ->
-                        val newValues = preference.entryValues
-                            .filterIndexed { index, _ -> selectedItems[index] }
-                            .map { it.toString() }
-                            .toMutableSet()
-                        if (preference.callChangeListener(newValues)) {
-                            preference.values = newValues
-                        }
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .show()
-            }
-            is EditTextPreference -> {
-                val binding = TextinputBinding.inflate(layoutInflater)
-                binding.urlEdittext.setText(preference.text)
-                binding.urlTextinput.findViewById<TextInputLayout>(R.id.url_textinput).hint = preference.title
-                val dialog = MaterialAlertDialogBuilder(requireContext())
-                    .setTitle(preference.title)
-                    .setView(binding.root)
-                    .setPositiveButton(android.R.string.ok) { _, _ ->
-                        val newValue = binding.urlEdittext.text.toString()
-                        if (preference.callChangeListener(newValue)) {
-                            preference.text = newValue
-                        }
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                dialog.show()
-                val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                binding.urlEdittext.setSelection(binding.urlEdittext.text!!.length)
-                binding.urlEdittext.postDelayed({
-                    binding.urlEdittext.requestFocus()
-                    imm.showSoftInput(binding.urlEdittext, 0)
-                }, 300)
-            }
-            /**
-             * Otherwise show the normal dialog, dialogs for other preference types are not supported yet
-             */
-            else -> super.onDisplayPreferenceDialog(preference)
         }
     }
 }
