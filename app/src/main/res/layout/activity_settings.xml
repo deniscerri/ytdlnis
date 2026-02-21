@@ -8,6 +8,23 @@
     android:fitsSystemWindows="true"
     tools:context=".ui.more.settings.SettingsActivity">
 
+    <com.google.android.material.search.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/search"
+        app:layout_anchor="@id/search_bar"
+        android:layout_marginBottom="-100dp"
+        android:paddingBottom="30dp"
+        app:layout_behavior="com.google.android.material.search.SearchView$Behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_suggestions_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.search.SearchView>
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/frame_layout"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -50,6 +67,7 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <FrameLayout
+            android:id="@+id/search_bar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap">
@@ -64,19 +82,5 @@
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <com.google.android.material.search.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:hint="@string/search"
-        app:layout_anchor="@id/search_bar">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_suggestions_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </com.google.android.material.search.SearchView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

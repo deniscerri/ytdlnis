@@ -92,7 +92,9 @@ class SettingsActivity : BaseActivity(), SettingHost {
         }
 
         onBackPressedDispatcher.addCallback(this) {
-            if (navController.currentDestination?.id == R.id.mainSettingsFragment) {
+            if (binding.searchView.isShowing) {
+                binding.searchView.hide()
+            } else if (navController.currentDestination?.id == R.id.mainSettingsFragment) {
                 navController.popBackStack()
                 finishAndRemoveTask()
             }else{
@@ -113,26 +115,30 @@ class SettingsActivity : BaseActivity(), SettingHost {
             if (binding.collapsingToolbar.title != getString(R.string.settings)) return@addOnOffsetChangedListener
 
             val totalScrollRange = appBarLayout.totalScrollRange
-            // Avoid division by zero
             if (totalScrollRange == 0) return@addOnOffsetChangedListener
 
             val percentage = Math.abs(verticalOffset).toFloat() / totalScrollRange
+            val isCollapsed = percentage > 0.8f
 
             // 1. Handle Menu Icon Visibility
-            val isCollapsed = percentage > 0.8f
             toolbar.menu.findItem(R.id.search)?.isVisible = isCollapsed
 
-            // 2. Handle SearchBar Visibility and Space
-            if (isCollapsed) {
-                if (searchBar.visibility != View.GONE) {
-                    searchBar.visibility = View.GONE
+            // 2. Handle SearchBar
+            when {
+                percentage >= 1f -> {
+                    // Fully collapsed — safe to GONE now, jump isn't visible
+                    if (searchBar.visibility != View.GONE) searchBar.visibility = View.GONE
                 }
-            } else {
-                if (searchBar.visibility != View.VISIBLE) {
-                    searchBar.visibility = View.VISIBLE
+                percentage > 0.8f -> {
+                    // Mid-collapse — hide visually but keep space to avoid jump
+                    searchBar.visibility = View.INVISIBLE
+                    searchBar.alpha = 0f
                 }
-                // Fade it out as we scroll up
-                searchBar.alpha = 1f - (percentage * 1.2f).coerceAtMost(1f)
+                else -> {
+                    // Expanding — restore and fade in/out
+                    if (searchBar.visibility != View.VISIBLE) searchBar.visibility = View.VISIBLE
+                    searchBar.alpha = 1f - (percentage * 1.2f).coerceAtMost(1f)
+                }
             }
         }
 
