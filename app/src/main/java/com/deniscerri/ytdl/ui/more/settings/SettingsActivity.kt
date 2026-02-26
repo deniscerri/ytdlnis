@@ -22,6 +22,7 @@ import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.databinding.ActivitySettingsBinding
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.more.settings.search.SettingsSearchAdapter
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -158,7 +159,5 @@ class SettingsActivity : BaseActivity(), SettingHost {
     fun changeTopAppbarTitle(text: String, hideSearch: Boolean = true) {
         if (this::binding.isInitialized) binding.collapsingToolbar.title = text
         binding.searchBar.isVisible = !hideSearch
-        binding.settingsToolbar.menu.findItem(R.id.search)?.isVisible =
-            !binding.searchBar.isVisible && !hideSearch
     }
 }

@@ -368,6 +368,7 @@ object GeneralSettingsModule : SettingModule {
                             }else {
                                 "${s}\n[${entries[entryValues.indexOf(value)]}]"
                             }
+                            host.findPref("api_key")?.isVisible = newValue == "yt_api"
                             host.refreshUI()
                         }
                         true
