@@ -61,8 +61,7 @@
             app:navigationIcon="@drawable/ic_back"
             app:navigationContentDescription="@string/back"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:menu="@menu/settings_menu" />
+            android:layout_height="?attr/actionBarSize"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

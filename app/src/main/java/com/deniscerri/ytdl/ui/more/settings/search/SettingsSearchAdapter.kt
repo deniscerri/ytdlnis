@@ -93,7 +93,7 @@ class SettingsSearchAdapter(
     private fun bindVisualsOnly(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         val pref = item.preference
-        if (pref.title.isNullOrBlank())
+        if (pref.title.isNullOrBlank()) return
 
         if (!item.isHeader && item.canRebind) {
             item.module?.bindLogic(pref, activity)

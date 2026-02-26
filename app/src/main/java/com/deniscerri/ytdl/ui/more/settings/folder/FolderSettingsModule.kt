@@ -109,7 +109,7 @@ object FolderSettingsModule: SettingModule {
                     }
                 }
                 pref.apply {
-                    summary = FileUtil.formatPath(preferences.getString("command_path", "")!!)
+                    summary = FileUtil.formatPath(preferences.getString(pref.key, "")!!)
                     onPreferenceClickListener =
                         Preference.OnPreferenceClickListener {
                             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
@@ -191,14 +191,15 @@ object FolderSettingsModule: SettingModule {
                                 putBoolean("keep_cache", false)
                             }
                         }
+                        host.refreshUI()
                         true
                     }
                 }
             }
             "keep_cache" -> {
                 (pref as SwitchPreferenceCompat).apply {
-                    val noFragments = host.findPref("no_part") as SwitchPreferenceCompat
-                    if (noFragments.isChecked) {
+                    val noFragments = preferences.getBoolean("no_part", false)
+                    if (noFragments) {
                         isEnabled = false
                         isChecked = false
                     } else {
@@ -229,6 +230,7 @@ object FolderSettingsModule: SettingModule {
                             preferences.edit(commit = true) {
                                 putString(pref.key, it)
                             }
+                            summary = it
                             host.refreshUI()
                         }
                         false
@@ -246,6 +248,7 @@ object FolderSettingsModule: SettingModule {
                             preferences.edit(commit = true) {
                                 putString(pref.key, it)
                             }
+                            summary = it
                             host.refreshUI()
                         }
                         false
@@ -287,6 +290,16 @@ object FolderSettingsModule: SettingModule {
                                 }else{
                                     Snackbar.make(host.hostView!!, context.getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
                                 }
+
+                                val cacheSize = File(FileUtil.getCachePath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
+                                val filesize  = if (cacheSize < 10000) {
+                                    "0B"
+                                }else {
+                                    FileUtil.convertFileSize(cacheSize)
+                                }
+
+                                summary = "${context.resources.getString(R.string.clear_temporary_files_summary)} (${filesize}) "
+
                                 host.refreshUI()
                             }
                             true

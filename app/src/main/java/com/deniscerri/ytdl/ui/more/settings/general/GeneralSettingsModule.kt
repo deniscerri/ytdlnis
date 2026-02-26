@@ -194,7 +194,7 @@ object GeneralSettingsModule : SettingModule {
                                 }
                             }
                             preferences.edit(commit = true){
-                                putString("ytdlnis_theme", newValue.toString())
+                                putString(pref.key, newValue.toString())
                             }
                             ThemeUtil.updateThemes()
                             host.refreshUI()
@@ -362,9 +362,14 @@ object GeneralSettingsModule : SettingModule {
                             withContext(Dispatchers.IO) {
                                 resultViewModel.deleteAll()
                             }
-
+                            val s = context.getString(R.string.video_recommendations_summary)
+                            summary = if ((newValue as String).isBlank()) {
+                                s
+                            }else {
+                                "${s}\n[${entries[entryValues.indexOf(value)]}]"
+                            }
+                            host.refreshUI()
                         }
-                        host.refreshUI()
                         true
                     }
                 }
@@ -400,6 +405,12 @@ object GeneralSettingsModule : SettingModule {
                                 resultViewModel.deleteAll()
                             }
                         }
+                        val s = context.getString(R.string.api_key_summary)
+                        summary = if ((newValue as String).isBlank()) {
+                            s
+                        }else {
+                            "${s}\n[${text}]"
+                        }
                         host.refreshUI()
                         true
                     }
@@ -414,6 +425,11 @@ object GeneralSettingsModule : SettingModule {
                         "${s}\n[${entries[entryValues.indexOf(value)]}]"
                     }
                     setOnPreferenceChangeListener { _, newValue ->
+                        summary = if (value.isNullOrBlank()) {
+                            s
+                        }else {
+                            "${s}\n[${entries[entryValues.indexOf(value)]}]"
+                        }
                         host.refreshUI()
                         true
                     }

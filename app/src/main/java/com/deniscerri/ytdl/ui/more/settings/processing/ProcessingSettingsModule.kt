@@ -1,6 +1,9 @@
 package com.deniscerri.ytdl.ui.more.settings.processing
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -11,6 +14,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.util.UiUtil
+import kotlinx.coroutines.launch
 import kotlin.collections.indexOf
 
 object ProcessingSettingsModule : SettingModule {
@@ -111,83 +115,97 @@ object ProcessingSettingsModule : SettingModule {
                 }
             }
             "audio_codec" -> {
-                updateCompatibleVideoConfig(host)
+                updateCompatibleVideoConfig(host, prefs)
             }
             "video_codec" -> {
-                updateCompatibleVideoConfig(host)
+                updateCompatibleVideoConfig(host, prefs)
             }
             "video_format" -> {
-                updateCompatibleVideoConfig(host)
+                updateCompatibleVideoConfig(host, prefs)
             }
             "recode_video" -> {
-                val compatibleVideoPreference = host.findPref("compatible_video") as SwitchPreferenceCompat
-
-                pref.setOnPreferenceClickListener {
-                    if (compatibleVideoPreference.isChecked && (pref as SwitchPreferenceCompat).isChecked) {
-                        compatibleVideoPreference.performClick()
-                    }
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    recodeVideoClicked(context, host, prefs, newValue as Boolean)
                     true
                 }
             }
             "compatible_video" -> {
-                updateCompatibleVideoConfig(host)
-                val prefSwitch = pref as SwitchPreferenceCompat
-                pref.setOnPreferenceClickListener {
-                    if (prefSwitch.isChecked) {
-                        val recodeVideoPreference = host.findPref("recode_video") as SwitchPreferenceCompat
-
-                        if (recodeVideoPreference.isChecked) {
-                            recodeVideoPreference.performClick()
-                        }
-
-                        val audioCodecPref = host.findPref("audio_codec") as? ListPreference
-                        val videoCodecPref = host.findPref("video_codec") as? ListPreference
-                        val videoContainerPref = host.findPref("video_format") as? ListPreference
-
-                        prefs.edit(commit = true) {
-                            putString("audio_codec_tmp", audioCodecPref?.value ?: "")
-                            putString("video_codec_tmp", videoCodecPref?.value ?: "")
-                            putString("video_format_tmp", videoContainerPref?.value ?: "")
-                        }
-
-                        val audioCodecs = context.getStringArray(R.array.audio_codec)
-                        val audioCodecValues = context.getStringArray(R.array.audio_codec_values)
-                        val videoCodecs = context.getStringArray(R.array.video_codec)
-                        val videoCodecValues = context.getStringArray(R.array.video_codec_values)
-
-                        val newAudioCodec = "M4A"
-                        val newVideoCodec = "AVC (H264)"
-
-                        prefs.edit(commit = true) {
-                            putString("audio_codec", audioCodecValues[audioCodecs.indexOf(newAudioCodec)])
-                            putString("video_codec", videoCodecValues[videoCodecs.indexOf(newVideoCodec)])
-                            putString("video_format", "")
-                        }
-                        host.refreshUI()
-                        host.requestRecreateActivity()
-                    } else {
-                        prefs.edit(commit = true) {
-                            putString("audio_codec", prefs.getString("audio_codec_tmp", ""))
-                            putString("video_codec", prefs.getString("video_codec_tmp", ""))
-                            putString("video_format", prefs.getString("video_format_tmp", ""))
-                        }
-                        host.refreshUI()
-                        host.requestRecreateActivity()
-                    }
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    compatibleVideoClicked(context, host, prefs, newValue as Boolean)
                     true
                 }
             }
         }
     }
 
-    fun updateCompatibleVideoConfig(host: SettingHost) {
+    fun updateCompatibleVideoConfig(host: SettingHost, prefs: SharedPreferences) {
         val audioCodecPref = host.findPref("audio_codec")
         val videoCodecPref = host.findPref("video_codec")
         val videoContainerPref = host.findPref("video_format")
-        val compatibleVideoPreference = host.findPref("compatible_video") as SwitchPreferenceCompat
+        val compatibleVideoPreference = prefs.getBoolean("compatible_video", false)
 
-        audioCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
-        videoCodecPref?.isEnabled = !compatibleVideoPreference.isChecked
-        videoContainerPref?.isEnabled = !compatibleVideoPreference.isChecked
+        audioCodecPref?.isEnabled = !compatibleVideoPreference
+        videoCodecPref?.isEnabled = !compatibleVideoPreference
+        videoContainerPref?.isEnabled = !compatibleVideoPreference
+    }
+
+    fun recodeVideoClicked(context: Context, host: SettingHost, prefs: SharedPreferences, isChecked: Boolean) {
+        val compatibleVideoPreference = prefs.getBoolean("compatible_video", false)
+        if (compatibleVideoPreference && isChecked) {
+            prefs.edit(commit = true) {
+                putBoolean("recode_video", isChecked)
+                putBoolean("compatible_video", false)
+            }
+            compatibleVideoClicked(context, host, prefs, !compatibleVideoPreference)
+        } else {
+            host.refreshUI()
+        }
+    }
+
+    fun compatibleVideoClicked(context: Context, host: SettingHost, prefs: SharedPreferences, isChecked: Boolean) {
+        if (isChecked) {
+            val recodeVideoPreference = prefs.getBoolean("recode_video", false)
+            if (recodeVideoPreference) {
+                prefs.edit(commit = true) {
+                    putBoolean("compatible_video", isChecked)
+                    putBoolean("recode_video", false)
+                }
+                recodeVideoClicked(context, host, prefs, !recodeVideoPreference)
+            }
+
+            val audioCodecPref = host.findPref("audio_codec") as? ListPreference
+            val videoCodecPref = host.findPref("video_codec") as? ListPreference
+            val videoContainerPref = host.findPref("video_format") as? ListPreference
+
+            prefs.edit(commit = true) {
+                putString("audio_codec_tmp", audioCodecPref?.value ?: "")
+                putString("video_codec_tmp", videoCodecPref?.value ?: "")
+                putString("video_format_tmp", videoContainerPref?.value ?: "")
+            }
+
+            val audioCodecs = context.getStringArray(R.array.audio_codec)
+            val audioCodecValues = context.getStringArray(R.array.audio_codec_values)
+            val videoCodecs = context.getStringArray(R.array.video_codec)
+            val videoCodecValues = context.getStringArray(R.array.video_codec_values)
+
+            val newAudioCodec = "M4A"
+            val newVideoCodec = "AVC (H264)"
+
+            prefs.edit(commit = true) {
+                putString("audio_codec", audioCodecValues[audioCodecs.indexOf(newAudioCodec)])
+                putString("video_codec", videoCodecValues[videoCodecs.indexOf(newVideoCodec)])
+                putString("video_format", "")
+            }
+            host.refreshUI()
+            host.requestRecreateActivity()
+        } else {
+            prefs.edit(commit = true) {
+                putString("audio_codec", prefs.getString("audio_codec_tmp", ""))
+                putString("video_codec", prefs.getString("video_codec_tmp", ""))
+                putString("video_format", prefs.getString("video_format_tmp", ""))
+            }
+            host.refreshUI()
+            host.requestRecreateActivity()
+        }
     }
 }

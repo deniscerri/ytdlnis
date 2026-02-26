@@ -71,6 +71,7 @@ object DownloadSettingsModule : SettingModule {
                             preferences.edit(commit = true) {
                                 putString("download_archive_path", path)
                             }
+                            pref.summary = FileUtil.getDownloadArchivePath(context)
                             host.refreshUI()
                         }
                         true
