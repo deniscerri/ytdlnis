@@ -17,6 +17,7 @@
             tools:ignore="MissingConstraints">
 
             <ImageView
+                android:id="@+id/app_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

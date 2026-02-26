@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.webkit.CookieManager
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebStorage
 import android.webkit.WebView
@@ -75,6 +76,9 @@ class WebViewActivity : BaseActivity() {
 
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
+                    R.id.back -> {
+                        webView?.goBack()
+                    }
                     R.id.incognito -> {
                         intent.putExtra("incognito", !incognito)
                         recreate()
@@ -107,6 +111,16 @@ class WebViewActivity : BaseActivity() {
                         cookies = cookieManager.getCookie(view?.url)
                     }
                 }
+//
+//                override fun shouldOverrideUrlLoading(
+//                    view: WebView?,
+//                    request: WebResourceRequest?
+//                ): Boolean {
+//                    if (request?.url?.scheme?.contains("http") == false) {
+//                        return true
+//                    }
+//                    return super.shouldOverrideUrlLoading(view, request)
+//                }
             }
 
             toolbar.setNavigationOnClickListener {

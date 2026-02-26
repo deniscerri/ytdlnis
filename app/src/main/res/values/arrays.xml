@@ -1577,6 +1577,7 @@
     <string-array name="audio_bitrate_values">
         <item></item>
         <item>968k</item>
+        <item>320k</item>
         <item>192k</item>
         <item>128k</item>
         <item>64k</item>
