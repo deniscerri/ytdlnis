@@ -70,6 +70,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.woheller69.freeDroidWarn.FreeDroidWarn
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.Reader
@@ -271,6 +272,7 @@ class MainActivity : BaseActivity() {
 
         cookieViewModel.updateCookiesFile()
         val intent = intent
+        FreeDroidWarn.showWarningOnUpgrade(this, BuildConfig.VERSION_CODE);
         handleIntents(intent)
 
         if (preferences.getBoolean("auto_update_ytdlp", false)){

@@ -426,10 +426,10 @@ object GeneralSettingsModule : SettingModule {
                         "${s}\n[${entries[entryValues.indexOf(value)]}]"
                     }
                     setOnPreferenceChangeListener { _, newValue ->
-                        summary = if (value.isNullOrBlank()) {
+                        summary = if ((newValue as String).isBlank()) {
                             s
                         }else {
-                            "${s}\n[${entries[entryValues.indexOf(value)]}]"
+                            "${s}\n[${entries[entryValues.indexOf(newValue)]}]"
                         }
                         host.refreshUI()
                         true

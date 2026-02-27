@@ -191,6 +191,14 @@ object FolderSettingsModule: SettingModule {
                                 putBoolean("keep_cache", false)
                             }
                         }
+                        (host.findPref("keep_cache") as? SwitchPreferenceCompat)?.apply {
+                            if (newValue) {
+                                isEnabled = false
+                                isChecked = false
+                            } else {
+                                isEnabled = true
+                            }
+                        }
                         host.refreshUI()
                         true
                     }
