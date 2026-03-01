@@ -156,6 +156,7 @@ dependencies {
     implementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
 
 //    implementation "io.github.junkfood02.youtubedl-android:library:0.17.4"
+    //noinspection NewerVersionAvailable
     implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
 //    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
 
@@ -231,5 +232,4 @@ dependencies {
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.commons:commons-compress:1.12")
     implementation("androidx.core:core-splashscreen:1.2.0")
-    implementation 'com.github.woheller69:FreeDroidWarn:V1.6'
 }

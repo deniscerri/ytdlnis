@@ -329,6 +329,10 @@ object FileUtil {
         return "${getCachePath(context)}dl"
     }
 
+    fun getCacheYTDLPPath(context: Context) : String {
+        return "${getCachePath(context)}yt-dlp"
+    }
+
     fun getInfoJsonPath(context: Context) : String {
         return "${getCachePath(context)}infojsons"
     }
