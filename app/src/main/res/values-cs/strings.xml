@@ -112,7 +112,7 @@
     <string name="download_over_metered_networks">Stahování v měřených sítích</string>
     <string name="adjust_video">Upravit video</string>
     <string name="update_ytdl_master">Hlavní verze yt-dlp</string>
-    <string name="clear_temporary_files_summary">Odstranění souborů v mezipaměti z neúspěšných/chybných/zrušených stahování</string>
+    <string name="clear_temporary_files_summary">Odstranění souborů v mezipaměti, json a jiných dočasných konfigurací</string>
     <string name="user_agent_header">Hlavička User-Agent</string>
     <string name="saved">Uložené</string>
     <string name="remove_deleted">Odebrat odstraněné</string>
@@ -190,7 +190,7 @@
     <string name="access_all_directories">Povolení přístupu do všech adresářů</string>
     <string name="monochrome">Monochromatický</string>
     <string name="format_id">Formát ID</string>
-    <string name="move_temporary_files_summary">Přesune soubory z mezipaměti do složky stažených souborů</string>
+    <string name="move_temporary_files_summary">Přesune stahované soubory z mezipaměti do složky stažených souborů</string>
     <string name="subtitle_languages">Jazyk titulků</string>
     <string name="help_translate">Pomoc s překladem</string>
     <string name="sort_by">Řazení</string>
@@ -508,4 +508,8 @@
     <string name="show_quick_download_share_menu">Zobrazit možnost okamžitého stažení v menu sdílení</string>
     <string name="quick_download_title">Nenačítat data</string>
     <string name="sponsorblock_hook">Poutka/Pozdravy</string>
+    <string name="packages">Balíky</string>
+    <string name="not_installed">Nenainstalované</string>
+    <string name="bundled">Součásti</string>
+    <string name="use_app_language_for_metadata_summary">Pokud je tato funkce zapnuta, pole metadat budou odpovídat jazyku vaší aplikace a budou dokonce ovlivňovat výběr formátu tím, že upřednostní dabované verze před originálními</string>
 </resources>
