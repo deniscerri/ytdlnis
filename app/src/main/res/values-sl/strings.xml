@@ -204,7 +204,7 @@
     <string name="items_imported">Uvoženi elementi</string>
     <string name="help_translate">Pomagaj prevesti</string>
     <string name="help_translate_summary">Prevedi to aplikacijo v svoj jezik z uporabo Weblate</string>
-    <string name="clear_temporary_files_summary">Izbriši predpomnjene datoteke iz zrušenih/preklicanih/neuspešnih prenosov</string>
+    <string name="clear_temporary_files_summary">Izbrišite predpomnjene datoteke, infojsone in druge začasne konfiguracije</string>
     <string name="downloads_running_try_later">Proces prenosa se izvaja. Poskusi znova kasneje</string>
     <string name="ytdl_version">Različica yt-dlp</string>
     <string name="freespace">Prosti prostor</string>
@@ -249,7 +249,7 @@
     <string name="crop_thumb_summary">Pri prenosu zvočnih posnetkov obreži sličico v kvadrat</string>
     <string name="audio_only_item">Ta element vsebuje samo zvočne formate</string>
     <string name="move_temporary_files">Premakni začasne datoteke</string>
-    <string name="move_temporary_files_summary">Prenesite predpomnjene datoteke v mapo za prenose</string>
+    <string name="move_temporary_files_summary">Prenesite predpomnjene datoteke za prenos v mapo s prenosi</string>
     <string name="custom_audio_quality">Uporabi kakovost zvoka po meri</string>
     <string name="retries">Poskusi ponovno</string>
     <string name="fragment_retries">Ponovni poskusi fragmentov</string>
@@ -476,7 +476,7 @@
     <string name="material_you">Material you</string>
     <string name="errored_downloads">Prenosi z napakami</string>
     <string name="errored_download_notification_channel_description">Obvestilo o neuspešnih prenosih</string>
-    <string name="quick_download_summary">Ne pridobivaj podatkov v kartici s prenosi</string>
+    <string name="quick_download_summary">Nadaljujte s postopkom prenosa takoj, brez predhodnega pridobivanja podatkov</string>
     <string name="preferred_format_id">Željeni ID formata</string>
     <string name="preferred_format_id_summary">Izberi format s tem ID-jem v kartici s prenosi</string>
     <string name="socket_timeout_description">Čas čakanja, preden preneha, v sekundah</string>
@@ -499,7 +499,16 @@
     <string name="update_ytdlp_while_downloading">Posodobi yt-dlp med prenosom</string>
     <string name="update_ytdlp_while_downloading_summary">Dodaj -U k yt-dlp, za posodobitev na najnovejšo različico pred prenosom</string>
     <string name="preview_filename">Predogled imena datoteke</string>
-    <string name="potoken_guide">Avtorizacija\n-----------------------\n1. Kliknite \'Avtorizacija\', da odprete stran za prijavo v spletnem pogledu.\n2. Prijavite se v svoj Google Račun.\n3. Predvajajte kateri koli videoposnetek, ki podpira samodejno prevedene podnapise.\n4. Vklopite samodejno prevedene podnapise in preverite, ali delujejo.\n\t4.1 Če samodejno prevedeni podnapisi ne delujejo, preklopite na drug videoposnetek, ki podpira samodejno prevedene podnapise, in poskusite znova 4. korak.\n5. Kliknite V redu.\n\nBrez avtorizacije\n-----------------------\n1. Kliknite \'Brez avtorizacije\'.\n2. Vnesite url katerega koli youtube videoposnetka.\n3. Počakajte, da se videoposnetek naloži, in ga predvajajte vsaj 3 sekunde.\n3. Kliknite V redu.</string>
+    <string name="potoken_guide">Avtorizacija\n-----------------------\n1. Kliknite \'Avtorizacija\', da odprete stran za prijavo v spletnem pogledu.\n2. Prijavite se v svoj Google Račun.\n3. Predvajajte kateri koli videoposnetek, ki podpira samodejno prevedene podnapise.\n4. Vklopite samodejno prevedene podnapise in preverite, ali delujejo.\n\t4.1 Če samodejno prevedeni podnapisi ne delujejo, preklopite na drug videoposnetek, ki podpira samodejno prevedene podnapise, in poskusite znova 4. korak.\n5. Kliknite V redu.\n\nBrez avtorizacije\n-----------------------\n1. Kliknite \'Brez avtorizacije\'.\n2. Vnesite url katerega koli youtube videoposnetka.\n3. Počakajte, da se videoposnetek naloži, in ga predvajajte vsaj 3 sekunde.\n4. Kliknite V redu.</string>
     <string name="no_auth">Brez avtorizacije</string>
     <string name="auth">Avtorizacija</string>
+    <string name="app_icon">Ikona aplikacije</string>
+    <string name="show_quick_download_share_menu">V meniju za skupno rabo prikaži možnost takojšnjega prenosa</string>
+    <string name="quick_download_title">Ne pridobivaj podatkov</string>
+    <string name="sponsorblock_hook">Kavelj/Pozdravi</string>
+    <string name="packages">Paketi</string>
+    <string name="not_installed">Ni nameščeno</string>
+    <string name="bundled">V paketu</string>
+    <string name="use_app_language_for_metadata_summary">Če je omogočeno, bodo polja z metapodatki sledila jeziku vaše aplikacije in celo vplivala na izbiro formata, tako da bodo dajala prednost sinhroniziranim različicam namesto izvirnika</string>
+    <string name="prefer_drc_audio">Prednostni zvok DRC</string>
 </resources>
