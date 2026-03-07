@@ -4,15 +4,15 @@
     app:startDestination="@id/mainSettingsFragment">
     <fragment
         android:id="@+id/appearanceSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.GeneralSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.general.GeneralSettingsFragment"
         android:label="AppearanceSettingsFragment" />
     <fragment
         android:id="@+id/processingSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.ProcessingSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.processing.ProcessingSettingsFragment"
         android:label="ProcessingSettingsFragment" />
     <fragment
         android:id="@+id/folderSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.FolderSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsFragment"
         android:label="FolderSettingsFragment" />
     <fragment
         android:id="@+id/updateSettingsFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/downloadSettingsFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.DownloadSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsFragment"
         android:label="DownloadSettingsFragment" />
     <fragment
         android:id="@+id/mainSettingsFragment"

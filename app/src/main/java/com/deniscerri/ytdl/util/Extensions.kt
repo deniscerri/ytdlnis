@@ -627,6 +627,10 @@ object Extensions {
         return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*").matcher(this).find()
     }
 
+    fun String.isSoundCloudURL() : Boolean {
+        return Pattern.compile("""^(https?://)?(www\.|m\.)?soundcloud\.com/[\w\-.]+(/[\w\-.]+)*/?$""").matcher(this).find()
+    }
+
     fun String.extractURL() : String {
         val res =
             Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")

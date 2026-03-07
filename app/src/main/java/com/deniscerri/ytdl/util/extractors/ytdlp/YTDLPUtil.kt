@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
+import com.deniscerri.ytdl.util.Extensions.isSoundCloudURL
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
@@ -104,6 +105,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
     }
 
+    private fun canApplyFlatPlaylist(url: String) : Boolean {
+        var noFlatPlaylist = sharedPreferences.getBoolean("no_flat_playlist", false)
+        if (url.isSoundCloudURL()) {
+            noFlatPlaylist = true
+        }
+
+        return !noFlatPlaylist
+    }
+
     @SuppressLint("RestrictedApi")
     fun getFromYTDL(query: String, singleItem: Boolean = false, resultsGenerated: (results: List<ResultItem>) -> Unit): List<ResultItem> {
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
@@ -136,7 +146,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.setYoutubeExtractorArgs(query)
         }
 
-        if (!sharedPreferences.getBoolean("no_flat_playlist", false)) {
+        if (canApplyFlatPlaylist(query)) {
             request.addOption("--flat-playlist")
         }
 
@@ -181,7 +191,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         for (result in results) {
             if (result.isNullOrBlank()) continue
             val jsonObject = JSONObject(result)
-            val title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
+            var title = jsonObject.getStringByAny("alt_title", "title", "webpage_url_basename")
             if (title == "[Private video]" || title == "[Deleted video]") continue
 
 
@@ -266,9 +276,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
 
             val type = jsonObject.getStringByAny("_type")
-            if (type == "playlist" && playlistTitle.isEmpty()) {
-                playlistTitle = title
+            if (type == "playlist") {
+                if (playlistTitle.isEmpty()) {
+                    playlistTitle = title
+                }
+                title = ""
             }
+
 
             val availableSubtitles = mutableListOf<String>()
             if (jsonObject.has("subtitles")) {
@@ -618,6 +632,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun YTDLRequest.addWriteInfoJson(url: String) {
+        if (url.isYoutubeURL() && url.contains("playlist?list=")) return
+
         val cachePath = FileUtil.getInfoJsonPath(context)
         File(cachePath).mkdirs()
 
@@ -1240,11 +1256,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 var cont = ""
                 val outputContainer = downloadItem.container
-                if (downloadItem.videoPreferences.compatibilityMode) {
-                    request.addOption("--recode-video", "mp4")
-                    request.addOption("--merge-output-format", "mp4/mkv")
-                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-c:v libx264 -c:a aac -profile:v baseline")
-                }
 
                 if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(
                         R.string.defaultValue) && supportedContainers.contains(outputContainer)){
@@ -1301,7 +1312,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+                var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+
+                if (downloadItem.videoPreferences.compatibilityMode) {
+                    request.addOption("--recode-video", "mp4")
+                    request.addOption("--merge-output-format", "mp4/mkv")
+                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-c:v libx264 -c:a aac -profile:v baseline")
+                }
 
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)
                 val usingGenericFormat = defaultFormats.contains(videoF) || downloadItem.allFormats.isEmpty() || downloadItem.allFormats == formatUtil.getGenericVideoFormats(context.resources)
@@ -1552,7 +1569,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         tmp.addOption("--config-locations", conf.absolutePath)
         ytDlRequest.addCommands(tmp)
 
-        ytDlRequest.addOption("--cache-dir", cache.absolutePath)
+        val ytdlpCache = File(FileUtil.getCacheYTDLPPath(context))
+        ytDlRequest.addOption("--cache-dir", ytdlpCache.absolutePath)
         return ytDlRequest
     }
 }

@@ -133,12 +133,6 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                 })
 
                 chosenCommandView.editText!!.setSelection(chosenCommandView.editText!!.text.length)
-                val imm = context?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-                chosenCommandView.editText!!.postDelayed({
-                    chosenCommandView.editText!!.requestFocus()
-                    imm.showSoftInput(chosenCommandView.editText, 0)
-                }, 300)
-
                 chosenCommandView.setEndIconOnClickListener {
                     if(chosenCommandView.editText!!.text.isEmpty()){
                         val clipboard: ClipboardManager =

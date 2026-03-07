@@ -70,6 +70,9 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isVisible = false
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
+                    R.id.back -> {
+                        webView.goBack()
+                    }
                     R.id.get_data_sync_id -> {
                         webView.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
                             UiUtil.copyToClipboard(id.replace("\"", ""), this@PoTokenWebViewLoginActivity)

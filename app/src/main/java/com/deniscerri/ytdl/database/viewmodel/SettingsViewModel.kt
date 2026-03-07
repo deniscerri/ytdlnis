@@ -5,22 +5,37 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
+import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.models.RestoreAppDataItem
+import com.deniscerri.ytdl.database.models.SearchSettingsItem
 import com.deniscerri.ytdl.database.repository.CommandTemplateRepository
 import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
+import com.deniscerri.ytdl.ui.more.settings.SettingsRegistry
 import com.deniscerri.ytdl.util.BackupSettingsUtil
+import com.deniscerri.ytdl.util.Extensions.combine
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.util.Calendar
@@ -37,6 +52,10 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     private val searchHistoryRepository : SearchHistoryRepository
     private val observeSourcesRepository : ObserveSourcesRepository
 
+    private val _settingsFlow = MutableStateFlow<List<SearchSettingsItem>>(emptyList())
+    val settingsFlow: StateFlow<List<SearchSettingsItem>>
+    private val _searchQuery = MutableStateFlow("")
+
     init {
         val dbManager = DBManager.getInstance(application)
         historyRepository = HistoryRepository(dbManager.historyDao)
@@ -45,6 +64,30 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         commandTemplateRepository = CommandTemplateRepository(dbManager.commandTemplateDao)
         searchHistoryRepository = SearchHistoryRepository(dbManager.searchHistoryDao)
         observeSourcesRepository = ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, preferences)
+
+        settingsFlow = combine(_settingsFlow, _searchQuery) { items, query ->
+            if (query.isBlank()) {
+                emptyList() // Or return items if you want to show everything when blank
+            } else {
+                items.filter { item ->
+                    val titleMatch = item.preference.title?.toString()?.contains(query, ignoreCase = true) == true
+                    val summaryMatch = item.preference.summary?.toString()?.contains(query, ignoreCase = true) == true
+                    val groupMatch = item.groupTitle?.contains(query, ignoreCase = true) == true
+                    (titleMatch || summaryMatch || groupMatch)
+                }
+            }
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    }
+
+    fun indexSearchSettings() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val indexedItems = SettingsRegistry.indexAll(App.instance)
+            _settingsFlow.emit(indexedItems)
+        }
+    }
+
+    fun setSearchQuery(query: String) {
+        _searchQuery.value = query
     }
 
     suspend fun backup(items: List<String> = listOf()) : Result<String> {
