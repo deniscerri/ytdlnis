@@ -461,7 +461,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
                 val info = getResultsFromSource(downloadItem.url, resetResults = false, addToResults = false, singleItem = true).first()
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title
                 if (downloadItem.author.isEmpty()) downloadItem.author = info.author
-                if (downloadItem.playlistTitle.isNotBlank() && downloadItem.playlistTitle != YTDLNIS_SEARCH) downloadItem.playlistTitle = info.playlistTitle
+                if (downloadItem.playlistTitle.isEmpty() || (downloadItem.playlistTitle.isNotBlank() && downloadItem.playlistTitle != YTDLNIS_SEARCH)   ) downloadItem.playlistTitle = info.playlistTitle
                 downloadItem.duration = info.duration
                 downloadItem.website = info.website
                 if (downloadItem.thumb.isEmpty()) downloadItem.thumb = info.thumb

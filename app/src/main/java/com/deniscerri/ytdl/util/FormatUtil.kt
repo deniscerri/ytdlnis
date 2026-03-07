@@ -123,11 +123,11 @@ class FormatUtil(private var context: Context) {
                         } else 0
                     }
                     "language" -> {
+                        val defaults = listOf("original", "default")
+
                         if (audioLanguagePreference.isBlank()) {
-                            (b.format_note.contains("default", true)).compareTo(
-                                a.format_note.contains(
-                                    "default", true
-                                )
+                            (defaults.any { b.format_note.contains(it, true) }).compareTo(
+                                defaults.any { a.format_note.contains(it, true) }
                             )
                         } else {
                             val res = (b.lang?.contains(audioLanguagePreference) == true).compareTo(
@@ -136,10 +136,8 @@ class FormatUtil(private var context: Context) {
                                 ) == true
                             )
                             if(res == 0) {
-                                (b.format_note.contains("default", true)).compareTo(
-                                    a.format_note.contains(
-                                        "default", true
-                                    )
+                                (defaults.any { b.format_note.contains(it, true) }).compareTo(
+                                    defaults.any { a.format_note.contains(it, true) }
                                 )
                             }else {
                                 res

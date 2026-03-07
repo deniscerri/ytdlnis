@@ -281,6 +281,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     playlistTitle = title
                 }
                 title = ""
+                author = ""
             }
 
 
