@@ -1258,8 +1258,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 var cont = ""
                 val outputContainer = downloadItem.container
 
-                if(outputContainer.isNotEmpty() && outputContainer != "Default" && outputContainer != context.getString(
-                        R.string.defaultValue) && supportedContainers.contains(outputContainer)){
+                if(
+                    outputContainer.isNotEmpty() &&
+                    outputContainer != "Default" &&
+                    outputContainer != context.getString(R.string.defaultValue) &&
+                    supportedContainers.contains(outputContainer)
+                ){
                     cont = outputContainer
 
                     val cantRecode = listOf("avi")
@@ -1313,7 +1317,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
                 if (downloadItem.videoPreferences.compatibilityMode) {
                     request.addOption("--recode-video", "mp4")
@@ -1455,8 +1459,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             }
                         }
                         "container" -> {
-                            if (cont.isNotBlank()) formatSorting.add("vext:$cont")
-                            if (acont.isNotBlank()) formatSorting.add("aext:$acont")
+                            if (!downloadItem.videoPreferences.compatibilityMode) {
+                                if (cont.isNotBlank()) formatSorting.add("vext:$cont")
+                                if (acont.isNotBlank()) formatSorting.add("aext:$acont")
+                            }
                         }
                     }
                 }
