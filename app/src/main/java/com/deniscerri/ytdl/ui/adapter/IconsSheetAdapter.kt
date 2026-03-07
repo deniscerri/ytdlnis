@@ -49,16 +49,12 @@ class IconsSheetAdapter(val host: SettingHost) : RecyclerView.Adapter<IconsSheet
             object Default : AppIcon(R.string.auto, R.mipmap.ic_launcher, "default")
             object DefaultLight : AppIcon(R.string.light, R.mipmap.ic_launcher_light, "Light")
             object DefaultDark : AppIcon(R.string.dark, R.mipmap.ic_launcher_dark, "Dark")
-            object Themed : AppIcon(R.string.Theme, R.mipmap.ic_launcher_themed, "Themed")
-            object ThemedDark : AppIcon(R.string.Theme, R.mipmap.ic_launcher_themed_dark, "ThemedDark")
         }
 
         val availableIcons = listOf(
             AppIcon.Default,
             AppIcon.DefaultLight,
             AppIcon.DefaultDark,
-            AppIcon.Themed,
-            AppIcon.ThemedDark,
         )
     }
 }

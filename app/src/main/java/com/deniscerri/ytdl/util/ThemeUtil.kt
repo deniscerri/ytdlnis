@@ -62,16 +62,12 @@ object ThemeUtil {
         object Default : AppIcon(R.mipmap.ic_launcher, "Default")
         object Light : AppIcon(R.mipmap.ic_launcher_light, "LightIcon")
         object Dark : AppIcon(R.mipmap.ic_launcher_dark, "DarkIcon")
-        object Themed : AppIcon(R.mipmap.ic_launcher_themed, "ThemedIcon")
-        object ThemedDark : AppIcon(R.mipmap.ic_launcher_themed_dark, "ThemedDarkIcon")
     }
 
     private val availableIcons = listOf(
         AppIcon.Default,
         AppIcon.Light,
-        AppIcon.Dark,
-        AppIcon.Themed,
-        AppIcon.ThemedDark
+        AppIcon.Dark
     )
 
     fun recreateMain() {
@@ -188,22 +184,6 @@ object ThemeUtil {
                 //set dark icon
                 activity.packageManager.setComponentEnabledSetting(
                     ComponentName(activity.packageName, "com.deniscerri.ytdl.DarkIcon"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
-                )
-            }
-            "Themed" -> {
-                //set themed icon
-                activity.packageManager.setComponentEnabledSetting(
-                    ComponentName(activity.packageName, "com.deniscerri.ytdl.ThemedIcon"),
-                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                    PackageManager.DONT_KILL_APP
-                )
-            }
-            "ThemedDark" -> {
-                //set themed icon
-                activity.packageManager.setComponentEnabledSetting(
-                    ComponentName(activity.packageName, "com.deniscerri.ytdl.ThemedDarkIcon"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP
                 )
