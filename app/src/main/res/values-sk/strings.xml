@@ -78,7 +78,7 @@
     <string name="quick_download">Rýchle sťahovanie</string>
     <string name="enable_mtime">Povoliť mtime</string>
     <string name="download_over_metered_networks">Sťahovať cez merané siete</string>
-    <string name="clear_temporary_files_summary">Vymaže súbory vyrovnávacej pamäte z neúspešných/chybných/zrušených sťahovaní</string>
+    <string name="clear_temporary_files_summary">Vymaže súbory vyrovnávacej pamäte, infojson a iné dočasné konfigurácie</string>
     <string name="command_templates">Príkazové šablóny</string>
     <string name="preferred_locale">Uprednostňované miesto</string>
     <string name="suggested">Navrhované</string>
@@ -291,7 +291,7 @@
     <string name="cache_first_summary">Súbory vyrovnávacej pamäte sa stiahnu do interného úložiska a potom sa presunú do zvoleného adresára. Použite, keď nemôžete zapisovať priamo do úložiska</string>
     <string name="use_extra_commands_summary">Pre audio/video sťahovania. Pridáte ďalšie príkazy spolu s konfiguráciou grafického rozhrania</string>
     <string name="save_for_later">Odložiť sťahovanie na neskôr?</string>
-    <string name="move_temporary_files_summary">Presunie súbory vyrovnávacej pamäte do priečinka sťahovania</string>
+    <string name="move_temporary_files_summary">Presunie sťahované súbory vo vyrovnávacej pamäte do priečinka sťahovania</string>
     <string name="errored_downloads">Chybné sťahovania</string>
     <string name="write_description_summary">Zapíše súbor s popisom</string>
     <string name="license">Licencia</string>
@@ -508,4 +508,8 @@
     <string name="show_quick_download_share_menu">Zobraziť možnosť okamžitého stiahnutia v menu zdieľania</string>
     <string name="quick_download_title">Nenačítať údaje</string>
     <string name="sponsorblock_hook">Pútka/Pozdravy</string>
+    <string name="packages">Balíky</string>
+    <string name="not_installed">Nenainštalované</string>
+    <string name="bundled">Súčasti</string>
+    <string name="use_app_language_for_metadata_summary">Ak je táto funkcia povolená, polia metadát budú zodpovedať jazyku vašej aplikácie a ovplyvnia dokonca výber formátu tým, že uprednostnia dabované verzie pred originálnymi</string>
 </resources>
