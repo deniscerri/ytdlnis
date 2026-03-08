@@ -565,7 +565,7 @@ object UiUtil {
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.history_item_details_bottom_sheet)
         bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.apply {
-            text = item.title.ifEmpty { item.url.ifEmpty { item.playlistTitle.ifEmpty {  "`${context.getString(R.string.defaultValue)}`" } } }
+            text = item.title.ifEmpty { item.playlistTitle.ifEmpty { item.url.ifEmpty { "`${context.getString(R.string.defaultValue)}`" } } }
             setOnLongClickListener {
                 showFullTextDialog(context, text.toString(), context.getString(R.string.title))
                 true

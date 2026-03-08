@@ -207,7 +207,7 @@ class DownloadWorker(
                     val logString = StringBuilder(initialLogDetails)
                     val logItem = LogItem(
                         0,
-                        downloadItem.title.ifBlank { downloadItem.url },
+                        downloadItem.title.ifBlank { downloadItem.playlistTitle.ifEmpty { downloadItem.url } },
                         logString.toString(),
                         downloadItem.format,
                         downloadItem.type,
@@ -330,7 +330,7 @@ class DownloadWorker(
 
                                         val historyItem = HistoryItem(0,
                                             downloadItem.url,
-                                            downloadItem.title,
+                                            downloadItem.title.ifEmpty { downloadItem.playlistTitle },
                                             downloadItem.author,
                                             downloadItem.duration,
                                             downloadItem.thumb,

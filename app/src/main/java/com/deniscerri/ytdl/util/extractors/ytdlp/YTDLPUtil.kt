@@ -1076,13 +1076,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
-        var aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
+        val aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
 
         when(type){
             DownloadType.audio -> {
                 val supportedContainers = context.resources.getStringArray(R.array.audio_containers)
                 val preferredLanguage = sharedPreferences.getString("audio_language","")!!
-                val formatImportance = formatUtil.getAudioFormatImportance()
+                val formatImportance = formatUtil.getAudioFormatImportance(false)
 
                 var abrSort = ""
 
