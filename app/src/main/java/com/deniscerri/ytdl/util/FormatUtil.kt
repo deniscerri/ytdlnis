@@ -55,9 +55,11 @@ class FormatUtil(private var context: Context) {
                 formatImportance.add("file_size")
             }
 
-            val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
-            if(preferContainerOverCodec) {
-                formatImportance.remove("codec")
+            if(!forVideoDownload) {
+                val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
+                if(preferContainerOverCodec) {
+                    formatImportance.remove("codec")
+                }
             }
 
             val preferDRC = sharedPreferences.getBoolean("prefer_drc_audio", false)
