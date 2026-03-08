@@ -36,8 +36,17 @@ object AdvancedSettingsModule : SettingModule {
                     false
                 }
             }
+            "use_format_sorting" -> {
+                pref.setOnPreferenceChangeListener {_, newValue ->
+                    host.findPref("format_importance_audio")?.isEnabled = newValue as Boolean
+                    host.findPref("format_importance_video")?.isEnabled = newValue as Boolean
+                    host.refreshUI()
+                    true
+                }
+            }
             "format_importance_audio" -> {
                 pref.apply {
+                    isEnabled = prefs.getBoolean("use_format_sorting", false)
                     title = "${context.getString(R.string.format_importance)} [${context.getString(R.string.audio)}]"
                     val items = context.resources.getStringArray(R.array.format_importance_audio)
                     val itemValues = context.resources.getStringArray(R.array.format_importance_audio_values).toSet()
@@ -64,6 +73,7 @@ object AdvancedSettingsModule : SettingModule {
             }
             "format_importance_video" -> {
                 pref.apply {
+                    isEnabled = prefs.getBoolean("use_format_sorting", false)
                     title = "${context.getString(R.string.format_importance)} [${context.getString(R.string.video)}]"
                     val items = context.resources.getStringArray(R.array.format_importance_video)
                     val itemValues = context.resources.getStringArray(R.array.format_importance_video_values).toSet()

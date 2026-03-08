@@ -132,7 +132,6 @@
             android:entryValues="@array/countries_values"
             app:icon="@drawable/ic_language"
             app:useSimpleSummaryProvider="true"
-            app:dependency="recommendations_home"
             app:key="locale"
             app:title="@string/preferred_locale" />
 

@@ -25,6 +25,20 @@ object ProcessingSettingsModule : SettingModule {
         val context = pref.context
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         when(pref.key) {
+            "use_sponsorblock" -> {
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    host.findPref("sponsorblock_filters")?.isEnabled = newValue as Boolean
+                    host.findPref("sponsorblock_url")?.isEnabled = newValue as Boolean
+                    host.refreshUI()
+                    true
+                }
+            }
+            "sponsorblock_filters" -> {
+                pref.isEnabled = prefs.getBoolean("use_sponsorblock", true)
+            }
+            "sponsorblock_url" -> {
+                pref.isEnabled = prefs.getBoolean("use_sponsorblock", true)
+            }
             "format_id" -> {
                 (pref as EditTextPreference).apply {
                     title = "${context.getString(R.string.preferred_format_id)} [${context.getString(R.string.video)}]"
@@ -113,6 +127,16 @@ object ProcessingSettingsModule : SettingModule {
                         true
                     }
                 }
+            }
+            "embed_thumbnail" -> {
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    host.findPref("crop_thumbnail")?.isEnabled = newValue as Boolean
+                    host.refreshUI()
+                    true
+                }
+            }
+            "crop_thumbnail" -> {
+                pref.isEnabled = prefs.getBoolean("embed_thumbnail", true)
             }
             "audio_codec" -> {
                 updateCompatibleVideoConfig(host, prefs)

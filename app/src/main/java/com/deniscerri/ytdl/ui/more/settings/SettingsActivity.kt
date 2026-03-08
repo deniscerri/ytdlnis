@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.ui.more.settings
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ import com.deniscerri.ytdl.ui.more.settings.search.SettingsSearchAdapter
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.lazy
@@ -37,7 +39,7 @@ class SettingsActivity : BaseActivity(), SettingHost {
     private lateinit var searchAdapter: SettingsSearchAdapter
 
     override fun findPref(key: String): Preference? {
-        return settingViewModel.settingsFlow.value.find { it.preference.key == key }?.preference
+        return settingViewModel.settingsFlow.value.first.find { it.preference.key == key }?.preference
     }
     @SuppressLint("NotifyDataSetChanged")
     override fun refreshUI() {
@@ -86,8 +88,10 @@ class SettingsActivity : BaseActivity(), SettingHost {
         val listener =
             NavController.OnDestinationChangedListener { controller, destination, arguments ->
                 if (destination.id == R.id.mainSettingsFragment) {
-                    changeTopAppbarTitle(getString(R.string.settings), false)
-                    settingViewModel.indexSearchSettings()
+                    if (binding.collapsingToolbar.title != getString(R.string.settings)) {
+                        changeTopAppbarTitle(getString(R.string.settings), false)
+                        settingViewModel.indexSearchSettings()
+                    }
                 }
             }
 
@@ -114,8 +118,6 @@ class SettingsActivity : BaseActivity(), SettingHost {
         val searchView = binding.searchView
         searchView.setupWithSearchBar(searchBar)
 
-        settingViewModel.indexSearchSettings()
-
         searchAdapter = SettingsSearchAdapter(emptyList(), this)
         binding.searchSuggestionsRecycler.layoutManager = LinearLayoutManager(context)
         binding.searchSuggestionsRecycler.adapter = searchAdapter
@@ -127,15 +129,22 @@ class SettingsActivity : BaseActivity(), SettingHost {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                settingViewModel.settingsFlow.collect { allItems ->
-                    allItems.forEach { item ->
-                        if (!item.isHeader) {
-                            item.module?.bindLogic(item.preference, this@SettingsActivity)
-                        }
-                    }
-                    val visibleItems = allItems.filter { it.preference.isVisible }
-                    searchAdapter.updateList(visibleItems)
+                settingViewModel.settingsFlow.collectLatest { res ->
+                    val items = res.first
+                    val query = res.second
 
+                    val filtered = items.filter { item ->
+                        val titleMatch = item.preference.title?.toString()?.contains(query, ignoreCase = true) == true
+                        val summaryMatch = item.preference.summary?.toString()?.contains(query, ignoreCase = true) == true
+                        val groupMatch = item.groupTitle?.contains(query, ignoreCase = true) == true
+                        (titleMatch || summaryMatch || groupMatch) && item.preference.isVisible
+                    }
+
+                    filtered.forEach { item ->
+                        item.module?.bindLogic(item.preference, this@SettingsActivity)
+                    }
+
+                    searchAdapter.updateList(filtered)
                     val savedSearch = intent.getStringExtra("search_query")
                     if (!savedSearch.isNullOrBlank()) {
                         binding.searchBar.performClick()

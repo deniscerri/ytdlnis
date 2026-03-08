@@ -193,7 +193,6 @@
             app:title="@string/use_scheduler" />
 
         <Preference
-            android:dependency="use_scheduler"
             android:icon="@drawable/ic_start"
             app:title="@string/start"
             app:defaultValue="00:00"
@@ -202,7 +201,6 @@
         />
 
         <Preference
-            android:dependency="use_scheduler"
             app:title="@string/end"
             android:icon="@drawable/ic_end"
             app:defaultValue="05:00"

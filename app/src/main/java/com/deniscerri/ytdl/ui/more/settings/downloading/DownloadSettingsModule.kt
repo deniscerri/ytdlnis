@@ -32,11 +32,8 @@ object DownloadSettingsModule : SettingModule {
         when(pref.key) {
             "remember_download_type" -> {
                 val rememberDownloadType = pref as SwitchPreferenceCompat
-                val downloadType = host.findPref("preferred_download_type")
-                downloadType?.isEnabled = !rememberDownloadType.isChecked
-
                 rememberDownloadType.setOnPreferenceChangeListener { _, newValue ->
-                    downloadType?.isEnabled = !(newValue as Boolean)
+                    host.findPref("preferred_download_type")?.isEnabled = !(newValue as Boolean)
                     host.refreshUI()
                     true
                 }
@@ -160,12 +157,14 @@ object DownloadSettingsModule : SettingModule {
                         )
                     }
                     host.refreshUI()
+                    host.findPref("schedule_start")?.isEnabled = allowChange && newValue as Boolean
+                    host.findPref("schedule_end")?.isEnabled = allowChange && newValue as Boolean
                     allowChange
                 }
             }
             "schedule_start" -> {
                 val scheduler = AlarmScheduler(context)
-
+                pref.isEnabled = preferences.getBoolean("use_scheduler", false)
                 pref.summary = preferences.getString("schedule_start", "00:00")
                 pref.setOnPreferenceClickListener {
                     UiUtil.showTimePicker(host.requestGetParentFragmentManager(), preferences){
@@ -184,7 +183,7 @@ object DownloadSettingsModule : SettingModule {
             }
             "schedule_end" -> {
                 val scheduler = AlarmScheduler(context)
-
+                pref.isEnabled = preferences.getBoolean("use_scheduler", false)
                 pref.summary = preferences.getString("schedule_end", "05:00")
                 pref.setOnPreferenceClickListener {
                     UiUtil.showTimePicker(host.requestGetParentFragmentManager(), preferences){
@@ -228,6 +227,7 @@ object DownloadSettingsModule : SettingModule {
                     }else {
                         "${s}\n[${entries[entryValues.indexOf(value)]}]"
                     }
+                    isEnabled = !preferences.getBoolean("remember_download_type", false)
                     setOnPreferenceChangeListener { _, newValue ->
                         summary = if ((newValue as String?).isNullOrBlank()) {
                             s

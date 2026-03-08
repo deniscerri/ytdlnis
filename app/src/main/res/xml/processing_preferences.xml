@@ -12,7 +12,6 @@
 
         <MultiSelectListPreference
             app:icon="@drawable/ic_money"
-            android:dependency="use_sponsorblock"
             app:dialogTitle="@string/select_sponsorblock_filtering"
             app:entries="@array/sponsorblock_settings_entries"
             app:entryValues="@array/sponsorblock_settings_values"
@@ -21,7 +20,6 @@
             app:title="SponsorBlock" />
 
         <EditTextPreference
-            android:dependency="use_sponsorblock"
             app:icon="@drawable/ic_money"
             app:key="sponsorblock_url"
             app:useSimpleSummaryProvider="true"
@@ -90,7 +88,6 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
-            android:dependency="embed_thumbnail"
             app:icon="@drawable/ic_cut"
             app:key="crop_thumbnail"
             app:summary="@string/crop_thumb_summary"

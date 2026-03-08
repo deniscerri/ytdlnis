@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.more.settings.general
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,6 +10,7 @@ import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.ViewGroup
 import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
@@ -212,7 +214,7 @@ object GeneralSettingsModule : SettingModule {
                     }
 
                     setOnPreferenceClickListener {
-                        val bottomSheet = BottomSheetDialog(context)
+                        val bottomSheet = BottomSheetDialog(host.getHostContext())
                         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
                         bottomSheet.setContentView(R.layout.generic_list)
 
@@ -222,7 +224,8 @@ object GeneralSettingsModule : SettingModule {
 
                         bottomSheet.show()
                         val displayMetrics = DisplayMetrics()
-                        host.getHostContext().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        wm.defaultDisplay.getMetrics(displayMetrics)
                         bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
                         bottomSheet.window!!.setLayout(
                             ViewGroup.LayoutParams.MATCH_PARENT,

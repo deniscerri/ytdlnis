@@ -60,13 +60,11 @@
         <Preference
             android:icon="@drawable/ic_format"
             android:key="format_importance_video"
-            android:dependency="use_format_sorting"
             app:title="@string/format_importance" />
 
         <Preference
             android:icon="@drawable/ic_format"
             android:key="format_importance_audio"
-            android:dependency="use_format_sorting"
             app:title="@string/format_importance" />
 
     </PreferenceCategory>

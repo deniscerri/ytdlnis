@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.database.viewmodel
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
@@ -21,6 +22,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
+import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingsRegistry
 import com.deniscerri.ytdl.util.BackupSettingsUtil
 import com.deniscerri.ytdl.util.Extensions.combine
@@ -37,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.schabi.newpipe.extractor.timeago.patterns.fa
 import java.io.File
 import java.util.Calendar
 
@@ -53,7 +56,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     private val observeSourcesRepository : ObserveSourcesRepository
 
     private val _settingsFlow = MutableStateFlow<List<SearchSettingsItem>>(emptyList())
-    val settingsFlow: StateFlow<List<SearchSettingsItem>>
+    val settingsFlow: StateFlow<Pair<List<SearchSettingsItem>, String>>
     private val _searchQuery = MutableStateFlow("")
 
     init {
@@ -67,16 +70,11 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
 
         settingsFlow = combine(_settingsFlow, _searchQuery) { items, query ->
             if (query.isBlank()) {
-                emptyList() // Or return items if you want to show everything when blank
+                Pair(emptyList(), "")
             } else {
-                items.filter { item ->
-                    val titleMatch = item.preference.title?.toString()?.contains(query, ignoreCase = true) == true
-                    val summaryMatch = item.preference.summary?.toString()?.contains(query, ignoreCase = true) == true
-                    val groupMatch = item.groupTitle?.contains(query, ignoreCase = true) == true
-                    (titleMatch || summaryMatch || groupMatch)
-                }
+                Pair(items, query)
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), Pair(emptyList(), ""))
     }
 
     fun indexSearchSettings() {
