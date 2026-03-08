@@ -27,7 +27,7 @@ class FormatUtil(private var context: Context) {
                                             }
 
     @SuppressLint("RestrictedApi")
-    fun getAudioFormatImportance() : List<String> {
+    fun getAudioFormatImportance(forVideoDownload: Boolean) : List<String> {
         val preferredFormatSize = sharedPreferences.getString("preferred_format_size", "")
 
         if (sharedPreferences.getBoolean("use_format_sorting", false)) {
@@ -39,9 +39,11 @@ class FormatUtil(private var context: Context) {
                 orderPreferences.add(0,"smallsize")
             }
 
-            val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
-            if(preferContainerOverCodec) {
-                orderPreferences.remove("codec")
+            if(!forVideoDownload) {
+                val preferContainerOverCodec = sharedPreferences.getBoolean("prefer_container_over_codec_audio", false)
+                if(preferContainerOverCodec) {
+                    orderPreferences.remove("codec")
+                }
             }
 
             return orderPreferences
@@ -95,8 +97,8 @@ class FormatUtil(private var context: Context) {
 
 
     @SuppressLint("RestrictedApi")
-    fun sortAudioFormats(formats: List<Format>) : List<Format> {
-        val orderPreferences = getAudioFormatImportance()
+    fun sortAudioFormats(formats: List<Format>, forVideoDownload: Boolean = false) : List<Format> {
+        val orderPreferences = getAudioFormatImportance(forVideoDownload)
 
         val comparator = Comparator<Format> { a, b ->
             if ("prefer_drc" in orderPreferences) {

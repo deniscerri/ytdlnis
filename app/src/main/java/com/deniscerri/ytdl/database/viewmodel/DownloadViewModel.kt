@@ -552,7 +552,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    fun getFormat(formats: List<Format>, type: DownloadType, url: String? = null) : Format {
+    //pass for video download for audio format sorter, so that it wont apply certain preferences that should be only for audio downloads
+    fun getFormat(formats: List<Format>, type: DownloadType, url: String? = null, forVideoDownload: Boolean = false) : Format {
         when(type) {
             DownloadType.audio -> {
                 return cloneFormat (
@@ -560,7 +561,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                         val theFormats = formats.filter { it.vcodec.isBlank() || it.vcodec == "none" }.ifEmpty {
                             formatUtil.getGenericAudioFormats(resources).sortedByDescending { it.filesize }
                         }
-                        FormatUtil(application).sortAudioFormats(theFormats).first()
+                        FormatUtil(application).sortAudioFormats(theFormats, forVideoDownload).first()
                     }catch (e: Exception){
                         formatUtil.getGenericAudioFormats(resources).first()
                     }
@@ -625,7 +626,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }
         if (preferredAudioFormats.isEmpty()){
-            val audioF = getFormat(formats, DownloadType.audio)
+            val audioF = getFormat(formats, DownloadType.audio, forVideoDownload = true)
             if (!formatUtil.getGenericAudioFormats(resources).contains(audioF)){
                 preferredAudioFormats.add(audioF.format_id)
             }
