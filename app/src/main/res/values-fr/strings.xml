@@ -513,4 +513,5 @@
     <string name="not_installed">Non installé</string>
     <string name="bundled">Ensemble</string>
     <string name="use_app_language_for_metadata_summary">Si cette option est activée, les champs de métadonnées suivront la langue de votre application et affecteront même la sélection du format en privilégiant les versions doublées plutôt que les versions originales</string>
+    <string name="installed">Installé</string>
 </resources>
