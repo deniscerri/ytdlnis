@@ -421,7 +421,7 @@
     <string name="items">项目</string>
     <string name="other_youtube_extractor_args">其他 YouTube 提取器变量</string>
     <string name="socket_timeout">Socket 超时</string>
-    <string name="socket_timeout_description">再等一下，不要放弃</string>
+    <string name="socket_timeout_description">放弃前等待多久，单位为秒</string>
     <string name="advanced">高级</string>
     <string name="pause_all">全部暂停</string>
     <string name="resume_all">全部恢复</string>
@@ -511,4 +511,5 @@
     <string name="not_installed">未安装</string>
     <string name="bundled">捆绑</string>
     <string name="use_app_language_for_metadata_summary">如启用，元数据字段会和应用程序语言保持一致，并且影响格式选择（首选配音版而不是原始声音版本）</string>
+    <string name="installed">已安装</string>
 </resources>
