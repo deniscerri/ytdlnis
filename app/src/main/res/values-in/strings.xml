@@ -511,4 +511,5 @@
     <string name="not_installed">Tidak terpasang</string>
     <string name="bundled">Dibundel</string>
     <string name="use_app_language_for_metadata_summary">Jika diaktifkan, kolom metadata akan mengikuti bahasa aplikasi Anda dan bahkan mempengaruhi pemilihan format dengan lebih memilih versi dubbing daripada versi asli</string>
+    <string name="installed">terpasang</string>
 </resources>
