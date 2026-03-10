@@ -28,7 +28,7 @@
     <string name="exit_app">Вийти зі застосунку</string>
     <string name="sponsorblock_sponsors">Спонсорська реклама</string>
     <string name="you_are_in_latest_version">Використовується остання версія</string>
-    <string name="sponsorblock_nonmusic">Частини, що не стосуються музики</string>
+    <string name="sponsorblock_nonmusic">Немузичні та нетематичні частини</string>
     <string name="sponsorblock_promos">Самореклама</string>
     <string name="adjust_video">Налаштування відео</string>
     <string name="ytld_update_success">Нову версію встановлено</string>
@@ -511,4 +511,5 @@
     <string name="not_installed">Не встановлено</string>
     <string name="bundled">У комплекті</string>
     <string name="use_app_language_for_metadata_summary">Якщо ввімкнено, поля метаданих відповідатимуть мові вашої програми та навіть впливатимуть на вибір формату, надаючи перевагу дубльованим версіям замість оригіналу</string>
+    <string name="installed">Встановлено</string>
 </resources>
