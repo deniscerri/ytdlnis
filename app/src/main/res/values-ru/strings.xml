@@ -57,14 +57,14 @@
     <string name="add_chapter">Добавить главы</string>
     <string name="exit_app">Выйти из приложения</string>
     <string name="warning">Предупреждение</string>
-    <string name="sponsorblock_intro">Пауза/Заставка</string>
+    <string name="sponsorblock_intro">Введение</string>
     <string name="sponsorblock_outro">Конечные заставки/Титры</string>
     <string name="sponsorblock_promos">Самореклама</string>
-    <string name="sponsorblock_previews">Предпросмотр/Пересказ</string>
-    <string name="sponsorblock_reminders">Напоминание о взаимодействии (подписка)</string>
+    <string name="sponsorblock_previews">Предварительный просмотр</string>
+    <string name="sponsorblock_reminders">Напоминания о подписке</string>
     <string name="select_sponsorblock_filtering">Выберите фильтрацию SponsorBlock</string>
     <string name="sponsorblock_fillers">Отвлеченные темы/Шутки</string>
-    <string name="sponsorblock_nonmusic">Сегмент без музыки</string>
+    <string name="sponsorblock_nonmusic">Немузыкальные и не по теме части</string>
     <string name="settings">Настройки</string>
     <string name="video_directory">Видеопапка</string>
     <string name="download_all">Скачать все</string>
@@ -511,4 +511,5 @@
     <string name="not_installed">Не установлено</string>
     <string name="bundled">В комплекте</string>
     <string name="use_app_language_for_metadata_summary">Если включено, поля метаданных будут соответствовать языку программы и даже влиять на выбор формата, предпочитая дублированные версии вместо оригинала</string>
+    <string name="installed">Установлено</string>
 </resources>

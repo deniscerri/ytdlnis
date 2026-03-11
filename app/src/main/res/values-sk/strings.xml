@@ -512,4 +512,5 @@
     <string name="not_installed">Nenainštalované</string>
     <string name="bundled">Súčasti</string>
     <string name="use_app_language_for_metadata_summary">Ak je táto funkcia povolená, polia metadát budú zodpovedať jazyku vašej aplikácie a ovplyvnia dokonca výber formátu tým, že uprednostnia dabované verzie pred originálnymi</string>
+    <string name="installed">Nainštalované</string>
 </resources>
