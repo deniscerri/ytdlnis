@@ -9,6 +9,25 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
+      - name: Process Message
+        id: process_msg
+        shell: bash
+        env:
+          BODY: ${{ github.event.release.body }}
+        run: |
+          MAX_LENGTH=3500
+          
+          if [ ${#BODY} -gt $MAX_LENGTH ]; then
+            TRUNCATED="${BODY:0:$MAX_LENGTH}... (truncated)"
+          else
+            TRUNCATED="$BODY"
+          fi
+          
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "TRUNCATED_BODY<<$EOF" >> $GITHUB_ENV
+          echo "$TRUNCATED" >> $GITHUB_ENV
+          echo "$EOF" >> $GITHUB_ENV
+    
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
@@ -20,7 +39,7 @@ jobs:
           message: |
             YTDLnis has a new release: [${{ github.event.release.tag_name }}](https://github.com/${{ github.repository }}/releases/tag/${{ github.event.release.tag_name }})
             ```markdown
-            ${{ github.event.release.body }}
+            ${{ env.TRUNCATED_BODY }}
             ```
             
             [${{ github.event.release.assets[0].name }}](${{ github.event.release.assets[0].browser_download_url }})
