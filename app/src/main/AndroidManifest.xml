@@ -463,6 +463,51 @@
             </intent-filter>
         </activity-alias>
 
+        <activity-alias
+            android:name=".BlueIcon"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_blue"
+            android:roundIcon="@mipmap/ic_launcher_round_blue"
+            android:configChanges="locale"
+            android:launchMode="singleTask"
+            android:targetActivity=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/txt" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".GreenIcon"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher_green"
+            android:roundIcon="@mipmap/ic_launcher_round_green"
+            android:configChanges="locale"
+            android:launchMode="singleTask"
+            android:targetActivity=".MainActivity"
+            android:windowSoftInputMode="adjustPan">
+            <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="application/txt" />
+            </intent-filter>
+        </activity-alias>
+
+
         <activity
             android:name=".ui.more.cookies.WebViewActivity"
             android:configChanges="locale"

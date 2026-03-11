@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Spanned
 import android.util.TypedValue
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.text.HtmlCompat
 import androidx.core.text.parseAsHtml
@@ -56,18 +57,23 @@ object ThemeUtil {
     }
 
     sealed class AppIcon(
+        @StringRes val nameResource: Int,
         @DrawableRes val iconResource: Int,
         val activityAlias: String
     ) {
-        object Default : AppIcon(R.mipmap.ic_launcher, "Default")
-        object Light : AppIcon(R.mipmap.ic_launcher_light, "LightIcon")
-        object Dark : AppIcon(R.mipmap.ic_launcher_dark, "DarkIcon")
+        object Default : AppIcon(R.string.auto, R.mipmap.ic_launcher, "Default")
+        object Light : AppIcon(R.string.light, R.mipmap.ic_launcher_light, "LightIcon")
+        object Dark : AppIcon(R.string.dark, R.mipmap.ic_launcher_dark, "DarkIcon")
+        object Blue : AppIcon(R.string.blue, R.mipmap.ic_launcher_blue, "BlueIcon")
+        object Green : AppIcon(R.string.green, R.mipmap.ic_launcher_green, "GreenIcon")
     }
 
-    private val availableIcons = listOf(
+    val availableIcons = listOf(
         AppIcon.Default,
         AppIcon.Light,
-        AppIcon.Dark
+        AppIcon.Dark,
+        AppIcon.Blue,
+        AppIcon.Green,
     )
 
     fun recreateMain() {
@@ -125,7 +131,7 @@ object ThemeUtil {
         }
 
 
-        val iconMode = sharedPreferences.getString("ytdlnis_icon", "default")!!
+        val iconMode = sharedPreferences.getString("ytdlnis_icon", "Default")!!
         updateAppIcon(activity,theme, iconMode)
     }
 
@@ -167,23 +173,35 @@ object ThemeUtil {
         }
 
         var iconMode = appIconMode
-        if (appIconMode == "default") {
+        if (appIconMode == "Default") {
             iconMode = theme
         }
 
         when (iconMode) {
-            "Light" -> {
-                //set light icon
+            "LightIcon" -> {
                 activity.packageManager.setComponentEnabledSetting(
                     ComponentName(activity.packageName, "com.deniscerri.ytdl.LightIcon"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP
                 )
             }
-            "Dark" -> {
-                //set dark icon
+            "DarkIcon" -> {
                 activity.packageManager.setComponentEnabledSetting(
                     ComponentName(activity.packageName, "com.deniscerri.ytdl.DarkIcon"),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP
+                )
+            }
+            "BlueIcon" -> {
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdl.BlueIcon"),
+                    PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                    PackageManager.DONT_KILL_APP
+                )
+            }
+            "GreenIcon" -> {
+                activity.packageManager.setComponentEnabledSetting(
+                    ComponentName(activity.packageName, "com.deniscerri.ytdl.GreenIcon"),
                     PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
                     PackageManager.DONT_KILL_APP
                 )

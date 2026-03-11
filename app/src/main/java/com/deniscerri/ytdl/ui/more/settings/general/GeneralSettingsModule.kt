@@ -209,7 +209,7 @@ object GeneralSettingsModule : SettingModule {
             "ytdlnis_icon" -> {
                 pref.apply {
                     val currentValue = preferences.getString("ytdlnis_icon", "default")
-                    IconsSheetAdapter.availableIcons.firstOrNull { it.activityAlias == currentValue }?.let {
+                    ThemeUtil.availableIcons.firstOrNull { it.activityAlias == currentValue }?.let {
                         summary = context.getString(it.nameResource)
                     }
 
