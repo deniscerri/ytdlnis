@@ -511,4 +511,5 @@
     <string name="not_installed">미설치</string>
     <string name="use_app_language_for_metadata_summary">켜져 있다면, 메타데이터가 앱 언어를 따라가며 원본 대신 더빙 버전을 우선하는 등 파일 형식 선택에도 영향을 미칩니다</string>
     <string name="bundled">묶임</string>
+    <string name="installed">설치함</string>
 </resources>
