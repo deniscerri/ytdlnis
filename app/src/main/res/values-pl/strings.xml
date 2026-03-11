@@ -196,7 +196,7 @@
     <string name="pure_theme_summary">Czysty motyw czarno-biały</string>
     <string name="blue">Niebieski</string>
     <string name="downloaded">"Pobrane: "</string>
-    <string name="material_you">Twój materiał</string>
+    <string name="material_you">Motyw własny</string>
     <string name="finished_download_notification_channel_description">Powiadomienie o zakończeniu pobierania</string>
     <string name="quick_download">Szybkie pobieranie</string>
     <string name="remove_audio">Usuń dźwięk</string>
@@ -216,7 +216,7 @@
     <string name="system">Systemowy</string>
     <string name="search_history">Historia wyszukiwania</string>
     <string name="finished_download_notification_channel_name">Zakończone pobieranie</string>
-    <string name="quick_download_summary">Nie pobieraj danych z karty pobierania</string>
+    <string name="quick_download_summary">Kontynuuj pobieranie nie pobierając danych z karty pobierania</string>
     <string name="adjust_video">Dostosuj film</string>
     <string name="light">Jasny</string>
     <string name="select_all">Zaznacz wszystko</string>
@@ -262,7 +262,7 @@
     <string name="shortcuts_desc">Użyj często używanych poleceń do tworzenia szablonów</string>
     <string name="cancelled">Anulowane</string>
     <string name="access_all_directories_summary">Zezwól aplikacji na pobieranie do katalogów, które są domyślnie ograniczone</string>
-    <string name="clear_temporary_files_summary">Usuń pliki pamięci podręcznej z pobrań zakończonych awarią, błędem bądź anulowaniem</string>
+    <string name="clear_temporary_files_summary">Usuń pliki pamięci podręcznej z pobrań, infojsony i inne tymczasowe konfiguracje</string>
     <string name="restrict_filenames_summary">Ogranicz nazwy plików tylko do znaków ASCII i unikaj \„&amp;\” i spacji w nazwach plików</string>
     <string name="confirm_terminate">Zatrzymuje wszystkie pobierania i wymusza zamknięcie aplikacji</string>
     <string name="download_over_metered_networks_summary">Umożliwia pobieranie przez dowolną sieć. Jeśli opcja nie jest wybrana, aplikacja czeka na sieć bez planu taryfowego</string>
@@ -494,4 +494,9 @@
     <string name="update_ytdlp_while_downloading_summary">Dodaj -U do yt-dlp, aby zaktualizować go do najnowszej wersji przed pobraniem</string>
     <string name="preview_filename">Podgląd nazwy pliku</string>
     <string name="potoken_gvs">V</string>
+    <string name="preferred_format_size">Preferowany rozdzielczość formatu</string>
+    <string name="prefer_drc_audio">Preferowany dziwęk dynamiczny (DRC)</string>
+    <string name="potoken_player">Token PO (odtwarzacz)</string>
+    <string name="potoken_subs">Token PO (napisy)</string>
+    <string name="url_regex">Złącze Regex</string>
 </resources>
