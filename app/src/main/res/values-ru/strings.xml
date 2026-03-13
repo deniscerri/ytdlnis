@@ -355,7 +355,7 @@
     <string name="bitrate">Битрейт</string>
     <string name="save_auto_subs">Сохранить автосубтитры</string>
     <string name="not_deleted">Не удалено</string>
-    <string name="archive">Архив скачанного от yt-dlp — файл со списком загруженных элементов для предотвращения дублирования загрузок (вместо встроенной для этого функции)</string>
+    <string name="archive">Загрузить архив [Используйте файл архива загрузок yt-dlp, чтобы предотвратить дублирование загрузок вместо встроенной функции]</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузок</string>
     <string name="show_download_count">Показывать кол-во контента на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>
@@ -463,7 +463,7 @@
     <string name="backup_path">Путь резервного копирования</string>
     <string name="automatic_backup_summary">Автоматически создавать резервную копию всех параметров при обнаружении новой версии приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
-    <string name="write_subs_when_embed_subs_summary">Это применит опции «Сохранять субтитры» и «Сохранять автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания в видеофайл</string>
+    <string name="write_subs_when_embed_subs_summary">Это применит Сохранять Субтитры и Сохранять Автосубтитры файлы субтитров будут загружены, а затем удалены после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Пользовательский приоритет форматов</string>
