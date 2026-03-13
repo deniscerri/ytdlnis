@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="music_directory">Cartella audio</string>
-    <string name="search">YouTube premium</string>
+    <string name="search">Cerca</string>
     <string name="remove_all">Rimuovi tutto</string>
     <string name="remove_results">Cancella risultati</string>
     <string name="updating">Aggiornamento in corso</string>
@@ -12,7 +12,7 @@
     <string name="directories">Cartelle</string>
     <string name="video_directory">Cartella video</string>
     <string name="configure_download">Regola download</string>
-    <string name="sponsorblock_outro">Outro</string>
+    <string name="sponsorblock_outro">Conclusione</string>
     <string name="title">Titolo</string>
     <string name="video_quality">Qualità video</string>
     <string name="embed_subtitles">Incorpora sottotitoli</string>
@@ -507,4 +507,10 @@
     <string name="app_icon">Icona app</string>
     <string name="show_quick_download_share_menu">Mostra l\'opzione per scaricare nel menu di condivisione</string>
     <string name="quick_download_title">Non recuperare i dati</string>
+    <string name="packages">Pacchetti</string>
+    <string name="not_installed">Non installato</string>
+    <string name="use_app_language_for_metadata_summary">Se abilitati, i campi dei metadati seguiranno la lingua dell\'app e influenzeranno persino la selezione del formato preferendo le versioni doppiate anzichè le originali</string>
+    <string name="installed">Installato</string>
+    <string name="sponsorblock_hook">Hook/Greetings</string>
+    <string name="bundled">Impacchettato</string>
 </resources>
