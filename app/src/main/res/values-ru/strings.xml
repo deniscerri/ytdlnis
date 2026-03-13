@@ -3,7 +3,7 @@
     <string name="remove_results">Очистить результаты</string>
     <string name="search">Поиск</string>
     <string name="remove_all">Удалить всё</string>
-    <string name="music_directory">Аудиопапка</string>
+    <string name="music_directory">Папка аудио</string>
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
     <string name="search_hint">Введите запрос или вставьте URL</string>
@@ -66,14 +66,14 @@
     <string name="sponsorblock_fillers">Отвлеченные темы/Шутки</string>
     <string name="sponsorblock_nonmusic">Немузыкальные и не по теме части</string>
     <string name="settings">Настройки</string>
-    <string name="video_directory">Видеопапка</string>
+    <string name="video_directory">Папка видео</string>
     <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
     <string name="ytdl_update_hint">Полезный совет при загрузке обновлений</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии</string>
-    <string name="command_directory">Пользовательская папка команд</string>
+    <string name="command_directory">Папка загруженных с помощью команд</string>
     <string name="save_thumb_summary">Сохранять миниатюру в папку загрузки</string>
     <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например, 50К или 4.2М</string>
     <string name="concurrent_fragments">Параллельные фрагменты</string>
@@ -133,7 +133,7 @@
     <string name="restart">Перезагрузить</string>
     <string name="download_rescheduled_to">Загрузка отложена до:</string>
     <string name="file_size">Размер файла</string>
-    <string name="clear_temporary_files">Очистите временные файлы</string>
+    <string name="clear_temporary_files">Очищать временные файлы</string>
     <string name="adjust_video">Настройка видео</string>
     <string name="concurrent_downloads">Параллельные загрузки</string>
     <string name="concurrent_downloads_summary">Количество одновременных загрузок</string>
@@ -194,7 +194,7 @@
     <string name="container">Контейнер</string>
     <string name="download_over_metered_networks_summary">Загрузка с любого типа сети. В противном случае ожидать безлимитную сеть</string>
     <string name="invert_selected">Инвертировать выбранное</string>
-    <string name="shortcuts_desc">Используйте часто применяемые команды для создания шаблонов</string>
+    <string name="shortcuts_desc">Использовать часто применяемые команды для создания шаблонов</string>
     <string name="restore">Восстановить</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="quick_download_summary">Немедленно продолжите процесс загрузки, не загружая данные предварительно</string>
@@ -290,11 +290,11 @@
     <string name="embed_metadata">Встроить метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
     <string name="update_formats_background">Обновление форматов в фоне</string>
-    <string name="use_sponsorblock">Используйте SponsorBlock</string>
+    <string name="use_sponsorblock">Использовать SponsorBlock</string>
     <string name="scheduling">Планирование</string>
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
-    <string name="cache_first_summary">Кэш загружается во внутреннюю память, а затем перемещается в выбранный каталог. Используйте это, когда нельзя записывать непосредственно в память</string>
+    <string name="cache_first_summary">Кэш загружается во внутреннюю память, а затем перемещается в выбранный каталог. Используйте при невозможности записывать файлы непосредственно в память</string>
     <string name="update_app_beta_summary">Примите участие в бета-тестировании. В нём могут содержаться ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
     <string name="auto">Авто</string>
@@ -355,7 +355,7 @@
     <string name="bitrate">Битрейт</string>
     <string name="save_auto_subs">Сохранить автосубтитры</string>
     <string name="not_deleted">Не удалено</string>
-    <string name="archive">Скачать архив [Используйте файл архива загрузки yt-dlp, чтобы предотвратить дублирование загрузок вместо встроенной функции]</string>
+    <string name="archive">Архив скачанного от yt-dlp — файл со списком загруженных элементов для предотвращения дублирования загрузок (вместо встроенной для этого функции)</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузок</string>
     <string name="show_download_count">Показывать кол-во контента на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>
@@ -463,7 +463,7 @@
     <string name="backup_path">Путь резервного копирования</string>
     <string name="automatic_backup_summary">Автоматически создавать резервную копию всех параметров при обнаружении новой версии приложения</string>
     <string name="write_subs_when_embed_subs">Напишите субтитры при внедрении</string>
-    <string name="write_subs_when_embed_subs_summary">Это применит Сохранять Субтитры и Сохранять Автосубтитры файлы субтитров будут загружены, а затем удалены после встраивания</string>
+    <string name="write_subs_when_embed_subs_summary">Это применит опции «Сохранять субтитры» и «Сохранять автосубтитры». Файлы субтитров будут загружены, а затем удалены после встраивания в видеофайл</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
     <string name="use_format_sorting">Пользовательский приоритет форматов</string>
@@ -492,9 +492,9 @@
     <string name="desktop">Рабочий стол</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Отключить плоский плейлист</string>
-    <string name="disable_flat_playlist_summary">Не используйте --плоский-плейлист. Медленнее загрузка данных, но больше данных</string>
+    <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
-    <string name="use_original_url_playlist">Используйте оригинальный url для url плейлиста</string>
+    <string name="use_original_url_playlist">Использовать оригинальный URL для URL плейлиста</string>
     <string name="use_original_url_playlist_summary">Используйте url списка воспроизведения, предоставленную пользователем, вместо тега playlist_webpage_url из дампа json</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
