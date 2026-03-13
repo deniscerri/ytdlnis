@@ -294,7 +294,7 @@
     <string name="scheduling">Планирование</string>
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
-    <string name="cache_first_summary">Файлы кэша загружаются во внутреннюю память, затем перемещаются в выбранный каталог. Используйте это, когда нельзя записывать непосредственно в память</string>
+    <string name="cache_first_summary">Файлы кэша загружаются во внутреннюю память, а затем перемещаются в выбранный каталог. Используйте эту опцию при невозможности записывать файлы непосредственно в память</string>
     <string name="update_app_beta_summary">Примите участие в бета-тестировании. В нём могут содержаться ошибки.</string>
     <string name="update_app_beta">Бета релизы</string>
     <string name="auto">Авто</string>
@@ -355,7 +355,7 @@
     <string name="bitrate">Битрейт</string>
     <string name="save_auto_subs">Сохранить автосубтитры</string>
     <string name="not_deleted">Не удалено</string>
-    <string name="archive">Загрузить архив [Использовать файл архива загрузок yt-dlp для предотвращения дублирования загрузок вместо встроенной функции]</string>
+    <string name="archive">Архив скачанного от yt-dlp — файл со списком загруженных элементов для предотвращения дублирования загрузок (вместо встроенной для этого функции)</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузок</string>
     <string name="show_download_count">Показывать кол-во контента на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>
