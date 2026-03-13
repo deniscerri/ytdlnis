@@ -128,7 +128,7 @@
     <string name="format">Формат</string>
     <string name="please_wait">Будь ласка, зачекайте</string>
     <string name="update_formats">Оновлення форматів</string>
-    <string name="log_downloads">Завантаження журналів</string>
+    <string name="log_downloads">Журнал завантажень</string>
     <string name="enable_mtime_summary">Встановіть HTTP в останній модифікований заголовок як останній модифікований час</string>
     <string name="error_updating_formats">Помилка оновлення форматів!</string>
     <string name="log_downloads_summary">Створювати файл журналу для кожного завантаження</string>
@@ -141,7 +141,7 @@
     <string name="shortcuts">Ярлики</string>
     <string name="edit">Редагувати</string>
     <string name="cancelled">Скасовано</string>
-    <string name="shortcuts_desc">Використовувати поширені команди для створення шаблонів</string>
+    <string name="shortcuts_desc">Використовувати часто використовувані команди для створення шаблонів</string>
     <string name="update_template">Оновити шаблон</string>
     <string name="update">Оновити</string>
     <string name="preferred_download_type">Бажаний тип завантаження</string>
@@ -289,10 +289,10 @@
     <string name="embed_metadata">Вбудувати метадані</string>
     <string name="embed_metadata_summary">Вбудовуйте та аналізуйте метадані в аудіофайл</string>
     <string name="auto_update_ytdlp">Автооновлення yt-dlp</string>
-    <string name="use_sponsorblock">Використовуйте SponsorBlock</string>
+    <string name="use_sponsorblock">Використати SponsorBlock</string>
     <string name="update_formats_background">Оновити формати у фоновому режимі</string>
     <string name="scheduling">Планування</string>
-    <string name="cache_first_summary">Кеш завантажуються у внутрішню пам\'ять, а потім переміщуються до вибраного каталогу. Використовуйте це, коли не можете записувати безпосередньо у пам\'ять</string>
+    <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переміщуються до вибраного каталогу. Використовуйте це, коли не можете записувати безпосередньо у пам\'ять</string>
     <string name="cache_first">Спочатку завантажується кеш</string>
     <string name="use_scheduler">Завантажити за розкладом</string>
     <string name="update_app_beta_summary">Візьміть участь у бета-тестуванні. У ньому можуть бути помилки.</string>
@@ -355,7 +355,7 @@
     <string name="month">Місяць</string>
     <string name="not_deleted">Не видалено</string>
     <string name="save_auto_subs">Зберегти автосубтитри</string>
-    <string name="archive">Завантажити архів [Використовуйте файл архіву завантаження yt-dlp, щоб запобігти дублювання завантажень замість вбудованої функції]</string>
+    <string name="archive">Завантажити архів [Використати файл архіву завантажень yt-dlp, щоб запобігти дублюванню завантажень, замість вбудованої функції]</string>
     <string name="swipe_gestures_download_card">Жести пальцем у картці завантаження</string>
     <string name="show_download_count">Показати підрахунки на екрані черги завантаження</string>
     <string name="thumbnail_format">Формат мініатюр</string>
@@ -494,7 +494,7 @@
     <string name="disable_flat_playlist">Вимкнути плоский плейлист</string>
     <string name="disable_flat_playlist_summary">Не використовуйте --плоский-плейлист. Повільніше отримання даних, але більш насичений даними</string>
     <string name="chapters">Розділи</string>
-    <string name="use_original_url_playlist">Використовуйте оригінальний url для url плейлиста</string>
+    <string name="use_original_url_playlist">Використати оригінальний url для url плейлиста</string>
     <string name="use_original_url_playlist_summary">Використовуйте url списку відтворення, надану користувачем, замість тегу playlist_webpage_url з дампу json</string>
     <string name="update_ytdlp_while_downloading">Оновити yt-dlp під час завантаження</string>
     <string name="update_ytdlp_while_downloading_summary">Додайте -U до yt-dlp щоб оновити його до останньої версії перед завантаженням</string>
