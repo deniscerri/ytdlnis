@@ -512,4 +512,5 @@
     <string name="not_installed">Quraşdırılmadı</string>
     <string name="bundled">Paketlənib</string>
     <string name="use_app_language_for_metadata_summary">Aktivləşdirildikdə, üst məlumat sahələri tətbiq dilinizə əməl edəcək və hətta əsil əvəzinə dublyaj olunan versiyalara üstünlük verərək format seçiminə təsir edəcək</string>
+    <string name="installed">Quraşdırılıb</string>
 </resources>
