@@ -60,7 +60,7 @@ object AdvancedSettingsModule : SettingModule {
                             Pair(it, items[itemValues.indexOf(it)])
                         }.toMutableList()
 
-                        showFormatImportanceDialog(context,title.toString(), itms) { new ->
+                        showFormatImportanceDialog(host.getHostContext(),title.toString(), itms) { new ->
                             prefs.edit(commit = true) {
                                 putString("format_importance_audio", new.joinToString(",") { it.first })
                             }

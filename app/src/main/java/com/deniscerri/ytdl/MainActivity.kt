@@ -12,13 +12,22 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.WindowInsets
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.children
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
@@ -31,6 +40,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
+import com.afollestad.materialdialogs.utils.MDUtil.textChanged
 import com.anggrayudi.storage.file.getAbsolutePath
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
@@ -53,12 +64,17 @@ import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -72,6 +88,8 @@ import java.io.InputStreamReader
 import java.io.Reader
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
+import java.util.Locale
+import kotlin.sequences.forEach
 import kotlin.system.exitProcess
 
 
@@ -112,7 +130,6 @@ class MainActivity : BaseActivity() {
         }
 
         askPermissions()
-        checkUpdate()
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
@@ -270,26 +287,7 @@ class MainActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
 
-        if (preferences.getBoolean("auto_update_ytdlp", false)){
-            CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
-                kotlin.runCatching {
-                    if(DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) == 0){
-                        if (UpdateUtil(this@MainActivity).updateYTDL().status == UpdateUtil.YTDLPUpdateStatus.DONE) {
-                            val version = RuntimeManager.getInstance().version(context)
-                            val snack = Snackbar.make(findViewById(R.id.frame_layout),
-                                this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]",
-                                Snackbar.LENGTH_LONG)
-
-                            navigationBarView?.apply {
-                                snack.setAnchorView(this)
-                            }
-                            snack.show()
-                        }
-                    }
-                }
-
-            }
-        }
+        askAutoUpdatePreferences()
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -485,8 +483,67 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun askAutoUpdatePreferences() {
+        if (preferences.getBoolean("asked_auto_update_preferences", false)) {
+            callAutoUpdates()
+            return
+        }
 
-    private fun checkUpdate() {
+        val builder = MaterialAlertDialogBuilder(this)
+        builder.setTitle(context.getString(R.string.update))
+        builder.setIcon(R.drawable.ic_info)
+        val view = layoutInflater.inflate(R.layout.dialog_ask_update_preferences, null)
+
+        val updateAppLayout = view.findViewById<View>(R.id.update_app)
+        val updateAppSwitch = updateAppLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
+        updateAppLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
+            icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update_app)
+            isVisible = true
+        }
+        updateAppLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.update_app)
+        updateAppLayout.findViewById<TextView>(R.id.preference_summary).apply {
+            text = getString(R.string.update_app_summary)
+            isVisible = true
+        }
+        updateAppSwitch.isChecked = true
+        updateAppLayout.setOnClickListener {
+            updateAppSwitch.isChecked = !updateAppSwitch.isChecked
+        }
+
+        val updateYTDLLayout = view.findViewById<View>(R.id.update_ytdl)
+        val updateYTDLSwitch = updateYTDLLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
+        updateYTDLLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
+            icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update)
+            isVisible = true
+        }
+        updateYTDLLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.auto_update_ytdlp)
+        updateYTDLLayout.findViewById<TextView>(R.id.preference_summary).apply {
+            text = getString(R.string.auto_update_ytdlp_summary)
+            isVisible = true
+        }
+        updateYTDLSwitch.isChecked = true
+        updateYTDLLayout.setOnClickListener {
+            updateYTDLSwitch.isChecked = !updateYTDLSwitch.isChecked
+        }
+
+        builder.setView(view)
+        builder.setCancelable(false)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { _: DialogInterface?, _: Int ->
+            preferences.edit(commit = true) {
+                putBoolean("update_app", updateAppSwitch.isChecked)
+                putBoolean("auto_update_ytdlp", updateYTDLSwitch.isChecked)
+                putBoolean("asked_auto_update_preferences", true)
+            }
+            callAutoUpdates()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun callAutoUpdates() {
         if (preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
             CoroutineScope(Dispatchers.IO).launch {
@@ -496,13 +553,35 @@ class MainActivity : BaseActivity() {
                         settingsViewModel.backup()
                     }
                     withContext(Dispatchers.Main) {
-                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, this@MainActivity, preferences)
+                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, this@MainActivity,  updateUtil, this@MainActivity, preferences)
                     }
                 }
 
             }
         }
+        if (preferences.getBoolean("auto_update_ytdlp", false)){
+            CoroutineScope(SupervisorJob()).launch {
+                try {
+                    val hasActiveQueuedDownloads = DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) > 0
+                    if (hasActiveQueuedDownloads) return@launch
+
+                    val updateRes = withContext(Dispatchers.IO) {
+                        UpdateUtil(this@MainActivity).updateYTDL()
+                    }
+
+                    if (updateRes.status == UpdateUtil.YTDLPUpdateStatus.DONE) {
+                        val version = RuntimeManager.getInstance().version(context)
+                        val message = this@MainActivity.getString(R.string.ytld_update_success) + " [${version}]"
+                        Snackbar.make(findViewById(R.id.frame_layout), message, Snackbar.LENGTH_LONG).apply {
+                            anchorView = navigationBarView
+                            show()
+                        }
+                    }
+                } catch (err: Exception) {}
+            }
+        }
     }
+
 
     companion object {
         private const val TAG = "MainActivity"

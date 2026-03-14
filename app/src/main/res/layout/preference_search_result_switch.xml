@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:background="?android:attr/selectableItemBackground"
     android:paddingEnd="16dp"
     android:paddingStart="0dp"
-    android:paddingVertical="16dp"
+    android:paddingVertical="8dp"
     android:minHeight="48dp"
     android:gravity="center_vertical">
 
@@ -41,7 +42,8 @@
             android:textSize="16sp"
             android:ellipsize="end"
             android:textStyle="bold"
-            android:maxLines="2" />
+            android:maxLines="2"
+            tools:text="Preference Title" />
 
         <TextView
             android:id="@+id/preference_summary"
@@ -52,7 +54,10 @@
             android:textSize="14sp"
             android:ellipsize="end"
             android:maxLines="10"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="Preference Description"
+            tools:visibility="visible"
+            />
     </LinearLayout>
 
     <com.google.android.material.materialswitch.MaterialSwitch

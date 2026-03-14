@@ -7,7 +7,7 @@
     android:background="?android:attr/selectableItemBackground"
     android:paddingEnd="16dp"
     android:paddingStart="0dp"
-    android:paddingVertical="16dp"
+    android:paddingVertical="8dp"
     android:minHeight="48dp">
 
     <com.google.android.material.button.MaterialButton

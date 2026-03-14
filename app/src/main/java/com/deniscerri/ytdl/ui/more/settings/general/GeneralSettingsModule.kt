@@ -158,7 +158,7 @@ object GeneralSettingsModule : SettingModule {
                         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
                         itemTouchHelper.attachToRecyclerView(optionsRecycler)
 
-                        MaterialAlertDialogBuilder(context)
+                        MaterialAlertDialogBuilder(host.getHostContext())
                             .setTitle(R.string.navigation_bar)
                             .setView(binding)
                             .setPositiveButton(R.string.ok) { _, _ ->
@@ -178,7 +178,7 @@ object GeneralSettingsModule : SettingModule {
                 (pref as ListPreference).apply {
                     summary = entry
                     setOnPreferenceChangeListener { _, newValue ->
-                        val dialog = MaterialAlertDialogBuilder(context)
+                        val dialog = MaterialAlertDialogBuilder(host.getHostContext())
                         dialog.setTitle(context.getString(R.string.app_icon_change))
                         dialog.setNegativeButton(context.getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                         dialog.setPositiveButton(context.getString(R.string.ok)) { _: DialogInterface?, _: Int ->

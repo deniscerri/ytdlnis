@@ -2,20 +2,27 @@ package com.deniscerri.ytdl.util
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.models.YTDLRequest
+import com.deniscerri.ytdl.core.packages.PackageBase.Companion.sharedClient
+import com.deniscerri.ytdl.core.packages.PackageBase.PackageRelease
 import com.deniscerri.ytdl.database.models.GithubRelease
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
+import okhttp3.Request
+import java.io.File
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import kotlin.coroutines.cancellation.CancellationException
 
 
 class UpdateUtil(var context: Context) {
@@ -149,6 +156,51 @@ class UpdateUtil(var context: Context) {
             }
 
 
+    }
+
+    suspend fun downloadReleaseApk(context: Context, release: GithubRelease, onProgress: (Int) -> Unit) : Result<File> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val tempApk = File(context.cacheDir, "YTDLnis-${release.tag_name}_interally_downloaded.apk")
+                val releaseVersion = release.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
+
+                //download
+                val request = Request.Builder()
+                    .url(releaseVersion!!.browser_download_url)
+                    .build()
+
+                val response = sharedClient.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    return@withContext Result.failure(Throwable(response.body.string()))
+                }
+
+                val body = response.body
+                val totalBytes = body.contentLength()
+                var bytesDownloaded = 0L
+
+                body.byteStream().use { inputStream ->
+                    tempApk.outputStream().use { outputStream ->
+                        val buffer = ByteArray(8192) // 8KB buffer
+                        var bytesRead: Int
+
+                        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            if (!isActive) throw CancellationException("Download cancelled by user")
+
+                            outputStream.write(buffer, 0, bytesRead)
+                            bytesDownloaded += bytesRead
+
+                            // Calculate percentage
+                            val progress = ((bytesDownloaded * 100) / totalBytes).toInt()
+                            onProgress(progress)
+                        }
+                    }
+                }
+
+                Result.success(tempApk)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
     }
 
     companion object {

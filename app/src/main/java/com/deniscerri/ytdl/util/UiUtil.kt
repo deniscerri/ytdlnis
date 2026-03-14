@@ -45,12 +45,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.FileProvider
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
@@ -94,6 +97,7 @@ import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -2689,74 +2693,28 @@ object UiUtil {
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, preferences: SharedPreferences) {
+    fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, updateUtil: UpdateUtil, lifecycleOwner: LifecycleOwner, preferences: SharedPreferences) {
         if (context.isFinishing || context.isDestroyed) return
+        var positiveButton: Button? = null
+        var tmpDownloadJob: Job? = null
 
-        val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val skippedVersions = preferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
 
         val updateDialog = MaterialAlertDialogBuilder(context)
             .setTitle(v.tag_name)
             .setMessage(v.body)
+            .setCancelable(false)
             .setIcon(R.drawable.ic_update_app)
             .setNeutralButton(R.string.ignore){ d: DialogInterface?, _:Int ->
+                tmpDownloadJob?.cancel()
                 skippedVersions.add(v.tag_name)
                 preferences.edit().putString("skip_updates", skippedVersions.joinToString(",")).apply()
                 d?.dismiss()
             }
-            .setNegativeButton(context.getString(R.string.cancel)) { _: DialogInterface?, _: Int -> }
-            .setPositiveButton(context.getString(R.string.update)) { d: DialogInterface?, _: Int ->
-                runCatching {
-                    val releaseVersion = v.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) }
-                    if (releaseVersion == null){
-                        Toast.makeText(context, R.string.couldnt_find_apk, Toast.LENGTH_SHORT).show()
-                        return@runCatching
-                    }
-
-
-                    val uri = Uri.parse(releaseVersion.browser_download_url)
-                    Environment
-                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                        .mkdirs()
-                    val downloadID = downloadManager.enqueue(
-                        DownloadManager.Request(uri)
-                            .setAllowedNetworkTypes(
-                                DownloadManager.Request.NETWORK_WIFI or
-                                        DownloadManager.Request.NETWORK_MOBILE
-                            )
-                            .setAllowedOverRoaming(true)
-                            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setTitle(releaseVersion.name)
-                            .setDescription(context.getString(R.string.downloading_update))
-                            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
-                    )
-
-                    val onDownloadComplete: BroadcastReceiver =
-                        object : BroadcastReceiver() {
-                            override fun onReceive(context: Context?, intent: Intent) {
-                                context?.unregisterReceiver(this)
-                                FileUtil.openFileIntent(context!!,
-                                    Environment.getExternalStoragePublicDirectory(
-                                        Environment.DIRECTORY_DOWNLOADS)?.absolutePath +
-                                            File.separator + releaseVersion.name)
-                            }
-                        }
-
-                    if (Build.VERSION.SDK_INT >= 26) {
-                        if (Build.VERSION.SDK_INT >= 33) {
-                            context.registerReceiver(onDownloadComplete, IntentFilter(
-                                DownloadManager.ACTION_DOWNLOAD_COMPLETE),
-                                Context.RECEIVER_NOT_EXPORTED
-                            )
-                        }else{
-                            context.registerReceiver(onDownloadComplete, IntentFilter(
-                                DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-                            )
-                        }
-                    }
-                    d?.dismiss()
-                }
+            .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int ->
+                tmpDownloadJob?.cancel()
             }
+            .setPositiveButton(R.string.update, null)
         val view = updateDialog.show()
         val textView = view.findViewById<TextView>(android.R.id.message)
         textView!!.movementMethod = LinkMovementMethod.getInstance()
@@ -2770,5 +2728,41 @@ object UiUtil {
             }
         }).build()
         mw.setMarkdown(textView, v.body)
+
+        positiveButton = view.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+        positiveButton?.setOnClickListener {
+            positiveButton.isEnabled = false
+            positiveButton.text = "0%"
+
+            val lifecycleScope = lifecycleOwner.lifecycleScope
+
+            tmpDownloadJob = lifecycleScope.launch {
+                val fileResp = updateUtil.downloadReleaseApk(context, v) { progress ->
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            positiveButton.text = "$progress%"
+                        }
+                    }
+                }
+
+                fileResp.onFailure {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
+                            Snackbar.make(context.findViewById(R.id.frame_layout), it.message ?: context.getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+                }
+                fileResp.onSuccess { file ->
+                    view.dismiss()
+                    val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
+                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                        setDataAndType(contentUri, "application/vnd.android.package-archive")
+                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+                    }
+                    context.startActivity(intent)
+                }
+            }
+        }
     }
 }

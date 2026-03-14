@@ -108,7 +108,7 @@ object UpdateSettingsModule : SettingModule {
                                             settingsViewModel.backup()
                                         }
                                     }
-                                    UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), preferences)
+                                    UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences)
                                 }
                             }
                             true

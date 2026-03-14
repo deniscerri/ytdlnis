@@ -515,4 +515,5 @@
     <string name="bundled">Bundled</string>
     <string name="use_app_language_for_metadata_summary">If enabled, metadata fields will follow your app language and even affect format selection by preferring dubbed versions instead of original</string>
     <string name="installed">Installed</string>
+    <string name="auto_update_ytdlp_summary">It\'s recommended to keep this enabled to keep the application working properly as yt-dlp updates pretty often! The data is extracted from yt-dlp\'s GitHub Repository.</string>
 </resources>

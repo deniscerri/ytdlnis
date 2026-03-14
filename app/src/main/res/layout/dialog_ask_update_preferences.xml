@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:paddingTop="20dp"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/update_app"
+        layout="@layout/preference_search_result_switch" />
+
+    <include
+        android:id="@+id/update_ytdl"
+        layout="@layout/preference_search_result_switch" />
+
+</LinearLayout>
