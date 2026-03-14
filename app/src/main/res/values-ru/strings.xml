@@ -512,4 +512,5 @@
     <string name="bundled">В комплекте</string>
     <string name="use_app_language_for_metadata_summary">Если включено, поля метаданных будут соответствовать языку программы и даже влиять на выбор формата, предпочитая дублированные версии вместо оригинала</string>
     <string name="installed">Установлено</string>
+    <string name="auto_update_ytdlp_summary">Рекомендуется оставлять эту опцию включенной для надлежащей работы приложения, поскольку yt-dlp довольно часто обновляется! Данные получены из репозитория GitHub yt-dlp.</string>
 </resources>
