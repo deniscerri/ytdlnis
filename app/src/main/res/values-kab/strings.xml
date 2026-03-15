@@ -100,4 +100,15 @@
     <string name="deleted">Yettwakkes</string>
     <string name="advanced">Leqqayen</string>
     <string name="end">Tagara</string>
+    <string name="desktop">Tanarit</string>
+    <string name="chapters">Ixfawen</string>
+    <string name="auth">Asesteb</string>
+    <string name="packages">Ikemmusen</string>
+    <string name="audio_format">Amasal n umeslaw</string>
+    <string name="video_format">Amasal n uvidyu</string>
+    <string name="copy_url">Nɣel aseɣwen</string>
+    <string name="delete_all_sources">Kkes akk tiɣbula</string>
+    <string name="wait_for_video">Rǧu tavidyut</string>
+    <string name="generate_potokens">Sarew-d tiddas PO</string>
+    <string name="update_ytdl_nightly">Lqem nightly n yt-dlp</string>
 </resources>

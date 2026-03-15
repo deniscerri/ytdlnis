@@ -43,7 +43,7 @@
     <string name="retries">ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ਾਂ</string>
     <string name="custom_audio_quality">ਕਸਟਮ ਆਡੀਓ ਗੁਣਵੱਤਾ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
     <string name="move_temporary_files">ਅਸਥਾਈ ਫ਼ਾਈਲਾਂ ਨੂੰ ਸਥਾਨਾਂਤਰਿਤ ਕਰੋ</string>
-    <string name="move_temporary_files_summary">ਕੈਸ਼ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਫ਼ੋਲਡਰ ਵਿੱਚ ਸਥਾਨਾਂਤਰਿਤ ਕਰੋ</string>
+    <string name="move_temporary_files_summary">ਕੈਸ਼ ਕੀਤੀਆਂ ਡਾਊਨਲੋਡ ਫ਼ਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਫ਼ੋਲਡਰ ਵਿੱਚ ਟ੍ਰਾਂਸਫਰ ਕਰੋ</string>
     <string name="music_directory">ਆਡੀਓ ਫ਼ੋਲਡਰ</string>
     <string name="video_directory">ਵੀਡੀਓ ਫ਼ੋਲਡਰ</string>
     <string name="updating">ਅੱਪਡੇਟ ਕਰ ਰਿਹਾ</string>
@@ -252,11 +252,11 @@
     <string name="access_all_directories_summary">ਐਪ ਨੂੰ ਡਾਇਰੈਕਟਰੀਆਂ \'ਤੇ ਡਾਊਨਲੋਡ ਕਰਨ ਦਿਓ ਜੋ ਡਿਫ਼ਾਲਟ ਤੌਰ \'ਤੇ ਪ੍ਰਤਿਬੰਧਿਤ ਹਨ</string>
     <string name="help_translate_summary">Weblate ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇਸ ਐਪ ਦਾ ਆਪਣੀ ਭਾਸ਼ਾ ਵਿੱਚ ਅਨੁਵਾਦ ਕਰੋ</string>
     <string name="green">ਹਰਾ</string>
-    <string name="clear_temporary_files_summary">ਕ੍ਰੈਸ਼ ਹੋਏ/ਤਰੁੱਟੀਪੂਰਨ/ਰੱਦ ਕੀਤੇ ਡਾਉਨਲੋਡਸ ਤੋਂ ਕੈਸ਼ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ ਨੂੰ ਮਿਟਾਓ</string>
+    <string name="clear_temporary_files_summary">ਕੈਸ਼ ਕੀਤੀਆਂ ਫ਼ਾਈਲਾਂ, ਇਨਫੋਜੇਸਨ ਅਤੇ ਹੋਰ ਅਸਥਾਈ ਸੰਰਚਨਾਵਾਂ ਨੂੰ ਮਿਟਾਓ</string>
     <string name="confirm_terminate">ਸਾਰੇ ਡਾਊਨਲੋਡਾਂ ਨੂੰ ਰੋਕਦਾ ਹੈ ਅਤੇ ਐਪ ਨੂੰ ਜ਼ਬਰੀ ਬੰਦ ਕਰ ਦਿੰਦਾ ਹੈ</string>
     <string name="ignore_battery_optimization">ਬੈਟਰੀ ਓਪਟੀਮਾਈਜੇਸ਼ਨ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ</string>
     <string name="quick_download">ਤੁਰੰਤ ਡਾਊਨਲੋਡ</string>
-    <string name="quick_download_summary">ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿੱਚ ਡੇਟਾ ਪ੍ਰਾਪਤ ਨਾ ਕਰੋ</string>
+    <string name="quick_download_summary">ਡਾਟਾ ਨੂੰ ਪਹਿਲਾਂ ਪ੍ਰਾਪਤ ਕੀਤੇ ਬਿਨਾਂ ਹੀ, ਡਾਊਨਲੋਡ ਪ੍ਰਕਿਰਿਆ ਫੌਰੀ ਤੌਰ ਤੇ ਜਾਰੀ ਰੱਖੋ</string>
     <string name="resume">ਮੁੜ ਸ਼ੁਰੂ ਕਰੋ</string>
     <string name="updating_download_data">ਡਾਊਨਲੋਡ ਆਈਟਮ ਡਾਟਾ ਅੱਪਡੇਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
     <string name="keep_cache">ਫਰੈਗਮੈਂਟਸ ਰੱਖੋ</string>
@@ -502,4 +502,14 @@
     <string name="potoken_guide">ਪ੍ਰਮਾਣੀਕਰਨ\n--------------------------\n1. ਵੈੱਬਵਿਊ ਵਿੱਚ ਸਾਈਨ ਇਨ ਪੰਨਾ ਖੋਲ੍ਹਣ ਲਈ \'ਪ੍ਰਮਾਣੀਕਰਨ\' \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\n2. ਆਪਣੇ Google ਖਾਤੇ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ।\n\n3. ਕੋਈ ਵੀ ਵੀਡੀਓ ਚਲਾਓ ਜੋ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਦਾ ਸਮਰਥਨ ਕਰਦਾ ਹੈ।\n\n4. ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਨੂੰ ਚਾਲੂ ਕਰੋ ਅਤੇ ਦੇਖੋ ਕਿ ਕੀ ਇਹ ਕੰਮ ਕਰਦਾ ਹੈ।\n\n4.1 ਜੇਕਰ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲ ਕੰਮ ਨਹੀਂ ਕਰਦੇ ਹਨ, ਤਾਂ ਕਿਸੇ ਹੋਰ ਵੀਡੀਓ \'ਤੇ ਸਵਿੱਚ ਕਰੋ ਜੋ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਦਾ ਸਮਰਥਨ ਕਰਦਾ ਹੈ ਅਤੇ ਕਦਮ 4 ਨੂੰ ਦੁਬਾਰਾ ਅਜ਼ਮਾਓ।\n\nਠੀਕ ਹੈ \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\nਕੋਈ ਪ੍ਰਮਾਣੀਕਰਨ ਨਹੀਂ\n------------------\n1. \'ਕੋਈ ਪ੍ਰਮਾਣੀਕਰਨ ਨਹੀਂ\' \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\n2. ਕੋਈ ਵੀ ਯੂਟਿਊਬ ਵੀਡੀਓ url ਲਿਖੋ\n3. ਵੀਡੀਓ ਦੇ ਲੋਡ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰੋ ਅਤੇ ਘੱਟੋ-ਘੱਟ 3 ਸਕਿੰਟਾਂ ਲਈ ਵੀਡੀਓ ਚਲਾਓ।\n\n4. ਠੀਕ ਹੈ \'ਤੇ ਕਲਿੱਕ ਕਰੋ।</string>
     <string name="no_auth">ਕੋਈ ਪ੍ਰਮਾਣਿਕਤਾ ਨਹੀਂ</string>
     <string name="auth">ਪ੍ਰਮਾਣਿਕਤਾ</string>
+    <string name="prefer_drc_audio">DRC ਆਡੀਓ ਨੂੰ ਤਰਜੀਹ ਦਿਓ</string>
+    <string name="app_icon">ਐਪ ਆਈਕਨ</string>
+    <string name="show_quick_download_share_menu">ਸ਼ੇਅਰ ਮੀਨੂ ਵਿੱਚ ਤੁਰੰਤ ਡਾਊਨਲੋਡ ਕਰਨ ਦਾ ਵਿਕਲਪ ਦਿਖਾਓ</string>
+    <string name="quick_download_title">ਡਾਟਾ ਨਾ ਪ੍ਰਾਪਤ ਕਰੋ</string>
+    <string name="sponsorblock_hook">ਹੁੱਕ/ਸ਼ੁਭਕਾਮਨਾਵਾਂ</string>
+    <string name="packages">ਪੈਕੇਜ</string>
+    <string name="not_installed">ਸਥਾਪਤ ਨਹੀਂ ਹੈ</string>
+    <string name="bundled">ਬੰਡਲ ਕੀਤਾ ਗਿਆ</string>
+    <string name="use_app_language_for_metadata_summary">ਜੇਕਰ ਇਨੇਬਲ ਕੀਤਾ ਗਿਆ, ਤਾਂ ਮੈਟਾਡੇਟਾ ਖੇਤਰ ਤੁਹਾਡੀ ਐਪ ਭਾਸ਼ਾ ਦੀ ਪਾਲਣਾ ਕਰਨਗੇ ਅਤੇ ਮੂਲ ਦੀ ਬਜਾਏ ਡੱਬ ਕੀਤੇ ਸੰਸਕਰਣਾਂ ਨੂੰ ਤਰਜੀਹ ਦੇ ਕੇ ਫਾਰਮੈਟ ਚੋਣ ਨੂੰ ਵੀ ਪ੍ਰਭਾਵਿਤ ਕਰਨਗੇ</string>
+    <string name="installed">ਸਥਾਪਤ ਕੀਤਾ ਗਿਆ</string>
 </resources>
