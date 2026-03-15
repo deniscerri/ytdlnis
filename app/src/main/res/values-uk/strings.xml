@@ -433,7 +433,7 @@
     <string name="data_fetching_extra_command">Додаткова команда для отримання даних</string>
     <string name="data_fetching_extra_command_summary">Увімкнути використання шаблонів команд для отримання даних як додаткових команд</string>
     <string name="disable_write_info_json_summary">Щоразу, коли ви перезапускаєте / відновлюєте завантаження, yt-dlp повторно завантажує дані json із серверів (не рекомендується)</string>
-    <string name="disable_write_info_json">Вимкнути запис інформації у форматі Json</string>
+    <string name="disable_write_info_json">Вимкнути запис інформації json</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube рекомендації (потрібні файли cookie)</string>
     <string name="ytdlp_liked">yt-dlp YouTube лайкнув відео (потрібні файли cookie)</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube подивитися пізніше (потрібні файли cookie)</string>
@@ -512,4 +512,5 @@
     <string name="bundled">У комплекті</string>
     <string name="use_app_language_for_metadata_summary">Якщо ввімкнено, поля метаданих відповідатимуть мові вашої програми та навіть впливатимуть на вибір формату, надаючи перевагу дубльованим версіям замість оригіналу</string>
     <string name="installed">Встановлено</string>
+    <string name="auto_update_ytdlp_summary">Рекомендується залишати цю опцію ввімкненою для належної роботи програми, оскільки yt-dlp досить часто оновлюється! Дані отримано з репозиторію GitHub yt-dlp.</string>
 </resources>
