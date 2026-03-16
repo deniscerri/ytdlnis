@@ -512,4 +512,6 @@
     <string name="not_installed">לא מותקנת</string>
     <string name="bundled">מאוגדת</string>
     <string name="installed">מותקנת</string>
+    <string name="use_app_language_for_metadata_summary">אם האפשרות פעילה, שדות נתוני העל יצמדו לשפת היישומון שלך ואפילו ישפיע על בחירת תסדיר על ידי העדפת גרסאות מדובבות על פני המקוריות</string>
+    <string name="auto_update_ytdlp_summary">מומלץ לשמור על האפשרות הזאת פעילה כדי לשמור על פעולה תקינה של היישום כיוון ש־yt-dlp מתעדכן לעתים מאוד תכופות! הנתונים מחולצים ממאגר ה־GitHub של yt-dlp.</string>
 </resources>
