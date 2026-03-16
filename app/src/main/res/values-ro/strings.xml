@@ -233,7 +233,7 @@
     <string name="confirm_delete_cookies_desc">Ștergeți toate cookie-urile, definitiv</string>
     <string name="invert_selected">Inversați selecția</string>
     <string name="save_subs">Salvați subtitrări</string>
-    <string name="video_recommendations_summary">Obțineți videoclipuri recomandate pe ecranul de pornire din API-ul PIPED</string>
+    <string name="video_recommendations_summary">Obțineți videoclipuri recomandate pe ecranul de pornire</string>
     <string name="preferred_search_engine">Motor de căutare preferat</string>
     <string name="preferred_search_engine_summary">Motorul de căutare de utilizat pentru căutări în aplicație</string>
     <string name="downloaded">"Descărcat: "</string>
@@ -261,7 +261,7 @@
     <string name="restore_complete">Restaurare aplicație finalizată. Următoarele elemente au fost restaurate:</string>
     <string name="select_backup_categories">Selectați categoriile de rezervă</string>
     <string name="search_history">Istoricul cautare</string>
-    <string name="backup_created_successfully">Fișier de rezervă salvat cu succes!</string>
+    <string name="backup_created_successfully">Fișier de rezervă salvat cu succes</string>
     <string name="appearance">Aspect</string>
     <string name="title">Titlu</string>
     <string name="update">Actualizați</string>
@@ -486,4 +486,6 @@
     <string name="chapters">Capitole</string>
     <string name="use_original_url_playlist">Folosește URL-ul original pentru ULR-ul playlist-ului</string>
     <string name="update_ytdlp_while_downloading">Actualizează yt-dlp în timpul descărcării</string>
+    <string name="installed">Instalat</string>
+    <string name="auto_update_ytdlp_summary">Se recomandă menținerea acestei opțiuni activate pentru ca aplicația să funcționeze corect, deoarece yt-dlp se actualizează destul de des! Datele sunt extrase din depozitul GitHub al yt-dlp.</string>
 </resources>
