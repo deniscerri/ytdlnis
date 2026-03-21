@@ -1,3 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="worst_quality">ערגסט קוואליטעט</string>
+    <string name="best_quality">בעסטער קוואליטעט</string>
+    <string name="search">זוכן</string>
+    <string name="remove_all">אויסמעקן אלע</string>
+    <string name="remove_results">אויסמעקן רעזולטאטן</string>
+    <string name="download_all">אראפלאדן ‮אלע</string>
+    <string name="settings">איינשטעלונגען</string>
+    <string name="home">הײם</string>
+    <string name="directories">פאלדערס</string>
+    <string name="music_directory">אוידיאו פאלדער</string>
+    <string name="video_directory">ווידעא פאלדער</string>
+    <string name="updating">באנייען</string>
+    <string name="ytdl_update_hint">נוצליכע טיפ בשעת\'ן דאונלאודן אפדעיטס</string>
+    <string name="update_ytdl">אפדעיט yt-dlp צו דער נייער ווערסיע</string>
+    <string name="about">וועגן דער אפליקאציע</string>
+    <string name="source_code">מקור-קאד</string>
+    <string name="search_hint">זוך אדער לייג אריין URL</string>
+    <string name="failed_download">נישט געקענט דאונלאודן די פייל</string>
+    <string name="download_notification_channel_name">פייל דאונלאודס</string>
+    <string name="download_notification_channel_description">נאטיפיקאציע פונעם אדיאו און ווידיא דאונלאוד פראגרעס</string>
+    <string name="you_are_in_latest_version">ניצן דעם לעצטע ווערסיע</string>
+    <string name="ytld_update_success">נייע ווערסיע אינסטאלירט</string>
+    <string name="ytdl_already_updating">אינסטאלירן א נייע ווערסיע</string>
+    <string name="ytdl_updating_started">דאונלאודן א נייע ווערסיע</string>
+    <string name="Remove">מעק אויס</string>
+    <string name="ok">אוקעי</string>
+    <string name="cancel">אפרופן</string>
+    <string name="confirm_delete_history_desc">מעק אויס די גאנצע פריערדיגע, פאר אייביג</string>
+    <string name="confirm_delete_history">באשטעטיג</string>
+    <string name="search_history_hint">זוך אין די פריערדיגע</string>
+    <string name="search_command_hint">זוך אין די קאמענדס</string>
+    <string name="no_results">נישט געפינען</string>
+    <string name="more">מער</string>
+    <string name="update_app">קיק פאר אפדעיטס</string>
+    <string name="version">ווערסיע</string>
+    <string name="command_directory">אייגענע קאמענד פאלדער</string>
+    <string name="couldnt_find_apk">נישט געפינען קיין פאסיגע</string>
+    <string name="downloading_update">דאונלאודן א נייע ווערסיע</string>
+    <string name="audio">אדיאו</string>
+    <string name="video">ווידאו</string>
+    <string name="concurrent_fragments_summary">צאל פראגמענטן פון א DASH/HLS ווידיא צו דאונלאודן אויפאמאל</string>
+    <string name="concurrent_fragments">פראגמענטן אויפאמאל</string>
+    <string name="downloading">דאונלאודן</string>
 </resources>
