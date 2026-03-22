@@ -13,6 +13,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -27,10 +28,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.google.android.material.button.MaterialButton
 import java.util.Locale
 
-class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<DownloadItemConfigureMultiple?, ConfigureMultipleDownloadsAdapter.ViewHolder>(
-    AsyncDifferConfig.Builder(
-    DIFF_CALLBACK
-).build()) {
+class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<DownloadItemConfigureMultiple, ConfigureMultipleDownloadsAdapter.ViewHolder>(DIFF_CALLBACK) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences : SharedPreferences
@@ -125,10 +123,9 @@ class ConfigureMultipleDownloadsAdapter(onItemClickListener: OnItemClickListener
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = getItem(position) ?: return
         val card = holder.cardView
         card.popup()
-        if (item == null) return
         card.tag = item.id.toString()
 
         val uiHandler = Handler(Looper.getMainLooper())

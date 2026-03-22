@@ -34,6 +34,7 @@ import androidx.core.view.setPadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.media3.exoplayer.offline.Download
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -46,6 +47,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdl.database.viewmodel.DownloadMultipleCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
@@ -85,6 +87,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var resultViewModel: ResultViewModel
     private lateinit var ytdlpViewModel: YTDLPViewModel
     private lateinit var formatViewModel: FormatViewModel
+    private lateinit var downloadMultipleCardViewModel: DownloadMultipleCardViewModel
+
     private lateinit var listAdapter : ConfigureMultipleDownloadsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var behavior: BottomSheetBehavior<View>
@@ -125,6 +129,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         commandTemplateViewModel = ViewModelProvider(requireActivity())[CommandTemplateViewModel::class.java]
+        downloadMultipleCardViewModel = ViewModelProvider(this)[DownloadMultipleCardViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         currentDownloadIDs = arguments?.getLongArray("currentDownloadIDs")?.toList() ?: listOf()
@@ -211,42 +216,49 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         }
 
         lifecycleScope.launch {
-            downloadViewModel.processingDownloads.collectLatest { items ->
-                processingItemsCount = items.size
-                processingDownloadIDs = items.map { it.id }
-                count.text = "$processingItemsCount ${getString(R.string.selected)}"
-                listAdapter.submitList(items)
-
-                updateFileSize(items)
-
-                if (items.isNotEmpty()){
-                    val checkedItems = listAdapter.getCheckedItemsOrNull() ?: listOf()
-                    val firstItem = if (checkedItems.isNotEmpty()) {
-                        items.firstOrNull { it.id == checkedItems.first() } ?: items.first()
-                    }else {
-                        items.first()
-                    }
-                    updateBottomAppBarMenuItemsVisibility(firstItem)
-                    val type = items.first().type
-                    when(type){
-                        DownloadType.audio -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
-                        }
-                        DownloadType.video -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
-                        }
-                        DownloadType.command -> {
-                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
-                            setContainerText("")
-                        }
-
-                        else -> {}
-                    }
-
+            downloadMultipleCardViewModel.totalProcessingFileSize.collectLatest { totalBytes ->
+                if (totalBytes > 0) {
+                    val size = FileUtil.convertFileSize(totalBytes)
+                    filesize.isVisible = size != "?" && !listAdapter.isCheckingItems()
+                    filesize.text = "${getString(R.string.file_size)}: >~ $size"
+                    formatViewModel.checkFreeSpace(totalBytes, Environment.getExternalStorageDirectory().path)
+                } else {
+                    filesize.visibility = View.GONE
                 }
             }
         }
 
+        lifecycleScope.launch {
+            downloadMultipleCardViewModel.processingIds.collectLatest { ids ->
+                processingItemsCount = ids.size
+                processingDownloadIDs = ids
+                count.text = "$processingItemsCount ${getString(R.string.selected)}"
+            }
+        }
+
+        lifecycleScope.launch {
+            downloadMultipleCardViewModel.processingDownloads.collectLatest { items ->
+                listAdapter.submitData(items)
+            }
+        }
+
+        lifecycleScope.launch {
+            downloadMultipleCardViewModel.firstProcessingDownload.collectLatest { item ->
+                if (item != null) {
+                    updateBottomAppBarMenuItemsVisibility(item)
+
+                    when(item.type) {
+                        DownloadType.audio -> preferredDownloadType.setIcon(R.drawable.baseline_audio_file_24)
+                        DownloadType.video -> preferredDownloadType.setIcon(R.drawable.baseline_video_file_24)
+                        DownloadType.command -> {
+                            preferredDownloadType.setIcon(R.drawable.baseline_insert_drive_file_24)
+                            setContainerText("")
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
 
         scheduleBtn.setOnClickListener{
             UiUtil.showDatePicker(parentFragmentManager, preferences) { cal ->
@@ -320,7 +332,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         val formatListener = object : OnMultipleFormatClickListener {
             override fun onFormatClick(formatTuple: List<MultipleItemFormatTuple>) {
-                downloadViewModel.updateAllProcessingFormats(listAdapter.getCheckedItemsOrNull(), formatTuple)
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        downloadViewModel.updateAllProcessingFormats(listAdapter.getCheckedItemsOrNull(), formatTuple)
+                        listAdapter.refresh()
+                    }
+                }
             }
 
             override fun onFormatUpdated(url: String, formats: List<Format>) {
@@ -403,6 +420,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         audio!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch {
                                 downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.audio)
+                                listAdapter.refresh()
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -412,6 +430,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         video!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
                                 downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.video)
+                                listAdapter.refresh()
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -421,6 +440,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                         command!!.setOnClickListener {
                             CoroutineScope(Dispatchers.IO).launch{
                                 downloadViewModel.updateProcessingType(listAdapter.getCheckedItemsOrNull(), DownloadType.command)
+                                listAdapter.refresh()
                                 withContext(Dispatchers.Main){
                                     bottomSheet.cancel()
                                 }
@@ -491,6 +511,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             withContext(Dispatchers.IO) {
                                 downloadViewModel.updateProcessingIncognito(listAdapter.getCheckedItemsOrNull(), false)
                                 withContext(Dispatchers.Main){
+                                    listAdapter.refresh()
                                     m.icon!!.alpha = 30
                                     m.isEnabled = true
                                 }
@@ -507,6 +528,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                             }
                             incognitoBtn.icon?.alpha = 255
                             incognitoBtn.isEnabled = true
+                            listAdapter.refresh()
                             Toast.makeText(requireContext(), "${getString(R.string.incognito)}: ${getString(R.string.ok)}", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -1012,41 +1034,6 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         bottomAppBar.menu.children.forEach { m -> m.isEnabled = !loading }
     }
 
-    private fun updateFileSize(items: List<DownloadItemConfigureMultiple>){
-        val fileSizes = mutableListOf<Long>()
-        items.forEach {
-            if (it.type == DownloadType.video){
-                println(it.format.filesize)
-                if (it.format.filesize <= 5L) {
-                    fileSizes.add(0)
-                }else{
-                    val preferredAudioFormatIDs = it.videoPreferences.audioFormatIDs
-                    val audioFormatSize = if (it.videoPreferences.removeAudio) {
-                        0
-                    }else{
-                        it.allFormats
-                            .filter { f -> preferredAudioFormatIDs.contains(f.format_id) }
-                            .sumOf { f -> f.filesize }
-                    }
-                    fileSizes.add(it.format.filesize + audioFormatSize)
-                }
-            }else if (it.type == DownloadType.audio){
-                fileSizes.add(it.format.filesize)
-            }
-        }
-
-        if (fileSizes.all { it > 5L }){
-            val filesizeRaw = fileSizes.sum()
-            val size = FileUtil.convertFileSize(filesizeRaw)
-            itemsFileSize = fileSizes.sum()
-            filesize.isVisible = size != "?" && !listAdapter.isCheckingItems()
-            filesize.text = "${getString(R.string.file_size)}: >~ $size"
-            formatViewModel.checkFreeSpace(filesizeRaw, Environment.getExternalStorageDirectory().path)
-        }else{
-            filesize.visibility = View.GONE
-        }
-    }
-
     private var pathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -1152,12 +1139,16 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         val checkedSize = listAdapter.getCheckedItemsSize()
         count.text = "$checkedSize ${getString(R.string.selected)}"
         updateBottomAppBarMenuItemsVisibility()
+        if (checkedSize == 1) {
+            downloadMultipleCardViewModel.setMainProcessingItem(id)
+        }
     }
 
     override fun onCardUnChecked(id: Long) {
         val checkedSize = listAdapter.getCheckedItemsSize()
         if (checkedSize == 0) {
             selectItemsMenuBtn.isVisible = false
+            downloadMultipleCardViewModel.setMainProcessingItem(null)
         }
         count.text = "$checkedSize ${getString(R.string.selected)}"
         updateBottomAppBarMenuItemsVisibility()
@@ -1317,7 +1308,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
         containerBtn.isVisible = true
     }
 
-    private fun updateBottomAppBarMenuItemsVisibility(item: DownloadItemConfigureMultiple? = null) {
+    private fun updateBottomAppBarMenuItemsVisibility(item: DownloadItem? = null) {
         CoroutineScope(Dispatchers.IO).launch {
             val haveSameType = downloadViewModel.checkIfAllProcessingItemsHaveSameType(listAdapter.getCheckedItemsOrNull())
 

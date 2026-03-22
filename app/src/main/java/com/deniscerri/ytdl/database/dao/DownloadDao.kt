@@ -12,6 +12,7 @@ import androidx.room.Upsert
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
+import com.deniscerri.ytdl.database.models.DownloadSizeMetadata
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import kotlinx.coroutines.flow.Flow
@@ -36,7 +37,13 @@ interface DownloadDao {
 
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
-    fun getProcessingDownloads() : Flow<List<DownloadItemConfigureMultiple>>
+    fun getProcessingDownloads() : PagingSource<Int, DownloadItemConfigureMultiple>
+
+    @Query("SELECT id FROM downloads WHERE status = 'Processing'")
+    fun getProcessingDownloadsIds() : Flow<List<Long>>
+
+    @Query("SELECT id, type, format, allFormats, videoPreferences FROM downloads WHERE status = 'Processing'")
+    fun getProcessingSizeMetadata(): Flow<List<DownloadSizeMetadata>>
 
     @Query("SELECT COUNT(*) FROM downloads WHERE status in (:statuses)")
     fun getDownloadsCountFlow(statuses: List<String>) : Flow<Int>
@@ -71,7 +78,7 @@ interface DownloadDao {
 
 
     @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY id LIMIT 1")
-    fun getFirstProcessingDownload() : DownloadItem
+    fun getFirstProcessingDownloadFlow() : Flow<DownloadItem?>
 
 
     @Query("SELECT * FROM downloads WHERE status = 'Processing'")
@@ -178,6 +185,9 @@ interface DownloadDao {
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getDownloadById(id: Long) : DownloadItem
+
+    @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
+    fun getDownloadByIdFlow(id: Long) : Flow<DownloadItem?>
 
     @Query("SELECT * FROM downloads WHERE id=:id LIMIT 1")
     fun getNullableDownloadById(id: Long) : DownloadItem?

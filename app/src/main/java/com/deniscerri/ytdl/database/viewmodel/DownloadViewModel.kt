@@ -78,7 +78,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : Flow<List<DownloadItem>>
     val activePausedDownloads : Flow<List<DownloadItem>>
-    val processingDownloads : Flow<List<DownloadItemConfigureMultiple>>
     val cancelledDownloads : Flow<PagingData<DownloadItemSimple>>
     val erroredDownloads : Flow<PagingData<DownloadItemSimple>>
     val savedDownloads : Flow<PagingData<DownloadItemSimple>>
@@ -149,7 +148,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         queuedDownloads = repository.queuedDownloads.flow
         activeDownloads = repository.activeDownloads
         activePausedDownloads = repository.activePausedDownloads
-        processingDownloads = repository.processingDownloads
         savedDownloads = repository.savedDownloads.flow
         scheduledDownloads = repository.scheduledDownloads.flow
         cancelledDownloads = repository.cancelledDownloads.flow
@@ -1137,7 +1135,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
 
-    fun updateAllProcessingFormats(selectedItems: List<Long>?, formatTuples : List<MultipleItemFormatTuple>) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun updateAllProcessingFormats(selectedItems: List<Long>?, formatTuples : List<MultipleItemFormatTuple>) {
         val items = if (selectedItems.isNullOrEmpty()) {
             repository.getAllProcessingDownloads()
         }else {
@@ -1337,12 +1335,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return Pair(containers.size == 1, containers.first())
     }
 
-
-    suspend fun updateItemsWithIdsToProcessingStatus(ids: List<Long>) {
-        repository.deleteProcessing()
-        dao.updateItemsToProcessing(ids)
-        val first = dao.getFirstProcessingDownload()
-    }
 
     suspend fun updateToStatus(id: Long, status: DownloadRepository.Status) {
         repository.setDownloadStatus(id, status)

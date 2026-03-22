@@ -19,6 +19,7 @@ import com.deniscerri.ytdl.database.dao.DownloadDao
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
+import com.deniscerri.ytdl.database.models.DownloadSizeMetadata
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.work.AlarmScheduler
@@ -39,7 +40,6 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
     val activePausedDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveAndPausedDownloads().distinctUntilChanged()
     val pausedDownloads : Flow<List<DownloadItem>> = downloadDao.getPausedDownloads().distinctUntilChanged()
-    val processingDownloads : Flow<List<DownloadItemConfigureMultiple>> = downloadDao.getProcessingDownloads().distinctUntilChanged()
     val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
         pagingSourceFactory = {downloadDao.getQueuedDownloads()}
@@ -231,6 +231,10 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
 
     fun removeAllLogID(){
         downloadDao.removeAllLogID()
+    }
+
+    fun getProcessingSizeMetadata() : Flow<List<DownloadSizeMetadata>> {
+        return downloadDao.getProcessingSizeMetadata()
     }
 
     @SuppressLint("RestrictedApi")

@@ -27,16 +27,12 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.io.File
 
-class DownloadCardViewModel(private val application: Application) : AndroidViewModel(application) {
+class DownloadCardViewModel(application: Application) : AndroidViewModel(application) {
     var resultItem: ResultItem? = null
         private set
 
     var downloadItem: DownloadItem? = null
         private set
-
-    init {
-
-    }
 
     fun setDownloadItem(item: DownloadItem?) {
         downloadItem = item
