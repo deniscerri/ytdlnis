@@ -513,4 +513,5 @@
     <string name="installed">Installato</string>
     <string name="sponsorblock_hook">Hook/Greetings</string>
     <string name="bundled">Impacchettato</string>
+    <string name="auto_update_ytdlp_summary">È consigliato mantenere abilitata la funzione per permettere all\'applicazione di funziona correttamente, in quanto yt-dlp si aggiorna molto spesso! I dati sono estratti dalla repository GitHub di yt-dlp.</string>
 </resources>
