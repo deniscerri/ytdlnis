@@ -53,7 +53,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     )
 
     enum class HistoryStatus {
-        UNSET, DELETED, NOT_DELETED, ALL
+        DELETED, NOT_DELETED, ALL
     }
 
     private var _items = MediatorLiveData<List<HistoryItem>>()

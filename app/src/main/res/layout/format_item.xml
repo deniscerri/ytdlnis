@@ -28,6 +28,14 @@
             android:clickable="false"
             android:layout_height="55dp"
             android:gravity="center"
+
+            android:maxLines="1"
+            android:lines="1"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeStepGranularity="1sp"
+
             android:minWidth="30dp"
             app:cornerRadius="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -74,8 +82,24 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/format_id"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constrainedWidth="true" />
+
+            <TextView
+                android:id="@+id/format_id"
+                android:layout_width="wrap_content"
+                android:minWidth="40dp"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:ellipsize="end"
+                android:gravity="end"
+                android:maxLines="1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/format_note"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBaseline_toBaselineOf="@id/format_note" />
 
 
             <RelativeLayout
@@ -191,21 +215,6 @@
                 </HorizontalScrollView>
 
             </RelativeLayout>
-
-            <TextView
-                android:id="@+id/format_id"
-                android:layout_width="0dp"
-                android:minWidth="70dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:clickable="false"
-                android:ellipsize="end"
-                android:gravity="bottom|end"
-                android:maxWidth="70dp"
-                android:maxLines="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:layout_width="wrap_content"

@@ -19,6 +19,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -323,65 +324,22 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     filterSheet.setContentView(R.layout.history_other_filters_sheet)
 
                     //format status
-                    val notDeleted = filterSheet.findViewById<TextView>(R.id.not_deleted)!!
-                    val deleted = filterSheet.findViewById<TextView>(R.id.deleted)!!
-                    when(historyViewModel.statusFilter.value) {
-                        HistoryViewModel.HistoryStatus.ALL -> {
-                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                        }
-                        HistoryViewModel.HistoryStatus.DELETED -> {
-                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                        }
-                        HistoryViewModel.HistoryStatus.NOT_DELETED -> {
-                            notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                            deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                        }
-                        else -> {}
-                    }
+                    val notDeleted = filterSheet.findViewById<RadioButton>(R.id.not_deleted)!!
+                    val deleted = filterSheet.findViewById<RadioButton>(R.id.deleted)!!
+                    val all = filterSheet.findViewById<RadioButton>(R.id.all)!!
+
+                    notDeleted.isChecked = historyViewModel.statusFilter.value == HistoryViewModel.HistoryStatus.NOT_DELETED
+                    deleted.isChecked = historyViewModel.statusFilter.value == HistoryViewModel.HistoryStatus.DELETED
+                    all.isChecked = historyViewModel.statusFilter.value == HistoryViewModel.HistoryStatus.ALL
 
                     notDeleted.setOnClickListener {
-                        val status = historyViewModel.statusFilter.value
-                        when (status) {
-                            HistoryViewModel.HistoryStatus.ALL -> {
-                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.DELETED)
-                            }
-                            HistoryViewModel.HistoryStatus.NOT_DELETED -> {
-                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.UNSET)
-                            }
-                            HistoryViewModel.HistoryStatus.DELETED -> {
-                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.ALL)
-                            }
-                            else -> {
-                                notDeleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.NOT_DELETED)
-                            }
-                        }
+                        historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.NOT_DELETED)
                     }
                     deleted.setOnClickListener {
-                        val status = historyViewModel.statusFilter.value
-                        when (status) {
-                            HistoryViewModel.HistoryStatus.ALL -> {
-                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.NOT_DELETED)
-                            }
-                            HistoryViewModel.HistoryStatus.NOT_DELETED -> {
-                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.ALL)
-                            }
-                            HistoryViewModel.HistoryStatus.DELETED -> {
-                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.UNSET)
-                            }
-                            else -> {
-                                deleted.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check,0,0,0)
-                                historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.DELETED)
-                            }
-                        }
+                        historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.DELETED)
+                    }
+                    all.setOnClickListener {
+                        historyViewModel.setStatusFilter(HistoryViewModel.HistoryStatus.ALL)
                     }
 
                     if (websiteList.size < 2) {

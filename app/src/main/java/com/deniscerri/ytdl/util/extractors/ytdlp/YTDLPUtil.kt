@@ -870,7 +870,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() != null){
                     request.addOption("--match-filter", "id~='${downloadItem.url.getIDFromYoutubeURL()}'")
                 }else{
-                    request.addOption("-I", "${downloadItem.playlistIndex!!}:${downloadItem.playlistIndex}")
+                    request.addOption("-I", "${downloadItem.playlistIndex!!}")
                 }
             }
         }
@@ -1076,7 +1076,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
-        val aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
+        var aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
 
         when(type){
             DownloadType.audio -> {
@@ -1317,12 +1317,14 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 val preferredCodec = sharedPreferences.getString("video_codec", "")
                 val vCodecPrefIndex = context.getStringArray(R.array.video_codec_values).indexOf(preferredCodec)
-                val vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
+                var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
                 if (downloadItem.videoPreferences.compatibilityMode) {
                     request.addOption("--recode-video", "mp4")
                     request.addOption("--merge-output-format", "mp4/mkv")
-                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-c:v libx264 -c:a aac -profile:v baseline")
+                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-profile:v baseline")
+                    vCodecPref = "h264"
+                    aCodecPref = "aac"
                 }
 
                 val defaultFormats = context.resources.getStringArray(R.array.video_formats_values)

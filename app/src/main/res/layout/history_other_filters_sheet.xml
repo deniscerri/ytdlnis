@@ -24,34 +24,36 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"/>
 
-
-        <TextView
-            android:id="@+id/not_deleted"
+        <RadioGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:drawablePadding="30dp"
-            android:focusable="true"
             android:paddingHorizontal="20dp"
-            android:paddingVertical="10dp"
-            android:text="@string/not_deleted"
-            android:textSize="15sp"
-            app:drawableStartCompat="@drawable/empty" />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/deleted"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackground"
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="20dp"
-            android:drawablePadding="30dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="@string/deleted"
-            app:drawableStartCompat="@drawable/empty" />
+            <RadioButton
+                android:id="@+id/all"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:checked="true"
+                android:text="@string/all" />
+
+
+            <RadioButton
+                android:id="@+id/not_deleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:text="@string/not_deleted" />
+
+            <RadioButton
+                android:id="@+id/deleted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="30dp"
+                android:text="@string/deleted" />
+
+
+        </RadioGroup>
 
     </LinearLayout>
 
