@@ -507,6 +507,13 @@
     <string name="potoken_guide">Doğrulama (Auth)\n-----------------------\n1. WebView\'da oturum açma sayfasını açmak için \'Doğrulamaya (Auth) tıklayın. \n2. Google Hesabınıza giriş yapın. \n3. Otomatik çevrilmiş altyazıları destekleyen herhangi bir videoyu oynatın.\n4. Otomatik çevrilmiş altyazıları açın ve çalışıp çalışmadığını kontrol edin.\n4.1 Otomatik çevrilmiş altyazılar çalışmıyorsa, otomatik çevrilmiş altyazıları destekleyen başka bir videoya geçin ve 4. adımı tekrar deneyin. \n5. Tamam\'a tıklayın. \n\nDoğrulama Yok (No_auth)\n-----------------------\n1. \'Doğrulama Yok\' (no_auth) tıklayın. \n2. Herhangi bir YouTube video URL\'si yazın.\n3. Videonun yüklenmesini bekleyin ve videoyu en az 3 saniye oynatın.\n4. Tamam\'a tıklayın.</string>
     <string name="prefer_drc_audio">DRC Sesi Tercih Et</string>
     <string name="app_icon">Uygulama Simgesi</string>
-    <string name="show_quick_download_share_menu">Paylaş menüsünde hemen indirmek için seçeneği göster</string>
+    <string name="show_quick_download_share_menu">Paylaş menüsünde hemen indirmek için seçenek göster</string>
     <string name="quick_download_title">Veri toplamayın</string>
+    <string name="packages">Paketler</string>
+    <string name="not_installed">Kurulmamış</string>
+    <string name="bundled">İçinde Gelen</string>
+    <string name="use_app_language_for_metadata_summary">Etkinleştirildiğinde, metadata alanları uygulama diline uyacak ve format seçimini etkileyerek orjinal şekli yerine çevirilmiş şeklini kullanacaktır</string>
+    <string name="installed">Kurulmuş</string>
+    <string name="auto_update_ytdlp_summary">yt-dlp sık sık güncellendiği için ve uygulamanın düzgün çalışması için bu seçeneğin etkin kalması önerilir! Bu veri yt-dlp\'nin GitHub Deposundan çıkarıldı.</string>
+    <string name="sponsorblock_hook">Tanıtım/Selamlar</string>
 </resources>

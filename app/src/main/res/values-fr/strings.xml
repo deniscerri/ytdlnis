@@ -514,4 +514,5 @@
     <string name="bundled">Ensemble</string>
     <string name="use_app_language_for_metadata_summary">Si cette option est activée, les champs de métadonnées suivront la langue de votre application et affecteront même la sélection du format en privilégiant les versions doublées plutôt que les versions originales</string>
     <string name="installed">Installé</string>
+    <string name="auto_update_ytdlp_summary">Il est recommandé de laisser cette option activée pour garantir le bon fonctionnement de l\'application, car yt-dlp est mis à jour assez fréquemment ! Les données sont extraites du dépôt GitHub de yt-dlp.</string>
 </resources>

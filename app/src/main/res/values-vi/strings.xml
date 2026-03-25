@@ -508,4 +508,10 @@
     <string name="show_quick_download_share_menu">Hiện tùy chọn tải xuống ngay trong menu chia sẻ</string>
     <string name="quick_download_title">Không lấy dữ liệu</string>
     <string name="sponsorblock_hook">Lời chào/Mở đầu</string>
+    <string name="installed">Đã cài đặt</string>
+    <string name="auto_update_ytdlp_summary">Khuyến nghị nên giữ tùy chọn này được bật để ứng dụng hoạt động ổn định, vì yt-dlp được cập nhật khá thường xuyên! Dữ liệu được lấy từ kho GitHub của yt-dlp.</string>
+    <string name="packages">Gói ứng dụng</string>
+    <string name="not_installed">Chưa cài đặt</string>
+    <string name="bundled">Tích hợp sẵn</string>
+    <string name="use_app_language_for_metadata_summary">Khi bật, metadata sẽ theo ngôn ngữ ứng dụng và có thể ưu tiên chọn bản lồng tiếng thay vì bản gốc.</string>
 </resources>

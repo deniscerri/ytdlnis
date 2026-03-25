@@ -210,7 +210,7 @@
     <string name="downloads_running_try_later">הורדה פועלת. נסה שוב מאוחר יותר</string>
     <string name="api_key">להשתמש במפתח API</string>
     <string name="download_over_metered_networks">הורדה דרך רשתות מוגבלות</string>
-    <string name="clear_temporary_files_summary">מחק קבצים בקובץ שמור מהורדות שקרסו/בשגיאה/בוטלו</string>
+    <string name="clear_temporary_files_summary">מחיקת קבצים, infojsons ושלל הגדרות זמניות נוספות</string>
     <string name="user_agent_header">כותרת סוכן-משתמש</string>
     <string name="suggested">מוּצָע</string>
     <string name="high_contrast">ניגודיות גבוהה</string>
@@ -508,4 +508,10 @@
     <string name="update_ytdlp_while_downloading_summary">יש להוסיף ‎-U ל־yt-dlp כדי לעדכן אותו לגרסה העדכנית ביותר לפני הורדה</string>
     <string name="potoken_guide">עם אימות\n-----------------------\n1. יש ללחוץ על ‚אימות’ כדי לפתוח את עמוד הכניסה למערכת בחלון אתר.\n2. להיכנס עם חשבון ה־Google שלך.\n3. לנגן סרטון כלשהו שתומך בכתוביות שתורגמו אוטומטית.\n4. להפעיל כתוביות שתורגמו אוטומטית ולראות אם הן עובדות.\n\t4.1 אם הכתוביות שתורגמו אוטומטית לא עובדות, יש לעבור לסרטון אחר שתומך בכתוביות שתורגמו אוטומטית ולנסות את שלב 4 שוב.\n5. ללחוץ על אישור.\n\nללא אימות\n-----------------------\n1. יש ללחוץ על ‚ללא אימות’.\n2. לכתובת כתובת סרטון youtube כלשהי\n3. להמתין לטעינת הסרטון ולנגן לפחות 3 שניות מהסרטון.\n4. ללחוץ על אישור.</string>
     <string name="sponsorblock_hook">מושך עניין/ברכות ואיחולים</string>
+    <string name="packages">חבילות</string>
+    <string name="not_installed">לא מותקנת</string>
+    <string name="bundled">מאוגדת</string>
+    <string name="installed">מותקנת</string>
+    <string name="use_app_language_for_metadata_summary">אם האפשרות פעילה, שדות נתוני העל יצמדו לשפת היישומון שלך ואפילו ישפיע על בחירת תסדיר על ידי העדפת גרסאות מדובבות על פני המקוריות</string>
+    <string name="auto_update_ytdlp_summary">מומלץ לשמור על האפשרות הזאת פעילה כדי לשמור על פעולה תקינה של היישום כיוון ש־yt-dlp מתעדכן לעתים מאוד תכופות! הנתונים מחולצים ממאגר ה־GitHub של yt-dlp.</string>
 </resources>
