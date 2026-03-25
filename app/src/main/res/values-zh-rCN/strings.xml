@@ -512,4 +512,5 @@
     <string name="bundled">捆绑</string>
     <string name="use_app_language_for_metadata_summary">如启用，元数据字段会和应用程序语言保持一致，并且影响格式选择（首选配音版而不是原始声音版本）</string>
     <string name="installed">已安装</string>
+    <string name="auto_update_ytdlp_summary">建议保持此选项开启让应用持续正常工作，因为 yt-dlp 更新相当频繁！数据提取自 yt-dlp 的 GitHub 代码库。</string>
 </resources>

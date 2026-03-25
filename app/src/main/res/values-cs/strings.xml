@@ -513,4 +513,5 @@
     <string name="bundled">Součásti</string>
     <string name="use_app_language_for_metadata_summary">Pokud je tato funkce zapnuta, pole metadat budou odpovídat jazyku vaší aplikace a budou dokonce ovlivňovat výběr formátu tím, že upřednostní dabované verze před originálními</string>
     <string name="installed">Nainstalované</string>
+    <string name="auto_update_ytdlp_summary">Doporučujeme tuto funkci nechat zapnutou, aby aplikace fungovala správně, protože yt-dlp se aktualizuje poměrně často! Data se stahují z repozitáře yt-dlp na GitHubu.</string>
 </resources>
