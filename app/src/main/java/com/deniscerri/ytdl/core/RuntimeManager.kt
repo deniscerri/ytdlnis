@@ -7,6 +7,7 @@ import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.core.models.ExecuteResponse
 import com.deniscerri.ytdl.core.models.YTDLRequest
 import com.deniscerri.ytdl.core.packages.Aria2c
+import com.deniscerri.ytdl.core.packages.Deno
 import com.deniscerri.ytdl.core.packages.FFmpeg
 import com.deniscerri.ytdl.core.packages.NodeJS
 import com.deniscerri.ytdl.core.packages.PackageBase
@@ -33,6 +34,7 @@ object RuntimeManager {
     lateinit var ffmpegLocation: PackageBase.PackageLocation
     lateinit var aria2Location: PackageBase.PackageLocation
     lateinit var nodeLocation : PackageBase.PackageLocation
+    lateinit var denoLocation : PackageBase.PackageLocation
     lateinit var quickJsLocation : PackageBase.PackageLocation
     var ytdlpPath: File? = null
 
@@ -60,18 +62,21 @@ object RuntimeManager {
         val aria2c = Aria2c.getInstance()
         val nodeJS = NodeJS.getInstance()
         val quickJS = QuickJS.getInstance()
+        val deno = Deno.getInstance()
 
         python.init(appContext)
         ffmpeg.init(appContext)
         aria2c.init(appContext)
         nodeJS.init(appContext)
         quickJS.init(appContext)
+        deno.init(appContext)
 
         //find location of libraries either from bundled or downloaded paths
         pythonLocation = python.location
         ffmpegLocation = ffmpeg.location
         aria2Location = aria2c.location
         nodeLocation = nodeJS.location
+        denoLocation = deno.location
         quickJsLocation = quickJS.location
 
         val ytdlpDir = File(baseDir, ytdlpDirName)
@@ -83,7 +88,8 @@ object RuntimeManager {
             ffmpegLocation,
             aria2Location,
             nodeLocation,
-            quickJsLocation
+            quickJsLocation,
+            denoLocation,
         )
 
         val ldPaths = mutableListOf<String>()
@@ -206,6 +212,10 @@ object RuntimeManager {
 
         if (nodeLocation.isAvailable) {
             request.addOption("--js-runtimes", "node:${nodeLocation.executable.absolutePath}")
+        }
+
+        if (denoLocation.isAvailable) {
+            request.addOption("--js-runtimes", "deno:${denoLocation.executable.absolutePath}")
         }
 
         if (quickJsLocation.isAvailable) {

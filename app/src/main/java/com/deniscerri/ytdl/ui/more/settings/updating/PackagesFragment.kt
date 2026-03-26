@@ -53,6 +53,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.core.net.toUri
 import com.anggrayudi.storage.file.toRawFile
+import com.deniscerri.ytdl.core.packages.Deno
 import java.io.File
 
 
@@ -95,6 +96,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
             PackageItem("Python", Python),
             PackageItem("FFmpeg", FFmpeg),
             PackageItem("NodeJS", NodeJS),
+            PackageItem("Deno", Deno),
             PackageItem("Aria2c", Aria2c)
         )
         listAdapter.submitList(packages)

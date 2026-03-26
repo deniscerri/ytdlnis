@@ -279,7 +279,7 @@ abstract class PackageBase {
                             it.tag_name.contains(githubPackageName)
                         }
                         .onEach {
-                            // nodejs-1.0.0-arm64-v8a
+                            // e.g. nodejs-1.0.0-arm64-v8a
                             it.version = it.tag_name.split("-")[1]
                             it.assets = it.assets.filter { a -> a.name.contains(supportedArch) }
                             it.downloadSize = it.assets.first().size

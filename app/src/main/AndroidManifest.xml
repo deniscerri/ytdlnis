@@ -32,6 +32,7 @@
         <package android:name="com.deniscerri.ytdl.python" />
         <package android:name="com.deniscerri.ytdl.ffmpeg" />
         <package android:name="com.deniscerri.ytdl.nodejs" />
+        <package android:name="com.deniscerri.ytdl.deno" />
         <package android:name="com.deniscerri.ytdl.aria2c" />
     </queries>
 
