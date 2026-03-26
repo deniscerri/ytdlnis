@@ -494,7 +494,7 @@ class NotificationUtil(var context: Context) {
                 ).build()
 
                 val builder = Notification.Builder(context, channel)
-                    .setSmallIcon(R.drawable.ic_app_icon)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground_large)
                     .setContentTitle("$progress%")
                     .setContentText(title)
                     .setSubText(contentText)
