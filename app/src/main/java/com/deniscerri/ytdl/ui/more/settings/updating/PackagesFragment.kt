@@ -99,6 +99,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
             PackageItem("Deno", Deno),
             PackageItem("Aria2c", Aria2c)
         )
+        RuntimeManager.getInstance().assertInit()
         listAdapter.submitList(packages)
     }
 

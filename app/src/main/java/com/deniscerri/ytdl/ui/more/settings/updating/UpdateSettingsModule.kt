@@ -147,25 +147,34 @@ object UpdateSettingsModule : SettingModule {
         ytdlVersionPreference: Preference,
         channel: String? = null
     ) = host.hostLifecycleOwner.lifecycleScope.launch {
-        val view = host.hostView!!
+        val view = host.hostView
 
-        Snackbar.make(view, context.getString(R.string.ytdl_updating_started),
-            Snackbar.LENGTH_LONG).show()
+        view?.apply {
+            Snackbar.make(view, context.getString(R.string.ytdl_updating_started), Snackbar.LENGTH_LONG).show()
+        }
+
         runCatching {
             val res = updateUtil.updateYTDL(channel)
             when (res.status) {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
-                    Snackbar.make(view, res.message, Snackbar.LENGTH_LONG).show()
+                    view?.apply {
+                        Snackbar.make(view, res.message, Snackbar.LENGTH_LONG).show()
+                    }
+
                     setYTDLPVersion(context, host, ytdlpViewModel, preferences, ytdlVersionPreference)
                     val infoJsonPath = FileUtil.getInfoJsonPath(context)
                     File(infoJsonPath).deleteRecursively()
                 }
-                UpdateUtil.YTDLPUpdateStatus.ALREADY_UP_TO_DATE -> Snackbar.make(view,
-                    context.getString(R.string.you_are_in_latest_version),
-                    Snackbar.LENGTH_LONG).show()
+                UpdateUtil.YTDLPUpdateStatus.ALREADY_UP_TO_DATE -> {
+                    view?.apply {
+                        Snackbar.make(view,
+                            context.getString(R.string.you_are_in_latest_version),
+                            Snackbar.LENGTH_LONG).show()
+                    }
+                }
                 UpdateUtil.YTDLPUpdateStatus.ERROR -> {
                     val msg = res.message
-                    view.apply {
+                    view?.apply {
                         val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
                         snackBar.setAction(R.string.copy_log){
                             UiUtil.copyToClipboard(msg, host.getHostContext())
@@ -182,7 +191,7 @@ object UpdateSettingsModule : SettingModule {
             }
         }.onFailure {
             val msg = it.message ?: context.getString(R.string.errored)
-            view.apply {
+            view?.apply {
                 val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
                 snackBar.setAction(R.string.copy_log){
                     UiUtil.copyToClipboard(msg, host.getHostContext())

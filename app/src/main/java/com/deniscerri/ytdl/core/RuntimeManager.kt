@@ -140,7 +140,7 @@ object RuntimeManager {
         init(context)
     }
 
-    private fun assertInit() {
+    fun assertInit() {
         val success = initLatch.await(5, TimeUnit.SECONDS)
         if (!success) {
             throw IllegalStateException("Instance not initialized")
