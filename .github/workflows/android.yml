@@ -4,8 +4,7 @@ env:
   # The name of the main module repository
   main_project_module: app
 
-permissions:
-  contents: write # for deleting/creating a pre-release
+permissions: {}
 
 on:
   push:
@@ -15,9 +14,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
     - uses: actions/checkout@v4
-
+      with:
+        persist-credentials: false
     - name: set up JDK 17
       uses: actions/setup-java@v4
       with:
@@ -29,7 +31,7 @@ jobs:
       run: echo "${{ secrets.BASE_64_SIGNING_KEY }}" > app/release_keystore.txt
     - name: Create jks file
       run: base64 -d "app/release_keystore.txt" > app/release_keystore.jks
-    - name: Create Blank Local Properties FIle
+    - name: Create Blank Local Properties File
       run: touch local.properties
     - name: Create Keystore Properties File
       run: echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
