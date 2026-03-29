@@ -1,7 +1,6 @@
 package com.deniscerri.ytdl.ui.more.settings.downloading
 
 import android.os.Bundle
-import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
@@ -24,9 +23,6 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, preferenceXMLRes)
                 requireActivity().recreate()
-                val fragmentId = findNavController().currentDestination?.id
-                findNavController().popBackStack(fragmentId!!,true)
-                findNavController().navigate(fragmentId)
             }
             true
         }
