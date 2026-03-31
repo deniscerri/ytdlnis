@@ -29,7 +29,7 @@
 [![حالة الترجمة](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) 
 [![المجتمع](https://img.shields.io/badge/Discord-YTDLnis-أزرق_بنفسجي?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm) 
 [![المجتمع](https://img.shields.io/badge/Telegram-YTDLnis-أزرق?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
-[![المجتمع](https://img.shields.io/badge/Telegram-التحديثات-أحمر?style=flat-square&logo=telegram)](https://t.me/ytdlnisupdates)
+[![المجتمع](https://img.shields.io/badge/Telegram-التحديثات-أحمر?style=flat-square&logo=telegram)](https://t.me/ytdlnis_updates)
 [![الموقع الإلكتروني](https://img.shields.io/badge/الموقع-برتقالي?style=flat-square&logo=youtube)](https://ytdlnis.org)
 ![راعي GitHub](https://img.shields.io/github/sponsors/deniscerri?label=راعي&logo=GitHub)
 
