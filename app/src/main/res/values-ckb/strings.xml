@@ -6,7 +6,7 @@
     <string name="search_history_hint">گەڕانەکانی پێشوو</string>
     <string name="search_command_hint">گەڕان لە فەرمانەکان</string>
     <string name="download_notification_channel_description">ئاگادارکردنەوە بۆ پیشاندانی پرۆسەی دابەزاندنی فایلە دەنگی و ڤیدیۆییەکان</string>
-    <string name="update_ytdl">دابەزاندنی وەشانی نوێی yt-dlp</string>
+    <string name="update_ytdl">yt-dlp نوێ بکەوە بۆ وەشانی نوێ</string>
     <string name="directories">فۆڵدەرەکان</string>
     <string name="confirm_delete_history">دڵنیابوونەوە</string>
     <string name="search_hint">بگەڕێ یان بەستەر دابنێ</string>
@@ -37,7 +37,7 @@
     <string name="sponsorblock_intro">دەستپێک</string>
     <string name="sponsorblock_fillers">پڕکەرەوەکان</string>
     <string name="sponsorblock_reminders">بیرخەرەوەکانی بەشداریبوون</string>
-    <string name="cancel_task">پاشگەزبوونەوە</string>
+    <string name="cancel_task">پاشگەزبوونەوە لە کردارەکە</string>
     <string name="logs">تۆمارەکان</string>
     <string name="audio_quality">کوالێتیی دەنگ</string>
     <string name="audio_format">فۆرماتی دەنگ</string>
@@ -88,7 +88,7 @@
     <string name="link_copied_to_clipboard">بەستەر لەبەرگیرایەوە بۆ کلیبۆرد</string>
     <string name="save_dir">شوێن پاشەکەوت بکە</string>
     <string name="defaultValue">بنەڕەتی</string>
-    <string name="video_format">فۆرماتی ڤیدیۆ</string>
+    <string name="video_format">جۆری ڤیدیۆ</string>
     <string name="container">هەڵگر</string>
     <string name="download">دایبەزێنە</string>
     <string name="run_command">جێبەجێکردنی فەرمان</string>
