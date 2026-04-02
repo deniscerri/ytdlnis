@@ -8,7 +8,7 @@
     <string name="video_directory">Directorio de Video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil al descargar actualizaciones</string>
-    <string name="update_ytdl">Actualiza yt-dl a la última versión</string>
+    <string name="update_ytdl">Actualiza yt-dlp a la nueva versión.</string>
     <string name="about">Acerca de</string>
     <string name="source_code">Código Fuente</string>
     <string name="search_hint">Buscar o insertar URL</string>
@@ -95,7 +95,7 @@
     <string name="sponsorblock_outro">Cierre</string>
     <string name="sponsorblock_nonmusic">Fragmentos sin música y que no corresponden al tema</string>
     <string name="sponsorblock_intro">Introducción</string>
-    <string name="sponsorblock_reminders">Recordatorios de Suscripción</string>
+    <string name="sponsorblock_reminders">Recordatorios de suscripción</string>
     <string name="select_sponsorblock_filtering">Seleccionar filtrado de SponsorBlock</string>
     <string name="sponsorblock_previews">Avances</string>
     <string name="sponsorblock_promos">Autopromociones</string>
@@ -150,7 +150,7 @@
     <string name="clear_errored">Borrar con errores</string>
     <string name="file_size">Tamaño del archivo</string>
     <string name="clear_temporary_files">Borrar los archivos temporales</string>
-    <string name="clear_temporary_files_summary">Elimina los archivos en caché de descargas bloqueadas, canceladas o anuladas</string>
+    <string name="clear_temporary_files_summary">Eliminar archivos en caché, archivos infojson y otras configuraciones temporales.</string>
     <string name="restart">Reiniciar</string>
     <string name="download_rescheduled_to">Descarga aplazada a:</string>
     <string name="ytdl_version">Versión de yt-dlp</string>
@@ -219,7 +219,7 @@
     <string name="download_now">Descargar ahora</string>
     <string name="download_already_exists">Ya existe la descarga</string>
     <string name="quick_download">Descargas rápidas</string>
-    <string name="quick_download_summary">No recuperar los datos en la tarjeta de la descarga</string>
+    <string name="quick_download_summary">Continúe con el proceso de descarga inmediatamente, sin obtener datos previamente</string>
     <string name="system">Sistema</string>
     <string name="accents">Acentos</string>
     <string name="high_contrast">Contraste alto</string>
@@ -237,7 +237,7 @@
     <string name="preferred_locale">Ubicación preferida</string>
     <string name="pause">Pausa</string>
     <string name="resume">Reanudar</string>
-    <string name="updating_download_data">Actualizando los datos de los elementos de la descarga</string>
+    <string name="updating_download_data">Actualizando los datos del elemento de descarga</string>
     <string name="keep_cache">Conservar los fragmentos</string>
     <string name="keep_cache_summary">No eliminar los archivos temporales una vez finalizada la descarga</string>
     <string name="backup">Copia de seguridad</string>
@@ -249,7 +249,7 @@
     <string name="couldnt_parse_file">No se pudo analizar el archivo</string>
     <string name="restore_complete">Restauración de la aplicación completa. Se han restaurado los siguientes elementos:</string>
     <string name="network_error">Error de red</string>
-    <string name="backup_created_successfully">Archivo de la copia de seguridad guardado en la carpeta de descargas</string>
+    <string name="backup_created_successfully">El archivo de copia de seguridad se guardó correctamente</string>
     <string name="appearance">Apariencia</string>
     <string name="backup_restore">Copia de seguridad y restauración</string>
     <string name="socks5_proxy_summary">Utilice el proxy HTTP/HTTPS/SOCKS especificado</string>

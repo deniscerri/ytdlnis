@@ -165,7 +165,7 @@
     <string name="swipe_gestures">Жестове с плъзгане</string>
     <string name="audio_only_item">Този елемент съдържа само аудио файлове</string>
     <string name="move_temporary_files">Преместване на временни файлове</string>
-    <string name="move_temporary_files_summary">Преместете кеша в папка за изтегляния</string>
+    <string name="move_temporary_files_summary">Прехвърляне на кеширани файлове за изтегляне в папката за изтегляния</string>
     <string name="fragment_retries">Повторни опити за сегменти</string>
     <string name="format_order">Ред на форматиране</string>
     <string name="use_extra_commands">Добавяне на допълнителни команди</string>
@@ -282,7 +282,7 @@
     <string name="search_history">История на търсения</string>
     <string name="couldnt_parse_file">Файлът не може да бъде анализиран</string>
     <string name="backup_created_successfully">Файлът с резервно копие е запазен</string>
-    <string name="appearance">Външен вид на YTDLnis</string>
+    <string name="appearance">Външен вид</string>
     <string name="backup_restore">Архивиране и възстановяване</string>
     <string name="socks5_proxy">URL Socks5-прокси</string>
     <string name="socks5_proxy_summary">Използвайте посочения прокси HTTP/HTTPS/SOCKS</string>
@@ -360,7 +360,7 @@
     <string name="help_translate_summary">Преведете това приложение на вашия език с помощта на Weblate</string>
     <string name="clear_temporary_files">Изчистване на временни файлове</string>
     <string name="file_size">Размер на файла</string>
-    <string name="clear_temporary_files_summary">Изтриване на кеша на неуспешни/неправилни/анулирани изтегляния</string>
+    <string name="clear_temporary_files_summary">Изтриване на кеширани файлове, infojsons и други временни конфигурации</string>
     <string name="downloads_running_try_later">Работещо изтегляне. Опитайте отново по-късно</string>
     <string name="ytdl_version">Версия yt-dlp</string>
     <string name="restrict_filenames">Ограничени имена на файловете</string>
@@ -418,7 +418,7 @@
     <string name="format_importance_note">Подреждане важността на елемента на формат. Това подреждане ще се използва, само когато приложението извлече форматите от картата за изтегляне и автоматично избере формата!</string>
     <string name="use_item_url_not_playlist_summary">Метаданните на плейлиста няма да бъдат вградени, ако функцията е включена</string>
     <string name="data_fetching_extractor_youtube">Екстрактор за извличане на данни (YouTube)</string>
-    <string name="disable_write_info_json_summary">(Не се препоръчва) Всеки път, когато рестартирате/възобновите изтеглянето, yt-dlp ще изтегли отново json данни от сървърите.</string>
+    <string name="disable_write_info_json_summary">Всеки път, когато рестартирате/възобновите изтеглянето, yt-dlp ще изтегли отново json данни от сървърите (не се препоръчва)</string>
     <string name="disable_write_info_json">Деактивиране на запис на информация Json</string>
     <string name="other_youtube_extractor_args">Други аргументи в полза на YouTube екстрактора</string>
     <string name="items">артикул(и)</string>
@@ -434,11 +434,11 @@
     <string name="deleted">Изтрит</string>
     <string name="websites">Уебсайт</string>
     <string name="data_fetching_extra_command">Допълнителна команда за получаване на данни</string>
-    <string name="ytdlp_liked">YT-DLP Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube История на гледане (необходими са бисквитки)</string>
+    <string name="ytdlp_liked">yt-dlp Youtube Харесвани видеоклипове (необходими са бисквитки)</string>
+    <string name="ytdlp_watch_history">yt-dlp Youtube История на гледане (необходими са бисквитки)</string>
     <string name="data_fetching_extra_command_summary">Разрешете командни шаблони, които да се използват за извличане на данни, като допълнителни команди</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube Гледайте по-късно (необходими са бисквитки)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube препоръки (необходими са бисквитки)</string>
+    <string name="ytdlp_watch_later">\"Гледайте по-късно\" в YouTube на yt-dlp (изисква бисквитки)</string>
+    <string name="ytdlp_recommnedations">yt-dlp Youtube препоръки (необходими са бисквитки)</string>
     <string name="prefer_container_over_codec_audio_summary">Когато това е активирано, предпочитанието за аудио кодек ще бъде игнорирано и само контейнерът ще се промени</string>
     <string name="live_stream">Излъчване на живо</string>
     <string name="wait_for_video">Изчакване на видео</string>
@@ -485,13 +485,13 @@
     <string name="largest">Най-големият</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Плеър)</string>
-    <string name="visitor_data">PO Token (Subs)</string>
+    <string name="visitor_data">Данни за посетителите</string>
     <string name="get_data_sync_id">Получава идентификатор за синхронизация на данни</string>
     <string name="desktop">Desktop</string>
     <string name="url_regex">URL Regex</string>
     <string name="chapters">Глави</string>
-    <string name="use_original_url_playlist">Използвайте оригиналния URL адрес за URL адрес на плейлиста</string>
-    <string name="use_original_url_playlist_summary">Използвайте URL адреса на плейлиста, предоставен от потребителя, вместо тага playlist_webpage_url от JSON дъмпа</string>
+    <string name="use_original_url_playlist">Използвайте оригиналния url адрес за url адрес на плейлиста</string>
+    <string name="use_original_url_playlist_summary">Използвайте url адреса на плейлиста, предоставен от потребителя, вместо тага playlist_webpage_url от JSON дъмпа</string>
     <string name="layout">Оформление</string>
     <string name="potoken_subs">PO токен (Subs)</string>
     <string name="update_ytdlp_while_downloading">Обновяване yt-dlp по време на изтегляне</string>
@@ -504,4 +504,14 @@
     <string name="show_quick_download_share_menu">Показване на опция изтегляне в менюто за споделяне</string>
     <string name="potoken_guide">Авторизация\n-----------------------\n1. Кликнете върху „Авторизация“, за да отворите страницата за вход в WebView.\n2. Влезте в профила си в Google.\n3. Пуснете всяко видео, което поддържа автоматично преведени субтитри.\n4. Включете автоматично преведените субтитри и вижте дали работят.\n4.1 Ако автоматично преведените субтитри не работят, преминете към друго видео, което поддържа автоматично преведени субтитри, и опитайте стъпка 4 отново.\n5. Кликнете върху OK.\n\nБез авторизация\n-----------------------\n1. Кликнете върху „Без авторизация“.\n2. Въведете URL адреса на произволен видеоклип в YouTube.\n3. Изчакайте видеоклипът да се зареди и го пуснете поне 3 секунди.\n4. Кликнете върху OK.</string>
     <string name="quick_download_title">Без извличане на данни</string>
+    <string name="reverse">Обратно</string>
+    <string name="disable_flat_playlist">Деактивиране на Flat Playlist</string>
+    <string name="disable_flat_playlist_summary">Не използвайте --flat-playlist. Извличането на данни се забавя, но ще го направи по-смислено</string>
+    <string name="sponsorblock_hook">Въведение/Поздравления</string>
+    <string name="packages">Пакети</string>
+    <string name="not_installed">Не е инсталирано</string>
+    <string name="bundled">Вграден</string>
+    <string name="use_app_language_for_metadata_summary">Ако е активирано, полетата с метаданни ще следват езика на програмата и дори ще влияят на избора на формат, като предпочитат дублиращите се записи пред оригиналните</string>
+    <string name="installed">Инсталирано</string>
+    <string name="auto_update_ytdlp_summary">Препоръчително е да оставите тази опция активирана за правилната работа на приложението, тъй като yt-dlp се актуализира често! Всички данни се извличат от хранилището на yt-dlp в GitHub.</string>
 </resources>
