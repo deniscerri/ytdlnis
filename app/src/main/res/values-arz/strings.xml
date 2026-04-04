@@ -155,4 +155,10 @@
     <string name="remove_duplicates">إزالة التكرارات</string>
     <string name="sort_by">ترتيب</string>
     <string name="incognito_summary">تنزيل دون إضافة إلى التاريخ</string>
+    <string name="title">العنوان</string>
+    <string name="download">تحميل</string>
+    <string name="video_quality">جودة الفيديو</string>
+    <string name="show_download_card">اظهر كارت التحميل</string>
+    <string name="download_card_summary">اضبط الاعدادات للبتاع دا قبل التحميل. الغاء تفعيل الخيار دا هيبدء التحميل حالا</string>
+    <string name="Open_File">افتح الملف</string>
 </resources>
