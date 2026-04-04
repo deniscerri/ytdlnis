@@ -63,6 +63,7 @@ import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
+import com.facebook.shimmer.BuildConfig
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -498,7 +499,6 @@ class MainActivity : BaseActivity() {
         val updateAppSwitch = updateAppLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
         updateAppLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
             icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update_app)
-            isVisible = true
         }
         updateAppLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.update_app)
         updateAppLayout.findViewById<TextView>(R.id.preference_summary).apply {
@@ -509,6 +509,7 @@ class MainActivity : BaseActivity() {
         updateAppLayout.setOnClickListener {
             updateAppSwitch.isChecked = !updateAppSwitch.isChecked
         }
+        updateAppLayout.isVisible = BuildConfig.FLAVOR == "github"
 
         val updateYTDLLayout = view.findViewById<View>(R.id.update_ytdl)
         val updateYTDLSwitch = updateYTDLLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
@@ -544,7 +545,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun callAutoUpdates() {
-        if (preferences.getBoolean("update_app", false)) {
+        if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
             CoroutineScope(Dispatchers.IO).launch {
                 val res = updateUtil.tryGetNewVersion()

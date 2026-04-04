@@ -20,8 +20,10 @@ import androidx.core.view.children
 import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.MainActivity
@@ -31,6 +33,7 @@ import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
@@ -40,11 +43,9 @@ import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class DownloadLogFragment : Fragment() {
@@ -240,30 +241,23 @@ class DownloadLogFragment : Fragment() {
                 }
             }
         }
+
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                WorkerEventBus.events.collectLatest { event ->
+                    val progressBar = requireView().findViewById<LinearProgressIndicator>(R.id.progress)
+                    if (event.logItemID == logID) {
+                        progressBar.isVisible = event.progress < 100
+                        progressBar.setProgressCompat(event.progress, true)
+                    }
+                }
+            }
+        }
     }
 
     private fun updateAutoScrollState() {
         val canVerticallyScroll = contentScrollView.canScrollVertically(1)
         scrollDownBtn?.isVisible = canVerticallyScroll
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    //dont remove
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
-        val progressBar = requireView().findViewById<LinearProgressIndicator>(R.id.progress)
-        if (event.logItemID == logID) {
-            progressBar.isVisible = event.progress < 100
-            progressBar.setProgressCompat(event.progress, true)
-        }
     }
 }

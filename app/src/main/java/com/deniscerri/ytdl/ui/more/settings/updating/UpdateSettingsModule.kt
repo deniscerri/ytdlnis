@@ -92,27 +92,28 @@ object UpdateSettingsModule : SettingModule {
                     val nativeLibraryDir = context.applicationInfo?.nativeLibraryDir
                     summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)})"
 
-
-                    onPreferenceClickListener =
-                        Preference.OnPreferenceClickListener {
-                            host.hostLifecycleOwner.lifecycleScope.launch{
-                                val updateUtil = UpdateUtil(context)
-                                val res = withContext(Dispatchers.IO){
-                                    updateUtil.tryGetNewVersion()
-                                }
-                                if (res.isFailure) {
-                                    Snackbar.make(host.hostView!!, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
-                                }else{
-                                    if (preferences.getBoolean("automatic_backup", false)) {
-                                        withContext(Dispatchers.IO){
-                                            settingsViewModel.backup()
-                                        }
+                    if (BuildConfig.FLAVOR == "github") {
+                        onPreferenceClickListener =
+                            Preference.OnPreferenceClickListener {
+                                host.hostLifecycleOwner.lifecycleScope.launch{
+                                    val updateUtil = UpdateUtil(context)
+                                    val res = withContext(Dispatchers.IO){
+                                        updateUtil.tryGetNewVersion()
                                     }
-                                    UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences)
+                                    if (res.isFailure) {
+                                        Snackbar.make(host.hostView!!, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
+                                    }else{
+                                        if (preferences.getBoolean("automatic_backup", false)) {
+                                            withContext(Dispatchers.IO){
+                                                settingsViewModel.backup()
+                                            }
+                                        }
+                                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences)
+                                    }
                                 }
+                                true
                             }
-                            true
-                        }
+                    }
                 }
             }
         }

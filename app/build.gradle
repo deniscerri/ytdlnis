@@ -85,6 +85,17 @@ android {
         }
     }
 
+    flavorDimensions "version"
+    productFlavors {
+        github {
+            dimension "version"
+            isDefault true
+        }
+        foss {
+            dimension "version"
+        }
+    }
+
 
     android.applicationVariants.configureEach { variant ->
         variant.outputs.each { output ->
@@ -226,7 +237,6 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-webview:0.36.0'
     implementation 'androidx.compose.material3:material3-android:1.4.0'
     implementation "io.noties.markwon:core:4.6.2"
-    implementation("org.greenrobot:eventbus:3.3.1")
     implementation("com.github.teamnewpipe:newpipeextractor:v0.26.0")
 
     implementation("commons-io:commons-io:2.5")

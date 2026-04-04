@@ -10,8 +10,10 @@ import android.widget.TextView
 import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,14 +22,12 @@ import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdl.ui.adapter.TerminalDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnItemClickListener {
@@ -72,29 +72,25 @@ class TerminalDownloadsListFragment : Fragment(), TerminalDownloadsAdapter.OnIte
             }
         }
 
-    }
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
 
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                WorkerEventBus.events.collectLatest { event ->
+                    val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
+                    val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
-        val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
-        val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
-
-        requireActivity().runOnUiThread {
-            kotlin.runCatching {
-                outputText?.text = event.output
-                progressBar?.setProgressCompat(event.progress, true)
+                    requireActivity().runOnUiThread {
+                        kotlin.runCatching {
+                            outputText?.text = event.output
+                            progressBar?.setProgressCompat(event.progress, true)
+                        }
+                    }
+                }
             }
         }
+
     }
+
 
     override fun onCancelClick(itemID: Long) {
         terminalViewModel.cancelTerminalDownload(itemID)

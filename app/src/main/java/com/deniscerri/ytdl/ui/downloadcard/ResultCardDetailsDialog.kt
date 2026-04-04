@@ -22,8 +22,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
@@ -51,6 +53,7 @@ import com.deniscerri.ytdl.util.Extensions.setFullScreen
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -69,9 +72,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdapter.OnItemClickListener, ActiveDownloadMinifiedAdapter.OnItemClickListener {
@@ -310,6 +310,22 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                 e.printStackTrace()
             }
         }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                WorkerEventBus.events.collectLatest { event ->
+                    val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
+                    val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
+
+                    requireActivity().runOnUiThread {
+                        try {
+                            progressBar?.setProgressCompat(event.progress, true)
+                            outputText?.text = event.output
+                        }catch (ignored: Exception) {}
+                    }
+                }
+            }
+        }
     }
 
     private fun onButtonClick(type: DownloadType){
@@ -509,30 +525,4 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             R.id.downloadQueueMainFragment
         )
     }
-
-    //dont remove
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDownloadProgressEvent(event: DownloadWorker.WorkerProgress) {
-        val progressBar = requireView().findViewWithTag<LinearProgressIndicator>("${event.downloadItemID}##progress")
-        val outputText = requireView().findViewWithTag<TextView>("${event.downloadItemID}##output")
-
-        requireActivity().runOnUiThread {
-            try {
-                progressBar?.setProgressCompat(event.progress, true)
-                outputText?.text = event.output
-            }catch (ignored: Exception) {}
-        }
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
 }

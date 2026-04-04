@@ -33,6 +33,7 @@ import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +42,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
@@ -221,8 +221,6 @@ class DownloadWorker(
                         dao.update(downloadItem)
                     }
 
-                    val eventBus = EventBus.getDefault()
-
                     runCatching {
                         RuntimeManager.getInstance().destroyProcessById(downloadItem.id.toString())
                         RuntimeManager.getInstance().execute(
@@ -231,7 +229,7 @@ class DownloadWorker(
                             redirectErrorStream = true,
                             usingCacheDir = true
                         ){ progress, _, line ->
-                            eventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
+                            WorkerEventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
                             val title: String = downloadItem.title.ifEmpty { downloadItem.url }
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
@@ -254,7 +252,7 @@ class DownloadWorker(
                             var finalPaths = mutableListOf<String>()
 
                             if (noCache){
-                                eventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
+                                WorkerEventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
                                 val outputSequence = it.out.split("\n")
                                 finalPaths =
                                     outputSequence.asSequence()
@@ -276,16 +274,16 @@ class DownloadWorker(
                                 FileUtil.scanMedia(finalPaths, context)
                             }else{
                                 //move file from internal to set download directory
-                                eventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                                WorkerEventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                 try {
                                     finalPaths = withContext(Dispatchers.IO){
                                         FileUtil.moveFile(tempFileDir.absoluteFile,context, downloadLocation, keepCache){ p ->
-                                            eventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                                            WorkerEventBus.post(WorkerProgress(p, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                         }
                                     }.filter { !it.matches("\\.(description)|(txt)\$".toRegex()) }.toMutableList()
 
                                     if (finalPaths.isNotEmpty()){
-                                        eventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
+                                        WorkerEventBus.post(WorkerProgress(100, "Moved file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                     }
                                 }catch (e: Exception){
                                     e.printStackTrace()
@@ -415,7 +413,7 @@ class DownloadWorker(
                             resources
                         )
 
-                        eventBus.post(WorkerProgress(100, it.toString(), downloadItem.id, downloadItem.logID))
+                        WorkerEventBus.post(WorkerProgress(100, it.toString(), downloadItem.id, downloadItem.logID))
                     }
                 }
             }

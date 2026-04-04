@@ -24,12 +24,12 @@ import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.greenrobot.eventbus.EventBus
 import java.io.File
 
 
@@ -111,7 +111,6 @@ class TerminalDownloadWorker(
             System.currentTimeMillis(),
         )
 
-        val eventBus = EventBus.getDefault()
 
         kotlin.runCatching {
             if (logDownloads){
@@ -122,7 +121,7 @@ class TerminalDownloadWorker(
 
             RuntimeManager.getInstance().execute(request, itemId.toString(), true){ progress, _, line ->
                 runBlocking {
-                    eventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
+                    WorkerEventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }
 
                 val title: String = command.take(65)
@@ -142,7 +141,7 @@ class TerminalDownloadWorker(
                     //move file from internal to set download directory
                     try {
                         FileUtil.moveFile(File(FileUtil.getCachePath(context) + "/TERMINAL/" + itemId),context, downloadLocation!!, false){ p ->
-                            eventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong(), logItem.id))
+                            WorkerEventBus.post(DownloadWorker.WorkerProgress(p, "", itemId.toLong(), logItem.id))
                         }
                     }catch (e: Exception){
                         e.printStackTrace()
