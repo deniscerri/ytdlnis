@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="remove_results">Notīrīt Rezultātus</string>
+    <string name="remove_results">Notīrīt rezultātus</string>
     <string name="search">Meklēt</string>
     <string name="remove_all">Noņemt Visu</string>
     <string name="download_all">Lejupielādēt Visu</string>
@@ -19,8 +19,8 @@
     <string name="download_notification_channel_description">Paziņojums par audio un video failu lejupielādes gaitu</string>
     <string name="you_are_in_latest_version">Tiek izmantota jaunākā versija</string>
     <string name="ytld_update_success">Jaunākā versija instalēta</string>
-    <string name="ytdl_already_updating">Instalē jaunāko versiju…</string>
-    <string name="ytdl_updating_started">Lejupielādē jaunāko versiju…</string>
+    <string name="ytdl_already_updating">Uzstāda jauno versiju</string>
+    <string name="ytdl_updating_started">Lejupielādē jauno versiju</string>
     <string name="Remove">Noņemt</string>
     <string name="ok">LABI</string>
     <string name="cancel">Atcelt</string>
@@ -33,7 +33,7 @@
     <string name="version">Versija</string>
     <string name="command_directory">Pielāgotā Komandu Mape</string>
     <string name="couldnt_find_apk">Nevarēja atrast piemērotu APK</string>
-    <string name="downloading_update">Lejupielādē jaunāko versiju…</string>
+    <string name="downloading_update">Lejupielādē jauno versiju</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
     <string name="concurrent_fragments_summary">Vienlaikus lejupielādējamo DASH/HLS video fragmentu skaits</string>
