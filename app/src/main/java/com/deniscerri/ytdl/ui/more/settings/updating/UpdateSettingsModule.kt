@@ -31,6 +31,9 @@ object UpdateSettingsModule : SettingModule {
         val updateUtil = UpdateUtil(context)
         val ytdlpViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[YTDLPViewModel::class.java]
         val settingsViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[SettingsViewModel::class.java]
+
+        val canUpdateApp = BuildConfig.FLAVOR == "github";
+
         when(pref.key) {
             "ytdlp_source_label" -> {
                 pref.apply {
@@ -92,7 +95,7 @@ object UpdateSettingsModule : SettingModule {
                     val nativeLibraryDir = context.applicationInfo?.nativeLibraryDir
                     summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)})"
 
-                    if (BuildConfig.FLAVOR == "github") {
+                    if (canUpdateApp) {
                         onPreferenceClickListener =
                             Preference.OnPreferenceClickListener {
                                 host.hostLifecycleOwner.lifecycleScope.launch{
@@ -114,6 +117,16 @@ object UpdateSettingsModule : SettingModule {
                                 true
                             }
                     }
+                }
+            }
+            "update_app" -> {
+                pref.apply {
+                    isVisible = canUpdateApp
+                }
+            }
+            "update_beta" -> {
+                pref.apply {
+                    isVisible = canUpdateApp
                 }
             }
         }
