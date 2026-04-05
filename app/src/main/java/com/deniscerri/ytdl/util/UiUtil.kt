@@ -2172,7 +2172,13 @@ object UiUtil {
 
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val myTemplates = preferences.getStringSet("filename_templates", setOf())!!.toMutableSet()
+
+        val filenameTemplatePresets = setOf(
+            "%(uploader).30B - %(title).170B"
+        )
+
+        val myTemplates = preferences.getStringSet("filename_templates", filenameTemplatePresets)!!.toMutableSet()
+        myTemplates.addAll(filenameTemplatePresets)
         val myTemplatesView = view.findViewById<View>(R.id.mytemplates)
         val myTemplatesChipGroup = view.findViewById<ChipGroup>(R.id.filename_personal_chipgroup)
 
@@ -2257,11 +2263,13 @@ object UiUtil {
                         }
                     },
                     onLongClick = { c ->
-                        showGenericDeleteDialog(context, c.text.toString()) {
-                            myTemplates.remove(c.text.toString())
-                            myTemplatesView.isVisible = myTemplates.isNotEmpty()
-                            myTemplatesChipGroup.removeView(c)
-                            preferences.edit().putStringSet("filename_templates", myTemplates).apply()
+                        if (!filenameTemplatePresets.contains(c.text.toString())) {
+                            showGenericDeleteDialog(context, c.text.toString()) {
+                                myTemplates.remove(c.text.toString())
+                                myTemplatesView.isVisible = myTemplates.isNotEmpty()
+                                myTemplatesChipGroup.removeView(c)
+                                preferences.edit().putStringSet("filename_templates", myTemplates).apply()
+                            }
                         }
                     }
                 )

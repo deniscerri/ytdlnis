@@ -163,6 +163,30 @@ object FolderSettingsModule: SettingModule {
                         }
                 }
             }
+            "playlist_subdirectory" -> {
+                pref.apply {
+                    setOnPreferenceChangeListener { _, newValue ->
+                        if (newValue as Boolean) {
+                            preferences.edit(commit = true) {
+                                putBoolean("trim_filenames", false)
+                            }
+                        }
+                        host.findPref("trim_filenames")?.apply {
+                            isEnabled = !newValue
+                            if (newValue){
+                                (this as SwitchPreferenceCompat).isChecked = false
+                            }
+                        }
+                        host.refreshUI()
+                        true
+                    }
+                }
+            }
+            "trim_filenames" -> {
+                pref.apply {
+                    isEnabled = !preferences.getBoolean("playlist_subdirectory", false)
+                }
+            }
             "access_all_files" -> {
                 pref.apply {
                     if ((Build.VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||

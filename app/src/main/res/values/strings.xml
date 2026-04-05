@@ -516,4 +516,7 @@
     <string name="use_app_language_for_metadata_summary">If enabled, metadata fields will follow your app language and even affect format selection by preferring dubbed versions instead of original</string>
     <string name="installed">Installed</string>
     <string name="auto_update_ytdlp_summary">It\'s recommended to keep this enabled as yt-dlp needs to be updated pretty often to stay working! The data is extracted from yt-dlp\'s GitHub Repository.</string>
+    <string name="playlist_subdirectory">Save to playlist subdirectory</string>
+    <string name="playlist_subdirectory_summary">Save files in folders named as the playlist name</string>
+    <string name="trim_filenames">Trim filenames</string>
 </resources>

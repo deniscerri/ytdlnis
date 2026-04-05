@@ -979,7 +979,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 request.addOption("--no-part")
             }
 
-            request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
+            if (sharedPreferences.getBoolean("trim_filenames", true)) {
+                request.addOption("--trim-filenames",  254 - downDir.absolutePath.length)
+            }
 
             if (downloadItem.SaveThumb) {
                 request.addOption("--write-thumbnail")

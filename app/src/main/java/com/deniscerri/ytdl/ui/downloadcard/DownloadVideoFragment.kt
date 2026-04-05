@@ -421,7 +421,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 if (it.isNotBlank()){
                                     downloadItem.customFileNameTemplate = downloadItem.customFileNameTemplate.applyFilenameTemplateForCuts()
                                 }else{
-                                    downloadItem.customFileNameTemplate = sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!
+                                    downloadItem.customFileNameTemplate = downloadViewModel.applySubdirectoryPreferences(sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!)
                                 }
                             },
                             filenameTemplateSet = {

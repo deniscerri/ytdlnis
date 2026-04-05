@@ -274,11 +274,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         var type = getDownloadType(givenType, resultItem.url)
         if(type == DownloadType.command && commandTemplateDao.getTotalNumber() == 0) type = DownloadType.video
 
-        val customFileNameTemplate = when(type) {
-            DownloadType.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
-            DownloadType.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
+        var customFileNameTemplate = when(type) {
+            DownloadType.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")!!
+            DownloadType.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!
             else -> ""
         }
+        customFileNameTemplate = applySubdirectoryPreferences(customFileNameTemplate)
 
         val downloadPath = when(type){
             DownloadType.audio -> sharedPreferences.getString("music_path", FileUtil.getDefaultAudioPath())
@@ -343,7 +344,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             audioPreferences,
             videoPreferences,
             extraCommands,
-            customFileNameTemplate!!,
+            customFileNameTemplate,
             saveThumb,
             DownloadRepository.Status.Queued.toString(),
             0,
@@ -461,11 +462,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
         val subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
 
-        val customFileNameTemplate = when(historyItem.type) {
-            DownloadType.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")
-            DownloadType.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")
+        var customFileNameTemplate = when(historyItem.type) {
+            DownloadType.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")!!
+            DownloadType.video -> sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!
             else -> ""
         }
+        customFileNameTemplate = applySubdirectoryPreferences(customFileNameTemplate)
 
         val container = when(historyItem.type){
             DownloadType.audio -> sharedPreferences.getString("audio_format", "Default")!!
@@ -539,7 +541,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             audioPreferences,
             videoPreferences,
             extraCommands,
-            customFileNameTemplate!!,
+            customFileNameTemplate,
             saveThumb,
             DownloadRepository.Status.Queued.toString(),
             0,
@@ -1374,6 +1376,14 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         }else {
             dao.getProcessingAsIncognitoCountByIDs(selectedItems) > 0
         }
+    }
+
+    fun applySubdirectoryPreferences(currentTemplate: String) : String {
+        var customFileNameTemplate = currentTemplate;
+        if (sharedPreferences.getBoolean("playlist_subdirectory", false)) {
+            customFileNameTemplate = "./%(playlist|)s/$customFileNameTemplate"
+        }
+        return customFileNameTemplate
     }
 
     fun cancelDownloadOnly(id : Long) {

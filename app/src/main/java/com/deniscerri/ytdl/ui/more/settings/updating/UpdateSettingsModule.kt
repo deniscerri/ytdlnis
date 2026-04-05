@@ -93,7 +93,7 @@ object UpdateSettingsModule : SettingModule {
             "version" -> {
                 pref.apply {
                     val nativeLibraryDir = context.applicationInfo?.nativeLibraryDir
-                    summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)})"
+                    summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)}) (${BuildConfig.FLAVOR})"
 
                     if (canUpdateApp) {
                         onPreferenceClickListener =
