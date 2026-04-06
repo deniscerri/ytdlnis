@@ -513,5 +513,5 @@
     <string name="bundled">Súčasti</string>
     <string name="use_app_language_for_metadata_summary">Ak je táto funkcia povolená, polia metadát budú zodpovedať jazyku vašej aplikácie a ovplyvnia dokonca výber formátu tým, že uprednostnia dabované verzie pred originálnymi</string>
     <string name="installed">Nainštalované</string>
-    <string name="auto_update_ytdlp_summary">Odporúča sa nechať túto funkciu zapnutú, aby aplikácia fungovala správne, keďže yt-dlp sa aktualizuje pomerne často! Údaje sa získavajú z repozitára yt-dlp na GitHub-e.</string>
+    <string name="auto_update_ytdlp_summary">Odporúča sa nechať túto funkciu zapnutú, pretože yt-dlp sa musí pomerne často aktualizovať, aby fungoval! Údaje sa získavajú z repozitára yt-dlp na GitHub-e.</string>
 </resources>

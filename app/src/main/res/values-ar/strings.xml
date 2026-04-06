@@ -513,5 +513,5 @@
     <string name="bundled">مضمنة</string>
     <string name="use_app_language_for_metadata_summary">في حال التفعيل، ستتبع حقول البيانات الوصفية لغة تطبيقك، بل وسيمتد أثر ذلك إلى اختيار التنسيق عبر تفضيل النسخ المدبلجة على النسخ الأصلية</string>
     <string name="installed">مُثبّت</string>
-    <string name="auto_update_ytdlp_summary">يُنصح بإبقاء هذا الخيار مفعلاً لضمان عمل التطبيق بشكل صحيح، حيث أن yt-dlp يتم تحديثه باستمرار! يتم استخراج البيانات من مستودع yt-dlp على GitHub.</string>
+    <string name="auto_update_ytdlp_summary">يُنصح بإبقاء هذا الخيار مفعلاً لأن yt-dlp يحتاج إلى تحديثات متكررة لضمان استمرارية عمله! يتم استخراج البيانات من مستودع yt-dlp على GitHub.</string>
 </resources>
