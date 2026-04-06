@@ -513,5 +513,8 @@
     <string name="bundled">مضمنة</string>
     <string name="use_app_language_for_metadata_summary">في حال التفعيل، ستتبع حقول البيانات الوصفية لغة تطبيقك، بل وسيمتد أثر ذلك إلى اختيار التنسيق عبر تفضيل النسخ المدبلجة على النسخ الأصلية</string>
     <string name="installed">مُثبّت</string>
-    <string name="auto_update_ytdlp_summary">يُنصح بإبقاء هذا الخيار مفعلاً لأن yt-dlp يحتاج إلى تحديثات متكررة لضمان استمرارية عمله! يتم استخراج البيانات من مستودع yt-dlp على GitHub.</string>
+    <string name="auto_update_ytdlp_summary">يُنصح بإبقاء هذا الخيار مُفعّلاً لأن برنامج yt-dlp يحتاج إلى تحديثات متكررة لضمان استمرارية عمله! يتم استخراج البيانات من مستودع yt-dlp على GitHub.</string>
+    <string name="playlist_subdirectory">حفظ في مجلد فرعي لقائمة التشغيل</string>
+    <string name="playlist_subdirectory_summary">حفظ الملفات في مجلدات تحمل اسم قائمة التشغيل</string>
+    <string name="trim_filenames">قص أسماء الملفات</string>
 </resources>
