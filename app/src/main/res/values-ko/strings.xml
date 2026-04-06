@@ -513,4 +513,7 @@
     <string name="bundled">묶임</string>
     <string name="installed">설치함</string>
     <string name="auto_update_ytdlp_summary">yt-dlp가 잘 작동하려면 자주 업데이트해야 하므로 이 설정을 켜두는 것이 좋습니다! 데이터는 yt-dlp의 GitHub 저장소에서 추출됩니다.</string>
+    <string name="playlist_subdirectory">재생목록 하위 경로에 저장</string>
+    <string name="playlist_subdirectory_summary">파일을 재생목록 이름으로 된 폴더 안에 저장합니다</string>
+    <string name="trim_filenames">파일 이름 다듬기</string>
 </resources>
