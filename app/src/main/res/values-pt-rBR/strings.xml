@@ -514,4 +514,7 @@
     <string name="use_app_language_for_metadata_summary">Se ativado, os campos de metadados seguirão o idioma do seu aplicativo e afetarão até mesmo a seleção do formato, dando preferência às versões dubladas em vez das originais</string>
     <string name="installed">Instalado</string>
     <string name="auto_update_ytdlp_summary">É recomendável manter esta opção ativada, pois o yt-dlp precisa ser atualizado com bastante frequência para continuar funcionando! Os dados foram extraídos do repositório GitHub do yt-dlp.</string>
+    <string name="playlist_subdirectory">Salvar no subdiretório da playlist</string>
+    <string name="playlist_subdirectory_summary">Salvar os arquivos em pastas com o nome da playlist</string>
+    <string name="trim_filenames">Abreviar nomes de arquivos</string>
 </resources>
