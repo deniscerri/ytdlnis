@@ -512,5 +512,8 @@
     <string name="bundled">Встроен</string>
     <string name="use_app_language_for_metadata_summary">Если включено, поля метаданных будут следовать языку программы и даже влиять на выбор формата, предпочитая дублированные дорожки вместо оригинальных</string>
     <string name="installed">Установлено</string>
-    <string name="auto_update_ytdlp_summary">Рекомендуется оставлять эту опцию включённой для надлежащей работы приложения, поскольку yt-dlp довольно часто обновляется! Все данные получаются из GitHub-репозитория yt-dlp.</string>
+    <string name="auto_update_ytdlp_summary">Рекомендуется оставить эту функцию включенной, так как yt-dlp требует довольно частого обновления для обеспечения стабильной работы! Данные извлекаются из репозитория yt-dlp на GitHub.</string>
+    <string name="playlist_subdirectory">Сохранить в подкаталог плейлиста</string>
+    <string name="playlist_subdirectory_summary">Сохраняйте файлы в папки, названия которых совпадают с названием плейлиста</string>
+    <string name="trim_filenames">Обрезать имена файлов</string>
 </resources>
