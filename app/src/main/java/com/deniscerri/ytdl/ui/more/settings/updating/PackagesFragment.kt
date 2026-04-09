@@ -199,6 +199,8 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
     }
 
     override fun onDownloadReleaseClick(item: PackageBase.PackageRelease) {
+        bottomSheet?.dismiss()
+
         var positiveButton: Button? = null
         val updateDialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
@@ -245,15 +247,14 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
                         }
                     }
                 }
-                fileResp.onSuccess { file ->
-                    view.dismiss()
 
-                    val contentUri = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", file)
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(contentUri, "application/vnd.android.package-archive")
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                fileResp.onSuccess {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
+                            Snackbar.make(requireView(), getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
+                        }
                     }
-                    installLauncher.launch(intent)
                 }
             }
         }

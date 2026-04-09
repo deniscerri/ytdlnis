@@ -519,4 +519,5 @@
     <string name="playlist_subdirectory">Save to playlist subdirectory</string>
     <string name="playlist_subdirectory_summary">Save files in folders named as the playlist name</string>
     <string name="trim_filenames">Trim filenames</string>
+    <string name="install_downloaded_file">Install the downloaded file</string>
 </resources>

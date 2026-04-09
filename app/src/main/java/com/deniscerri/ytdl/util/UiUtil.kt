@@ -2757,18 +2757,26 @@ object UiUtil {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             view.dismiss()
-                            Snackbar.make(context.findViewById(R.id.frame_layout), it.message ?: context.getString(R.string.errored), Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(
+                                context.findViewById(R.id.frame_layout),
+                                it.message ?: context.getString(R.string.errored),
+                                Snackbar.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
-                fileResp.onSuccess { file ->
-                    view.dismiss()
-                    val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
-                    val intent = Intent(Intent.ACTION_VIEW).apply {
-                        setDataAndType(contentUri, "application/vnd.android.package-archive")
-                        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK
+
+                fileResp.onSuccess {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
+                            Snackbar.make(
+                                context.findViewById(R.id.frame_layout),
+                                context.getString(R.string.install_downloaded_file),
+                                Snackbar.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                    context.startActivity(intent)
                 }
             }
         }

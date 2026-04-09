@@ -25,9 +25,6 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <!--    foreground service permission for android 14 and up-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
-
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"
-        tools:ignore="RequestInstallPackagesPolicy" />
     <queries>
         <package android:name="com.deniscerri.ytdl.python" />
         <package android:name="com.deniscerri.ytdl.ffmpeg" />
