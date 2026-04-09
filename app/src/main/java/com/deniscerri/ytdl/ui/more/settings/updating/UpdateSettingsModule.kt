@@ -104,7 +104,9 @@ object UpdateSettingsModule : SettingModule {
                                         updateUtil.tryGetNewVersion()
                                     }
                                     if (res.isFailure) {
-                                        Snackbar.make(host.hostView!!, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
+                                        host.hostView?.apply {
+                                            Snackbar.make(this, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
+                                        }
                                     }else{
                                         if (preferences.getBoolean("automatic_backup", false)) {
                                             withContext(Dispatchers.IO){
