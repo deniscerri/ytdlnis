@@ -518,4 +518,5 @@
     <string name="playlist_subdirectory">Enregistrer dans le sous-répertoire de la playlist</string>
     <string name="playlist_subdirectory_summary">Enregistrez les fichiers dans des dossiers portant le même nom que la playlist</string>
     <string name="trim_filenames">Raccourcir les noms de fichiers</string>
+    <string name="install_downloaded_file">Installez le fichier téléchargé</string>
 </resources>
