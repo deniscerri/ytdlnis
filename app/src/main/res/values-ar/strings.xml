@@ -517,4 +517,5 @@
     <string name="playlist_subdirectory">حفظ في مجلد فرعي لقائمة التشغيل</string>
     <string name="playlist_subdirectory_summary">حفظ الملفات في مجلدات تحمل اسم قائمة التشغيل</string>
     <string name="trim_filenames">قص أسماء الملفات</string>
+    <string name="install_downloaded_file">تثبيت الملف المُنزّل</string>
 </resources>
