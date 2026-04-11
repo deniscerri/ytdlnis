@@ -5,18 +5,14 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.format.DateFormat
@@ -51,7 +47,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -72,6 +67,7 @@ import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
+import com.deniscerri.ytdl.util.Extensions.hasPermission
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -2745,7 +2741,7 @@ object UiUtil {
             val lifecycleScope = lifecycleOwner.lifecycleScope
 
             tmpDownloadJob = lifecycleScope.launch {
-                val fileResp = updateUtil.downloadReleaseApk(context, v) { progress ->
+                val fileResp = updateUtil.downloadReleaseApk(v) { progress ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             positiveButton.text = "$progress%"
@@ -2766,15 +2762,27 @@ object UiUtil {
                     }
                 }
 
-                fileResp.onSuccess {
+                fileResp.onSuccess { file ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
+                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(context)
+                            } else {
+                                true
+                            }
+
+                            if (canRequestPackageInstalls) {
+                                val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
+                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                }
+                                context.startActivity(intent)
+                            } else {
+                                Snackbar.make(context.findViewById(R.id.frame_layout), context.getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
+                            }
+
                             view.dismiss()
-                            Snackbar.make(
-                                context.findViewById(R.id.frame_layout),
-                                context.getString(R.string.install_downloaded_file),
-                                Snackbar.LENGTH_LONG
-                            ).show()
                         }
                     }
                 }

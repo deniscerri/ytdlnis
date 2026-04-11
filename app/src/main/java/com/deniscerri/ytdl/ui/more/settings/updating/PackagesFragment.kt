@@ -1,12 +1,12 @@
 package com.deniscerri.ytdl.ui.more.settings.updating
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
@@ -20,7 +20,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
-import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -51,10 +50,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.net.toUri
-import com.anggrayudi.storage.file.toRawFile
 import com.deniscerri.ytdl.core.packages.Deno
-import java.io.File
+import com.deniscerri.ytdl.util.Extensions.hasPermission
 
 
 class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, PackageReleaseAdapter.OnItemClickListener {
@@ -231,7 +228,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
 
             tmpDownloadJob = lifecycleScope.launch {
                 val instance = tmpItem!!.getInstance()
-                val fileResp = instance.downloadReleaseApk(requireContext(), item) { progress ->
+                val fileResp = instance.downloadReleaseApk(item) { progress ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             positiveButton.text = "$progress%"
@@ -248,11 +245,27 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
                     }
                 }
 
-                fileResp.onSuccess {
+                fileResp.onSuccess { file ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             view.dismiss()
-                            Snackbar.make(requireView(), getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
+
+                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(requireContext())
+                            } else {
+                                true
+                            }
+
+                            if (canRequestPackageInstalls) {
+                                val contentUri = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", file)
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
+                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                }
+                                installLauncher.launch(intent)
+                            } else {
+                                Snackbar.make(requireView(), getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
+                            }
                         }
                     }
                 }

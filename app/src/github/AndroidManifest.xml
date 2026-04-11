@@ -1,0 +1,4 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<!--    Install YTDLnis packages permission for github releases only, as its an anti feature for F-droid builds. You have to manually install the downloaded apks and then restart the app to apply the changes-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+</manifest>

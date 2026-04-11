@@ -116,7 +116,7 @@ object DownloadSettingsModule : SettingModule {
                         if (!scheduler.canSchedule() && Build.VERSION.SDK_INT >= 31){
                             Intent().also { intent ->
                                 intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                context.startActivity(intent)
+                                host.getHostContext().startActivity(intent)
                             }
                             allowChange = false
                         }
@@ -135,7 +135,7 @@ object DownloadSettingsModule : SettingModule {
                         if (!scheduler.canSchedule() && Build.VERSION.SDK_INT >= 31){
                             Intent().also { intent ->
                                 intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                                context.startActivity(intent)
+                                host.getHostContext().startActivity(intent)
                             }
                             allowChange = false
                         }else{

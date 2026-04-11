@@ -1,28 +1,18 @@
 package com.deniscerri.ytdl.core.packages
 
 import android.annotation.SuppressLint
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
-import android.util.Log
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.edit
-import androidx.core.net.toUri
-import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.ZipUtils
 import com.deniscerri.ytdl.database.models.GithubReleaseAsset
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
@@ -197,86 +187,44 @@ abstract class PackageBase {
         )
     }
 
-    private var downloadReleaseId = -1L
-    private val onDownloadReleaseComplete = object : BroadcastReceiver() {
-        @SuppressLint("Range")
-        override fun onReceive(context: Context?, intent: Intent) {
-            if (context == null) return;
-            val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
-            val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-
-            if (id == downloadReleaseId) {
-                context.unregisterReceiver(this)
-
-                val query = DownloadManager.Query().setFilterById(id)
-                val cursor = downloadManager.query(query)
-
-                if (cursor.moveToFirst()) {
-                    val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
-                    if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                        val localUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
-                        FileUtil.openFileIntent(context, localUri)
-                    }
-                }
-                cursor.close()
-            }
-        }
-    }
-
     @SuppressLint("UnspecifiedRegisterReceiverFlag", "Range")
-    suspend fun downloadReleaseApk(context: Context, release: PackageRelease, onProgress: (Long) -> Unit) : Result<Unit> {
+    suspend fun downloadReleaseApk(release: PackageRelease, onProgress: (Long) -> Unit) : Result<File> {
         return withContext(Dispatchers.IO) {
             try {
-                val releaseVersion = release.assets.first()
+                File(FileUtil.getDefaultApksPath()).mkdirs()
+                val tempApk = File(FileUtil.getDefaultApksPath(), "${packageFolderName}_${release.version.replace(".", "")}.apk")
 
-                val uri = releaseVersion.browser_download_url.toUri()
-                Environment
-                    .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    .mkdirs()
-                val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                downloadReleaseId = downloadManager.enqueue(
-                    DownloadManager.Request(uri)
-                        .setAllowedNetworkTypes(
-                            DownloadManager.Request.NETWORK_WIFI or
-                                    DownloadManager.Request.NETWORK_MOBILE
-                        )
-                        .setAllowedOverRoaming(true)
-                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                        .setTitle(releaseVersion.name)
-                        .setDescription(context.getString(R.string.downloading_update))
-                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, releaseVersion.name)
-                )
+                val request = Request.Builder()
+                    .url(release.assets.first().browser_download_url)
+                    .build()
 
-                var downloading = true
-                while (downloading) {
-                    val query = DownloadManager.Query().setFilterById(downloadReleaseId)
-                    val cursor = downloadManager.query(query)
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).mkdirs()
+                val response = sharedClient.newCall(request).execute()
+                if (!response.isSuccessful) {
+                    return@withContext Result.failure(Throwable(response.body.string()))
+                }
 
-                    if (cursor.moveToFirst()) {
-                        val bytesDownloaded = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR))
-                        val totalBytes = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES))
-                        val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
+                val body = response.body
+                val totalBytes = body.contentLength()
+                var bytesDownloaded = 0L
 
-                        if (status == DownloadManager.STATUS_SUCCESSFUL) {
-                            downloading = false
-                        }
+                body.byteStream().use { inputStream ->
+                    tempApk.outputStream().use { outputStream ->
+                        val buffer = ByteArray(8192)
+                        var bytesRead: Int
 
-                        if (totalBytes > 0) {
-                            val progress = (bytesDownloaded * 100L / totalBytes)
+                        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            if (!isActive) throw CancellationException("Download cancelled by user")
+
+                            outputStream.write(buffer, 0, bytesRead)
+                            bytesDownloaded += bytesRead
+                            val progress = ((bytesDownloaded * 100) / totalBytes)
                             onProgress(progress)
                         }
                     }
-                    cursor.close()
-                    delay(500)
                 }
 
-                val intentFilter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    context.registerReceiver(onDownloadReleaseComplete, intentFilter, Context.RECEIVER_EXPORTED)
-                } else {
-                    context.registerReceiver(onDownloadReleaseComplete, intentFilter)
-                }
-                Result.success(Unit)
+                Result.success(tempApk)
             } catch (e: Exception) {
                 Result.failure(e)
             }
