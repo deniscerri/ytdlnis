@@ -516,4 +516,5 @@
     <string name="playlist_subdirectory">Сохранить в подкаталог плейлиста</string>
     <string name="playlist_subdirectory_summary">Сохраняйте файлы в папки, названия которых совпадают с названием плейлиста</string>
     <string name="trim_filenames">Обрезать имена файлов</string>
+    <string name="install_downloaded_file">Установите загруженный файл</string>
 </resources>
