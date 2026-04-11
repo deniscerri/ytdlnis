@@ -508,8 +508,8 @@
     <string name="show_quick_download_share_menu">Zobrazit možnost okamžitého stažení v menu sdílení</string>
     <string name="quick_download_title">Nenačítat data</string>
     <string name="sponsorblock_hook">Poutka/Pozdravy</string>
-    <string name="packages">Balíky</string>
-    <string name="not_installed">Nenainstalované</string>
+    <string name="packages">Balíčky</string>
+    <string name="not_installed">Nenainstalováno</string>
     <string name="bundled">Součásti</string>
     <string name="use_app_language_for_metadata_summary">Pokud je tato funkce zapnuta, pole metadat budou odpovídat jazyku vaší aplikace a budou dokonce ovlivňovat výběr formátu tím, že upřednostní dabované verze před originálními</string>
     <string name="installed">Nainstalované</string>
@@ -517,4 +517,5 @@
     <string name="playlist_subdirectory">Uložit do podadresáře playlistu</string>
     <string name="playlist_subdirectory_summary">Uloží soubory do složek s názvem playlistu</string>
     <string name="trim_filenames">Zkrátit názvy souborů</string>
+    <string name="install_downloaded_file">Nainstalovat stažený soubor</string>
 </resources>
