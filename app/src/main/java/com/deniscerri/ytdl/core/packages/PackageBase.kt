@@ -204,7 +204,6 @@ abstract class PackageBase {
             if (context == null) return;
             val id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1L)
             val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-            Log.e("sssssss",id.toString())
 
             if (id == downloadReleaseId) {
                 context.unregisterReceiver(this)
@@ -216,7 +215,6 @@ abstract class PackageBase {
                     val status = cursor.getInt(cursor.getColumnIndex(DownloadManager.COLUMN_STATUS))
                     if (status == DownloadManager.STATUS_SUCCESSFUL) {
                         val localUri = cursor.getString(cursor.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI))
-                        Log.e("sssssss", localUri)
                         FileUtil.openFileIntent(context, localUri)
                     }
                 }

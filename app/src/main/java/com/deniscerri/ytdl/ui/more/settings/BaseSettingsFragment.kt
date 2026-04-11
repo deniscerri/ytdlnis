@@ -34,7 +34,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat(), SettingHost {
         this
     }
     override val hostView by lazy {
-        requireView()
+        view
     }
     override fun onStart() {
         super.onStart()

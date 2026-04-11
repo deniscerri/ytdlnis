@@ -54,7 +54,7 @@ class SettingsActivity : BaseActivity(), SettingHost {
         this
     }
     override val hostView: View? by lazy {
-        this.findViewById<View>(android.R.id.content)
+        binding.root
     }
     override fun requestGetParentFragmentManager() = supportFragmentManager
     override fun requestRecreateActivity() = this.recreate()
