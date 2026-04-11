@@ -111,4 +111,9 @@
     <string name="wait_for_video">Rǧu tavidyut</string>
     <string name="generate_potokens">Sarew-d tiddas PO</string>
     <string name="update_ytdl_nightly">Lqem nightly n yt-dlp</string>
+    <string name="command">Anezḍay</string>
+    <string name="minute">Tasdat</string>
+    <string name="second">Tasint</string>
+    <string name="milliseconds">Timilitasinin</string>
+    <string name="custom">Udmawan</string>
 </resources>
