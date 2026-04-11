@@ -512,5 +512,8 @@
     <string name="use_app_language_for_metadata_summary">켜져 있다면, 메타데이터가 앱 언어를 따라가며 원본 대신 더빙 버전을 우선하는 등 파일 형식 선택에도 영향을 미칩니다</string>
     <string name="bundled">묶임</string>
     <string name="installed">설치함</string>
-    <string name="auto_update_ytdlp_summary">yt-dlp는 자주 업데이트하므로 애플리케이션이 제대로 작동하도록 이 설정을 켜두는 것이 좋습니다! 데이터는 yt-dlp의 GitHub 저장소에서 추출됩니다.</string>
+    <string name="auto_update_ytdlp_summary">yt-dlp가 잘 작동하려면 자주 업데이트해야 하므로 이 설정을 켜두는 것이 좋습니다! 데이터는 yt-dlp의 GitHub 저장소에서 추출됩니다.</string>
+    <string name="playlist_subdirectory">재생목록 하위 경로에 저장</string>
+    <string name="playlist_subdirectory_summary">파일을 재생목록 이름으로 된 폴더 안에 저장합니다</string>
+    <string name="trim_filenames">파일 이름 다듬기</string>
 </resources>

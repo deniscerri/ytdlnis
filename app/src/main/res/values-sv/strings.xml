@@ -78,7 +78,7 @@
     <string name="download_now">Ladda ner nu</string>
     <string name="socks5_proxy_summary">Använd den angivna HTTP/HTTPS/SOCKS-proxyn</string>
     <string name="search_suggestions_summary">Få sökförslag från Google</string>
-    <string name="move_temporary_files_summary">Överför cachade filer till nerladdningsmappen</string>
+    <string name="move_temporary_files_summary">Överför cachade nedladdade filer till nerladdningsmappen</string>
     <string name="socks5_proxy">SOCKS5 proxy-URL</string>
     <string name="custom_audio_quality">Använd anpassad ljudkvalitet</string>
     <string name="use_extra_commands">Lägg till extra kommandon</string>
@@ -196,7 +196,7 @@
     <string name="download_rescheduled_to">Nerladdningen planerad till:</string>
     <string name="file_size">Filstorlek</string>
     <string name="clear_temporary_files">Rensa tillfälliga filer</string>
-    <string name="clear_temporary_files_summary">Ta bort cachade filer från kraschade/felaktiga/avbrutna nerladdningar</string>
+    <string name="clear_temporary_files_summary">Ta bort cachade filer, infojsons och andra tillfälliga konfigurationer</string>
     <string name="cache_cleared">Tillfälliga filer rensade</string>
     <string name="downloads_running_try_later">Nerladdningen arbetar nu. Försök igen senare</string>
     <string name="ytdl_version">yt-dlp version</string>
@@ -486,4 +486,28 @@
     <string name="select_between_desc">Bestäm urvalet av objekt att välja</string>
     <string name="potoken">PO-nyckel</string>
     <string name="web_client_po_token">Webbklients PO-nyckel</string>
+    <string name="no_keep_subs_summary">När du använder både inbäddade undertexter och skrivna undertexter, inte behålla undertextfilerna efter inbäddning</string>
+    <string name="preferred_format_size">Föredragen formatstorlek</string>
+    <string name="prefer_drc_audio">Föredra DRC ljud</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (spelare)</string>
+    <string name="potoken_subs">PO Token (undertexter)</string>
+    <string name="url_regex">URL Regex</string>
+    <string name="disable_flat_playlist">Inaktivera platt spellista</string>
+    <string name="disable_flat_playlist_summary">Använd inte --flat-playlist. Långsammare datahämtning, men mer datarik</string>
+    <string name="use_original_url_playlist">Använd original-url för spellista-url</string>
+    <string name="use_original_url_playlist_summary">Använd spelliste-url:en som anges av användaren istället för taggen playlist_webpage_url från json-dumpen</string>
+    <string name="update_ytdlp_while_downloading">Uppdatera yt-dlp under nedladdning</string>
+    <string name="update_ytdlp_while_downloading_summary">Lägg till -U till yt-dlp för att uppdatera den till den senaste versionen innan nedladdning</string>
+    <string name="preview_filename">Förhandsgranska filnamn</string>
+    <string name="no_auth">Ingen autentisering</string>
+    <string name="auth">Autentisering</string>
+    <string name="app_icon">App ikon</string>
+    <string name="show_quick_download_share_menu">Visa alternativ för att ladda ner direkt i delningsmenyn</string>
+    <string name="quick_download_title">Hämta inte data</string>
+    <string name="packages">Paket</string>
+    <string name="not_installed">Inte installerat</string>
+    <string name="use_app_language_for_metadata_summary">Om det är aktiverat kommer metadatafält att följa ditt appspråk och även påverka formatval genom att föredra dubbade versioner istället för original</string>
+    <string name="installed">Installerat</string>
+    <string name="trim_filenames">Trimma filnamn</string>
 </resources>

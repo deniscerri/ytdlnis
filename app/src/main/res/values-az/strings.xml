@@ -513,5 +513,8 @@
     <string name="bundled">Paketlənib</string>
     <string name="use_app_language_for_metadata_summary">Aktivləşdirildikdə, üst məlumat sahələri tətbiq dilinizə əməl edəcək və hətta əsil əvəzinə dublyaj olunan versiyalara üstünlük verərək format seçiminə təsir edəcək</string>
     <string name="installed">Quraşdırılıb</string>
-    <string name="auto_update_ytdlp_summary">yt-dlp olduqca tez-tez yeniləndiyi səbəbilə, tətbiqin düzgün işləməsi üçün bunu aktiv saxlamaq tövsiyə olunur! Məlumat yt-dlp-nin GitHub Deposundan çıxarılır.</string>
+    <string name="auto_update_ytdlp_summary">yt-dlp-nin işlək qalması üçün çox tez-tez yenilənməsi lazım olduğundan, bunu işlək saxlamaq tövsiyə olunandır! Məlumat yt-dlp-nin GitHub Deposundan çıxarılır.</string>
+    <string name="playlist_subdirectory">Pleylist alt qovluğuna yerləşdir</string>
+    <string name="playlist_subdirectory_summary">Faylları pleylist adı kimi adlandırılan qovluqlarda saxla</string>
+    <string name="trim_filenames">Fayl adlarını kəsin</string>
 </resources>
