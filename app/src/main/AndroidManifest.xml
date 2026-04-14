@@ -51,7 +51,7 @@
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
         tools:targetApi="tiramisu"
-        android:memtagMode="sync">
+        android:memtagMode="async">
         <profileable
             android:shell="true"
             tools:targetApi="29" />
