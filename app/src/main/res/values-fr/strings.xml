@@ -97,7 +97,7 @@
     <string name="sponsorblock_fillers">Remplissage</string>
     <string name="sponsorblock_reminders">Rappels d\'abonnement</string>
     <string name="select_sponsorblock_filtering">Sélectionner le filtrage SponsorBlock</string>
-    <string name="worst_quality">Basse qualité</string>
+    <string name="worst_quality">Pire qualité</string>
     <string name="best_quality">Meilleure qualité</string>
     <string name="enable_mtime">Activer la date de modification</string>
     <string name="enable_mtime_summary">Définir l\'en-tête HTTP Last-Modified comme l\'heure de la dernière modification</string>
@@ -345,8 +345,7 @@
     <string name="on_time">Sur</string>
     <string name="cut_unavailable_please_update_item">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
     <string name="format_smallest">Le plus petit format (par résolution)</string>
-    <string name="confirm_delete_sources_desc">Supprimer définitivement
-\ntoutes les sources</string>
+    <string name="confirm_delete_sources_desc">Supprimer définitivement toutes les sources</string>
     <string name="week">Semaine</string>
     <string name="month">Mois</string>
     <string name="bitrate">Débit binaire</string>
