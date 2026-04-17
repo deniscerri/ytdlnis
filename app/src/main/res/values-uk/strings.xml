@@ -295,7 +295,7 @@
     <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переміщуються до вибраного каталогу. Використовуйте це, коли не можете записувати безпосередньо у пам\'ять</string>
     <string name="cache_first">Спочатку завантажується кеш</string>
     <string name="use_scheduler">Завантажити за розкладом</string>
-    <string name="update_app_beta_summary">Візьміть участь у бета-тестуванні. У ньому можуть бути помилки.</string>
+    <string name="update_app_beta_summary">Зареєструйтесь у бета-програмі.Він може містити помилки.</string>
     <string name="update_app_beta">Бета релізи</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Бажаний аудіокодек</string>
@@ -516,4 +516,5 @@
     <string name="playlist_subdirectory">Зберегти в підкаталог списку відтворення</string>
     <string name="playlist_subdirectory_summary">Зберігайте файли в папках з назвами, що відповідають назвам списку відтворення</string>
     <string name="trim_filenames">Обрізати імена файлів</string>
+    <string name="install_downloaded_file">Встановіть завантажений файл</string>
 </resources>

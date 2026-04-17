@@ -517,4 +517,5 @@
     <string name="playlist_subdirectory">Pleylist alt qovluğuna yerləşdir</string>
     <string name="playlist_subdirectory_summary">Faylları pleylist adı kimi adlandırılan qovluqlarda saxla</string>
     <string name="trim_filenames">Fayl adlarını kəsin</string>
+    <string name="install_downloaded_file">Yüklənilən faylı quraşdır</string>
 </resources>
