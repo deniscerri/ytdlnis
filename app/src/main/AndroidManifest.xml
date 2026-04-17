@@ -48,7 +48,8 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
-        tools:targetApi="tiramisu">
+        tools:targetApi="tiramisu"
+        android:memtagMode="async">
         <profileable
             android:shell="true"
             tools:targetApi="29" />
