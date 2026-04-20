@@ -507,4 +507,11 @@
     <string name="prefer_drc_audio">優先使用 DRC 音訊</string>
     <string name="show_quick_download_share_menu">在分享選單中顯示立即下載選項</string>
     <string name="quick_download_title">不擷取資料</string>
+    <string name="not_installed">尚未安裝</string>
+    <string name="packages">套件</string>
+    <string name="use_app_language_for_metadata_summary">如果開啟此選項，元數據欄位將會跟隨你的 App 語言設定，甚至會因為偏好配音版而非原音版，進而影響格式的選擇</string>
+    <string name="installed">已安裝</string>
+    <string name="auto_update_ytdlp_summary">建議保持此選項開啟，因為 yt-dlp 需要經常更新才能維持正常運作！相關資料是從 yt-dlp 的 GitHub 儲存庫中擷取的</string>
+    <string name="trim_filenames">修改檔名</string>
+    <string name="install_downloaded_file">安裝已下載的檔案</string>
 </resources>
