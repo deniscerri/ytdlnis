@@ -154,13 +154,15 @@ abstract class PackageBase {
         val downloadedLDDir = getDownloadedDir(context)
         val downloadedExe = File(packageBinDir, "lib$executableName.so")
 
-        //bundled location
-        val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
+        //bundled location - check extracted directory first
         val bundledLDDir = File(File(baseDir, packagesRoot), packageFolderName)
-        val bundledExe = File(bundledBinDir, "lib$executableName.so")
+        val bundledExtractedExe = File(bundledLDDir, "usr/bin/$executableName")
+        val bundledBinDir = File(context.applicationInfo.nativeLibraryDir)
+        val bundledApkExe = File(bundledBinDir, "lib$executableName.so")
 
         val isPackageActive = downloadedExe.exists()
-        val isBundleActive = bundledExe.exists()
+        val isBundleExtractedActive = bundledExtractedExe.exists()
+        val isBundleApkActive = bundledApkExe.exists()
 
         val finalExe: File
         val binDir: File
@@ -170,8 +172,12 @@ abstract class PackageBase {
             finalExe = downloadedExe
             binDir = downloadedBinDir
             ldDir = downloadedLDDir
+        } else if (isBundleExtractedActive) {
+            finalExe = bundledExtractedExe
+            binDir = bundledExtractedExe.parentFile!!
+            ldDir = bundledLDDir
         } else {
-            finalExe = bundledExe
+            finalExe = bundledApkExe
             binDir = bundledBinDir
             ldDir = bundledLDDir
         }
@@ -181,8 +187,8 @@ abstract class PackageBase {
             ldDir = ldDir,
             executable = finalExe,
             isDownloaded = isPackageActive,
-            isBundled = isBundleActive,
-            isPackageActive || isBundleActive,
+            isBundled = isBundleExtractedActive || isBundleApkActive,
+            isPackageActive || isBundleExtractedActive || isBundleApkActive,
             canUninstall
         )
     }
