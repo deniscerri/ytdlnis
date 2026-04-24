@@ -514,4 +514,8 @@
     <string name="sponsorblock_hook">Hook/Greetings</string>
     <string name="bundled">Impacchettato</string>
     <string name="auto_update_ytdlp_summary">È consigliato mantenere abilitata la funzione, in quanto yt-dlp necessità di essere aggiornato regolarmente per poter continuare a funzionare! I dati sono estratti dalla repository GitHub di yt-dlp.</string>
+    <string name="playlist_subdirectory">Salva nella sottocartella della playlist</string>
+    <string name="playlist_subdirectory_summary">Salva i file in cartelle con il nome della playlist</string>
+    <string name="trim_filenames">Tronca i nomi dei file</string>
+    <string name="install_downloaded_file">Installa il file scaricato</string>
 </resources>
