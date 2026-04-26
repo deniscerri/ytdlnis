@@ -511,5 +511,8 @@
     <string name="not_installed">Tidak terpasang</string>
     <string name="bundled">Dibundel</string>
     <string name="use_app_language_for_metadata_summary">Jika diaktifkan, kolom metadata akan mengikuti bahasa aplikasi Anda dan bahkan mempengaruhi pemilihan format dengan lebih memilih versi dubbing daripada versi asli</string>
-    <string name="installed">terpasang</string>
+    <string name="installed">Terpasang</string>
+    <string name="auto_update_ytdlp_summary">Disarankan untuk tetap mengaktifkan fitur ini karena yt-dlp perlu sering diperbarui agar tetap berfungsi! Data tersebut diambil dari repositori GitHub yt-dlp.</string>
+    <string name="trim_filenames">Pangkas nama berkas</string>
+    <string name="install_downloaded_file">Pasang berkas yang telah diunduh</string>
 </resources>

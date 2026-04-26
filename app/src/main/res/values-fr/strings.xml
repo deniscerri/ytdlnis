@@ -48,8 +48,8 @@
     <string name="embed_thumb_summary">Utiliser la miniature comme pochette</string>
     <string name="add_chapters">Chapitres dans les vidéos</string>
     <string name="add_chapters_summary">Marquer les segments YouTube / SponsorBlock comme chapitres de la vidéo</string>
-    <string name="save_thumb">Enregistrer la vignette</string>
-    <string name="save_thumb_summary">Enregistrer la vignette dans le dossier de téléchargement</string>
+    <string name="save_thumb">Enregistrer la miniature</string>
+    <string name="save_thumb_summary">Enregistrer la miniature dans le dossier de téléchargement</string>
     <string name="audio_format">Format audio</string>
     <string name="video_format">Format vidéo</string>
     <string name="audio_quality">Qualité audio</string>
@@ -299,7 +299,7 @@
     <string name="fragment_retries">Essais pour les fragments</string>
     <string name="custom_audio_quality">Utiliser une qualité audio personnalisée</string>
     <string name="material_you">Material You</string>
-    <string name="crop_thumb_summary">Recadrer la vignette dans le carré pour les téléchargements audio</string>
+    <string name="crop_thumb_summary">Recadrer la miniature dans le carré pour les téléchargements audio</string>
     <string name="ignore">Ignorer</string>
     <string name="use_extra_commands_summary">Pour les téléchargements audio / vidéo. Ajoutez des commandes supplémentaires avec la configuration de l\'interface graphique</string>
     <string name="app">Application</string>
@@ -322,7 +322,7 @@
     <string name="remember_download_type_summary">Sélectionner le dernier type de téléchargement ouvert pour l\'élément actuel</string>
     <string name="length">Longueur</string>
     <string name="update_ytdl_stable">Version stable de yt-dlp</string>
-    <string name="crop_thumb">Recadrer la vignette</string>
+    <string name="crop_thumb">Recadrer la miniature</string>
     <string name="force_keyframes">Forcer les images clés lors des coupes</string>
     <string name="force_keyframes_summary">Processus plus lent, mais coupes plus précises</string>
     <string name="observe_sources">Observer les sources</string>
@@ -394,7 +394,7 @@
     <string name="no_audio">Vidéo sans audio</string>
     <string name="download_archive_folder">Dossier de l\'archive de téléchargement</string>
     <string name="hour">Heure</string>
-    <string name="thumbnail_format">Format de la vignette</string>
+    <string name="thumbnail_format">Format de la miniature</string>
     <string name="scroll_down">Défiler vers le bas</string>
     <string name="move_top">Déplacer en premier</string>
     <string name="move_bottom">Déplacer en dernier</string>
