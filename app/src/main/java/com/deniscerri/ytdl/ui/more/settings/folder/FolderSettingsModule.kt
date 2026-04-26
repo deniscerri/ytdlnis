@@ -188,7 +188,7 @@ object FolderSettingsModule: SettingModule {
             }
             "trim_filenames" -> {
                 pref.apply {
-                    isEnabled = preferences.getStringSet("save_subdirectory", setOf()).isEmpty()
+                    isEnabled = preferences.getStringSet("save_subdirectory", setOf())!!.isEmpty()
                 }
             }
             "access_all_files" -> {
