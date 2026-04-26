@@ -1075,7 +1075,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             val subDirectories = sharedPreferences.getStringSet("save_subdirectory", setOf())!!
-            if (subDirectories.isNotEmpty()) {
+            if (subDirectories.contains("website")) {
                 metadataCommands.addOption("--parse-metadata", "%(extractor_key,extractor,ie_key)s:^(?P<no_GH5ME>(?!Generic|HTML5MediaEmbed).*)$")
                 metadataCommands.addOption("--parse-metadata", "%(no_GH5ME,webpage_url_domain)s:%(fldr_website)s")
             }
