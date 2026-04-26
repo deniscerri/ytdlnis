@@ -237,7 +237,7 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-webview:0.36.0'
     implementation 'androidx.compose.material3:material3-android:1.4.0'
     implementation "io.noties.markwon:core:4.6.2"
-    implementation("com.github.teamnewpipe:newpipeextractor:v0.26.0")
+    implementation("com.github.teamnewpipe:newpipeextractor:v0.26.1")
 
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.commons:commons-compress:1.12")
