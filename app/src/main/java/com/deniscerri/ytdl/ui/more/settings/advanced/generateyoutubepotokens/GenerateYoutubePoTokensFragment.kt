@@ -203,14 +203,13 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 layout.setContentView(R.layout.generate_po_token_url_bottom_sheet)
 
                 val editText = layout.findViewById<EditText>(R.id.url_edittext)!!
-                editText.setSelection(editText.text.length)
-
                 val regenerateBtn = layout.findViewById<MaterialButton>(R.id.getPoTokenBtn)!!
-                regenerateBtn.isEnabled = false
-
+                val placeHolderURL = "https://youtu.be/aqz-KE-bpKQ" //Big Buck Bunny
                 editText.doOnTextChanged { text, start, before, count ->
                     regenerateBtn.isEnabled = editText.text.toString().isYoutubeURL()
                 }
+                editText.setText(placeHolderURL)
+                editText.setSelection(editText.text.length)
 
                 regenerateBtn.setOnClickListener {
                     layout.dismiss()
@@ -239,7 +238,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
             dialog.setPositiveButton(getString(R.string.auth)) { dialogInterface: DialogInterface, _: Int ->
                 val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
-                intent.putExtra("url", "https://www.youtube.com/account")
+                intent.putExtra("url", "https://youtube.com/signin")
                 intent.putExtra("no_auth", false)
                 webPoTokenResultLauncher.launch(intent)
             }

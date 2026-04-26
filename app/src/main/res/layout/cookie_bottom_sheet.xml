@@ -144,6 +144,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:layout_margin="20dp"
+                android:enabled="false"
                 android:text="@string/get_cookies"
                 app:icon="@drawable/baseline_cookie_24"
                 app:layout_constraintBottom_toBottomOf="parent"

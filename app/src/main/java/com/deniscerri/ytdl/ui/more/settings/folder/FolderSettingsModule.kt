@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
@@ -27,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.HashSet
 import kotlin.collections.first
 
 object FolderSettingsModule: SettingModule {
@@ -163,17 +165,19 @@ object FolderSettingsModule: SettingModule {
                         }
                 }
             }
-            "playlist_subdirectory" -> {
+            "save_subdirectory" -> {
                 pref.apply {
                     setOnPreferenceChangeListener { _, newValue ->
-                        if (newValue as Boolean) {
+                        val list = newValue as HashSet<String>
+
+                        if (list.isEmpty()) {
                             preferences.edit(commit = true) {
                                 putBoolean("trim_filenames", false)
                             }
                         }
                         host.findPref("trim_filenames")?.apply {
-                            isEnabled = !newValue
-                            if (newValue){
+                            isEnabled = list.isEmpty()
+                            if (list.isNotEmpty()){
                                 (this as SwitchPreferenceCompat).isChecked = false
                             }
                         }
@@ -201,7 +205,6 @@ object FolderSettingsModule: SettingModule {
                                 val uri = Uri.parse("package:" + context.packageName)
                                 intent.data = uri
                                 host.getHostContext().startActivity(intent)
-                                host.refreshUI()
                                 true
                             }
                     }

@@ -3,10 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/back"
-        android:title="@string/back" />
-
-    <item
         android:id="@+id/get_data_sync_id"
         android:title="@string/get_data_sync_id" />
 

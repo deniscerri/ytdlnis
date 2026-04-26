@@ -259,12 +259,12 @@
         <item>YouTube Music</item>
         <item>Soundcloud</item>
         <item>Bilibili</item>
-        <item>Nico video</item>
+<!--        <item>Nico video</item>-->
         <item>PRX Series</item>
         <item>PRX Stories</item>
         <item>Rokfin</item>
         <item>Yahoo screen</item>
-        <item>Google Video</item>
+<!--        <item>Google Video</item>-->
         <item>Netverse</item>
     </array>
 
@@ -273,12 +273,12 @@
         <item>ytsearchmusic</item>
         <item>scsearch</item>
         <item>bilisearch</item>
-        <item>nicosearch</item>
+<!--        <item>nicosearch</item>-->
         <item>prxseries</item>
         <item>prxstories</item>
         <item>rkfnsearch</item>
         <item>yvsearch</item>
-        <item>gvsearch</item>
+<!--        <item>gvsearch</item>-->
         <item>netsearch</item>
     </array>
 
@@ -1593,5 +1593,17 @@
         <item></item>
         <item>smallest</item>
         <item>largest</item>
+    </string-array>
+
+    <string-array name="save_subdirectory">
+        <item>@string/website</item>
+        <item>@string/playlist</item>
+        <item>@string/media_type</item>
+    </string-array>
+
+    <string-array name="save_subdirectory_values">
+        <item>website</item>
+        <item>playlist</item>
+        <item>media_type</item>
     </string-array>
 </resources>

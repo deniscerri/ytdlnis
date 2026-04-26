@@ -514,8 +514,6 @@
     <string name="use_app_language_for_metadata_summary">Ak je táto funkcia povolená, polia metadát budú zodpovedať jazyku vašej aplikácie a ovplyvnia dokonca výber formátu tým, že uprednostnia dabované verzie pred originálnymi</string>
     <string name="installed">Nainštalované</string>
     <string name="auto_update_ytdlp_summary">Odporúča sa nechať túto funkciu zapnutú, pretože yt-dlp sa musí pomerne často aktualizovať, aby fungoval! Údaje sa získavajú z repozitára yt-dlp na GitHub-e.</string>
-    <string name="playlist_subdirectory">Uložiť do podadresára playlistu</string>
-    <string name="playlist_subdirectory_summary">Uloží súbory do priečinkov s názvom playlistu</string>
     <string name="trim_filenames">Skrátiť názvy súborov</string>
     <string name="install_downloaded_file">Nainštalovať stiahnutý súbor</string>
 </resources>

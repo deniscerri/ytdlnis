@@ -58,14 +58,23 @@ class FolderSettingsFragment : BaseSettingsFragment() {
     }
 
     override fun onResume() {
-        if((Build.VERSION.SDK_INT >= 30 && Environment.isExternalStorageManager()) ||
-            Build.VERSION.SDK_INT < 30) {
-            findPreference<Preference>("access_all_files")!!.isVisible = false
-            findPreference<Preference>("cache_downloads")!!.isEnabled = true
-        }else{
-            editor.putBoolean("cache_downloads", true).apply()
-            findPreference<Preference>("cache_downloads")!!.isEnabled = false
-        }
         super.onResume()
+
+        val allFilesPref = findPreference<Preference>("access_all_files")
+        val cachePref = findPreference<Preference>("cache_downloads")
+        val cachePath = findPreference<Preference>("cache_path")
+
+        if (FileUtil.hasAllFilesAccess()) {
+            allFilesPref?.isVisible = false
+            cachePref?.isEnabled = true
+            cachePath?.isEnabled = true
+        } else {
+            editor.putBoolean("cache_downloads", true).apply()
+            allFilesPref?.isVisible = true
+            cachePref?.isEnabled = false
+            cachePath?.isEnabled = false
+        }
+
+        refreshUI()
     }
 }

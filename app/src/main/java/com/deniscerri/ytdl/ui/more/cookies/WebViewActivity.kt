@@ -13,6 +13,7 @@ import android.webkit.WebStorage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -76,9 +77,6 @@ class WebViewActivity : BaseActivity() {
 
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
-                    R.id.back -> {
-                        webView?.goBack()
-                    }
                     R.id.incognito -> {
                         intent.putExtra("incognito", !incognito)
                         recreate()
@@ -124,8 +122,21 @@ class WebViewActivity : BaseActivity() {
             }
 
             toolbar.setNavigationOnClickListener {
-                onBackPressedDispatcher.onBackPressed()
+                finishAndRemoveTask()
             }
+
+            val backCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (webView?.canGoBack() == true) {
+                        webView?.goBack()
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+
+            onBackPressedDispatcher.addCallback(this@WebViewActivity, backCallback)
 
             generateBtn.setOnClickListener {
                 lifecycleScope.launch {
@@ -173,6 +184,8 @@ class WebViewActivity : BaseActivity() {
         }
 
     }
+
+
 
     private fun configureDesktopMode(webView: WebView, desktop: Boolean) {
         webView.settings.apply {

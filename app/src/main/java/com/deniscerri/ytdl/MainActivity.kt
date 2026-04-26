@@ -498,6 +498,7 @@ class MainActivity : BaseActivity() {
         val updateAppSwitch = updateAppLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
         updateAppLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
             icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update_app)
+            isVisible = true
         }
         updateAppLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.update_app)
         updateAppLayout.findViewById<TextView>(R.id.preference_summary).apply {

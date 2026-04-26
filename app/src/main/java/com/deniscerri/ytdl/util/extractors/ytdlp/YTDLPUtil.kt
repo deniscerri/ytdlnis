@@ -163,7 +163,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (generatedResults.isNotEmpty()) {
 
                     generatedResults.forEach {
-                        if (!it.playlistURL.isNullOrBlank() && usePlaylistOriginalURL) {
+                        if (!it.playlistURL.isNullOrBlank() && usePlaylistOriginalURL && query.contains("http")) {
                             it.playlistURL = query
                         }
                     }
@@ -867,8 +867,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }else{
             isPlaylistItem = true
             YTDLRequest(downloadItem.playlistURL!!).apply {
-                if(downloadItem.playlistIndex == null || downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() != null){
-                    request.addOption("--match-filter", "id~='${downloadItem.url.getIDFromYoutubeURL()}'")
+                val ytVideoID = downloadItem.url.getIDFromYoutubeURL()
+                if(downloadItem.playlistIndex == null || (downloadItem.url.isYoutubeURL() && ytVideoID != null)){
+                    request.addOption("--match-filter", "id~='${ytVideoID}'")
                 }else{
                     request.addOption("-I", "${downloadItem.playlistIndex!!}")
                 }
@@ -880,10 +881,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val metadataCommands = StringJoiner(" ")
 
         if (downloadItem.playlistIndex != null && useItemURL) {
-            metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
+            metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}:%(playlist_index)s")
         }
 
         if (downloadItem.playlistTitle.isNotBlank() && useItemURL) {
+            metadataCommands.addOption("--parse-metadata", " :%(playlist_title)s")
+            metadataCommands.addOption("--parse-metadata", "%(playlist_title)s:%(playlist)s")
             metadataCommands.addOption("--replace-in-metadata", "playlist,playlist_title", "^.*$", downloadItem.playlistTitle)
         }
 
@@ -1069,6 +1072,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }else {
                     ytDlRequest.addWriteInfoJson(infoJsonURL)
                 }
+            }
+
+            val subDirectories = sharedPreferences.getStringSet("save_subdirectory", setOf())!!
+            if (subDirectories.isNotEmpty()) {
+                metadataCommands.addOption("--parse-metadata", "%(extractor_key,extractor,ie_key)s:^(?P<no_GH5ME>(?!Generic|HTML5MediaEmbed).*)$")
+                metadataCommands.addOption("--parse-metadata", "%(no_GH5ME,webpage_url_domain)s:%(fldr_website)s")
             }
         }
 

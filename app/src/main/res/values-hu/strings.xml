@@ -509,6 +509,4 @@
     <string name="packages">Csomagok</string>
     <string name="not_installed">Nincs telepítve</string>
     <string name="installed">Telepítve</string>
-    <string name="playlist_subdirectory">Mentés a lejátszási lista alkönyvtárába</string>
-    <string name="playlist_subdirectory_summary">Mentse a fájlokat a lejátszási lista neveként elnevezett mappákba</string>
 </resources>

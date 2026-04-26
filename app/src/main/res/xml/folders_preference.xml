@@ -75,13 +75,14 @@
         app:defaultValue="%(uploader).30B - %(title).170B"
         app:title="@string/file_name_template" />
 
-    <SwitchPreferenceCompat
-        android:widgetLayout="@layout/preferece_material_switch"
-        app:defaultValue="false"
+    <MultiSelectListPreference
+        app:dialogTitle="@string/save_subdirectory"
+        app:entries="@array/save_subdirectory"
+        app:entryValues="@array/save_subdirectory_values"
         app:icon="@drawable/ic_textformat"
-        app:key="playlist_subdirectory"
-        app:summary="@string/playlist_subdirectory_summary"
-        app:title="@string/playlist_subdirectory" />
+        app:key="save_subdirectory"
+        app:summary="@string/save_subdirectory_summary"
+        app:title="@string/save_subdirectory" />
 
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"

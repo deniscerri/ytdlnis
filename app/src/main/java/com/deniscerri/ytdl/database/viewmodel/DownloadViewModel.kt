@@ -1379,10 +1379,26 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun applySubdirectoryPreferences(currentTemplate: String) : String {
-        var customFileNameTemplate = currentTemplate;
-        if (sharedPreferences.getBoolean("playlist_subdirectory", false)) {
-            customFileNameTemplate = "./%(playlist|)s/$customFileNameTemplate"
+        var customFileNameTemplate = currentTemplate
+        val subDirectories = sharedPreferences.getStringSet("save_subdirectory", setOf())!!
+        if (subDirectories.isNotEmpty()) {
+            if (customFileNameTemplate.isBlank()) {
+                customFileNameTemplate = "%(title)s [%(id)s].%(ext)s"
+            }
+
+            if (subDirectories.contains("media_type")) {
+                customFileNameTemplate = "%(media_type|)s/$customFileNameTemplate"
+            }
+            if (subDirectories.contains("playlist")) {
+                customFileNameTemplate = "%(playlist|)s/$customFileNameTemplate"
+            }
+            if (subDirectories.contains("website")) {
+                customFileNameTemplate = "%(fldr_website|)s/$customFileNameTemplate"
+            }
+
+            customFileNameTemplate = "./$customFileNameTemplate"
         }
+
         return customFileNameTemplate
     }
 

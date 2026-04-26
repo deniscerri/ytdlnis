@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.more.settings.downloading
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.preference.ListPreference
@@ -116,6 +117,7 @@ object DownloadSettingsModule : SettingModule {
                         if (!scheduler.canSchedule() && Build.VERSION.SDK_INT >= 31){
                             Intent().also { intent ->
                                 intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                                intent.data = Uri.parse("package:${context.packageName}")
                                 host.getHostContext().startActivity(intent)
                             }
                             allowChange = false

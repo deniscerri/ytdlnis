@@ -18,6 +18,7 @@ import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -32,6 +33,7 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.adapter.CookieAdapter
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
+import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
@@ -175,6 +177,12 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             layout.setContentView(R.layout.cookie_bottom_sheet)
 
             val urlEditText = layout.findViewById<EditText>(R.id.url_edittext)!!
+            val getCookies = layout.findViewById<MaterialButton>(R.id.getCookiesBtn)!!
+
+            urlEditText.doAfterTextChanged { action ->
+                getCookies.isEnabled = urlEditText.text.toString().isURL()
+            }
+
             val urlText = item?.url ?: "https://"
             urlEditText.setText(urlText)
             urlEditText.setSelection(urlEditText.text.length)
@@ -197,7 +205,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             val clipboard = layout.findViewById<MaterialButton>(R.id.clipboard)!!
             val save = layout.findViewById<MaterialButton>(R.id.save)!!
             save.isVisible = item != null
-            val getCookies = layout.findViewById<MaterialButton>(R.id.getCookiesBtn)!!
 
             getCookies.setOnClickListener {
                 val myIntent = Intent(requireContext(), WebViewActivity::class.java)
@@ -224,10 +231,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 }
             }
 
-            urlEditText.doOnTextChanged { text, start, before, count ->
-                getCookies.isEnabled = urlEditText.text.isNotEmpty()
-            }
-
             val imm = mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             urlEditText.postDelayed({
                 urlEditText.requestFocus()
@@ -241,7 +244,6 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
 
-            getCookies.isEnabled = urlEditText.text.isNotEmpty()
         }
 
     }

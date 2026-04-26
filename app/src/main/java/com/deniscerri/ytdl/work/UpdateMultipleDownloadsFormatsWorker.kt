@@ -69,7 +69,7 @@ class UpdateMultipleDownloadsFormatsWorker(
                     count++
                     notificationUtil.updateFormatUpdateNotification(workID, UpdateMultipleDownloadsFormatsWorker::class.java.name, count, ids.size)
                 }else{
-                    throw Exception()
+                    return Result.success()
                 }
             }
 
@@ -77,7 +77,7 @@ class UpdateMultipleDownloadsFormatsWorker(
         }catch (e: Exception){
             notificationUtil.cancelDownloadNotification(workID)
             ids.clear()
-            Result.failure()
+            Result.success()
         }finally {
             if (ids.isNotEmpty()){
                 notificationUtil.showFormatsUpdatedNotification(ids + otherIdsInBundle)

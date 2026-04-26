@@ -12,6 +12,7 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -70,9 +71,6 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isVisible = false
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
-                    R.id.back -> {
-                        webView.goBack()
-                    }
                     R.id.get_data_sync_id -> {
                         webView.evaluateJavascript("ytcfg.get('DATASYNC_ID')") { id ->
                             UiUtil.copyToClipboard(id.replace("\"", ""), this@PoTokenWebViewLoginActivity)
@@ -183,6 +181,18 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
             toolbar.setNavigationOnClickListener {
                 finishAndRemoveTask()
             }
+
+            val backCallback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (webView.canGoBack()) {
+                        webView.goBack()
+                    } else {
+                        isEnabled = false
+                        onBackPressedDispatcher.onBackPressed()
+                    }
+                }
+            }
+            onBackPressedDispatcher.addCallback(this@PoTokenWebViewLoginActivity, backCallback)
 
             generateBtn.setOnClickListener {
                 generateBtn.isEnabled = false
