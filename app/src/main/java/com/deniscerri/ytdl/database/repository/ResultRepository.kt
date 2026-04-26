@@ -19,11 +19,13 @@ import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
-class ResultRepository(private val resultDao: ResultDao, private val commandTemplateDao: CommandTemplateDao, private val context: Context) {
+class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: CommandTemplateDao, private val context: Context) {
     val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
     val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)
@@ -75,6 +77,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         }
 
         itemCount.value = items.size
+        currentCoroutineContext().ensureActive()
         resultDao.insertMultiple(items)
     }
 
@@ -112,6 +115,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
         }
 
+        currentCoroutineContext().ensureActive()
         itemCount.value = items.size
         if (addToResults){
             val ids = resultDao.insertMultiple(items)
@@ -128,16 +132,15 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         //throw ExecuteException("Youtube Watch Videos is not yet supported in data fetching. You can download it directly by clicking Continue Anyway or by Quick Downloading it!")
         val items = mutableListOf<ResultItem>()
         val newpipeExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
-            newPipeUtil.getPlaylistData(inputQuery) {
+            newPipeUtil.getPlaylistData(inputQuery) { chunk ->
+                currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
+                    val ids = resultDao.insertMultiple(chunk)
+                    ids.forEachIndexed { index, id ->
+                        chunk[index].id = id
                     }
                 }
-                items.addAll(it)
+                items.addAll(chunk)
             }
         }else {
             Result.failure(Throwable())
@@ -147,6 +150,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
             newpipeExtractorResult.getOrElse { items }
         }else{
             val res = ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
+            currentCoroutineContext().ensureActive()
             if (addToResults) {
                 val ids = resultDao.insertMultiple(res)
                 ids.forEachIndexed { index, id ->
@@ -173,6 +177,7 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         }else{
             ytdlpUtil.getFromYTDL( inputQuery, resultsGenerated = {})
         }
+        currentCoroutineContext().ensureActive()
 
         if (resetResults) {
             deleteAll()
@@ -195,16 +200,15 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         if (resetResults) deleteAll()
         val items = mutableListOf<ResultItem>()
         val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()){
-            newPipeUtil.getPlaylistData(playlistURL) {
+            newPipeUtil.getPlaylistData(playlistURL) { chunk ->
+                currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
+                    val ids = resultDao.insertMultiple(chunk)
+                    ids.forEachIndexed { index, id ->
+                        chunk[index].id = id
                     }
                 }
-                items.addAll(it)
+                items.addAll(chunk)
             }
         }else {
             Result.failure(Throwable())
@@ -219,12 +223,11 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         }else {
             var itemCounts = 0
             ytdlpUtil.getFromYTDL(inputQuery) {
+                currentCoroutineContext().ensureActive()
                 if (addToResults) {
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
+                    val ids = resultDao.insertMultiple(it)
+                    ids.forEachIndexed { index, id ->
+                        it[index].id = id
                     }
                 }
                 finalResults.addAll(it)
@@ -241,12 +244,11 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val items = mutableListOf<ResultItem>()
         val ytExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
             newPipeUtil.getChannelData(url) {
+                currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
+                    val ids = resultDao.insertMultiple(it)
+                    ids.forEachIndexed { index, id ->
+                        it[index].id = id
                     }
                 }
                 items.addAll(it)
@@ -264,12 +266,11 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         }else {
             var itemCounts = 0
             ytdlpUtil.getFromYTDL(url) {
+                currentCoroutineContext().ensureActive()
                 if (addToResults) {
-                    runBlocking {
-                        val ids = resultDao.insertMultiple(it)
-                        ids.forEachIndexed { index, id ->
-                            it[index].id = id
-                        }
+                    val ids = resultDao.insertMultiple(it)
+                    ids.forEachIndexed { index, id ->
+                        it[index].id = id
                     }
                 }
                 finalResults.addAll(it)
@@ -290,17 +291,16 @@ class ResultRepository(private val resultDao: ResultDao, private val commandTemp
         val itemsToReturn = mutableListOf<ResultItem>()
 
         ytdlpUtil.getFromYTDL(inputQuery, singleItem) { results ->
+            currentCoroutineContext().ensureActive()
             if (resetResults) {
                 itemsCount += results.size
                 itemCount.value = itemsCount
             }
             results.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
             if (addToResults) {
-                runBlocking {
-                    val ids = resultDao.insertMultiple(results)
-                    ids.forEachIndexed { index, id ->
-                        results[index].id = id
-                    }
+                val ids = resultDao.insertMultiple(results)
+                ids.forEachIndexed { index, id ->
+                    results[index].id = id
                 }
             }
             itemsToReturn.addAll(results)

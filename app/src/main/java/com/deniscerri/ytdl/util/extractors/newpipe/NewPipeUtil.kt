@@ -148,7 +148,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getChannelData(url: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    suspend fun getChannelData(url: String, progress: suspend (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             //return Result.failure(Throwable())
             val req = ChannelInfo.getInfo(ServiceList.YouTube, url)
@@ -170,7 +170,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    private fun getChannelTabData(linkHandler: ListLinkHandler, tabInfo: ChannelTabInfo, channelName: String, playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    private suspend fun getChannelTabData(linkHandler: ListLinkHandler, tabInfo: ChannelTabInfo, channelName: String, playlistURL: String, progress: suspend (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val totalItems = mutableListOf<ResultItem>()
             var nextPage : Page? = null
@@ -215,7 +215,7 @@ class NewPipeUtil(context: Context) {
         }
     }
 
-    fun getPlaylistData(playlistURL: String, progress: (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
+    suspend fun getPlaylistData(playlistURL: String, progress: suspend (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             val totalItems = mutableListOf<ResultItem>()
             var nextPage : Page? = null

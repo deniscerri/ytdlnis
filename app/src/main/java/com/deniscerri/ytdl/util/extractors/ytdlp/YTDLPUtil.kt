@@ -37,6 +37,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
@@ -115,7 +116,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     @SuppressLint("RestrictedApi")
-    fun getFromYTDL(query: String, singleItem: Boolean = false, resultsGenerated: (results: List<ResultItem>) -> Unit): List<ResultItem> {
+    suspend fun getFromYTDL(query: String, singleItem: Boolean = false, resultsGenerated: suspend (pagedResults: List<ResultItem>) -> Unit): List<ResultItem> {
         val searchEngine = sharedPreferences.getString("search_engine", "ytsearch")
 
         val request : YTDLRequest
@@ -171,11 +172,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     finalResults.addAll(generatedResults)
                     if (!postedProgress) {
                         if (finalResults.size > 1) {
-                            resultsGenerated(finalResults)
+                            runBlocking {
+                                resultsGenerated(finalResults)
+                            }
                             postedProgress = true
                         }
                     }else{
-                        resultsGenerated(generatedResults)
+                        runBlocking {
+                            resultsGenerated(generatedResults)
+                        }
                     }
                 }
             }

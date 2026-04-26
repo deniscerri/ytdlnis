@@ -258,7 +258,7 @@ object Extensions {
                 val tmp = this.getString(it)
                 if (tmp != "null") {
                     return try {
-                        Json.decodeFromString<List<String>>(tmp).joinToString(", ")
+                        Json.decodeFromString<List<String>>(tmp).distinct().joinToString(", ")
                     } catch (e: Exception) {
                         tmp
                     }

@@ -26,9 +26,13 @@ import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
@@ -146,9 +150,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     fun cancelParsingQueries(){
-        parsingQueries?.cancel(CancellationException())
-        parsingQueriesJobList.forEach { it.cancel(CancellationException()) }
-        uiState.update {it.copy(processing = false)}
+        parsingQueries?.cancel()
+        parsingQueriesJobList.forEach { it.cancel() }
+        parsingQueriesJobList.clear()
+        uiState.update { it.copy(processing = false) }
     }
 
     private suspend fun parseQueriesImpl(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
@@ -157,33 +162,41 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }
         val resetResults = inputQueries.size == 1
         uiState.update {it.copy(processing = true, errorMessage = null)}
+
         val res = mutableListOf<ResultItem?>()
-
         val requestSemaphore = Semaphore(10)
-        inputQueries.forEach { inputQuery ->
-            parsingQueriesJobList.add(viewModelScope.launch(Dispatchers.IO){
-                requestSemaphore.withPermit {
-                    try {
-                        res.addAll(repository.getResultsFromSource(inputQuery, resetResults))
-                    } catch (e: Exception) {
-                        if (updateResultDataJob?.isCancelled == false || e is ExecuteException){
-                            uiState.update {it.copy(
-                                processing = false,
-                                errorMessage = e.message.toString(),
-                            )}
-                            Log.e(tag, e.toString())
-                        }
 
+        try {
+            coroutineScope {
+                inputQueries.forEach { inputQuery ->
+                    launch(Dispatchers.IO) {
+                        requestSemaphore.withPermit {
+                            try {
+                                val results = repository.getResultsFromSource(inputQuery, resetResults)
+                                synchronized(res) { res.addAll(results) }
+                            } catch (e: Exception) {
+                                if (e is CancellationException) throw e
+                                if (isActive) {
+                                    uiState.update { it.copy(processing = false, errorMessage = e.message.toString()) }
+                                }
+                            }
+                        }
                     }
                 }
-            })
+            }
+
+            if (currentCoroutineContext().isActive) {
+                onResult(res)
+            }
+
+        } catch (e: CancellationException) {
+            Log.d(tag, "Parsing queries cancelled.")
+        } finally {
+            uiState.update { it.copy(processing = false) }
+            if (!isForegrounded() && inputQueries.size > 1) {
+                notificationUtil.showQueriesFinished()
+            }
         }
-        parsingQueriesJobList.joinAll()
-        if (!isForegrounded() && inputQueries.size > 1){
-            notificationUtil.showQueriesFinished()
-        }
-        uiState.update {it.copy(processing = false)}
-        onResult(res)
     }
 
     suspend fun parseQueries(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
@@ -268,29 +281,23 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
 
     suspend fun updateItemData(res: ResultItem){
-        if (updateResultDataJob == null || updateResultDataJob?.isCancelled == true || updateResultDataJob?.isCompleted == true){
-            updateResultDataJob = viewModelScope.launch(Dispatchers.IO) {
-                updatingData.emit(true)
-                updatingData.value = true
-                parseQueriesImpl(listOf(res.url)){ result ->
-                    viewModelScope.launch(Dispatchers.IO){
-                        updatingData.emit(false)
-                        updatingData.value = false
-                        updateResultData.emit(result)
-                    }
-                }
-            }
+        if (updateResultDataJob?.isActive == true) return
+        updateResultData.emit(null)
+        updateResultData.value = null
 
-            //updateResultDataJob?.start()
-            updateResultDataJob?.invokeOnCompletion {
-                if (it != null){
-                    viewModelScope.launch(Dispatchers.IO) {
-                        updatingData.emit(false)
-                        updatingData.value = false
-                        updateResultData.emit(null)
-                        updateResultData.value = null
+        updateResultDataJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                updatingData.value = true
+                parseQueriesImpl(listOf(res.url)) { result ->
+                    if (isActive) {
+                        updateResultData.value = result
                     }
                 }
+            } catch (e: CancellationException) {
+            } finally {
+                updatingData.emit(false)
+                updatingData.value = false
+
             }
         }
     }
@@ -312,44 +319,32 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     suspend fun updateFormatItemData(result: ResultItem){
-        if (updateFormatsResultDataJob == null || updateFormatsResultDataJob?.isCancelled == true || updateFormatsResultDataJob?.isCompleted == true) {
-            updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
-                updatingFormats.emit(true)
-                try {
-                    val formats = getFormats(result.url)
-                    updatingFormats.emit(false)
-                    formats.apply {
-                        if (formats.isNotEmpty() && updateFormatsResultDataJob?.isCancelled == false) {
-                            getItemByURL(result.url)?.apply {
-                                this.formats = formats.toMutableList()
-                                update(this)
-                            }
-                            updateFormatsResultData.emit(formats.toMutableList())
-                        }
+        if (updateFormatsResultDataJob?.isActive == true) return
+        updateFormatsResultData.emit(null)
+        updateFormatsResultData.value = null
+
+        updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                updatingFormats.value = true
+                val formats = getFormats(result.url)
+                ensureActive()
+                if (formats.isNotEmpty()) {
+                    getItemByURL(result.url)?.apply {
+                        this.formats = formats.toMutableList()
+                        update(this)
                     }
-                }catch(e: Exception) {
-                    if (e !is kotlinx.coroutines.CancellationException) {
-                        uiState.update {
-                            it.copy(
-                                processing = false,
-                                errorMessage = e.message.toString(),
-                            )
-                        }
-                        Log.e(tag, e.toString())
-                    }
-                    updatingFormats.emit(false)
+                    updateFormatsResultData.emit(formats.toMutableList())
                 }
-            }
-            updateFormatsResultDataJob?.start()
-            updateFormatsResultDataJob?.invokeOnCompletion {
-                if (it != null){
-                    viewModelScope.launch(Dispatchers.IO) {
-                        updatingFormats.emit(false)
-                        updatingFormats.value = false
-                        updateFormatsResultData.emit(null)
-                        updateFormatsResultData.value = null
-                    }
+            } catch (e: CancellationException) {
+
+            } catch (e: Exception) {
+                uiState.update {
+                    it.copy(processing = false, errorMessage = e.message.toString())
                 }
+                Log.e(tag, "Error updating formats: $e")
+            } finally {
+                updatingFormats.emit(false)
+                updatingFormats.value = false
             }
         }
     }

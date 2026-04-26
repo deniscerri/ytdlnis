@@ -91,9 +91,11 @@ import com.google.android.material.timepicker.TimeFormat
 import io.noties.markwon.AbstractMarkwonPlugin
 import io.noties.markwon.Markwon
 import io.noties.markwon.MarkwonConfiguration
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -2213,17 +2215,20 @@ object UiUtil {
         val previewTemplateLoading = view.findViewById<ProgressBar>(R.id.filename_template_preview_loading)
         val previewTemplateText = view.findViewById<TextView>(R.id.filename_template_preview_text)
 
+        var previewJob: Job? = null;
+
         previewTemplateBtn.setOnClickListener {
             previewTemplateLoading.isVisible = true
             previewTemplateBtn.isVisible = false
 
-            CoroutineScope(Dispatchers.IO).launch {
+            previewJob = CoroutineScope(Dispatchers.IO).launch {
                 val preview = ytdlpViewModel!!.getFilenameTemplatePreview(itemContext!!, editText.text.toString())
-
-                withContext(Dispatchers.Main) {
-                    previewTemplateLoading.isVisible = false
-                    previewTemplateText.isVisible = true
-                    previewTemplateText.text = preview
+                if (isActive) {
+                    withContext(Dispatchers.Main) {
+                        previewTemplateLoading.isVisible = false
+                        previewTemplateText.isVisible = true
+                        previewTemplateText.text = preview
+                    }
                 }
             }
         }
@@ -2233,6 +2238,7 @@ object UiUtil {
                 previewTemplateText.isVisible = false
                 previewTemplateLoading.isVisible = false
                 previewTemplateBtn.isVisible = true
+                previewJob?.cancel(CancellationException())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
