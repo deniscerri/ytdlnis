@@ -881,7 +881,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val metadataCommands = StringJoiner(" ")
 
         if (downloadItem.playlistIndex != null && useItemURL) {
-            metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}:%(playlist_index)s")
+            metadataCommands.addOption("--parse-metadata", " ${downloadItem.playlistIndex}: %(playlist_index)s")
         }
 
         if (downloadItem.playlistTitle.isNotBlank() && useItemURL) {
