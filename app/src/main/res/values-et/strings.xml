@@ -1,3 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="worst_quality">Halvim kvaliteet</string>
+    <string name="best_quality">Parim kvaliteet</string>
+    <string name="search">Otsing</string>
+    <string name="remove_all">Eemalda kõik</string>
+    <string name="remove_results">Puhasta valikud</string>
+    <string name="download_all">Lae kõik alla</string>
+    <string name="settings">Seaded</string>
+    <string name="home">Kodu</string>
+    <string name="directories">Kaustad</string>
+    <string name="music_directory">Heli kaust</string>
+    <string name="video_directory">Video kaust</string>
+    <string name="updating">Uuendab</string>
+    <string name="ytdl_update_hint">Kasulik nõuanne värskenduste allalaadimisel</string>
+    <string name="update_ytdl">Uuenda yt-dlp uuele versioonile</string>
+    <string name="source_code">Lähtekood</string>
+    <string name="search_hint">Otsi või sisesta URL</string>
+    <string name="failed_download">Faili ei õnnestunud alla laadida</string>
+    <string name="you_are_in_latest_version">Kasutab uusimat versiooni</string>
+    <string name="ytld_update_success">Uus versioon paigaldatud</string>
+    <string name="ytdl_already_updating">Uue versiooni paigaldamine</string>
+    <string name="ytdl_updating_started">Uue versiooni allalaadimine</string>
+    <string name="Remove">Eemalda</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Tühista</string>
+    <string name="confirm_delete_history">Kinnita</string>
+    <string name="search_history_hint">Otsi ajaloost</string>
+    <string name="search_command_hint">Otsi käsklustest</string>
+    <string name="no_results">Tulemusi pole</string>
+    <string name="more">Rohkem</string>
+    <string name="update_app">Kontrollige värskendusi</string>
+    <string name="version">Versioon</string>
+    <string name="command_directory">Kohandatud kaust käsklustele</string>
+    <string name="couldnt_find_apk">Sobivat APK-d ei leitud</string>
 </resources>
