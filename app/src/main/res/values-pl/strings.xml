@@ -8,7 +8,7 @@
     <string name="music_directory">Folder audio</string>
     <string name="video_directory">Folder wideo</string>
     <string name="updating">Aktualizowanie</string>
-    <string name="update_ytdl">Aktualizuj yt-dlp do nowej wersji</string>
+    <string name="update_ytdl">Zaktualizuj yt-dlp do najnowszej wersji</string>
     <string name="source_code">Kod źródłowy</string>
     <string name="search_hint">Szukaj lub wstaw URL</string>
     <string name="Remove">Usuń</string>
@@ -34,7 +34,7 @@
     <string name="search">Szukaj</string>
     <string name="directories">Foldery</string>
     <string name="failed_download">Nie można pobrać pliku</string>
-    <string name="ytdl_update_hint">Przydatna wskazówka przy aktualizacji</string>
+    <string name="ytdl_update_hint">Przydatna wskazówka podczas aktualizacji</string>
     <string name="download_notification_channel_description">Powiadomienie pokazujące postęp pobierania plików audio i wideo</string>
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
     <string name="download_notification_channel_name">Pobieranie plików</string>
@@ -99,7 +99,7 @@
     <string name="sponsorblock_fillers">Filtry</string>
     <string name="worst_quality">Najgorsza jakość</string>
     <string name="best_quality">Najlepsza jakość</string>
-    <string name="about">O programie</string>
+    <string name="about">O aplikacji</string>
     <string name="language">Język</string>
     <string name="command_templates">Szablony poleceń</string>
     <string name="terminal">Terminal</string>
@@ -244,7 +244,7 @@
     <string name="restart">Uruchom ponownie</string>
     <string name="ytdl_version">Wersja yt-dlp</string>
     <string name="move_temporary_files">Przenieś pliki tymczasowe</string>
-    <string name="move_temporary_files_summary">Przenieś pliki z pamięci podręcznej do folderu pobierania</string>
+    <string name="move_temporary_files_summary">Przenieś pliki z pamięci cash do folderu pobrane</string>
     <string name="file_size">Rozmiar pliku</string>
     <string name="preferred_home_screen">Preferowany ekran główny</string>
     <string name="undo">Cofnij</string>
@@ -499,4 +499,26 @@
     <string name="potoken_player">Token PO (odtwarzacz)</string>
     <string name="potoken_subs">Token PO (napisy)</string>
     <string name="url_regex">Złącze Regex</string>
+    <string name="use_original_url_playlist_summary">Użyj adresu url do playlisty podanego przez użytkownika zamiast tagu playlist_webpage_url z dumpa jsona</string>
+    <string name="potoken_guide">Z autentykacją\n-----------------------\n1. Naciśnij \"logowanie\" aby otworzyć stronę logowania w android WebView.\n2. Zaloguj się do swojego konta google.\n3. Odtwórz dowolny filmik wspierający automatycznie tłumaczone napisy.\n4. Włącz automatycznie tłumaczone napisy aby zobaczyć czy działa.\n\t4.1 Jeśli automatycznie tłumaczone napisy się nie wyświetlają zmień filmik i wykonaj krok 4 jeszcze raz.\n5. Naciśnij OK.\n\nBez autentykacji\n-----------------------\n1. Naciśnij \"Bez autentykacji\".\n2. Wklej link do filmiku.\n3. Poczekaj aż filmik się załaduje i obejrzyj conajmniej 3 sekundy.\n4. Naciśnij OK.</string>
+    <string name="no_auth">Bez autentykacji</string>
+    <string name="auth">Z autentykacją</string>
+    <string name="app_icon">Ikona aplikacji</string>
+    <string name="show_quick_download_share_menu">Pokaż opcję aby natychmiast rozpocząć pobieranie w menu udostępniania</string>
+    <string name="quick_download_title">Nie pobieraj danych</string>
+    <string name="sponsorblock_hook">Hook powitalny</string>
+    <string name="packages">Pakiety</string>
+    <string name="not_installed">Nie zainstalowano</string>
+    <string name="bundled">W pakiecie</string>
+    <string name="disable_flat_playlist">Wyłącz płaską playlistę</string>
+    <string name="installed">Zainstalowano</string>
+    <string name="save_subdirectory">Zapisz do podfolderu</string>
+    <string name="save_subdirectory_summary">Zapisz pliki do folderów na podstawie metadanych</string>
+    <string name="trim_filenames">Skróć nazwy plików</string>
+    <string name="install_downloaded_file">Zainstaluj pobrany plik</string>
+    <string name="website">Strona internetowa</string>
+    <string name="playlist">Playlista</string>
+    <string name="media_type">Typ mediów</string>
+    <string name="use_app_language_for_metadata_summary">Jeśli ta opcja jest włączona, pola metadanych będą zgodne z językiem aplikacji, co wpłynie również na wybór formatu poprzez preferowanie wersji z dubbingiem zamiast oryginalnych</string>
+    <string name="auto_update_ytdlp_summary">Zaleca się pozostawienie tej opcji włączonej, ponieważ yt-dlp wymaga częstych aktualizacji do poprawnego działania. Dane są pobierane bezpośrednio z repozytorium yt-dlp w serwisie GitHub.</string>
 </resources>
