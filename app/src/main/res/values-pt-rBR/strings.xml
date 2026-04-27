@@ -442,7 +442,7 @@
     <string name="use_app_language_for_metadata">Usar idioma do aplicativo para metadados</string>
     <string name="layout">Layout</string>
     <string name="player_client">Cliente de reprodução</string>
-    <string name="player_client_summary"><![CDATA[Cliente de reprodução do YouTube & Chave de acesso PO]]></string>
+    <string name="player_client_summary"><![CDATA[Clientes de reprodução do YouTube &amp; Chave de acesso PO]]></string>
     <string name="list">Lista</string>
     <string name="grid">Grade</string>
     <string name="prefer_container_over_codec_audio">Preferir o contêiner em vez do codec para downloads de áudio</string>
@@ -516,4 +516,9 @@
     <string name="auto_update_ytdlp_summary">É recomendável manter esta opção ativada, pois o yt-dlp precisa ser atualizado com bastante frequência para continuar funcionando! Os dados foram extraídos do repositório GitHub do yt-dlp.</string>
     <string name="trim_filenames">Abreviar nomes de arquivos</string>
     <string name="install_downloaded_file">Instale o arquivo baixado</string>
+    <string name="save_subdirectory">Salvar no subdiretório</string>
+    <string name="save_subdirectory_summary">Salvar arquivos em pastas com base em tags de metadados</string>
+    <string name="website">Site</string>
+    <string name="playlist">Playlist</string>
+    <string name="media_type">Tipo de mídia</string>
 </resources>
