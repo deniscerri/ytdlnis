@@ -515,4 +515,9 @@
     <string name="auto_update_ytdlp_summary">yt-dlp가 잘 작동하려면 자주 업데이트해야 하므로 이 설정을 켜두는 것이 좋습니다! 데이터는 yt-dlp의 GitHub 저장소에서 추출됩니다.</string>
     <string name="trim_filenames">파일 이름 다듬기</string>
     <string name="install_downloaded_file">다운로드한 파일 설치</string>
+    <string name="website">웹사이트</string>
+    <string name="playlist">재생목록</string>
+    <string name="media_type">미디어 유형</string>
+    <string name="save_subdirectory">하위 폴더에 저장</string>
+    <string name="save_subdirectory_summary">메타데이터 태그를 기반으로 파일을 폴더에 분류해 저장</string>
 </resources>
