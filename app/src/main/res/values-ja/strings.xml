@@ -3,12 +3,12 @@
     <string name="updating">更新</string>
     <string name="remove_all">すべて削除</string>
     <string name="remove_results">結果を消去</string>
-    <string name="settings">セッティング</string>
+    <string name="settings">設定</string>
     <string name="home">ホーム</string>
     <string name="directories">フォルダ</string>
     <string name="music_directory">音声用フォルダ</string>
     <string name="video_directory">動画用フォルダ</string>
-    <string name="update_ytdl">yt-dl を最新版に更新</string>
+    <string name="update_ytdl">yt-dlp を最新版に更新</string>
     <string name="failed_download">ファイルをダウンロードできませんでした</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用中です</string>
@@ -150,14 +150,14 @@
     <string name="copy_log">ログをコピー</string>
     <string name="create_shortcut">ショートカットを作成</string>
     <string name="error_restarting_download">ダウンロードの再開時にエラーが発生しました</string>
-    <string name="all_items_selected">すべての項目を選択</string>
-    <string name="access_all_directories">すべてのディレクトリのアクセスを許可</string>
+    <string name="all_items_selected">すべて選択</string>
+    <string name="access_all_directories">すべてのファイルへのアクセスを許可</string>
     <string name="access_all_directories_summary">初期設定では制限されているディレクトリにダウンロード</string>
     <string name="in_queue">順番待ち</string>
     <string name="clear_cancelled">キャンセル済みの項目を消去</string>
     <string name="items_imported">インポートされました</string>
     <string name="help_translate">翻訳にご協力ください</string>
-    <string name="help_translate_summary">Weblate にて本アプリを翻訳できます</string>
+    <string name="help_translate_summary">ウェブサイト にて本アプリを翻訳できます</string>
     <string name="restart">再起動</string>
     <string name="download_rescheduled_to">スケジュールされたダウンロード:</string>
     <string name="file_size">ファイルサイズ</string>
@@ -507,4 +507,12 @@
     <string name="app_icon">アプリアイコン</string>
     <string name="show_quick_download_share_menu">共有メニューに「すぐにダウンロード」のオプションを追加する</string>
     <string name="quick_download_title">データを取得しない</string>
+    <string name="use_app_language_for_metadata_summary">有効にすると、アプリの言語設定に合わせて、字幕よりも「吹き替え版」が優先的に選ばれるようになります</string>
+    <string name="auto_update_ytdlp_summary">yt-dlpを安定して動作させるために自動更新を有効にすることをおすすめします。アップデートはGithubリポジトリから取得されます。</string>
+    <string name="save_subdirectory">サブフォルダに保存</string>
+    <string name="trim_filenames">ファイル名の整理</string>
+    <string name="install_downloaded_file">ファイルのダウンロードが完了しました。\nインストールを開始します</string>
+    <string name="website">ウェブサイト</string>
+    <string name="playlist">プレイリスト</string>
+    <string name="media_type">メディアタイプ</string>
 </resources>
