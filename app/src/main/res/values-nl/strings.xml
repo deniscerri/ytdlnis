@@ -8,7 +8,7 @@
     <string name="audio_quality">Audio­kwaliteit</string>
     <string name="audio_format">Audio­formaat</string>
     <string name="title">Titel</string>
-    <string name="music_directory">Muziek­map</string>
+    <string name="music_directory">Audio­map</string>
     <string name="warning">Waarschuwing</string>
     <string name="couldnt_find_apk">Kon geen geschikte APK vinden</string>
     <string name="ytdl_updating_started">Nieuwe versie aan het downloaden</string>
@@ -371,7 +371,7 @@
     <string name="add_template_first">U moet ten­minste één opdracht­sjabloon aangemaakt hebben!</string>
     <string name="download_over_metered_networks_summary">Downloadt via elk netwerk­type. Wacht anders voor een ongemeten netwerk</string>
     <string name="metered_network_download_start_info">Download zal starten wanneer u bent verbonden met en ongemeten netwerk</string>
-    <string name="video_recommendations_summary">Ontvang aan­bevolen YouTube-video\'s op het start­scherm</string>
+    <string name="video_recommendations_summary">Ontvang aan­bevolen video\'s op het start­scherm</string>
     <string name="format_filtering_hint">Alle items moeten van hetzelfde type zĳn om deze optie te kunnen gebruiken</string>
     <string name="remember_download_type_summary">Selecteer het laatst geopende download­type voor het huidige item</string>
     <string name="buffer_size_summary">Grootte van download­buffer, bĳv. 1024 of 16k (standaard is 1024)</string>
@@ -389,7 +389,7 @@
     <string name="audio_only_item">Dit item bevat enkel audio­formaten</string>
     <string name="force_keyframes_summary">Langzamer proces, maar preciezere sneden</string>
     <string name="download_already_exists_summary">Wilt u nog steeds downloaden?</string>
-    <string name="backup_created_successfully">Back-up­bestand opgeslagen in de download­map</string>
+    <string name="backup_created_successfully">Back-up­bestand succesvol opgeslagen</string>
     <string name="crop_thumb_summary">Snĳd de miniatuur bĳ tot een vierkant voor audio­downloads</string>
     <string name="process_downloads_background">"Downloads worden nog steeds geladen. Doorgaan met het verwerken ervan op de achtergrond en beginnen met downloaden? "</string>
     <string name="cache_first_summary">Cache­bestanden worden naar de interne opslag gedownload en vervolgens naar de door u gekozen map verplaatst. Gebruik dit als u niet recht­streeks naar de opslag kunt schrĳven</string>
