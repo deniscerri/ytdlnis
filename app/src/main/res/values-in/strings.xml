@@ -515,4 +515,9 @@
     <string name="auto_update_ytdlp_summary">Disarankan untuk tetap mengaktifkan fitur ini karena yt-dlp perlu sering diperbarui agar tetap berfungsi! Data tersebut diambil dari repositori GitHub yt-dlp.</string>
     <string name="trim_filenames">Pangkas nama berkas</string>
     <string name="install_downloaded_file">Pasang berkas yang telah diunduh</string>
+    <string name="save_subdirectory">Simpan ke subdirektori</string>
+    <string name="save_subdirectory_summary">Simpan berkas dalam folder berdasarkan label metadata</string>
+    <string name="website">Situs web</string>
+    <string name="playlist">Daftar putar</string>
+    <string name="media_type">Jenis Media</string>
 </resources>
