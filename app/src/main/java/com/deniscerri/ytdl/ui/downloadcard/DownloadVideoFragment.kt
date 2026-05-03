@@ -33,6 +33,7 @@ import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
+import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -266,6 +267,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
+                        if (downloadItem.cropValues.isNotBlank()) {
+                            downloadItem.cropValues = ""
+                            view.findViewById<Chip>(R.id.crop)?.createBadge(requireContext(), 0)
+                        }
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
                             if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats,
                             showSize = downloadItem.downloadSections.isEmpty()
@@ -423,6 +428,37 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 }else{
                                     downloadItem.customFileNameTemplate = downloadViewModel.applySubdirectoryPreferences(sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!)
                                 }
+                            },
+                            cropClicked = { cropVideoListener ->
+                                if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
+                                    val bottomSheet = CropVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cropVideoListener)
+                                    bottomSheet.show(parentFragmentManager, "cropVideoSheet")
+                                }
+                            },
+                            cropDisabledClicked = {
+                                val isUpdatingData = ViewModelProvider(requireActivity())[ResultViewModel::class.java].updatingData.value
+                                if(isUpdatingData){
+                                    val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (downloadItem.duration == "0:00" || downloadItem.duration == "-1"){
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (!nonSpecific){
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable_please_update_item), Snackbar.LENGTH_SHORT)
+                                    snack.setAction(R.string.update){
+                                        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                            resultItem?.apply {
+                                                val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                                rsVM.updateItemData(this)
+                                                disabledCutClicked = true
+                                            }
+                                        }
+                                    }
+                                    snack.show()
+                                }
+                            },
+                            cropValueChanged = {
+                                downloadItem.cropValues = it
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
