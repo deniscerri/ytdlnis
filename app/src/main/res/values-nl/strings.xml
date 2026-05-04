@@ -450,4 +450,19 @@
     <string name="minutes">Minuten</string>
     <string name="grid">Raster</string>
     <string name="list">Lijst</string>
+    <string name="prefer_container_over_codec_audio">geef voorkeur aan de container dan codec voor audio downloads</string>
+    <string name="prefer_container_over_codec_audio_summary">Met deze optie ingeschakeld, zal de bij voorkeur gekozen audio codec worden genegeerd en aleen de container veranderen</string>
+    <string name="player_client">Speler cliënt</string>
+    <string name="player_client_summary"><![CDATA[Youtube Speler Cliënten &amp; PO Tokens]]></string>
+    <string name="use_app_language_for_metadata">Gebruik app taal voor metadata</string>
+    <string name="layout">Formaat</string>
+    <string name="use_only_po_token">Gebruik aleen PO Tokens (negeer speler cliënt)</string>
+    <string name="cache_directory">Cache map</string>
+    <string name="cache_directory_warning">Het veranderen van de cache map kan leiden tot onverwachte fouten. Als de app niet can schrijven naar het geconfigureerde pad, zal het terugvallen op de standaar interne cache locatie</string>
+    <string name="app_icon_change">Icoon kan veranderen en applicatie zal sluiten</string>
+    <string name="use_format_sorting">Gebruik formaats belang sorteren</string>
+    <string name="reset_preferences_in_screen">Reset alle opties op dit scherm</string>
+    <string name="automatic_backup">Automatische backup</string>
+    <string name="backup_path">Backup locatie</string>
+    <string name="automatic_backup_summary">Maak automatisch een backup van alles wanneer een nieuwe versie van de applicatie beschikbaar is</string>
 </resources>
