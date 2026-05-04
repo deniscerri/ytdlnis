@@ -1052,6 +1052,23 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
             }
 
+            if (downloadItem.cropValues.isNotBlank()){
+                val parts = downloadItem.cropValues.split(":")
+                if (parts.size >= 4) {
+                    val x = parts[0].toIntOrNull() ?: 0
+                    val y = parts[1].toIntOrNull() ?: 0
+                    val w = parts[2].toIntOrNull() ?: 0
+                    val h = parts[3].toIntOrNull() ?: 0
+                    if (w > 0 && h > 0) {
+                        // Crop requires re-encoding to invoke VideoConvertor postprocessor
+                        request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-vf crop=$w:$h:$x:$y")
+                        if (!downloadItem.videoPreferences.recodeVideo && !downloadItem.videoPreferences.compatibilityMode) {
+                            request.addOption("--recode-video", "mp4")
+                        }
+                    }
+                }
+            }
+
             if (sharedPreferences.getBoolean("write_description", false)){
                 request.addOption("--write-description")
             }

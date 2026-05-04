@@ -64,6 +64,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdl.ui.downloadcard.VideoCropListener
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
@@ -1311,6 +1312,9 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         cutValueChanged: (String) -> Unit,
         cutDisabledClicked: () -> Unit,
+        cropClicked: (VideoCropListener) -> Unit,
+        cropValueChanged: (String) -> Unit,
+        cropDisabledClicked: () -> Unit,
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
         saveAutoSubtitlesClicked: (Boolean) -> Unit,
@@ -1752,6 +1756,38 @@ object UiUtil {
                 cut.alpha = 0.3f
                 cut.setOnClickListener {
                     cutDisabledClicked()
+                }
+            }
+        }
+
+        val crop = view.findViewById<Chip>(R.id.crop)
+        if (items.size > 1 || items.first().url.isEmpty()) crop.isVisible = false
+        else{
+            crop.setOnClickListener(null)
+            val duration = items[0].duration
+            if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
+                val downloadItem = items[0]
+                crop.alpha = 1f
+                if (downloadItem.cropValues.isNotBlank()) crop.createBadge(context, 1)
+                val cropVideoListener = object : VideoCropListener {
+
+                    override fun onChangeCrop(x: Int, y: Int, w: Int, h: Int) {
+                        crop.createBadge(context, 1)
+                        cropValueChanged("$x:$y:$w:$h")
+                    }
+
+                    override fun onClearCrop() {
+                        crop.createBadge(context, 0)
+                        cropValueChanged("")
+                    }
+                }
+                crop.setOnClickListener {
+                    cropClicked(cropVideoListener)
+                }
+            }else{
+                crop.alpha = 0.3f
+                crop.setOnClickListener {
+                    cropDisabledClicked()
                 }
             }
         }

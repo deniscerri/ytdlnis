@@ -186,6 +186,17 @@
     <string name="ignore_battery_optimization">Ignore battery optimization</string>
     <string name="cut">Cut</string>
     <string name="new_cut">New cut</string>
+    <string name="crop">Crop</string>
+    <string name="crop_video">Crop Video</string>
+    <string name="lock_ratio">Lock ratio</string>
+    <string name="crop_x">X</string>
+    <string name="crop_y">Y</string>
+    <string name="crop_w">Width</string>
+    <string name="crop_h">Height</string>
+    <string name="crop_validation_required">Required</string>
+    <string name="crop_validation_zero">Must be > 0</string>
+    <string name="crop_validation_exceeds_w">X+W exceeds %d</string>
+    <string name="crop_validation_exceeds_h">Y+H exceeds %d</string>
     <string name="add_template_first">You need to have at least one command template created!</string>
     <string name="suggested">Suggested</string>
     <string name="select_all">Select all</string>

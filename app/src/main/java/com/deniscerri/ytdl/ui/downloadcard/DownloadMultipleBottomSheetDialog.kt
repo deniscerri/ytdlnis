@@ -693,6 +693,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         cutClicked = {},
                                         cutDisabledClicked = {},
                                         cutValueChanged = {},
+                                        cropClicked = {},
+                                        cropDisabledClicked = {},
+                                        cropValueChanged = {},
                                         filenameTemplateSet = { checked ->
                                             items.forEach { it.customFileNameTemplate = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
