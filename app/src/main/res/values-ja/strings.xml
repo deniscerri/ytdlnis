@@ -435,10 +435,10 @@
     <string name="disable_write_info_json">情報用の json を書き込まない</string>
     <string name="no_check_certificates">HTTPS証明書を検証しない</string>
     <string name="data_fetching_extra_command">データ取得用の追加コマンド</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube 後で見る (要クッキー)</string>
-    <string name="ytdlp_recommnedations">YT-DLP Youtube おすすめ (要クッキー)</string>
-    <string name="ytdlp_watch_history">YT-DLP Youtube 視聴履歴 (要クッキー)</string>
-    <string name="ytdlp_liked">YT-DLP Youtube 高評価した動画 (要クッキー)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube 後で見る（クッキーが必要）</string>
+    <string name="ytdlp_recommnedations">yt-dlp YouTube おすすめ （クッキーが必要）</string>
+    <string name="ytdlp_watch_history">yt-dlp YouTube 視聴履歴 （クッキーが必要）</string>
+    <string name="ytdlp_liked">yt-dlp YouTube 高評価した動画 （クッキーが必要）</string>
     <string name="data_fetching_extra_command_summary">コマンドテンプレートを追加コマンドとしてデータ取得に用いる</string>
     <string name="prefer_container_over_codec_audio">音声をダウンロードする際にコーデックよりコンテナを優先</string>
     <string name="prefer_container_over_codec_audio_summary">有効にすると、優先する音声コーデックの設定を無視し、コンテナのみを変更します</string>
@@ -511,8 +511,13 @@
     <string name="auto_update_ytdlp_summary">yt-dlpを安定して動作させるために自動更新を有効にすることをおすすめします。アップデートはGithubリポジトリから取得されます。</string>
     <string name="save_subdirectory">サブフォルダに保存</string>
     <string name="trim_filenames">ファイル名の整理</string>
-    <string name="install_downloaded_file">ファイルのダウンロードが完了しました。\nインストールを開始します</string>
+    <string name="install_downloaded_file">ダウンロードしたファイルをインストールする</string>
     <string name="website">ウェブサイト</string>
     <string name="playlist">プレイリスト</string>
     <string name="media_type">メディアタイプ</string>
+    <string name="packages">パッケージ</string>
+    <string name="not_installed">未インストール</string>
+    <string name="bundled">バンドル済み</string>
+    <string name="installed">インストール済み</string>
+    <string name="save_subdirectory_summary">メタデータタグに基づいてファイルをフォルダに保存する</string>
 </resources>
