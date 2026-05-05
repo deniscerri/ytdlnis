@@ -514,6 +514,11 @@
     <string name="use_app_language_for_metadata_summary">Si cette option est activée, les champs de métadonnées suivront la langue de votre application et affecteront même la sélection du format en privilégiant les versions doublées plutôt que les versions originales</string>
     <string name="installed">Installé</string>
     <string name="auto_update_ytdlp_summary">Il est recommandé de laisser cette option activée pour garantir le bon fonctionnement de l\'application, car yt-dlp est mis à jour assez fréquemment ! Les données sont extraites du dépôt GitHub de yt-dlp.</string>
-    <string name="trim_filenames">Raccourcir les noms de fichiers</string>
+    <string name="trim_filenames">Ajuster les noms de fichiers</string>
     <string name="install_downloaded_file">Installez le fichier téléchargé</string>
+    <string name="media_type">Type de média</string>
+    <string name="playlist">Liste de Lecture</string>
+    <string name="website">Site Web</string>
+    <string name="save_subdirectory_summary">Sauvegarder les fichiers dans un dossier basé sur les balises de métadonnées</string>
+    <string name="save_subdirectory">Sauvegarder dans un sous-répertoire</string>
 </resources>

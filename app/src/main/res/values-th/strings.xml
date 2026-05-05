@@ -497,4 +497,5 @@
     <string name="use_original_url_playlist">ใช้ยูอาร์แอลต้นฉบับสำหรับยูอาร์แอลของเพลย์ลิสต์</string>
     <string name="prefer_drc_audio">เลือกเสียงแบบ DRC</string>
     <string name="app_icon">ไอคอนแอป</string>
+    <string name="install_downloaded_file">ติดตั้งไฟที่ดาวน์โหลดมา</string>
 </resources>

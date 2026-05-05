@@ -516,4 +516,9 @@
     <string name="auto_update_ytdlp_summary">yt-dlp-nin işlək qalması üçün çox tez-tez yenilənməsi lazım olduğundan, bunu işlək saxlamaq tövsiyə olunandır! Məlumat yt-dlp-nin GitHub Deposundan çıxarılır.</string>
     <string name="trim_filenames">Fayl adlarını kəsin</string>
     <string name="install_downloaded_file">Yüklənilən faylı quraşdır</string>
+    <string name="save_subdirectory">Alt qovluğa yerləşdir</string>
+    <string name="save_subdirectory_summary">Faylları üst məlumat etiketlərinə əsasən qovluqlarda yerləşdir</string>
+    <string name="website">Veb Sayt</string>
+    <string name="playlist">Pleylist</string>
+    <string name="media_type">Media Növü</string>
 </resources>

@@ -447,7 +447,7 @@
     <string name="prefer_container_over_codec_audio">Предпочитать контейнер кодеку для загрузок аудио</string>
     <string name="prefer_container_over_codec_audio_summary">Если этот параметр включён, предпочитаемый аудиокодек будет игнорироваться, и изменится только контейнер</string>
     <string name="player_client">Клиент плеера</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
     <string name="use_app_language_for_metadata">Запрашивать метаданные на языке приложения</string>
     <string name="layout">Макет</string>
     <string name="list">Список</string>
@@ -515,4 +515,9 @@
     <string name="auto_update_ytdlp_summary">Рекомендуется оставить эту опцию включённой для надлежащей работы приложения, поскольку yt-dlp довольно часто обновляется! Все данные извлекаются из репозитория yt-dlp на GitHub.</string>
     <string name="trim_filenames">Обрезать имена файлов</string>
     <string name="install_downloaded_file">Установить загруженный файл</string>
+    <string name="save_subdirectory">Сохранить в подкаталог</string>
+    <string name="save_subdirectory_summary">Сохраняйте файлы в папках на основе тегов метаданных</string>
+    <string name="website">Вебсайт</string>
+    <string name="playlist">Плейлист</string>
+    <string name="media_type">Тип носителя</string>
 </resources>
