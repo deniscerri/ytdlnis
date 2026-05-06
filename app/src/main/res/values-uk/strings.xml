@@ -451,7 +451,7 @@
     <string name="layout">Макет</string>
     <string name="list">Список</string>
     <string name="grid">Сітка</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
     <string name="cache_directory">Папка кешу</string>
     <string name="cache_directory_warning">Зміна папки кешу може спричинити непередбачені проблеми. Якщо програма не може виконати запис налаштованим шляхом, вона буде використовувати каталог внутрішнього кешу за замовчуванням</string>
     <string name="use_only_po_token">Використовувати лише PO token (ігнорувати клієнт програвача)</string>
@@ -515,4 +515,9 @@
     <string name="auto_update_ytdlp_summary">Рекомендується залишити цю функцію увімкненою, оскільки yt-dlp вимагає досить частого оновлення для забезпечення стабільної роботи! Дані витягуються з репозиторію yt-dlp GitHub.</string>
     <string name="trim_filenames">Обрізати імена файлів</string>
     <string name="install_downloaded_file">Встановіть завантажений файл</string>
+    <string name="save_subdirectory">Зберегти в підкаталог</string>
+    <string name="save_subdirectory_summary">Зберігайте файли в папках на основі тегів метаданих</string>
+    <string name="website">Вебсайт</string>
+    <string name="playlist">Список відтворення</string>
+    <string name="media_type">Тип носія</string>
 </resources>

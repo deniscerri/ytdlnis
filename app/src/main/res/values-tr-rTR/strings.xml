@@ -514,7 +514,13 @@
     <string name="bundled">İçinde Gelen</string>
     <string name="use_app_language_for_metadata_summary">Etkinleştirildiğinde, metadata alanları uygulama diline uyacak ve format seçimini etkileyerek orjinal şekli yerine çevirilmiş şeklini kullanacaktır</string>
     <string name="installed">Kurulmuş</string>
-    <string name="auto_update_ytdlp_summary">yt-dlp sık sık güncellendiği için ve uygulamanın düzgün çalışması için bu seçeneğin etkin kalması önerilir! Bu veri yt-dlp\'nin GitHub Deposundan çıkarıldı.</string>
+    <string name="auto_update_ytdlp_summary">yt-dlp\'nin çalışmaya devam etmesi için sık sık güncellenmesi gerekmektedir, bu seçeneğin etkin kalması önerilir! Bu veri yt-dlp\'nin GitHub Deposundan çıkarıldı.</string>
     <string name="sponsorblock_hook">Tanıtım/Selamlar</string>
     <string name="install_downloaded_file">İndirilen dosyayı yükle</string>
+    <string name="save_subdirectory">Alt klasöre kaydet</string>
+    <string name="save_subdirectory_summary">Dosyaları metaveri etiketlerine göre klasörlere kaydet</string>
+    <string name="trim_filenames">Dosya adlarını kırp</string>
+    <string name="website">Website</string>
+    <string name="playlist">Oynatma listesi</string>
+    <string name="media_type">Medya türü</string>
 </resources>
