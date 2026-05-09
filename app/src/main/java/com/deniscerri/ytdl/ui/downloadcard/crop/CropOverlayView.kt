@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.downloadcard
+package com.deniscerri.ytdl.ui.downloadcard.crop
 
 import android.content.Context
 import android.graphics.Canvas
@@ -8,6 +8,8 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import androidx.compose.ui.unit.dp
+import com.deniscerri.ytdl.util.Extensions
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -48,8 +50,8 @@ class CropOverlayView(context: Context, attrs: AttributeSet?) : View(context, at
     private var lastTouchX = 0f
     private var lastTouchY = 0f
 
-    private val handleRadius = 48f
-    private val minCropSize = 20f
+    private val handleRadius = Extensions.dp(resources, 24f)
+    private val minCropSize = Extensions.dp(resources, 40f)
 
     var aspectRatio: Float? = null
 

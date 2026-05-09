@@ -32,6 +32,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
+import com.deniscerri.ytdl.ui.downloadcard.crop.CropVideoBottomSheetDialog
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
@@ -267,8 +268,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
-                        if (downloadItem.cropValues.isNotBlank()) {
-                            downloadItem.cropValues = ""
+                        if (downloadItem.videoPreferences.cropValues.isNotBlank()) {
+                            downloadItem.videoPreferences.cropValues = ""
                             view.findViewById<Chip>(R.id.crop)?.createBadge(requireContext(), 0)
                         }
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
@@ -430,8 +431,17 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 }
                             },
                             cropClicked = { cropVideoListener ->
-                                if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
-                                    val bottomSheet = CropVideoBottomSheetDialog(downloadItem, resultItem?.urls ?: "", resultItem?.chapters ?: listOf(), cropVideoListener)
+                                val fw = downloadItem.format.width ?: 0
+                                val fh = downloadItem.format.height ?: 0
+                                if (fw == 0 || fh == 0) {
+                                    val snack = Snackbar.make(view, context.getString(R.string.select_format), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
+                                    val bottomSheet = CropVideoBottomSheetDialog(
+                                        downloadItem,
+                                        resultItem?.urls ?: "",
+                                        cropVideoListener
+                                    )
                                     bottomSheet.show(parentFragmentManager, "cropVideoSheet")
                                 }
                             },
@@ -458,7 +468,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 }
                             },
                             cropValueChanged = {
-                                downloadItem.cropValues = it
+                                downloadItem.videoPreferences.cropValues = it
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it

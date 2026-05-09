@@ -342,7 +342,7 @@ class NewPipeUtil(context: Context) {
                             lang = it.audioLocale?.language,
                             asr = it.itagItem!!.sampleRate.toString(),
                             url = it.content,
-                            tbr = (it.bitrate / 1000).toString() + "k"
+                            tbr = (it.bitrate / 1000).toString() + "k",
                         )
 
                         formats.add(formatObj)
@@ -367,7 +367,9 @@ class NewPipeUtil(context: Context) {
                             format_note = it.itagItem!!.getResolutionString() ?: it.quality,
                             filesize = it.itagItem!!.contentLength,
                             url = it.content,
-                            tbr = (it.bitrate / 1000).toString() + "k"
+                            tbr = (it.bitrate / 1000).toString() + "k",
+                            width = it.width,
+                            height = it.height
                         )
                         formats.add(formatObj)
                     }
@@ -385,7 +387,9 @@ class NewPipeUtil(context: Context) {
                             format_note = it.itagItem!!.getResolutionString() ?: it.quality,
                             filesize = it.itagItem!!.contentLength,
                             url = it.content,
-                            tbr = (it.bitrate / 1000).toString() + "k"
+                            tbr = (it.bitrate / 1000).toString() + "k",
+                            width = it.width,
+                            height = it.height
                         )
                         formats.add(formatObj)
                     }

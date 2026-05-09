@@ -1052,18 +1052,20 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
             }
 
-            if (downloadItem.cropValues.isNotBlank()){
-                val parts = downloadItem.cropValues.split(":")
-                if (parts.size >= 4) {
+            if (downloadItem.videoPreferences.cropValues.isNotBlank()){
+                val parts = downloadItem.videoPreferences.cropValues.split(":")
+                if (parts.size >= 6) {
                     val x = parts[0].toIntOrNull() ?: 0
                     val y = parts[1].toIntOrNull() ?: 0
                     val w = parts[2].toIntOrNull() ?: 0
                     val h = parts[3].toIntOrNull() ?: 0
+                    val refW = parts[4].toIntOrNull() ?: 0
+                    val refH = parts[5].toIntOrNull() ?: 0
+
                     if (w > 0 && h > 0) {
-                        // Crop requires re-encoding to invoke VideoConvertor postprocessor
-                        request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-vf crop=$w:$h:$x:$y")
+                        request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-vf crop=($w/$refW)*iw:($h/$refH)*ih:($x/$refW)*iw:($y/$refH)*ih")
                         if (!downloadItem.videoPreferences.recodeVideo && !downloadItem.videoPreferences.compatibilityMode) {
-                            request.addOption("--recode-video", "mp4")
+                            request.addOption("--recode-video", "mkv")
                         }
                     }
                 }

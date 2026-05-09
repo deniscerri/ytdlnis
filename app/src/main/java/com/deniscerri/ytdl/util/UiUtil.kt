@@ -64,7 +64,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
-import com.deniscerri.ytdl.ui.downloadcard.VideoCropListener
+import com.deniscerri.ytdl.ui.downloadcard.crop.VideoCropListener
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
@@ -967,6 +967,8 @@ object UiUtil {
         val fpsParent = bottomSheet.findViewById<ConstraintLayout>(R.id.fps_parent)
         val asrParent = bottomSheet.findViewById<ConstraintLayout>(R.id.asr_parent)
         val bitrateParent = bottomSheet.findViewById<ConstraintLayout>(R.id.bitrate_parent)
+        val widthParent = bottomSheet.findViewById<ConstraintLayout>(R.id.width_parent)
+        val heightParent = bottomSheet.findViewById<ConstraintLayout>(R.id.height_parent)
 
 
         val clicker = View.OnClickListener {
@@ -1061,7 +1063,8 @@ object UiUtil {
             bitrateParent?.setOnLongClickListener(longClicker)
         }
 
-
+        widthParent?.findViewById<TextView>(R.id.width_value)?.text = format.width?.toString() ?: "?"
+        heightParent?.findViewById<TextView>(R.id.height_value)?.text = format.height?.toString() ?: "?"
 
         bottomSheet.show()
         val displayMetrics = DisplayMetrics()
@@ -1768,12 +1771,12 @@ object UiUtil {
             if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
                 val downloadItem = items[0]
                 crop.alpha = 1f
-                if (downloadItem.cropValues.isNotBlank()) crop.createBadge(context, 1)
+                if (downloadItem.videoPreferences.cropValues.isNotBlank()) crop.createBadge(context, 1)
                 val cropVideoListener = object : VideoCropListener {
 
-                    override fun onChangeCrop(x: Int, y: Int, w: Int, h: Int) {
+                    override fun onChangeCrop(x: Int, y: Int, w: Int, h: Int, refW: Int, refH: Int) {
                         crop.createBadge(context, 1)
-                        cropValueChanged("$x:$y:$w:$h")
+                        cropValueChanged("$x:$y:$w:$h:$refW:$refH")
                     }
 
                     override fun onClearCrop() {

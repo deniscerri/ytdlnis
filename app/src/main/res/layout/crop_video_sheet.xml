@@ -35,7 +35,7 @@
                 app:resize_mode="fit"
                 app:use_controller="false" />
 
-            <com.deniscerri.ytdl.ui.downloadcard.CropOverlayView
+            <com.deniscerri.ytdl.ui.downloadcard.crop.CropOverlayView
                 android:id="@+id/crop_overlay"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -55,69 +55,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/pause"
-                    android:visibility="gone"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_play_arrow_white"
-                    android:layout_width="wrap_content"
-                    android:indeterminate="true"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/rewind"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_rewind_white"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/restart"
-                    android:indeterminate="true"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mute"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/remove_audio"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_music"
-                    app:iconSize="30dp"
-                    app:iconTint="?android:colorAccent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/forward"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_fast_forward_white"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/end"
-                    android:indeterminate="true"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -154,129 +91,165 @@
             app:layout_constraintTop_toBottomOf="@+id/frame_layout">
 
             <LinearLayout
-                android:id="@+id/ratio_lock_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <com.google.android.material.materialswitch.MaterialSwitch
-                    android:id="@+id/ratio_lock_switch"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/rewind"
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lock_ratio" />
+                    android:layout_marginHorizontal="40dp"
+                    app:icon="@drawable/exomedia_ic_rewind_white"
+                    app:iconSize="40dp"
+                    app:iconTint="?android:colorAccent" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ratio_w_input"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/playpause"
+                    style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                android:hint="@string/crop_w">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ratio_w_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ratio_h_input"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="0dp"
                     android:layout_weight="1"
+                    app:icon="@drawable/exomedia_ic_pause_white"
+                    app:iconGravity="textStart"
+                    app:iconSize="40dp"
+                    app:iconTint="?android:colorAccent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/forward"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                android:hint="@string/crop_h">
+                    android:layout_marginStart="40dp"
+                    app:icon="@drawable/exomedia_ic_fast_forward_white"
+                    app:iconSize="40dp"
+                    app:iconTint="?android:colorAccent" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/ratio_h_edittext"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mute"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/remove_audio"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_music"
+                    app:iconSize="30dp"
+                    app:iconTint="?android:colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/aspect_ratio"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:scrollbars="none"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/ratio_chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/free_ratio"
+                        android:checked="true"
+                        android:id="@+id/chip_free" />
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1:1"
+                        android:id="@+id/chip_11"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4:3"
+                        android:id="@+id/chip_43"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="16:9"
+                        android:id="@+id/chip_169"/>
+
+                    <com.google.android.material.chip.Chip
+                        style="@style/Widget.Material3.Chip.Filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="9:16"
+                        android:id="@+id/chip_916"/>
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
+
             <LinearLayout
+                android:id="@+id/crop_value_fields_section"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/crop_x_input"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:hint="@string/crop_x">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/precision_px"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/crop_x_edittext"
+                <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:layout_marginTop="8dp"
+                    android:columnCount="2"
+                    android:alignmentMode="alignMargins">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/crop_x_input"
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginEnd="4dp"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="@string/x_offset">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/crop_x_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/crop_y_input"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:hint="@string/crop_y">
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/crop_y_input"
+                        android:layout_width="0dp"
+                        android:layout_columnWeight="1"
+                        android:layout_marginStart="4dp"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="@string/y_offset">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/crop_y_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </GridLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/crop_y_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/crop_w_input"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="5dp"
-                android:hint="@string/crop_w">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/crop_w_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/crop_h_input"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:hint="@string/crop_h">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/crop_h_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-        </LinearLayout>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -290,16 +263,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crop_values_section"
             app:layout_constraintVertical_bias="1.0">
-
-            <Button
-                android:id="@+id/cancelButton"
-                style="@style/Widget.Material3.Button.ElevatedButton"
-                android:layout_width="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"
-                android:outlineProvider="none"
-                app:icon="@drawable/ic_cancel"/>
 
             <Button
                 android:id="@+id/resetButton"

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.downloadcard
+package com.deniscerri.ytdl.ui.downloadcard.crop
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -13,6 +13,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.annotation.OptIn
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +23,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem.fromUri
 import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
@@ -28,6 +32,7 @@ import androidx.media3.ui.PlayerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
+import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.convertToTimestamp
 import com.deniscerri.ytdl.util.Extensions.toStringTimeStamp
@@ -36,7 +41,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +59,6 @@ import kotlin.math.roundToInt
 class CropVideoBottomSheetDialog(
     private val _item: DownloadItem? = null,
     private val urls: String? = null,
-    private var chapters: List<ChapterItem>? = null,
     private val listener: VideoCropListener? = null
 ) : BottomSheetDialogFragment() {
 
@@ -62,35 +69,31 @@ class CropVideoBottomSheetDialog(
     private lateinit var cropValuesSection: LinearLayout
     private lateinit var durationText: TextView
     private lateinit var progress: ProgressBar
-    private lateinit var pauseBtn: MaterialButton
+    private lateinit var playPauseBtn: MaterialButton
     private lateinit var rewindBtn: MaterialButton
     private lateinit var forwardBtn: MaterialButton
     private lateinit var muteBtn: MaterialButton
-    private lateinit var cancelBtn: Button
     private lateinit var resetBtn: Button
     private lateinit var okBtn: Button
     private lateinit var xEditText: EditText
     private lateinit var yEditText: EditText
-    private lateinit var wEditText: EditText
-    private lateinit var hEditText: EditText
     private lateinit var xInputLayout: TextInputLayout
     private lateinit var yInputLayout: TextInputLayout
-    private lateinit var wInputLayout: TextInputLayout
-    private lateinit var hInputLayout: TextInputLayout
-    private lateinit var ratioLockSwitch: MaterialSwitch
-    private lateinit var ratioWEditText: EditText
-    private lateinit var ratioHEditText: EditText
     private lateinit var item: DownloadItem
 
     private var videoWidth = 0
     private var videoHeight = 0
     private var itemDurationTimestamp = 0L
     private var updatingFromTextInput = false
-    private var enforcingRatio = false
     private var batchUpdating = 0
     private var cutStartTimestamp = 0L
     private var cutEndTimestamp = 0L
     private var hasCutRange = false
+
+    private lateinit var ratioChipGroup: ChipGroup
+
+    private var tempW = 0
+    private var tempH = 0
 
     private fun scaleX(): Float {
         val vw = cropOverlay.width
@@ -108,7 +111,7 @@ class CropVideoBottomSheetDialog(
     }
 
     @SuppressLint("RestrictedApi", "SetTextI18n")
-    @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
+    @OptIn(UnstableApi::class)
     override fun setupDialog(dialog: Dialog, style: Int) {
         super.setupDialog(dialog, style)
         val view = LayoutInflater.from(context).inflate(R.layout.crop_video_sheet, null)
@@ -136,7 +139,6 @@ class CropVideoBottomSheetDialog(
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
         itemDurationTimestamp = item.duration.convertToTimestamp()
-        if (chapters == null) chapters = emptyList()
 
         cropOverlay = view.findViewById(R.id.crop_overlay)
         cropOverlay.visibility = View.INVISIBLE
@@ -146,73 +148,64 @@ class CropVideoBottomSheetDialog(
         durationText = view.findViewById(R.id.durationText)
         durationText.text = ""
         progress = view.findViewById(R.id.progress)
-        pauseBtn = view.findViewById(R.id.pause)
+        playPauseBtn = view.findViewById(R.id.playpause)
         rewindBtn = view.findViewById(R.id.rewind)
         forwardBtn = view.findViewById(R.id.forward)
         muteBtn = view.findViewById(R.id.mute)
-        cancelBtn = view.findViewById(R.id.cancelButton)
         resetBtn = view.findViewById(R.id.resetButton)
         okBtn = view.findViewById(R.id.okButton)
 
         xEditText = view.findViewById(R.id.crop_x_edittext)
         yEditText = view.findViewById(R.id.crop_y_edittext)
-        wEditText = view.findViewById(R.id.crop_w_edittext)
-        hEditText = view.findViewById(R.id.crop_h_edittext)
         xInputLayout = view.findViewById(R.id.crop_x_input)
         yInputLayout = view.findViewById(R.id.crop_y_input)
-        wInputLayout = view.findViewById(R.id.crop_w_input)
-        hInputLayout = view.findViewById(R.id.crop_h_input)
 
         cropOverlay.onCropChanged = { updateTextInputsFromOverlay() }
 
         xEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { updateOverlayFromTextInputs(); validateCropInputs() } }
         yEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { updateOverlayFromTextInputs(); validateCropInputs() } }
-        wEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { enforceRatioFromW(); updateOverlayFromTextInputs(); validateCropInputs() } }
-        hEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { enforceRatioFromH(); updateOverlayFromTextInputs(); validateCropInputs() } }
 
-        ratioLockSwitch = view.findViewById(R.id.ratio_lock_switch)
-        ratioWEditText = view.findViewById(R.id.ratio_w_edittext)
-        ratioHEditText = view.findViewById(R.id.ratio_h_edittext)
-        ratioLockSwitch.isEnabled = false
-
-        ratioLockSwitch.setOnCheckedChangeListener { _, checked ->
-            if (checked) {
-                applyRatioLock()
-                reshapeToRatio()
-            } else {
+        ratioChipGroup = view.findViewById<ChipGroup>(R.id.ratio_chip_group)
+        ratioChipGroup.findViewById<Chip>(R.id.chip_free).apply {
+            setOnClickListener {
                 cropOverlay.aspectRatio = null
             }
         }
-
-        val ratioTextWatcher = {
-            val rw = ratioWEditText.text.toString().toIntOrNull()
-            val rh = ratioHEditText.text.toString().toIntOrNull()
-            val valid = rw != null && rh != null && rw > 0 && rh > 0
-            ratioLockSwitch.isEnabled = valid
-            if (!valid) {
-                ratioLockSwitch.isChecked = false
-                cropOverlay.aspectRatio = null
-            } else if (ratioLockSwitch.isChecked) {
-                applyRatioLock()
+        ratioChipGroup.findViewById<Chip>(R.id.chip_11).apply {
+            setOnClickListener {
+                cropOverlay.aspectRatio = 1.toFloat() / 1
                 reshapeToRatio()
             }
         }
-
-        ratioWEditText.doOnTextChanged { _, _, _, _ -> ratioTextWatcher() }
-        ratioHEditText.doOnTextChanged { _, _, _, _ -> ratioTextWatcher() }
-
-        cancelBtn.setOnClickListener { dismiss() }
+        ratioChipGroup.findViewById<Chip>(R.id.chip_43).apply {
+            setOnClickListener {
+                cropOverlay.aspectRatio = 4.toFloat() / 3
+                reshapeToRatio()
+            }
+        }
+        ratioChipGroup.findViewById<Chip>(R.id.chip_169).apply {
+            setOnClickListener {
+                cropOverlay.aspectRatio = 16.toFloat() / 9
+                reshapeToRatio()
+            }
+        }
+        ratioChipGroup.findViewById<Chip>(R.id.chip_916).apply {
+            setOnClickListener {
+                cropOverlay.aspectRatio = 9.toFloat() / 16
+                reshapeToRatio()
+            }
+        }
 
         resetBtn.setOnClickListener {
             listener?.onClearCrop()
             player.stop()
             dismiss()
         }
-        resetBtn.isEnabled = item.cropValues.isNotBlank()
+        resetBtn.isEnabled = item.videoPreferences.cropValues.isNotBlank()
 
         okBtn.setOnClickListener {
             readTextFieldsToVideoCoords()?.let { (x, y, w, h) ->
-                listener?.onChangeCrop(x, y, w, h)
+                listener?.onChangeCrop(x, y, w, h, videoWidth, videoHeight)
             }
             player.stop()
             dismiss()
@@ -228,12 +221,18 @@ class CropVideoBottomSheetDialog(
             }
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
-                pauseBtn.isVisible = !isPlaying
+                if (isPlaying) {
+                    playPauseBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.exomedia_ic_pause_white)
+                } else {
+                    playPauseBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.exomedia_ic_play_arrow_white)
+                }
                 super.onIsPlayingChanged(isPlaying)
             }
         })
 
-        trySetResolutionFromFormat()
+        videoWidth = item.format.width ?: 0
+        videoHeight = item.format.height ?: 0
+        showOverlayAndLoad()
 
         videoView.setOnClickListener {
             if (player.isPlaying) player.pause() else player.play()
@@ -249,6 +248,14 @@ class CropVideoBottomSheetDialog(
             }
         }
 
+        playPauseBtn.setOnClickListener {
+            if (player.isPlaying) {
+                player.pause()
+            } else {
+                player.play()
+            }
+        }
+
         rewindBtn.setOnClickListener {
             try {
                 val seekTo = if (hasCutRange) cutStartTimestamp else 0
@@ -258,7 +265,7 @@ class CropVideoBottomSheetDialog(
         }
 
         forwardBtn.setOnClickListener {
-            kotlin.runCatching {
+            runCatching {
                 val end = if (hasCutRange) cutEndTimestamp else itemDurationTimestamp
                 player.seekTo(max(0, end - 1500))
                 player.play()
@@ -271,7 +278,7 @@ class CropVideoBottomSheetDialog(
                     if (urls.isNullOrEmpty()) {
                         resultViewModel.getStreamingUrlAndChapters(item.url)
                     } else {
-                        Pair(urls.split("\n"), chapters)
+                        Pair(urls.split("\n"), listOf())
                     }
                 }
 
@@ -315,63 +322,10 @@ class CropVideoBottomSheetDialog(
         }
     }
 
-    private fun trySetResolutionFromFormat() {
-        findVideoDimensions()?.let { (w, h) ->
-            videoWidth = w
-            videoHeight = h
-            showOverlayAndLoad()
-        }
-    }
-
-    private fun findVideoDimensions(): Pair<Int, Int>? {
-        // Format width/height from JSON
-        val fw = item.format.width ?: 0
-        val fh = item.format.height ?: 0
-        if (fw > 0 && fh > 0) return Pair(fw, fh)
-        // Matching format_id in allFormats
-        item.allFormats.find { it.format_id == item.format.format_id && (it.width ?: 0) > 0 && (it.height ?: 0) > 0 }
-            ?.let { return Pair(it.width!!, it.height!!) }
-        // Any format in allFormats
-        item.allFormats.find { (it.width ?: 0) > 0 && (it.height ?: 0) > 0 }
-            ?.let { return Pair(it.width!!, it.height!!) }
-        // Parse format_note
-        parseResolution(item.format.format_note)?.let { return it }
-        // Parse any format_note in allFormats
-        item.allFormats.firstNotNullOfOrNull { parseResolution(it.format_note) }?.let { return it }
-        return null
-    }
-
-    private fun parseResolution(note: String): Pair<Int, Int>? {
-        if (note.isBlank()) return null
-        // "1920x1080" format
-        Regex("""(\d+)x(\d+)""").find(note)?.let {
-            return Pair(it.groupValues[1].toInt(), it.groupValues[2].toInt())
-        }
-        // "1080p", "1080p60", "1080p60 HDR" etc.
-        Regex("""(\d+)p""").find(note)?.let {
-            val h = it.groupValues[1].toInt()
-            return Pair(h * 16 / 9, h)
-        }
-        // "hd1080", "hd720" etc.
-        Regex("""hd(\d+)""", RegexOption.IGNORE_CASE).find(note)?.let {
-            val h = it.groupValues[1].toInt()
-            return Pair(h * 16 / 9, h)
-        }
-        return null
-    }
-
     private fun showOverlayAndLoad() {
         cropOverlay.visibility = View.VISIBLE
         cropValuesSection.visibility = View.VISIBLE
         loadSavedCrop()
-    }
-
-    private fun applyRatioLock() {
-        val rw = ratioWEditText.text.toString().toIntOrNull() ?: return
-        val rh = ratioHEditText.text.toString().toIntOrNull() ?: return
-        if (rw > 0 && rh > 0) {
-            cropOverlay.aspectRatio = rw.toFloat() / rh
-        }
     }
 
     private fun reshapeToRatio() {
@@ -389,17 +343,31 @@ class CropVideoBottomSheetDialog(
         val cx = vx + vw / 2
         val cy = vy + vh / 2
 
-        // Compute largest rectangle with this ratio that fits centered
-        val maxW = minOf(cx, videoWidth - cx) * 2
-        val maxH = minOf(cy, videoHeight - cy) * 2
-        val newH = minOf(maxH, (maxW / ar).roundToInt())
-        val newW = (newH * ar).roundToInt()
-        if (newW <= 0 || newH <= 0) return
+        // 2. Calculate the largest possible rectangle that fits the Aspect Ratio
+        // inside the actual video dimensions
+        var finalW: Int
+        var finalH: Int
 
-        val newX = (cx - newW / 2).coerceIn(0, videoWidth - newW)
-        val newY = (cy - newH / 2).coerceIn(0, videoHeight - newH)
+        if (videoWidth.toFloat() / videoHeight > ar) {
+            // Video is wider than the desired aspect ratio: Constrain by Height
+            finalH = videoHeight
+            finalW = (finalH * ar).roundToInt()
+        } else {
+            // Video is taller than the desired aspect ratio: Constrain by Width
+            finalW = videoWidth
+            finalH = (finalW / ar).roundToInt()
+        }
 
-        applyVideoCoordsToOverlay(newX, newY, newW, newH)
+        val scaleFactor = minOf(vw.toFloat() / finalW, vh.toFloat() / finalH).coerceAtMost(1.0f)
+        finalW = (finalW * scaleFactor).roundToInt().coerceAtLeast(1)
+        finalH = (finalH * scaleFactor).roundToInt().coerceAtLeast(1)
+        val maxPossibleX = (videoWidth - finalW).coerceAtLeast(0)
+        val maxPossibleY = (videoHeight - finalH).coerceAtLeast(0)
+
+        val newX = (cx - finalW / 2).coerceIn(0, maxPossibleX)
+        val newY = (cy - finalH / 2).coerceIn(0, maxPossibleY)
+
+        applyVideoCoordsToOverlay(newX, newY, finalW, finalH)
     }
 
     private fun validateCropInputs(): Boolean {
@@ -414,54 +382,26 @@ class CropVideoBottomSheetDialog(
         // Clear all previous errors first
         error(xInputLayout, null)
         error(yInputLayout, null)
-        error(wInputLayout, null)
-        error(hInputLayout, null)
 
         val x = xEditText.text.toString().toIntOrNull()
         val y = yEditText.text.toString().toIntOrNull()
-        val w = wEditText.text.toString().toIntOrNull()
-        val h = hEditText.text.toString().toIntOrNull()
 
-        if (x == null) { error(xInputLayout, context?.getString(R.string.crop_validation_required) ?: "Required"); return false }
-        if (y == null) { error(yInputLayout, context?.getString(R.string.crop_validation_required) ?: "Required"); return false }
-        if (w == null) { error(wInputLayout, context?.getString(R.string.crop_validation_required) ?: "Required"); return false }
-        if (h == null) { error(hInputLayout, context?.getString(R.string.crop_validation_required) ?: "Required"); return false }
+        if (x == null) { error(xInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
+        if (y == null) { error(yInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
 
-        if (w <= 0) error(wInputLayout, context?.getString(R.string.crop_validation_zero) ?: "Must be > 0")
-        if (h <= 0) error(hInputLayout, context?.getString(R.string.crop_validation_zero) ?: "Must be > 0")
-
-        if (videoWidth > 0 && x + w > videoWidth) {
+        if (videoWidth > 0 && x + tempW > videoWidth) {
             val msg = context?.getString(R.string.crop_validation_exceeds_w, videoWidth) ?: "X+W exceeds $videoWidth"
             error(xInputLayout, msg)
-            error(wInputLayout, msg)
         }
-        if (videoHeight > 0 && y + h > videoHeight) {
+        if (videoHeight > 0 && y + tempH > videoHeight) {
             val msg = context?.getString(R.string.crop_validation_exceeds_h, videoHeight) ?: "Y+H exceeds $videoHeight"
             error(yInputLayout, msg)
-            error(hInputLayout, msg)
         }
 
         okBtn.isEnabled = valid
         return valid
     }
 
-    private fun enforceRatioFromW() {
-        if (enforcingRatio || !ratioLockSwitch.isChecked) return
-        val ar = cropOverlay.aspectRatio ?: return
-        val w = wEditText.text.toString().toIntOrNull() ?: return
-        enforcingRatio = true
-        hEditText.setText((w / ar).roundToInt().toString())
-        enforcingRatio = false
-    }
-
-    private fun enforceRatioFromH() {
-        if (enforcingRatio || !ratioLockSwitch.isChecked) return
-        val ar = cropOverlay.aspectRatio ?: return
-        val h = hEditText.text.toString().toIntOrNull() ?: return
-        enforcingRatio = true
-        wEditText.setText((h * ar).roundToInt().toString())
-        enforcingRatio = false
-    }
 
     private fun parseCutRange() {
         val sections = item.downloadSections
@@ -470,7 +410,7 @@ class CropVideoBottomSheetDialog(
         val parts = firstSection.split(" ")
         val timeRange = parts[0].split("-")
         if (timeRange.size != 2) return
-        kotlin.runCatching {
+        runCatching {
             cutStartTimestamp = timeRange[0].convertToTimestamp()
             cutEndTimestamp = timeRange[1].convertToTimestamp()
             if (cutStartTimestamp >= 0 && cutEndTimestamp > cutStartTimestamp) {
@@ -482,7 +422,7 @@ class CropVideoBottomSheetDialog(
     private fun loadSavedCrop() {
         cropOverlay.post {
             if (cropOverlay.width <= 0 || cropOverlay.height <= 0) return@post
-            val existingCrop = item.cropValues
+            val existingCrop = item.videoPreferences.cropValues
             if (existingCrop.isNotBlank()) {
                 val parts = existingCrop.split(":")
                 if (parts.size >= 4) {
@@ -490,6 +430,9 @@ class CropVideoBottomSheetDialog(
                     val y = parts[1].toIntOrNull() ?: 0
                     val w = parts[2].toIntOrNull() ?: videoWidth
                     val h = parts[3].toIntOrNull() ?: videoHeight
+                    tempW = parts[4].toIntOrNull() ?: 0
+                    tempH = parts[5].toIntOrNull() ?: 0
+
                     applyVideoCoordsToOverlay(x, y, w, h)
                 }
             } else {
@@ -522,8 +465,8 @@ class CropVideoBottomSheetDialog(
         batchUpdating++
         xEditText.setText(x.toString())
         yEditText.setText(y.toString())
-        wEditText.setText(w.toString())
-        hEditText.setText(h.toString())
+        tempW = w
+        tempH = h
         batchUpdating--
         validateCropInputs()
     }
@@ -532,22 +475,18 @@ class CropVideoBottomSheetDialog(
         if (cropOverlay.width <= 0 || cropOverlay.height <= 0) return
         val x = xEditText.text.toString().toIntOrNull() ?: return
         val y = yEditText.text.toString().toIntOrNull() ?: return
-        val w = wEditText.text.toString().toIntOrNull() ?: return
-        val h = hEditText.text.toString().toIntOrNull() ?: return
         updatingFromTextInput = true
         val sx = scaleX()
         val sy = scaleY()
-        cropOverlay.setCrop(x * sx, y * sy, (x + w) * sx, (y + h) * sy)
+        cropOverlay.setCrop(x * sx, y * sy, (x + tempW) * sx, (y + tempH) * sy)
         updatingFromTextInput = false
     }
 
     private fun readTextFieldsToVideoCoords(): Quadruple? {
         val x = xEditText.text.toString().toIntOrNull() ?: return null
         val y = yEditText.text.toString().toIntOrNull() ?: return null
-        val w = wEditText.text.toString().toIntOrNull() ?: return null
-        val h = hEditText.text.toString().toIntOrNull() ?: return null
-        if (w <= 0 || h <= 0) return null
-        return Quadruple(x, y, w, h)
+        if (tempW <= 0 || tempH <= 0) return null
+        return Quadruple(x, y, tempW, tempH)
     }
 
     private data class Quadruple(val x: Int, val y: Int, val w: Int, val h: Int)
@@ -570,7 +509,7 @@ class CropVideoBottomSheetDialog(
     }
 
     private fun cleanUp() {
-        kotlin.runCatching {
+        runCatching {
             player.stop()
             parentFragmentManager.beginTransaction()
                 .remove(parentFragmentManager.findFragmentByTag("cropVideoSheet")!!).commit()
@@ -579,6 +518,6 @@ class CropVideoBottomSheetDialog(
 }
 
 interface VideoCropListener {
-    fun onChangeCrop(x: Int, y: Int, w: Int, h: Int)
+    fun onChangeCrop(x: Int, y: Int, w: Int, h: Int, refW: Int, refH: Int)
     fun onClearCrop()
 }
