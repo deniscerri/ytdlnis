@@ -529,7 +529,9 @@
     <string name="media_type">Media Type</string>
     <string name="free_ratio">Free Ratio</string>
     <string name="aspect_ratio">Aspect Ratio</string>
-    <string name="precision_px">Precision (px)</string>
+    <string name="dimensions">Dimensions</string>
     <string name="x_offset">X Offset</string>
     <string name="y_offset">Y Offset</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
 </resources>

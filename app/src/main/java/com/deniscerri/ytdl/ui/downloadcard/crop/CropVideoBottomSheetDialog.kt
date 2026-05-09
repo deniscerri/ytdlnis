@@ -75,25 +75,29 @@ class CropVideoBottomSheetDialog(
     private lateinit var muteBtn: MaterialButton
     private lateinit var resetBtn: Button
     private lateinit var okBtn: Button
+
     private lateinit var xEditText: EditText
-    private lateinit var yEditText: EditText
     private lateinit var xInputLayout: TextInputLayout
+    private lateinit var yEditText: EditText
     private lateinit var yInputLayout: TextInputLayout
+    private lateinit var widthEditText: EditText
+    private lateinit var widthInputLayout: TextInputLayout
+    private lateinit var heightEditText: EditText
+    private lateinit var heightInputLayout: TextInputLayout
+
     private lateinit var item: DownloadItem
 
     private var videoWidth = 0
     private var videoHeight = 0
     private var itemDurationTimestamp = 0L
     private var updatingFromTextInput = false
+    private var enforcingRatio = false
     private var batchUpdating = 0
     private var cutStartTimestamp = 0L
     private var cutEndTimestamp = 0L
     private var hasCutRange = false
 
     private lateinit var ratioChipGroup: ChipGroup
-
-    private var tempW = 0
-    private var tempH = 0
 
     private fun scaleX(): Float {
         val vw = cropOverlay.width
@@ -156,41 +160,52 @@ class CropVideoBottomSheetDialog(
         okBtn = view.findViewById(R.id.okButton)
 
         xEditText = view.findViewById(R.id.crop_x_edittext)
-        yEditText = view.findViewById(R.id.crop_y_edittext)
         xInputLayout = view.findViewById(R.id.crop_x_input)
+        yEditText = view.findViewById(R.id.crop_y_edittext)
         yInputLayout = view.findViewById(R.id.crop_y_input)
+        widthEditText = view.findViewById(R.id.crop_width_edittext)
+        widthInputLayout = view.findViewById(R.id.crop_width_input)
+        heightEditText = view.findViewById(R.id.crop_height_edittext)
+        heightInputLayout = view.findViewById(R.id.crop_height_input)
 
         cropOverlay.onCropChanged = { updateTextInputsFromOverlay() }
 
         xEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { updateOverlayFromTextInputs(); validateCropInputs() } }
         yEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { updateOverlayFromTextInputs(); validateCropInputs() } }
+        widthEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { enforceRatioFromW(); updateOverlayFromTextInputs(); validateCropInputs() } }
+        heightEditText.doOnTextChanged { _, _, _, _ -> if (batchUpdating <= 0) { enforceRatioFromH(); updateOverlayFromTextInputs(); validateCropInputs() } }
 
         ratioChipGroup = view.findViewById<ChipGroup>(R.id.ratio_chip_group)
         ratioChipGroup.findViewById<Chip>(R.id.chip_free).apply {
             setOnClickListener {
                 cropOverlay.aspectRatio = null
+                enforcingRatio = false
             }
         }
         ratioChipGroup.findViewById<Chip>(R.id.chip_11).apply {
             setOnClickListener {
+                enforcingRatio = true
                 cropOverlay.aspectRatio = 1.toFloat() / 1
                 reshapeToRatio()
             }
         }
         ratioChipGroup.findViewById<Chip>(R.id.chip_43).apply {
             setOnClickListener {
+                enforcingRatio = true
                 cropOverlay.aspectRatio = 4.toFloat() / 3
                 reshapeToRatio()
             }
         }
         ratioChipGroup.findViewById<Chip>(R.id.chip_169).apply {
             setOnClickListener {
+                enforcingRatio = true
                 cropOverlay.aspectRatio = 16.toFloat() / 9
                 reshapeToRatio()
             }
         }
         ratioChipGroup.findViewById<Chip>(R.id.chip_916).apply {
             setOnClickListener {
+                enforcingRatio = true
                 cropOverlay.aspectRatio = 9.toFloat() / 16
                 reshapeToRatio()
             }
@@ -382,26 +397,49 @@ class CropVideoBottomSheetDialog(
         // Clear all previous errors first
         error(xInputLayout, null)
         error(yInputLayout, null)
+        error(widthInputLayout, null)
+        error(heightInputLayout, null)
 
         val x = xEditText.text.toString().toIntOrNull()
         val y = yEditText.text.toString().toIntOrNull()
+        val w = widthEditText.text.toString().toIntOrNull()
+        val h = heightEditText.text.toString().toIntOrNull()
 
         if (x == null) { error(xInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
         if (y == null) { error(yInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
+        if (w == null) { error(widthInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
+        if (h == null) { error(heightInputLayout, context?.getString(R.string.required) ?: "Required"); return false }
 
-        if (videoWidth > 0 && x + tempW > videoWidth) {
+        if (videoWidth > 0 && x + w > videoWidth) {
             val msg = context?.getString(R.string.crop_validation_exceeds_w, videoWidth) ?: "X+W exceeds $videoWidth"
             error(xInputLayout, msg)
+            error(widthInputLayout, msg)
         }
-        if (videoHeight > 0 && y + tempH > videoHeight) {
+        if (videoHeight > 0 && y + h > videoHeight) {
             val msg = context?.getString(R.string.crop_validation_exceeds_h, videoHeight) ?: "Y+H exceeds $videoHeight"
             error(yInputLayout, msg)
+            error(heightInputLayout, msg)
         }
 
         okBtn.isEnabled = valid
         return valid
     }
 
+    private fun enforceRatioFromW() {
+        if (enforcingRatio) return
+        val ar = cropOverlay.aspectRatio ?: return
+        val w = widthEditText.text.toString().toIntOrNull() ?: return
+        heightEditText.setText((w / ar).roundToInt().toString())
+        requireView().findViewById<Chip>(R.id.chip_free).performClick()
+    }
+
+    private fun enforceRatioFromH() {
+        if (enforcingRatio) return
+        val ar = cropOverlay.aspectRatio ?: return
+        val h = heightEditText.text.toString().toIntOrNull() ?: return
+        widthEditText.setText((h * ar).roundToInt().toString())
+        requireView().findViewById<Chip>(R.id.chip_free).performClick()
+    }
 
     private fun parseCutRange() {
         val sections = item.downloadSections
@@ -430,8 +468,6 @@ class CropVideoBottomSheetDialog(
                     val y = parts[1].toIntOrNull() ?: 0
                     val w = parts[2].toIntOrNull() ?: videoWidth
                     val h = parts[3].toIntOrNull() ?: videoHeight
-                    tempW = parts[4].toIntOrNull() ?: 0
-                    tempH = parts[5].toIntOrNull() ?: 0
 
                     applyVideoCoordsToOverlay(x, y, w, h)
                 }
@@ -465,8 +501,8 @@ class CropVideoBottomSheetDialog(
         batchUpdating++
         xEditText.setText(x.toString())
         yEditText.setText(y.toString())
-        tempW = w
-        tempH = h
+        widthEditText.setText(w.toString())
+        heightEditText.setText(h.toString())
         batchUpdating--
         validateCropInputs()
     }
@@ -475,18 +511,22 @@ class CropVideoBottomSheetDialog(
         if (cropOverlay.width <= 0 || cropOverlay.height <= 0) return
         val x = xEditText.text.toString().toIntOrNull() ?: return
         val y = yEditText.text.toString().toIntOrNull() ?: return
+        val w = widthEditText.text.toString().toIntOrNull() ?: return
+        val h = heightEditText.text.toString().toIntOrNull() ?: return
         updatingFromTextInput = true
         val sx = scaleX()
         val sy = scaleY()
-        cropOverlay.setCrop(x * sx, y * sy, (x + tempW) * sx, (y + tempH) * sy)
+        cropOverlay.setCrop(x * sx, y * sy, (x + w) * sx, (y + h) * sy)
         updatingFromTextInput = false
     }
 
     private fun readTextFieldsToVideoCoords(): Quadruple? {
         val x = xEditText.text.toString().toIntOrNull() ?: return null
         val y = yEditText.text.toString().toIntOrNull() ?: return null
-        if (tempW <= 0 || tempH <= 0) return null
-        return Quadruple(x, y, tempW, tempH)
+        val w = widthEditText.text.toString().toIntOrNull() ?: return null
+        val h = heightEditText.text.toString().toIntOrNull() ?: return null
+        if (w <= 0 || h <= 0) return null
+        return Quadruple(x, y, w, h)
     }
 
     private data class Quadruple(val x: Int, val y: Int, val w: Int, val h: Int)
