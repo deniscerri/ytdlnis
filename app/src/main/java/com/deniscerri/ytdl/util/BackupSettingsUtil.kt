@@ -41,7 +41,7 @@ object BackupSettingsUtil {
                 historyRepository.getAll()
             }
             val arr = JsonArray()
-            historyItems.forEach {
+            historyItems.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -55,7 +55,7 @@ object BackupSettingsUtil {
                 downloadRepository.getQueuedDownloads()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -69,7 +69,7 @@ object BackupSettingsUtil {
                 downloadRepository.getScheduledDownloads()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -83,7 +83,7 @@ object BackupSettingsUtil {
                 downloadRepository.getCancelledDownloads()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -97,7 +97,7 @@ object BackupSettingsUtil {
                 downloadRepository.getErroredDownloads()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -111,7 +111,7 @@ object BackupSettingsUtil {
                 downloadRepository.getSavedDownloads()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -125,7 +125,7 @@ object BackupSettingsUtil {
                 cookieRepository.getAll()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -139,7 +139,7 @@ object BackupSettingsUtil {
                 commandTemplateRepository.getAll()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 it.useAsExtraCommand = false
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
@@ -154,7 +154,7 @@ object BackupSettingsUtil {
                 commandTemplateRepository.getAllShortCuts()
             }
             val arr = JsonArray()
-            items.forEach {
+            items.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -168,7 +168,7 @@ object BackupSettingsUtil {
                 searchHistoryRepository.getAll()
             }
             val arr = JsonArray()
-            historyItems.forEach {
+            historyItems.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
@@ -182,7 +182,7 @@ object BackupSettingsUtil {
                 observeSourcesRepository.getAll()
             }
             val arr = JsonArray()
-            observeSourcesItems.forEach {
+            observeSourcesItems.reversed().forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
