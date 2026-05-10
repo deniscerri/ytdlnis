@@ -229,6 +229,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/crop"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_crop"
+                android:minWidth="30dp"
+                android:text="@string/crop"
+                app:cornerRadius="10dp"
+                android:outlineProvider="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
         </com.google.android.material.chip.ChipGroup>
 
