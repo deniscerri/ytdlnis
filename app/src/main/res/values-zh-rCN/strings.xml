@@ -451,7 +451,7 @@
     <string name="list">列表</string>
     <string name="grid">网格</string>
     <string name="player_client">播放器客户端</string>
-    <string name="player_client_summary"><![CDATA[YouTube 播放器客户端 & PO 令牌]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube 播放器客户端 &amp; PO 令牌]]></string>
     <string name="use_only_po_token">只使用 PO 令牌（忽略播放器客户端）</string>
     <string name="cache_directory">缓存文件夹</string>
     <string name="cache_directory_warning">更改缓存文件夹可能导致意外问题。如果应用无法写入配置的路径，它将使用默认的内部缓存目录</string>
@@ -515,4 +515,9 @@
     <string name="auto_update_ytdlp_summary">建议保持此选项开启因 yt-dlp 需要相当频繁地更新来保持正常工作！数据提取自 yt-dlp 的 GitHub 代码库。</string>
     <string name="trim_filenames">缩短文件名</string>
     <string name="install_downloaded_file">安装下载的文件</string>
+    <string name="save_subdirectory">保存到子目录</string>
+    <string name="save_subdirectory_summary">根据元数据标签将文件保存在文件夹中</string>
+    <string name="website">网站</string>
+    <string name="playlist">播放列表</string>
+    <string name="media_type">媒体类型</string>
 </resources>

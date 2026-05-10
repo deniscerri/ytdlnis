@@ -29,5 +29,12 @@ data class Format(
     @SerializedName(value = "language", alternate = ["audioTrackLocale"])
     val lang: String? = "",
     @SerializedName(value = "tbr", alternate = ["bitrate"])
-    var tbr: String? = ""
-) : Parcelable
+    var tbr: String? = "",
+    @SerializedName(value = "width")
+    private val _width: String? = null,
+    @SerializedName(value = "height")
+    private val _height: String? = null
+) : Parcelable {
+    val width: Int? get() = _width?.toIntOrNull()
+    val height: Int? get() = _height?.toIntOrNull()
+}

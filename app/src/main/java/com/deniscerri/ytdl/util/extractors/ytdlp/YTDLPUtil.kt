@@ -1536,9 +1536,41 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
                 }
 
+                var copyStream = ""
+
+                if (downloadItem.videoPreferences.cropValues.isNotBlank()){
+                    val parts = downloadItem.videoPreferences.cropValues.split(":")
+                    if (parts.size >= 6) {
+                        val x = parts[0].toIntOrNull() ?: 0
+                        val y = parts[1].toIntOrNull() ?: 0
+                        val w = parts[2].toIntOrNull() ?: 0
+                        val h = parts[3].toIntOrNull() ?: 0
+                        val refW = parts[4].toIntOrNull() ?: 0
+                        val refH = parts[5].toIntOrNull() ?: 0
+
+                        if (w > 0 && h > 0) {
+                            val setting = when {
+                                downloadItem.format.vcodec.contains("vp9", true) -> "-c:v libvpx-vp9 -cpu-used 5"
+                                downloadItem.format.vcodec.contains("av1", true) -> "-c:v libaom-av1 -cpu-used 5"
+                                downloadItem.format.vcodec.contains("hevc", true) -> "-c:v libx265 -preset veryfast"
+                                else -> "-c:v libx264 -preset veryfast"
+                            }
+
+                            copyStream = "$setting -vf crop=($w/$refW)*iw:($h/$refH)*ih:($x/$refW)*iw:($y/$refH)*ih"
+                        }
+                    }
+                }
+
                 if (downloadItem.videoPreferences.removeAudio && outputContainer != "gif") {
+                    if (copyStream.isBlank()) {
+                        copyStream = "-c copy"
+                    }
+                    copyStream = "$copyStream -an"
+                }
+
+                if (copyStream.isNotBlank()) {
                     request.addOption("--use-postprocessor", "FFmpegCopyStream")
-                    request.addOption("--ppa", "CopyStream:-c copy -an")
+                    request.addOption("--ppa", "CopyStream:$copyStream")
                 }
 
                 request.addOption("-P", downDir.absolutePath)

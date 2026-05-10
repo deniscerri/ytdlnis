@@ -20,4 +20,5 @@ data class VideoPreferences (
     var waitForVideoMinutes: Int = 0,
     var compatibilityMode: Boolean = false,
     var embedThumbnail: Boolean = false,
+    var cropValues: String = ""
 ) : Parcelable

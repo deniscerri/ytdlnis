@@ -64,6 +64,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
+import com.deniscerri.ytdl.ui.downloadcard.crop.VideoCropListener
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
@@ -966,6 +967,8 @@ object UiUtil {
         val fpsParent = bottomSheet.findViewById<ConstraintLayout>(R.id.fps_parent)
         val asrParent = bottomSheet.findViewById<ConstraintLayout>(R.id.asr_parent)
         val bitrateParent = bottomSheet.findViewById<ConstraintLayout>(R.id.bitrate_parent)
+        val widthParent = bottomSheet.findViewById<ConstraintLayout>(R.id.width_parent)
+        val heightParent = bottomSheet.findViewById<ConstraintLayout>(R.id.height_parent)
 
 
         val clicker = View.OnClickListener {
@@ -1060,7 +1063,8 @@ object UiUtil {
             bitrateParent?.setOnLongClickListener(longClicker)
         }
 
-
+        widthParent?.findViewById<TextView>(R.id.width_value)?.text = format.width?.toString() ?: "?"
+        heightParent?.findViewById<TextView>(R.id.height_value)?.text = format.height?.toString() ?: "?"
 
         bottomSheet.show()
         val displayMetrics = DisplayMetrics()
@@ -1311,6 +1315,9 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         cutValueChanged: (String) -> Unit,
         cutDisabledClicked: () -> Unit,
+        cropClicked: (VideoCropListener) -> Unit,
+        cropValueChanged: (String) -> Unit,
+        cropDisabledClicked: () -> Unit,
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
         saveAutoSubtitlesClicked: (Boolean) -> Unit,
@@ -1601,7 +1608,7 @@ object UiUtil {
 
             adjustVideoDialog.show()
         }
-        recodeVideo.isEnabled = items.first().container != "gif"
+        recodeVideo.isEnabled = items.first().container != "gif" && items.first().videoPreferences.cropValues.isBlank()
 
 
         val adjustLiveStream = view.findViewById<Chip>(R.id.adjust_live_stream)
@@ -1752,6 +1759,38 @@ object UiUtil {
                 cut.alpha = 0.3f
                 cut.setOnClickListener {
                     cutDisabledClicked()
+                }
+            }
+        }
+
+        val crop = view.findViewById<Chip>(R.id.crop)
+        if (items.size > 1 || items.first().url.isEmpty()) crop.isVisible = false
+        else{
+            crop.setOnClickListener(null)
+            val duration = items[0].duration
+            if(duration.isNotEmpty() && duration != "-1" && duration != "0:00"){
+                val downloadItem = items[0]
+                crop.alpha = 1f
+                if (downloadItem.videoPreferences.cropValues.isNotBlank()) crop.createBadge(context, 1)
+                val cropVideoListener = object : VideoCropListener {
+
+                    override fun onChangeCrop(x: Int, y: Int, w: Int, h: Int, refW: Int, refH: Int) {
+                        crop.createBadge(context, 1)
+                        cropValueChanged("$x:$y:$w:$h:$refW:$refH")
+                    }
+
+                    override fun onClearCrop() {
+                        crop.createBadge(context, 0)
+                        cropValueChanged("")
+                    }
+                }
+                crop.setOnClickListener {
+                    cropClicked(cropVideoListener)
+                }
+            }else{
+                crop.alpha = 0.3f
+                crop.setOnClickListener {
+                    cropDisabledClicked()
                 }
             }
         }

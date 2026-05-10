@@ -516,4 +516,9 @@
     <string name="auto_update_ytdlp_summary">Odporúča sa nechať túto funkciu zapnutú, pretože yt-dlp sa musí pomerne často aktualizovať, aby fungoval! Údaje sa získavajú z repozitára yt-dlp na GitHub-e.</string>
     <string name="trim_filenames">Skrátiť názvy súborov</string>
     <string name="install_downloaded_file">Nainštalovať stiahnutý súbor</string>
+    <string name="save_subdirectory">Uložiť do podadresára</string>
+    <string name="save_subdirectory_summary">Uložte súbory do priečinkov na základe štítkov metadát</string>
+    <string name="website">Webstránka</string>
+    <string name="playlist">Playlist</string>
+    <string name="media_type">Typ média</string>
 </resources>

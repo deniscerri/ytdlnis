@@ -32,7 +32,9 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
+import com.deniscerri.ytdl.ui.downloadcard.crop.CropVideoBottomSheetDialog
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
+import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
@@ -266,6 +268,15 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
+                        if (downloadItem.videoPreferences.cropValues.isNotBlank()) {
+                            downloadItem.videoPreferences.cropValues = ""
+                            downloadItem.videoPreferences.recodeVideo = false
+                            downloadItem.videoPreferences.compatibilityMode = false
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 0)
+                            view.findViewById<Chip>(R.id.recode_video)?.isEnabled = true
+                            container.isEnabled = true
+                            view.findViewById<Chip>(R.id.crop)?.createBadge(requireContext(), 0)
+                        }
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
                             if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats,
                             showSize = downloadItem.downloadSections.isEmpty()
@@ -336,11 +347,13 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             downloadItem.videoPreferences.removeAudio = true
                             view.findViewById<Chip>(R.id.recode_video).isEnabled = false
                             downloadItem.videoPreferences.recodeVideo = true
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 1)
                         }else {
                             view.findViewById<Chip>(R.id.adjust_audio).isEnabled = true
                             downloadItem.videoPreferences.removeAudio = false
                             view.findViewById<Chip>(R.id.recode_video).isEnabled = true
                             downloadItem.videoPreferences.recodeVideo = false
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 0)
                         }
                     }
                 if (downloadItem.videoPreferences.compatibilityMode) {
@@ -424,6 +437,54 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     downloadItem.customFileNameTemplate = downloadViewModel.applySubdirectoryPreferences(sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!)
                                 }
                             },
+                            cropClicked = { cropVideoListener ->
+                                val fw = downloadItem.format.width ?: 0
+                                val fh = downloadItem.format.height ?: 0
+                                if (fw == 0 || fh == 0) {
+                                    val snack = Snackbar.make(view, context.getString(R.string.select_format), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
+                                    val bottomSheet = CropVideoBottomSheetDialog(
+                                        downloadItem,
+                                        resultItem?.urls ?: "",
+                                        cropVideoListener
+                                    )
+                                    bottomSheet.show(parentFragmentManager, "cropVideoSheet")
+                                }
+                            },
+                            cropDisabledClicked = {
+                                val isUpdatingData = ViewModelProvider(requireActivity())[ResultViewModel::class.java].updatingData.value
+                                if(isUpdatingData){
+                                    val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (downloadItem.duration == "0:00" || downloadItem.duration == "-1"){
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT)
+                                    snack.show()
+                                }else if (!nonSpecific){
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable_please_update_item), Snackbar.LENGTH_SHORT)
+                                    snack.setAction(R.string.update){
+                                        CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
+                                            resultItem?.apply {
+                                                val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+                                                rsVM.updateItemData(this)
+                                                disabledCutClicked = true
+                                            }
+                                        }
+                                    }
+                                    snack.show()
+                                }
+                            },
+                            cropValueChanged = {
+                                downloadItem.videoPreferences.cropValues = it
+                                container.isEnabled = it.isBlank()
+                                view.findViewById<Chip>(R.id.recode_video)?.isEnabled = it.isBlank()
+                                view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), if (it.isBlank()) 0 else 1)
+                                if (it.isNotBlank()) {
+                                    containerAutoCompleteTextView.setText("mkv",false)
+                                    downloadItem.container = "mkv"
+                                    downloadItem.videoPreferences.recodeVideo = true
+                                }
+                            },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
                             },
@@ -452,7 +513,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             compatibilityModeClicked = {
                                 downloadItem.videoPreferences.compatibilityMode = it
-                                container.isEnabled = !it
+                                container.isEnabled = !it && downloadItem.videoPreferences.cropValues.isBlank()
                                 if (it) {
                                     containerAutoCompleteTextView.setText("mp4",false)
                                     downloadItem.container = "mp4"

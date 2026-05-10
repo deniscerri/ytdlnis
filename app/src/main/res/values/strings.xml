@@ -186,6 +186,10 @@
     <string name="ignore_battery_optimization">Ignore battery optimization</string>
     <string name="cut">Cut</string>
     <string name="new_cut">New cut</string>
+    <string name="crop">Crop</string>
+    <string name="required">Required</string>
+    <string name="crop_validation_exceeds_w">X+W exceeds %d</string>
+    <string name="crop_validation_exceeds_h">Y+H exceeds %d</string>
     <string name="add_template_first">You need to have at least one command template created!</string>
     <string name="suggested">Suggested</string>
     <string name="select_all">Select all</string>
@@ -523,4 +527,11 @@
     <string name="website">Website</string>
     <string name="playlist">Playlist</string>
     <string name="media_type">Media Type</string>
+    <string name="free_ratio">Free Ratio</string>
+    <string name="aspect_ratio">Aspect Ratio</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="x_offset">X Offset</string>
+    <string name="y_offset">Y Offset</string>
+    <string name="width">Width</string>
+    <string name="height">Height</string>
 </resources>
