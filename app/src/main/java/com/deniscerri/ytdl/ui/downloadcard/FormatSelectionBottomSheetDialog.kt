@@ -421,6 +421,7 @@ class FormatSelectionBottomSheetDialog(
 
     private fun cleanUp(){
         kotlin.runCatching {
+            formatViewModel.filterBy.value = FormatCategory.ALL
             updateFormatsJob?.cancel(CancellationException())
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("formatSheet")!!).commit()
         }

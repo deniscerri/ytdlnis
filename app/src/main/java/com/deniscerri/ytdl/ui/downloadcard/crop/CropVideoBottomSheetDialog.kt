@@ -245,8 +245,6 @@ class CropVideoBottomSheetDialog(
             }
         })
 
-        videoWidth = item.format.width ?: 0
-        videoHeight = item.format.height ?: 0
         showOverlayAndLoad()
 
         videoView.setOnClickListener {

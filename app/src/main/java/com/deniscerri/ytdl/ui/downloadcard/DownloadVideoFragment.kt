@@ -438,12 +438,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 }
                             },
                             cropClicked = { cropVideoListener ->
-                                val fw = downloadItem.format.width ?: 0
-                                val fh = downloadItem.format.height ?: 0
-                                if (fw == 0 || fh == 0) {
-                                    val snack = Snackbar.make(view, context.getString(R.string.select_format), Snackbar.LENGTH_SHORT)
-                                    snack.show()
-                                }else if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
+                                if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
                                     val bottomSheet = CropVideoBottomSheetDialog(
                                         downloadItem,
                                         resultItem?.urls ?: "",
@@ -478,12 +473,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.cropValues = it
                                 container.isEnabled = it.isBlank()
                                 view.findViewById<Chip>(R.id.recode_video)?.isEnabled = it.isBlank()
-                                view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), if (it.isBlank()) 0 else 1)
-                                if (it.isNotBlank()) {
-                                    containerAutoCompleteTextView.setText("mkv",false)
-                                    downloadItem.container = "mkv"
-                                    downloadItem.videoPreferences.recodeVideo = true
-                                }
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
