@@ -368,8 +368,8 @@ class NewPipeUtil(context: Context) {
                             filesize = it.itagItem!!.contentLength,
                             url = it.content,
                             tbr = (it.bitrate / 1000).toString() + "k",
-                            width = it.width,
-                            height = it.height
+                            _width = it.width.toString(),
+                            _height = it.height.toString()
                         )
                         formats.add(formatObj)
                     }
@@ -388,8 +388,8 @@ class NewPipeUtil(context: Context) {
                             filesize = it.itagItem!!.contentLength,
                             url = it.content,
                             tbr = (it.bitrate / 1000).toString() + "k",
-                            width = it.width,
-                            height = it.height
+                            _width = it.width.toString(),
+                            _height = it.height.toString()
                         )
                         formats.add(formatObj)
                     }

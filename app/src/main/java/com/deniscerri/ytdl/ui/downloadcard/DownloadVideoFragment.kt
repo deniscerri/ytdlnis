@@ -270,6 +270,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         }
                         if (downloadItem.videoPreferences.cropValues.isNotBlank()) {
                             downloadItem.videoPreferences.cropValues = ""
+                            downloadItem.videoPreferences.recodeVideo = false
+                            downloadItem.videoPreferences.compatibilityMode = false
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 0)
+                            view.findViewById<Chip>(R.id.recode_video)?.isEnabled = true
+                            container.isEnabled = true
                             view.findViewById<Chip>(R.id.crop)?.createBadge(requireContext(), 0)
                         }
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
@@ -342,11 +347,13 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             downloadItem.videoPreferences.removeAudio = true
                             view.findViewById<Chip>(R.id.recode_video).isEnabled = false
                             downloadItem.videoPreferences.recodeVideo = true
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 1)
                         }else {
                             view.findViewById<Chip>(R.id.adjust_audio).isEnabled = true
                             downloadItem.videoPreferences.removeAudio = false
                             view.findViewById<Chip>(R.id.recode_video).isEnabled = true
                             downloadItem.videoPreferences.recodeVideo = false
+                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 0)
                         }
                     }
                 if (downloadItem.videoPreferences.compatibilityMode) {
@@ -469,6 +476,14 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             cropValueChanged = {
                                 downloadItem.videoPreferences.cropValues = it
+                                container.isEnabled = it.isBlank()
+                                view.findViewById<Chip>(R.id.recode_video)?.isEnabled = it.isBlank()
+                                view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), if (it.isBlank()) 0 else 1)
+                                if (it.isNotBlank()) {
+                                    containerAutoCompleteTextView.setText("mkv",false)
+                                    downloadItem.container = "mkv"
+                                    downloadItem.videoPreferences.recodeVideo = true
+                                }
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
@@ -498,7 +513,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             },
                             compatibilityModeClicked = {
                                 downloadItem.videoPreferences.compatibilityMode = it
-                                container.isEnabled = !it
+                                container.isEnabled = !it && downloadItem.videoPreferences.cropValues.isBlank()
                                 if (it) {
                                     containerAutoCompleteTextView.setText("mp4",false)
                                     downloadItem.container = "mp4"

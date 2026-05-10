@@ -1608,7 +1608,7 @@ object UiUtil {
 
             adjustVideoDialog.show()
         }
-        recodeVideo.isEnabled = items.first().container != "gif"
+        recodeVideo.isEnabled = items.first().container != "gif" && items.first().videoPreferences.cropValues.isBlank()
 
 
         val adjustLiveStream = view.findViewById<Chip>(R.id.adjust_live_stream)

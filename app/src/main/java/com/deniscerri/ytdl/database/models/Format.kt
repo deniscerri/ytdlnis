@@ -31,7 +31,10 @@ data class Format(
     @SerializedName(value = "tbr", alternate = ["bitrate"])
     var tbr: String? = "",
     @SerializedName(value = "width")
-    var width: Int? = null,
+    private val _width: String? = null,
     @SerializedName(value = "height")
-    var height: Int? = null
-) : Parcelable
+    private val _height: String? = null
+) : Parcelable {
+    val width: Int? get() = _width?.toIntOrNull()
+    val height: Int? get() = _height?.toIntOrNull()
+}
