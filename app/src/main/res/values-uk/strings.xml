@@ -158,7 +158,7 @@
     <string name="access_all_directories_summary">Дозволити застосунку завантажувати в каталоги, обмежених за замовчуванням</string>
     <string name="download_rescheduled_to">Завантаження перенесено до:</string>
     <string name="file_size">Розмір файлу</string>
-    <string name="clear_temporary_files">Очистити тимчасові файли</string>
+    <string name="clear_temporary_files">Очистити папку кешу</string>
     <string name="clear_temporary_files_summary">Видалити кешовані файли, infojson та інші тимчасові конфігурації</string>
     <string name="clear_cancelled">Очистити скасоване</string>
     <string name="split_by_chapters">Розподіл за розділами</string>
@@ -520,4 +520,15 @@
     <string name="website">Вебсайт</string>
     <string name="playlist">Список відтворення</string>
     <string name="media_type">Тип носія</string>
+    <string name="crop">Обрізати</string>
+    <string name="required">Необхідний</string>
+    <string name="crop_validation_exceeds_w">X+W перевищує %d</string>
+    <string name="crop_validation_exceeds_h">Y+H перевищує %d</string>
+    <string name="free_ratio">Вільне співвідношення</string>
+    <string name="aspect_ratio">Співвідношення сторін</string>
+    <string name="dimensions">Розміри</string>
+    <string name="x_offset">Зміщення X</string>
+    <string name="y_offset">Зміщення Y</string>
+    <string name="width">Ширина</string>
+    <string name="height">Висота</string>
 </resources>
