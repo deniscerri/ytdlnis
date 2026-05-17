@@ -521,4 +521,6 @@
     <string name="website">الموقع</string>
     <string name="playlist">قائمة التشغيل</string>
     <string name="media_type">نوع الوسائط</string>
+    <string name="crop">قصّ</string>
+    <string name="required">مطلوب</string>
 </resources>
