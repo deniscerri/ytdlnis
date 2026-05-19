@@ -186,7 +186,7 @@
     <string name="redownload">Télécharger à nouveau</string>
     <string name="preferred_download_type_summary">Onglet par défaut dans lequel la carte de téléchargement s\'ouvrira</string>
     <string name="confirm_delete_logs_desc">Supprimer définitivement la liste complète des journaux.</string>
-    <string name="clear_temporary_files">Effacer les fichiers temporaires</string>
+    <string name="clear_temporary_files">Vider le dossier cache</string>
     <string name="ytdl_version">Version de yt-dlp</string>
     <string name="ignore_battery_optimization">Ignorer l’optimisation de la batterie</string>
     <string name="update_formats_summary">Récupérez les formats dès que la carte de téléchargement apparaît</string>
@@ -521,4 +521,15 @@
     <string name="website">Site Web</string>
     <string name="save_subdirectory_summary">Sauvegarder les fichiers dans un dossier basé sur les balises de métadonnées</string>
     <string name="save_subdirectory">Sauvegarder dans un sous-répertoire</string>
+    <string name="crop">Recadrer</string>
+    <string name="required">Requis</string>
+    <string name="crop_validation_exceeds_w">X+W est supérieur à %d</string>
+    <string name="crop_validation_exceeds_h">Y+H est supérieur à %d</string>
+    <string name="free_ratio">Rapport libre</string>
+    <string name="aspect_ratio">Format d\'image</string>
+    <string name="dimensions">Dimensions</string>
+    <string name="x_offset">Décalage X</string>
+    <string name="y_offset">Décalage Y</string>
+    <string name="width">Largeur</string>
+    <string name="height">Hauteur</string>
 </resources>

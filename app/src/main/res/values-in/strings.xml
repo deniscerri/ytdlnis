@@ -53,7 +53,7 @@
     <string name="create_shortcut">Buat pintasan</string>
     <string name="preferred_download_type_summary">Tab bawaan tempat kartu unduhan akan terbuka</string>
     <string name="access_all_directories_summary">Biarkan aplikasi diunduh pada direktori yang dibatasi secara default</string>
-    <string name="clear_temporary_files">Bersihkan berkas sementara</string>
+    <string name="clear_temporary_files">Bersihkan folder cache</string>
     <string name="downloads_running_try_later">Pekerja unduhan sedang berjalan. Coba lagi nanti</string>
     <string name="video_format">Format video</string>
     <string name="items_left">butir tersisa</string>
@@ -520,4 +520,15 @@
     <string name="website">Situs web</string>
     <string name="playlist">Daftar putar</string>
     <string name="media_type">Jenis Media</string>
+    <string name="crop">Potong</string>
+    <string name="required">Diperlukan</string>
+    <string name="crop_validation_exceeds_w">X+W melebihi %d</string>
+    <string name="crop_validation_exceeds_h">Y+H melebihi %d</string>
+    <string name="free_ratio">Rasio Bebas</string>
+    <string name="aspect_ratio">Rasio Aspek</string>
+    <string name="dimensions">Dimensi</string>
+    <string name="x_offset">Pergeseran X</string>
+    <string name="y_offset">Pergeseran Y</string>
+    <string name="width">Lebar</string>
+    <string name="height">Tinggi</string>
 </resources>

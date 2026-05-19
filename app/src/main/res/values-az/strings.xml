@@ -163,7 +163,7 @@
     <string name="file_size">Fayl həcmi</string>
     <string name="clear_temporary_files_summary">Keşkələnən faylları, infojson-ları və digər müvəqqəti qurulmaları sil</string>
     <string name="cache_cleared">Müvəqqəti fayllar təmizləndi</string>
-    <string name="clear_temporary_files">Müvəqqəti faylları təmizlə</string>
+    <string name="clear_temporary_files">Qalıq qovluğunu təmizlə</string>
     <string name="download_rescheduled_to">Yükləmə bu vaxta planlaşdırıldı:</string>
     <string name="downloads_running_try_later">Yükləmə işçisi işləyir. Daha sonra təkrar cəhd et</string>
     <string name="freespace">Boş yer</string>
@@ -215,7 +215,7 @@
     <string name="light">İşıqlı</string>
     <string name="quality">Keyfiyyət</string>
     <string name="system">Sistem</string>
-    <string name="accents">Çalarlar</string>
+    <string name="accents">Cilalar</string>
     <string name="high_contrast">Yüksək ziddiyyət</string>
     <string name="pure_theme_summary">Təmiz qara / ağ kolorit</string>
     <string name="material_you">Material You</string>
@@ -521,4 +521,15 @@
     <string name="website">Veb Sayt</string>
     <string name="playlist">Pleylist</string>
     <string name="media_type">Media Növü</string>
+    <string name="crop">Qırp</string>
+    <string name="required">Tələb olundu</string>
+    <string name="crop_validation_exceeds_w">X+W %d dəyərin aşır</string>
+    <string name="crop_validation_exceeds_h">Y+H %d dəyərin aşır</string>
+    <string name="free_ratio">Sərbəst Nisbət</string>
+    <string name="aspect_ratio">Görünüş Nisbəti</string>
+    <string name="dimensions">Ölçülər</string>
+    <string name="x_offset">X Xətti</string>
+    <string name="y_offset">Y Xətti</string>
+    <string name="width">En</string>
+    <string name="height">Uzunluq</string>
 </resources>

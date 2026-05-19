@@ -265,7 +265,7 @@
     <string name="errored">Errore</string>
     <string name="clear_temporary_files_summary">Elimina i file memorizzati nella cache, infojson e altre configurazioni temporanee</string>
     <string name="file_size">Dimensione del file</string>
-    <string name="clear_temporary_files">Cancella i file temporanei</string>
+    <string name="clear_temporary_files">Cancella la cartella cache</string>
     <string name="cache_cleared">File temporanei cancellati</string>
     <string name="move_temporary_files_summary">Trasferisci i file in cache nella cartella dei download</string>
     <string name="move_temporary_files">Sposta file temporanei</string>
@@ -516,4 +516,20 @@
     <string name="auto_update_ytdlp_summary">È consigliato mantenere abilitata la funzione, in quanto yt-dlp necessità di essere aggiornato regolarmente per poter continuare a funzionare! I dati sono estratti dalla repository GitHub di yt-dlp.</string>
     <string name="trim_filenames">Tronca i nomi dei file</string>
     <string name="install_downloaded_file">Installa il file scaricato</string>
+    <string name="save_subdirectory">Salva nella sottocartella</string>
+    <string name="save_subdirectory_summary">Salva i file in cartelle basate sui tag dei metadati</string>
+    <string name="website">Sito web</string>
+    <string name="playlist">Playlist</string>
+    <string name="media_type">Tipo di contenuto</string>
+    <string name="crop">Ritaglia</string>
+    <string name="required">Obbligatorio</string>
+    <string name="crop_validation_exceeds_w">X+L supera %d</string>
+    <string name="crop_validation_exceeds_h">Y+A supera %d</string>
+    <string name="free_ratio">Proporzioni libere</string>
+    <string name="aspect_ratio">Proporzioni</string>
+    <string name="dimensions">Dimensioni</string>
+    <string name="x_offset">Offset X</string>
+    <string name="y_offset">Offset Y</string>
+    <string name="width">Larghezza</string>
+    <string name="height">Altezza</string>
 </resources>

@@ -138,7 +138,7 @@
     <string name="error_restarting_download">重新下载时出错</string>
     <string name="update_template">更新模板</string>
     <string name="update">更新</string>
-    <string name="clear_temporary_files">清除临时文件</string>
+    <string name="clear_temporary_files">清理缓存文件夹</string>
     <string name="download_rescheduled_to">下载已重新添加到：</string>
     <string name="restrict_filenames">限制文件名</string>
     <string name="dont_ask_again">不再询问</string>
@@ -220,7 +220,7 @@
     <string name="restrict_filenames_summary">将文件名限制为仅 ASCII 字符，并避免在文件名中使用\"&amp;\"和空格</string>
     <string name="kill_app">关闭app</string>
     <string name="confirm_terminate">停止所有下载并强制关闭应用</string>
-    <string name="new_cut">新剪辑</string>
+    <string name="new_cut">新剪切</string>
     <string name="new_cookie">新 Cookie</string>
     <string name="downloads_running_try_later">下载器正在运行，请稍后再试</string>
     <string name="freespace">可用空间</string>
@@ -260,7 +260,7 @@
     <string name="select_backup_categories">选择备份类别</string>
     <string name="preferred_search_engine_summary">用于应用内搜索的搜索引擎</string>
     <string name="restore">恢复</string>
-    <string name="cut">剪辑</string>
+    <string name="cut">切</string>
     <string name="format_filtering_hint">所有项目必须属于同一类型才能使用此选项</string>
     <string name="backup_restore">备份和恢复</string>
     <string name="preferred_home_screen">首选主屏幕</string>
@@ -520,4 +520,15 @@
     <string name="website">网站</string>
     <string name="playlist">播放列表</string>
     <string name="media_type">媒体类型</string>
+    <string name="crop">裁剪</string>
+    <string name="required">必需</string>
+    <string name="crop_validation_exceeds_w">X+W 超过 %d</string>
+    <string name="crop_validation_exceeds_h">Y+H 超过 %d</string>
+    <string name="free_ratio">自由比</string>
+    <string name="aspect_ratio">宽高比</string>
+    <string name="dimensions">尺寸</string>
+    <string name="x_offset">X 偏移</string>
+    <string name="y_offset">Y 偏移</string>
+    <string name="width">宽度</string>
+    <string name="height">高度</string>
 </resources>
