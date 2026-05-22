@@ -195,7 +195,7 @@
     <string name="help_translate_summary">Översätt den här appen till ditt språk med Weblate</string>
     <string name="download_rescheduled_to">Nerladdningen planerad till:</string>
     <string name="file_size">Filstorlek</string>
-    <string name="clear_temporary_files">Rensa tillfälliga filer</string>
+    <string name="clear_temporary_files">Rensa cache-mapp</string>
     <string name="clear_temporary_files_summary">Ta bort cachade filer, infojsons och andra tillfälliga konfigurationer</string>
     <string name="cache_cleared">Tillfälliga filer rensade</string>
     <string name="downloads_running_try_later">Nerladdningen arbetar nu. Försök igen senare</string>
@@ -510,4 +510,22 @@
     <string name="use_app_language_for_metadata_summary">Om det är aktiverat kommer metadatafält att följa ditt appspråk och även påverka formatval genom att föredra dubbade versioner istället för original</string>
     <string name="installed">Installerat</string>
     <string name="trim_filenames">Trimma filnamn</string>
+    <string name="crop">Beskär</string>
+    <string name="required">Obligatoriskt</string>
+    <string name="crop_validation_exceeds_w">X+W överstiger %d</string>
+    <string name="crop_validation_exceeds_h">Y+H överstiger %d</string>
+    <string name="potoken_guide">Autentisering\n-----------------------\n1. Tryck på \'Autentisering\' för att logga in i WebView.\n2. Logga in på ditt Google-konto.\n3. Spela upp vilken video som helst som stödjer automatiskt översatta undertexter.\n4. Sätt på automatiskt översatta undertexter för att kolla om det fungerar.\n\t4.1 Om automatiskt översatta undertexter inte fungerar, byt till en annan video som stödjer automatiskt översatta undertexter och prova steg 4 igen. \n5. Tryck på OK.\n\nIngen autentisering\n-----------------------\n1. Tryck på \'Ingen autentisering\'.\n2. Klistra in en YouTube URLl\n3. Vänta på att videon laddas och spela sedan upp den i minst 3 sekunder. .\n4. Tryck på OK.</string>
+    <string name="auto_update_ytdlp_summary">Vi rekommenderar att detta fortsätter vara på eftersom yt-dlp behöver uppdateras ganska ofta för att fungera som det ska! Datan extraheras från ytdlps Github Repository.</string>
+    <string name="save_subdirectory">Spara till underkatalog</string>
+    <string name="save_subdirectory_summary">Spara filer i kataloger baserat på metadata taggar</string>
+    <string name="install_downloaded_file">Installera den nedladdade filen</string>
+    <string name="website">Webbsida</string>
+    <string name="playlist">Spellista</string>
+    <string name="media_type">Medietyp</string>
+    <string name="aspect_ratio">Bildförhållande</string>
+    <string name="dimensions">Mått</string>
+    <string name="x_offset">X offset</string>
+    <string name="y_offset">Y offset</string>
+    <string name="width">Bredd</string>
+    <string name="height">Höjd</string>
 </resources>
