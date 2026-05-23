@@ -101,7 +101,7 @@
     <string name="couldnt_parse_file">Tiedostoa ei voitu jäsentää</string>
     <string name="restore_complete">Sovelluksen palautus on valmis. Seuraavat kohteet on palautettu:</string>
     <string name="search_history">Hakuhistoria</string>
-    <string name="backup_created_successfully">Varmuuskopio on tallenettu latauskansioon</string>
+    <string name="backup_created_successfully">Varmuuskopio tallennettiin onnistuneesti</string>
     <string name="appearance">Ulkonäkö</string>
     <string name="backup_restore">Varmuuskopioi ja palauta</string>
     <string name="preferred_format_id_summary">Valitse formaatti tällä ID:llä latauskortissa</string>
@@ -258,7 +258,7 @@
     <string name="search_suggestions">Hakusuositukset</string>
     <string name="network_error">Verkkovirhe</string>
     <string name="select_backup_categories">Valitse varmuuskopioinnin kohteet</string>
-    <string name="socks5_proxy">Socks5 Välityspalvelimen osoite</string>
+    <string name="socks5_proxy">SOCKS5 välityspalvelimen osoite</string>
     <string name="search_suggestions_summary">Hae hakusuosituksia Googlelta</string>
     <string name="general">Yleinen</string>
     <string name="crop_thumb">Pienoiskuvan rajaaminen</string>
@@ -276,4 +276,10 @@
     <string name="retries">Uudestaanyritykset</string>
     <string name="crop">Rajaa</string>
     <string name="required">Vaadittu</string>
+    <string name="force_keyframes">Pakota avainruudut leikkauskohtiin</string>
+    <string name="force_keyframes_summary">Hitaampi prosessi, mutta tarkemmat leikkauskohdat</string>
+    <string name="use_extra_commands">Lisää lisäkomentoja</string>
+    <string name="use_extra_commands_summary">Ääni- ja videolatauksia varten. Lisää lisäkomentoja graafisen käyttöliittymän asetusten ohelle</string>
+    <string name="current">Nykyinen komento</string>
+    <string name="subtitle_format">Tekstitysten formaatti</string>
 </resources>
