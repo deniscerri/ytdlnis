@@ -530,4 +530,6 @@
     <string name="y_offset">إزاحة ص</string>
     <string name="width">العرض</string>
     <string name="height">الارتفاع</string>
+    <string name="crop_validation_exceeds_w">X+W يتجاوز %d</string>
+    <string name="crop_validation_exceeds_h">Y+H يتجاوز %d</string>
 </resources>
