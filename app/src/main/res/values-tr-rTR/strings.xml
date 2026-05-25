@@ -523,4 +523,15 @@
     <string name="website">Website</string>
     <string name="playlist">Oynatma listesi</string>
     <string name="media_type">Medya türü</string>
+    <string name="crop">Kırp</string>
+    <string name="required">Gerekli</string>
+    <string name="crop_validation_exceeds_w">X+W %d değerini aşıyor</string>
+    <string name="crop_validation_exceeds_h">Y+H %d sınırını aşıyor</string>
+    <string name="free_ratio">Serbest Oran</string>
+    <string name="aspect_ratio">En Boy Oranı</string>
+    <string name="dimensions">Boyutlar</string>
+    <string name="x_offset">X Ekseni</string>
+    <string name="y_offset">Y Ekseni</string>
+    <string name="width">Genişlik</string>
+    <string name="height">Yükseklik</string>
 </resources>
