@@ -101,7 +101,7 @@
     <string name="update">إتمام</string>
     <string name="preferred_download_type">نوع التنزيل المفضل</string>
     <string name="file_size">حجم الملف</string>
-    <string name="clear_temporary_files">النقر لمسح الملفات المؤقتة</string>
+    <string name="clear_temporary_files">مسح مجلد الملفات المؤقتة</string>
     <string name="clear_temporary_files_summary">احذف الملفات المخزنة مؤقتاً، وملفات infojsons، والإعدادات المؤقتة الأخرى</string>
     <string name="cache_cleared">تم مسح الملفات المؤقتة</string>
     <string name="freespace">التخزين المتاح</string>
@@ -523,4 +523,13 @@
     <string name="media_type">نوع الوسائط</string>
     <string name="crop">قصّ</string>
     <string name="required">مطلوب</string>
+    <string name="free_ratio">نسبة حرّة</string>
+    <string name="aspect_ratio">نسبة الارتفاع إلى العرض</string>
+    <string name="dimensions">الأبعاد</string>
+    <string name="x_offset">إزاحة س</string>
+    <string name="y_offset">إزاحة ص</string>
+    <string name="width">العرض</string>
+    <string name="height">الارتفاع</string>
+    <string name="crop_validation_exceeds_w">X+W يتجاوز %d</string>
+    <string name="crop_validation_exceeds_h">Y+H يتجاوز %d</string>
 </resources>

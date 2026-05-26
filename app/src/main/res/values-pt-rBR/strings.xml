@@ -528,4 +528,8 @@
     <string name="free_ratio">Proporção Livre</string>
     <string name="aspect_ratio">Proporção</string>
     <string name="dimensions">Dimensões</string>
+    <string name="width">Largura</string>
+    <string name="height">Altura</string>
+    <string name="x_offset">Deslocamento X</string>
+    <string name="y_offset">Deslocamento Y</string>
 </resources>
