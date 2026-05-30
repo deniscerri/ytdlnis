@@ -57,7 +57,7 @@ class PoTokenWebViewLoginActivity : BaseActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.webview_activity)
+        setContentView(R.layout.webview_potoken_activity)
 
         val url = intent.getStringExtra("url")!!
         var redirectUrl = intent.getStringExtra("redirect_url")
