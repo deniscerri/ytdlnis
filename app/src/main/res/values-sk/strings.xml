@@ -86,7 +86,7 @@
     <string name="quick_download_summary">Pokračovať v procese sťahovania ihneď, bez predchádzajúceho načítania údajov</string>
     <string name="create">Vytvoriť</string>
     <string name="save_subs">Uložiť titulky</string>
-    <string name="clear_temporary_files">Vymazať dočasné súbory</string>
+    <string name="clear_temporary_files">Vymazať zložku vyrovnávacej pamäte</string>
     <string name="update_formats">Aktualizovať formáty</string>
     <string name="search_history">História vyhľadávania</string>
     <string name="pause">Pozastaviť</string>
@@ -137,7 +137,7 @@
     <string name="yellow">Žltý</string>
     <string name="file_name_template">Šablóna názvu súboru</string>
     <string name="select">Vybrať</string>
-    <string name="new_cut">Nové orezanie</string>
+    <string name="new_cut">Nový strih</string>
     <string name="log_downloads">Protokoly sťahovania</string>
     <string name="audio_samplerate">Vzorkovacia frekvencia zvuku</string>
     <string name="download_already_exists">Sťahovanie už existuje</string>
@@ -172,7 +172,7 @@
     <string name="finished_download_notification_channel_name">Dokončené sťahovania</string>
     <string name="preferred_home_screen">Uprednostňovaná domovská obrazovka</string>
     <string name="cache_cleared">Dočasné súbory vymazané</string>
-    <string name="cut">Orezať</string>
+    <string name="cut">Vystrihnúť</string>
     <string name="create_shortcut">Vytvoriť skratku</string>
     <string name="ytdl_version">Verzia yt-dlp</string>
     <string name="command">Príkaz</string>
@@ -317,15 +317,15 @@
     <string name="remember_download_type_summary">Vyberie naposledy otvorený typ sťahovania pre aktuálnu položku</string>
     <string name="length">Dĺžka</string>
     <string name="update_ytdl_stable">Stabilná verzia yt-dlp</string>
-    <string name="force_keyframes_summary">Pomalší proces, ale presnejšie orezania</string>
+    <string name="force_keyframes_summary">Pomalší proces, ale presnejšie strihy</string>
     <string name="changelog">Zoznam zmien</string>
-    <string name="cut_unavailable_please_update_item">Aby ste mohli použiť funkciu orezania, musíte aktualizovať údaje o položke</string>
+    <string name="cut_unavailable_please_update_item">Aby ste mohli použiť funkciu strihu, musíte aktualizovať údaje o položke</string>
     <string name="app">Aplikácia</string>
     <string name="modify_download_card">Upraviť kartu sťahovania</string>
     <string name="source">Zdroj</string>
     <string name="use_scheduler">Sťahovať podľa rozvrhu</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
-    <string name="force_keyframes">Vynútiť kľúčové snímky pri orezaní</string>
+    <string name="force_keyframes">Vynútiť kľúčové snímky pri strihoch</string>
     <string name="dismiss">Odmietnuť</string>
     <string name="format_smallest">Najmenší formát (podľa rozlíšenia)</string>
     <string name="all">Všetko</string>
@@ -472,7 +472,7 @@
     <string name="app_icon_change">Ikona sa môže zmeniť a aplikácia sa zavrie</string>
     <string name="generate_potokens_warning">Pre zapnutie tejto funkcie musíte zakázať súbory cookie</string>
     <string name="custom">Vlastné</string>
-    <string name="cut_unsupported">Orezanie nie je pre túto položku k dispozícii</string>
+    <string name="cut_unsupported">Strihanie nie je pre túto položku k dispozícii</string>
     <string name="select_between_desc">Špecifikujte rozsah položiek pre výber</string>
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Webový klient PO Token</string>
@@ -521,4 +521,15 @@
     <string name="website">Webstránka</string>
     <string name="playlist">Playlist</string>
     <string name="media_type">Typ média</string>
+    <string name="height">Výška</string>
+    <string name="crop">Orezať</string>
+    <string name="crop_validation_exceeds_w">X+W presahuje %d</string>
+    <string name="crop_validation_exceeds_h">Y+H presahuje %d</string>
+    <string name="width">Šírka</string>
+    <string name="dimensions">Rozmery</string>
+    <string name="free_ratio">Voľný pomer</string>
+    <string name="aspect_ratio">Pomer strán</string>
+    <string name="x_offset">Posun X</string>
+    <string name="y_offset">Posun Y</string>
+    <string name="required">Povinné</string>
 </resources>

@@ -70,8 +70,8 @@
     <string name="video_directory">مجلد الفيديو</string>
     <string name="updating">يتم التحديث</string>
     <string name="ytdl_update_hint">خد بالك وإنت بتنزل التحديثات</string>
-    <string name="update_ytdl">نزل النسخة الجديدة من yt-dl</string>
-    <string name="source_code">كود البرنامج</string>
+    <string name="update_ytdl">نزل النسخة الجديدة من yt-dlp</string>
+    <string name="source_code">الكود المصري بتاع البرنامح</string>
     <string name="search_hint">ابحث أو ضيف الرابط</string>
     <string name="failed_download">مش قادر أحمل الملف</string>
     <string name="download_notification_channel_name">الملفات اللي اتحملت</string>
@@ -161,4 +161,19 @@
     <string name="show_download_card">اظهر كارت التحميل</string>
     <string name="download_card_summary">اضبط الاعدادات للبتاع دا قبل التحميل. الغاء تفعيل الخيار دا هيبدء التحميل حالا</string>
     <string name="Open_File">افتح الملف</string>
+    <string name="embed_subtitles">تضمين الترجمه</string>
+    <string name="you_are_going_to_delete_multiple_items">امسح كذا عنصر</string>
+    <string name="delete_file_too">امسح الملف من الفون</string>
+    <string name="delete_files_too">امسح الملف من الموبايل</string>
+    <string name="request_permission_desc">البرنامج دا محتاج صلاحيات علشان يحفظ الملفات على الموبايل</string>
+    <string name="exit_app">اخرج من البرنامج</string>
+    <string name="warning">تحذير</string>
+    <string name="sponsorblock_nonmusic">أجزاء مش موسيقيه و برا الموضوع</string>
+    <string name="sponsorblock_sponsors">الرعاة</string>
+    <string name="sponsorblock_intro">المقدمه</string>
+    <string name="sponsorblock_outro">الخاتمة</string>
+    <string name="sponsorblock_promos">الترويج الذاتي</string>
+    <string name="sponsorblock_previews">معاينات</string>
+    <string name="sponsorblock_reminders">تذكير الاشتراكات</string>
+    <string name="save_dir">احفظ الملف</string>
 </resources>

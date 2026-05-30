@@ -112,7 +112,7 @@
     <string name="download_over_metered_networks">Stahování v měřených sítích</string>
     <string name="adjust_video">Upravit video</string>
     <string name="update_ytdl_master">Hlavní verze yt-dlp</string>
-    <string name="clear_temporary_files_summary">Odstranění souborů v mezipaměti, json a jiných dočasných konfigurací</string>
+    <string name="clear_temporary_files_summary">Odstranění souborů v mezipaměti, json a ostatních dočasných konfigurací</string>
     <string name="user_agent_header">Hlavička User-Agent</string>
     <string name="saved">Uložené</string>
     <string name="remove_deleted">Odebrat odstraněné</string>
@@ -132,7 +132,7 @@
     <string name="changelog">Seznam změn</string>
     <string name="select_sponsorblock_filtering">Vybrat filtrování SponsorBlock</string>
     <string name="sponsorblock_promos">Vlastní propagace</string>
-    <string name="clear_temporary_files">Odstranit dočasné soubory</string>
+    <string name="clear_temporary_files">Vymazat složku mezipaměti</string>
     <string name="search_suggestions_summary">Získejte návrhy vyhledávání od Google</string>
     <string name="update_formats">Aktualizace formátů</string>
     <string name="search_history">Historie vyhledávání</string>
@@ -472,7 +472,7 @@
     <string name="regenerate">Znovu vygenerovat</string>
     <string name="generate_potokens_warning">Pro zapnutí této funkce musíte zakázat soubory cookie</string>
     <string name="custom">Vlastní</string>
-    <string name="cut_unsupported">Ořezání není pro tuto položku k dispozici</string>
+    <string name="cut_unsupported">Stříhání není pro tuto položku k dispozici</string>
     <string name="select_between_desc">Specifikujte rozsah položek pro výběr</string>
     <string name="potoken">PO Token</string>
     <string name="web_client_po_token">Webový klient PO token</string>
@@ -511,7 +511,7 @@
     <string name="packages">Balíčky</string>
     <string name="not_installed">Nenainstalováno</string>
     <string name="bundled">Součásti</string>
-    <string name="use_app_language_for_metadata_summary">Pokud je tato funkce zapnuta, pole metadat budou odpovídat jazyku vaší aplikace a budou dokonce ovlivňovat výběr formátu tím, že upřednostní dabované verze před originálními</string>
+    <string name="use_app_language_for_metadata_summary">Pokud je tato funkce zapnuta, pole metadat budou odpovídat jazyku vaší aplikace a dokonce ovlivní výběr formátu tím, že upřednostní dabované verze před originálem</string>
     <string name="installed">Nainstalované</string>
     <string name="auto_update_ytdlp_summary">Doporučujeme tuto funkci nechat zapnutou, protože yt-dlp je třeba poměrně často aktualizovat, aby správně fungoval! Data se stahují z repozitáře yt-dlp na GitHubu.</string>
     <string name="trim_filenames">Zkrátit názvy souborů</string>
@@ -521,4 +521,15 @@
     <string name="website">Webstránka</string>
     <string name="playlist">Playlist</string>
     <string name="media_type">Typ média</string>
+    <string name="crop">Ořezání</string>
+    <string name="required">Povinné</string>
+    <string name="crop_validation_exceeds_w">X+W přesahuje %d</string>
+    <string name="crop_validation_exceeds_h">Y+H přesahuje %d</string>
+    <string name="free_ratio">Volný poměr</string>
+    <string name="aspect_ratio">Poměr stran</string>
+    <string name="dimensions">Rozměry</string>
+    <string name="x_offset">Posun X</string>
+    <string name="y_offset">Posun Y</string>
+    <string name="width">Šířka</string>
+    <string name="height">Výška</string>
 </resources>

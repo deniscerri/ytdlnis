@@ -133,7 +133,7 @@
     <string name="restart">Перезапустить</string>
     <string name="download_rescheduled_to">Загрузка отложена до:</string>
     <string name="file_size">Размер файла</string>
-    <string name="clear_temporary_files">Очистить временные файлы</string>
+    <string name="clear_temporary_files">Очистить папку кэша</string>
     <string name="adjust_video">Настройка видео</string>
     <string name="concurrent_downloads">Параллельные загрузки</string>
     <string name="concurrent_downloads_summary">Количество одновременных загрузок</string>
@@ -520,4 +520,15 @@
     <string name="website">Вебсайт</string>
     <string name="playlist">Плейлист</string>
     <string name="media_type">Тип носителя</string>
+    <string name="crop">Обрезать</string>
+    <string name="required">Необходимый</string>
+    <string name="crop_validation_exceeds_w">X+W превышает %d</string>
+    <string name="crop_validation_exceeds_h">Y+H превышает %d</string>
+    <string name="free_ratio">Свободное соотношение</string>
+    <string name="aspect_ratio">Соотношение сторон</string>
+    <string name="dimensions">Размеры</string>
+    <string name="x_offset">Смещение X</string>
+    <string name="y_offset">Смещение Y</string>
+    <string name="width">Ширина</string>
+    <string name="height">Высота</string>
 </resources>
