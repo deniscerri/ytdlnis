@@ -217,8 +217,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     suspend fun deleteAllWithIDs(ids: List<Long>){
-        downloadDao.deleteAllWithIDs(ids)
-
+        ids.chunked(100).forEach { chunkedIds ->
+            downloadDao.deleteAllWithIDs(chunkedIds)
+        }
     }
 
     suspend fun cancelActiveQueued(){

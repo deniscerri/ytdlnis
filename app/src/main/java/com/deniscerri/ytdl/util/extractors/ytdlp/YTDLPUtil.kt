@@ -1550,8 +1550,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                         if (w > 0 && h > 0) {
                             val setting = when {
-                                downloadItem.format.vcodec.contains("vp9", true) -> "-c:v libvpx-vp9 -cpu-used 5"
-                                downloadItem.format.vcodec.contains("av1", true) -> "-c:v libaom-av1 -cpu-used 5"
+                                downloadItem.format.vcodec.contains("vp9", true) -> "-c:v libvpx-vp9"
+                                downloadItem.format.vcodec.contains("av1", true) -> "-c:v libaom-av1"
                                 downloadItem.format.vcodec.contains("hevc", true) -> "-c:v libx265 -preset veryfast"
                                 else -> "-c:v libx264 -preset veryfast"
                             }

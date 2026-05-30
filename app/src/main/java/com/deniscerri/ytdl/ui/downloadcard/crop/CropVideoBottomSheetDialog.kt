@@ -245,6 +245,11 @@ class CropVideoBottomSheetDialog(
             }
         })
 
+        val formatReference = item.allFormats.sortedByDescending { it.height }.firstOrNull {
+            (it.height ?: 0) > 0 && (it.width ?: 0) > 0
+        }
+        videoWidth = formatReference?.width ?: 0
+        videoHeight = formatReference?.height ?: 0
         showOverlayAndLoad()
 
         videoView.setOnClickListener {

@@ -1334,7 +1334,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             dao.getDownloadContainersByIDs(checkedItems)
         }
 
-        return Pair(containers.size == 1, containers.first())
+        return Pair(containers.size == 1, if (containers.isNotEmpty()) containers.first() else "")
     }
 
 

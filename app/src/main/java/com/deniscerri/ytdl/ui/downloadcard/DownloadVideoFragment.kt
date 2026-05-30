@@ -268,15 +268,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         formatTuple.audioFormats?.map { it.format_id }?.let {
                             downloadItem.videoPreferences.audioFormatIDs.addAll(it)
                         }
-                        if (downloadItem.videoPreferences.cropValues.isNotBlank()) {
-                            downloadItem.videoPreferences.cropValues = ""
-                            downloadItem.videoPreferences.recodeVideo = false
-                            downloadItem.videoPreferences.compatibilityMode = false
-                            view.findViewById<Chip>(R.id.recode_video)?.createBadge(requireContext(), 0)
-                            view.findViewById<Chip>(R.id.recode_video)?.isEnabled = true
-                            container.isEnabled = true
-                            view.findViewById<Chip>(R.id.crop)?.createBadge(requireContext(), 0)
-                        }
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, downloadItem.format,
                             if(downloadItem.videoPreferences.removeAudio) listOf() else formatTuple.audioFormats,
                             showSize = downloadItem.downloadSections.isEmpty()
@@ -473,6 +464,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 downloadItem.videoPreferences.cropValues = it
                                 container.isEnabled = it.isBlank()
                                 view.findViewById<Chip>(R.id.recode_video)?.isEnabled = it.isBlank()
+                                if (it.isNotBlank()) {
+                                    downloadItem.videoPreferences.recodeVideo = false
+                                }
                             },
                             filenameTemplateSet = {
                                 downloadItem.customFileNameTemplate = it
