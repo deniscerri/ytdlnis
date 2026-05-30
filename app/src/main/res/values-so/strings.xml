@@ -1,2 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="worst_quality">Tayada ugu xun</string>
+    <string name="best_quality">Tayada ugu Fiican</string>
+    <string name="search">Raadi</string>
+    <string name="remove_all">Tirtir Dhamaan</string>
+    <string name="remove_results">Nadiifi natiijooyinka</string>
+    <string name="download_all">Deji dhamaan</string>
+    <string name="settings">Habeynta</string>
+    <string name="home">Guriga</string>
+    <string name="directories">Qaanad</string>
+    <string name="music_directory">Qaanada maqalka</string>
+    <string name="video_directory">Qaanada muuqaalada</string>
+    <string name="updating">Cusboonaysiinaya</string>
+    <string name="ytdl_update_hint">Talo waxtar leh inta la soo dejinayo cusbooneysiinta</string>
+    <string name="update_ytdl">Cusboonaysii yt-dlp nooca cusub</string>
+    <string name="about">Ku saabsan</string>
+    <string name="source_code">Isha Koodhka</string>
+    <string name="search_hint">Raadi ama gali URL</string>
+    <string name="failed_download">Lama soo dejin karo faylka</string>
+    <string name="download_notification_channel_name">Faylka soo dejinta</string>
+    <string name="you_are_in_latest_version">la adeegsanayo noocii ugu dambeeyay</string>
+    <string name="ytld_update_success">Nooc cusub ayaa la rakibay</string>
+    <string name="ytdl_already_updating">Rakibaya nooc cusub</string>
+    <string name="ytdl_updating_started">Soo dejinaya nooc cusub</string>
+    <string name="Remove">Ka saar</string>
+    <string name="ok">Hagaag</string>
+    <string name="cancel">Jooji</string>
+    <string name="confirm_delete_history_desc">Tirtir taariikhda oo dhan, si joogto ah</string>
+    <string name="confirm_delete_history">Xaqiiji</string>
+    <string name="search_history_hint">Ka raadi taariikhda</string>
+    <string name="search_command_hint">Ka raadi amarrada</string>
+    <string name="no_results">Natiijooyin ma jiraan</string>
+    <string name="more">Wax badan</string>
+    <string name="update_app">Hubi cusboonaysiin</string>
+    <string name="version">Nooc</string>
+    <string name="command_directory">Qaabada amarada gaarka ah</string>
+    <string name="couldnt_find_apk">Ma heli karin APK ku habboon</string>
+    <string name="downloading_update">Soo dejinaya nooc cusub</string>
+    <string name="audio">Maqal</string>
+    <string name="video">Muuqaal</string>
+    <string name="downloading">Soo dejinaya</string>
+    <string name="limit_rate">Heerka Xaddidan</string>
+    <string name="limit_rate_summary">Heerka ugu badan ee soo dejinta (baytyada ilbiriqsigiiba), tusaale ahaan 50K ama 4.2M</string>
+    <string name="add_chapters">Cutubyada fiidiyowyada</string>
+    <string name="audio_quality">Tayada maqalka</string>
+    <string name="audio_quality_summary">0 (ugu fiican) 10 (ugu xun)</string>
+    <string name="cancel_task">Jooji hawsha</string>
+    <string name="items_left">Shayga(yada) haray</string>
+    <string name="history_is_empty">Wixii hore waa eber</string>
+    <string name="you_are_going_to_delete">Tirtiraya</string>
+    <string name="url">URL</string>
+    <string name="api_key">Isticmaal furaha API</string>
+</resources>
