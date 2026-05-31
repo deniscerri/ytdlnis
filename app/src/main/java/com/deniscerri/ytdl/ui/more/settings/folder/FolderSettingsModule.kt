@@ -321,9 +321,13 @@ object FolderSettingsModule: SettingModule {
                                     }
                                     clearCacheFolder(File(FileUtil.getCachePath(context)))
 
-                                    Snackbar.make(host.hostView!!, context.getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
+                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
+                                        Snackbar.make(host.hostView!!, context.getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
+                                    }
                                 }else{
-                                    Snackbar.make(host.hostView!!, context.getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
+                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
+                                        Snackbar.make(host.hostView!!, context.getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
+                                    }
                                 }
 
                                 val cacheSize = File(FileUtil.getCachePath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }

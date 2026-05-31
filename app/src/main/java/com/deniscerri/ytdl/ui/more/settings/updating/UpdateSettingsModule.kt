@@ -104,8 +104,8 @@ object UpdateSettingsModule : SettingModule {
                                         updateUtil.tryGetNewVersion()
                                     }
                                     if (res.isFailure) {
-                                        host.hostView?.apply {
-                                            Snackbar.make(this, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
+                                        if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
+                                            Snackbar.make(host.hostView!!, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
                                         }
                                     }else{
                                         if (preferences.getBoolean("automatic_backup", false)) {
@@ -165,7 +165,7 @@ object UpdateSettingsModule : SettingModule {
     ) = host.hostLifecycleOwner.lifecycleScope.launch {
         val view = host.hostView
 
-        view?.apply {
+        if (view != null && view.isAttachedToWindow) {
             Snackbar.make(view, context.getString(R.string.ytdl_updating_started), Snackbar.LENGTH_LONG).show()
         }
 
@@ -173,7 +173,7 @@ object UpdateSettingsModule : SettingModule {
             val res = updateUtil.updateYTDL(channel)
             when (res.status) {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
-                    view?.apply {
+                    if (view != null && view.isAttachedToWindow) {
                         Snackbar.make(view, res.message, Snackbar.LENGTH_LONG).show()
                     }
 
@@ -182,7 +182,7 @@ object UpdateSettingsModule : SettingModule {
                     File(infoJsonPath).deleteRecursively()
                 }
                 UpdateUtil.YTDLPUpdateStatus.ALREADY_UP_TO_DATE -> {
-                    view?.apply {
+                    if (view != null && view.isAttachedToWindow) {
                         Snackbar.make(view,
                             context.getString(R.string.you_are_in_latest_version),
                             Snackbar.LENGTH_LONG).show()
@@ -190,8 +190,8 @@ object UpdateSettingsModule : SettingModule {
                 }
                 UpdateUtil.YTDLPUpdateStatus.ERROR -> {
                     val msg = res.message
-                    view?.apply {
-                        val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
+                    if (view != null && view.isAttachedToWindow) {
+                        val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                         snackBar.setAction(R.string.copy_log){
                             UiUtil.copyToClipboard(msg, host.getHostContext())
                         }
@@ -207,8 +207,8 @@ object UpdateSettingsModule : SettingModule {
             }
         }.onFailure {
             val msg = it.message ?: context.getString(R.string.errored)
-            view?.apply {
-                val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
+            if (view != null && view.isAttachedToWindow) {
+                val snackBar = Snackbar.make(view, msg, Snackbar.LENGTH_LONG)
                 snackBar.setAction(R.string.copy_log){
                     UiUtil.copyToClipboard(msg, host.getHostContext())
                 }
@@ -217,7 +217,6 @@ object UpdateSettingsModule : SettingModule {
                 snackTextView.maxLines = 9999999
                 snackBar.show()
             }
-
         }
     }
 }
