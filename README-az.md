@@ -49,7 +49,7 @@
 - yükləmələri növbəyə qoyun və onları tarix və vaxta görə planlaşdırın
 	- eyni vaxtda çoxlu elementi planlaşdıra bilərsiniz
 - eyni vaxtda çoxlu elementi yüklə
-- fərdi əmrlər və şablonlar istifadə edin və ya quraşdırılan sıxac ilə tam yt-dlp rejiminə keçin
+- fərdi əmrlər və şablonlar istifadə edin və ya quraşdırılan konsol ilə tam yt-dlp rejiminə keçin
 	- Siz şablonları nüsxələyə və bərpa edə bilərsiniz, beləcə dostlarınızla paylaşa bilərsiniz
 - Məlumatlar bazası dəstəyi.Hesablarınızla daxil olun və şəxsi/əlçatmaz videoları yüklə, premium formatları kiliddən açın və s.
 - vaxt ştampları və video bölmələri əsasında videoları kəsin (Bu yt-dlp xüsusiyyəti orijinal layihədə təcrübidir)
@@ -114,7 +114,7 @@ Müzakirə, elanlar və buraxılışlar üçün [Telegram Kanalımıza](https://
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Tərcümə vəziyyəti" />
 </a>
 
-## 🔑 Paket adın istifadə edərək üçüncü tərəf tətbiqləri əlaqə qurun
+## 🔑 Paket adın istifadə edərək üçüncü tərəf tətbiqlərlə əlaqə qurun
 
 Tətbiqin paket adı "com.deniscerri.ytdl"-dir.
 
@@ -132,7 +132,7 @@ Signer #1 certificate MD5 digest: 429d0c6315d2f99650f66cc44cf5a794
 
 ## 🤖 İntent-lər istifadə edərək üçüncü tərəf tətbiqləri ilə əlaqə qurun
 
-Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün tətbiqə əmrlər göndərmək niyyətin (İntent) istifadə edə bilərsiniz. Qəbul edilən dəyişgənliklər:
+Siz istifadəçi toxunuşu olmadan yükləmələri həyata keçirmək üçün tətbiqə əmrlər göndərmək niyyətin (İntent) istifadə edə bilərsiniz. Qəbul edilən dəyişkənliklər:
 
 <b>TYPE</b> -> bu ola bilər: səs,video,əmr <br/>
 <b>BACKGROUND</b> -> bu ola bilər: true,false. Əgər bu true olarsa, tətbiq istənilən halda yükləmə kartını göstərməyəcək və yükləməni arxa planda həyata keçirəcək <br/>
