@@ -74,7 +74,7 @@
 - bitmiş bildirişdən yüklənən faylları aç / paylaş
 - əksər yt-dlp xüsusiyyətləri həyata keçirilir, təkliflər arzu ediləndir
 - Material You görünüşü
-- Tema seçimləri
+- Kolorit seçimləri
 - Nüsxələmə və bərpa xüsusiyyətləri. (Təqribən, hər şey nüsxələnə bilər)
 - MVVM Architecture w/ WorkManager
 
@@ -161,7 +161,7 @@ height="80">](https://www.buymeacoffee.com/deniscerri)
 
 ## 🙏 Təşəkkürlər
 
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) və bu aləti mümkün etmək üçün töhfəçiləri. Bunsuz bu tətbiq mövcud olmazdı.
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) və bu aləti mümkün etmək üçün töhfəçilərə. Bunsuz bu tətbiq mövcud olmazdı.
 - [youtubedl-android](https://github.com/yausername/youtubedl-android) yt-dlp-ni Android-ə köçürmək üçün
 - [dvd](https://github.com/yausername/dvd) Sizə youtubedl-android alətin göstərmək üçün
 - [seal](https://github.com/JunkFood02/Seal) müəyyən dizayn elementləri və xüsusiyyətləri üçün bu tətbiqdə də istifadə etmək istədim
