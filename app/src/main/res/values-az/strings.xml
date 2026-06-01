@@ -120,7 +120,7 @@
     <string name="file_name_template">Şablon fayl adı</string>
     <string name="language">Dil</string>
     <string name="command_templates">Əmr şablonları</string>
-    <string name="terminal">Sıxac</string>
+    <string name="terminal">Konsol</string>
     <string name="format">Format</string>
     <string name="please_wait">Xahiş olunur, gözləyin</string>
     <string name="remove_search_history">Axtarış tarixçəsin təmizlə</string>
@@ -270,12 +270,12 @@
     <string name="retries">Təkrar cəhdlər</string>
     <string name="fragment_retries">Fraqment təkrar cəhdləri</string>
     <string name="format_order">Format düzülüşü</string>
-    <string name="force_keyframes">Kəsiklərdə əsas kadrları məcbur et</string>
+    <string name="force_keyframes">Kəsiklərdə əsas fraqmentləri məcbur et</string>
     <string name="force_keyframes_summary">Daha yavaş emal, lakin daha dəqiq kəsiklər</string>
     <string name="save_for_later">Yükləmə sonraya saxlanılsın?</string>
     <string name="subtitle_format">Titr formatı</string>
     <string name="hide_thumbnails">Miniatürləri gizlət</string>
-    <string name="show_terminal">Paylaş menyusunda sıxac göstər</string>
+    <string name="show_terminal">Paylaş menyusunda konsolu göstər</string>
     <string name="saved">Saxlanıldı</string>
     <string name="clear_saved">Saxlanılanları təmizlə</string>
     <string name="use_extra_commands">Əlavə əmrlər əlavə et</string>
@@ -286,8 +286,8 @@
     <string name="write_description_summary">Açıqlama faylın yaz</string>
     <string name="extra_command">Əlavə əmr</string>
     <string name="use_cookies">Məlumat bazası istifadə et</string>
-    <string name="embed_metadata">Üst məlumat yerləşdir</string>
-    <string name="embed_metadata_summary">Səs faylına üst məlumatı təhlil et və yerləşdir</string>
+    <string name="embed_metadata">Şərhi məlumat yerləşdir</string>
+    <string name="embed_metadata_summary">Səs faylına şərhi məlumatı təhlil et və yerləşdir</string>
     <string name="update_formats_background">Arxa planda formatları yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni avtomatik yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>
@@ -363,7 +363,7 @@
     <string name="thumbnail_format">Miniatür formatı</string>
     <string name="get_new_uploads">Yalnız sonrakı yükləmələri al (mövcud elementləri istəmə)</string>
     <string name="also_download_audio">Həmçinin səs kimi yüklə</string>
-    <string name="wrap_text">Mətni bük</string>
+    <string name="wrap_text">Mətni sığdır</string>
     <string name="scroll_down">Aşağıya sürüşdür</string>
     <string name="back">Geri</string>
     <string name="all_queries_finished">Bütün sorğular emal edilib</string>
@@ -407,7 +407,7 @@
     <string name="use_alarm_manager">Planlaşdırma üçün WorkManager əvəzinə AlarmManager işlət</string>
     <string name="use_alarm_manager_summary">WorkManager-ə cihaz başladıcı tərəfindən limit qoyulubsa və ya planlaşdırılan vəzifələr çox dəqiq deyilsə, bunu aktivləşdirin</string>
     <string name="use_item_url_not_playlist">Pleylist URL əvəzinə element URL istifadə et</string>
-    <string name="use_item_url_not_playlist_summary">Bu aktivləşdikdə pleylist üst məlumatı yerləşdirilməyəcək</string>
+    <string name="use_item_url_not_playlist_summary">Bu aktivləşdikdə pleylist şərhi məlumatı yerləşdirilməyəcək</string>
     <string name="recode_video">Videonu yenidən kodla</string>
     <string name="recode_video_summary">Video faylı təyin edilmiş video formatına yenidən kodlayır</string>
     <string name="daily">Gündəlik</string>
@@ -415,11 +415,11 @@
     <string name="monthly">Aylıq</string>
     <string name="cleanup_leftover_downloads">Qalan yükləmələri təmizlə (ləğv edilmiş, xətalı)</string>
     <string name="continue_anyway">Yenə də davam et</string>
-    <string name="playlist_as_album">Albom üst məlumatı kimi pleylist adı istifadə et</string>
-    <string name="playlist_as_album_summary">Albom üst məlumatı yoxdursa, əvəzinə pleylist adı istifadə et</string>
+    <string name="playlist_as_album">Albom şərhi məlumatı kimi pleylist adı istifadə et</string>
+    <string name="playlist_as_album_summary">Albom şərhi məlumatı yoxdursa, əvəzinə pleylist adı istifadə et</string>
     <string name="data_fetching_extractor_youtube">Məlumat çıxarıcı (YouTube)</string>
     <string name="items">element</string>
-    <string name="socket_timeout">Uzun vaxt dövriyyəsi</string>
+    <string name="socket_timeout">Zaman aşımı</string>
     <string name="thumbnail">Miniatür</string>
     <string name="other_youtube_extractor_args">Digər YouTube extractor quruluşları</string>
     <string name="socket_timeout_description">Bitirməzdən əvvəl saniyə ilə gözləmək vaxtı</string>
@@ -449,7 +449,7 @@
     <string name="prefer_container_over_codec_audio_summary">Bu aktivləşdikdə, üstünlük verilən səs kodlayıcı seçiminə məhəl qoyulmayacaq və yalnız konteyner dəyişdiriləcək</string>
     <string name="player_client">Oynadıcı qəbuledici</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
-    <string name="use_app_language_for_metadata">Üst məlumat üçün tətbiq dili istifadə et</string>
+    <string name="use_app_language_for_metadata">Şərhi məlumat üçün tətbiq dili istifadə et</string>
     <string name="layout">Düzülüş</string>
     <string name="list">Siyahı</string>
     <string name="grid">Şəbəkə</string>
@@ -462,7 +462,7 @@
     <string name="app_icon_change">Simvol dəyişə bilər və tətbiq bağlanacaq</string>
     <string name="use_format_sorting">Format əhəmiyyəti sırası istifadə et</string>
     <string name="write_subs_when_embed_subs_summary">Bu, yarım faylları endirmək və daxil etdikdən sonra onları silmək üçün Titrləri Saxla və Avtomatik Titrləri Saxla funksiyalarını tətbiq edəcək</string>
-    <string name="use_code_highlighter">Code color highlighter, istifadə et</string>
+    <string name="use_code_highlighter">Kod rəng vurğulayıcısın istifadə et</string>
     <string name="automatic_backup">Avtomatik nüsxələmə</string>
     <string name="reset_preferences_in_screen">Bu ekrandakı bütün seçimləri sıfırla</string>
     <string name="backup_path">Nüsxələmə yolu</string>
@@ -492,7 +492,7 @@
     <string name="get_data_sync_id">Data Sync ID Əldə et</string>
     <string name="desktop">Masaüstü</string>
     <string name="url_regex">URL Regex</string>
-    <string name="disable_flat_playlist">Düz pleylisti qapat</string>
+    <string name="disable_flat_playlist">Sadə pleylisti qapat</string>
     <string name="disable_flat_playlist_summary">--flat-playlist istifadə etməyin. Daha yavaş məlumat əldə edilir, lakin daha çox məlumat var</string>
     <string name="chapters">Bölümlər</string>
     <string name="use_original_url_playlist">Pleylist url üçün orijinal url istifadə et</string>
@@ -511,13 +511,13 @@
     <string name="packages">Paketlər</string>
     <string name="not_installed">Quraşdırılmadı</string>
     <string name="bundled">Paketlənib</string>
-    <string name="use_app_language_for_metadata_summary">Aktivləşdirildikdə, üst məlumat sahələri tətbiq dilinizə əməl edəcək və hətta əsil əvəzinə dublyaj olunan versiyalara üstünlük verərək format seçiminə təsir edəcək</string>
+    <string name="use_app_language_for_metadata_summary">Aktivləşdirildikdə, şərhi məlumat sahələri tətbiq dilinizə əməl edəcək və hətta əsil əvəzinə dublyaj olunan versiyalara üstünlük verərək format seçiminə təsir edəcək</string>
     <string name="installed">Quraşdırılıb</string>
     <string name="auto_update_ytdlp_summary">yt-dlp-nin işlək qalması üçün çox tez-tez yenilənməsi lazım olduğundan, bunu işlək saxlamaq tövsiyə olunandır! Məlumat yt-dlp-nin GitHub Deposundan çıxarılır.</string>
     <string name="trim_filenames">Fayl adlarını kəsin</string>
     <string name="install_downloaded_file">Yüklənilən faylı quraşdır</string>
     <string name="save_subdirectory">Alt qovluğa yerləşdir</string>
-    <string name="save_subdirectory_summary">Faylları üst məlumat etiketlərinə əsasən qovluqlarda yerləşdir</string>
+    <string name="save_subdirectory_summary">Faylları şərhi məlumat etiketlərinə əsasən qovluqlarda yerləşdir</string>
     <string name="website">Veb Sayt</string>
     <string name="playlist">Pleylist</string>
     <string name="media_type">Media Növü</string>
@@ -528,8 +528,8 @@
     <string name="free_ratio">Sərbəst Nisbət</string>
     <string name="aspect_ratio">Görünüş Nisbəti</string>
     <string name="dimensions">Ölçülər</string>
-    <string name="x_offset">X Xətti</string>
-    <string name="y_offset">Y Xətti</string>
+    <string name="x_offset">X Sürüşməsi</string>
+    <string name="y_offset">Y Sürüşməsi</string>
     <string name="width">En</string>
     <string name="height">Uzunluq</string>
 </resources>
