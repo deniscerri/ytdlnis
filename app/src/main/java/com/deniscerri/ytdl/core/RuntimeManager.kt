@@ -27,6 +27,7 @@ import java.io.IOException
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlin.concurrent.Volatile
 
 object RuntimeManager {
     val idProcessMap = Collections.synchronizedMap(HashMap<String, Process>())
@@ -38,9 +39,12 @@ object RuntimeManager {
     lateinit var quickJsLocation : PackageBase.PackageLocation
     var ytdlpPath: File? = null
 
+    @Volatile
     var initialized = false
         private set
+
     private var initLatch = CountDownLatch(1)
+    private val initLock = Any()
 
     const val BASENAME = "ytdlnis"
     const val ytdlpDirName = "yt-dlp"
@@ -55,94 +59,100 @@ object RuntimeManager {
 
     fun init(appContext: Context) {
         if (initialized) return
-        val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
 
-        val python = Python.getInstance()
-        val ffmpeg = FFmpeg.getInstance()
-        val aria2c = Aria2c.getInstance()
-        val nodeJS = NodeJS.getInstance()
-        val quickJS = QuickJS.getInstance()
-        val deno = Deno.getInstance()
+        synchronized(initLock) {
+            val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
 
-        python.init(appContext)
-        ffmpeg.init(appContext)
-        aria2c.init(appContext)
-        nodeJS.init(appContext)
-        quickJS.init(appContext)
-        deno.init(appContext)
+            val python = Python.getInstance()
+            val ffmpeg = FFmpeg.getInstance()
+            val aria2c = Aria2c.getInstance()
+            val nodeJS = NodeJS.getInstance()
+            val quickJS = QuickJS.getInstance()
+            val deno = Deno.getInstance()
 
-        //find location of libraries either from bundled or downloaded paths
-        pythonLocation = python.location
-        ffmpegLocation = ffmpeg.location
-        aria2Location = aria2c.location
-        nodeLocation = nodeJS.location
-        denoLocation = deno.location
-        quickJsLocation = quickJS.location
+            python.init(appContext)
+            ffmpeg.init(appContext)
+            aria2c.init(appContext)
+            nodeJS.init(appContext)
+            quickJS.init(appContext)
+            deno.init(appContext)
 
-        val ytdlpDir = File(baseDir, ytdlpDirName)
-        ytdlpPath = File(ytdlpDir, ytdlpBin)
-        initYTDLP(appContext, ytdlpDir)
+            //find location of libraries either from bundled or downloaded paths
+            pythonLocation = python.location
+            ffmpegLocation = ffmpeg.location
+            aria2Location = aria2c.location
+            nodeLocation = nodeJS.location
+            denoLocation = deno.location
+            quickJsLocation = quickJS.location
 
-        val locations = listOf(
-            pythonLocation,
-            ffmpegLocation,
-            aria2Location,
-            nodeLocation,
-            quickJsLocation,
-            denoLocation,
-        )
+            val ytdlpDir = File(baseDir, ytdlpDirName)
+            ytdlpPath = File(ytdlpDir, ytdlpBin)
+            initYTDLP(appContext, ytdlpDir)
 
-        val ldPaths = mutableListOf<String>()
-        locations.forEach {
-            val usrLib = File(it.ldDir, "usr/lib")
-            if (usrLib.exists()) {
-                ldPaths.add(usrLib.absolutePath)
-            } else if (it.ldDir.exists()) {
-                ldPaths.add(it.ldDir.absolutePath)
+            val locations = listOf(
+                pythonLocation,
+                ffmpegLocation,
+                aria2Location,
+                nodeLocation,
+                quickJsLocation,
+                denoLocation,
+            )
+
+            val ldPaths = mutableListOf<String>()
+            locations.forEach {
+                val usrLib = File(it.ldDir, "usr/lib")
+                if (usrLib.exists()) {
+                    ldPaths.add(usrLib.absolutePath)
+                } else if (it.ldDir.exists()) {
+                    ldPaths.add(it.ldDir.absolutePath)
+                }
             }
-        }
-        ldPaths.add(appContext.applicationInfo.nativeLibraryDir)
-        ENV_LD_LIBRARY_PATH = ldPaths.distinct().joinToString(":")
+            ldPaths.add(appContext.applicationInfo.nativeLibraryDir)
+            ENV_LD_LIBRARY_PATH = ldPaths.distinct().joinToString(":")
 
-        val binPaths = locations.filter { it.binDir.exists() }.map { it.binDir.absolutePath }.toMutableList()
-        binPaths.add(System.getenv("PATH") ?: "/system/bin")
-        PATH = binPaths.distinct().joinToString(":")
+            val binPaths = locations.filter { it.binDir.exists() }.map { it.binDir.absolutePath }.toMutableList()
+            binPaths.add(System.getenv("PATH") ?: "/system/bin")
+            PATH = binPaths.distinct().joinToString(":")
 
-        ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
-            File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
-        } else {
-            pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
-        }
-
-        OPEN_SSL_CONF = ""
-        if (nodeLocation.ldDir.exists()) {
-            OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
-                File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
+            ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
+                File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
             } else {
-                nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
+                pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
             }
-        }
 
-        ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
-            pythonLocation.ldDir.absolutePath + "/usr"
-        } else {
-            pythonLocation.ldDir.absolutePath + "/usr"
-        }
-        TMPDIR = appContext.cacheDir.absolutePath
+            OPEN_SSL_CONF = ""
+            if (nodeLocation.ldDir.exists()) {
+                OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
+                    File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
+                } else {
+                    nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
+                }
+            }
 
-        initialized = true
-        initLatch.countDown()
+            ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
+                pythonLocation.ldDir.absolutePath + "/usr"
+            } else {
+                pythonLocation.ldDir.absolutePath + "/usr"
+            }
+            TMPDIR = appContext.cacheDir.absolutePath
+
+            initialized = true
+            initLatch.countDown()
+        }
     }
 
     fun reInit(context: Context) {
-        initialized = false
-        initLatch = CountDownLatch(1)
-        init(context)
+        synchronized(initLock) {
+            initialized = false
+            initLatch = CountDownLatch(1)
+            init(context)
+        }
+
     }
 
     fun assertInit() {
-        val success = initLatch.await(5, TimeUnit.SECONDS)
-        if (!success) {
+        val success = initLatch.await(30, TimeUnit.SECONDS)
+        if (!success || !initialized) {
             throw IllegalStateException("Instance not initialized")
         }
     }
