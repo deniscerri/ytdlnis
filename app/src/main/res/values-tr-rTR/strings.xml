@@ -446,7 +446,7 @@
     <string name="layout">Düzen</string>
     <string name="list">Liste</string>
     <string name="grid">Izgara</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
     <string name="no_check_certificates">HTTPS sertifika doğrulamasını bastır</string>
     <string name="live_stream">Canlı yayın</string>
     <string name="live_from_start">Baştan canlı yayın</string>
@@ -526,12 +526,12 @@
     <string name="crop">Kırp</string>
     <string name="required">Gerekli</string>
     <string name="crop_validation_exceeds_w">X+W %d değerini aşıyor</string>
-    <string name="crop_validation_exceeds_h">Y+H %d sınırını aşıyor</string>
+    <string name="crop_validation_exceeds_h">Y+H %d değerini aşıyor</string>
     <string name="free_ratio">Serbest Oran</string>
     <string name="aspect_ratio">En Boy Oranı</string>
     <string name="dimensions">Boyutlar</string>
-    <string name="x_offset">X Ekseni</string>
-    <string name="y_offset">Y Ekseni</string>
+    <string name="x_offset">X Kayması</string>
+    <string name="y_offset">Y Kayması</string>
     <string name="width">Genişlik</string>
     <string name="height">Yükseklik</string>
 </resources>
