@@ -217,7 +217,7 @@
     <string name="format_filtering_hint">Tout les éléments doivent être du même type pour utiliser cette option</string>
     <string name="preferred_search_engine">Moteur de recherche préféré</string>
     <string name="format_source">Formats source</string>
-    <string name="embed_metadata_summary">Récupérer et intégrer les métadonnées dans le fichier audio</string>
+    <string name="embed_metadata_summary">Analyser et intégrer les métadonnées au fichier audio</string>
     <string name="pure_theme_summary">Thème noir / blanc pur</string>
     <string name="preferred_audio_codec">Codec audio préféré</string>
     <string name="use_cookies">Utiliser des cookies</string>
