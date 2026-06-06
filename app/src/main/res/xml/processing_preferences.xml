@@ -59,9 +59,6 @@
             app:summary="@string/force_keyframes_summary"
             app:title="@string/force_keyframes" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/audio">
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
@@ -70,6 +67,9 @@
             app:summary="@string/embed_metadata_summary"
             app:title="@string/embed_metadata" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/audio">
         <Preference
             android:icon="@drawable/baseline_high_quality_24"
             app:key="audio_bitrate"

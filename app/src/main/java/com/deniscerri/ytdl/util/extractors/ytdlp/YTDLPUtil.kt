@@ -1270,6 +1270,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--embed-chapters")
                 }
 
+                if (embedMetadata) {
+                    metadataCommands.add("--embed-metadata")
+                }
+
 
                 var cont = ""
                 val outputContainer = downloadItem.container

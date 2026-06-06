@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ResultItem
+import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.PlaylistAdapter
@@ -45,6 +46,7 @@ import kotlin.math.absoluteValue
 class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var downloadCardViewModel: DownloadCardViewModel
     private lateinit var listAdapter : PlaylistAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var ok: MaterialButton
@@ -61,6 +63,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
+        downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
 
         arguments?.getLongArray("resultIDs").apply {
@@ -182,6 +185,8 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                 val checkedResultItems = items.filter { item -> checkedItems.contains(item.id) }
                 if (checkedResultItems.size == 1){
                     val resultItem = resultViewModel.getByID(checkedResultItems[0].id)!!
+                    downloadCardViewModel.setResultItem(resultItem)
+                    downloadCardViewModel.setDownloadItem(null)
                     withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadBottomSheetDialog, bundleOf(
                             Pair("result", resultItem),
