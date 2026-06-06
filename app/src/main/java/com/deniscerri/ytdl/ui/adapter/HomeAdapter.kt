@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -25,16 +26,18 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
 
-class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, HomeAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<ResultItem, HomeAdapter.ViewHolder>(
     DIFF_CALLBACK
-).build()) {
-    private val checkedItems: ArrayList<String>
+) {
+    val checkedItems: MutableSet<Long>
+    var inverted: Boolean
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
 
     init {
-        checkedItems = ArrayList()
+        checkedItems = mutableSetOf()
+        this.inverted = false
         this.onItemClickListener = onItemClickListener
         this.activity = activity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -55,7 +58,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val video = getItem(position)
+        val video = getItem(position) ?: return
         val card = holder.cardView
         card.popup()
 
@@ -64,11 +67,11 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
         // THUMBNAIL ----------------------------------
         val hideThumb = sharedPreferences.getStringSet("hide_thumbnails", emptySet())!!.contains("home")
-        uiHandler.post { thumbnail.loadThumbnail(hideThumb, video!!.thumb) }
+        uiHandler.post { thumbnail.loadThumbnail(hideThumb, video.thumb) }
 
         // TITLE  ----------------------------------
         val videoTitle = card.findViewById<TextView>(R.id.result_title)
-        var title = video!!.title.ifBlank { video.url }
+        var title = video.title.ifBlank { video.url }
         if (title.length > 100) {
             title = title.substring(0, 40) + "..."
         }
@@ -87,13 +90,13 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         val musicBtn = card.findViewById<MaterialButton>(R.id.download_music)
         musicBtn.tag = "$videoURL##audio"
         musicBtn.setTag(R.id.cancelDownload, "false")
-        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadType.audio) }
-        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadType.audio); true}
+        musicBtn.setOnClickListener { onItemClickListener.onButtonClick(video, DownloadType.audio) }
+        musicBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(video, DownloadType.audio); true}
         val videoBtn = card.findViewById<MaterialButton>(R.id.download_video)
         videoBtn.tag = "$videoURL##video"
         videoBtn.setTag(R.id.cancelDownload, "false")
-        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(videoURL, DownloadType.video) }
-        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(videoURL, DownloadType.video); true}
+        videoBtn.setOnClickListener { onItemClickListener.onButtonClick(video, DownloadType.video) }
+        videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(video, DownloadType.video); true}
 
 
         // PROGRESS BAR ----------------------------------------------------
@@ -132,71 +135,80 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 //                videoBtn.setIcon(ContextCompat.getDrawable(activity, R.drawable.ic_video));
 //            }
 //        }
-        if (checkedItems.contains(videoURL)) {
+        if ((checkedItems.contains(video.id) && !inverted) || (!checkedItems.contains(video.id) && inverted)) {
             card.isChecked = true
             card.strokeWidth = 5
         } else {
             card.isChecked = false
             card.strokeWidth = 0
         }
+
         card.tag = "$videoURL##card"
         card.setOnLongClickListener {
-            checkCard(card, videoURL)
+            checkCard(card, video.id, video)
             true
         }
         card.setOnClickListener {
-            if (checkedItems.size > 0) {
-                checkCard(card, videoURL)
+            if (checkedItems.isNotEmpty()) {
+                checkCard(card, video.id, video)
             }else{
-                onItemClickListener.onCardDetailsClick(videoURL)
+                onItemClickListener.onCardDetailsClick(video)
             }
         }
     }
 
-    private fun checkCard(card: MaterialCardView, videoURL: String) {
+    private fun checkCard(card: MaterialCardView, itemID: Long, item: ResultItem) {
         if (card.isChecked) {
             card.strokeWidth = 0
-            checkedItems.remove(videoURL)
+            if (inverted) checkedItems.add(itemID)
+            else checkedItems.remove(itemID)
         } else {
             card.strokeWidth = 5
-            checkedItems.add(videoURL)
+            if (inverted) checkedItems.remove(itemID)
+            else checkedItems.add(itemID)
         }
         card.isChecked = !card.isChecked
-        onItemClickListener.onCardClick(videoURL, card.isChecked)
+        onItemClickListener.onCardClick(item, card.isChecked)
     }
 
     interface OnItemClickListener {
-        fun onButtonClick(videoURL: String, type: DownloadType?)
-        fun onLongButtonClick(videoURL: String, type: DownloadType?)
-        fun onCardClick(videoURL: String, add: Boolean)
-        fun onCardDetailsClick(videoURL: String)
+        fun onButtonClick(item: ResultItem, type: DownloadType?)
+        fun onLongButtonClick(item: ResultItem, type: DownloadType?)
+        fun onCardClick(item: ResultItem, isChecked: Boolean)
+        fun onCardDetailsClick(item: ResultItem)
     }
 
-    fun checkAll(items: List<ResultItem?>?){
+    fun checkAll(){
         checkedItems.clear()
-        checkedItems.addAll(items!!.map { it!!.url })
+        inverted = true
         notifyDataSetChanged()
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun checkMultipleItems(list: List<String>){
+    fun checkMultipleItems(list: List<Long>){
         checkedItems.clear()
+        inverted = false
         checkedItems.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun invertSelected(items: List<ResultItem?>?){
-        val invertedList = mutableListOf<String>()
-        items?.forEach {
-            if (!checkedItems.contains(it!!.url)) invertedList.add(it.url)
-        }
-        checkedItems.clear()
-        checkedItems.addAll(invertedList)
+    fun invertSelected(){
+        inverted = !inverted
         notifyDataSetChanged()
     }
 
+    fun getSelectedObjectsCount(totalSize: Int) : Int{
+        return if (inverted){
+            totalSize - checkedItems.size
+        }else{
+            checkedItems.size
+        }
+    }
+
     fun clearCheckedItems(){
+        inverted = false
         checkedItems.clear()
+        notifyDataSetChanged()
     }
 
     companion object {

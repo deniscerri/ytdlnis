@@ -6,15 +6,14 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
@@ -25,28 +24,42 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
-import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withPermit
+import kotlinx.coroutines.withContext
 import java.util.concurrent.CancellationException
+import kotlin.collections.filter
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class ResultViewModel(private val application: Application) : AndroidViewModel(application) {
     private val tag: String = "ResultViewModel"
     val repository : ResultRepository
     private val searchHistoryRepository : SearchHistoryRepository
-    val items : LiveData<List<ResultItem>>
-    private var _items = MediatorLiveData<List<ResultItem>>()
-    val playlistFilter = MutableLiveData("")
+    val playlistFilter = MutableStateFlow("")
+
+    var paginatedItems : Flow<PagingData<ResultItem>>
+    var totalCount = MutableStateFlow(0)
+    var firstResult = MutableStateFlow<ResultItem?>(null)
+    var playlistResults : StateFlow<List<String>>
+
 
     private val notificationUtil: NotificationUtil
     private val dao: ResultDao
@@ -82,20 +95,33 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         repository = ResultRepository(dao, commandTemplateDao, getApplication<Application>().applicationContext)
         searchHistoryRepository = SearchHistoryRepository(DBManager.getInstance(application).searchHistoryDao)
 
-        items = repository.allResults.asLiveData()
-        _items.addSource(items){
-            filter()
-        }
-        _items.addSource(playlistFilter) {
-            filter()
-        }
+        playlistResults = dao.getDistinctPlaylistNamesFlow()
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000),
+                initialValue = emptyList()
+            )
+
+        val filters = listOf(dao.getResultsFlow(), playlistFilter)
+        paginatedItems = combine(filters) { f ->
+            val playlistF = f[1] as String
+            var pager = Pager(
+                config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
+                pagingSourceFactory = {
+                    dao.getPaginatedFilteredFlow(playlistF)
+                }
+            ).flow
+
+            withContext(Dispatchers.IO) {
+                firstResult.value = dao.getFirstMatchingResult(playlistF)
+                totalCount.value = repository.getFilteredIDs(playlistFilter.value).size
+            }
+
+            pager
+        }.flatMapLatest { it }
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         notificationUtil = NotificationUtil(application)
-    }
-
-    fun filter() = viewModelScope.launch(Dispatchers.IO){
-        _items.postValue(repository.getFiltered(playlistFilter.value ?: ""))
     }
 
     fun setPlaylistFilter(p: String){
@@ -103,23 +129,15 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     private fun resetPlaylistFilter() = viewModelScope.launch(Dispatchers.Main) {
-        _items.removeSource(playlistFilter)
         playlistFilter.value = ""
-        _items.addSource(playlistFilter) {
-            filter()
-        }
-    }
-
-    fun getFilteredList() : LiveData<List<ResultItem>> {
-        return _items
     }
 
     fun checkTrending() = viewModelScope.launch(Dispatchers.IO){
         try {
             val item = repository.getFirstResult()
             if (
-                item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
-                && item.creationTime < (System.currentTimeMillis() / 1000) - 86400
+                item == null || (item.playlistTitle == getApplication<App>().getString(R.string.trendingPlaylist)
+                && item.creationTime < (System.currentTimeMillis() / 1000) - 86400)
             ){
                 getHomeRecommendations()
             }
@@ -128,6 +146,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
             getHomeRecommendations()
         }
     }
+
+
     fun getHomeRecommendations() = viewModelScope.launch(Dispatchers.IO){
         val homeRecommendations = sharedPreferences.getString("recommendations_home", "")
         val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
@@ -273,7 +293,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return searchHistoryRepository.getAll()
     }
 
-    fun deleteSelected(selectedItems : List<ResultItem>) = viewModelScope.launch(Dispatchers.IO) {
+    fun deleteSelected(selectedItems : List<Long>) = viewModelScope.launch(Dispatchers.IO) {
         selectedItems.forEach {
             repository.delete(it)
         }
@@ -378,6 +398,15 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
         return repository.getStreamingUrlAndChapters(url)
+    }
+
+    fun getItemIDsNotPresentIn(not: List<Long>) : List<Long> {
+        val ids = repository.getFilteredIDs(playlistFilter.value)
+        return ids.filter { !not.contains(it) }
+    }
+
+    fun getAllIds() : List<Long> {
+        return repository.getFilteredIDs(playlistFilter.value)
     }
 
     fun reverseResults(resultItems: List<Long>): List<Long> {

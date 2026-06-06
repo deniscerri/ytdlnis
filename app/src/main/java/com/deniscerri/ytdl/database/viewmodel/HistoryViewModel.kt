@@ -2,7 +2,6 @@ package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -55,8 +54,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     enum class HistoryStatus {
         DELETED, NOT_DELETED, ALL
     }
-
-    private var _items = MediatorLiveData<List<HistoryItem>>()
 
     var paginatedItems : Flow<PagingData<HistoryItem>>
     var websites : Flow<List<String>>

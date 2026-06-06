@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
+import androidx.paging.filter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
@@ -39,6 +40,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue
@@ -56,9 +60,10 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     private lateinit var count: TextView
     private lateinit var selectBetween: MenuItem
     private lateinit var bottomAppBar: BottomAppBar
+    private var totalCount: Int = 0
+    private var isProgrammaticChange : Boolean = false
 
     private lateinit var resultItemIDs: List<Long>
-    private var items = listOf<ResultItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -116,6 +121,8 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
 
 
         fromTextInput.editText!!.doAfterTextChanged { _text ->
+            if (isProgrammaticChange) return@doAfterTextChanged
+
             reset()
             val start = _text.toString()
             val end = toTextInput.editText!!.text.toString()
@@ -127,15 +134,27 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                     var endNr = Integer.parseInt(end)
                     endNr--
                     if (startNr <= 0) startNr = 0
-                    if (endNr > items.size) endNr = items.size - 1
-                    listAdapter.checkRange(startNr, endNr)
-                    ok.isEnabled = true
-                    count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    if (endNr > totalCount) endNr = totalCount - 1
+
+                    lifecycleScope.launch {
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            resultViewModel.getResultsBetweenTwoItems(resultItemIDs[startNr], resultItemIDs[endNr])
+                        }.toMutableList()
+
+                        if (resultsInMiddle.isNotEmpty()) {
+                            listAdapter.checkMultipleItems(resultsInMiddle.map { it.id })
+                        }
+                        ok.isEnabled = true
+                        val selectedIds = getSelectedIDs()
+                        count.text = "${selectedIds.size} ${resources.getString(R.string.selected)}"
+                    }
                 }
             }
         }
 
         toTextInput.editText!!.doAfterTextChanged { _text  ->
+            if (isProgrammaticChange) return@doAfterTextChanged
+
             reset()
             val start = fromTextInput.editText!!.text.toString()
             val end = _text.toString()
@@ -147,31 +166,50 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                     var endNr = Integer.parseInt(end)
                     endNr--
                     if (startNr <= 0) startNr = 0
-                    if (endNr > items.size) endNr = items.size -1
-                    listAdapter.checkRange(startNr, endNr)
-                    ok.isEnabled = true
-                    count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    if (endNr > totalCount) endNr = totalCount -1
+
+                    lifecycleScope.launch {
+                        val resultsInMiddle = withContext(Dispatchers.IO){
+                            resultViewModel.getResultsBetweenTwoItems(resultItemIDs[startNr], resultItemIDs[endNr])
+                        }.toMutableList()
+
+                        if (resultsInMiddle.isNotEmpty()) {
+                            listAdapter.checkMultipleItems(resultsInMiddle.map { it.id })
+                        }
+
+                        val selectedIDs = getSelectedIDs().toMutableList()
+                        ok.isEnabled = true
+                        count.text = "${selectedIDs.size} ${resources.getString(R.string.selected)}"
+                    }
                 }
             }
         }
 
         val checkAll = view.findViewById<FloatingActionButton>(R.id.check_all)
         checkAll!!.setOnClickListener {
-            if (listAdapter.getCheckedItems().size != items.size){
-                fromTextInput.editText!!.setTextAndRecalculateWidth("1")
-                toTextInput.editText!!.setTextAndRecalculateWidth(items.size.toString())
-                listAdapter.checkAll()
-                fromTextInput.isEnabled = true
-                toTextInput.isEnabled = true
-                ok.isEnabled = true
-                count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
-            }else{
-                reset()
-                fromTextInput.isEnabled = true
-                toTextInput.isEnabled = true
-                ok.isEnabled = false
-                fromTextInput.editText!!.setTextAndRecalculateWidth("")
-                toTextInput.editText!!.setTextAndRecalculateWidth("")
+            lifecycleScope.launch {
+                isProgrammaticChange = true
+
+                val selectedIds = getSelectedIDs()
+                if (selectedIds.size != totalCount){
+                    fromTextInput.editText!!.setTextAndRecalculateWidth("1")
+                    toTextInput.editText!!.setTextAndRecalculateWidth(totalCount.toString())
+                    listAdapter.checkAll()
+                    fromTextInput.isEnabled = true
+                    toTextInput.isEnabled = true
+                    ok.isEnabled = true
+                    val selectedIds = getSelectedIDs()
+                    count.text = "(${selectedIds.size}) ${resources.getString(R.string.all_items_selected)} "
+                }else{
+                    reset()
+                    fromTextInput.isEnabled = true
+                    toTextInput.isEnabled = true
+                    ok.isEnabled = false
+                    fromTextInput.editText!!.setTextAndRecalculateWidth("")
+                    toTextInput.editText!!.setTextAndRecalculateWidth("")
+                }
+
+                isProgrammaticChange = false
             }
         }
 
@@ -181,10 +219,9 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         ok.setOnClickListener {
             ok.isEnabled = false
             lifecycleScope.launch(Dispatchers.IO) {
-                val checkedItems = listAdapter.getCheckedItems()
-                val checkedResultItems = items.filter { item -> checkedItems.contains(item.id) }
-                if (checkedResultItems.size == 1){
-                    val resultItem = resultViewModel.getByID(checkedResultItems[0].id)!!
+                val selectedIds = getSelectedIDs()
+                if (selectedIds.size == 1){
+                    val resultItem = resultViewModel.getByID(selectedIds.first())!!
                     downloadCardViewModel.setResultItem(resultItem)
                     downloadCardViewModel.setDownloadItem(null)
                     withContext(Dispatchers.Main){
@@ -194,7 +231,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
                         ))
                     }
                 }else{
-                    downloadViewModel.turnResultItemsToProcessingDownloads(checkedResultItems.map { it.id })
+                    downloadViewModel.turnResultItemsToProcessingDownloads(selectedIds)
                     withContext(Dispatchers.Main){
                         findNavController().navigate(R.id.action_selectPlaylistItemsDialog_to_downloadMultipleBottomSheetDialog)
                     }
@@ -210,30 +247,41 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         bottomAppBar.setOnMenuItemClickListener { m: MenuItem ->
             when(m.itemId) {
                 R.id.invert_selected -> {
-                    listAdapter.invertSelected(items)
-                    val checkedItems = listAdapter.getCheckedItems()
-                    if (checkedItems.size == items.size){
-                        count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
-                    }else{
-                        count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
+                    listAdapter.invertSelected()
+
+                    lifecycleScope.launch {
+                        val selectedIds = getSelectedIDs()
+                        if (selectedIds.size == totalCount){
+                            count.text = "(${selectedIds.size}) ${resources.getString(R.string.all_items_selected)} "
+                        }else{
+                            count.text = "${selectedIds.size} ${resources.getString(R.string.selected)}"
+                        }
+                        if(selectedIds.isNotEmpty() && selectedIds.size < totalCount){
+                            fromTextInput.isEnabled = false
+                            toTextInput.isEnabled = false
+                        }
+                        ok.isEnabled = selectedIds.isNotEmpty()
                     }
-                    if(checkedItems.isNotEmpty() && checkedItems.size < items.size){
-                        fromTextInput.isEnabled = false
-                        toTextInput.isEnabled = false
-                    }
-                    ok.isEnabled = checkedItems.isNotEmpty()
                 }
                 R.id.select_between -> {
-                    val selectedItems = listAdapter.getCheckedItems()
-                    if(selectedItems.size != 2){
-                        m.isVisible = false
-                    }else{
-                        val item2 = resultItemIDs.indexOf(selectedItems.last())
-                        val item1 = resultItemIDs.indexOf(selectedItems.first())
-                        if(item1 > item2) listAdapter.checkRange(item2, item1)
-                        else listAdapter.checkRange(item1, item2)
-                        count.text = "${listAdapter.getCheckedItems().size} ${resources.getString(R.string.selected)}"
+                    lifecycleScope.launch {
+                        val selectedIDs = getSelectedIDs().toMutableList()
+                        if(selectedIDs.size != 2){
+                            m.isVisible = false
+                        }else{
+                            val resultsInMiddle = withContext(Dispatchers.IO){
+                                resultViewModel.getResultsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
+                            }.toMutableList()
+                            if (resultsInMiddle.isNotEmpty()){
+                                selectedIDs.addAll(resultsInMiddle.map { it.id })
+                                listAdapter.checkMultipleItems(selectedIDs)
+                                val selectedIDs = getSelectedIDs().toMutableList()
+                                count.text = "${selectedIDs.size} ${resources.getString(R.string.selected)}"
+                            }
+                        }
                     }
+
+
                 }
                 R.id.reverse -> {
                     resultItemIDs = resultViewModel.reverseResults(resultItemIDs)
@@ -246,21 +294,40 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         selectBetween = bottomAppBar.menu.findItem(R.id.select_between)
 
         lifecycleScope.launch {
-            resultViewModel.items.map { items -> items.filter { resultItemIDs.contains(it.id) } }.observe(this@SelectPlaylistItemsDialog) {
-                val isLoading = it.size != resultItemIDs.size
+            resultViewModel.totalCount.collectLatest {
+                totalCount = it
+
+                val isLoading = it != resultItemIDs.size
                 progress.isVisible = isLoading
-                listAdapter.submitList(it)
                 recyclerView.suppressLayout(isLoading)
                 bottomAppBar.menu.children.forEach { c -> c.isEnabled = !isLoading }
                 ok.isEnabled = !isLoading
                 checkAll.isEnabled = !isLoading
                 fromTextInput.isEnabled = !isLoading
                 toTextInput.isEnabled = !isLoading
-
-                items = it
             }
         }
 
+        lifecycleScope.launch {
+            resultViewModel.paginatedItems.map {
+                it.filter { it2 ->
+                    resultItemIDs.contains(it2.id)
+                }
+            }.collectLatest {
+                listAdapter.submitData(it)
+            }
+        }
+
+    }
+
+    suspend fun getSelectedIDs() : List<Long> {
+        return if (listAdapter.inverted || (listAdapter.checkedItems.isEmpty() && listAdapter.inverted)){
+            withContext(Dispatchers.IO){
+                resultViewModel.getItemIDsNotPresentIn(listAdapter.checkedItems.toList())
+            }
+        }else{
+            listAdapter.checkedItems.toList()
+        }
     }
 
     override fun onResume() {
@@ -302,32 +369,39 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     }
 
 
-    override fun onCardSelect(itemID: Long, isChecked: Boolean, checkedItems: List<Long>) {
-        if (checkedItems.size == items.size){
-            count.text = "(${listAdapter.getCheckedItems().size}) ${resources.getString(R.string.all_items_selected)} "
-        }else{
-            count.text = "${checkedItems.size} ${resources.getString(R.string.selected)}"
-        }
-        if (checkedItems.isEmpty()){
-            ok.isEnabled = false
-            fromTextInput.isEnabled = true
-            toTextInput.isEnabled = true
-        }else{
-            ok.isEnabled = true
-            fromTextInput.isEnabled = false
-            toTextInput.isEnabled = false
-            val canSelectBetween = run {
-                val size = checkedItems.size
-                if(size != 2) false
-                else {
-                    val item1 = resultItemIDs.indexOf(checkedItems.first())
-                    val item2 = resultItemIDs.indexOf(checkedItems.last())
+    @SuppressLint("SetTextI18n")
+    override fun onCardSelect(itemID: Long, isChecked: Boolean) {
+        lifecycleScope.launch {
+            val realSelectedIDs = getSelectedIDs()
+            val selectedSize = realSelectedIDs.size
 
-                    (item1-item2).absoluteValue > 1
-                }
+            if (selectedSize == totalCount){
+                count.text = "(${selectedSize}) ${resources.getString(R.string.all_items_selected)} "
+            }else{
+                count.text = "$selectedSize ${resources.getString(R.string.selected)}"
             }
-            selectBetween.isVisible = canSelectBetween
+            if (selectedSize == 0){
+                ok.isEnabled = false
+                fromTextInput.isEnabled = true
+                toTextInput.isEnabled = true
+            }else{
+                ok.isEnabled = true
+                fromTextInput.isEnabled = false
+                toTextInput.isEnabled = false
+                val canSelectBetween = run {
+                    if(selectedSize != 2) false
+                    else {
+                        val item1 = resultItemIDs.indexOf(realSelectedIDs.first())
+                        val item2 = resultItemIDs.indexOf(realSelectedIDs.last())
+
+                        (item1-item2).absoluteValue > 1
+                    }
+                }
+                selectBetween.isVisible = canSelectBetween
+            }
         }
+
+
     }
 
 }

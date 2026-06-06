@@ -3,18 +3,22 @@ package com.deniscerri.ytdl.database.repository
 import android.content.Context
 import android.util.Patterns
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
+import com.deniscerri.ytdl.database.repository.HistoryRepository.HistorySortType
+import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeChannelURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
@@ -27,12 +31,7 @@ import kotlinx.coroutines.runBlocking
 
 class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: CommandTemplateDao, private val context: Context) {
     val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
-    val allResults : Flow<List<ResultItem>> = resultDao.getResults()
     var itemCount = MutableStateFlow(-1)
-
-    fun getFiltered(playlistName : String = "") : List<ResultItem> {
-        return resultDao.getResultsWithPlaylistName(playlistName)
-    }
 
     private val youtubeApiUtil = YoutubeApiUtil(context)
     private val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
@@ -54,8 +53,12 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         resultDao.insert(it)
     }
 
-    fun getFirstResult() : ResultItem{
+    fun getFirstResult() : ResultItem? {
         return resultDao.getFirstResult()
+    }
+
+    fun getFilteredIDs (playlistTitle: String) : List<Long> {
+        return resultDao.getFilteredListIds(playlistTitle)
     }
 
     suspend fun getHomeRecommendations(){
@@ -367,8 +370,8 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return ytdlpRes.getOrElse { mutableListOf() }
     }
 
-    suspend fun delete(item: ResultItem){
-        resultDao.delete(item.id)
+    suspend fun delete(itemId: Long){
+        resultDao.delete(itemId)
     }
 
     suspend fun deleteByUrl(url: String) {

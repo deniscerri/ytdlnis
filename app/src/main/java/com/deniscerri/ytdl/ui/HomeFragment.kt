@@ -82,11 +82,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
+import kotlin.math.sign
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
     private var inputQueries: MutableList<String>? = null
-    private var homeAdapter: HomeAdapter? = null
+    private lateinit var homeAdapter: HomeAdapter
+    private var totalCount: Int = 0
+    private var firstResult: ResultItem? = null
     private var searchSuggestionsAdapter: SearchSuggestionsAdapter? = null
     private var queriesConstraint: ConstraintLayout? = null
 
@@ -119,8 +122,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private var recyclerView: RecyclerView? = null
     private var searchSuggestionsRecyclerView: RecyclerView? = null
     private var uiHandler: Handler? = null
-    private var resultsList: List<ResultItem?>? = null
-    private lateinit var selectedObjects: ArrayList<ResultItem>
     private var quickLaunchSheet = false
     private var sharedPreferences: SharedPreferences? = null
     private var actionMode: ActionMode? = null
@@ -141,7 +142,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         mainActivity = activity as MainActivity?
         quickLaunchSheet = false
         notificationUtil = NotificationUtil(requireContext())
-        selectedObjects = arrayListOf()
         return fragmentView
     }
 
@@ -151,15 +151,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         fragmentContext = context
         layoutinflater = LayoutInflater.from(context)
         uiHandler = Handler(Looper.getMainLooper())
-        selectedObjects = ArrayList()
 
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
 
         downloadQueue = ArrayList()
-        resultsList = mutableListOf()
-        selectedObjects = ArrayList()
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
@@ -204,20 +201,29 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         val progressBar = view.findViewById<View>(R.id.progress)
 
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
-        resultViewModel.getFilteredList().observe(requireActivity()) {
-            kotlin.runCatching {
-                homeAdapter!!.submitList(it)
-                resultsList = it
-                progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
+        resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
+
+        lifecycleScope.launch {
+            resultViewModel.paginatedItems.collectLatest {
+                homeAdapter.submitData(it)
+            }
+        }
+
+        homeAdapter.addLoadStateListener { loadStates ->
+            val isNotLoading = loadStates.refresh is androidx.paging.LoadState.NotLoading
+            if (isNotLoading) {
+                val size = resultViewModel.totalCount.value;
+                val firstResult = resultViewModel.firstResult.value;
+
+                progressBar.isVisible = loadingItems && size > 0
                 if(resultViewModel.repository.itemCount.value > 1 || resultViewModel.repository.itemCount.value == -1){
-                    showDownloadAllFab = it.size > 1 && it[0].playlistTitle.isNotEmpty() && !loadingItems
+                    showDownloadAllFab = size > 1 && firstResult!!.playlistTitle.isNotEmpty() && !loadingItems
                     downloadAllFab!!.isVisible = showDownloadAllFab
                 }else if (resultViewModel.repository.itemCount.value == 1){
                     if (sharedPreferences!!.getBoolean("download_card", true)){
-                        if(it.size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
+                        if(size == 1 && quickLaunchSheet && parentFragmentManager.findFragmentByTag("downloadSingleSheet") == null){
                             showSingleDownloadSheet(
-                                it[0],
+                                firstResult!!,
                                 DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
                             )
                         }
@@ -230,12 +236,24 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             }
         }
 
-        resultViewModel.items.observe(requireActivity()) {
-            updateMultiplePlaylistResults(it
-                .filter { it2 -> it2.playlistTitle != "" && it2.playlistTitle != "YTDLNIS_SEARCH" }
-                .map { it2 -> it2.playlistTitle }
-                .distinct()
-            )
+        lifecycleScope.launch {
+            resultViewModel.totalCount.collectLatest {
+                totalCount = it
+            }
+        }
+
+        lifecycleScope.launch {
+            resultViewModel.firstResult.collectLatest {
+                firstResult = it
+            }
+        }
+
+        lifecycleScope.launch {
+            resultViewModel.playlistResults.collectLatest {
+                updateMultiplePlaylistResults(it
+                    .filter { it2 -> it2 != "YTDLNIS_SEARCH" }
+                )
+            }
         }
 
         initMenu()
@@ -318,7 +336,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
 
                     loadingItems = res.processing
-                    progressBar.isVisible = loadingItems && resultsList!!.isNotEmpty()
+                    progressBar.isVisible = loadingItems && totalCount > 0
                     if (res.processing){
                         recyclerView?.setPadding(0,0,0,0)
                         shimmerCards!!.startShimmer()
@@ -328,7 +346,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
 
-                        showDownloadAllFab = resultsList!!.size > 1 && resultsList!![0]!!.playlistTitle.isNotEmpty()
+                        showDownloadAllFab = totalCount > 1 && firstResult!!.playlistTitle.isNotEmpty()
                         downloadAllFab!!.isVisible = showDownloadAllFab
                     }
                 }
@@ -528,14 +546,12 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
                 R.id.delete_results -> {
-                    resultsList = listOf()
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO){
                             resultViewModel.cancelParsingQueries()
                         }
                     }
                     resultViewModel.getHomeRecommendations()
-                    selectedObjects = ArrayList()
                     searchBar!!.setText("")
                     showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE
@@ -733,18 +749,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     @SuppressLint("ResourceType")
-    override fun onButtonClick(videoURL: String, type: DownloadType?) {
-        Log.e(TAG, type.toString() + " " + videoURL)
-        val item = resultsList!!.find { it?.url == videoURL }
-        Log.e(TAG, resultsList!![0].toString() + " " + videoURL)
-        recyclerView!!.findViewWithTag<MaterialButton>("""${item?.url}##$type""")
+    override fun onButtonClick(item: ResultItem, type: DownloadType?) {
         if (sharedPreferences!!.getBoolean("download_card", true)) {
-            showSingleDownloadSheet(item!!, type!!)
+            showSingleDownloadSheet(item, type!!)
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
                     downloadViewModel.createDownloadItemFromResult(
-                        result = item!!,
+                        result = item,
                         givenType = type!!)
                 }
                 downloadViewModel.queueDownloads(listOf(downloadItem))
@@ -752,10 +764,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
     }
 
-    override fun onLongButtonClick(videoURL: String, type: DownloadType?) {
-        Log.e(TAG, type.toString() + " " + videoURL)
-        val item = resultsList!!.find { it?.url == videoURL }
-        showSingleDownloadSheet(item!!, type!!)
+    override fun onLongButtonClick(item: ResultItem, type: DownloadType?) {
+        showSingleDownloadSheet(item, type!!)
     }
 
     @SuppressLint("RestrictedApi")
@@ -779,23 +789,20 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
     }
 
-    override fun onCardClick(videoURL: String, add: Boolean) {
+    override fun onCardClick(item: ResultItem, add: Boolean) {
         lifecycleScope.launch {
-            val item = resultsList?.find { it?.url == videoURL }
+            val selectedObjects = homeAdapter.getSelectedObjectsCount(totalCount)
             if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
             actionMode?.apply {
-                if (add) selectedObjects.add(item!!)
-                else selectedObjects.remove(item!!)
-
-                if (selectedObjects.size == 0){
+                if (selectedObjects == 0){
                     this.finish()
                 }else{
-                    actionMode?.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+                    actionMode?.title = "$selectedObjects ${getString(R.string.selected)}"
                     this.menu.findItem(R.id.select_between).isVisible = false
-                    if(selectedObjects.size == 2){
-                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                    if(selectedObjects == 2){
+                        val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
                         val resultsInMiddle = withContext(Dispatchers.IO){
-                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
                         }.toMutableList()
                         this.menu.findItem(R.id.select_between).isVisible = resultsInMiddle.isNotEmpty()
                     }
@@ -804,10 +811,10 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
     }
 
-    override fun onCardDetailsClick(videoURL: String) {
-        if (parentFragmentManager.findFragmentByTag("resultDetails") == null && resultsList != null && resultsList!!.isNotEmpty()){
+    override fun onCardDetailsClick(item: ResultItem) {
+        if (parentFragmentManager.findFragmentByTag("resultDetails") == null){
             val bundle = Bundle()
-            bundle.putParcelable("result", resultsList!!.first{it!!.url == videoURL}!!)
+            bundle.putParcelable("result", item)
             findNavController().navigate(R.id.resultCardDetailsDialog, bundle)
         }
     }
@@ -819,10 +826,19 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         if (viewIdName.isNotEmpty()) {
             if (viewIdName == "downloadAll") {
                 val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
-                downloadViewModel.turnResultItemsToProcessingDownloads(resultsList!!.map { it!!.id }, downloadNow = !showDownloadCard)
-                if (showDownloadCard){
-                    findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+
+                lifecycleScope.launch {
+                    val resultIds = withContext(Dispatchers.IO) {
+                        resultViewModel.getAllIds()
+                    }
+
+                    downloadViewModel.turnResultItemsToProcessingDownloads(resultIds, downloadNow = !showDownloadCard)
+                    if (showDownloadCard){
+                        findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
+                    }
                 }
+
+
             }
         }
     }
@@ -830,7 +846,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private val contextualActionBar = object : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode!!.menuInflater.inflate(R.menu.main_menu_context, menu)
-            mode.title = "${selectedObjects.size} ${getString(R.string.selected)}"
+            mode.title = "${homeAdapter.getSelectedObjectsCount(totalCount)} ${getString(R.string.selected)}"
             searchBar!!.isEnabled = false
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = false }
             searchBar!!.menu.forEach { it.isEnabled = false }
@@ -854,14 +870,14 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             return when (item!!.itemId) {
                 R.id.select_between -> {
                     lifecycleScope.launch {
-                        val selectedIDs = selectedObjects.sortedBy { it.id }
+                        val selectedIDs = getSelectedIDs().toMutableList()
                         val resultsInMiddle = withContext(Dispatchers.IO){
-                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first().id, selectedIDs.last().id)
+                            resultViewModel.getResultsBetweenTwoItems(selectedIDs.first(), selectedIDs.last())
                         }.toMutableList()
                         if (resultsInMiddle.isNotEmpty()){
-                            selectedObjects.addAll(resultsInMiddle)
-                            homeAdapter?.checkMultipleItems(selectedObjects.map { it.url })
-                            actionMode?.title = "${selectedObjects.count()} ${getString(R.string.selected)}"
+                            selectedIDs.addAll(resultsInMiddle.map { it.id })
+                            homeAdapter.checkMultipleItems(selectedIDs)
+                            actionMode?.title = "${selectedIDs.count()} ${getString(R.string.selected)}"
                         }
                         mode?.menu?.findItem(R.id.select_between)?.isVisible = false
                     }
@@ -872,15 +888,16 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     deleteDialog.setTitle(getString(R.string.you_are_going_to_delete_multiple_items))
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
-                        if (selectedObjects.size == resultsList?.size){
-                            lifecycleScope.launch(Dispatchers.IO){
+                        lifecycleScope.launch {
+                            val selectedObjects = getSelectedIDs()
+                            if (selectedObjects.size == totalCount) {
                                 resultViewModel.deleteAll()
+                            } else {
+                                resultViewModel.deleteSelected(selectedObjects)
                             }
-                        }else{
-                            resultViewModel.deleteSelected(selectedObjects.toList())
+                            homeAdapter.clearCheckedItems()
+                            actionMode?.finish()
                         }
-                        clearCheckedItems()
-                        actionMode?.finish()
                     }
                     deleteDialog.show()
                     true
@@ -888,39 +905,41 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 R.id.download -> {
                     lifecycleScope.launch {
                         val showDownloadCard = sharedPreferences!!.getBoolean("download_card", true)
+                        val selectedObjects = getSelectedIDs()
+
                         if (showDownloadCard && selectedObjects.size == 1) {
-                            showSingleDownloadSheet(
-                                selectedObjects[0],
-                                downloadViewModel.getDownloadType(url = selectedObjects[0].url)
-                            )
+                            var resultItem = withContext(Dispatchers.IO) {
+                                resultViewModel.getByID(selectedObjects.first())
+                            }
+
+                            resultItem?.apply {
+                                showSingleDownloadSheet(
+                                    resultItem,
+                                    downloadViewModel.getDownloadType(url = resultItem.url)
+                                )
+                            }
                         }else{
-                            downloadViewModel.turnResultItemsToProcessingDownloads(selectedObjects.map { it.id }, downloadNow = !showDownloadCard)
+                            downloadViewModel.turnResultItemsToProcessingDownloads(selectedObjects, downloadNow = !showDownloadCard)
                             if (showDownloadCard){
                                 findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2)
                             }
                         }
-                        clearCheckedItems()
+                        homeAdapter.clearCheckedItems()
                         actionMode?.finish()
                     }
                     true
                 }
                 R.id.select_all -> {
-                    homeAdapter?.checkAll(resultsList)
-                    selectedObjects.clear()
-                    resultsList?.forEach { selectedObjects.add(it!!) }
-                    mode?.title = "(${selectedObjects.size}) ${resources.getString(R.string.all_items_selected)}"
+                    homeAdapter.checkAll()
+                    val selectedCount = homeAdapter.getSelectedObjectsCount(totalCount)
+                    mode?.title = "(${selectedCount}) ${resources.getString(R.string.all_items_selected)}"
                     true
                 }
                 R.id.invert_selected -> {
-                    homeAdapter?.invertSelected(resultsList)
-                    val invertedList = arrayListOf<ResultItem>()
-                    resultsList?.forEach {
-                        if (!selectedObjects.contains(it)) invertedList.add(it!!)
-                    }
-                    selectedObjects.clear()
-                    selectedObjects.addAll(invertedList)
-                    actionMode!!.title = "${selectedObjects.size} ${getString(R.string.selected)}"
-                    if (invertedList.isEmpty()) actionMode?.finish()
+                    homeAdapter.invertSelected()
+                    val selectedCount = homeAdapter.getSelectedObjectsCount(totalCount)
+                    actionMode!!.title = "$selectedCount ${getString(R.string.selected)}"
+                    if (selectedCount == 0) actionMode?.finish()
                     true
                 }
                 else -> false
@@ -930,7 +949,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         override fun onDestroyActionMode(mode: ActionMode?) {
             actionMode = null
             (activity as MainActivity).enableBottomNavigation()
-            clearCheckedItems()
+            homeAdapter.clearCheckedItems()
             searchBar!!.isEnabled = true
             playlistNameFilterChipGroup.children.forEach { it.isEnabled = true }
             searchBar!!.menu.forEach { it.isEnabled = true }
@@ -939,16 +958,17 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             downloadAllFab!!.isVisible = showDownloadAllFab
             clipboardFab!!.isVisible = showClipboardFab
         }
-    }
 
-    private fun clearCheckedItems(){
-        homeAdapter?.clearCheckedItems()
-        selectedObjects.forEach {
-            homeAdapter?.notifyItemChanged(resultsList!!.indexOf(it))
+        suspend fun getSelectedIDs() : List<Long>{
+            return if (homeAdapter.inverted || homeAdapter.checkedItems.isEmpty()){
+                withContext(Dispatchers.IO){
+                    resultViewModel.getItemIDsNotPresentIn(homeAdapter.checkedItems.toList())
+                }
+            }else{
+                homeAdapter.checkedItems.toList()
+            }
         }
-        selectedObjects.clear()
     }
-
 
     private fun checkClipboard(): List<String>?{
         return kotlin.runCatching {
@@ -956,11 +976,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             val clip = clipboard.primaryClip!!.getItemAt(0).text
             return clip.split("\r","\n").map { it.trim() }.filter { Patterns.WEB_URL.matcher(it).matches() }
         }.getOrNull()
-    }
-
-    override fun onStop() {
-        actionMode?.finish()
-        super.onStop()
     }
 
 

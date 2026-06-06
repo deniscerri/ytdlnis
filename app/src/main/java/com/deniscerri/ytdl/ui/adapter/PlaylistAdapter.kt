@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.paging.PagingDataAdapter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
@@ -21,18 +22,19 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
+import org.junit.internal.Checks
 
 
-class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<ResultItem?, PlaylistAdapter.ViewHolder>(AsyncDifferConfig.Builder(
-    DIFF_CALLBACK
-).build()) {
-    private val checkedItems: ArrayList<Long>
+class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<ResultItem, PlaylistAdapter.ViewHolder>(DIFF_CALLBACK) {
+    val checkedItems: ArrayList<Long>
+    var inverted: Boolean
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
 
     init {
         checkedItems = ArrayList()
+        this.inverted = false
         this.onItemClickListener = onItemClickListener
         this.activity = activity
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
@@ -53,7 +55,8 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getItem(position)
+        val item = getItem(position) ?: return
+
         val card = holder.cardView
         card.popup()
         val uiHandler = Handler(Looper.getMainLooper())
@@ -70,9 +73,14 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
 
         // CHECKBOX ----------------------------------
         val check = card.findViewById<CheckBox>(R.id.checkBox)
-        check.isChecked = checkedItems.contains(item.id)
+
+        if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
+            check.isChecked = true
+        } else {
+            check.isChecked = false
+        }
         check.setOnClickListener {
-            checkCard(check.isChecked, item.id)
+            checkCard(check, item.id)
         }
 
         card.setOnClickListener {
@@ -80,68 +88,45 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         }
     }
 
-    private fun checkCard(isChecked: Boolean, id: Long) {
-        if (isChecked) {
-            checkedItems.add(id)
+    private fun checkCard(check: CheckBox, id: Long) {
+        if (!check.isChecked) {
+            if (inverted) checkedItems.add(id)
+            else checkedItems.remove(id)
         } else {
-            checkedItems.remove(id)
+            if (inverted) checkedItems.remove(id)
+            else checkedItems.add(id)
         }
-        onItemClickListener.onCardSelect(id, isChecked, checkedItems)
+        onItemClickListener.onCardSelect(id, check.isChecked)
     }
 
     interface OnItemClickListener {
-        fun onCardSelect(itemID: Long, isChecked: Boolean, checkedItems: List<Long>)
+        fun onCardSelect(itemID: Long, isChecked: Boolean)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun clearCheckeditems() {
-        for (i in 0 until itemCount){
-            val item = getItem(i)
-            if (checkedItems.find { it == item?.id } != null){
-                checkedItems.remove(item?.id)
-                notifyItemChanged(i)
-            }
-        }
+        inverted = false
         checkedItems.clear()
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun checkMultipleItems(list: List<Long>){
+        checkedItems.clear()
+        inverted = false
+        checkedItems.addAll(list)
+        notifyDataSetChanged()
     }
 
     fun checkAll(){
         checkedItems.clear()
-        for (i in 0 until itemCount){
-            val item = getItem(i)
-            checkedItems.add(item!!.id)
-            notifyItemChanged(i)
-        }
-    }
-
-    fun invertSelected(items: List<ResultItem?>?){
-        val invertedList = mutableListOf<Long>()
-        items?.forEach {
-            if (!checkedItems.contains(it!!.id)) invertedList.add(it.id)
-        }
-        checkedItems.clear()
-        checkedItems.addAll(invertedList)
+        inverted = true
         notifyDataSetChanged()
     }
 
-    fun checkRange(start: Int, end: Int){
-        checkedItems.clear()
-        if (start == end ){
-            val item = getItem(start)
-            checkedItems.add(item!!.id)
-            notifyItemChanged(start)
-        }else{
-            for (i in start..end){
-                val item = getItem(i)
-                checkedItems.add(item!!.id)
-                notifyItemChanged(i)
-            }
-        }
-
-    }
-
-    fun getCheckedItems() : List<Long>{
-        return checkedItems
+    fun invertSelected(){
+        inverted = !inverted
+        notifyDataSetChanged()
     }
 
     companion object {
