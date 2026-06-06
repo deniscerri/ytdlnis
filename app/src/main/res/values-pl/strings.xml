@@ -521,4 +521,10 @@
     <string name="media_type">Typ mediów</string>
     <string name="use_app_language_for_metadata_summary">Jeśli ta opcja jest włączona, pola metadanych będą zgodne z językiem aplikacji, co wpłynie również na wybór formatu poprzez preferowanie wersji z dubbingiem zamiast oryginalnych</string>
     <string name="auto_update_ytdlp_summary">Zaleca się pozostawienie tej opcji włączonej, ponieważ yt-dlp wymaga częstych aktualizacji do poprawnego działania. Dane są pobierane bezpośrednio z repozytorium yt-dlp w serwisie GitHub.</string>
+    <string name="required">Wymagane</string>
+    <string name="width">Szerokość</string>
+    <string name="height">Wysokość</string>
+    <string name="crop">Przytnij</string>
+    <string name="crop_validation_exceeds_w">X+W jest większe niż %d</string>
+    <string name="crop_validation_exceeds_h">Y+H jest większe niż %d</string>
 </resources>
