@@ -287,7 +287,7 @@
     <string name="write_description_summary">Записати опис у файл</string>
     <string name="extra_command">Додаткова команда</string>
     <string name="embed_metadata">Вбудувати метадані</string>
-    <string name="embed_metadata_summary">Вбудовуйте та аналізуйте метадані в аудіофайл</string>
+    <string name="embed_metadata_summary">Розбір та вбудовування метаданих у файл</string>
     <string name="auto_update_ytdlp">Автооновлення yt-dlp</string>
     <string name="use_sponsorblock">Використати SponsorBlock</string>
     <string name="update_formats_background">Оновити формати у фоновому режимі</string>
