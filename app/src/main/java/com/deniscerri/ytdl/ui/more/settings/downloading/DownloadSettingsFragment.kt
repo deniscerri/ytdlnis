@@ -24,9 +24,10 @@ class DownloadSettingsFragment : BaseSettingsFragment() {
             UiUtil.showGenericConfirmDialog(requireContext(), getString(R.string.reset), getString(R.string.reset_preferences_in_screen)) {
                 resetPreferences(editor, preferenceXMLRes)
                 requireActivity().recreate()
-                val fragmentId = findNavController().currentDestination?.id
-                findNavController().popBackStack(fragmentId!!,true)
-                findNavController().navigate(fragmentId)
+                findNavController().currentDestination?.id?.apply {
+                    findNavController().popBackStack(this,true)
+                    findNavController().navigate(this)
+                }
             }
             true
         }
