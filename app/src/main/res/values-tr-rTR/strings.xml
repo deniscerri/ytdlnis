@@ -290,7 +290,7 @@
     <string name="extra_command">Ekstra komut</string>
     <string name="use_cookies">Çerezleri kullan</string>
     <string name="embed_metadata">Meta veriyi göm</string>
-    <string name="embed_metadata_summary">Meta verileri ayrıştır ve ses dosyasına ekle</string>
+    <string name="embed_metadata_summary">Meta verileri ayrıştır ve dosyaya ekle</string>
     <string name="update_formats_background">Formatları arka planda güncelle</string>
     <string name="auto_update_ytdlp">yt-dlp\'yi otomatik güncelle</string>
     <string name="use_sponsorblock">SponsorBlock kullan</string>
