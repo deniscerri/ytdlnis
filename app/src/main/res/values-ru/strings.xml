@@ -286,7 +286,7 @@
     <string name="write_description_summary">Сохранять в файл описание загружаемого видео</string>
     <string name="extra_command">Дополнительная команда</string>
     <string name="use_cookies">Использовать Cookies</string>
-    <string name="embed_metadata_summary">Извлекать метаданные и встраивать их в аудиофайл</string>
+    <string name="embed_metadata_summary">Разбор и встраивание метаданных в файл</string>
     <string name="embed_metadata">Встраивать метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
     <string name="update_formats_background">Обновление форматов в фоне</string>
