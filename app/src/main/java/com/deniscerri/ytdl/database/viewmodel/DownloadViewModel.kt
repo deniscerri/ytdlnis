@@ -684,7 +684,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 val toInsert = mutableListOf<DownloadItem>()
                 itemIDs.forEachIndexed { index, it ->
                     val item = historyRepository.getItem(it)
-                    val downloadItem = createDownloadItemFromHistory(item)
+                    val downloadItem = createDownloadItemFromHistory(item!!)
                     downloadItem.status = DownloadRepository.Status.Processing.toString()
                     downloadItem.rowNumber = index + 1
 

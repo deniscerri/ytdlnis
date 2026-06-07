@@ -166,7 +166,7 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         return repository.getAll()
     }
 
-    fun getByID(id: Long) : HistoryItem {
+    fun getByID(id: Long) : HistoryItem? {
         return repository.getItem(id)
     }
 
