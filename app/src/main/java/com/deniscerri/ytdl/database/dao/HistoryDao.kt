@@ -78,7 +78,7 @@ interface HistoryDao {
     fun getAllHistoryList() : List<HistoryItem>
 
     @Query("SELECT * FROM history WHERE id=:id LIMIT 1")
-    fun getHistoryItem(id: Long) : HistoryItem
+    fun getHistoryItem(id: Long) : HistoryItem?
 
     @Query("SELECT * FROM history WHERE url=:url")
     fun getAllHistoryByURL(url: String) : List<HistoryItem>

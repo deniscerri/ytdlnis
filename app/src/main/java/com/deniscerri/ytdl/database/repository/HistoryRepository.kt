@@ -20,7 +20,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         DATE, TITLE, AUTHOR, FILESIZE
     }
 
-    fun getItem(id: Long) : HistoryItem {
+    fun getItem(id: Long) : HistoryItem? {
         return historyDao.getHistoryItem(id)
     }
 
