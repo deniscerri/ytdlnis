@@ -116,4 +116,7 @@
     <string name="second">Tasint</string>
     <string name="milliseconds">Timilitasinin</string>
     <string name="custom">Udmawan</string>
+    <string name="configure_download">Swel asader</string>
+    <string name="adjust_templates">Sgaddi timudwimin</string>
+    <string name="adjust_video">Sgaddi tavidyut</string>
 </resources>
