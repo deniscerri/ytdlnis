@@ -286,7 +286,7 @@
     <string name="write_description_summary">Сохранять в файл описание загружаемого видео</string>
     <string name="extra_command">Дополнительная команда</string>
     <string name="use_cookies">Использовать Cookies</string>
-    <string name="embed_metadata_summary">Разбор и встраивание метаданных в файл</string>
+    <string name="embed_metadata_summary">Извлекать и встраивать метаданные в файл</string>
     <string name="embed_metadata">Встраивать метаданные</string>
     <string name="auto_update_ytdlp">Автообновление yt-dlp</string>
     <string name="update_formats_background">Обновление форматов в фоне</string>
@@ -447,7 +447,7 @@
     <string name="prefer_container_over_codec_audio">Предпочитать контейнер кодеку для загрузок аудио</string>
     <string name="prefer_container_over_codec_audio_summary">Если этот параметр включён, предпочитаемый аудиокодек будет игнорироваться, и изменится только контейнер</string>
     <string name="player_client">Клиент плеера</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[YouTube Player Clients и PO Token]]></string>
     <string name="use_app_language_for_metadata">Запрашивать метаданные на языке приложения</string>
     <string name="layout">Макет</string>
     <string name="list">Список</string>
@@ -516,10 +516,10 @@
     <string name="trim_filenames">Обрезать имена файлов</string>
     <string name="install_downloaded_file">Установить загруженный файл</string>
     <string name="save_subdirectory">Сохранить в подкаталог</string>
-    <string name="save_subdirectory_summary">Сохраняйте файлы в папках на основе тегов метаданных</string>
-    <string name="website">Вебсайт</string>
+    <string name="save_subdirectory_summary">Сохранять файлы в папки, основываясь на тегах метаданных</string>
+    <string name="website">Веб-сайт</string>
     <string name="playlist">Плейлист</string>
-    <string name="media_type">Тип носителя</string>
+    <string name="media_type">Тип медиа</string>
     <string name="crop">Обрезать</string>
     <string name="required">Необходимый</string>
     <string name="crop_validation_exceeds_w">X+W превышает %d</string>
