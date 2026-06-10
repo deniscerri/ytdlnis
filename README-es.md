@@ -3,10 +3,29 @@
 	YTDLnis
 </h1>
 
+
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
 	Español
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh_CN.md">简体中文</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
 </div>
 
 <h3 align="center">
@@ -18,19 +37,20 @@ YTDLnis es un descargador de audio/video gratuito y de código abierto que utili
 
 <div align="center">
 
-[![Github Download](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
+[![GitHub Releases](https://custom-icon-badges.herokuapp.com/badge/Download-blue?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 [![F-Droid](https://custom-icon-badges.herokuapp.com/badge/FDroid-violet?style=for-the-badge&logo=download&logoColor=white)](https://f-droid.org/en/packages/com.deniscerri.ytdl)
-[![IzzyOnDroid Repo](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
-[![UpToDown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
+[![IzzyOnDroid repository](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-red?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
+[![Uptodown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-green?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
 ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull)
-[![preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
-[![downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) 
+[![Preview release](https://img.shields.io/github/release/deniscerri/ytdlnis.svg?maxAge=3600&include_prereleases&label=preview)](https://github.com/deniscerri/ytdlnis/releases) 
+[![Downloads](https://img.shields.io/github/downloads/deniscerri/ytdlnis/total?style=flat-square)](https://github.com/deniscerri/ytdlnis/releases) 
 [![Translation status](https://hosted.weblate.org/widgets/ytdlnis/-/svg-badge.svg)](https://hosted.weblate.org/engage/ytdlnis/?utm_source=widget) 
 [![community](https://img.shields.io/badge/Discord-YTDLnis-blueviolet?style=flat-square&logo=discord)](https://discord.gg/WW3KYWxAPm) 
 [![community](https://img.shields.io/badge/Telegram-YTDLnis-blue?style=flat-square&logo=telegram)](https://t.me/ytdlnis)
-[![website](https://img.shields.io/badge/Website-orange?style=flat-square&logo=youtube)](https://ytdlnis.org)
 [![community](https://img.shields.io/badge/Telegram-Updates-red?style=flat-square&logo=telegram)](https://t.me/ytdlnis_updates)
+[![website](https://img.shields.io/badge/Website-orange?style=flat-square&logo=youtube)](https://ytdlnis.org)
+![GitHub Sponsor](https://img.shields.io/github/sponsors/deniscerri?label=Sponsor&logo=GitHub)
 
 
 ### Los enlaces anteriores son las únicas fuentes confiables de YTDLnis. Todo lo demás no está relacionado.
@@ -100,9 +120,9 @@ YTDLnis es un descargador de audio/video gratuito y de código abierto que utili
 
 Únanse a nuestro [Canal de Telegram](https://t.me/ytdlnis) o [Discord](https://discord.gg/WW3KYWxAPm) para debates, anuncios y lanzamientos.
 
-## 🔑 Conéctate con ReVanced
+## 🔑 Conéctate con aplicaciones de terceros usando el nombre del paquete
 
-El nombre del paquete de la aplicación es "com.deniscerri.ytdl"
+El nombre del paquete de la aplicación es "com.deniscerri.ytdl".
 
 ## 📝 Ayuda a traducir en Weblate
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
@@ -114,7 +134,19 @@ El nombre del paquete de la aplicación es "com.deniscerri.ytdl"
 <img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
-## ✔️🤖 Conéctate con Tasker / Macrodroid etc
+## 🔍 Verify application signature
+
+The app should contain the signature below. The github workflow action uses it, and the releases are based on it to make it a reproducible build.
+If the signature is different, your third party distributor has modified the application. Please use the app with the original signature.
+```
+Signer #1 certificate DN: CN=Denis Cerri, OU=Personal, O=Personal, L=Albania, ST=Albania, C=AL
+Signer #1 certificate SHA-256 digest: 263645cb5272eb290759fe1f59149ae24df6ce171e9f6666eead981d3fc64c95
+Signer #1 certificate SHA-1 digest: 2fec9c2fcef68d29a60857e185c795fec5f56fb6
+Signer #1 certificate MD5 digest: 429d0c6315d2f99650f66cc44cf5a794
+```
+
+
+## 🤖 Conéctate con Tasker / Macrodroid etc
 
 Puede usar intents en aplicaciones como tasker o macrodroid para enviar comandos a la aplicación para ejecutar una descarga sin interacción del usuario.
 Variables aceptadas:
@@ -143,6 +175,14 @@ Si quieres contribuir.  Lea la sección [Contribuyendo](CONTRIBUTING.MD).
 ⚠️  Advertencia <br>
 
 A excepción del código fuente bajo la licencia GPLv3, todas las demás partes tienen prohibido utilizar el nombre 'YTDLnis' como aplicación de descarga, y lo mismo ocurre con sus derivados.  Los derivados incluyen, entre otros, bifurcaciones y compilaciones no oficiales.
+
+## 😁 Donate
+
+
+[<img src="https://raw.githubusercontent.com/WSTxda/WSTxda/main/images/BMC.svg"
+alt='Donate with BMC'
+height="80">](https://www.buymeacoffee.com/deniscerri)
+
 
 ## 🙏 Gracias
 

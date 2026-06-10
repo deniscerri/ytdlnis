@@ -3,10 +3,29 @@
 	YTDLnis
 </h1>
 
+
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
 	简体中文
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
 </div>
 
 <h3 align="center">
@@ -117,6 +136,18 @@
 ## 🔑 使用包名与第三方应用连接
 
 应用的包名是 "com.deniscerri.ytdl"。
+
+
+## 🔍 验证应用签名
+
+应用应包含以下签名。GitHub 工作流操作使用该签名，并且发布版本基于此签名以确保可重现构建。
+如果签名不同，说明您的第三方发行商已修改了该应用程序。请使用具有原始签名的应用。
+```
+Signer #1 certificate DN: CN=Denis Cerri, OU=Personal, O=Personal, L=Albania, ST=Albania, C=AL
+Signer #1 certificate SHA-256 digest: 263645cb5272eb290759fe1f59149ae24df6ce171e9f6666eead981d3fc64c95
+Signer #1 certificate SHA-1 digest: 2fec9c2fcef68d29a60857e185c795fec5f56fb6
+Signer #1 certificate MD5 digest: 429d0c6315d2f99650f66cc44cf5a794
+```
 
 
 ## 🤖 使用 Intent 与第三方应用连接

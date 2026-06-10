@@ -17,8 +17,8 @@ buildscript {
         oldytdlAndroidVer = "0.14.0"
         retrofitVer = "2.9.0"
         kodeinVer = "7.16.0"
-        agp_version = '8.1.0'
-        agp_version1 = '7.4.2'
+        agp_version = '8.14.0'
+        agp_version1 = '8.14.0'
     }
     repositories {
         mavenCentral()
@@ -29,12 +29,12 @@ buildscript {
 }
 
 plugins {
-    id 'com.android.application' version '8.13.2' apply false
-    id 'com.android.library' version '8.13.2' apply false
+    id 'com.android.application' version '8.14.0' apply false
+    id 'com.android.library' version '8.14.0' apply false
     id 'org.jetbrains.kotlin.android' version '2.3.0' apply false
     id "org.jetbrains.kotlin.plugin.serialization" version "2.3.0" apply false
     id "org.jetbrains.kotlin.plugin.parcelize" version "2.3.0" apply false
-    id 'com.android.test' version '8.13.2' apply false
+    id 'com.android.test' version '8.14.0' apply false
     id 'com.google.devtools.ksp' version '2.3.4' apply false
 }
 
