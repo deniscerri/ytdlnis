@@ -20,7 +20,7 @@
 
 [![إصدارات GitHub](https://custom-icon-badges.herokuapp.com/badge/تحميل-أزرق?style=for-the-badge&logo=download&logoColor=white)](https://github.com/deniscerri/ytdlnis/releases/latest)
 [![F-Droid](https://custom-icon-badges.herokuapp.com/badge/FDroid-بنفسجي?style=for-the-badge&logo=download&logoColor=white)](https://f-droid.org/en/packages/com.deniscerri.ytdl)
-[![مستودع IzzyOnDroid](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-أحمر?style=for-the-badge&logo=download&logoColor=white)](https://android.izzysoft.de/repo/apk/com.deniscerri.ytdl)
+[![مستودع IzzyOnDroid](https://custom-icon-badges.herokuapp.com/badge/IzzyOnDroid%20Repo-أحمر?style=for-the-badge&logo=download&logoColor=white)](https://apt.izzysoft.de/packages/com.deniscerri.ytdl)
 [![Uptodown](https://custom-icon-badges.herokuapp.com/badge/UpToDown-أخضر?style=for-the-badge&logo=download&logoColor=white)](https://ytdlnis.en.uptodown.com/android/download)
 
 ![CI](https://github.com/deniscerri/ytdlnis/actions/workflows/android.yml/badge.svg?branch=main&event=pull)
