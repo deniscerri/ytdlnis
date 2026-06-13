@@ -287,7 +287,7 @@
     <string name="extra_command">Əlavə əmr</string>
     <string name="use_cookies">Məlumat bazası istifadə et</string>
     <string name="embed_metadata">Şərhi məlumat yerləşdir</string>
-    <string name="embed_metadata_summary">Səs faylına şərhi məlumatı təhlil et və yerləşdir</string>
+    <string name="embed_metadata_summary">Fayla şərhi məlumatı təhlil et və yerləşdir</string>
     <string name="update_formats_background">Arxa planda formatları yenilə</string>
     <string name="auto_update_ytdlp">Yt-dlp-ni avtomatik yenilə</string>
     <string name="use_sponsorblock">SponsorBlock istifadə et</string>

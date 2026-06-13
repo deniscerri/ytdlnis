@@ -164,7 +164,7 @@
     <string name="restart">Rinis</string>
     <string name="file_size">Madhësia e skedarit</string>
     <string name="clear_temporary_files">Pastro skedarët e perkohshëm</string>
-    <string name="clear_temporary_files_summary">Fshi skedarët në memorien kashe nga shkarkimet me probleme ose të anuluara</string>
+    <string name="clear_temporary_files_summary">Fshi skedarët në memorien kashe, infojson dhe konfigurime të tjera</string>
     <string name="cache_cleared">Skedarët e perkohshëm u fshinë</string>
     <string name="download_rescheduled_to">Shkarkimi u riskedulua në:</string>
     <string name="downloads_running_try_later">Punëtori i shkarkimit është në ekzekutim. Provo sërisht më vonë</string>
@@ -287,7 +287,7 @@
     <string name="extra_command">Komanda Shtesë</string>
     <string name="use_cookies">Përdor Biskotat</string>
     <string name="embed_metadata">Vendos Metadatat</string>
-    <string name="embed_metadata_summary">Vendosni të dhënat meta në skedarin e audios</string>
+    <string name="embed_metadata_summary">Vendosni të dhënat meta në skedar</string>
     <string name="update_formats_background">Përditëso formatet në Prapaskenë</string>
     <string name="auto_update_ytdlp">Përditëso yt-dlp Automatikisht</string>
     <string name="use_sponsorblock">Përdor SponsorBlock</string>
@@ -506,4 +506,29 @@
     <string name="app_icon">Ikona e Aplikacionit</string>
     <string name="show_quick_download_share_menu">Shfaq Shkarkimin e Shpejtë te menuja e shpërndarjes</string>
     <string name="quick_download_title">Mos tërhiq të dhëna</string>
+    <string name="crop">Prej</string>
+    <string name="required">E detyrueshme</string>
+    <string name="crop_validation_exceeds_w">X+W e kalon %d</string>
+    <string name="crop_validation_exceeds_h">Y+H e kalon %d</string>
+    <string name="sponsorblock_hook">Përshëndetjet</string>
+    <string name="packages">Paketat</string>
+    <string name="not_installed">Nuk është instaluar</string>
+    <string name="bundled">E paketuar</string>
+    <string name="use_app_language_for_metadata_summary">Nëse aktivizohet, fushat metadata do të ndjekin gjuhën e aplikacionit dhe mund të ndikojnë në zgjedhjen e formatit duke preferuar versionet e dubluara në vend të origjinalit</string>
+    <string name="installed">Instaluar</string>
+    <string name="auto_update_ytdlp_summary">Rekomandohet të jetë e aktivizuar pasi yt-dlp duhet të jetë i përditësuar shpesh që të qëndrojë funksional! Të dhënat shkarkohen nga repoja Github e yt-dlp.</string>
+    <string name="save_subdirectory">Ruaj në nën-direktori</string>
+    <string name="save_subdirectory_summary">Ruaj skedarët në dosje të bazuara në taget e metadatave</string>
+    <string name="trim_filenames">Shkurto emrin e skedarit</string>
+    <string name="install_downloaded_file">Instalo skedarin e shkarkuar</string>
+    <string name="website">Uebsajti</string>
+    <string name="playlist">Playlist</string>
+    <string name="media_type">Lloji i medias</string>
+    <string name="free_ratio">Ratio e lirë</string>
+    <string name="aspect_ratio">Raporti i pamjes</string>
+    <string name="dimensions">Dimensionet</string>
+    <string name="x_offset">Ofseti X</string>
+    <string name="y_offset">Ofseti Y</string>
+    <string name="width">Gjerësia</string>
+    <string name="height">Gjatësia</string>
 </resources>

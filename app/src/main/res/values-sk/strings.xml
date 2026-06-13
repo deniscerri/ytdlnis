@@ -267,7 +267,7 @@
     <string name="crop_thumb">Orezať miniatúru</string>
     <string name="errored_download_notification_channel_description">Upozornenie na chybné sťahovanie</string>
     <string name="current">Aktuálny príkaz</string>
-    <string name="embed_metadata_summary">Analyzuje a vloží metadáta do zvukového súboru</string>
+    <string name="embed_metadata_summary">Analyzuje a vloží metadáta do súboru</string>
     <string name="export_file">Exportovať súbor</string>
     <string name="preferred_audio_codec">Uprednostňovaný kodek zvuku</string>
     <string name="use_cookies">Použiť súbory cookie</string>

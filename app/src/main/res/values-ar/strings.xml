@@ -287,7 +287,7 @@
     <string name="extra_command">أوامر إضافية</string>
     <string name="use_cookies">استخدام ملفات تعريف الارتباط</string>
     <string name="embed_metadata">تضمين البيانات الوصفية</string>
-    <string name="embed_metadata_summary">تحليل البيانات الوصفية وتضمينها في الملف الصوتي</string>
+    <string name="embed_metadata_summary">تحليل البيانات الوصفية وتضمينها في الملف</string>
     <string name="update_formats_background">تحديث التنسيقات في الخلفية</string>
     <string name="use_sponsorblock">استخدام حاجب شرائح الإعلانات</string>
     <string name="auto_update_ytdlp">تحديث تلقائي لـ yt-dlp</string>

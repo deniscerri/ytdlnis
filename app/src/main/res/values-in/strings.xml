@@ -286,7 +286,7 @@
     <string name="write_description_summary">Tulis deskripsi berkas</string>
     <string name="extra_command">Perintah ekstra</string>
     <string name="use_cookies">Gunakan kuki</string>
-    <string name="embed_metadata_summary">Menguraikan dan menanamkan metadata ke berkas audio</string>
+    <string name="embed_metadata_summary">Mengurai dan menyematkan metadata ke dalam berkas</string>
     <string name="embed_metadata">Sematkan metadata</string>
     <string name="update_formats_background">Perbarui format di latar belakang</string>
     <string name="use_sponsorblock">Gunakan SponsorBlock</string>

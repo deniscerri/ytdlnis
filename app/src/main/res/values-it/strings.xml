@@ -289,7 +289,7 @@
     <string name="ignore">Ignora</string>
     <string name="write_description">Salva descrizione</string>
     <string name="extra_command">Comando aggiuntivo</string>
-    <string name="embed_metadata_summary">Analizza e incorpora metadati nel file audio</string>
+    <string name="embed_metadata_summary">Analizza e incorpora metadati nel file</string>
     <string name="preferred_download_type_summary">Scheda predefinita in cui si aprirà la scheda di download</string>
     <string name="buffer_size">Dimensione buffer</string>
     <string name="buffer_size_summary">Dimensioni del buffer download, ad es. 1024 o 16K (il valore predefinito è 1024)</string>
