@@ -1,5 +1,112 @@
 # YTDLnis Changelog
 
+> # 1.8.9 (2026-06)
+
+# What's Changed
+
+## Video cropping
+
+Now in the video section of the download card u can crop a video however you like and the app applies a ffmpeg postprocessor with yt-dlp. I have to note that in vp9 and av1 formats cropping might need higher versions of ffmpeg, so i recommend upgrading to ffmpeg 7.1.1 from the packages settings.
+
+## Subfolder download preference
+
+I have to tell people that the app has a filename template system where u can have endless possibilities on how to name your files, but for some people they just need basic structure so i added this. U can select playlist name, website and download type
+
+## Other stuff
+
+- Fix webview not working for titkok and facebook
+- Make webview go back when swiping back on the device
+- Enabled by default download over metered networks
+- Show progress in the updating app dialog
+- Fix app inverting the order of items when restoring backup
+- Added placeholder url in po token generation
+- Validate url properly for the cookies screen
+- fix app using search query for playlist url when use original url as playlist url toggle is enabled
+- disable some website search options (nico video, google video) as they are broken
+- fix parse metadata playlist name
+- Fix The cache folder preference can't be interacted immediately (remains grayed out) after you grant all files perms
+- remove reduntant -c:v libx264 -c:a aac -profile:v baseline for compat mode
+- Use codec in -S instead of vcodec and acodec
+- enable embed metadata in video downloads too
+- remove yt-dlp from /raw to make fdroid buildable
+- fix format card ui to have wrapping text instead of being cut off
+- other stuff i forgor
+
+> # 1.8.8 (2026-03)
+
+# What's Changed
+
+## Package Integration
+
+This was long overdue, and the next progression from this app. Instead of releasing new versions of the app when packages like python, ffmpeg etc need upgrades, now the app can manage both bundled and downloadable packages.
+Packages will be published in a separate repository.
+
+You can also import zip if you have it locally.
+Currently what is published is nodejs 25.3.0 and previous versions of ffmpeg and python.
+I downgraded ffmpeg to 7.0.1 for this release to reduce filesize but also to resolve issues with users who cant run higher version ffmpeg.
+ffmpeg 7.1.1 is available to download of course.
+
+Since beyond skd28 downloadable executables can't execute, the only way to make them executable is if they are part of jniLibs inside the app OR inside another app. So now downloadable packages are shipped as apks u can install. The app will immediately recognize them.
+
+The package apks are simply empty apps with jniLibs folder in them containing libxxx.so and libxxx.zip.so. libxxx.zip.so are extracted within the ytdlnis internal directory, and libxxx.so is accessible throughout the android system.
+
+## YoutubeDL-Android rewrite
+
+Since the package integration, the library had to undergo many changes so i decided to rewrite everything and integrate it within the app. Also fixed some other issues. In future releases i will have more control how commands are executed.
+
+## Android 16 Live Notifications
+
+Now the app supports the new live notification feature for download jobs. If you have concurrent downloads, it will make separate live notifications for each.
+
+## Everything else
+- Remove error code 100 from success codes, it was causing errored downloads to not go to errored screen
+- Made app not hardcode @latest when using custom yt-dlp update repository
+- fix beta1 crashing when sharing link to the app, sorry lol
+- fix app putting premerged videos before video only formats when fetching from newpipe
+- made app pre-sort audio formats from newpipe by highest bitrate, for default users
+- fix app not applying embed thumbnail in compatible mode for some reason
+- add AI policy to contributing.md
+- add feature to reapply old codec and video container preferences when disabling compatible mode
+- remove redundant +br +fps +res from worst audio in quick download
+- fix app showing repeated aria2c logs in logs screen
+- made app give more importance to preferred language than prefer drc audio on quick download
+- made use_app_language_for_metadata false by default
+- fix ytdlp not auto downloading when app starts and erroring out, made it wait for runtime to start
+- fix exporting the temp files generates a folder named "0" and an extra "storage/emulated/0/…" directory inside, LOL
+- fix app not showing generic format ids in format selection screen, without restarting app
+- made cache export only export temporary download files and not other config files like infojsons or other ytdlp temp files
+- add --replace-in-metadata "playlist,playlist_title" "^.*$" "NAME" if use item url instead of playlist url is applied
+- add %(rownumber)s as metadata instead of modifying autonumber start. use that in filename template to do the same thing as autonumber when downloading multiple items at once
+- add 968kbps for audio bitrate setting
+- merge thumbnail chips in audio download in a single dialog to save space
+- Add remove audio as preference in the settings
+- Add also download as audio as preference in the settings
+- fix app not adding trailing spaces when adding command templates in the download card
+- remove hardcoded --no-cache-dir from youtubedl-android
+- add vorbis to audio containers
+- some metadata command rework for title and author
+- for errored downloads, long press redownloads and press sends to download card
+- delete info json files after updating yt-dlp
+- tried fixing po token no auth generation, lmk
+- add badge to the filters in download history fragment
+- fix app sometimes showing "watch" in result titles
+- apply prefer drc audio format in quick downloads for video tab
+- move use header from cookies screen to advanced since UA overriding breaks the tabs (playlist, releases, etc.) extraction, too
+- add write info json when fetching formats aswell
+- fix preference compatible video not applying in download card
+- enforce avc and acc codecs when enabling compatible video
+- made double tap of the downloads screen to open the search bar
+- update to newpipe 0.25.2
+- use --ppa VideoConvertor+ffmpeg_o:-c:v libx264 -c:a aac -profile:v baseline for compatibility mode toggle, should now be truly compatible lol
+- apply prefer drc preference even in quick download
+- truncate match filter logs to prevent crashes
+- add --cache-dir always on downloads
+- Fix app applying replace in metadata title for playlist items when quick downloaded and data was fetched after a while
+- dont apply write info json on yt playlist links
+- add back btn to webview in the menu
+- add green and blue icons
+- remove app autofocusing on the command textview in the command tab
+
 > # 1.8.7.2 (2026-01)
 
 # What's Changed
