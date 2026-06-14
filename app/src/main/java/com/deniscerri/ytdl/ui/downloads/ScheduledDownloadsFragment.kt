@@ -159,7 +159,6 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
 
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
-            actionMode?.finish()
             runCatching {
                 withContext(Dispatchers.IO){
                     downloadViewModel.resetScheduleTimeForItemsAndStartDownload(listOf(itemID))
@@ -167,6 +166,7 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
             }.onFailure {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
             }
+            actionMode?.finish()
         }
     }
 

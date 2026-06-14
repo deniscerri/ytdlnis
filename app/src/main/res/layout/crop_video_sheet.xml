@@ -97,14 +97,34 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/clearZoom"
+                    style="@style/Widget.Material3.Button.IconButton"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@string/reset"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/baseline_delete_24"
+                    app:iconSize="30dp"
+                    app:iconTint="?android:colorAccent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/rewind"
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="40dp"
                     app:icon="@drawable/exomedia_ic_rewind_white"
                     app:iconSize="40dp"
+                    android:layout_marginHorizontal="15dp"
                     app:iconTint="?android:colorAccent" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/playpause"
@@ -117,15 +137,23 @@
                     app:iconSize="40dp"
                     app:iconTint="?android:colorAccent" />
 
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/forward"
                     style="@style/Widget.Material3.Button.IconButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     app:icon="@drawable/exomedia_ic_fast_forward_white"
                     app:iconSize="40dp"
+                    android:layout_marginHorizontal="15dp"
                     app:iconTint="?android:colorAccent" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mute"

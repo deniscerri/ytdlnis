@@ -153,7 +153,6 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
 
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
-            actionMode?.finish()
             val item = withContext(Dispatchers.IO){
                 downloadViewModel.getItemByID(itemID)
             }
@@ -166,6 +165,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                     bundle
                 )
             }
+            actionMode?.finish()
         }
     }
 

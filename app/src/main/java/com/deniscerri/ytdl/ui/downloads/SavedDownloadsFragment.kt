@@ -162,7 +162,6 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
 
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
-            actionMode?.finish()
 
             val item = withContext(Dispatchers.IO){
                 downloadViewModel.getItemByID(itemID)
@@ -175,6 +174,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
             }else{
                 Toast.makeText(requireContext(), getString(R.string.error_restarting_download), Toast.LENGTH_LONG).show()
             }
+            actionMode?.finish()
         }
     }
 

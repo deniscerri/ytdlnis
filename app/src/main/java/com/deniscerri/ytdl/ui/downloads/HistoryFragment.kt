@@ -590,11 +590,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     deleteDialog.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
                     deleteDialog.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                         lifecycleScope.launch {
-                            actionMode?.finish()
-
                             val selectedObjects = getSelectedIDs()
                             historyAdapter.clearCheckedItems()
                             historyViewModel.deleteAllWithIDs(selectedObjects, deleteFile[0])
+                            actionMode?.finish()
                         }
                     }
                     deleteDialog.show()
@@ -602,22 +601,20 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                 }
                 R.id.share -> {
                     lifecycleScope.launch {
-                        actionMode?.finish()
-
                         val selectedObjects = getSelectedIDs()
                         val paths = withContext(Dispatchers.IO){
                             historyViewModel.getDownloadPathsFromIDs(selectedObjects)
                         }
                         FileUtil.shareFileIntent(requireContext(), paths.flatten())
                         historyAdapter.clearCheckedItems()
+                        actionMode?.finish()
+
                     }
                     true
                 }
                 R.id.redownload -> {
                     lifecycleScope.launch {
                         val selectedObjects = getSelectedIDs()
-                        actionMode?.finish()
-
                         historyAdapter.clearCheckedItems()
                         if (selectedObjects.size == 1) {
                             val tmp = withContext(Dispatchers.IO) {
@@ -633,6 +630,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                     Pair("ignore_duplicates", true)
                                 ))
                             }
+                            actionMode?.finish()
                         }else {
                             val showDownloadCard = sharedPreferences.getBoolean("download_card", true)
                             downloadViewModel.turnHistoryItemsToProcessingDownloads(selectedObjects, downloadNow = !showDownloadCard)
@@ -642,6 +640,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                 bundle.putBoolean("ignore_duplicates", true)
                                 findNavController().navigate(R.id.downloadMultipleBottomSheetDialog2, bundle)
                             }
+                            actionMode?.finish()
                         }
                     }
                     true

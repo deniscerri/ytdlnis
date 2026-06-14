@@ -153,13 +153,13 @@ class CancelledDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClic
     override fun onActionButtonClick(itemID: Long) {
         lifecycleScope.launch {
             runCatching {
-                actionMode?.finish()
                 val item = withContext(Dispatchers.IO){
                     downloadViewModel.getItemByID(itemID)
                 }
                 withContext(Dispatchers.IO){
                     downloadViewModel.queueDownloads(listOf(item), true)
                 }
+                actionMode?.finish()
             }.onFailure {
                 Toast.makeText(requireContext(), getString(R.string.error_restarting_download), Toast.LENGTH_LONG).show()
             }

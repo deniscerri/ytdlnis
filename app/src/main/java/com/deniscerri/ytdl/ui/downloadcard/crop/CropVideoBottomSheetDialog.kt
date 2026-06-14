@@ -74,6 +74,7 @@ class CropVideoBottomSheetDialog(
     private lateinit var forwardBtn: MaterialButton
     private lateinit var muteBtn: MaterialButton
     private lateinit var resetBtn: Button
+    private lateinit var clearZoom: Button
     private lateinit var okBtn: Button
 
     private lateinit var xEditText: EditText
@@ -157,6 +158,7 @@ class CropVideoBottomSheetDialog(
         forwardBtn = view.findViewById(R.id.forward)
         muteBtn = view.findViewById(R.id.mute)
         resetBtn = view.findViewById(R.id.resetButton)
+        clearZoom = view.findViewById(R.id.clearZoom)
         okBtn = view.findViewById(R.id.okButton)
 
         xEditText = view.findViewById(R.id.crop_x_edittext)
@@ -218,9 +220,23 @@ class CropVideoBottomSheetDialog(
         }
         resetBtn.isEnabled = item.videoPreferences.cropValues.isNotBlank()
 
+        val formatReference = item.allFormats.sortedByDescending { it.height }.firstOrNull {
+            (it.height ?: 0) > 0 && (it.width ?: 0) > 0
+        }
+        videoWidth = formatReference?.width ?: 0
+        videoHeight = formatReference?.height ?: 0
+
+        clearZoom.setOnClickListener {
+            listener?.onClearCrop()
+            ratioChipGroup.findViewById<Chip>(R.id.chip_free).performClick()
+            refreshTextInputs(0, 0, videoWidth, videoHeight)
+            applyVideoCoordsToOverlay(0, 0, videoWidth, videoHeight)
+        }
+
         okBtn.setOnClickListener {
             readTextFieldsToVideoCoords()?.let { (x, y, w, h) ->
                 listener?.onChangeCrop(x, y, w, h, videoWidth, videoHeight)
+                resetBtn.isEnabled = true
             }
             player.stop()
             dismiss()
@@ -245,11 +261,6 @@ class CropVideoBottomSheetDialog(
             }
         })
 
-        val formatReference = item.allFormats.sortedByDescending { it.height }.firstOrNull {
-            (it.height ?: 0) > 0 && (it.width ?: 0) > 0
-        }
-        videoWidth = formatReference?.width ?: 0
-        videoHeight = formatReference?.height ?: 0
         showOverlayAndLoad()
 
         videoView.setOnClickListener {

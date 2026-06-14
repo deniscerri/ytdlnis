@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.util
 
+import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
 import android.media.MediaScannerConnection
@@ -55,30 +56,29 @@ object FileUtil {
         val file = File(path)
         val uri = MediaStore.Files.getContentUri("external")
 
-        val selection: String
-        val selectionArgs: Array<String>
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val parentPath = file.parentFile?.absolutePath.orEmpty()
-            val primaryRoot = Environment.getExternalStorageDirectory().absolutePath
-            if (parentPath.startsWith(primaryRoot)) {
-                val trimmed = parentPath
-                    .removePrefix(primaryRoot)
-                    .removePrefix(File.separator)
-                val relativePath = if (trimmed.isEmpty()) "" else "$trimmed${File.separator}"
-                selection = MediaStore.MediaColumns.RELATIVE_PATH + " =? AND " +
-                            MediaStore.MediaColumns.DISPLAY_NAME + " =?"
-                selectionArgs = arrayOf(relativePath, file.name)
-            } else {
-                // Non-primary storage: fall back to DATA query
-                selection = MediaStore.MediaColumns.DATA + " =?"
-                selectionArgs = arrayOf(file.absolutePath)
+            // Query by DATA first to find the exact MediaStore row ID, then delete by ID
+            val projection = arrayOf(MediaStore.MediaColumns._ID)
+            val selection = MediaStore.MediaColumns.DATA + " =?"
+            val selectionArgs = arrayOf(file.absolutePath)
+
+            val rowUri = contentResolver.query(uri, projection, selection, selectionArgs, null)
+                ?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                        ContentUris.withAppendedId(uri, id)
+                    } else null
+                }
+
+            if (rowUri != null) {
+                contentResolver.delete(rowUri, null, null)
             }
         } else {
-            selection = MediaStore.MediaColumns.DATA + " =?"
-            selectionArgs = arrayOf(file.absolutePath)
+            // Pre-Q: DATA column is reliable
+            val selection = MediaStore.MediaColumns.DATA + " =?"
+            val selectionArgs = arrayOf(file.absolutePath)
+            contentResolver.delete(uri, selection, selectionArgs)
         }
-        contentResolver.delete(uri, selection, selectionArgs)
     }
 
     fun exists(path: String) : Boolean {

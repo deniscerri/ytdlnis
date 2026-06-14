@@ -149,7 +149,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
             true
         }
         card.setOnClickListener {
-            if (checkedItems.isNotEmpty()) {
+            if (card.isChecked || checkedItems.isNotEmpty()) {
                 checkCard(card, video.id, video)
             }else{
                 onItemClickListener.onCardDetailsClick(video)
