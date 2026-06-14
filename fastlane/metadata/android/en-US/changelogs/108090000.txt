@@ -1,0 +1,6 @@
+# What's Changed
+
+- Video Cropping, crop in predefined sizes or freeform
+- download by subfolder playlist, website, download type
+- fix webview for tiktok, facebook
+- other yt-dlp fixes

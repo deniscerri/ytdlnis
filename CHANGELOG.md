@@ -1,5 +1,18 @@
 # YTDLnis Changelog
 
+> # 1.8.9.1 (2026-06)
+
+# What's Changed
+
+## Note
+If app is crashing when searching for something on home screen you are facing a newpipe extractor bug. Change the data fetching extractor to yt-dlp in general settings to resolve it
+
+## Other urgent fixes
+- Fix bug in history deleting whole history list 💀
+- Update newpipe extractor to snapshot
+- Add reset button in crop bottom sheet
+- Fix bug in history when deleting selected item, deletes whole folder in sd card
+
 > # 1.8.9 (2026-06)
 
 # What's Changed

@@ -1,0 +1,6 @@
+# What's Changed
+
+- Fix bug in history deleting whole history list
+- Update newpipe extractor to snapshot
+- Add reset button in crop bottom sheet
+- Fix bug in history when deleting selected item, deletes whole folder in sd card

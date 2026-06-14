@@ -1,0 +1,8 @@
+# What's Changed
+
+## Package / Plugin integration
+Now you can upgrade packages like python, ffmpeg, nodejs, deno etc within the app without need of updating the app itself
+
+- youtubedl-android rewrite within the app
+- android 16 live notifications
+- other fixes
