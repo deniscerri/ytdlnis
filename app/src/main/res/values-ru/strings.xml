@@ -87,7 +87,7 @@
     <string name="video_quality">Качество видео</string>
     <string name="author">Автор</string>
     <string name="download">Скачать</string>
-    <string name="embed_subtitles">Встроить субтитры</string>
+    <string name="embed_subtitles">Встраивать субтитры</string>
     <string name="show_download_card">Показать карточку загрузки</string>
     <string name="download_card_summary">Модифицыруйте настройки этого пункта перед загрузкой. Отключение этой опции запускает загрузку немедленно</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
@@ -218,7 +218,7 @@
     <string name="quality">Качество</string>
     <string name="system">Системная</string>
     <string name="updating_download_data">Обновление данных загружаемого контента</string>
-    <string name="backup">Резервировать</string>
+    <string name="backup">Резервирование</string>
     <string name="pure_theme_summary">Чисто чёрная / белая тема</string>
     <string name="accents">Акценты</string>
     <string name="network_error">Ошибка сети</string>
@@ -286,7 +286,7 @@
     <string name="write_description_summary">Записать описание в файл</string>
     <string name="extra_command">Дополнительная команда</string>
     <string name="use_cookies">Использовать Cookies</string>
-    <string name="embed_metadata_summary">Разбор и встраивание метаданных в файл</string>
+    <string name="embed_metadata_summary">Разбирать и встраивать метаданные в файл</string>
     <string name="embed_metadata">Встраивать метаданные</string>
     <string name="auto_update_ytdlp">Авто обновление yt-dlp</string>
     <string name="update_formats_background">Обновление форматов в фоне</string>
@@ -335,7 +335,7 @@
     <string name="dismiss">Отклонить</string>
     <string name="delete_all_sources">Удалить все источники</string>
     <string name="force_ipv4_desc">Совершайте все соединения при помощи IPv4</string>
-    <string name="force_ipv4">Принудительно использовать IPv4</string>
+    <string name="force_ipv4">Принудительное IPv4</string>
     <string name="copy_urls">Копировать URL-адреса</string>
     <string name="every">Каждый</string>
     <string name="set_time">Установить время</string>
@@ -459,9 +459,9 @@
     <string name="reset_processed_links_desc">Повторно загрузить все элементы снова</string>
     <string name="use_code_highlighter">Использовать цветовой индикатор кода</string>
     <string name="reset_preferences_in_screen">Сбросить все настройки на этом экране</string>
-    <string name="automatic_backup">Авто резервирование</string>
+    <string name="automatic_backup">Авторезервирование</string>
     <string name="backup_path">Путь резервирования</string>
-    <string name="automatic_backup_summary">Автосоздания резервирования всего, когда найдена новая версия приложения</string>
+    <string name="automatic_backup_summary">Авторезервирование всего, когда будет найдена новая версия приложения</string>
     <string name="write_subs_when_embed_subs">Запись субтитров при встраивании</string>
     <string name="write_subs_when_embed_subs_summary">Это применит функции Сохранить субтитры и Сохранить автосубтитры для загрузки файлов субтитров и удалить их после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
