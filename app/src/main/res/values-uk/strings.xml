@@ -53,7 +53,7 @@
     <string name="concurrent_fragments_summary">Кількість фрагментів DASH/HLS власного відео для одночасного завантаження</string>
     <string name="history_is_empty">Історія порожня</string>
     <string name="processing">Обробка</string>
-    <string name="embed_subs_summary">Додати субтитри до відео</string>
+    <string name="embed_subs_summary">Додає субтитри у відео</string>
     <string name="embed_thumb">Мініатюри обкладинок</string>
     <string name="aria2_summary">Використовувати aria2c як завантажувач замість стандартного</string>
     <string name="embed_thumb_summary">Використовуйте мініатюру як обкладинку</string>
@@ -88,7 +88,7 @@
     <string name="incognito_summary">Завантажити без додавання до історії</string>
     <string name="remove_downloading">Скасувати завантаження</string>
     <string name="configure_download">Налаштувати завантаження</string>
-    <string name="embed_subtitles">Вставити субтитри</string>
+    <string name="embed_subtitles">Вбудовувати субтитри</string>
     <string name="add_chapter">Додати розділи</string>
     <string name="download_card_summary">Модифікуйте параметри цього пункту перед завантаженням. Вимкнення цієї опції запускає завантаження негайно</string>
     <string name="author">Автор</string>
@@ -101,7 +101,7 @@
     <string name="warning">Попередження</string>
     <string name="error_restarting_download">Помилка, намагаючись перезапустити завантаження</string>
     <string name="create">Створити</string>
-    <string name="sponsorblock_previews">Перед огляд</string>
+    <string name="sponsorblock_previews">Перед-огляд</string>
     <string name="sponsorblock_reminders">Нагадування про підписку</string>
     <string name="select_sponsorblock_filtering">Вибрати фільтрацію SponsorBlock</string>
     <string name="container">Контейнер</string>
@@ -240,7 +240,7 @@
     <string name="updating_download_data">Оновлення даних завантажуваного контенту</string>
     <string name="keep_cache">Зберігати фрагменти</string>
     <string name="keep_cache_summary">Не видаляти тимчасові файли після завершення завантаження</string>
-    <string name="backup">Резервувати</string>
+    <string name="backup">Резервування</string>
     <string name="restore">Відновлення</string>
     <string name="incognito">Інкогніто</string>
     <string name="couldnt_parse_file">Не вдалося розібрати файл</string>
@@ -286,8 +286,8 @@
     <string name="write_description">Зберегти опис</string>
     <string name="write_description_summary">Записати опис у файл</string>
     <string name="extra_command">Додаткова команда</string>
-    <string name="embed_metadata">Вбудувати метадані</string>
-    <string name="embed_metadata_summary">Розбір та вбудовування метаданих у файл</string>
+    <string name="embed_metadata">Вбудовувати метадані</string>
+    <string name="embed_metadata_summary">Розбирати та вбудовувати метадані у файл</string>
     <string name="auto_update_ytdlp">Автооновлення yt-dlp</string>
     <string name="use_sponsorblock">Використати SponsorBlock</string>
     <string name="update_formats_background">Оновлення форматів у фоні</string>
@@ -335,7 +335,7 @@
     <string name="format_smallest">Найменший формат (за резолюцією)</string>
     <string name="new_source">Нове джерело</string>
     <string name="force_ipv4_desc">Здійснюйте всі з\'єднання за допомогою IPv4</string>
-    <string name="force_ipv4">Примусово використовувати IPv4</string>
+    <string name="force_ipv4">Примусове IPv4</string>
     <string name="copy_urls">Скопіюйте URL-адреси</string>
     <string name="every">Кожен</string>
     <string name="set_time">Встановити час</string>
@@ -461,9 +461,9 @@
     <string name="app_icon_change">Іконка може змінитися, і застосунок закриється</string>
     <string name="use_format_sorting">Використовуйте порядок пріоритету формату</string>
     <string name="write_subs_when_embed_subs_summary">Це застосує функції Зберегти субтитри та Зберегти автосубтитри для завантаження файлів субтитрів, а потім видалить їх після вбудовування</string>
-    <string name="automatic_backup_summary">Автостворення резервування всього, коли знайдено нову версію додатка</string>
+    <string name="automatic_backup_summary">Авторезервування всього, коли буде знайдено нову версію додатка</string>
     <string name="reset_preferences_in_screen">Скинути всі налаштування на цьому екрані</string>
-    <string name="automatic_backup">Авто резервування</string>
+    <string name="automatic_backup">Авторезервування</string>
     <string name="write_subs_when_embed_subs">Запис субтитрів під час вбудовування</string>
     <string name="use_code_highlighter">Використовувати колірний індикатор коду</string>
     <string name="backup_path">Шлях резервування</string>
