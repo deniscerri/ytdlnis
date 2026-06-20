@@ -29,6 +29,11 @@ import com.deniscerri.ytdl.receiver.PauseDownloadNotificationReceiver
 import com.deniscerri.ytdl.receiver.ResumeActivity
 import com.deniscerri.ytdl.util.Extensions.toBitmap
 import java.io.File
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
+import kotlin.math.log10
+import kotlin.math.pow
 import kotlin.random.Random
 
 
@@ -44,6 +49,51 @@ class NotificationUtil(var context: Context) {
     private val resources: Resources = context.resources
 
     private val canPostPromotedNotifications = Build.VERSION.SDK_INT >= 36 && notificationManager.canPostPromotedNotifications()
+
+    private val cachedTotalSizes = HashMap<Int, Long>()
+
+    private fun formatFileSizeLocalized(bytes: Long): String {
+        if (bytes < 0) return "?"
+        val units = arrayOf(
+            R.string.unit_bytes,
+            R.string.unit_kilobytes,
+            R.string.unit_megabytes,
+            R.string.unit_gigabytes,
+            R.string.unit_terabytes
+        )
+        val digitGroups = (log10(bytes.toDouble()) / log10(1024.0)).toInt().coerceIn(0, units.size - 1)
+        val symbols = DecimalFormatSymbols(Locale.US)
+        val value = DecimalFormat("#,##0.#", symbols).format(bytes / 1024.0.pow(digitGroups.toDouble()))
+        return "$value ${resources.getString(units[digitGroups])}"
+    }
+
+    private fun formatSizeProgress(desc: String, progressPercent: Int, notificationId: Int): String? {
+        val regex = Regex("""\[download\].*?of\s+~?\s*(\d+(?:\.\d+)?)\s*(KiB|MiB|GiB|KB|MB|GB)""", RegexOption.IGNORE_CASE)
+        val match = regex.find(desc)
+        if (match != null) {
+            val value = match.groupValues[1].toDoubleOrNull()
+            val unit = match.groupValues[2].uppercase()
+            if (value != null) {
+                val multiplier = when (unit) {
+                    "KB", "KIB" -> 1024.0
+                    "MB", "MIB" -> 1024.0 * 1024.0
+                    "GB", "GIB" -> 1024.0 * 1024.0 * 1024.0
+                    else -> null
+                }
+                if (multiplier != null) {
+                    val newTotal = (value * multiplier).toLong()
+                    val existing = cachedTotalSizes[notificationId]
+                    if (existing == null || newTotal > existing) {
+                        cachedTotalSizes[notificationId] = newTotal
+                    }
+                }
+            }
+        }
+
+        val totalBytes = cachedTotalSizes[notificationId] ?: return null
+        val currentBytes = (totalBytes * progressPercent.toLong() / 100).coerceAtMost(totalBytes)
+        return "${formatFileSizeLocalized(currentBytes)} / ${formatFileSizeLocalized(totalBytes)}"
+    }
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -449,7 +499,13 @@ class NotificationUtil(var context: Context) {
 
         var contentText = ""
         if (queue > 1) contentText += """${queue - 1} ${resources.getString(R.string.items_left)}""" + "\n"
-        contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
+        val sizeText = formatSizeProgress(desc, progress, id)
+        if (sizeText != null) {
+            contentText += "$sizeText • ${progress}%"
+        } else {
+            contentText += "${progress}%"
+            contentText += "\n" + desc.replace("\\[.*?\\] ".toRegex(), "")
+        }
 
         val pauseIntent = Intent(context, PauseDownloadNotificationReceiver::class.java)
         pauseIntent.putExtra("itemID", id)
@@ -495,9 +551,8 @@ class NotificationUtil(var context: Context) {
 
                 val builder = Notification.Builder(context, channel)
                     .setSmallIcon(R.drawable.ic_launcher_foreground_large)
-                    .setContentTitle("$progress%")
-                    .setContentText(title)
-                    .setSubText(contentText)
+                    .setContentTitle(title)
+                    .setContentText(contentText)
                     .setStyle(progressStyle)
                     .setOngoing(true)
                     .setOnlyAlertOnce(true)
@@ -538,7 +593,13 @@ class NotificationUtil(var context: Context) {
 
         val notificationBuilder = getBuilder(channel)
         var contentText = ""
-        contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
+        val sizeText = formatSizeProgress(desc, progress, id)
+        if (sizeText != null) {
+            contentText += "$sizeText • ${progress}%"
+        } else {
+            contentText += "${progress}%"
+            contentText += "\n" + desc.replace("\\[.*?\\] ".toRegex(), "")
+        }
 
         val cancelIntent = Intent(context, CancelDownloadNotificationReceiver::class.java)
         cancelIntent.putExtra("itemID", id)
@@ -563,6 +624,7 @@ class NotificationUtil(var context: Context) {
     }
 
     fun cancelDownloadNotification(id: Int) {
+        cachedTotalSizes.remove(id)
         notificationManager.cancel(id)
     }
 

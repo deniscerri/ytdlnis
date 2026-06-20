@@ -31,7 +31,7 @@
     <item
         android:id="@+id/incognito"
         android:title="@string/incognito"
-        android:icon="@drawable/ic_nightly"
+        android:icon="@drawable/ic_incognito"
         app:showAsAction="always"/>
 
     <item

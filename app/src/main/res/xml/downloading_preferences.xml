@@ -7,7 +7,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            android:icon="@drawable/ic_nightly"
+            android:icon="@drawable/ic_incognito"
             android:key="incognito"
             app:summary="@string/incognito_summary"
             app:title="@string/incognito" />
@@ -150,7 +150,6 @@
             android:key="log_downloads"
             app:summary="@string/log_downloads_summary"
             app:title="@string/log_downloads" />
-
         <ListPreference
             android:defaultValue=""
             android:entries="@array/cleanup_leftover_downloads"

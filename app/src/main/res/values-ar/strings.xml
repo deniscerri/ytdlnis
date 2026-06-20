@@ -80,6 +80,11 @@
     <string name="remove_search_history">مسح سجل البحث</string>
     <string name="enable_mtime">تمكين الطابع الزمني المعدّل</string>
     <string name="enable_mtime_summary">ضبط تاريخ ووقت التعديل استنادًا للرابط</string>
+    <string name="unit_bytes">بايت</string>
+    <string name="unit_kilobytes">كيلوبايت</string>
+    <string name="unit_megabytes">ميجابايت</string>
+    <string name="unit_gigabytes">جيجابايت</string>
+    <string name="unit_terabytes">تيرابايت</string>
     <string name="update_formats">تحديث التنسيقات</string>
     <string name="error_updating_formats">هنالك مشكلة في تحيين التنسيقات!</string>
     <string name="log_downloads">تقارير التنزيل</string>

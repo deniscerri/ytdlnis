@@ -128,6 +128,11 @@
     <string name="remove_search_history">Clear search history</string>
     <string name="enable_mtime">Enable mtime</string>
     <string name="enable_mtime_summary">Set the HTTP Last-Modified header as last modified time</string>
+    <string name="unit_bytes">B</string>
+    <string name="unit_kilobytes">kB</string>
+    <string name="unit_megabytes">MB</string>
+    <string name="unit_gigabytes">GB</string>
+    <string name="unit_terabytes">TB</string>
     <string name="update_formats">Update formats</string>
     <string name="error_updating_formats">Error updating formats!</string>
     <string name="log_downloads">Log downloads</string>
