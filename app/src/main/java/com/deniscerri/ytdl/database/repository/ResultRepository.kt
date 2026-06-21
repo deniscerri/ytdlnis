@@ -47,7 +47,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         YT_DLP
     }
 
-    private fun isUsingNewPipeExtractorDataFetching() = sharedPreferences.getString("youtube_data_fetching_extractor", "NEWPIPE") == "NEWPIPE"
+    private fun isUsingNewPipeExtractorDataFetching() = sharedPreferences.getString("youtube_data_fetching_extractor", "YT_DLP") == "NEWPIPE"
 
     suspend fun insert(it: ResultItem){
         resultDao.insert(it)

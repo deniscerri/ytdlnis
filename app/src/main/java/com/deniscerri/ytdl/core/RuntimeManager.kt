@@ -15,6 +15,7 @@ import com.deniscerri.ytdl.core.packages.Python
 import com.deniscerri.ytdl.core.packages.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -45,6 +46,9 @@ object RuntimeManager {
 
     private var initLatch = CountDownLatch(1)
     private val initLock = Any()
+
+    private var updateLatch = CountDownLatch(1)
+    private val updateLock = Any()
 
     const val BASENAME = "ytdlnis"
     const val ytdlpDirName = "yt-dlp"
@@ -138,6 +142,7 @@ object RuntimeManager {
 
             initialized = true
             initLatch.countDown()
+            updateLatch.countDown()
         }
     }
 
@@ -154,6 +159,13 @@ object RuntimeManager {
         val success = initLatch.await(30, TimeUnit.SECONDS)
         if (!success || !initialized) {
             throw IllegalStateException("Instance not initialized")
+        }
+    }
+
+    fun assertNoUpdate() {
+        val completed = updateLatch.await(2, TimeUnit.MINUTES)
+        if (!completed) {
+            throw IllegalStateException("Update timed out or failed to complete")
         }
     }
 
@@ -212,6 +224,8 @@ object RuntimeManager {
         callback: ((Float, Long, String) -> Unit)? = null
     ) : ExecuteResponse {
         assertInit()
+        assertNoUpdate()
+
         if (processId != null && idProcessMap.containsKey(processId)) {
             throw ExecuteException("Process ID already exists")
         }
@@ -308,10 +322,21 @@ object RuntimeManager {
         updateChannel: UpdateChannel = UpdateChannel.STABLE
     ): UpdateStatus? {
         assertInit()
+
+        synchronized(updateLock) {
+            if (updateLatch.count >= 0) {
+                updateLatch = CountDownLatch(1)
+            }
+        }
+
         return try {
             YTDLUpdater.update(appContext, updateChannel)
         } catch (e: IOException) {
             throw ExecuteException("failed to update youtube-dl", e)
+        } finally {
+            synchronized(updateLock) {
+                updateLatch.countDown()
+            }
         }
     }
 

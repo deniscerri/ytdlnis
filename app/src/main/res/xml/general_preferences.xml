@@ -97,7 +97,7 @@
             app:title="@string/api_key" />
 
         <ListPreference
-            android:defaultValue="NEWPIPE"
+            android:defaultValue="YT_DLP"
             android:entries="@array/data_fetching_extractor_youtube"
             android:entryValues="@array/data_fetching_extractor_youtube_values"
             android:icon="@drawable/baseline_manage_search_24"

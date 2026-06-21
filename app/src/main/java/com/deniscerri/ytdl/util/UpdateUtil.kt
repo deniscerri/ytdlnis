@@ -56,8 +56,8 @@ class UpdateUtil(var context: Context) {
 
             var v: GithubRelease
             if (useBeta) {
-                v = res.firstOrNull { it.tag_name.contains("beta", true) } ?: res.first()
-                val stableV = res.first { !it.tag_name.contains("beta", true) }
+                v = res.firstOrNull { it.tag_name.contains("beta", true) && it.tag_name.contains("github", true) } ?: res.first()
+                val stableV = res.first { !it.tag_name.contains("beta", true) && it.tag_name.contains("github", true) }
 
                 val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
                 val incomingStableVerNumber = stableV.tag_name.removePrefix("v").tagNameToVersionNumber()
@@ -70,7 +70,7 @@ class UpdateUtil(var context: Context) {
                     isInLatest = currentVerNumber >= incomingVerNumber
                 }
             }else {
-                v = res.first { !it.tag_name.contains("beta", true) }
+                v = res.first { !it.tag_name.contains("beta", true) && it.tag_name.contains("github", true) }
                 val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
 
                 //if current version is beta but wants to downgrade to stable, allow it

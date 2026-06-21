@@ -36,9 +36,15 @@ class NewPipeUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
     private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
+    private val useAppLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", false)
 
     init {
-        NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()), Localization(language, countryCode))
+        if (useAppLanguageForMetadata) {
+            NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()),  Localization(language, countryCode))
+        } else {
+            NewPipe.init(NewPipeDownloaderImpl(OkHttpClient.Builder()))
+        }
+
         YoutubeStreamExtractor.setPoTokenProvider(NewPipePoTokenGenerator())
     }
 
