@@ -283,7 +283,7 @@
     <string name="fragment_retries">조각 재시도</string>
     <string name="format_order">형식 순서</string>
     <string name="embed_metadata">메타데이터 내장</string>
-    <string name="embed_metadata_summary">오디오 파일에 메타데이터를 수집 및 내장합니다.</string>
+    <string name="embed_metadata_summary">파일에 메타데이터를 수집 및 내장합니다.</string>
     <string name="force_keyframes">자를 때 키프레임 강제 적용</string>
     <string name="force_keyframes_summary">처리속도는 느리지만 더 정확하게 자름</string>
     <string name="current">현재 명령</string>

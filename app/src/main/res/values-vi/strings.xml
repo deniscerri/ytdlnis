@@ -185,7 +185,7 @@
     <string name="start">Bắt đầu</string>
     <string name="download_over_metered_networks_summary">Tải xuống bằng mọi loại mạng. Nếu không thì đợi mạng không tính phí</string>
     <string name="help_translate">Dịch thuật</string>
-    <string name="clear_temporary_files">Dọn dẹp các tệp tạm thời</string>
+    <string name="clear_temporary_files">Xóa các thư mục lưu tạm</string>
     <string name="file_size">Kích thước tập tin</string>
     <string name="ignore_battery_optimization">Tắt tối ưu hóa pin</string>
     <string name="restrict_filenames_summary">Chỉ dùng ký tự ASCII và tránh các ký tự như \"&amp;\" hay dấu cách trong tên tệp</string>
@@ -279,7 +279,7 @@
     <string name="preferred_format_id">ID định dạng ưu tiên</string>
     <string name="couldnt_parse_file">Không thể phân tích cú pháp tệp</string>
     <string name="current">Lệnh hiện tại</string>
-    <string name="embed_metadata_summary">Phân tích và nhúng metadata vào tệp âm thanh</string>
+    <string name="embed_metadata_summary">Phân tích và nhúng metadata vào tệp</string>
     <string name="use_cookies">Dùng cookie</string>
     <string name="use_extra_commands">Lệnh bổ sung</string>
     <string name="clear_saved">Xoá mục đã lưu</string>
@@ -509,9 +509,16 @@
     <string name="quick_download_title">Không lấy dữ liệu</string>
     <string name="sponsorblock_hook">Lời chào/Mở đầu</string>
     <string name="installed">Đã cài đặt</string>
-    <string name="auto_update_ytdlp_summary">Khuyến nghị nên giữ tùy chọn này được bật để ứng dụng hoạt động ổn định, vì yt-dlp được cập nhật khá thường xuyên! Dữ liệu được lấy từ kho GitHub của yt-dlp.</string>
+    <string name="auto_update_ytdlp_summary">Khuyến nghị nên giữ tùy chọn này được bật vì yt-dlp được cập nhật khá thường xuyên! Dữ liệu được lấy từ kho GitHub của yt-dlp.</string>
     <string name="packages">Gói ứng dụng</string>
     <string name="not_installed">Chưa cài đặt</string>
     <string name="bundled">Tích hợp sẵn</string>
     <string name="use_app_language_for_metadata_summary">Khi bật, metadata sẽ theo ngôn ngữ ứng dụng và có thể ưu tiên chọn bản lồng tiếng thay vì bản gốc.</string>
+    <string name="crop">Cắt</string>
+    <string name="required">Được yêu cầu</string>
+    <string name="crop_validation_exceeds_w">X+W vượt quá %d</string>
+    <string name="crop_validation_exceeds_h">Y+H vượt quá %d</string>
+    <string name="save_subdirectory">Lưu đến thư mục con</string>
+    <string name="save_subdirectory_summary">Lưu tệp trong các thư mục dựa trên các thẻ siêu dữ liệu</string>
+    <string name="install_downloaded_file">Cài đặt tệp đã tải xuống</string>
 </resources>

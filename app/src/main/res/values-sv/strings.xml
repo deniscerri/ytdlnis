@@ -97,7 +97,7 @@
     <string name="extra_command">Extra kommando</string>
     <string name="use_cookies">Använd kakor</string>
     <string name="embed_metadata">Bädda in metadata</string>
-    <string name="embed_metadata_summary">Analysera och bädda in metadata i ljudfilen</string>
+    <string name="embed_metadata_summary">Analysera och bädda in metadata till filen</string>
     <string name="auto_update_ytdlp">Uppdatera automatiskt yt-dlp</string>
     <string name="use_sponsorblock">Använd SponsorBlock</string>
     <string name="use_scheduler">Ladda ner enligt schema</string>
