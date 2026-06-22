@@ -1193,7 +1193,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 if (downloadItem.audioPreferences.splitByChapters && downloadItem.downloadSections.isBlank()){
                     request.addOption("--split-chapters")
-                    request.addOption("-o", "chapter:%(section_title)s.%(ext)s")
+                    request.addOption("-o", "chapter:%(section_number)d - %(section_title)s.%(ext)s")
                 }else{
                     if (embedMetadata){
                         metadataCommands.addOption("--embed-metadata")

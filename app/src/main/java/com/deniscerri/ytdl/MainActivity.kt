@@ -566,6 +566,11 @@ class MainActivity : BaseActivity() {
                     val hasActiveQueuedDownloads = DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) > 0
                     if (hasActiveQueuedDownloads) return@launch
 
+                    Snackbar.make(findViewById(R.id.frame_layout), context.getString(R.string.ytdl_updating_started), Snackbar.LENGTH_LONG).apply {
+                        anchorView = navigationBarView
+                        show()
+                    }
+
                     val updateRes = withContext(Dispatchers.IO) {
                         UpdateUtil(this@MainActivity).updateYTDL()
                     }
