@@ -281,7 +281,7 @@
     <string name="save_for_later">Zachować pobieranie na później?</string>
     <string name="subtitle_format">Format napisów</string>
     <string name="orange">Pomarańczowy</string>
-    <string name="embed_metadata_summary">Osadzaj i analizuj metadane w pliku audio</string>
+    <string name="embed_metadata_summary">Osadzaj i analizuj metadane w pliku</string>
     <string name="preferred_audio_codec">Preferowany kodek audio</string>
     <string name="use_cookies">Używaj plików cookie</string>
     <string name="update_app_beta_summary">Zarejestruj się w programie beta. (Mogą wystąpić błędy).</string>
@@ -527,4 +527,9 @@
     <string name="crop">Przytnij</string>
     <string name="crop_validation_exceeds_w">X+W jest większe niż %d</string>
     <string name="crop_validation_exceeds_h">Y+H jest większe niż %d</string>
+    <string name="free_ratio">Dowolne proporcje</string>
+    <string name="aspect_ratio">Proporcje wideo</string>
+    <string name="dimensions">Wymiary</string>
+    <string name="x_offset">Przesunięcie w osi X</string>
+    <string name="y_offset">Przesunięcie w osi Y</string>
 </resources>
