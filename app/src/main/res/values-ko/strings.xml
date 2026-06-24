@@ -7,8 +7,8 @@
     <string name="search_hint">검색 또는 URL 입력</string>
     <string name="download_notification_channel_description">오디오 및 비디오 파일 다운로드 진행률을 보여주는 알림</string>
     <string name="you_are_in_latest_version">현재 최신버전 사용중</string>
-    <string name="ytld_update_success">새 버전 설치됨</string>
-    <string name="ytdl_already_updating">새 버전을 설치하는 중…</string>
+    <string name="ytld_update_success">새 yt-dlp 버전 설치됨</string>
+    <string name="ytdl_already_updating">새 yt-dlp 버전을 설치하는 중</string>
     <string name="Remove">삭제</string>
     <string name="cancel">취소</string>
     <string name="confirm_delete_history_desc">전체 기록을 완전히 삭제</string>
@@ -31,7 +31,7 @@
     <string name="home">홈</string>
     <string name="ytdl_update_hint">업데이트를 다운로드할 때 유용한 도움말 표시</string>
     <string name="source_code">소스 코드</string>
-    <string name="ytdl_updating_started">새 버전 다운로드 중…</string>
+    <string name="ytdl_updating_started">새 yt-dlp 버전 다운로드 중</string>
     <string name="updating">업데이트</string>
     <string name="video">비디오</string>
     <string name="save_thumb_summary">다운로드 폴더에 썸네일 저장</string>
