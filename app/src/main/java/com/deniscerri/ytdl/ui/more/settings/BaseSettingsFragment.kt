@@ -81,6 +81,7 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat(), SettingHost {
                 WindowInsetsCompat.Type.systemBars()
             )
 
+
             v.setPadding(
                 v.paddingLeft,
                 v.paddingTop,
