@@ -18,13 +18,13 @@
     <string name="download_notification_channel_description">إشعار يُظهر مستوى التقدم في تنزيل ملفات الصوت والفيديو</string>
     <string name="download_notification_channel_name">تنزيلات الملفات</string>
     <string name="ok">تم</string>
-    <string name="ytdl_already_updating">يتم تثبيت أحدث إصدار</string>
-    <string name="ytdl_updating_started">بحث/تحميل أحدث إصدار</string>
+    <string name="ytdl_already_updating">يثبت إصدار yt-dlp الجديد</string>
+    <string name="ytdl_updating_started">ينزل إصدار yt-dlp الجديد</string>
     <string name="cancel">إلغاء</string>
     <string name="Remove">إزالة</string>
     <string name="confirm_delete_history_desc">الإزالة من سجل التنزيلات تمامًا.</string>
     <string name="you_are_in_latest_version">لديك أحدث إصدار</string>
-    <string name="ytld_update_success">تم تثبيت أحدث إصدار yt-dlp</string>
+    <string name="ytld_update_success">ثُبِّت إصدار yt-dlp جديد</string>
     <string name="confirm_delete_history">تأكيد</string>
     <string name="search_history_hint">البحث في السجل</string>
     <string name="no_results">لا نتائج</string>
