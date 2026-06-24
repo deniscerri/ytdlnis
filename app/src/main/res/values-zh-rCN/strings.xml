@@ -9,7 +9,7 @@
     <string name="failed_download">无法下载文件</string>
     <string name="download_notification_channel_name">文件下载</string>
     <string name="you_are_in_latest_version">已是最新版本</string>
-    <string name="ytld_update_success">已安装新版本</string>
+    <string name="ytld_update_success">已安装新版 yt−dlp</string>
     <string name="confirm_delete_history">确认</string>
     <string name="search_history_hint">搜索历史记录</string>
     <string name="no_results">没有结果</string>
@@ -160,8 +160,8 @@
     <string name="embed_metadata_summary">解析并嵌入元数据到文件</string>
     <string name="embed_metadata">嵌入元数据</string>
     <string name="force_keyframes">强制剪辑关键帧</string>
-    <string name="ytdl_already_updating">正在安装新版本</string>
-    <string name="ytdl_updating_started">正在下载新版本</string>
+    <string name="ytdl_already_updating">正在安装新版 yt−dlp</string>
+    <string name="ytdl_updating_started">正在下载新版 yt−dlp</string>
     <string name="Remove">移除</string>
     <string name="incognito_summary">下载时不添加到历史记录</string>
     <string name="delete_files_too">从设备中删除文件</string>
