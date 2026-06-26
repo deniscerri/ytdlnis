@@ -227,7 +227,7 @@
     <string name="scheduling">Planification</string>
     <string name="quick_download">Téléchargement rapide</string>
     <string name="saved">Enregistré</string>
-    <string name="quick_download_summary">Poursuivez immédiatement le processus de téléchargement, sans récupérer les données au préalable.</string>
+    <string name="quick_download_summary">Poursuivre immédiatement le téléchargement, sans récupérer de données au préalable</string>
     <string name="update_formats_background">Mettre à jour les formats en arrière-plan</string>
     <string name="pause">Pause</string>
     <string name="search_command_hint">Rechercher dans les commandes</string>
@@ -343,7 +343,7 @@
     <string name="save_auto_subs">Enregistrer les sous-titres automatiques</string>
     <string name="not_deleted">Non supprimé</string>
     <string name="on_time">Sur</string>
-    <string name="cut_unavailable_please_update_item">Vous devez mettre à jour les données de l\'élément pour utiliser la fonction de coupe.</string>
+    <string name="cut_unavailable_please_update_item">Vous devez mettre à jour les données de l\'article pour pouvoir utiliser la fonction de découpe.</string>
     <string name="format_smallest">Le plus petit format (par résolution)</string>
     <string name="confirm_delete_sources_desc">Supprimer définitivement toutes les sources</string>
     <string name="week">Semaine</string>
@@ -427,7 +427,7 @@
     <string name="player_client">Lecteur client</string>
     <string name="use_app_language_for_metadata">Utiliser la langue de l\'application pour les métadonnées</string>
     <string name="layout">Mise en page</string>
-    <string name="disable_write_info_json_summary">Chaque fois que vous redémarrez / reprenez le téléchargement, yt-dlp retéléchargera les données JSON à partir des serveurs (non recommandé)</string>
+    <string name="disable_write_info_json_summary">À chaque fois que vous redémarrez ou reprenez le téléchargement, yt-dlp télécharge à nouveau les données JSON depuis les serveurs (ce qui n\'est pas recommandé)</string>
     <string name="items">élément(s)</string>
     <string name="other_youtube_extractor_args">Autres arguments de l\'extracteur YouTube</string>
     <string name="no_check_certificates">Supprimer la validation du certificat HTTPS</string>
@@ -435,7 +435,7 @@
     <string name="ytdlp_recommnedations">yt-dlp Recommandations YouTube (nécessite des cookies)</string>
     <string name="use_only_po_token">Utiliser uniquement le jeton PO (ignorez le client du lecteur)</string>
     <string name="cache_directory">Dossier cache</string>
-    <string name="prefer_container_over_codec_audio_summary">Lorsque cette option est activée, la préférence du codec audio préféré sera ignorée et seul le conteneur changera.</string>
+    <string name="prefer_container_over_codec_audio_summary">Lorsque cette option est activée, le codec audio par défaut sera ignoré et seul le conteneur sera modifié.</string>
     <string name="data_fetching_extra_command_summary">Activer les modèles de commande à utiliser pour la récupération de données en tant que commandes supplémentaires</string>
     <string name="data_fetching_extractor_youtube">Extracteur de récupération de données (YouTube)</string>
     <string name="retry_missing_downloads_desc">Télécharger à nouveau les éléments qui ne sont pas présents dans l\'historique des téléchargements</string>
@@ -456,7 +456,7 @@
     <string name="wait_for_video">Attendre la vidéo</string>
     <string name="retry_every">Réessayer chaque</string>
     <string name="minutes">Minutes</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[Clients du Lecteur YouTube &amp; Jeton PO]]></string>
     <string name="list">Liste</string>
     <string name="prefer_container_over_codec_audio">Préférer le conteneur au codec pour les téléchargements audio</string>
     <string name="app_icon_change">L\'icône pourrait changer et l\'application se fermera</string>
@@ -495,12 +495,12 @@
     <string name="disable_flat_playlist">Télécharger la vidéo et pas la playlist</string>
     <string name="disable_flat_playlist_summary">Ne pas utiliser --flat-playlist. Récupération plus lente des données, mais plus riche en données</string>
     <string name="chapters">Chapitres</string>
-    <string name="use_original_url_playlist">Utiliser l\'URL originale pour l\'URL de la playlist</string>
-    <string name="use_original_url_playlist_summary">Utiliser l\'URL de la playlist fournie par l\'utilisateur au lieu du tag playlist_webpage_url du dump JSON</string>
+    <string name="use_original_url_playlist">Utilisez l\'URL d\'origine comme URL de la playlist</string>
+    <string name="use_original_url_playlist_summary">Utiliser l\'URL de la playlist fournie par l\'utilisateur à la place de la balise « playlist_webpage_url » issue du fichier JSON</string>
     <string name="update_ytdlp_while_downloading">Mettre à jour yt-dlp pendant le téléchargement</string>
     <string name="update_ytdlp_while_downloading_summary">Ajoute -U à yt-dlp pour le mettre à jour avant de télécharger</string>
     <string name="preview_filename">Aperçu du nom de fichier</string>
-    <string name="potoken_guide">Authentification\n-----------------------\n1. Cliquez sur « Authentification » pour ouvrir la page de connexion dans WebView.\n\n2. Connectez-vous à votre compte Google.\n\n3. Lancez une vidéo compatible avec la traduction automatique des sous-titres.\n\n4. Activez la traduction automatique des sous-titres et vérifiez si cela fonctionne.\n\n4.1 Si la traduction automatique des sous-titres ne fonctionne pas, choisissez une autre vidéo compatible et répétez l\'étape 4.\n\n5. Cliquez sur OK.\n\nAucune authentification\n-----------------------\n1. Cliquez sur « Aucune authentification ».\n\n2. Saisissez l\'URL d\'une vidéo YouTube.\n\n3. Attendez le chargement de la vidéo et lancez la lecture pendant au moins 3 secondes.\n\n4. Cliquez sur OK.</string>
+    <string name="potoken_guide">Authentification\n-----------------------\n1. Cliquez sur « Authentification » pour ouvrir la page de connexion dans WebView.\n2. Connectez-vous à votre compte Google.\n3. Lancez une vidéo compatible avec la traduction automatique des sous-titres.\n4. Activez la traduction automatique des sous-titres et vérifiez si cela fonctionne.\n4.1 Si la traduction automatique des sous-titres ne fonctionne pas, choisissez une autre vidéo compatible et répétez l\'étape 4.\n5. Cliquez sur OK.\n\nAucune authentification\n-----------------------\n1. Cliquez sur « Aucune authentification ».\n2. Saisissez l\'URL d\'une vidéo YouTube.\n3. Attendez le chargement de la vidéo et lancez la lecture pendant au moins 3 secondes.\n4. Cliquez sur OK.</string>
     <string name="no_auth">Aucune authentification</string>
     <string name="auth">Authentification</string>
     <string name="prefer_drc_audio">Préférez l\'audio DRC</string>
@@ -508,7 +508,7 @@
     <string name="show_quick_download_share_menu">Afficher l\'option de téléchargement immédiat dans le menu de partage</string>
     <string name="quick_download_title">Ne pas récupérer de données</string>
     <string name="sponsorblock_hook">Crochet/Salutations</string>
-    <string name="packages">Packages</string>
+    <string name="packages">Colis</string>
     <string name="not_installed">Non installé</string>
     <string name="bundled">Ensemble</string>
     <string name="use_app_language_for_metadata_summary">Si cette option est activée, les champs de métadonnées suivront la langue de votre application et affecteront même la sélection du format en privilégiant les versions doublées plutôt que les versions originales</string>
