@@ -138,6 +138,17 @@
             app:layout_scrollFlags="scroll|enterAlways"
             android:layout_height="wrap_content" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/home_channels"
+            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/channels"
+            app:icon="@drawable/baseline_live_tv_24"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_marginVertical="15dp"

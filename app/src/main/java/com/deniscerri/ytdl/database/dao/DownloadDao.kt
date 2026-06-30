@@ -29,6 +29,12 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active' or status = 'Paused' ORDER BY id, CASE WHEN status='Active' THEN 0 ELSE 1 END")
     fun getActiveAndPausedDownloads() : Flow<List<DownloadItem>>
 
+    @Query("SELECT url FROM downloads WHERE status IN ('Active','Queued','Processing','Paused','Scheduled')")
+    fun getRunningDownloadUrls() : Flow<List<String>>
+
+    @Query("SELECT url FROM downloads WHERE status IN ('Active','Queued','Processing','Paused','Scheduled')")
+    fun getRunningDownloadUrlsList() : List<String>
+
     @Query("SELECT * FROM downloads WHERE status='Paused'")
     fun getPausedDownloads() : Flow<List<DownloadItem>>
 

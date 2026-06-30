@@ -87,6 +87,43 @@ object FileUtil {
         return file.exists()
     }
 
+    /**
+     * Returns a readable MediaStore content uri for a downloaded file path, or null if MediaStore
+     * doesn't know it. Works without all-files access for files this app saved to shared storage.
+     */
+    fun mediaStoreUriForPath(path: String) : Uri? {
+        if (path.isEmpty()) return null
+        val collection = MediaStore.Files.getContentUri("external")
+        val projection = arrayOf(MediaStore.MediaColumns._ID)
+        val selection = MediaStore.MediaColumns.DATA + " =?"
+        return App.instance.contentResolver.query(collection, projection, selection, arrayOf(path), null)
+            ?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                    ContentUris.withAppendedId(collection, id)
+                } else null
+            }
+    }
+
+    /**
+     * True if the file is present and readable by this app, either via a direct File path
+     * (all-files access) or via a MediaStore entry it owns.
+     */
+    fun existsAccessible(path: String) : Boolean {
+        if (path.isEmpty()) return false
+        return File(path).exists() || mediaStoreUriForPath(path) != null
+    }
+
+    /**
+     * The best playable uri for a downloaded file: a direct file uri when readable, otherwise the
+     * MediaStore content uri.
+     */
+    fun playableUriForPath(path: String) : Uri {
+        val file = File(path)
+        if (file.exists()) return Uri.fromFile(file)
+        return mediaStoreUriForPath(path) ?: Uri.fromFile(file)
+    }
+
     fun formatPath(path: String) : String {
         var dataValue = path
         if (dataValue.startsWith("/storage/")) return dataValue

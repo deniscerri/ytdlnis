@@ -165,6 +165,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         searchView = view.findViewById(R.id.search_view)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         materialToolbar = view.findViewById(R.id.home_toolbar)
+        view.findViewById<MaterialButton>(R.id.home_channels).setOnClickListener {
+            findNavController().navigate(R.id.channelsFragment)
+        }
         queriesChipGroup = view.findViewById(R.id.queries)
         queriesConstraint = view.findViewById(R.id.queries_constraint)
         homeFabs = view.findViewById(R.id.home_fabs)

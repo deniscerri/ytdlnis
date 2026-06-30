@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.deniscerri.ytdl.database.dao.ChannelVideoCacheDao
+import com.deniscerri.ytdl.database.dao.ChannelsDao
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.CookieDao
 import com.deniscerri.ytdl.database.dao.DownloadDao
@@ -15,6 +17,8 @@ import com.deniscerri.ytdl.database.dao.ObserveSourcesDao
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.dao.SearchHistoryDao
 import com.deniscerri.ytdl.database.dao.TerminalDao
+import com.deniscerri.ytdl.database.models.ChannelItem
+import com.deniscerri.ytdl.database.models.ChannelVideoCache
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
@@ -38,9 +42,11 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
         CookieItem::class,
         LogItem::class,
         TerminalItem::class,
-        ObserveSourcesItem::class
+        ObserveSourcesItem::class,
+        ChannelItem::class,
+        ChannelVideoCache::class
    ],
-    version = 27,
+    version = 30,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -67,7 +73,13 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
         //AutoMigration(from = 23, to = 24) MANUALLY HANDLED
         //AutoMigration(from = 24, to = 25) MANUALLY HANDLED
         //AutoMigration(from = 25, to = 26) MANUALLY HANDLED
-        AutoMigration(from = 26, to = 27)
+        AutoMigration(from = 26, to = 27),
+        AutoMigration(from = 27, to = 28),
+        AutoMigration(from = 28, to = 29),
+        // Adds the UNIQUE index on channels.url. The channels table only ever shipped in the
+        // unreleased v28/v29 dev schema, and its single insert path already rejected duplicate
+        // urls, so no existing database holds conflicting rows for the index to trip over.
+        AutoMigration(from = 29, to = 30)
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -80,6 +92,8 @@ abstract class DBManager : RoomDatabase(){
     abstract val logDao: LogDao
     abstract val terminalDao: TerminalDao
     abstract val observeSourcesDao: ObserveSourcesDao
+    abstract val channelsDao: ChannelsDao
+    abstract val channelVideoCacheDao: ChannelVideoCacheDao
 
     enum class SORTING{
         DESC, ASC

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/result_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:checkable="true"
+        app:cardBackgroundColor="?attr/colorSurfaceContainer"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:cardPreventCornerOverlap="true"
+        app:checkedIconTint="?attr/colorPrimary"
+        app:strokeColor="?attr/colorPrimary"
+        app:strokeWidth="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/result_image_view"
+                android:layout_width="120dp"
+                android:layout_height="68dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/played_badge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:background="@drawable/bg_played_badge"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:text="@string/played"
+                android:textColor="#FFF"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/result_image_view"
+                app:layout_constraintTop_toTopOf="@+id/result_image_view" />
+
+            <TextView
+                android:id="@+id/result_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/author"
+                app:layout_constraintEnd_toStartOf="@+id/play_file"
+                app:layout_constraintStart_toEndOf="@+id/result_image_view"
+                app:layout_constraintTop_toTopOf="@+id/result_image_view"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/author"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/duration"
+                app:layout_constraintEnd_toStartOf="@+id/play_file"
+                app:layout_constraintStart_toEndOf="@+id/result_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/result_title" />
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/result_image_view"
+                app:layout_constraintEnd_toStartOf="@+id/play_file"
+                app:layout_constraintStart_toEndOf="@+id/result_image_view"
+                app:layout_constraintTop_toBottomOf="@+id/author" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/play_file"
+                style="@style/Widget.Material3.Button.IconButton"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:visibility="gone"
+                android:contentDescription="@string/play"
+                app:icon="@drawable/ic_play"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/download_music"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/download_music"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:contentDescription="@string/audio"
+                app:icon="@drawable/ic_music"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/download_video"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/download_video"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:contentDescription="@string/video"
+                app:icon="@drawable/ic_video"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/download_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

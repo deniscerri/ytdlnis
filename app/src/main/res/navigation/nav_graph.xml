@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_moreFragment_to_observeSourcesFragment"
             app:destination="@id/observeSourcesFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_channelsFragment"
+            app:destination="@id/channelsFragment" />
     </fragment>
     <activity
         android:id="@+id/terminalActivity"
@@ -200,6 +203,38 @@
         android:id="@+id/observeSourcesBottomSheetDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.ObserveSourcesBottomSheetDialog"
         android:label="ObserveSourcesBottomSheetDialog" />
+    <fragment
+        android:id="@+id/channelsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.ChannelsFragment"
+        android:label="ChannelsFragment" >
+        <action
+            android:id="@+id/action_channelsFragment_to_channelVideosFragment"
+            app:destination="@id/channelVideosFragment" />
+        <action
+            android:id="@+id/action_channelsFragment_to_channelSearchFragment"
+            app:destination="@id/channelSearchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/channelVideosFragment"
+        android:name="com.deniscerri.ytdl.ui.more.ChannelVideosFragment"
+        android:label="ChannelVideosFragment" >
+        <argument
+            android:name="channelUrl"
+            app:argType="string" />
+        <argument
+            android:name="channelName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_channelVideosFragment_to_resultCardDetailsDialog"
+            app:destination="@id/resultCardDetailsDialog" />
+        <action
+            android:id="@+id/action_channelVideosFragment_to_downloadBottomSheetDialog"
+            app:destination="@id/downloadBottomSheetDialog" />
+    </fragment>
+    <fragment
+        android:id="@+id/channelSearchFragment"
+        android:name="com.deniscerri.ytdl.ui.more.ChannelSearchFragment"
+        android:label="ChannelSearchFragment" />
     <dialog
         android:id="@+id/downloadsAlreadyExistDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadsAlreadyExistDialog"

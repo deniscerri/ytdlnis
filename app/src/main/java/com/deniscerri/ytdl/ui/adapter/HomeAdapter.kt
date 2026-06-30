@@ -35,6 +35,23 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     private val activity: Activity
     private val sharedPreferences: SharedPreferences
 
+    // Maps a result's url to a local downloaded file path. When set, the card shows a play
+    // button for that item. Empty by default, so screens that don't populate it (e.g. Home)
+    // never show the play button.
+    val downloadedPaths = mutableMapOf<String, String>()
+    var onPlayFile: ((ResultItem, String) -> Unit)? = null
+
+    // Urls with an in-progress download. When set, the card shows an indeterminate progress bar.
+    // Empty by default, so Home is unaffected.
+    val downloadingUrls = mutableSetOf<String>()
+
+    // Urls already played. When set, the card shows a "Played" badge. Empty by default.
+    val playedUrls = mutableSetOf<String>()
+
+    // When true, items render as compact list rows instead of large cards. Card layout (false)
+    // is the default, so Home is unaffected.
+    var useListLayout = false
+
     init {
         checkedItems = mutableSetOf()
         this.inverted = false
@@ -51,9 +68,13 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         }
     }
 
+    override fun getItemViewType(position: Int): Int =
+        if (useListLayout) VIEW_TYPE_LIST else VIEW_TYPE_CARD
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val layout = if (viewType == VIEW_TYPE_LIST) R.layout.result_card_list else R.layout.result_card
         val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.result_card, parent, false)
+                .inflate(layout, parent, false)
         return ViewHolder(cardView, onItemClickListener)
     }
 
@@ -98,13 +119,28 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         videoBtn.setOnClickListener { onItemClickListener.onButtonClick(video, DownloadType.video) }
         videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(video, DownloadType.video); true}
 
+        // PLAY BUTTON (only for items with a local downloaded file) ---------
+        val playBtn = card.findViewById<MaterialButton>(R.id.play_file)
+        val downloadedPath = downloadedPaths[videoURL]
+        if (downloadedPath != null) {
+            playBtn.visibility = View.VISIBLE
+            playBtn.setOnClickListener { onPlayFile?.invoke(video, downloadedPath) }
+        } else {
+            playBtn.visibility = View.GONE
+            playBtn.setOnClickListener(null)
+        }
+
 
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.download_progress)
         progressBar.tag = "$videoURL##progress"
         progressBar.progress = 0
         progressBar.isIndeterminate = true
-        progressBar.visibility = View.GONE
+        progressBar.visibility = if (downloadingUrls.contains(videoURL)) View.VISIBLE else View.GONE
+
+        // PLAYED BADGE ----------------------------------------------------
+        val playedBadge = card.findViewById<TextView>(R.id.played_badge)
+        playedBadge.visibility = if (playedUrls.contains(videoURL)) View.VISIBLE else View.GONE
 
 //        if (video.isDownloading()){
 //            progressBar.setVisibility(View.VISIBLE);
@@ -212,6 +248,9 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     }
 
     companion object {
+        private const val VIEW_TYPE_CARD = 0
+        private const val VIEW_TYPE_LIST = 1
+
         private val DIFF_CALLBACK: DiffUtil.ItemCallback<ResultItem> = object : DiffUtil.ItemCallback<ResultItem>() {
             override fun areItemsTheSame(oldItem: ResultItem, newItem: ResultItem): Boolean {
                 val ranged = arrayListOf(oldItem.id, newItem.id)

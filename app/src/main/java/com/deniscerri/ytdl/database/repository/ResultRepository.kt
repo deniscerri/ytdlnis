@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.database.DBManager.SORTING
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.ResultDao
+import com.deniscerri.ytdl.database.models.ChannelItem
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -472,6 +473,15 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             }
         }
         return null
+    }
+
+    suspend fun searchChannels(query: String): List<ChannelItem> {
+        val result = newPipeUtil.searchChannels(query)
+        return result.getOrDefault(emptyList())
+    }
+
+    fun normalizeChannelUrl(url: String): String? {
+        return newPipeUtil.normalizeChannelUrl(url).getOrNull()
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.database.models.ChannelItem
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
@@ -18,6 +19,7 @@ import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.Page
 import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.channel.ChannelInfo
+import org.schabi.newpipe.extractor.channel.ChannelInfoItem
 import org.schabi.newpipe.extractor.channel.tabs.ChannelTabInfo
 import org.schabi.newpipe.extractor.kiosk.KioskInfo
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler
@@ -135,6 +137,49 @@ class NewPipeUtil(context: Context) {
 
         }catch (e: Exception){
             return Result.failure(e)
+        }
+    }
+
+    @Throws(JSONException::class)
+    fun searchChannels(query: String): Result<ArrayList<ChannelItem>> {
+        try {
+            val items = arrayListOf<ChannelItem>()
+            val res = SearchInfo.getInfo(NewPipe.getService(ServiceList.YouTube.serviceId),
+                NewPipe.getService(ServiceList.YouTube.serviceId)
+                    .searchQHFactory
+                    .fromQuery(query, listOf(YoutubeSearchQueryHandlerFactory.CHANNELS), ""))
+
+            if (res.relatedItems.isEmpty()) return Result.failure(Throwable())
+
+            for (i in 0 until res.relatedItems.size) {
+                val element = res.relatedItems[i]
+                if (element is ChannelInfoItem) {
+                    val url = element.url
+                    if (url.isBlank()) continue
+                    val thumb = element.thumbnails?.firstOrNull()?.url ?: ""
+                    val channel = ChannelItem(name = element.name, url = url, thumb = thumb)
+                    items.add(channel)
+                }
+            }
+            return Result.success(items)
+
+        }catch (e: Exception){
+            return Result.failure(e)
+        }
+    }
+
+    /**
+     * Validates a pasted channel link and reduces it to its canonical channel url (dropping any
+     * /videos, /shorts, … tab suffix). Returns a failure for anything that isn't a supported
+     * YouTube channel url, so unsupported links are never persisted.
+     */
+    fun normalizeChannelUrl(url: String): Result<String> {
+        return try {
+            val canonical = ServiceList.YouTube.channelLHFactory.fromUrl(url.trim()).url
+            if (canonical.isNullOrBlank()) Result.failure(Throwable("Unsupported channel url"))
+            else Result.success(canonical)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 
