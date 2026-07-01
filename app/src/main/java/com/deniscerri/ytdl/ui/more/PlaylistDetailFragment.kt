@@ -29,6 +29,8 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.PlaylistViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
+import com.deniscerri.ytdl.util.PlaybackCoordinator
+import com.deniscerri.ytdl.util.PlaybackQueueEntry
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -45,6 +47,7 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
     private lateinit var channelsViewModel: ChannelsViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var downloadCardViewModel: DownloadCardViewModel
+    private lateinit var playbackCoordinator: PlaybackCoordinator
     private lateinit var noResults: RelativeLayout
     private lateinit var mainActivity: MainActivity
     private var playlistId: Long = 0
@@ -68,6 +71,7 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
         channelsViewModel = ViewModelProvider(this)[ChannelsViewModel::class.java]
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
+        playbackCoordinator = ViewModelProvider(requireActivity())[PlaybackCoordinator::class.java]
         topAppBar.title = getString(R.string.playlists)
         viewLifecycleOwner.lifecycleScope.launch {
             playlist = withContext(Dispatchers.IO) { playlistViewModel.getPlaylist(playlistId) }
@@ -94,17 +98,18 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
 
         view.findViewById<Chip>(R.id.playAll).setOnClickListener { playFrom(0) }
 
-        parentFragmentManager.setFragmentResultListener(
-            PlayerBottomSheetDialog.PLAYLIST_TRANSITION_REQUEST,
-            viewLifecycleOwner
-        ) { _, bundle ->
-            if (bundle.getLong("playlistId") != playlistId) return@setFragmentResultListener
-            val index = bundle.getInt("index", 0)
-            playlistViewModel.setCursor(playlistId, index)
-            currentResults.getOrNull(index)?.let { markPlayed(it) }
-            playlist?.let {
-                viewLifecycleOwner.lifecycleScope.launch {
-                    playlistViewModel.prefetchWindow(it, currentEntries, index, channelsViewModel, downloadViewModel)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                playbackCoordinator.playlistTransitions.collect { transition ->
+                    if (transition.playlistId != playlistId) return@collect
+                    val index = transition.index
+                    playlistViewModel.setCursor(playlistId, index)
+                    currentResults.getOrNull(index)?.let { markPlayed(it) }
+                    playlist?.let {
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            playlistViewModel.prefetchWindow(it, currentEntries, index, channelsViewModel, downloadViewModel)
+                        }
+                    }
                 }
             }
         }
@@ -172,18 +177,18 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
         activeQueuedThroughIndex = index + entries.size - 1
         playlistViewModel.setCursor(playlistId, index)
         markPlayed(currentResults[index])
-        PlayerBottomSheetDialog.newInstance(entries, 0, playlistId)
-            .show(parentFragmentManager, PLAYER_TAG)
+        playbackCoordinator.startPlaylist(entries, 0, playlistId)
+        showPlayerSheet()
     }
 
-    private fun queueEntriesFrom(startIndex: Int): ArrayList<PlayerBottomSheetDialog.QueueEntry> {
+    private fun queueEntriesFrom(startIndex: Int): ArrayList<PlaybackQueueEntry> {
         val downloaded = homeAdapter.downloadedPaths
-        val queue = arrayListOf<PlayerBottomSheetDialog.QueueEntry>()
+        val queue = arrayListOf<PlaybackQueueEntry>()
         for (i in startIndex until currentResults.size) {
             val result = currentResults[i]
             val path = downloaded[result.url] ?: break
             queue.add(
-                PlayerBottomSheetDialog.QueueEntry(
+                PlaybackQueueEntry(
                     path = path,
                     title = result.title,
                     artist = result.author,
@@ -203,8 +208,7 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val newEntries = queueEntriesFrom(next)
         if (newEntries.isEmpty()) return
         activeQueuedThroughIndex = next + newEntries.size - 1
-        (parentFragmentManager.findFragmentByTag(PLAYER_TAG) as? PlayerBottomSheetDialog)
-            ?.appendQueueEntries(newEntries)
+        playbackCoordinator.appendQueueEntries(newEntries)
     }
 
     private fun attachItemTouchHelper() {
@@ -278,8 +282,12 @@ class PlaylistDetailFragment : Fragment(), HomeAdapter.OnItemClickListener {
         findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
     }
 
+    private fun showPlayerSheet() {
+        if (parentFragmentManager.findFragmentByTag(PlayerBottomSheetDialog.TAG) != null) return
+        PlayerBottomSheetDialog().show(parentFragmentManager, PlayerBottomSheetDialog.TAG)
+    }
+
     companion object {
-        private const val PLAYER_TAG = "playlistPlayer"
         private const val PLAYED_PREFS = "channel_played_ids"
         private const val PLAYED_KEY = "ids"
     }

@@ -347,8 +347,10 @@
     <string name="confirm_delete_sources_desc">Delete all the sources, permanently</string>
     <string name="channels">Channels</string>
     <string name="play">Play</string>
+    <string name="stop">Stop</string>
     <string name="close">Close</string>
     <string name="played">Played</string>
+    <string name="now_playing">Now playing</string>
     <string name="toggle_view">Toggle view</string>
     <string name="video_hidden">Hidden</string>
     <string name="show_hidden">Show hidden</string>

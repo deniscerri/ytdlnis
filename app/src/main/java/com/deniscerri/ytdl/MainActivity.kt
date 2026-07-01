@@ -18,6 +18,7 @@ import android.view.WindowInsets
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -33,8 +34,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -56,11 +59,15 @@ import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
+import com.deniscerri.ytdl.ui.more.PlayerBottomSheetDialog
 import com.deniscerri.ytdl.ui.more.PlaylistsFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
+import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
+import com.deniscerri.ytdl.util.PlaybackCoordinator
+import com.deniscerri.ytdl.util.PlaybackUiState
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -103,8 +110,10 @@ class MainActivity : BaseActivity() {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var settingsViewModel: SettingsViewModel
     private lateinit var downloadCardViewModel: DownloadCardViewModel
+    private lateinit var playbackCoordinator: PlaybackCoordinator
     private var navigationView: NavigationView? = null
     private var navigationBarView: NavigationBarView? = null
+    private var bottomNavigationVisible = true
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
@@ -122,6 +131,7 @@ class MainActivity : BaseActivity() {
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
         settingsViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(this)[DownloadCardViewModel::class.java]
+        playbackCoordinator = ViewModelProvider(this)[PlaybackCoordinator::class.java]
         preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         if (preferences.getBoolean("incognito", false)) {
@@ -148,6 +158,8 @@ class MainActivity : BaseActivity() {
                 )
                 val isImeVisible = windowInsetsCompat.isVisible(WindowInsetsCompat.Type.ime())
                 visibility = if (isImeVisible) View.GONE else View.VISIBLE
+                bottomNavigationVisible = !isImeVisible
+                updatePlayerAndNavigationConstraints()
                 view.onApplyWindowInsets(windowInsets)
             }
         }
@@ -289,6 +301,8 @@ class MainActivity : BaseActivity() {
             getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this@MainActivity)
         }
 
+        setupMiniPlayer()
+
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
@@ -317,12 +331,10 @@ class MainActivity : BaseActivity() {
 
 
     fun hideBottomNavigation(){
+        bottomNavigationVisible = false
+        updatePlayerAndNavigationConstraints()
         navigationBarView?.apply {
             if (this is BottomNavigationView){
-                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    bottomToTop = ConstraintLayout.LayoutParams.UNSET
-                    bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
-                }
                 this.animate()?.translationY(this.height.toFloat())?.setDuration(300)?.withEndAction {
                     this.visibility = View.GONE
                 }?.start()
@@ -347,12 +359,10 @@ class MainActivity : BaseActivity() {
     }
 
     fun showBottomNavigation(){
+        bottomNavigationVisible = true
+        updatePlayerAndNavigationConstraints()
         navigationBarView?.apply {
             if (this is BottomNavigationView){
-                this@MainActivity.findViewById<FragmentContainerView>(R.id.frame_layout).updateLayoutParams<ConstraintLayout.LayoutParams> {
-                    bottomToTop = R.id.bottomNavigationView
-                    bottomToBottom = ConstraintLayout.LayoutParams.UNSET
-                }
                 this.animate()?.translationY(0F)?.setDuration(300)?.withEndAction {
                     this.visibility = View.VISIBLE
                 }?.start()
@@ -366,6 +376,107 @@ class MainActivity : BaseActivity() {
             }
         }
 
+    }
+
+    private fun setupMiniPlayer() {
+        val miniPlayer = findViewById<View?>(R.id.player_mini_bar) ?: return
+        val title = miniPlayer.findViewById<TextView>(R.id.mini_player_title)
+        val artist = miniPlayer.findViewById<TextView>(R.id.mini_player_artist)
+        val thumb = miniPlayer.findViewById<ImageView>(R.id.mini_player_thumb)
+        val playPause = miniPlayer.findViewById<MaterialButton>(R.id.mini_player_play_pause)
+        val stop = miniPlayer.findViewById<MaterialButton>(R.id.mini_player_stop)
+
+        miniPlayer.setOnClickListener { showPlayerSheet() }
+        playPause.setOnClickListener { playbackCoordinator.playPause() }
+        stop.setOnClickListener { playbackCoordinator.stopAndClear() }
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                playbackCoordinator.state.collectLatest { state ->
+                    bindMiniPlayerState(miniPlayer, title, artist, thumb, playPause, state)
+                }
+            }
+        }
+    }
+
+    private fun bindMiniPlayerState(
+        miniPlayer: View,
+        title: TextView,
+        artist: TextView,
+        thumb: ImageView,
+        playPause: MaterialButton,
+        state: PlaybackUiState
+    ) {
+        miniPlayer.isVisible = state.hasMedia
+        updatePlayerAndNavigationConstraints()
+        if (!state.hasMedia) return
+
+        title.text = state.title ?: getString(R.string.now_playing)
+        artist.text = state.artist ?: ""
+        artist.isVisible = !state.artist.isNullOrBlank()
+        thumb.loadThumbnail(false, state.thumb ?: "")
+        playPause.contentDescription = getString(if (state.isPlaying) R.string.pause else R.string.play)
+        playPause.setIconResource(
+            if (state.isPlaying) R.drawable.exomedia_ic_pause_white
+            else R.drawable.exomedia_ic_play_arrow_white
+        )
+    }
+
+    private fun showPlayerSheet() {
+        if (!playbackCoordinator.state.value.hasMedia) return
+        if (supportFragmentManager.findFragmentByTag(PlayerBottomSheetDialog.TAG) != null) return
+        PlayerBottomSheetDialog().show(supportFragmentManager, PlayerBottomSheetDialog.TAG)
+    }
+
+    private fun updatePlayerAndNavigationConstraints() {
+        val frame = findViewById<FragmentContainerView?>(R.id.frame_layout) ?: return
+        val miniPlayer = findViewById<View?>(R.id.player_mini_bar)
+        val miniPlayerVisible = miniPlayer?.isVisible == true
+        val hasBottomNavigation = navigationBarView is BottomNavigationView
+        val hasNavigationRail = navigationBarView is NavigationRailView
+        val hasNavigationDrawer = navigationView != null
+
+        frame.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            if (miniPlayerVisible) {
+                bottomToTop = R.id.player_mini_bar
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            } else if (hasBottomNavigation && bottomNavigationVisible) {
+                bottomToTop = R.id.bottomNavigationView
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+        }
+
+        miniPlayer?.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            if (hasBottomNavigation && bottomNavigationVisible) {
+                bottomToTop = R.id.bottomNavigationView
+                bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                bottomToTop = ConstraintLayout.LayoutParams.UNSET
+                bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+
+            when {
+                hasNavigationRail && bottomNavigationVisible -> {
+                    startToStart = ConstraintLayout.LayoutParams.UNSET
+                    startToEnd = R.id.bottomNavigationView
+                }
+                hasNavigationRail -> {
+                    startToEnd = ConstraintLayout.LayoutParams.UNSET
+                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+                hasNavigationDrawer -> {
+                    startToStart = ConstraintLayout.LayoutParams.UNSET
+                    startToEnd = R.id.navigationView
+                }
+                else -> {
+                    startToEnd = ConstraintLayout.LayoutParams.UNSET
+                    startToStart = ConstraintLayout.LayoutParams.PARENT_ID
+                }
+            }
+        }
     }
 
     fun disableBottomNavigation(){

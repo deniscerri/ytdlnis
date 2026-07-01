@@ -1,0 +1,7 @@
+interface:
+  display_name: "Test Android Emulator"
+  short_description: "Clean emulator testing for Android apps"
+  default_prompt: "Use $test-android-emulator to run a clean emulator smoke test for this Android app and report screenshots, logcat, and findings."
+
+policy:
+  allow_implicit_invocation: true

@@ -43,6 +43,15 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <include
+            android:id="@+id/player_mini_bar"
+            layout="@layout/player_mini_bar"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/navigationView" />
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
             android:layout_width="wrap_content"

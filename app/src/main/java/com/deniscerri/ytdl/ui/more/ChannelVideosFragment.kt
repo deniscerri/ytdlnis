@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.PlaylistViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
+import com.deniscerri.ytdl.util.PlaybackCoordinator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.CancellationException
@@ -44,6 +45,7 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var downloadCardViewModel: DownloadCardViewModel
     private lateinit var playlistViewModel: PlaylistViewModel
+    private lateinit var playbackCoordinator: PlaybackCoordinator
     private lateinit var noResults: RelativeLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var mainActivity: MainActivity
@@ -104,6 +106,7 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
         channelsViewModel = ViewModelProvider(this)[ChannelsViewModel::class.java]
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
+        playbackCoordinator = ViewModelProvider(requireActivity())[PlaybackCoordinator::class.java]
         playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
         homeAdapter.onAddToPlaylist = { item ->
             PlaylistDialogs.showAddToPlaylistDialog(
@@ -148,8 +151,8 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
     private fun loadChannelVideos(channelUrl: String) {
         homeAdapter.onPlayFile = { item, path ->
             markPlayed(item)
-            PlayerBottomSheetDialog.newInstance(path, item.title, item.author, item.thumb)
-                .show(parentFragmentManager, "channelPlayer")
+            playbackCoordinator.startSingle(path, item.title, item.author, item.thumb)
+            showPlayerSheet()
         }
 
         lifecycleScope.launch {
@@ -320,8 +323,8 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
         val downloadedPath = homeAdapter.downloadedPaths[item.url]
         if (downloadedPath != null) {
             markPlayed(item)
-            PlayerBottomSheetDialog.newInstance(downloadedPath, item.title, item.author, item.thumb)
-                .show(parentFragmentManager, "channelPlayer")
+            playbackCoordinator.startSingle(downloadedPath, item.title, item.author, item.thumb)
+            showPlayerSheet()
             return
         }
         if (parentFragmentManager.findFragmentByTag("resultDetails") == null) {
@@ -341,6 +344,11 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
             bundle.putSerializable("type", downloadViewModel.getDownloadType(type, resultItem.url))
             findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
         }
+    }
+
+    private fun showPlayerSheet() {
+        if (parentFragmentManager.findFragmentByTag(PlayerBottomSheetDialog.TAG) != null) return
+        PlayerBottomSheetDialog().show(parentFragmentManager, PlayerBottomSheetDialog.TAG)
     }
 
     companion object {

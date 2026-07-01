@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="?attr/colorSurfaceContainerHigh"
+    android:clickable="true"
+    android:elevation="8dp"
+    android:focusable="true"
+    android:paddingStart="10dp"
+    android:paddingTop="6dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="6dp"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/mini_player_thumb"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:contentDescription="@string/now_playing"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/mini_player_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/now_playing"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/mini_player_artist"
+        app:layout_constraintEnd_toStartOf="@+id/mini_player_play_pause"
+        app:layout_constraintStart_toEndOf="@+id/mini_player_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_goneMarginStart="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="6dp" />
+
+    <TextView
+        android:id="@+id/mini_player_artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="@string/now_playing"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mini_player_play_pause"
+        app:layout_constraintStart_toStartOf="@+id/mini_player_title"
+        app:layout_constraintTop_toBottomOf="@+id/mini_player_title"
+        android:layout_marginEnd="6dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mini_player_play_pause"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:contentDescription="@string/pause"
+        app:icon="@drawable/exomedia_ic_pause_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/mini_player_stop"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/mini_player_stop"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:contentDescription="@string/stop"
+        app:icon="@drawable/baseline_stop_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
