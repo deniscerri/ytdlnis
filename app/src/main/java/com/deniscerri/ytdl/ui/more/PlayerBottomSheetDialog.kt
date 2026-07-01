@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,12 +22,16 @@ import com.deniscerri.ytdl.util.PlaybackService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.common.util.concurrent.ListenableFuture
+import kotlinx.parcelize.Parcelize
 
 class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
     private var controllerFuture: ListenableFuture<MediaController>? = null
     private var controller: MediaController? = null
     private var filePath: String? = null
+    private var playlistId: Long = 0
     private var playerView: PlayerView? = null
+    private var queueEntries: ArrayList<QueueEntry> = arrayListOf()
+    private var playerListener: Player.Listener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +45,9 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val path = arguments?.getString("path")
-        if (path.isNullOrBlank()) {
+        queueEntries = arguments?.getParcelableArrayList("queue") ?: arrayListOf()
+        playlistId = arguments?.getLong("playlistId", 0L) ?: 0L
+        if (path.isNullOrBlank() && queueEntries.isEmpty()) {
             dismiss()
             return
         }
@@ -75,9 +82,21 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
             controller = mediaController
             playerView?.player = mediaController
 
-            // If the service is already playing this exact track (e.g. reopened after minimizing),
-            // just attach to it; otherwise start it from the last saved position.
-            if (mediaController.currentMediaItem?.mediaId != path) {
+            if (queueEntries.isNotEmpty()) {
+                val savedIndex = positionPrefs()?.getInt(playlistIndexKey(), arguments?.getInt("startIndex", 0) ?: 0)
+                    ?: (arguments?.getInt("startIndex", 0) ?: 0)
+                val savedPosition = positionPrefs()?.getLong(playlistPositionKey(), 0L) ?: 0L
+                mediaController.setMediaItems(
+                    queueEntries.map { it.toMediaItem() },
+                    savedIndex.coerceIn(queueEntries.indices),
+                    savedPosition
+                )
+                addPlaylistListener(mediaController)
+                mediaController.prepare()
+                mediaController.play()
+            } else if (!path.isNullOrBlank() && mediaController.currentMediaItem?.mediaId != path) {
+                // If the service is already playing this exact track (e.g. reopened after minimizing),
+                // just attach to it; otherwise start it from the last saved position.
                 val item = MediaItem.Builder()
                     .setMediaId(path)
                     .setUri(FileUtil.playableUriForPath(path))
@@ -99,6 +118,7 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
         // the app does not dismiss the sheet, so playback keeps going in the service.
         savePosition()
         controller?.run {
+            playerListener?.let { removeListener(it) }
             stop()
             clearMediaItems()
         }
@@ -109,7 +129,6 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun savePosition() {
-        val path = filePath ?: return
         val c = controller ?: return
         val prefs = positionPrefs() ?: return
         val position = c.currentPosition
@@ -118,12 +137,61 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
         val finished = c.playbackState == Player.STATE_ENDED ||
             (duration > 0 && position >= duration - 1500)
         prefs.edit().apply {
-            if (finished || position <= 0) remove(path) else putLong(path, position)
+            if (queueEntries.isNotEmpty()) {
+                if (finished || position <= 0) {
+                    remove(playlistIndexKey())
+                    remove(playlistPositionKey())
+                } else {
+                    putInt(playlistIndexKey(), c.currentMediaItemIndex)
+                    putLong(playlistPositionKey(), position)
+                }
+            } else {
+                val path = filePath ?: return
+                if (finished || position <= 0) remove(path) else putLong(path, position)
+            }
         }.apply()
     }
 
     private fun positionPrefs() =
         context?.getSharedPreferences("channel_player_positions", Context.MODE_PRIVATE)
+
+    private fun playlistIndexKey() = "playlist_${playlistId}_index"
+    private fun playlistPositionKey() = "playlist_${playlistId}_position"
+
+    fun appendQueueEntries(entries: List<QueueEntry>) {
+        if (entries.isEmpty()) return
+        queueEntries.addAll(entries)
+        val mediaItems = entries.map { it.toMediaItem() }
+        controller?.run {
+            mediaItems.forEach { addMediaItem(it) }
+            if (playbackState == Player.STATE_ENDED || !isPlaying) {
+                prepare()
+                play()
+            }
+        }
+    }
+
+    private fun addPlaylistListener(mediaController: MediaController) {
+        val listener = object : Player.Listener {
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                val index = mediaController.currentMediaItemIndex
+                val entry = queueEntries.getOrNull(index)
+                val cursor = entry?.index ?: index
+                context?.getSharedPreferences("playlist_playback_cursor", Context.MODE_PRIVATE)
+                    ?.edit()?.putInt("playlist_${playlistId}_cursor", cursor)?.apply()
+                parentFragmentManager.setFragmentResult(
+                    PLAYLIST_TRANSITION_REQUEST,
+                    Bundle().apply {
+                        putLong("playlistId", playlistId)
+                        putInt("index", cursor)
+                        putString("url", entry?.url)
+                    }
+                )
+            }
+        }
+        playerListener = listener
+        mediaController.addListener(listener)
+    }
 
     /**
      * Title / channel / thumbnail shown on the lock screen and notification-shade media card
@@ -143,7 +211,33 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
         }.build()
     }
 
+    @Parcelize
+    data class QueueEntry(
+        val path: String,
+        val title: String? = null,
+        val artist: String? = null,
+        val thumb: String? = null,
+        val url: String? = null,
+        val index: Int = 0
+    ) : Parcelable {
+        fun toMediaItem(): MediaItem {
+            return MediaItem.Builder()
+                .setMediaId(path)
+                .setUri(FileUtil.playableUriForPath(path))
+                .setMediaMetadata(
+                    MediaMetadata.Builder().apply {
+                        if (!title.isNullOrBlank()) setTitle(title)
+                        if (!artist.isNullOrBlank()) setArtist(artist)
+                        if (!thumb.isNullOrBlank()) setArtworkUri(Uri.parse(thumb))
+                    }.build()
+                )
+                .build()
+        }
+    }
+
     companion object {
+        const val PLAYLIST_TRANSITION_REQUEST = "playlist_player_transition"
+
         fun newInstance(
             path: String,
             title: String? = null,
@@ -156,6 +250,20 @@ class PlayerBottomSheetDialog : BottomSheetDialogFragment() {
                     putString("title", title)
                     putString("artist", artist)
                     putString("thumb", thumb)
+                }
+            }
+        }
+
+        fun newInstance(
+            items: ArrayList<QueueEntry>,
+            startIndex: Int,
+            playlistId: Long
+        ): PlayerBottomSheetDialog {
+            return PlayerBottomSheetDialog().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList("queue", items)
+                    putInt("startIndex", startIndex)
+                    putLong("playlistId", playlistId)
                 }
             }
         }

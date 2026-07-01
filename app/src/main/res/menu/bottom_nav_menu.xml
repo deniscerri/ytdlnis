@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_downloads"
         android:id="@+id/historyFragment"/>
 
+    <item android:title="@string/playlists"
+        android:icon="@drawable/baseline_format_list_numbered_24"
+        android:id="@+id/playlistsFragment"/>
+
     <item android:title="@string/more"
         android:icon="@drawable/ic_more"
         android:id="@+id/moreFragment"/>
@@ -18,8 +22,4 @@
         android:visible="false"
         android:id="@+id/downloadQueueMainFragment"/>
 
-    <item android:title="@string/terminal"
-        android:icon="@drawable/ic_terminal"
-        android:visible="false"
-        android:id="@+id/terminalActivity"/>
 </menu>

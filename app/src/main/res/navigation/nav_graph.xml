@@ -53,6 +53,27 @@
             app:destination="@id/downloadsAlreadyExistDialog" />
     </fragment>
     <fragment
+        android:id="@+id/playlistsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.PlaylistsFragment"
+        android:label="@string/playlists"
+        tools:layout="@layout/fragment_playlists">
+        <action
+            android:id="@+id/action_playlistsFragment_to_playlistDetailFragment"
+            app:destination="@id/playlistDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistDetailFragment"
+        android:name="com.deniscerri.ytdl.ui.more.PlaylistDetailFragment"
+        android:label="@string/playlists"
+        tools:layout="@layout/fragment_playlist_detail">
+        <argument
+            android:name="playlistId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_playlistDetailFragment_to_downloadBottomSheetDialog"
+            app:destination="@id/downloadBottomSheetDialog" />
+    </fragment>
+    <fragment
         android:id="@+id/moreFragment"
         android:name="com.deniscerri.ytdl.ui.more.MoreFragment"
         android:label="More"
@@ -84,6 +105,9 @@
         <action
             android:id="@+id/action_moreFragment_to_channelsFragment"
             app:destination="@id/channelsFragment" />
+        <action
+            android:id="@+id/action_moreFragment_to_playlistsFragment"
+            app:destination="@id/playlistsFragment" />
     </fragment>
     <activity
         android:id="@+id/terminalActivity"

@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ChannelsViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.PlaylistViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.google.android.material.snackbar.Snackbar
@@ -42,6 +43,7 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
     private lateinit var channelsViewModel: ChannelsViewModel
     private lateinit var downloadViewModel: DownloadViewModel
     private lateinit var downloadCardViewModel: DownloadCardViewModel
+    private lateinit var playlistViewModel: PlaylistViewModel
     private lateinit var noResults: RelativeLayout
     private lateinit var progressBar: ProgressBar
     private lateinit var mainActivity: MainActivity
@@ -101,6 +103,17 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
         channelsViewModel = ViewModelProvider(this)[ChannelsViewModel::class.java]
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
+        playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
+        homeAdapter.onAddToPlaylist = { item ->
+            PlaylistDialogs.showAddToPlaylistDialog(
+                this,
+                item,
+                playlistViewModel,
+                channelsViewModel,
+                downloadViewModel,
+                lifecycleScope
+            )
+        }
 
         observeDownloadState()
         loadChannelVideos(channelUrl)

@@ -116,6 +116,16 @@
             app:summary="@string/concurrent_downloads_summary"
             app:title="@string/concurrent_downloads" />
 
+        <SeekBarPreference
+            android:defaultValue="3"
+            android:icon="@drawable/baseline_format_list_numbered_24"
+            android:max="10"
+            app:key="playlist_prefetch_count"
+            app:min="0"
+            app:showSeekBarValue="true"
+            app:summary="@string/playlist_prefetch_count_summary"
+            app:title="@string/playlist_prefetch_count" />
+
         <EditTextPreference
             android:icon="@drawable/ic_limitrate"
             app:key="limit_rate"

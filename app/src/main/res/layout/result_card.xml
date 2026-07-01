@@ -149,6 +149,23 @@
                     android:layout_marginHorizontal="5dp"
                     app:icon="@drawable/ic_play"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/add_to_playlist" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_to_playlist"
+                    style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    app:elevation="0dp"
+                    android:elevation="0dp"
+                    app:borderWidth="0dp"
+                    android:outlineProvider="none"
+                    android:visibility="gone"
+                    android:contentDescription="@string/add_to_playlist"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginHorizontal="5dp"
+                    app:icon="@drawable/baseline_format_list_numbered_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/download_music" />
 
                 <com.google.android.material.button.MaterialButton

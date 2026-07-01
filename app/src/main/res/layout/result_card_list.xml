@@ -105,6 +105,18 @@
                 android:contentDescription="@string/play"
                 app:icon="@drawable/ic_play"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/add_to_playlist"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_to_playlist"
+                style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:visibility="gone"
+                android:contentDescription="@string/add_to_playlist"
+                app:icon="@drawable/baseline_format_list_numbered_24"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/download_music"
                 app:layout_constraintTop_toTopOf="parent" />
 

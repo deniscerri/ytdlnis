@@ -14,6 +14,7 @@ import com.deniscerri.ytdl.database.dao.DownloadDao
 import com.deniscerri.ytdl.database.dao.HistoryDao
 import com.deniscerri.ytdl.database.dao.LogDao
 import com.deniscerri.ytdl.database.dao.ObserveSourcesDao
+import com.deniscerri.ytdl.database.dao.PlaylistDao
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.dao.SearchHistoryDao
 import com.deniscerri.ytdl.database.dao.TerminalDao
@@ -24,6 +25,8 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
+import com.deniscerri.ytdl.database.models.PlaylistEntryItem
+import com.deniscerri.ytdl.database.models.PlaylistItem
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
@@ -44,9 +47,11 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
         TerminalItem::class,
         ObserveSourcesItem::class,
         ChannelItem::class,
-        ChannelVideoCache::class
+        ChannelVideoCache::class,
+        PlaylistItem::class,
+        PlaylistEntryItem::class
    ],
-    version = 30,
+    version = 31,
     autoMigrations = [
         AutoMigration (from = 1, to = 2),
         AutoMigration (from = 2, to = 3),
@@ -79,7 +84,8 @@ import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
         // Adds the UNIQUE index on channels.url. The channels table only ever shipped in the
         // unreleased v28/v29 dev schema, and its single insert path already rejected duplicate
         // urls, so no existing database holds conflicting rows for the index to trip over.
-        AutoMigration(from = 29, to = 30)
+        AutoMigration(from = 29, to = 30),
+        AutoMigration(from = 30, to = 31)
     ]
 )
 abstract class DBManager : RoomDatabase(){
@@ -94,6 +100,7 @@ abstract class DBManager : RoomDatabase(){
     abstract val observeSourcesDao: ObserveSourcesDao
     abstract val channelsDao: ChannelsDao
     abstract val channelVideoCacheDao: ChannelVideoCacheDao
+    abstract val playlistDao: PlaylistDao
 
     enum class SORTING{
         DESC, ASC

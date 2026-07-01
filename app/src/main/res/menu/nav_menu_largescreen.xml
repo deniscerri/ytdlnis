@@ -9,6 +9,10 @@
         android:icon="@drawable/ic_downloads"
         android:checkable="true"
         android:id="@+id/historyFragment"/>
+    <item android:title="@string/playlists"
+        android:icon="@drawable/baseline_format_list_numbered_24"
+        android:checkable="true"
+        android:id="@+id/playlistsFragment"/>
     <item android:title="@string/terminal"
         android:icon="@drawable/ic_terminal"
         android:checkable="true"

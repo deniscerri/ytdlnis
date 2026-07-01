@@ -53,10 +53,13 @@ import com.deniscerri.ytdl.database.models.SearchSuggestionItem
 import com.deniscerri.ytdl.database.models.SearchSuggestionType
 import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
+import com.deniscerri.ytdl.database.viewmodel.ChannelsViewModel
 import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
+import com.deniscerri.ytdl.database.viewmodel.PlaylistViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
+import com.deniscerri.ytdl.ui.more.PlaylistDialogs
 import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
@@ -107,6 +110,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var historyViewModel : HistoryViewModel
     private lateinit var downloadCardViewModel : DownloadCardViewModel
+    private lateinit var playlistViewModel: PlaylistViewModel
+    private lateinit var channelsViewModel: ChannelsViewModel
 
     private var fragmentView: View? = null
     private var activity: Activity? = null
@@ -155,6 +160,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
         historyViewModel = ViewModelProvider(this)[HistoryViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
+        playlistViewModel = ViewModelProvider(this)[PlaylistViewModel::class.java]
+        channelsViewModel = ViewModelProvider(this)[ChannelsViewModel::class.java]
 
         downloadQueue = ArrayList()
 
@@ -184,6 +191,16 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 this,
                 requireActivity()
             )
+        homeAdapter.onAddToPlaylist = { item ->
+            PlaylistDialogs.showAddToPlaylistDialog(
+                this,
+                item,
+                playlistViewModel,
+                channelsViewModel,
+                downloadViewModel,
+                lifecycleScope
+            )
+        }
         recyclerView = view.findViewById(R.id.recyclerViewHome)
         recyclerView?.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
         recyclerView?.adapter = homeAdapter

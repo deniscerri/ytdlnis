@@ -47,6 +47,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
 
     // Urls already played. When set, the card shows a "Played" badge. Empty by default.
     val playedUrls = mutableSetOf<String>()
+    var onAddToPlaylist: ((ResultItem) -> Unit)? = null
 
     // When true, items render as compact list rows instead of large cards. Card layout (false)
     // is the default, so Home is unaffected.
@@ -118,6 +119,15 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         videoBtn.setTag(R.id.cancelDownload, "false")
         videoBtn.setOnClickListener { onItemClickListener.onButtonClick(video, DownloadType.video) }
         videoBtn.setOnLongClickListener{ onItemClickListener.onLongButtonClick(video, DownloadType.video); true}
+
+        val addToPlaylistBtn = card.findViewById<MaterialButton>(R.id.add_to_playlist)
+        if (onAddToPlaylist != null) {
+            addToPlaylistBtn.visibility = View.VISIBLE
+            addToPlaylistBtn.setOnClickListener { onAddToPlaylist?.invoke(video) }
+        } else {
+            addToPlaylistBtn.visibility = View.GONE
+            addToPlaylistBtn.setOnClickListener(null)
+        }
 
         // PLAY BUTTON (only for items with a local downloaded file) ---------
         val playBtn = card.findViewById<MaterialButton>(R.id.play_file)

@@ -56,6 +56,7 @@ import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
+import com.deniscerri.ytdl.ui.more.PlaylistsFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
@@ -183,6 +184,11 @@ class MainActivity : BaseActivity() {
                     R.id.downloadQueueMainFragment -> {
                         kotlin.runCatching {
                             (navHostFragment.childFragmentManager.primaryNavigationFragment!! as DownloadQueueMainFragment).scrollToActive()
+                        }
+                    }
+                    R.id.playlistsFragment -> {
+                        kotlin.runCatching {
+                            (navHostFragment.childFragmentManager.primaryNavigationFragment!! as PlaylistsFragment).scrollToTop()
                         }
                     }
                     R.id.moreFragment -> {

@@ -366,6 +366,17 @@
     <string name="invalid_channel_url">Not a valid channel URL</string>
     <string name="search_failed">Search failed</string>
     <string name="confirm_delete_channels_desc">Delete all channels, permanently</string>
+    <string name="playlists">Playlists</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="playlist_name">Playlist name</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="added_to_playlist">Added to playlist</string>
+    <string name="playlist_item_exists">Already in this playlist</string>
+    <string name="confirm_delete_playlists_desc">Delete all playlists, permanently. Downloaded files are kept.</string>
+    <string name="play_all">Play all</string>
+    <string name="playlist_item_downloading">Downloading this item</string>
+    <string name="playlist_prefetch_count">Playlist prefetch count</string>
+    <string name="playlist_prefetch_count_summary">Number of playlist items to keep downloaded ahead of playback</string>
     <string name="force_ipv4_desc">Make all connections with IPv4</string>
     <string name="force_ipv4">Force IPv4</string>
     <string name="copy_urls">Copy URLs</string>

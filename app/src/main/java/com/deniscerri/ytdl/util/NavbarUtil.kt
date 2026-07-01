@@ -25,6 +25,7 @@ object NavbarUtil {
     private var navItems = mapOf(
         "Home" to R.id.homeFragment,
         "History" to R.id.historyFragment,
+        "Playlists" to R.id.playlistsFragment,
         "Queue" to R.id.downloadQueueMainFragment,
         "Terminal" to R.id.terminalActivity,
         "More" to R.id.moreFragment
@@ -81,7 +82,7 @@ object NavbarUtil {
 
     private fun getNavBarPrefs(): List<String> {
         return settings
-            .getString("navigation_bar", "0,1,2,-3,-4")!!
+            .getString("navigation_bar", "0,1,2,3,-4")!!
             .split(",")
     }
 
