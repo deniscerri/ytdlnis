@@ -52,6 +52,7 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
     // When true, items render as compact list rows instead of large cards. Card layout (false)
     // is the default, so Home is unaffected.
     var useListLayout = false
+    var cardBodyClicksEnabled = true
 
     init {
         checkedItems = mutableSetOf()
@@ -190,16 +191,21 @@ class HomeAdapter(onItemClickListener: OnItemClickListener, activity: Activity) 
         }
 
         card.tag = "$videoURL##card"
-        card.setOnLongClickListener {
-            checkCard(card, video.id, video)
-            true
-        }
-        card.setOnClickListener {
-            if (card.isChecked || checkedItems.isNotEmpty()) {
+        if (cardBodyClicksEnabled) {
+            card.setOnLongClickListener {
                 checkCard(card, video.id, video)
-            }else{
-                onItemClickListener.onCardDetailsClick(video)
+                true
             }
+            card.setOnClickListener {
+                if (card.isChecked || checkedItems.isNotEmpty()) {
+                    checkCard(card, video.id, video)
+                }else{
+                    onItemClickListener.onCardDetailsClick(video)
+                }
+            }
+        } else {
+            card.setOnLongClickListener(null)
+            card.setOnClickListener(null)
         }
     }
 

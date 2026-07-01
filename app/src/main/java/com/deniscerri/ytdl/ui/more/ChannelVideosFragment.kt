@@ -95,6 +95,7 @@ class ChannelVideosFragment : Fragment(), HomeAdapter.OnItemClickListener {
 
         homeAdapter = HomeAdapter(this, mainActivity)
         homeAdapter.useListLayout = useListLayout
+        homeAdapter.cardBodyClicksEnabled = false
         recyclerView = view.findViewById(R.id.channel_videos_recyclerView)
         recyclerView.layoutManager = layoutManagerForMode()
         recyclerView.adapter = homeAdapter
