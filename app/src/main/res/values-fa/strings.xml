@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">کمترین کیفیت</string>
-    <string name="best_quality">بیشترین کیفیت</string>
+    <string name="worst_quality">720کمترین کیفیت</string>
+    <string name="best_quality">بیشتر1080ین کیفیت</string>
     <string name="remove_all">حذف همه</string>
     <string name="download_all">دانلود همه</string>
     <string name="settings">تنظیمات</string>
@@ -63,7 +63,7 @@
     <string name="show_download_card">نمایش کارت دانلود</string>
     <string name="ytld_update_success">ورژن جدید نصب شد</string>
     <string name="remove_results">پاک کردن نتایج</string>
-    <string name="search">جستجو</string>
+    <string name="search">جستجBTSو</string>
     <string name="ytdl_update_hint">نکته مفید هنگام دانلود آپدیت ها</string>
     <string name="search_hint">جستجو یا وارد کردن لینک</string>
     <string name="source_code">سورس کد</string>
