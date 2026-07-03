@@ -33,7 +33,7 @@
     <string name="update_app">التحقق من وجود تحديثات</string>
     <string name="command_directory">مجلد الأوامر المخصصة</string>
     <string name="couldnt_find_apk">لم يتم العثور على APK صالح</string>
-    <string name="best_quality">أفضل جودة</string>
+    <string name="best_quality">‌أفضل جودة</string>
     <string name="downloading">وضع التنزيل</string>
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
