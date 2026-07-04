@@ -284,4 +284,18 @@
     <string name="use_extra_commands_summary">لتحميلات الصوت / الفيديو. إضافة أوامر إضافية بجانب إعدادات الواجهة</string>
     <string name="current">الأمر الحالي</string>
     <string name="subtitle_format">صيغة الترجمة</string>
+    <string name="hide_thumbnails">إخفاء الصور المصغرة</string>
+    <string name="show_terminal">إظهار الطرفية في القائمة تاع المشاركة</string>
+    <string name="saved">محفوظ</string>
+    <string name="clear_saved">مسح المحفوظات</string>
+    <string name="save_for_later">حفظ التحميل حتان من بعد ؟</string>
+    <string name="write_description">حفظ الوصف</string>
+    <string name="write_description_summary">إنشاء ملف وصف</string>
+    <string name="extra_command">أمر زايد</string>
+    <string name="use_cookies">استعمال ملفات تعريف الارتباط</string>
+    <string name="embed_metadata">تضمين البيانات الوصفية</string>
+    <string name="embed_metadata_summary">تحليل وتضمين البيانات الوصفية في الملف</string>
+    <string name="update_formats_background">تحديث الصيغ في الخلفية</string>
+    <string name="auto_update_ytdlp">تحديث yt-dlp تلقائيا</string>
+    <string name="use_sponsorblock">إستعمال SponsorBlock</string>
 </resources>
