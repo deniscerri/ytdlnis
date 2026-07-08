@@ -18,9 +18,9 @@
     <string name="download_notification_channel_name">Fayl yükləmələri</string>
     <string name="download_notification_channel_description">Səs və video faylların yüklənilmə irəliləyişin göstərən bildiriş</string>
     <string name="you_are_in_latest_version">Ən son versiya işlədilir</string>
-    <string name="ytld_update_success">Yeni versiya quraşdırıldı</string>
-    <string name="ytdl_already_updating">Yeni versiya quraşdırılır</string>
-    <string name="ytdl_updating_started">Yeni versiya yüklənilir</string>
+    <string name="ytld_update_success">Yeni yt-dlp versiyası quraşdırıldı</string>
+    <string name="ytdl_already_updating">Yeni yt-dlp versiyası quraşdırılır</string>
+    <string name="ytdl_updating_started">Yeni yt-dlp versiyası yüklənilir</string>
     <string name="Remove">Təmizlə</string>
     <string name="ok">Oldu</string>
     <string name="cancel">Ləğv et</string>

@@ -459,8 +459,22 @@
     <string name="automatic_backup">هەڵگرتنی خۆکارانە</string>
     <string name="backup_path">شوێنی هەڵگرتن</string>
     <string name="potoken">نیشانەی PO</string>
-    <string name="video_compatible">ڤیدیۆی شیاو</string>
+    <string name="video_compatible">ڤیدیۆی گونجاو</string>
     <string name="visitor_data">داتای سەردانیکەر</string>
     <string name="preview_filename">ناوی پەڕگە پێشبینین بکە</string>
     <string name="preferred_format_size">قەبارەی فۆرماتی خوازراو</string>
+    <string name="regenerate">دووبارە دروستکردنەوە</string>
+    <string name="free_ratio">ڕێژەی سەربەست</string>
+    <string name="app_icon">وێنۆچکەی بەرنامە</string>
+    <string name="select_between_desc">مەودای هەڵبژاردنی بڕگەکان دیاری بکە</string>
+    <string name="web_client_po_token">کۆدی پشتڕاستکردنەوەی کڕیاری وێب</string>
+    <string name="no_keep_subs">سڕینەوەی فایلەکانی ژێرنووس دوای جێگیرکردن</string>
+    <string name="no_keep_subs_summary">دوای جێگیرکردن ، فایلی ژێرنووس مەهێڵەرەوە، کاتێک هەم Embed و هەمیش Write بەکاردێنیت</string>
+    <string name="video_compatible_summary">دووبارە کۆدڕێژیکردنەوەی ڤیدیۆکە بۆ گونجاندنی لەگەڵ ئەپەکانی تر</string>
+    <string name="no_free_space_warning">هیچ بۆشاییەکی بەتاڵ نییە بۆ ئەم ڕێکخستنە</string>
+    <string name="prefer_drc_audio">هەڵبژاردنی دەنگی DRC وەک لەپێشینە</string>
+    <string name="potoken_gvs">کۆدی پشتڕاستکردنەوەی سەرچاوە (سەر بە خزمەتگوزاری ڤیدیۆی گوگل)</string>
+    <string name="potoken_player">کۆدی پشتڕاستکردنەوەی سەرچاوە بۆ لێدەر</string>
+    <string name="potoken_subs">کۆدی پشتڕاستکردنەوەی سەرچاوە بۆ گەیشتن بە خزمەتگوزارییەکان</string>
+    <string name="get_data_sync_id">وەرگرتنی ناسنامەی هاوکاتکردنی دراوەکان</string>
 </resources>

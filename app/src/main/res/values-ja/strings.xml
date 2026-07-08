@@ -12,8 +12,8 @@
     <string name="failed_download">ファイルをダウンロードできませんでした</string>
     <string name="download_notification_channel_name">ファイルのダウンロード</string>
     <string name="you_are_in_latest_version">最新版を使用中です</string>
-    <string name="ytld_update_success">最新版がインストールされました</string>
-    <string name="ytdl_already_updating">新しいバージョンのインストール</string>
+    <string name="ytld_update_success">新しいyt-dlpバージョンのインストール完了</string>
+    <string name="ytdl_already_updating">新しいバージョンのyt-dlpをインストールしています</string>
     <string name="ok">OK</string>
     <string name="cancel">キャンセル</string>
     <string name="confirm_delete_history_desc">すべての履歴を完全に削除します</string>
@@ -62,7 +62,7 @@
     <string name="add_chapter">チャプターを追加</string>
     <string name="show_download_card">ダウンロードのオプションを表示</string>
     <string name="download_card_summary">ダウンロード前に設定を変更します。このオプションが無効なら、すぐにダウンロードを開始します</string>
-    <string name="ytdl_updating_started">新しいバージョンのダウンロード</string>
+    <string name="ytdl_updating_started">新しいyt-dlpバージョンのダウンロード中</string>
     <string name="you_are_going_to_delete_multiple_items">複数の項目を削除します</string>
     <string name="delete_file_too">この端末からファイルを削除</string>
     <string name="delete_files_too">この端末からファイルを削除</string>
@@ -520,4 +520,10 @@
     <string name="bundled">バンドル済み</string>
     <string name="installed">インストール済み</string>
     <string name="save_subdirectory_summary">メタデータタグに基づいてファイルをフォルダに保存する</string>
+    <string name="width">幅</string>
+    <string name="required">必須</string>
+    <string name="crop">トリミング</string>
+    <string name="aspect_ratio">アスペクト比</string>
+    <string name="height">高さ</string>
+    <string name="dimensions">寸法</string>
 </resources>

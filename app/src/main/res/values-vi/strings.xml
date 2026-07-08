@@ -17,9 +17,9 @@
     <string name="failed_download">Không thể tải xuống tệp</string>
     <string name="download_notification_channel_name">Tải xuống tệp</string>
     <string name="you_are_in_latest_version">Đang dùng phiên bản mới nhất</string>
-    <string name="ytld_update_success">Phiên bản mới được cài đặt</string>
-    <string name="ytdl_already_updating">Đang cài đặt phiên bản mới</string>
-    <string name="ytdl_updating_started">Đang tải phiên bản mới</string>
+    <string name="ytld_update_success">Phiên bản mới của yt-dlp được cài đặt</string>
+    <string name="ytdl_already_updating">Đang cài đặt phiên bản yt-dlp mới</string>
+    <string name="ytdl_updating_started">Đang tải phiên bản yt-dlp mới</string>
     <string name="Remove">Loại bỏ</string>
     <string name="ok">Xong</string>
     <string name="confirm_delete_history_desc">Xóa vĩnh viễn toàn bộ lịch sử</string>
@@ -521,4 +521,15 @@
     <string name="save_subdirectory">Lưu đến thư mục con</string>
     <string name="save_subdirectory_summary">Lưu tệp trong các thư mục dựa trên các thẻ siêu dữ liệu</string>
     <string name="install_downloaded_file">Cài đặt tệp đã tải xuống</string>
+    <string name="trim_filenames">Cắt bớt tên tệp</string>
+    <string name="website">Trang web</string>
+    <string name="playlist">Danh sách phát</string>
+    <string name="media_type">Loại phương tiện</string>
+    <string name="free_ratio">Tỷ lệ tự do</string>
+    <string name="aspect_ratio">Tỷ lệ khung hình</string>
+    <string name="dimensions">Kích thước</string>
+    <string name="x_offset">Độ lệch X</string>
+    <string name="y_offset">Độ lệch Y</string>
+    <string name="width">Chiều rộng</string>
+    <string name="height">Chiều cao</string>
 </resources>

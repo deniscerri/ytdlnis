@@ -19,7 +19,7 @@
     <string name="download_notification_channel_description">Ses ve video dosyalarının indirilirken ilerlemesini gösteren bildirim</string>
     <string name="you_are_in_latest_version">En son sürüm kullanılıyor</string>
     <string name="ytld_update_success">Yeni sürüm yüklendi</string>
-    <string name="ytdl_already_updating">Yeni sürüm yükleniyor</string>
+    <string name="ytdl_already_updating">Yeni sürüm kuruluyor</string>
     <string name="ytdl_updating_started">Yeni sürüm indiriliyor</string>
     <string name="Remove">Kaldır</string>
     <string name="ok">Tamam</string>
