@@ -532,4 +532,7 @@
     <string name="y_offset">Y Sürüşməsi</string>
     <string name="width">En</string>
     <string name="height">Uzunluq</string>
+    <string name="player_client_not_empty">Oynadıcı Qəbuledici etiketi boş olmamalıdır</string>
+    <string name="player_client_already_created">Oynadıcı Qəbuledici artıq yaradılıb</string>
+    <string name="write_atleast_one_potoken">Ən azı bir PO Token-i yazmalısınız</string>
 </resources>
