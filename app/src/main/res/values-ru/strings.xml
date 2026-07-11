@@ -531,4 +531,7 @@
     <string name="y_offset">Смещение Y</string>
     <string name="width">Ширина</string>
     <string name="height">Высота</string>
+    <string name="player_client_not_empty">Тег Player Client не должен быть пустым</string>
+    <string name="player_client_already_created">Player Client уже создан</string>
+    <string name="write_atleast_one_potoken">Вам нужно записать хотя бы один PO Token</string>
 </resources>
