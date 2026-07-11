@@ -531,4 +531,7 @@
     <string name="y_offset">الإزاحة العمودية</string>
     <string name="width">العرض</string>
     <string name="height">الارتفاع</string>
+    <string name="player_client_not_empty">العلامة تاع عميل المشغل مالازمش تكون فارغة</string>
+    <string name="player_client_already_created">تم إنشاء العميل تاع المشغل مسبقاً</string>
+    <string name="write_atleast_one_potoken">لازم تكتب رمز PO واحد على الأقل</string>
 </resources>
