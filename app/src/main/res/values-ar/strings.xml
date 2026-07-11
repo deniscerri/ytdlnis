@@ -532,4 +532,7 @@
     <string name="height">الارتفاع</string>
     <string name="crop_validation_exceeds_w">X+W يتجاوز %d</string>
     <string name="crop_validation_exceeds_h">Y+H يتجاوز %d</string>
+    <string name="player_client_not_empty">يجب ألا تكون علامة عميل المشغّل فارغة</string>
+    <string name="player_client_already_created">أُنشئ عميل المشغّل بالفعل</string>
+    <string name="write_atleast_one_potoken">يجب عليك كتابة رمز PO واحد على الأقل</string>
 </resources>
