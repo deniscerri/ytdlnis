@@ -38,9 +38,9 @@
     <string name="download_notification_channel_description">Notifica che mostra l\'avanzamento del download di file audio e video</string>
     <string name="download_notification_channel_name">Download dei file</string>
     <string name="you_are_in_latest_version">Stai utilizzando l\'ultima versione</string>
-    <string name="ytld_update_success">Nuova versione installata</string>
-    <string name="ytdl_already_updating">Installazione nuova versione</string>
-    <string name="ytdl_updating_started">Download nuova versione</string>
+    <string name="ytld_update_success">Nuova versione di yt-dlp installata</string>
+    <string name="ytdl_already_updating">Installazione nuova versione di yt-dlp</string>
+    <string name="ytdl_updating_started">Download nuova versione di yt-dlp</string>
     <string name="Remove">Rimuovi</string>
     <string name="ok">OK</string>
     <string name="cancel">Annulla</string>

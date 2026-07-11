@@ -17,7 +17,7 @@
     <string name="video_directory">Відео папка</string>
     <string name="search_hint">Пошук або вставте URL-адресу</string>
     <string name="updating">Оновлення</string>
-    <string name="ytdl_already_updating">Встановлення нової версії</string>
+    <string name="ytdl_already_updating">Встановлення нової версії yt-dlp</string>
     <string name="ytdl_update_hint">Корисна порада при завантаженні оновлень</string>
     <string name="source_code">Вихідний код</string>
     <string name="update_ytdl">Оновіть yt-dlp до нової версії</string>
@@ -31,9 +31,9 @@
     <string name="sponsorblock_nonmusic">Немузичні та нетематичні частини</string>
     <string name="sponsorblock_promos">Самореклама</string>
     <string name="adjust_video">Налаштування відео</string>
-    <string name="ytld_update_success">Нову версію встановлено</string>
+    <string name="ytld_update_success">Встановлено нову версію yt-dlp</string>
     <string name="ok">OK</string>
-    <string name="ytdl_updating_started">Завантаження нової версії</string>
+    <string name="ytdl_updating_started">Завантаження нової версії yt-dlp</string>
     <string name="Remove">Видалити</string>
     <string name="cancel">Скасувати</string>
     <string name="no_results">Немає результатів</string>

@@ -11,8 +11,8 @@
     <string name="failed_download">Не удалось скачать файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
     <string name="you_are_in_latest_version">Используется последняя версия</string>
-    <string name="ytld_update_success">Установлена новая версия</string>
-    <string name="ytdl_updating_started">Загрузка новой версии</string>
+    <string name="ytld_update_success">Установлена новая версия yt-dlp</string>
+    <string name="ytdl_updating_started">Загрузка новой версии yt-dlp</string>
     <string name="Remove">Удалить</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
@@ -72,7 +72,7 @@
     <string name="updating">Обновление</string>
     <string name="ytdl_update_hint">Полезный совет при загрузке обновлений</string>
     <string name="confirm_delete_history_desc">Удалить всю историю навсегда</string>
-    <string name="ytdl_already_updating">Установка новой версии</string>
+    <string name="ytdl_already_updating">Установка новой версии yt-dlp</string>
     <string name="command_directory">Пользовательская папка команд</string>
     <string name="save_thumb_summary">Сохраняет миниатюру в папку загрузки</string>
     <string name="limit_rate_summary">Максимальная скорость загрузки (в байтах в секунду), например, 50K или 4.2M</string>

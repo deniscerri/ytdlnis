@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="save_thumb_summary">Uloží miniatúru do priečinka stiahnutých súborov</string>
-    <string name="ytdl_already_updating">Inštaluje sa nová verzia</string>
+    <string name="ytdl_already_updating">Inštaluje sa nová verzia yt-dlp</string>
     <string name="cancel_task">Zrušiť úlohu</string>
     <string name="audio_quality">Kvalita zvuku</string>
     <string name="audio_format">Formát zvuku</string>
     <string name="music_directory">Audio priečinok</string>
     <string name="couldnt_find_apk">Nepodarilo sa nájsť vhodnú APK</string>
-    <string name="ytdl_updating_started">Sťahuje sa nová verzia</string>
+    <string name="ytdl_updating_started">Sťahuje sa nová verzia yt-dlp</string>
     <string name="command_download_notification_channel_description">Upozornenie zobrazujúce priebeh sťahovania pomocou yt-dlp príkazu</string>
     <string name="add_chapters">Kapitoly vo videách</string>
     <string name="aria2_summary">Použije aria2c ako sťahovač namiesto predvoleného</string>
@@ -57,7 +57,7 @@
     <string name="you_are_in_latest_version">Používate najnovšiu verziu</string>
     <string name="audio">Audio</string>
     <string name="add_chapters_summary">Označí YouTube / SponsorBlock segmenty ako kapitoly pre video</string>
-    <string name="ytld_update_success">Nová verzia nainštalovaná</string>
+    <string name="ytld_update_success">Nová verzia yt-dlp je nainštalovaná</string>
     <string name="no_results">Žiadne výsledky</string>
     <string name="best_quality">Najlepšia kvalita</string>
     <string name="embed_subs_summary">Pridá titulky do videa</string>

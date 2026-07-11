@@ -22,9 +22,9 @@
     <string name="update_ytdl">Perbarui yt-dlp ke versi baru</string>
     <string name="source_code">Kode sumber</string>
     <string name="search_hint">Telusuri atau sisipkan URL</string>
-    <string name="ytld_update_success">Versi yang baru terpasang</string>
-    <string name="ytdl_already_updating">Memasang versi yang baru</string>
-    <string name="ytdl_updating_started">Mengunduh versi yang baru</string>
+    <string name="ytld_update_success">Versi baru yt-dlp telah dipasang</string>
+    <string name="ytdl_already_updating">Memasang versi baru yt-dlp</string>
+    <string name="ytdl_updating_started">Mengunduh versi baru yt-dlp</string>
     <string name="Remove">Tiadakan</string>
     <string name="ok">Oke</string>
     <string name="cancel">Batalkan</string>
