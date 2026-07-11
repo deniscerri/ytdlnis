@@ -36,7 +36,7 @@ interface DownloadDao {
     fun getPausedDownloadsList() : List<DownloadItem>
 
     @RewriteQueriesToDropUnusedColumns
-    @Query("SELECT * FROM downloads WHERE status = 'Processing'")
+    @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY queueOrder, id")
     fun getProcessingDownloads() : PagingSource<Int, DownloadItemConfigureMultiple>
 
     @Query("SELECT id FROM downloads WHERE status = 'Processing'")
@@ -81,7 +81,7 @@ interface DownloadDao {
     fun getFirstProcessingDownloadFlow() : Flow<DownloadItem?>
 
 
-    @Query("SELECT * FROM downloads WHERE status = 'Processing'")
+    @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY queueOrder, id")
     fun getProcessingDownloadsList() : List<DownloadItem>
 
     @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
@@ -118,7 +118,7 @@ interface DownloadDao {
     fun getActiveAndQueuedDownloads() : Flow<List<DownloadItem>>
 
     @RewriteQueriesToDropUnusedColumns
-    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY id")
+    @Query("SELECT * FROM downloads WHERE status='Queued' ORDER BY queueOrder, id")
     fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT format FROM downloads WHERE status='Queued'")
@@ -127,7 +127,7 @@ interface DownloadDao {
     @Query("""
         SELECT * FROM downloads 
         WHERE status in ('Queued', 'Scheduled') AND downloadStartTime <= :currentTime 
-        ORDER BY downloadStartTime, id
+        ORDER BY downloadStartTime, queueOrder, id
         LIMIT 10
     """)
     fun getQueuedScheduledDownloadsUntil(currentTime: Long) : Flow<List<DownloadItem>>
@@ -140,7 +140,7 @@ interface DownloadDao {
                 WHEN id in (:priorityItems) THEN 0
                 ELSE 1
             END,
-            downloadStartTime, id
+            downloadStartTime, queueOrder, id
         LIMIT 10
     """)
     fun getQueuedScheduledDownloadsUntilWithPriority(currentTime: Long, priorityItems: List<Long>) : Flow<List<DownloadItem>>
@@ -151,7 +151,7 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id")
     fun getScheduledDownloadsList() : List<DownloadItem>
 
-    @Query("SELECT id FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, id")
+    @Query("SELECT id FROM downloads WHERE status='Queued' ORDER BY downloadStartTime, queueOrder, id")
     fun getQueuedDownloadsListIDs() : List<Long>
 
     @RewriteQueriesToDropUnusedColumns
@@ -327,58 +327,79 @@ interface DownloadDao {
     @Query("Update downloads SET status='Saved' WHERE status='Processing'")
     suspend fun updateProcessingtoSavedStatus()
 
-    @Transaction
-    suspend fun putAtTopOfTheQueue(existingIDs: List<Long>){
-        val downloads = getQueuedDownloadsListIDs()
-        val newIDs = downloads.sortedBy { it }.take(existingIDs.size)
+    @Query("SELECT COALESCE(MAX(queueOrder), 0) FROM downloads where status='Queued'")
+    suspend fun getLastQueueOrder() : Int
 
-        resetScheduleTimeForItems(existingIDs)
-        existingIDs.forEach { updateDownloadID(it, -it) }
-        downloads.filter { !existingIDs.contains(it) }.toMutableList().apply {
-            this.reverse()
-            this.forEach {
-                updateDownloadID(it, it + existingIDs.size)
-            }
-        }
+    @Query("SELECT COALESCE(MIN(queueOrder), 0) FROM downloads where status='Queued'")
+    suspend fun getFirstQueueOrder() : Int
 
-        existingIDs.forEachIndexed { idx, it ->
-            updateDownloadID(-it, newIDs[idx])
-        }
-    }
+    @Query("SELECT queueOrder FROM downloads where id=:id")
+    suspend fun getQueueOrder(id: Long) : Int
 
-    @Transaction
-    suspend fun putAtBottomOfTheQueue(existingIDs: List<Long>){
-        val downloads = getQueuedDownloadsListIDs()
-        val newIDs = downloads.sortedByDescending { it }.take(existingIDs.size)
+    @Query("UPDATE downloads set queueOrder = queueOrder + 1 WHERE id=:id")
+    suspend fun shiftQueueOrderDownForDownload(id: Long)
 
-        resetScheduleTimeForItems(existingIDs)
-        existingIDs.forEach { updateDownloadID(it, -it) }
-        downloads.filter { !existingIDs.contains(it) }.toMutableList().apply {
-            this.reverse()
-            this.forEach {
-                updateDownloadID(it, it + existingIDs.size)
-            }
-        }
+    @Query("UPDATE downloads set queueOrder = queueOrder - 1 WHERE id=:id")
+    suspend fun shiftQueueOrderUpForDownload(id: Long)
 
-        existingIDs.forEachIndexed { idx, it ->
-            updateDownloadID(-it, newIDs[idx])
-        }
-    }
+    @Query("UPDATE downloads set queueOrder=:queueOrder WHERE id=:id")
+    suspend fun updateQueueOrder(queueOrder: Int, id: Long)
 
     @Transaction
     suspend fun reverseProcessingDownloads() {
         val items = getProcessingDownloadsList()
-        val newIDs = items.reversed().map { it.id }
-        items.forEach { updateDownloadID(it.id, -(it.id)) }
-
-        items.forEachIndexed { idx, it ->
-            updateDownloadID(-(it.id), newIDs[idx])
-            updateDownloadRowNumber(newIDs[idx], items.size - idx)
+        var idx = 0
+        items.reversed().forEach {
+           updateQueueOrder(idx, it.id)
+           idx++
         }
     }
 
-    @Query("Update downloads set id=:newId where id=:id")
-    suspend fun updateDownloadID(id: Long, newId: Long)
+    @Transaction
+    suspend fun putAtTopOfQueue(ids: List<Long>) {
+        val firstQueueOrder = getFirstQueueOrder()
+
+        val downloads = getQueuedDownloadsListIDs()
+        resetScheduleTimeForItems(ids)
+
+        downloads.filter { !ids.contains(it) }.forEach {
+            shiftQueueOrderDownForDownload(it)
+        }
+        ids.forEach { it ->
+            updateQueueOrder(firstQueueOrder, it)
+        }
+    }
+
+    @Transaction
+    suspend fun putAtBottomOfQueue(ids: List<Long>) {
+        val lastQueueOrder = getLastQueueOrder()
+
+        val downloads = getQueuedDownloadsListIDs()
+        resetScheduleTimeForItems(ids)
+
+        downloads.filter { !ids.contains(it) }.forEach {
+            shiftQueueOrderUpForDownload(it)
+        }
+        ids.forEach { it ->
+            updateQueueOrder(lastQueueOrder, it)
+        }
+    }
+
+    @Transaction
+    suspend fun putQueueDownloadAtPosition(mutableIds: MutableList<Long>, startIdx: Int, endIdx: Int) {
+        val baseOrder = if (startIdx == 0) {
+            0
+        } else {
+            val previousItemId = mutableIds[startIdx - 1]
+            getQueueOrder(previousItemId) + 1
+        }
+
+        for (i in startIdx..endIdx) {
+            val idToUpdate = mutableIds[i]
+            val newOrder = baseOrder + (i - startIdx)
+            updateQueueOrder(newOrder, idToUpdate)
+        }
+    }
 
     @Query("Update downloads set rowNumber=:newNr where id=:id")
     suspend fun updateDownloadRowNumber(id: Long, newNr: Int)

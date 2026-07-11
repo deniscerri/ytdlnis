@@ -534,4 +534,7 @@
     <string name="y_offset">Y Offset</string>
     <string name="width">Width</string>
     <string name="height">Height</string>
+    <string name="player_client_not_empty">Player Client tag shouldn\'t be empty</string>
+    <string name="player_client_already_created">Player Client is already created</string>
+    <string name="write_atleast_one_potoken">You need to write at least one PO Token</string>
 </resources>

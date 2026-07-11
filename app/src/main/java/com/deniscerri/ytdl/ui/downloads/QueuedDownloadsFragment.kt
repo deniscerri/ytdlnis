@@ -431,13 +431,17 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
 
     override fun onMoveQueuedItemToTop(itemID: Long) {
         lifecycleScope.launch {
-            downloadViewModel.putAtTopOfQueue(listOf(itemID))
+            withContext(Dispatchers.IO) {
+                downloadViewModel.putAtTopOfQueue(listOf(itemID))
+            }
         }
     }
 
     override fun onMoveQueuedItemToBottom(itemID: Long) {
         lifecycleScope.launch {
-            downloadViewModel.putAtBottomOfQueue(listOf(itemID))
+            withContext(Dispatchers.IO) {
+                downloadViewModel.putAtBottomOfQueue(listOf(itemID))
+            }
         }
     }
 

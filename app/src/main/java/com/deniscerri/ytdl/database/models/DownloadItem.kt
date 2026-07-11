@@ -47,5 +47,7 @@ data class DownloadItem(
     var incognito: Boolean = false,
     @ColumnInfo(defaultValue = "[]")
     var availableSubtitles: List<String> = listOf(),
-    var rowNumber: Int = 0
+    var rowNumber: Int = 0,
+    @ColumnInfo(defaultValue = "0")
+    var queueOrder: Int = 0
 ) : Parcelable

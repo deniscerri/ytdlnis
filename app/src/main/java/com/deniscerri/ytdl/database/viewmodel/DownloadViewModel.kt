@@ -7,6 +7,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Parcelable
 import android.util.DisplayMetrics
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -859,69 +860,32 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         repository.startDownloadWorker(emptyList(), application)
     }
 
-    suspend fun putAtTopOfQueue(ids: List<Long>) = CoroutineScope(Dispatchers.IO).launch{
-        val downloads = dao.getQueuedDownloadsListIDs()
-        val lastID = ids.maxOf { it }
-        ids.forEach { dao.updateDownloadID(it, -it) }
-        val newIDs = downloads.take(ids.size)
+    suspend fun putAtTopOfQueue(ids: List<Long>) {
+        dao.putAtTopOfQueue(ids)
+    }
 
-        //other ids that need to move around
-        val takenPositions = mutableListOf<Long>()
-        downloads.filter { !ids.contains(it) && it < lastID }.toMutableList().apply {
-            this.reverse()
-            this.forEach { dID ->
-                val newID = downloads.last { !newIDs.contains(it) && !takenPositions.contains(it) && it <= lastID }
-                takenPositions.add(newID)
-                dao.updateDownloadID(dID, newID)
-            }
-        }
-        ids.forEachIndexed { idx, it ->
-            dao.updateDownloadID(-it, newIDs[idx])
-        }
+    suspend fun putAtBottomOfQueue(ids: List<Long>) {
+        dao.putAtBottomOfQueue(ids)
     }
 
 
-    suspend fun putAtBottomOfQueue(ids: List<Long>) = CoroutineScope(Dispatchers.IO).launch{
-        val downloads = dao.getQueuedDownloadsListIDs()
-        ids.forEach { dao.updateDownloadID(it, -it)}
-        val newIDs = downloads.takeLast(ids.size)
+    fun putAtPosition(currentId: Long, targetId: Long) = CoroutineScope(Dispatchers.IO).launch {
+        if (currentId == targetId) return@launch
 
-        //other ids that need to move around
-        val takenPositions = mutableListOf<Long>()
-        for (dID in downloads.filter { !ids.contains(it) }){
-            val newID = downloads.first { !newIDs.contains(it) && !takenPositions.contains(it) }
-            takenPositions.add(newID)
-            dao.updateDownloadID(dID, newID)
-        }
+        val orderedIds = dao.getQueuedDownloadsListIDs()
+        val currentIndex = orderedIds.indexOf(currentId)
+        val targetIndex = orderedIds.indexOf(targetId)
+        if (currentIndex == -1 || targetIndex == -1) return@launch
 
-        ids.toMutableList().apply {
-            this.reverse()
-            this.forEachIndexed { idx, it ->
-                dao.updateDownloadID(-it, newIDs[idx])
-            }
-        }
-    }
+        val mutableIds = orderedIds.toMutableList()
+        mutableIds.removeAt(currentIndex)
+        mutableIds.add(targetIndex, currentId)
 
+        //Figure out the bounds of what actually moved to optimize DB writes
+        val startIdx = minOf(currentIndex, targetIndex)
+        val endIdx = maxOf(currentIndex, targetIndex)
 
-    fun putAtPosition(current: Long, id: Long) = CoroutineScope(Dispatchers.IO).launch {
-        val downloads = dao.getQueuedDownloadsListIDs()
-        dao.updateDownloadID(current, -current)
-
-        if (current > id){
-            downloads.filter { it in id until current }.toMutableList().apply {
-                this.reverse()
-                this.forEach { dID ->
-                    val index = downloads.indexOf(dID)
-                    dao.updateDownloadID(dID, downloads[index + 1])
-                }
-            }
-        }else{
-            for (dID in downloads.filter { it in (current + 1)..id }){
-                val index = downloads.indexOf(dID)
-                dao.updateDownloadID(dID, downloads[index - 1])
-            }
-        }
-        dao.updateDownloadID(-current, id)
+        dao.putQueueDownloadAtPosition(mutableIds, startIdx, endIdx)
     }
 
     fun reQueueDownloadItems(items: List<Long>) = viewModelScope.launch(Dispatchers.IO) {
@@ -960,6 +924,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             repository.getActiveAndQueuedDownloads()
         }
 
+        var lastQueueOrder = withContext(Dispatchers.IO) {
+            dao.getLastQueueOrder()
+        }
+
         items.forEachIndexed { idx, it ->
             if (it.downloadStartTime > 0) {
                 it.status = DownloadRepository.Status.Scheduled.toString()
@@ -969,6 +937,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             if (it.rowNumber == 0 && items.size > 1) {
                 it.rowNumber = idx + 1
             }
+            it.queueOrder = lastQueueOrder + 1
+            lastQueueOrder++
 
             //CHECK DUPLICATES
             var isDuplicate = false

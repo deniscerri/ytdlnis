@@ -22,5 +22,6 @@ data class DownloadItemSimple(
     var type: DownloadType,
     @ColumnInfo(defaultValue = "0")
     var downloadStartTime: Long,
-    var incognito: Boolean = false
+    var incognito: Boolean = false,
+    var queueOrder: Int = 0
 )

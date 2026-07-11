@@ -232,8 +232,6 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         notifyDataSetChanged()
     }
 
-
-
     private fun checkCard(card: MaterialCardView, itemID: Long, position: Int) {
         if (card.isChecked) {
             card.strokeWidth = 0
@@ -265,7 +263,7 @@ class QueuedDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
             }
 
             override fun areContentsTheSame(oldItem: DownloadItemSimple, newItem: DownloadItemSimple): Boolean {
-                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb
+                return oldItem.id == newItem.id && oldItem.title == newItem.title && oldItem.author == newItem.author && oldItem.thumb == newItem.thumb && oldItem.queueOrder == newItem.queueOrder
             }
         }
     }

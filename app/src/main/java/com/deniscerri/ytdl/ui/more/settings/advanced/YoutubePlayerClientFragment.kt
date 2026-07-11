@@ -213,17 +213,17 @@ class YoutubePlayerClientFragment : Fragment(), YoutubePlayerClientAdapter.OnIte
         okBtn.setOnClickListener {
             val titleVal = title.editText!!.text.toString()
             if (titleVal.isBlank()) {
-                title.error = "Player Client tag shouldn't be empty"
+                title.error = getString(R.string.player_client_not_empty)
                 return@setOnClickListener
             }
 
             if(existingConfigs.any { it2 -> it2.playerClient == titleVal && it2.enabled } && ( currentValue == null || currentValue.playerClient != titleVal )) {
-                title.error = "Player Client is already created"
+                title.error = getString(R.string.player_client_already_created)
                 return@setOnClickListener
             }
 
             if (useOnlyPOToken.isChecked && (poTokenInputs.filter { it.tag.toString().startsWith("potoken") }.all { it.editText!!.text.isBlank() })) {
-                poTokenInputs.first().error = "You need to write at least one PO Token"
+                poTokenInputs.first().error = getString(R.string.write_atleast_one_potoken)
                 return@setOnClickListener
             }
 
