@@ -534,4 +534,8 @@
     <string name="player_client_not_empty">العلامة تاع عميل المشغل مالازمش تكون فارغة</string>
     <string name="player_client_already_created">تم إنشاء العميل تاع المشغل مسبقاً</string>
     <string name="write_atleast_one_potoken">لازم تكتب رمز PO واحد على الأقل</string>
+    <string name="version_ready_to_download">النسخة %s راهي جاهزة للتنزيل</string>
+    <string name="package_version_ready_to_download">الحزمة %1$s مع نسخة %2$s راهي جاهزة للتنزيل</string>
+    <string name="tap_to_see_changes_and_install">اضغط باش تشوف التغييرات والتثبيت</string>
+    <string name="view">عرض</string>
 </resources>
