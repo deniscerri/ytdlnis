@@ -535,4 +535,8 @@
     <string name="player_client_not_empty">يجب ألا تكون علامة عميل المشغّل فارغة</string>
     <string name="player_client_already_created">أُنشئ عميل المشغّل بالفعل</string>
     <string name="write_atleast_one_potoken">يجب عليك كتابة رمز PO واحد على الأقل</string>
+    <string name="version_ready_to_download">النسخة %s جاهزة للتنزيل</string>
+    <string name="package_version_ready_to_download">الحزمة %1$s مع نسخة %2$s جاهزة للتنزيل</string>
+    <string name="tap_to_see_changes_and_install">اضغط لرؤية التغييرات والتثبيت</string>
+    <string name="view">عرض</string>
 </resources>
