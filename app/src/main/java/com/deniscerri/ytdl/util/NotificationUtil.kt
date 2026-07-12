@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.util
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
@@ -15,6 +16,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.FileProvider
@@ -820,6 +822,58 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(QUERY_PROCESS_FINISHED_NOTIFICATION_ID, notificationBuilder.build())
     }
 
+    @SuppressLint("MissingPermission")
+    fun showNewAppUpdate(version: String) {
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+
+        val intent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.homeFragment)
+            .createPendingIntent()
+
+        notificationBuilder
+            .setContentTitle(resources.getString(R.string.version_ready_to_download, version))
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentIntent(intent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+
+        notificationManager.notify(NEW_APP_UPDATE_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
+    @SuppressLint("MissingPermission")
+    fun showNewPackageUpdate(packageName: String, version: String) {
+        val notificationBuilder = getBuilder(DOWNLOAD_MISC_CHANNEL_ID)
+
+        val intent = NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.nav_graph)
+            .setDestination(R.id.homeFragment)
+            .createPendingIntent()
+
+        notificationBuilder
+            .setContentTitle(resources.getString(R.string.package_version_ready_to_download, packageName, version))
+            .setSmallIcon(R.drawable.ic_launcher_foreground_large)
+            .setLargeIcon(
+                BitmapFactory.decodeResource(
+                    resources,
+                    R.drawable.ic_launcher_foreground_large
+                )
+            )
+            .setContentIntent(intent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .clearActions()
+
+        notificationManager.notify(NEW_PACKAGE_UPDATE_NOTIFICATION_ID, notificationBuilder.build())
+    }
+
     private fun isNotificationChannelEnabled(channelId: String?): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!TextUtils.isEmpty(channelId)) {
@@ -850,6 +904,8 @@ class NotificationUtil(var context: Context) {
         const val QUERY_PROCESS_FINISHED_NOTIFICATION_ID =      80000
         const val DOWNLOAD_RUNNING_NOTIFICATION_ID =            90000
         const val DOWNLOAD_TERMINAL_RUNNING_NOTIFICATION_ID =   99000
+        const val NEW_APP_UPDATE_NOTIFICATION_ID =              99900
+        const val NEW_PACKAGE_UPDATE_NOTIFICATION_ID =          99990
 
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0

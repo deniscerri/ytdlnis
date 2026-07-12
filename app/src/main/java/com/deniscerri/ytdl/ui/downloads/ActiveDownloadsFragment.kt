@@ -31,7 +31,6 @@ import com.deniscerri.ytdl.ui.adapter.ActiveDownloadAdapter
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
-import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator

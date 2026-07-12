@@ -11,7 +11,7 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.TerminalDao
 import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.work.TerminalDownloadWorker
+import com.deniscerri.ytdl.work.download.TerminalDownloadWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

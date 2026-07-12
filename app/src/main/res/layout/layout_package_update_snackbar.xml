@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="?attr/colorTertiaryContainer"
+    app:cardBackgroundColor="?attr/colorTertiaryContainer">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="12dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
+
+        <!-- Circular Indicator Container matching App Palette -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="?attr/colorTertiary"
+            android:layout_marginEnd="14dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/stat_sys_download_done"
+                app:tint="?attr/colorPrimaryContainer" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/newVersionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/package_version_ready_to_download"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_update_details"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tap_to_see_changes_and_install"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                android:layout_marginTop="1dp" />
+        </LinearLayout>
+
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_close_update"
+            style="@style/Widget.Material3.Button.IconButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            app:icon="@drawable/baseline_close_24"
+            app:iconTint="?attr/colorTertiary"
+            android:fontFamily="sans-serif-medium"
+            android:paddingHorizontal="12dp"
+            app:rippleColor="?attr/colorTertiaryContainer" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

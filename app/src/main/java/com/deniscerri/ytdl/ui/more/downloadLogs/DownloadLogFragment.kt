@@ -24,17 +24,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.LogViewModel
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
-import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
-import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

@@ -1,7 +1,7 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.background
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -13,23 +13,28 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import java.io.File
 
-
 class CleanUpLeftoverDownloads(
     private val context: Context,
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
-        val notificationUtil = NotificationUtil(App.instance)
+        val notificationUtil = NotificationUtil(App.Companion.instance)
         val id = System.currentTimeMillis().toInt()
 
         val notification = notificationUtil.createDeletingLeftoverDownloadsNotification()
         if (Build.VERSION.SDK_INT >= 33) {
-            setForegroundAsync(ForegroundInfo(id, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
+            setForegroundAsync(
+                ForegroundInfo(
+                    id,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                )
+            )
         }else{
             setForegroundAsync(ForegroundInfo(id, notification))
         }
 
-        val dbManager = DBManager.getInstance(context)
+        val dbManager = DBManager.Companion.getInstance(context)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         downloadRepo.deleteCancelled()
         downloadRepo.deleteErrored()

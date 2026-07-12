@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.download
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -29,12 +29,15 @@ import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
+import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
+import com.deniscerri.ytdl.work.isRunning
+import com.deniscerri.ytdl.work.setForegroundSafely
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

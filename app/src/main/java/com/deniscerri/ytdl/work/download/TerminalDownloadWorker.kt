@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.download
 
 import android.app.PendingIntent
 import android.content.Context
@@ -112,7 +112,7 @@ class TerminalDownloadWorker(
         )
 
 
-        kotlin.runCatching {
+        runCatching {
             if (logDownloads){
                 runBlocking {
                     logItem.id = logRepo.insert(logItem)

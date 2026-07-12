@@ -1,7 +1,7 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.background
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
@@ -10,19 +10,19 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.work.setForegroundSafely
 import kotlinx.coroutines.runBlocking
 
-
-class UpdateMultipleDownloadsDataWorker(private val context: Context,workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
+class UpdateMultipleDownloadsDataWorker(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val workNotif = NotificationUtil(App.instance).createDataUpdateNotification()
+        val workNotif = NotificationUtil(App.Companion.instance).createDataUpdateNotification()
 
         return ForegroundInfo(
             2000000000,
             workNotif,
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
             } else {
                 0
             },
@@ -31,11 +31,11 @@ class UpdateMultipleDownloadsDataWorker(private val context: Context,workerParam
 
 
     override suspend fun doWork(): Result {
-        val dbManager = DBManager.getInstance(context)
+        val dbManager = DBManager.Companion.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao
         val commandTemplateDao = dbManager.commandTemplateDao
-        val resultRepo = ResultRepository(resDao,commandTemplateDao, context)
+        val resultRepo = ResultRepository(resDao, commandTemplateDao, context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()
 
         setForegroundSafely()

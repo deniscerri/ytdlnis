@@ -89,13 +89,7 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         recyclerView.adapter = listAdapter
         recyclerView.enableFastScroll()
 
-        packages = listOf(
-            PackageItem("Python", Python),
-            PackageItem("FFmpeg", FFmpeg),
-            PackageItem("NodeJS", NodeJS),
-            PackageItem("Deno", Deno),
-            PackageItem("Aria2c", Aria2c)
-        )
+        packages = RuntimeManager.packages
         RuntimeManager.getInstance().assertInit()
         listAdapter.submitList(packages)
     }
@@ -197,79 +191,6 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
 
     override fun onDownloadReleaseClick(item: PackageBase.PackageRelease) {
         bottomSheet?.dismiss()
-
-        var positiveButton: Button? = null
-        val updateDialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
-            .setMessage(item.body)
-            .setIcon(R.drawable.ic_update_app)
-            .setNegativeButton(requireContext().getString(R.string.cancel)) { _: DialogInterface?, _: Int ->
-                tmpDownloadJob?.cancel()
-            }
-            .setPositiveButton(requireContext().getString(R.string.download), null)
-        val view = updateDialog.show()
-        val textView = view.findViewById<TextView>(android.R.id.message)
-        textView!!.movementMethod = LinkMovementMethod.getInstance()
-        val mw = Markwon.builder(requireContext()).usePlugin(object: AbstractMarkwonPlugin() {
-
-            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
-                builder.linkResolver { view, link ->
-                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-                    requireContext().startActivity(browserIntent)
-                }
-            }
-        }).build()
-        mw.setMarkdown(textView, item.body)
-
-        positiveButton = view.getButton(AlertDialog.BUTTON_POSITIVE)
-        positiveButton?.setOnClickListener {
-            positiveButton.isEnabled = false
-            positiveButton.text = "0%"
-
-            tmpDownloadJob = lifecycleScope.launch {
-                val instance = tmpItem!!.getInstance()
-                val fileResp = instance.downloadReleaseApk(item) { progress ->
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            positiveButton.text = "$progress%"
-                        }
-                    }
-                }
-
-                fileResp.onFailure {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            view.dismiss()
-                            Snackbar.make(requireView(), it.message ?: getString(R.string.errored), Snackbar.LENGTH_LONG).show()
-                        }
-                    }
-                }
-
-                fileResp.onSuccess { file ->
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.Main) {
-                            view.dismiss()
-
-                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(requireContext())
-                            } else {
-                                true
-                            }
-
-                            if (canRequestPackageInstalls) {
-                                val contentUri = FileProvider.getUriForFile(requireContext(), requireContext().packageName + ".fileprovider", file)
-                                val intent = Intent(Intent.ACTION_VIEW).apply {
-                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
-                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                }
-                                installLauncher.launch(intent)
-                            } else {
-                                Snackbar.make(requireView(), getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        UiUtil.showNewReleaseUpdateDialog(item, tmpItem!!, requireActivity(), viewLifecycleOwner, requireView(), null, installLauncher)
     }
 }

@@ -35,6 +35,7 @@ import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.DimenRes
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AlertDialog
@@ -53,12 +54,14 @@ import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.afollestad.materialdialogs.utils.MDUtil.textChanged
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.packages.PackageBase
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.GithubRelease
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.database.models.PackageItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
@@ -2741,6 +2744,31 @@ object UiUtil {
         )
     }
 
+    fun showNewAppUpdateSnackBar(
+        v: GithubRelease,
+        context: Activity,
+        container: LinearLayout,
+        frameLayout: View,
+        anchorView: View?,
+        layoutInflater: LayoutInflater,
+        updateUtil: UpdateUtil,
+        lifecycleOwner: LifecycleOwner,
+        preferences: SharedPreferences
+    ) {
+        val customView = layoutInflater.inflate(R.layout.layout_update_snackbar, null)
+        val triggerAction = View.OnClickListener {
+            container.removeView(customView)
+            showNewAppUpdateDialog(v, context, updateUtil, lifecycleOwner, preferences)
+        }
+
+        customView.setOnClickListener(triggerAction)
+        customView.findViewById<View>(R.id.btn_close_update).setOnClickListener {
+            container.removeView(customView)
+        }
+
+        container.addView(customView)
+    }
+
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, updateUtil: UpdateUtil, lifecycleOwner: LifecycleOwner, preferences: SharedPreferences) {
         if (context.isFinishing || context.isDestroyed) return
@@ -2834,4 +2862,123 @@ object UiUtil {
             }
         }
     }
+
+    fun showNewPackageUpdateSnackBar(
+        v: PackageBase.PackageRelease,
+        packageItem: PackageItem,
+        context: Activity,
+        container: LinearLayout,
+        frameLayout: View,
+        anchorView: View?,
+        layoutInflater: LayoutInflater,
+        lifecycleOwner: LifecycleOwner,
+        installLauncher: ActivityResultLauncher<Intent>
+    ) {
+        val customView = layoutInflater.inflate(R.layout.layout_package_update_snackbar, null)
+        val triggerAction = View.OnClickListener {
+            container.removeView(customView)
+            showNewReleaseUpdateDialog(v, packageItem, context, lifecycleOwner, frameLayout, anchorView, installLauncher)
+        }
+
+        customView.setOnClickListener(triggerAction)
+        customView.findViewById<View>(R.id.btn_close_update).setOnClickListener {
+            container.removeView(customView)
+        }
+        customView.findViewById<TextView>(R.id.newVersionTitle).text = context.getString(R.string.package_version_ready_to_download, packageItem.title, v.tag_name)
+
+        container.addView(customView)
+    }
+
+    fun showNewReleaseUpdateDialog(
+        item: PackageBase.PackageRelease,
+        packageItem: PackageItem,
+        context: Activity,
+        lifecycleOwner: LifecycleOwner,
+        activityView: View,
+        snackbarAnchorView: View?,
+        installLauncher: ActivityResultLauncher<Intent>
+    ) {
+        var tmpDownloadJob : Job? = null
+
+        var positiveButton: Button? = null
+        val updateDialog = MaterialAlertDialogBuilder(context)
+            .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
+            .setMessage(item.body)
+            .setIcon(R.drawable.ic_update_app)
+            .setNegativeButton(context.getString(R.string.cancel)) { _: DialogInterface?, _: Int ->
+                tmpDownloadJob?.cancel()
+            }
+            .setPositiveButton(context.getString(R.string.download), null)
+        val view = updateDialog.show()
+        val textView = view.findViewById<TextView>(android.R.id.message)
+        textView!!.movementMethod = LinkMovementMethod.getInstance()
+        val mw = Markwon.builder(context).usePlugin(object: AbstractMarkwonPlugin() {
+
+            override fun configureConfiguration(builder: MarkwonConfiguration.Builder) {
+                builder.linkResolver { view, link ->
+                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                    context.startActivity(browserIntent)
+                }
+            }
+        }).build()
+        mw.setMarkdown(textView, item.body)
+
+        val lifecycleScope = lifecycleOwner.lifecycleScope
+
+        positiveButton = view.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+        positiveButton?.setOnClickListener {
+            positiveButton.isEnabled = false
+            positiveButton.text = "0%"
+
+            tmpDownloadJob = lifecycleScope.launch {
+                val instance = packageItem.getInstance()
+                val fileResp = instance.downloadReleaseApk(item) { progress ->
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            positiveButton.text = "$progress%"
+                        }
+                    }
+                }
+
+                fileResp.onFailure {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
+                            val snackbar = Snackbar.make(activityView, it.message ?: context.getString(R.string.errored), Snackbar.LENGTH_LONG)
+                            snackbar.anchorView = snackbarAnchorView
+                            snackbar.show()
+                        }
+                    }
+                }
+
+                fileResp.onSuccess { file ->
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.Main) {
+                            view.dismiss()
+
+                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(context)
+                            } else {
+                                true
+                            }
+
+                            if (canRequestPackageInstalls) {
+                                val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
+                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                                }
+                                installLauncher.launch(intent)
+                            } else {
+                                val snackbar = Snackbar.make(activityView, context.getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG)
+                                snackbar.anchorView = snackbarAnchorView
+                                snackbar.show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

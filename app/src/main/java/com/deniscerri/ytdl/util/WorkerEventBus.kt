@@ -1,6 +1,6 @@
 package com.deniscerri.ytdl.util
 
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.work.download.DownloadWorker
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 

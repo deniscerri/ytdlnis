@@ -15,6 +15,7 @@ import com.deniscerri.ytdl.core.packages.Python
 import com.deniscerri.ytdl.core.packages.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
+import com.deniscerri.ytdl.database.models.PackageItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
@@ -60,6 +61,14 @@ object RuntimeManager {
     private var OPEN_SSL_CONF: String? = null
     private var ENV_PYTHONHOME: String? = null
     private var TMPDIR: String = ""
+
+    val packages: List<PackageItem> = listOf(
+        PackageItem("Python", Python),
+        PackageItem("FFmpeg", FFmpeg),
+        PackageItem("NodeJS", NodeJS),
+        PackageItem("Deno", Deno),
+        PackageItem("Aria2c", Aria2c)
+    )
 
     fun init(appContext: Context) {
         if (initialized) return

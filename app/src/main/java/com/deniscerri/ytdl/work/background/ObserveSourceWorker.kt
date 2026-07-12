@@ -1,7 +1,7 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.background
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
 import androidx.preference.PreferenceManager
@@ -22,6 +22,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
+import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
@@ -31,7 +32,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
-
 class ObserveSourceWorker(
     private val context: Context,
     workerParams: WorkerParameters
@@ -40,11 +40,12 @@ class ObserveSourceWorker(
         val sourceID = inputData.getLong("id", 0)
         if (sourceID == 0L) return Result.success()
 
-        val notificationUtil = NotificationUtil(App.instance)
-        val dbManager = DBManager.getInstance(context)
-        val workManager = WorkManager.getInstance(context)
+        val notificationUtil = NotificationUtil(App.Companion.instance)
+        val dbManager = DBManager.Companion.getInstance(context)
+        val workManager = WorkManager.Companion.getInstance(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val repo = ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, sharedPreferences)
+        val repo =
+            ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, sharedPreferences)
         val historyRepo = HistoryRepository(dbManager.historyDao)
         val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
@@ -60,12 +61,18 @@ class ObserveSourceWorker(
         val workerID = System.currentTimeMillis().toInt()
         val notification = notificationUtil.createObserveSourcesNotification(item.name)
         if (Build.VERSION.SDK_INT >= 33) {
-            setForegroundAsync(ForegroundInfo(workerID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
+            setForegroundAsync(
+                ForegroundInfo(
+                    workerID,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                )
+            )
         }else{
             setForegroundAsync(ForegroundInfo(workerID, notification))
         }
 
-        val list = kotlin.runCatching {
+        val list = runCatching {
             resultRepository.getResultsFromSource(item.url, resetResults = false, addToResults = false, singleItem = false)
         }.onFailure {
             Log.e("observe", it.toString())
@@ -140,7 +147,7 @@ class ObserveSourceWorker(
         if (downloadItems.isNotEmpty()){
             //QUEUE DOWNLOADS
             //COPY OF QUEUE DOWNLOADS IN DOWNLOAD VIEW MODEL. NEEDS TO BE UPDATED IF THAT IS UPDATED
-            val context = App.instance
+            val context = App.Companion.instance
             val alarmScheduler = AlarmScheduler(context)
             val activeAndQueuedDownloads = downloadRepo.getActiveAndQueuedDownloads()
             val queuedItems = mutableListOf<DownloadItem>()
@@ -171,8 +178,9 @@ class ObserveSourceWorker(
                     existing.add(it)
                 }else{
                     //check if downloaded and file exists
-                    val history = withContext(Dispatchers.IO){
-                        historyRepo.getAllByURL(it.url).filter { item -> item.downloadPath.any { path -> FileUtil.exists(path) } }
+                    val history = withContext(Dispatchers.IO) {
+                        historyRepo.getAllByURL(it.url)
+                            .filter { item -> item.downloadPath.any { path -> FileUtil.exists(path) } }
                     }
 
                     val existingHistory = history.firstOrNull {
@@ -211,13 +219,13 @@ class ObserveSourceWorker(
 
         if (isFinished) {
             item.status = ObserveSourcesRepository.SourceStatus.STOPPED
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 repo.update(item)
             }
             return Result.success()
         }
 
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             repo.update(item)
         }
 
@@ -237,7 +245,7 @@ class ObserveSourceWorker(
             .setInitialDelay(item.calculateNextTimeForObserving() - System.currentTimeMillis(), TimeUnit.MILLISECONDS)
             .setInputData(Data.Builder().putLong("id", sourceID).build())
 
-        WorkManager.getInstance(context).enqueueUniqueWork(
+        WorkManager.Companion.getInstance(context).enqueueUniqueWork(
             "OBSERVE$sourceID",
             ExistingWorkPolicy.REPLACE,
             workRequest.build()

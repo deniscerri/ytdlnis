@@ -21,6 +21,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -63,6 +64,7 @@ import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
+import com.deniscerri.ytdl.work.background.UpdateCheckWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.chip.Chip
@@ -537,11 +539,20 @@ class MainActivity : BaseActivity() {
                 putBoolean("auto_update_ytdlp", updateYTDLSwitch.isChecked)
                 putBoolean("asked_auto_update_preferences", true)
             }
+
+            if (updateAppSwitch.isChecked) {
+                UpdateCheckWorker.schedule(context)
+            }
+
             callAutoUpdates()
         }
 
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private var installPackageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        RuntimeManager.reInit(this)
     }
 
     private fun callAutoUpdates() {
@@ -554,10 +565,50 @@ class MainActivity : BaseActivity() {
                         settingsViewModel.backup()
                     }
                     withContext(Dispatchers.Main) {
-                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, this@MainActivity,  updateUtil, this@MainActivity, preferences)
+                        UiUtil.showNewAppUpdateSnackBar(
+                            res.getOrNull()!!,
+                            this@MainActivity,
+                            findViewById<LinearLayout>(R.id.notification_container),
+                            findViewById(R.id.frame_layout),
+                            navigationBarView,
+                            layoutInflater,
+                            updateUtil,
+                            this@MainActivity,
+                            preferences
+                        )
                     }
                 }
 
+                val skipRemindingPackageUpdate = preferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
+                RuntimeManager.packages.forEach { pkg ->
+                    val instance = pkg.plugin.getInstance()
+                    if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
+
+                    instance.getReleases().apply {
+                        val releases = this.getOrElse { listOf() }
+                        if (releases.isEmpty()) return@apply
+
+                        val latestRelease = releases.first()
+                        if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
+                        if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
+
+                        skipRemindingPackageUpdate.add(latestRelease.tag_name)
+                        preferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
+                        withContext(Dispatchers.Main) {
+                            UiUtil.showNewPackageUpdateSnackBar(
+                                latestRelease,
+                                pkg,
+                                this@MainActivity,
+                                findViewById<LinearLayout>(R.id.notification_container),
+                                findViewById(R.id.frame_layout),
+                                navigationBarView,
+                                layoutInflater,
+                                this@MainActivity,
+                                installPackageLauncher
+                            )
+                        }
+                    }
+                }
             }
         }
         if (preferences.getBoolean("auto_update_ytdlp", false)){

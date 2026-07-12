@@ -30,7 +30,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.ObserveSourcesViewModel
 import com.deniscerri.ytdl.ui.adapter.ObserveSourcesAdapter
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.work.ObserveSourceWorker
+import com.deniscerri.ytdl.work.background.ObserveSourceWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

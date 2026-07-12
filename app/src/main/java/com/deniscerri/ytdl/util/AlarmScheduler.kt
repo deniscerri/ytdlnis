@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.util
 
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -85,7 +85,7 @@ class AlarmScheduler(private val context: Context) {
         val cancelPendingIntent = PendingIntent.getService(context, 0, cancelIntent,
             PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE)
 
-        kotlin.runCatching {
+        runCatching {
             alarmManager?.cancel(pendingIntent)
             alarmManager?.cancel(cancelPendingIntent)
         }

@@ -1,7 +1,7 @@
-package com.deniscerri.ytdl.work
+package com.deniscerri.ytdl.work.background
 
 import android.content.Context
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+import android.content.pm.ServiceInfo
 import android.os.Build
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
@@ -13,18 +13,17 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.runBlocking
 
-
 class UpdateMultipleDownloadsFormatsWorker(
     private val context: Context,
     workerParams: WorkerParameters
 ) : Worker(context, workerParams) {
     override fun doWork(): Result {
-        val dbManager = DBManager.getInstance(context)
+        val dbManager = DBManager.Companion.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao
         val commandTemplateDao = dbManager.commandTemplateDao
         val resultRepo = ResultRepository(resDao, commandTemplateDao, context)
-        val vm = DownloadViewModel(App.instance)
+        val vm = DownloadViewModel(App.Companion.instance)
         val notificationUtil = NotificationUtil(context)
         val ids = inputData.getLongArray("ids")!!.toMutableList()
         val otherIdsInBundle = inputData.getLongArray("other_ids_in_bundle")!!.toMutableList()
@@ -34,7 +33,13 @@ class UpdateMultipleDownloadsFormatsWorker(
         val notification = notificationUtil.createFormatsUpdateNotification()
 
         if (Build.VERSION.SDK_INT >= 33) {
-            setForegroundAsync(ForegroundInfo(workID, notification, FOREGROUND_SERVICE_TYPE_DATA_SYNC))
+            setForegroundAsync(
+                ForegroundInfo(
+                    workID,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+                )
+            )
         }else{
             setForegroundAsync(ForegroundInfo(workID, notification))
         }

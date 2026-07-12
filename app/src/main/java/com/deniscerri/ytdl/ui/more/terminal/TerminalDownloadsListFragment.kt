@@ -23,7 +23,6 @@ import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdl.ui.adapter.TerminalDownloadsAdapter
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.WorkerEventBus
-import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.flow.collectLatest

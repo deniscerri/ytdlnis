@@ -537,4 +537,8 @@
     <string name="player_client_not_empty">Player Client tag shouldn\'t be empty</string>
     <string name="player_client_already_created">Player Client is already created</string>
     <string name="write_atleast_one_potoken">You need to write at least one PO Token</string>
+    <string name="version_ready_to_download">Version %s is ready to download</string>
+    <string name="package_version_ready_to_download">Package %1$s with version %2$s is ready to download</string>
+    <string name="tap_to_see_changes_and_install">Tap to see changes and install</string>
+    <string name="view">View</string>
 </resources>

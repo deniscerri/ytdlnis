@@ -16,9 +16,9 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.work.AlarmScheduler
-import com.deniscerri.ytdl.work.CleanUpLeftoverDownloads
-import com.deniscerri.ytdl.work.DownloadWorker
+import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.work.background.CleanUpLeftoverDownloads
+import com.deniscerri.ytdl.work.download.DownloadWorker
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import androidx.core.content.edit

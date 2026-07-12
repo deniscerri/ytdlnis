@@ -10,7 +10,7 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.dao.ObserveSourcesDao
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
-import com.deniscerri.ytdl.work.ObserveSourceWorker
+import com.deniscerri.ytdl.work.background.ObserveSourceWorker
 import kotlinx.coroutines.flow.Flow
 import java.util.Calendar
 import java.util.concurrent.TimeUnit

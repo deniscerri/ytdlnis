@@ -45,9 +45,9 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
-import com.deniscerri.ytdl.work.AlarmScheduler
-import com.deniscerri.ytdl.work.UpdateMultipleDownloadsDataWorker
-import com.deniscerri.ytdl.work.UpdateMultipleDownloadsFormatsWorker
+import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.work.background.UpdateMultipleDownloadsDataWorker
+import com.deniscerri.ytdl.work.background.UpdateMultipleDownloadsFormatsWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope

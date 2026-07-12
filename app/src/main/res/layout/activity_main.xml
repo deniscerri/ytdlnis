@@ -34,6 +34,18 @@
         app:layout_constraintTop_toBottomOf="@+id/incognito_header"
         />
 
+    <LinearLayout
+        android:id="@+id/notification_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:divider="@drawable/divider_10dp"
+        android:showDividers="middle"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:animateLayoutChanges="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"

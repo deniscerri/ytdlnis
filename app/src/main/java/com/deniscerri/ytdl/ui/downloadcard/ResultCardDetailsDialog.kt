@@ -54,7 +54,6 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.VideoPlayerUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
-import com.deniscerri.ytdl.work.DownloadWorker
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
