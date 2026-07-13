@@ -445,7 +445,7 @@
     <string name="prefer_container_over_codec_audio">Upřednostnění kontejneru před kodekem pro stahování audia</string>
     <string name="wait_for_video">Čekejte na video</string>
     <string name="prefer_container_over_codec_audio_summary">Pokud je tato volba povolena, předvolba preferovaného zvukového kodeku bude ignorována a změní se pouze kontejner</string>
-    <string name="player_client">Přehrávač klient</string>
+    <string name="player_client">Klient přehrávače</string>
     <string name="player_client_summary"><![CDATA[Klienti přehrávače YouTube a token PO]]></string>
     <string name="use_app_language_for_metadata">Použítí jazyku aplikace pro metadata</string>
     <string name="layout">Uspořádání</string>
@@ -532,4 +532,7 @@
     <string name="y_offset">Posun Y</string>
     <string name="width">Šířka</string>
     <string name="height">Výška</string>
+    <string name="player_client_not_empty">Štítek klienta přehrávače nesmí být prázdný</string>
+    <string name="player_client_already_created">Klient přehrávače je už vytvořen</string>
+    <string name="write_atleast_one_potoken">Musíte zadat alespoň jeden PO token</string>
 </resources>

@@ -445,7 +445,7 @@
     <string name="prefer_container_over_codec_audio">Uprednostniť kontajner pred kodekom pre sťahovanie zvuku</string>
     <string name="prefer_container_over_codec_audio_summary">Po zapnutí tejto funkcie sa budú ignorovať preferencie preferovaného zvukového kodeku a zmení sa iba kontajner</string>
     <string name="live_stream">Naživo</string>
-    <string name="player_client">Prehrávač klient</string>
+    <string name="player_client">Klient prehrávača</string>
     <string name="player_client_summary"><![CDATA[Klienti prehrávača YouTube a token PO]]></string>
     <string name="use_app_language_for_metadata">Použiť jazyk aplikácie pre metaúdaje</string>
     <string name="layout">Usporiadanie</string>
@@ -532,4 +532,7 @@
     <string name="x_offset">Posun X</string>
     <string name="y_offset">Posun Y</string>
     <string name="required">Povinné</string>
+    <string name="player_client_not_empty">Štítok klienta prehrávača nesmie byť prázdny</string>
+    <string name="player_client_already_created">Klient prehrávača je už vytvorený</string>
+    <string name="write_atleast_one_potoken">Musíte zadať aspoň jeden PO token</string>
 </resources>

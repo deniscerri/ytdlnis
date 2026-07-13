@@ -531,4 +531,7 @@
     <string name="y_offset">Y 偏移</string>
     <string name="width">宽度</string>
     <string name="height">高度</string>
+    <string name="player_client_not_empty">播放器客户端标签不能为空</string>
+    <string name="player_client_already_created">已创建播放器客户端</string>
+    <string name="write_atleast_one_potoken">需要写入至少一枚 PO 令牌</string>
 </resources>

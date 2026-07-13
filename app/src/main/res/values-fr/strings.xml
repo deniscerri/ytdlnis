@@ -532,4 +532,7 @@
     <string name="y_offset">Décalage Y</string>
     <string name="width">Largeur</string>
     <string name="height">Hauteur</string>
+    <string name="player_client_not_empty">Le champ « Client Lecteur » ne doit pas être vide</string>
+    <string name="player_client_already_created">Le client lecteur a déjà été créé</string>
+    <string name="write_atleast_one_potoken">Vous devez saisir au moins un jeton PO</string>
 </resources>

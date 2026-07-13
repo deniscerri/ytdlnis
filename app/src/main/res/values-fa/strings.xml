@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">720کمترین کیفیت</string>
-    <string name="best_quality">بیشتر1080ین کیفیت</string>
+    <string name="worst_quality">پایین‌ترین کیفیت</string>
+    <string name="best_quality">بالاترین کیفیت</string>
     <string name="remove_all">حذف همه</string>
     <string name="download_all">دانلود همه</string>
     <string name="settings">تنظیمات</string>
@@ -63,7 +63,7 @@
     <string name="show_download_card">نمایش کارت دانلود</string>
     <string name="ytld_update_success">ورژن جدید نصب شد</string>
     <string name="remove_results">پاک کردن نتایج</string>
-    <string name="search">جستجBTSو</string>
+    <string name="search">جستجو</string>
     <string name="ytdl_update_hint">نکته مفید هنگام دانلود آپدیت ها</string>
     <string name="search_hint">جستجو یا وارد کردن لینک</string>
     <string name="source_code">سورس کد</string>
@@ -232,7 +232,7 @@
     <string name="quality">کیفیت</string>
     <string name="accents">تُن‌ها</string>
     <string name="high_contrast">تباین بالا</string>
-    <string name="pure_theme_summary">تم سیاه/سفید محض</string>
+    <string name="pure_theme_summary">تم سیاه/سفید خالص</string>
     <string name="material_you">متریال یو</string>
     <string name="downloaded">"دانلود شده: "</string>
     <string name="finished_download_notification_channel_name">دانلودهای تمام شده</string>
@@ -249,8 +249,8 @@
     <string name="appearance">ظاهر</string>
     <string name="backup_restore">پشتیبان‌گیری و بازیابی</string>
     <string name="socks5_proxy">لینک پروکسی Socks5</string>
-    <string name="search_suggestions">پیشنهادهای جستجو</string>
-    <string name="search_suggestions_summary">گرفتن پیشنهادهای جستجو از گوگل</string>
+    <string name="search_suggestions">جستجوهای پیشنهادی</string>
+    <string name="search_suggestions_summary">دریافت جستجوهای پیشنهادی از گوگل</string>
     <string name="move_temporary_files">جابجایی فایل‌های موقت</string>
     <string name="custom_audio_quality">استفاده از کیفیت صدای سفارشی</string>
     <string name="retries">تلاش‌های دوباره</string>
@@ -276,7 +276,7 @@
     <string name="preferred_format_id">شناسه‌ی فرمت برگزیده</string>
     <string name="download_now">هم اکنون دانلود کن</string>
     <string name="download_already_exists">دانلود از قبل هست</string>
-    <string name="move_temporary_files_summary">انتقال فایل‌های نهان به پوشه‌ی دانلودها</string>
+    <string name="move_temporary_files_summary">انتقال فایل‌های موقت به پوشه‌ی دانلودها</string>
     <string name="use_extra_commands_summary">برای دانلودهای صوتی/تصویری، دستورات اضافی را همراه با پیکربندی رابط کاربری گرافیکی (GUI) اضافه کنید.</string>
     <string name="save_for_later">ذخیرهٔ دریافتی برای بعد؟</string>
     <string name="hide_thumbnails">مخفی کردن تصاویر بندانگشتی</string>
@@ -336,7 +336,7 @@
     <string name="changed_path_for_everyone_to">مسیر دریافت هر گزینه را تغییر داد به:</string>
     <string name="dismiss">رد کن</string>
     <string name="all">همه</string>
-    <string name="modify_download_card">تغییر کارت دریافت</string>
+    <string name="modify_download_card">ویرایش پنل دانلود</string>
     <string name="user_agent_header">سربرگ User-Agent</string>
     <string name="not_deleted">حذف نشد</string>
     <string name="embed_metadata_summary">متادیتا را تجزیه و در فایل صوتی تعبیه کن</string>
