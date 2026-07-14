@@ -535,4 +535,8 @@
     <string name="player_client_not_empty">Štítek klienta přehrávače nesmí být prázdný</string>
     <string name="player_client_already_created">Klient přehrávače je už vytvořen</string>
     <string name="write_atleast_one_potoken">Musíte zadat alespoň jeden PO token</string>
+    <string name="version_ready_to_download">Verze %s je připravena ke stažení</string>
+    <string name="package_version_ready_to_download">Balíček %1$s s verzi %2$s je připraven ke stažení</string>
+    <string name="tap_to_see_changes_and_install">Klepnutím zobrazíte změny a provedete instalaci</string>
+    <string name="view">Zobrazit</string>
 </resources>
