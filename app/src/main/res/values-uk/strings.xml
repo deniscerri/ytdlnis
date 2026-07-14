@@ -535,7 +535,7 @@
     <string name="player_client_already_created">Player Client вже створено</string>
     <string name="write_atleast_one_potoken">Вам потрібно записати хоча б один PO Token</string>
     <string name="version_ready_to_download">Версія %s готова до завантаження</string>
-    <string name="package_version_ready_to_download">Пакет %1$s версії %2$s готовий до завантаження</string>
-    <string name="tap_to_see_changes_and_install">Торкніться, аби переглянути зміни та встановити</string>
+    <string name="package_version_ready_to_download">Пакет %1$s з версією %2$s готовий до завантаження</string>
+    <string name="tap_to_see_changes_and_install">Натисніть, щоб побачити зміни та встановити</string>
     <string name="view">Переглянути</string>
 </resources>
