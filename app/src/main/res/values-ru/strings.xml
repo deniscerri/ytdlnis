@@ -534,4 +534,8 @@
     <string name="player_client_not_empty">Тег Player Client не должен быть пустым</string>
     <string name="player_client_already_created">Player Client уже создан</string>
     <string name="write_atleast_one_potoken">Вам нужно записать хотя бы один PO Token</string>
+    <string name="version_ready_to_download">Версия %s готова к загрузке</string>
+    <string name="package_version_ready_to_download">Пакет %1$s с версией %2$s готов к загрузке</string>
+    <string name="tap_to_see_changes_and_install">Нажмите, чтобы увидеть изменения и установить</string>
+    <string name="view">Просмотреть</string>
 </resources>
