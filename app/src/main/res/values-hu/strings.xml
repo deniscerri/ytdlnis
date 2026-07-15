@@ -2,7 +2,7 @@
 <resources>
     <string name="save_thumb_summary">Mentse el a miniatűrt a letöltési mappában</string>
     <string name="command_download_notification_channel_name">Parancs letöltések</string>
-    <string name="ytdl_already_updating">Új verzió telepítése</string>
+    <string name="ytdl_already_updating">Új verzió telepítése folyamatban</string>
     <string name="sponsorblock_fillers">Fiók</string>
     <string name="sponsorblock_reminders">Előfizetési felszólítások</string>
     <string name="cancel_task">Feladat megszakítása</string>
@@ -12,7 +12,7 @@
     <string name="adjust_audio">Audió beállítása</string>
     <string name="music_directory">Hangok</string>
     <string name="couldnt_find_apk">Nincs megfelelő APK-t</string>
-    <string name="ytdl_updating_started">Új verzió letöltése</string>
+    <string name="ytdl_updating_started">Új verziónak letöltése folyamatban</string>
     <string name="new_template">Új sablon</string>
     <string name="update_ytdl_nightly">Az yt-dlp nightly(szuper béta) verziója</string>
     <string name="command_download_notification_channel_description">Értesítés, amely megmutatja a letöltés előrehaladását egy yt-dlp parancs használatával</string>
@@ -98,7 +98,7 @@
     <string name="incognito_summary">Töltse le anélkül, hogy hozzáadná a történetet</string>
     <string name="audio">Hang</string>
     <string name="add_chapters_summary">Jelölje meg a YouTube / SponsorBlock szegmenseket a videó fejezeteiként</string>
-    <string name="ytld_update_success">Új verzió telepítve</string>
+    <string name="ytld_update_success">Új yt-dlp verzió telepítve!</string>
     <string name="no_results">Nincsen találat</string>
     <string name="best_quality">Legjobb minőség</string>
     <string name="embed_subs_summary">Adjon feliratokat a videóban</string>
@@ -208,7 +208,7 @@
     <string name="finished_download_notification_channel_name">Befejezett letöltések</string>
     <string name="finished_download_notification_channel_description">Értesítés a befejezett letöltésekről</string>
     <string name="quick_download">Gyors letöltés</string>
-    <string name="quick_download_summary">Ne kérjen le adatokat a letöltőkártyáról</string>
+    <string name="quick_download_summary">Ne kérjen le adatokat a letöltőkártyáról, dolgozza fel egyből adat szerzés nélkül</string>
     <string name="remove_audio">Hang eltávolítása</string>
     <string name="preferred_format_id">Előnyben részesített formátumazonosító</string>
     <string name="download_now">Letöltés most</string>
@@ -282,7 +282,7 @@
     <string name="crop_thumb_summary">A miniatűr kép négyzet alakúvá vágása audió letöltésekhez</string>
     <string name="audio_only_item">Ez a tétel csak hangformátumokat tartalmaz</string>
     <string name="move_temporary_files">Ideiglenes fájlok áthelyezése</string>
-    <string name="move_temporary_files_summary">A gyorsítótárazott fájlok átvitele a letöltések mappába</string>
+    <string name="move_temporary_files_summary">A gyorsítótárazott fájlok átvitele a letöltések mappába…</string>
     <string name="custom_audio_quality">Egyéni/saját hangminőség használata</string>
     <string name="retries">Újrapróbálkozás</string>
     <string name="fragment_retries">Töredék újrapróbálása/újraprobálkozások</string>
@@ -297,7 +297,7 @@
     <string name="show_terminal">Terminál megjelenítése a Megosztás menüben</string>
     <string name="use_cookies">Sütik használata</string>
     <string name="embed_metadata">Metadata beágyazása</string>
-    <string name="embed_metadata_summary">Metaadatok elemzése és beágyazása a hangfájlba</string>
+    <string name="embed_metadata_summary">Metadata(mera-adatok) elemzése és beágyazása a hangfájlba</string>
     <string name="update_formats_background">Formátumok frissítése a háttérben</string>
     <string name="auto_update_ytdlp">Automatikus frissítés yt-dlp</string>
     <string name="use_sponsorblock">SponsorBlock használata</string>
@@ -509,4 +509,30 @@
     <string name="packages">Csomagok</string>
     <string name="not_installed">Nincs telepítve</string>
     <string name="installed">Telepítve</string>
+    <string name="crop">Metszés, vágás</string>
+    <string name="required">Kötelező, muszáj</string>
+    <string name="crop_validation_exceeds_w">x+w túllépi %d</string>
+    <string name="crop_validation_exceeds_h">y+h épu %d</string>
+    <string name="quick_download_title">Ne dolgozzkn fel adatot, ne szerezzen adatot</string>
+    <string name="sponsorblock_hook">Köszönés és bemutató rész</string>
+    <string name="use_app_language_for_metadata_summary">Ha bekapcsolja, a metadata táblák követni fogják a kiválasztott applikációs nyvet, és még befolyásolni fogják a forma választást, a narrált/fordított változatokat előre helyezve</string>
+    <string name="auto_update_ytdlp_summary">Anjánlott hogy ezt ön bekapcsolva, úgy hagyja mert, úgyan is a yt-dlp- működéséhez szükségesek a gyakori frissítések, az adatok forrása a yt-dlp github repo-ja</string>
+    <string name="save_subdirectory">Mentés altartományba</string>
+    <string name="save_subdirectory_summary">Fájlok mentése mappákban metada címkék alapján</string>
+    <string name="trim_filenames">Fájl nevek levágása, rövidítése</string>
+    <string name="install_downloaded_file">A letöltött fájl telepítése</string>
+    <string name="website">Weboldal</string>
+    <string name="playlist">Lejátszási-lista</string>
+    <string name="media_type">Média típus</string>
+    <string name="free_ratio">Szabad arány</string>
+    <string name="dimensions">Árányok, kép méret</string>
+    <string name="width">Szélesség</string>
+    <string name="height">Magasság</string>
+    <string name="player_client_not_empty">Lejátszó szolgáltató(kliens) címke(tag) nem lehet üres</string>
+    <string name="player_client_already_created">Lejátszó klines már létre hozva!</string>
+    <string name="write_atleast_one_potoken">Legalább egy PO token létre kell hoznia!</string>
+    <string name="version_ready_to_download">Verzió %s készen áll a letöltésre</string>
+    <string name="package_version_ready_to_download">Csomag %1$s készen áll a letöltésre a(z) %2$s verzióval</string>
+    <string name="tap_to_see_changes_and_install">Koppitson változtatások megjelenéséhez és kezdje a telepítést</string>
+    <string name="view">Megtekintés</string>
 </resources>
