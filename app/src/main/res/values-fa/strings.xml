@@ -176,7 +176,7 @@
     <string name="search_history">تاریخچه‌ی جستجو</string>
     <string name="misc">متفرقه</string>
     <string name="swipe_gestures">حرکات کشیدن انگشت</string>
-    <string name="crop_thumb">برش تصویر وصف کننده</string>
+    <string name="crop_thumb">برش تصویر بندانگشتی</string>
     <string name="preferred_format_id_summary">انتخاب فرمت با این شناسه در کارت دانلود</string>
     <string name="general">عمومی</string>
     <string name="crop_thumb_summary">برای بارگیری صدا، تصویر کوچک را به یک مربع برش دهید</string>

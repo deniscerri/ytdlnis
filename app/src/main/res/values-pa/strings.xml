@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="you_are_in_latest_version">ਨਵੀਨਤਮ ਸੰਸਕਰਣ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ</string>
-    <string name="ytdl_already_updating">ਨਵਾਂ ਸੰਸਕਰਣ ਇੰਸਟਾਲ ਹੋ ਰਿਹਾ</string>
+    <string name="ytdl_already_updating">ਨਵਾਂ yt-dlp ਸੰਸਕਰਣ ਇੰਸਟਾਲ ਹੋ ਰਿਹਾ ਹੈ</string>
     <string name="Remove">ਹਟਾਓ</string>
     <string name="no_results">ਕੋਈ ਨਤੀਜਾ ਨਹੀਂ</string>
     <string name="more">ਹੋਰ</string>
@@ -54,11 +54,11 @@
     <string name="search_hint">URL ਖੋਜੋ ਜਾਂ ਸੰਮਿਲਿਤ ਕਰੋ</string>
     <string name="failed_download">ਫ਼ਾਈਲ ਡਾਊਨਲੋਡ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ</string>
     <string name="download_notification_channel_name">ਫ਼ਾਈਲ ਡਾਊਨਲੋਡਸ</string>
-    <string name="ytdl_updating_started">ਨਵੇਂ ਅੱਪਡੇਟ ਦਾ ਡਾਊਨਲੋਡ ਸ਼ੁਰੂ</string>
+    <string name="ytdl_updating_started">ਨਵਾਂ yt-dlp ਵਰਜਨ ਡਾਊਨਲੋਡ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ</string>
     <string name="cancel">ਰੱਦ ਕਰੋ</string>
     <string name="confirm_delete_history_desc">ਪੂਰੇ ਇਤਿਹਾਸ ਨੂੰ ਪੱਕੇ ਤੌਰ \'ਤੇ ਮਿਟਾਓ</string>
     <string name="download_notification_channel_description">ਆਡੀਓ ਅਤੇ ਵੀਡੀਓ ਫ਼ਾਈਲਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰਨ ਦੀ ਪ੍ਰਗਤੀ ਨੂੰ ਦਰਸਾਉਂਦੀ ਸੂਚਨਾ</string>
-    <string name="ytld_update_success">ਨਵਾਂ ਸੰਸਕਰਣ ਇੰਸਟਾਲ ਕੀਤਾ ਗਿਆ</string>
+    <string name="ytld_update_success">ਨਵਾਂ yt-dlp ਸੰਸਕਰਣ ਇੰਸਟਾਲ ਕੀਤਾ ਗਿਆ</string>
     <string name="ok">ਠੀਕ ਹੈ</string>
     <string name="version">ਸੰਸਕਰਣ</string>
     <string name="command_directory">ਕਸਟਮ ਕਮਾਂਡ ਫ਼ੋਲਡਰ</string>
@@ -147,7 +147,7 @@
     <string name="restart">ਰੀਸਟਾਰਟ ਕਰੋ</string>
     <string name="download_rescheduled_to">ਡਾਉਨਲੋਡ ਨੂੰ ਇਸ \'ਤੇ ਮੁੜ ਨਿਯਤ ਕੀਤਾ ਗਿਆ:</string>
     <string name="file_size">ਫ਼ਾਈਲ ਦਾ ਆਕਾਰ</string>
-    <string name="clear_temporary_files">ਅਸਥਾਈ ਫਾਈਲਾਂ ਸਾਫ਼ ਕਰੋ</string>
+    <string name="clear_temporary_files">ਕੈਸ਼ ਫ਼ੋਲਡਰ ਸਾਫ਼ ਕਰੋ</string>
     <string name="cache_cleared">ਅਸਥਾਈ ਫ਼ਾਈਲਾਂ ਸਾਫ ਕੀਤੀਆਂ ਗਈਆਂ</string>
     <string name="downloads_running_try_later">ਡਾਊਨਲੋਡ ਵਰਕਰ ਚੱਲ ਰਿਹਾ ਹੈ। ਬਾਅਦ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
     <string name="ytdl_version">yt-dlp ਸੰਸਕਰਣ</string>
@@ -285,7 +285,7 @@
     <string name="extra_command">ਵਾਧੂ ਕਮਾਂਡ</string>
     <string name="use_cookies">ਕੂਕੀਜ਼ ਵਰਤੋ</string>
     <string name="embed_metadata">ਮੈਟਾਡਾਟਾ ਏਮਬੇਡ ਕਰੋ</string>
-    <string name="embed_metadata_summary">ਆਡੀਓ ਫ਼ਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਨੂੰ ਪਾਰਸ ਅਤੇ ਏਮਬੇਡ ਕਰੋ</string>
+    <string name="embed_metadata_summary">ਫ਼ਾਈਲ ਵਿੱਚ ਮੈਟਾਡੇਟਾ ਨੂੰ ਪਾਰਸ ਅਤੇ ਏਮਬੇਡ ਕਰੋ</string>
     <string name="write_description_summary">ਵੇਰਵਾ ਫਾਇਲ ਲਿਖੋ</string>
     <string name="write_description">ਵੇਰਵਾ ਸੰਭਾਲੋ</string>
     <string name="update_formats_background">ਬੈਕਗ੍ਰਾਊਂਡ ਵਿੱਚ ਫਾਰਮੈਟ ਅੱਪਡੇਟ ਕਰੋ</string>

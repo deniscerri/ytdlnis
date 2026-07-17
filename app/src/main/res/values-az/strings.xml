@@ -535,4 +535,8 @@
     <string name="player_client_not_empty">Oynadıcı Qəbuledici etiketi boş olmamalıdır</string>
     <string name="player_client_already_created">Oynadıcı Qəbuledici artıq yaradılıb</string>
     <string name="write_atleast_one_potoken">Ən azı bir PO Token-i yazmalısınız</string>
+    <string name="version_ready_to_download">%s versiyası yüklənilməyə hazırdır</string>
+    <string name="package_version_ready_to_download">%1$s paketi %2$s versiyası ilə yüklənilməyə hazırdır</string>
+    <string name="tap_to_see_changes_and_install">Dəyişikliklərə baxmaq və quraşdırmaq üçün toxun</string>
+    <string name="view">Baxın</string>
 </resources>

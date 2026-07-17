@@ -534,4 +534,8 @@
     <string name="player_client_not_empty">播放器客户端标签不能为空</string>
     <string name="player_client_already_created">已创建播放器客户端</string>
     <string name="write_atleast_one_potoken">需要写入至少一枚 PO 令牌</string>
+    <string name="version_ready_to_download">可以下载 %s 版本了</string>
+    <string name="package_version_ready_to_download">可以下载 %2$s 版的 %1$s 包了</string>
+    <string name="tap_to_see_changes_and_install">轻触查看更改并安装</string>
+    <string name="view">查看</string>
 </resources>

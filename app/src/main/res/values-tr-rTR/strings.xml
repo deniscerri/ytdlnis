@@ -534,4 +534,11 @@
     <string name="y_offset">Y Kayması</string>
     <string name="width">Genişlik</string>
     <string name="height">Yükseklik</string>
+    <string name="player_client_not_empty">Oynatıcı İstemcisi etiketi boş olmamalıdır</string>
+    <string name="player_client_already_created">Oynatıcı İstemcisi zaten oluşturuldu</string>
+    <string name="write_atleast_one_potoken">En az bir PO Token girmeniz gerekiyor</string>
+    <string name="version_ready_to_download">%s sürümü indirilmeye hazır</string>
+    <string name="package_version_ready_to_download">%1$s paketi, %2$s sürümüyle indirilmeye hazır</string>
+    <string name="tap_to_see_changes_and_install">Değişiklikleri görmek ve kurmak için dokun</string>
+    <string name="view">Görüntüle</string>
 </resources>

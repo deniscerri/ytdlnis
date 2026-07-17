@@ -239,7 +239,7 @@
     <string name="link_you_copied">Link die u gekopieerd heeft</string>
     <string name="new_cut">Nieuw knipsel</string>
     <string name="dont_ask_again">Niet opnieuw vragen</string>
-    <string name="ignore_battery_optimization">Accu­optimalisatie negeren</string>
+    <string name="ignore_battery_optimization">Batterij-optimalisatie negeren</string>
     <string name="select_all">Alles selecteren</string>
     <string name="new_cookie">Nieuwe cookie</string>
     <string name="get_cookies">Cookies ophalen</string>
@@ -368,7 +368,7 @@
     <string name="update_ytdl_master">Ontwikkelings­versie van yt-dlp</string>
     <string name="format_smallest">Kleinste formaat (per resolutie)</string>
     <string name="update_formats_summary">Haalt de formaten direct op wanneer de download­kaart verschĳnt</string>
-    <string name="add_template_first">U moet ten­minste één opdracht­sjabloon aangemaakt hebben!</string>
+    <string name="add_template_first">U moet tenminste één opdrachtsjabloon aangemaakt hebben!</string>
     <string name="download_over_metered_networks_summary">Downloadt via elk netwerk­type. Wacht anders voor een ongemeten netwerk</string>
     <string name="metered_network_download_start_info">Download zal starten wanneer u bent verbonden met en ongemeten netwerk</string>
     <string name="video_recommendations_summary">Ontvang aan­bevolen video\'s op het start­scherm</string>
@@ -465,4 +465,5 @@
     <string name="automatic_backup">Automatische backup</string>
     <string name="backup_path">Backup locatie</string>
     <string name="automatic_backup_summary">Maak automatisch een backup van alles wanneer een nieuwe versie van de applicatie beschikbaar is</string>
+    <string name="required">Vereist</string>
 </resources>
