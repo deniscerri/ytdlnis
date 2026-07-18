@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
@@ -80,6 +82,21 @@ class SettingsActivity : BaseActivity(), SettingHost {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         settingViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { v, insets ->
+            val topInset = insets.getInsets(
+                WindowInsetsCompat.Type.statusBars()
+            ).top
+
+            v.setPadding(
+                v.paddingLeft,
+                topInset,
+                v.paddingRight,
+                v.paddingBottom
+            )
+
+            insets
+        }
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment

@@ -39,10 +39,10 @@ import kotlinx.coroutines.launch
 class GenerateYoutubePoTokensFragment : Fragment() {
     private lateinit var settingsActivity: SettingsActivity
     private lateinit var preferences: SharedPreferences
-    private lateinit var configuration : MutableList<YoutubeGeneratePoTokenItem>
-    private lateinit var workManager : WorkManager
+    private lateinit var configuration: MutableList<YoutubeGeneratePoTokenItem>
+    private lateinit var workManager: WorkManager
 
-    private lateinit var webPoTokenResultLauncher : ActivityResultLauncher<Intent>
+    private lateinit var webPoTokenResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +57,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
         configuration = kotlin.runCatching {
             Gson().fromJson(
@@ -82,7 +83,8 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         val playerClientDiv = requireView().findViewById<View>(R.id.playerclient_div)
         val playerClientText = requireView().findViewById<TextView>(R.id.content_playerclient)
 
-        val regenerate = requireView().findViewById<MaterialButton>(R.id.regenerate_webview_potokens)
+        val regenerate =
+            requireView().findViewById<MaterialButton>(R.id.regenerate_webview_potokens)
         val useVisitorData = requireView().findViewById<MaterialSwitch>(R.id.use_visitor_data)
 
         switch.isChecked = conf.enabled
@@ -130,7 +132,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                         conf.clients.clear()
                         conf.clients.addAll(newValues)
                         configuration.add(conf)
-                        preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+                        preferences.edit().putString(
+                            "youtube_generated_po_tokens",
+                            Gson().toJson(configuration).toString()
+                        ).apply()
                         setValues(conf)
                     }
                 }
@@ -142,8 +147,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val streamingDataPoTokenResult = result.data!!.getStringExtra("streaming_potoken") ?: ""
-                val playerRequestPoTokenResult = result.data!!.getStringExtra("player_potoken") ?: ""
+                val streamingDataPoTokenResult =
+                    result.data!!.getStringExtra("streaming_potoken") ?: ""
+                val playerRequestPoTokenResult =
+                    result.data!!.getStringExtra("player_potoken") ?: ""
                 val subsRequestPoTokenResult = result.data!!.getStringExtra("subs_potoken") ?: ""
                 val visitorDataResult = result.data!!.getStringExtra("visitor_data") ?: ""
 
@@ -157,7 +164,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                 configuration.add(conf)
                 setValues(conf)
-                preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+                preferences.edit().putString(
+                    "youtube_generated_po_tokens",
+                    Gson().toJson(configuration).toString()
+                ).apply()
             }
         }
 
@@ -170,7 +180,9 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             conf.enabled = switch.isChecked
             useVisitorData.isEnabled = switch.isChecked
             configuration.add(conf)
-            preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+            preferences.edit()
+                .putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString())
+                .apply()
             if (conf.poTokens.isEmpty()) {
                 regenerate.performClick()
             }
@@ -183,13 +195,16 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 configuration.remove(conf)
                 conf.useVisitorData = b
                 configuration.add(conf)
-                preferences.edit().putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString()).apply()
+                preferences.edit().putString(
+                    "youtube_generated_po_tokens",
+                    Gson().toJson(configuration).toString()
+                ).apply()
             }
         }
 
     }
 
-    private fun showBottomSheet(){
+    private fun showBottomSheet() {
         lifecycleScope.launch {
             val dialog = MaterialAlertDialogBuilder(requireContext())
             dialog.setTitle(getString(R.string.generate_potokens))
@@ -216,13 +231,19 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                     val intent = Intent(requireContext(), PoTokenWebViewLoginActivity::class.java)
                     intent.putExtra("url", "https://www.youtube.com")
-                    intent.putExtra("redirect_url", "https://www.youtube.com/watch?v=${editText.text.toString().getIDFromYoutubeURL()}")
+                    intent.putExtra(
+                        "redirect_url",
+                        "https://www.youtube.com/watch?v=${
+                            editText.text.toString().getIDFromYoutubeURL()
+                        }"
+                    )
                     intent.putExtra("no_auth", true)
                     webPoTokenResultLauncher.launch(intent)
                 }
 
 
-                val imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 editText.postDelayed({
                     editText.requestFocus()
                     imm.showSoftInput(editText, 0)
