@@ -21,9 +21,9 @@
     <string name="download_notification_channel_name">Shkarkimet e Skedarëve</string>
     <string name="download_notification_channel_description">Njoftimi i cili tregon progresin e shkarkimeve te skedarëve audio dhe video</string>
     <string name="you_are_in_latest_version">Je ne versionin e fundit</string>
-    <string name="ytld_update_success">Perditesimi u krye me sukses</string>
-    <string name="ytdl_already_updating">Po instalohet versioni i ri</string>
-    <string name="ytdl_updating_started">Po shkarkohet versioni i ri</string>
+    <string name="ytld_update_success">U instalua versioni i ri i yt-dlp</string>
+    <string name="ytdl_already_updating">Po instalohet versioni i ri i yt-dlp</string>
+    <string name="ytdl_updating_started">Po shkarkohet versioni i ri i yt-dlp</string>
     <string name="Remove">Hiqe</string>
     <string name="ok">OK</string>
     <string name="cancel">Anullo</string>
@@ -531,4 +531,11 @@
     <string name="y_offset">Ofseti Y</string>
     <string name="width">Gjerësia</string>
     <string name="height">Gjatësia</string>
+    <string name="player_client_not_empty">Tagu i Klientit nuk duhet të jetë bosh</string>
+    <string name="player_client_already_created">Ky klient është krijuar tashmë</string>
+    <string name="write_atleast_one_potoken">Ju duhet të shkruani të paktën një PO Token</string>
+    <string name="version_ready_to_download">Versioni %s është gati për shkarkim</string>
+    <string name="package_version_ready_to_download">Paketa %1$s me versionin %2$s është gati për shkarkim</string>
+    <string name="tap_to_see_changes_and_install">Shtyp për të parë detajet dhe instalimin</string>
+    <string name="view">Shiko</string>
 </resources>
