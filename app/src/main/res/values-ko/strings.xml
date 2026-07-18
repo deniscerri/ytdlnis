@@ -531,4 +531,11 @@
     <string name="aspect_ratio">화면 비율</string>
     <string name="dimensions">치수</string>
     <string name="required">필수</string>
+    <string name="player_client_not_empty">플레이어 클라이언트 태그는 비워둘 수 없습니다</string>
+    <string name="player_client_already_created">플레이어 클라이언트가 이미 생성되었습니다</string>
+    <string name="version_ready_to_download">%s 버전을 다운로드할 준비가 되었습니다</string>
+    <string name="package_version_ready_to_download">%1$s 패키지의 %2$s 버전을 다운로드할 준비가 되었습니다</string>
+    <string name="tap_to_see_changes_and_install">눌러서 변경 내역을 보고 설치하세요</string>
+    <string name="view">보기</string>
+    <string name="write_atleast_one_potoken">최소 하나 이상의 PO 토큰을 입력해야 합니다</string>
 </resources>
