@@ -541,4 +541,27 @@
     <string name="package_version_ready_to_download">Package %1$s with version %2$s is ready to download</string>
     <string name="tap_to_see_changes_and_install">Tap to see changes and install</string>
     <string name="view">View</string>
+    <string name="next_run">Next: %1$s</string>
+    <string name="paused">Paused</string>
+    <string name="check_complete">Check complete</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Finished · %d run</item>
+        <item quantity="other">Finished · %d runs</item>
+    </plurals>
+    <string name="reset_state">Reset state</string>
+    <string name="rescan_from_scratch">Re-scan from scratch</string>
+    <string name="rescan_from_scratch_desc">Forget processed items and re-download everything not already saved</string>
+    <string name="skip_backlog">Skip current backlog</string>
+    <string name="skip_backlog_desc">Mark everything currently in the source as done — only download future uploads</string>
+    <string name="unskip_ignored">Un-skip ignored uploads</string>
+    <string name="unskip_ignored_desc">Download the existing uploads the first run skipped</string>
+    <string name="observe_runs_chip">%d runs</string>
+    <string name="observe_processed_chip">%d processed</string>
+    <string name="observe_skipped_chip">%d skipped</string>
+    <string name="observe_updating">Updating…</string>
+    <string name="check_available_storage">Check for available storage</string>
+    <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
+    <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
+    <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
+    <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
 </resources>

@@ -7,7 +7,11 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.models.ExecuteException
+import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.util.Extensions.hasReachedEnd
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.ObserveAlarmScheduler
 import com.deniscerri.ytdl.util.ThemeUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +47,16 @@ class App : Application() {
             }
         }
         ThemeUtil.init(this)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            runCatching {
+                val db = DBManager.getInstance(this@App)
+                val scheduler = ObserveAlarmScheduler(this@App)
+                db.observeSourcesDao.getAllSources()
+                    .filter { it.status == ObserveSourcesRepository.SourceStatus.ACTIVE && !it.hasReachedEnd() }
+                    .forEach { scheduler.schedule(it) }         // idempotent: FLAG_UPDATE_CURRENT updates in place
+            }
+        }
     }
     @Throws(ExecuteException::class)
     private fun initLibraries() {

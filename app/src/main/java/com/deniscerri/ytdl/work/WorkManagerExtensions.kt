@@ -1,8 +1,11 @@
 package com.deniscerri.ytdl.work
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.NetworkType
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import kotlinx.coroutines.delay
@@ -13,6 +16,13 @@ val Context.workManager: WorkManager
 fun WorkManager.isRunning(tag: String): Boolean {
     val list = this.getWorkInfosByTag(tag).get()
     return list.count { it.state == WorkInfo.State.RUNNING } > 1
+}
+
+fun networkConstraints(prefs: SharedPreferences): Constraints {
+    val allowMetered = prefs.getBoolean("metered_networks", true)
+    return Constraints.Builder()
+        .setRequiredNetworkType(if (allowMetered) NetworkType.CONNECTED else NetworkType.UNMETERED)
+        .build()
 }
 
 /**

@@ -544,7 +544,7 @@ class MainActivity : BaseActivity() {
                 UpdateCheckWorker.schedule(context)
             }
 
-            callAutoUpdates()
+            callAutoUpdates(firstRun = true)
         }
 
         val dialog = builder.create()
@@ -555,7 +555,7 @@ class MainActivity : BaseActivity() {
         RuntimeManager.reInit(this)
     }
 
-    private fun callAutoUpdates() {
+    private fun callAutoUpdates(firstRun : Boolean = false) {
         if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
             val updateUtil = UpdateUtil(this)
             CoroutineScope(Dispatchers.IO).launch {
@@ -617,9 +617,11 @@ class MainActivity : BaseActivity() {
                     val hasActiveQueuedDownloads = DBManager.getInstance(this@MainActivity).downloadDao.getDownloadsCountByStatus(listOf("Active", "Queued")) > 0
                     if (hasActiveQueuedDownloads) return@launch
 
-                    Snackbar.make(findViewById(R.id.frame_layout), context.getString(R.string.ytdl_updating_started), Snackbar.LENGTH_LONG).apply {
-                        anchorView = navigationBarView
-                        show()
+                    if (firstRun) {
+                        Snackbar.make(findViewById(R.id.frame_layout), context.getString(R.string.ytdl_updating_started), Snackbar.LENGTH_LONG).apply {
+                            anchorView = navigationBarView
+                            show()
+                        }
                     }
 
                     val updateRes = withContext(Dispatchers.IO) {

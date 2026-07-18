@@ -125,6 +125,8 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     private lateinit var selectRangeBtn: MaterialButton
     private lateinit var selectItemsOpenBtn: MaterialButton
 
+    private var noFreespaceSnack: Snackbar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         downloadViewModel = ViewModelProvider(requireActivity())[DownloadViewModel::class.java]
@@ -211,10 +213,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
         lifecycleScope.launch {
             formatViewModel.noFreeSpace.collectLatest {
-                if (it != null) {
-                    val snack = Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE)
-                    snack.setTextMaxLines(10)
-                    snack.show()
+                if (it != null && noFreespaceSnack?.isShown == false) {
+                    noFreespaceSnack = Snackbar.make(view, it, Snackbar.LENGTH_INDEFINITE)
+                    noFreespaceSnack?.setTextMaxLines(10)
+                    noFreespaceSnack?.show()
                 }
             }
         }

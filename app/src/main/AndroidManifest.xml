@@ -536,6 +536,13 @@
         <receiver android:name=".receiver.PauseDownloadNotificationReceiver" />
         <receiver android:name=".receiver.CancelScheduleAlarmReceiver" />
         <receiver android:name=".receiver.ScheduleAlarmReceiver" />
+        <receiver android:name=".receiver.ObserveSourceAlarmReceiver" android:exported="false" />
+        <receiver android:name=".receiver.ObserveBootReceiver" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".receiver.ResumeActivity"

@@ -35,6 +35,13 @@
     <SwitchPreferenceCompat
         android:widgetLayout="@layout/preferece_material_switch"
         app:defaultValue="true"
+        app:icon="@drawable/outline_storage_24"
+        app:key="check_available_storage"
+        app:title="@string/check_available_storage" />
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
         app:icon="@drawable/if_file_rename"
         android:enabled="false"
         app:key="cache_downloads"

@@ -1,19 +1,16 @@
 package com.deniscerri.ytdl.database.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.database.DBManager
-import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.models.RestoreAppDataItem
 import com.deniscerri.ytdl.database.models.SearchSettingsItem
 import com.deniscerri.ytdl.database.repository.CommandTemplateRepository
@@ -22,24 +19,19 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
-import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingsRegistry
 import com.deniscerri.ytdl.util.BackupSettingsUtil
-import com.deniscerri.ytdl.util.Extensions.combine
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.schabi.newpipe.extractor.timeago.patterns.fa
 import java.io.File
 import java.util.Calendar
 
@@ -66,7 +58,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         cookieRepository = CookieRepository(dbManager.cookieDao)
         commandTemplateRepository = CommandTemplateRepository(dbManager.commandTemplateDao)
         searchHistoryRepository = SearchHistoryRepository(dbManager.searchHistoryDao)
-        observeSourcesRepository = ObserveSourcesRepository(dbManager.observeSourcesDao, workManager, preferences)
+        observeSourcesRepository = ObserveSourcesRepository(dbManager.observeSourcesDao)
 
         settingsFlow = combine(_settingsFlow, _searchQuery) { items, query ->
             if (query.isBlank()) {
@@ -118,7 +110,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         }
 
         val currentTime = Calendar.getInstance()
-        val dir = File(FileUtil.getCachePath(application) + "/Backups")
+        val dir = File(FileUtil.getBackupPath(application))
         dir.mkdirs()
 
         val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(

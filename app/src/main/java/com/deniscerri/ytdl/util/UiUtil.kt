@@ -19,6 +19,7 @@ import android.text.format.DateFormat
 import android.text.method.DigitsKeyListener
 import android.text.method.LinkMovementMethod
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -63,15 +64,20 @@ import com.deniscerri.ytdl.database.models.GithubRelease
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.PackageItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
+import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
+import com.deniscerri.ytdl.database.viewmodel.HistoryViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.downloadcard.VideoCutListener
 import com.deniscerri.ytdl.ui.downloadcard.crop.VideoCropListener
+import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
 import com.deniscerri.ytdl.util.Extensions.createBadge
+import com.deniscerri.ytdl.util.Extensions.displayStatus
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.hasPermission
+import com.deniscerri.ytdl.util.Extensions.scheduleSummary
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
@@ -2979,6 +2985,127 @@ object UiUtil {
                 }
             }
         }
+    }
+
+
+    fun showObserveSourceDetailsCard(
+        item: ObserveSourcesItem,
+        context: Activity,
+        onCheckNow: () -> Unit,
+        onPauseResume: () -> Unit,
+        onEdit: () -> Unit,
+        onDelete: () -> Unit,
+        onReScanFromScratch: () -> Unit,
+        onSkipBacklog: () -> Unit,
+        onUnskipIgnored: () -> Unit,
+    ) {
+        val bottomSheet = BottomSheetDialog(context)
+        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        bottomSheet.setContentView(R.layout.observe_sources_details_bottom_sheet)
+
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_title)?.text = item.name.ifEmpty { item.url }
+        bottomSheet.findViewById<TextView>(R.id.bottom_sheet_link)?.apply {
+            text = item.url
+            setOnClickListener { openLinkIntent(context, item.url) }
+            setOnLongClickListener { copyLinkToClipBoard(context, item.url); true }
+        }
+
+        // status chip
+        val status = bottomSheet.findViewById<Chip>(R.id.status_chip)
+        when (item.displayStatus()) {
+            Extensions.ObserveSourceDisplayStatus.ACTIVE -> {
+                val c = Calendar.getInstance().apply { timeInMillis = item.calculateNextTimeForObserving() }
+                val next = SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(c.timeInMillis)
+                status?.text = "${item.scheduleSummary(context)} · $next"
+                status?.setChipIconResource(R.drawable.baseline_loop_24)
+            }
+            Extensions.ObserveSourceDisplayStatus.PAUSED -> {
+                status?.text = context.getString(R.string.paused)
+                status?.setChipIconResource(R.drawable.exomedia_ic_pause_white)
+            }
+            Extensions.ObserveSourceDisplayStatus.FINISHED -> {
+                status?.text = context.resources.getQuantityString(R.plurals.finished_runs, item.runCount, item.runCount)
+                status?.setChipIconResource(R.drawable.ic_check)
+            }
+        }
+
+        // stat chips (tap processed/skipped -> view the link list)
+        bottomSheet.findViewById<Chip>(R.id.runs_chip)?.text =
+            context.getString(R.string.observe_runs_chip, item.runCount)
+        bottomSheet.findViewById<Chip>(R.id.processed_chip)?.apply {
+            text = context.getString(R.string.observe_processed_chip, item.alreadyProcessedLinks.size)
+            isClickable = item.alreadyProcessedLinks.isNotEmpty()
+            setOnClickListener {
+                showFullTextDialog(context, item.alreadyProcessedLinks.joinToString("\n"), context.getString(R.string.observe_processed_chip, item.alreadyProcessedLinks.size))
+            }
+        }
+        bottomSheet.findViewById<Chip>(R.id.skipped_chip)?.apply {
+            text = context.getString(R.string.observe_skipped_chip, item.ignoredLinks.size)
+            isVisible = item.ignoredLinks.isNotEmpty()
+            setOnClickListener {
+                showFullTextDialog(context, item.ignoredLinks.joinToString("\n"), context.getString(R.string.observe_skipped_chip, item.ignoredLinks.size))
+            }
+        }
+
+        // check now (FAB)
+        bottomSheet.findViewById<FloatingActionButton>(R.id.check_now_fab)?.setOnClickListener {
+            onCheckNow(); bottomSheet.dismiss()
+        }
+
+        // pause / resume
+        bottomSheet.findViewById<FloatingActionButton>(R.id.pause_resume_fab)?.apply {
+            if (item.displayStatus() == Extensions.ObserveSourceDisplayStatus.ACTIVE) {
+                setImageResource(R.drawable.exomedia_ic_pause_white)
+            } else {
+                setImageResource(R.drawable.exomedia_ic_play_arrow_white)
+            }
+            setOnClickListener { onPauseResume(); bottomSheet.dismiss() }
+        }
+
+        bottomSheet.findViewById<Button>(R.id.edit_button)?.setOnClickListener { onEdit(); bottomSheet.dismiss() }
+        bottomSheet.findViewById<Button>(R.id.delete_button)?.setOnClickListener {
+            showGenericDeleteDialog(context, item.name) { onDelete(); bottomSheet.dismiss() }
+        }
+
+        bottomSheet.findViewById<Button>(R.id.settings_button)?.setOnClickListener {
+
+            val settingsSheet = BottomSheetDialog(context)
+            settingsSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            settingsSheet.setContentView(R.layout.observe_sources_settings_sheet)
+
+            // reset-state actions (all confirmed)
+            settingsSheet.findViewById<Button>(R.id.rescan_button)?.setOnClickListener {
+                showGenericConfirmDialog(context, context.getString(R.string.rescan_from_scratch), context.getString(R.string.rescan_from_scratch_desc)) {
+                    onReScanFromScratch(); settingsSheet.dismiss()
+                }
+            }
+            settingsSheet.findViewById<Button>(R.id.skip_backlog_button)?.setOnClickListener {
+                showGenericConfirmDialog(context, context.getString(R.string.skip_backlog), context.getString(R.string.skip_backlog_desc)) {
+                    onSkipBacklog(); settingsSheet.dismiss()
+                }
+            }
+            settingsSheet.findViewById<Button>(R.id.unskip_button)?.apply {
+                isVisible = item.ignoredLinks.isNotEmpty()
+                setOnClickListener {
+                    showGenericConfirmDialog(context, context.getString(R.string.unskip_ignored), context.getString(R.string.unskip_ignored_desc)) {
+                        onUnskipIgnored(); settingsSheet.dismiss()
+                    }
+                }
+            }
+
+
+            val displayMetrics = DisplayMetrics()
+            context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+            settingsSheet.behavior.peekHeight = displayMetrics.heightPixels
+            settingsSheet.show()
+
+        }
+
+        bottomSheet.show()
+        val displayMetrics = DisplayMetrics()
+        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
+        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+        bottomSheet.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
 }

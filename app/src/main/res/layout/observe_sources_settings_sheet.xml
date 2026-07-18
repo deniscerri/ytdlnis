@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout style="@style/Widget.Material3.BottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="@string/reset_state"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/rescan_button"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/rescan_from_scratch"
+        android:textAlignment="textStart"
+        app:icon="@drawable/ic_restore" />
+
+    <Button
+        android:id="@+id/skip_backlog_button"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/skip_backlog"
+        android:textAlignment="textStart"
+        app:icon="@drawable/ic_delete_all" />
+
+    <Button
+        android:id="@+id/unskip_button"
+        style="@style/Widget.Material3.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="start|center_vertical"
+        android:text="@string/unskip_ignored"
+        android:textAlignment="textStart"
+        app:icon="@drawable/ic_check" />
+
+</LinearLayout>

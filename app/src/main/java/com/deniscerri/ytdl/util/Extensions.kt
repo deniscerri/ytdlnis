@@ -46,6 +46,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository.EveryCategory
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.badge.BadgeDrawable
@@ -531,10 +532,11 @@ object Extensions {
         // Get the Set-Cookie header format
         return cookie.toString()
     }
-    
+
     fun ObserveSourcesItem.calculateNextTimeForObserving() : Long {
         val item = this
         val now = System.currentTimeMillis()
+        var everyNr = item.everyNr
         Calendar.getInstance().apply {
             timeInMillis = item.startsTime
 
@@ -548,43 +550,61 @@ object Extensions {
 
             while (timeInMillis < now){
                 when(item.everyCategory){
-                    EveryCategory.HOUR -> {
-                        add(Calendar.HOUR, item.everyNr)
-                    }
-                    EveryCategory.DAY -> {
-                        add(Calendar.DAY_OF_MONTH, item.everyNr)
-                    }
+                    EveryCategory.HOUR -> { add(Calendar.HOUR, everyNr) }
+                    EveryCategory.DAY  -> { add(Calendar.DAY_OF_MONTH, everyNr) }
                     EveryCategory.WEEK -> {
                         item.weeklyConfig?.apply {
                             if (this.weekDays.isEmpty()){
-                                add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                                add(Calendar.DAY_OF_MONTH, 7 * everyNr)
                             }else{
                                 var weekDayNr = get(Calendar.DAY_OF_WEEK) - 1
                                 if (weekDayNr == 0) weekDayNr = 7
                                 val followingWeekDay = this.weekDays.firstOrNull { it > weekDayNr }
                                 if (followingWeekDay == null){
                                     add(Calendar.DAY_OF_MONTH, this.weekDays.minBy { it } + (7 - weekDayNr))
-                                    item.everyNr--
+                                    everyNr--
                                 }else{
-                                    add(Calendar.DAY_OF_MONTH, followingWeekDay.toInt() - weekDayNr)
+                                    add(Calendar.DAY_OF_MONTH, followingWeekDay - weekDayNr)
                                 }
-
-                                if (item.everyNr > 1){
-                                    add(Calendar.DAY_OF_MONTH, 7 * item.everyNr)
+                                if (everyNr > 1){
+                                    add(Calendar.DAY_OF_MONTH, 7 * everyNr)
                                 }
                             }
                         }
                     }
                     EveryCategory.MONTH -> {
-                        add(Calendar.MONTH, item.everyNr)
-                        item.monthlyConfig?.apply {
-                            set(Calendar.DAY_OF_MONTH, this.everyMonthDay)
-                        }
+                        add(Calendar.MONTH, everyNr)
+                        item.monthlyConfig?.apply { set(Calendar.DAY_OF_MONTH, this.everyMonthDay) }
                     }
                 }
             }
-
             return timeInMillis
+        }
+    }
+
+    enum class ObserveSourceDisplayStatus { ACTIVE, PAUSED, FINISHED }
+
+    // Same condition the worker uses to decide it's done (ObserveSourceWorker.kt:216-218)
+    fun ObserveSourcesItem.hasReachedEnd(now: Long = System.currentTimeMillis()): Boolean {
+        return (endsAfterCount > 0 && runCount >= endsAfterCount) ||
+                (endsDate > 0 && now >= endsDate)
+    }
+
+    fun ObserveSourcesItem.displayStatus(): ObserveSourceDisplayStatus {
+        return when {
+            status == ObserveSourcesRepository.SourceStatus.ACTIVE -> ObserveSourceDisplayStatus.ACTIVE
+            hasReachedEnd() -> ObserveSourceDisplayStatus.FINISHED
+            else -> ObserveSourceDisplayStatus.PAUSED
+        }
+    }
+
+    fun ObserveSourcesItem.scheduleSummary(context: Context): String {
+        val nr = everyNr
+        return when (everyCategory) {
+            EveryCategory.HOUR  -> context.resources.getQuantityString(R.plurals.every_hours, nr, nr)
+            EveryCategory.DAY   -> context.resources.getQuantityString(R.plurals.every_days, nr, nr)
+            EveryCategory.WEEK  -> context.resources.getQuantityString(R.plurals.every_weeks, nr, nr)
+            EveryCategory.MONTH -> context.resources.getQuantityString(R.plurals.every_months, nr, nr)
         }
     }
 

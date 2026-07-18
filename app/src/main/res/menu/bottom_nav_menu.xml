@@ -15,7 +15,7 @@
 
     <item android:title="@string/queue"
         android:icon="@drawable/baseline_downloading_24"
-        android:visible="false"
+        android:visible="true"
         android:id="@+id/downloadQueueMainFragment"/>
 
     <item android:title="@string/terminal"

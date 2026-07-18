@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.adapter
 
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -15,11 +16,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.util.Extensions
 import com.deniscerri.ytdl.util.Extensions.calculateNextTimeForObserving
+import com.deniscerri.ytdl.util.Extensions.displayStatus
+import com.deniscerri.ytdl.util.Extensions.dp
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import java.text.DateFormatSymbols
 import java.text.SimpleDateFormat
@@ -32,6 +37,8 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
 ).build()) {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
+
+    private var runningIds: Set<Long> = emptySet()
 
     init {
         this.onItemClickListener = onItemClickListener
@@ -51,6 +58,8 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
             .inflate(R.layout.observe_sources_item, parent, false)
         return ViewHolder(cardView)
     }
+
+    private fun dp(v: View, value: Int) = (v.resources.displayMetrics.density * value).toInt()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
@@ -74,61 +83,54 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
         val url = card.findViewById<TextView>(R.id.url)
         url.text = item.url
 
-        //INFO
         val info = card.findViewById<Chip>(R.id.info)
-        val nextTime = item.calculateNextTimeForObserving()
-        val c = Calendar.getInstance()
-        c.timeInMillis = nextTime
-
-        val weekdays = DateFormatSymbols(Locale.getDefault()).shortWeekdays
-        val text = "${weekdays[c.get(Calendar.DAY_OF_WEEK)]}, ${SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault()).format(c.timeInMillis)}"
-        info.text = text
-
-        //CHECK MISSING
-        val checkMissing = card.findViewById<Button>(R.id.check_missing)
-        checkMissing.isVisible = item.retryMissingDownloads
-
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.download_progress)
         progressBar.isIndeterminate = true
         progressBar.isVisible = false
 
-        // BUTTON ----------------------------------
-        val searchBtn = card.findViewById<MaterialButton>(R.id.search)
-        val pauseBtn = card.findViewById<MaterialButton>(R.id.pause_resume)
-        searchBtn.isEnabled = true
-        pauseBtn.isEnabled = true
-        if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED){
-            info.isVisible = false
-            searchBtn.isVisible = false
+        info.isVisible = true
 
-            pauseBtn.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
-            pauseBtn.contentDescription = activity.getString(R.string.resume)
-            pauseBtn.setOnClickListener {
-                pauseBtn.isEnabled = false
-                onItemClickListener.onItemStart(item, position)
+        val isRunning = runningIds.contains(item.id)
+        progressBar.isVisible = isRunning
+
+        fun attr(a: Int) = MaterialColors.getColor(card, a)
+
+        when (item.displayStatus()) {
+            Extensions.ObserveSourceDisplayStatus.ACTIVE -> {
+                val c = Calendar.getInstance().apply { timeInMillis = item.calculateNextTimeForObserving() }
+                val weekdays = DateFormatSymbols(Locale.getDefault()).shortWeekdays
+                val next = "${weekdays[c.get(Calendar.DAY_OF_WEEK)]}, " +
+                        SimpleDateFormat(DateFormat.getBestDateTimePattern(Locale.getDefault(), "ddMMMyyyy - HHmm"), Locale.getDefault())
+                            .format(c.timeInMillis)
+                info.text = activity.getString(R.string.next_run, next)
+                info.setChipIconResource(R.drawable.baseline_loop_24)
+
+                // ACTIVE styling: accent chip + outline, full opacity
+                val onAccent = attr(com.google.android.material.R.attr.colorOnTertiaryContainer)
+                info.chipBackgroundColor = ColorStateList.valueOf(attr(com.google.android.material.R.attr.colorTertiaryContainer))
+                info.setTextColor(onAccent)
+                info.chipIconTint = ColorStateList.valueOf(onAccent)
+                itemTitle.alpha = 1f
+                url.alpha = 0.7f
             }
-        }else{
-            info.isVisible = true
-            searchBtn.isVisible = true
 
-            searchBtn.setOnClickListener {
-                searchBtn.isEnabled = false
-                progressBar.isVisible = true
-                progressBar.animate()
-                onItemClickListener.onItemSearch(item)
+            Extensions.ObserveSourceDisplayStatus.PAUSED -> {
+                info.text = activity.getString(R.string.paused)
+                info.setChipIconResource(R.drawable.exomedia_ic_pause_white)
+                styleInactive(card, info, itemTitle, url, ::attr)
             }
 
-            pauseBtn.setIconResource(R.drawable.exomedia_ic_pause_white)
-            pauseBtn.contentDescription = activity.getString(R.string.pause)
-            pauseBtn.setOnClickListener {
-                pauseBtn.isEnabled = false
-                onItemClickListener.onItemPaused(item, position)
+            Extensions.ObserveSourceDisplayStatus.FINISHED -> {
+                info.text = activity.resources.getQuantityString(
+                    R.plurals.finished_runs, item.runCount, item.runCount)
+                info.setChipIconResource(R.drawable.ic_check)
+                styleInactive(card, info, itemTitle, url, ::attr)
             }
         }
 
 
         card.setOnClickListener {
-            onItemClickListener.onItemClick(item)
+            onItemClickListener.onItemClick(item, position)
         }
 
         card.setOnLongClickListener {
@@ -136,12 +138,29 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
         }
     }
 
+    fun setRunningIds(ids: Set<Long>) {
+        if (ids == runningIds) return
+        runningIds = ids
+        notifyDataSetChanged()   // list is small; fine
+    }
+
+    private fun styleInactive(
+        card: MaterialCardView, info: Chip, title: TextView, url: TextView,
+        attr: (Int) -> Int
+    ) {
+        val onNeutral = attr(com.google.android.material.R.attr.colorOnSurfaceVariant)
+        info.chipBackgroundColor = ColorStateList.valueOf(attr(com.google.android.material.R.attr.colorSurfaceVariant))
+        info.setTextColor(onNeutral)
+        info.chipIconTint = ColorStateList.valueOf(onNeutral)
+        card.strokeWidth = 0
+        title.alpha = 0.5f
+        url.alpha = 0.4f
+    }
+
     interface OnItemClickListener {
 
-        fun onItemSearch(item: ObserveSourcesItem)
         fun onItemStart(item: ObserveSourcesItem, position: Int)
-        fun onItemPaused(item: ObserveSourcesItem, position: Int)
-        fun onItemClick(item: ObserveSourcesItem)
+        fun onItemClick(item: ObserveSourcesItem, position: Int)
         fun onDelete(item: ObserveSourcesItem)
     }
 
@@ -159,6 +178,7 @@ class ObserveSourcesAdapter(onItemClickListener: OnItemClickListener, activity: 
                         && oldItem.retryMissingDownloads == newItem.retryMissingDownloads
                         && oldItem.runCount == newItem.runCount
                         && oldItem.calculateNextTimeForObserving() == newItem.calculateNextTimeForObserving()
+                        && oldItem.displayStatus() == newItem.displayStatus()
             }
         }
     }

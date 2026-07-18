@@ -194,7 +194,7 @@
 
             <LinearLayout
                 android:id="@+id/multiple_top_info"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/selectActionButtons"
