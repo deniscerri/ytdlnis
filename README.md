@@ -96,6 +96,17 @@
 - Backup and restore features
 - MVVM architecture with WorkManager
 
+## 🧩 Plugin Support
+
+YTDLnis orchestrates plugins so users can freely upgrade and downgrade components such as:
+- Python
+- JS Runtimes (NodeJS, Deno)
+- FFmpeg
+- Aria2c
+
+You can install ytdlnis packages from this repository [ytdlnis-packages](https://github.com/deniscerri/ytdlnis-packages/) or through the updating section in the application.
+<br>For more information refer to the repo's README.
+
 ## 📲 Screenshots
 
 <div>
