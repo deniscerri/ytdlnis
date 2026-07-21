@@ -582,4 +582,5 @@
         <item quantity="many">Кожені %d місяців</item>
         <item quantity="other">Кожені %d місяців</item>
     </plurals>
+    <string name="skip_backlog">Пропустити поточну чергу завдань</string>
 </resources>
