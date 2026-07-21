@@ -538,4 +538,34 @@
     <string name="package_version_ready_to_download">可以下载 %2$s 版的 %1$s 包了</string>
     <string name="tap_to_see_changes_and_install">轻触查看更改并安装</string>
     <string name="view">查看</string>
+    <string name="next_run">下一次：%1$s</string>
+    <string name="paused">已暂停</string>
+    <string name="check_complete">检查完毕</string>
+    <plurals name="finished_runs">
+        <item quantity="other">已完成 ·运行 %d 次</item>
+    </plurals>
+    <string name="reset_state">重置状态</string>
+    <string name="rescan_from_scratch">从头开始重新扫描</string>
+    <string name="rescan_from_scratch_desc">忘记已处理项目并重新扫描尚未保存的一切</string>
+    <string name="skip_backlog">跳过当前积压项</string>
+    <string name="skip_backlog_desc">将源中的所有内容标记为已完成——仅下载未来的上传内容</string>
+    <string name="unskip_ignored">不跳过已忽略的上传</string>
+    <string name="unskip_ignored_desc">下载首次运行跳过的现有上传内容</string>
+    <string name="observe_runs_chip">%d 次运行</string>
+    <string name="observe_processed_chip">已处理 %d</string>
+    <string name="observe_skipped_chip">已跳过 %d</string>
+    <string name="observe_updating">更新中…</string>
+    <string name="check_available_storage">检查可用存储空间</string>
+    <plurals name="every_hours">
+        <item quantity="other">每 %d 个小时</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="other">每 %d 天</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="other">每 %d 周</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="other">每 %d 个月</item>
+    </plurals>
 </resources>
