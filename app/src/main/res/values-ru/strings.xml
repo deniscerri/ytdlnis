@@ -538,4 +538,49 @@
     <string name="package_version_ready_to_download">Пакет %1$s с версией %2$s готов к загрузке</string>
     <string name="tap_to_see_changes_and_install">Нажмите, чтобы увидеть изменения и установить</string>
     <string name="view">Просмотреть</string>
+    <string name="next_run">Следующий: %1$s</string>
+    <string name="paused">Приостановлено</string>
+    <string name="check_complete">Проверка завершена</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Завершено · %d запуск</item>
+        <item quantity="few">Завершено · %d запуски</item>
+        <item quantity="many">Завершено · %d запусков</item>
+        <item quantity="other">Завершено · %d запусков</item>
+    </plurals>
+    <string name="reset_state">Сбросить состояние</string>
+    <string name="rescan_from_scratch">Повторное сканирование с нуля</string>
+    <string name="rescan_from_scratch_desc">Забыть обработанные елеметы и заново скачайть все, что не сохранено</string>
+    <string name="skip_backlog">Skip current backlog</string>
+    <string name="skip_backlog_desc">Пометить всё, текущее в источнике как выполнено — загружать только будущие загрузки</string>
+    <string name="unskip_ignored">Отменить пропуск игнорируемых загрузок</string>
+    <string name="unskip_ignored_desc">Скачать существующие загрузки, пропущенные при первом запуске</string>
+    <string name="observe_runs_chip">%d запусков</string>
+    <string name="observe_processed_chip">%d обработано</string>
+    <string name="observe_skipped_chip">%d пропущено</string>
+    <string name="observe_updating">Обновление…</string>
+    <string name="check_available_storage">Проверьте доступное хранилище</string>
+    <plurals name="every_hours">
+        <item quantity="one">Каждый час</item>
+        <item quantity="few">Каждые %d часа</item>
+        <item quantity="many">Каждые %d часов</item>
+        <item quantity="other">Каждые %d часов</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Каждый день</item>
+        <item quantity="few">Каждые %d дня</item>
+        <item quantity="many">Каждые %d дней</item>
+        <item quantity="other">Каждые %d дней</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Каждую неделю</item>
+        <item quantity="few">Каждые %d недели</item>
+        <item quantity="many">Каждые %d недель</item>
+        <item quantity="other">Каждые %d недель</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Каждый месяц</item>
+        <item quantity="few">Каждые %d месяца</item>
+        <item quantity="many">Каждый %d месяцев</item>
+        <item quantity="other">Каждый %d месяцев</item>
+    </plurals>
 </resources>
