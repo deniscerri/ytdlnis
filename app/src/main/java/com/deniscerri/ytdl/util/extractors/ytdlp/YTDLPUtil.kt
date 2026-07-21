@@ -1515,11 +1515,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
 
-                if (downloadItem.videoPreferences.writeSubs){
+                if (downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.embedSubs){
                     request.addOption("--write-subs")
                 }
 
-                if(downloadItem.videoPreferences.writeAutoSubs){
+                if(downloadItem.videoPreferences.writeAutoSubs || downloadItem.videoPreferences.embedSubs){
                     request.addOption("--write-auto-subs")
                 }
 

@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -194,9 +195,9 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                    downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
                    downloadCardViewModel.setDownloadItem(it)
 
-                   findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                       Pair("type", it.type)
-                   ))
+                    findNavController().navigateDownloadSheet(requireContext(), bundleOf(
+                        Pair("type", it.type)
+                    ))
                },
                scheduleButtonClick = {}
            )
@@ -306,9 +307,9 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                                 downloadCardViewModel.setDownloadItem(itm)
 
                                 withContext(Dispatchers.Main) {
-                                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
-                                        Pair("type", itm.type)
-                                    ))
+                                     findNavController().navigateDownloadSheet(requireContext(), bundleOf(
+                                         Pair("type", itm.type)
+                                     ))
                                 }
                             }else {
                                 CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
@@ -394,7 +395,7 @@ class ErroredDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickL
                             downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(item))
                             downloadCardViewModel.setDownloadItem(item)
 
-                            findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                            findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                                 Pair("type", item.type)
                             ))
                             

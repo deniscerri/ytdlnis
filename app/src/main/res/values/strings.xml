@@ -6,6 +6,10 @@
     <string name="remove_all">Remove all</string>
     <string name="remove_results">Clear results</string>
     <string name="download_all">Download all</string>
+    <string name="download_card_style">Download Sheet Style</string>
+    <string name="download_card_style_youtube">YouTube Style</string>
+    <string name="download_card_style_classic">Classic Style</string>
+    <string name="audio_only">Audio Only</string>
     <string name="settings">Settings</string>
     <string name="home">Home</string>
     <string name="directories">Folders</string>

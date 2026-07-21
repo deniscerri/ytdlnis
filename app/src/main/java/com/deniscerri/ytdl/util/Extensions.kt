@@ -40,6 +40,8 @@ import androidx.core.text.HtmlCompat
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.withStarted
+import androidx.navigation.NavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
@@ -735,5 +737,20 @@ object Extensions {
         }
 
         return packageInfo.requestedPermissions?.contains(this) ?: false
+    }
+
+    fun NavController.navigateDownloadSheet(context: Context, args: android.os.Bundle? = null) {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val style = prefs.getString("download_card_style", "youtube")
+        val destinationId = if (style == "youtube") {
+            R.id.youtubeDownloadBottomSheetDialog
+        } else {
+            R.id.downloadBottomSheetDialog
+        }
+        if (args != null) {
+            navigate(destinationId, args)
+        } else {
+            navigate(destinationId)
+        }
     }
 }

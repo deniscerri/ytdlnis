@@ -173,6 +173,14 @@
             app:destination="@id/cutVideoBottomSheetDialog" />
     </dialog>
     <dialog
+        android:id="@+id/youtubeDownloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.YouTubeDownloadBottomSheetDialog"
+        android:label="YouTubeDownloadBottomSheetDialog" >
+        <action
+            android:id="@+id/action_youtubeDownloadBottomSheetDialog_to_cutVideoBottomSheetDialog"
+            app:destination="@id/cutVideoBottomSheetDialog" />
+    </dialog>
+    <dialog
         android:id="@+id/downloadMultipleBottomSheetDialog2"
         android:name="com.deniscerri.ytdl.ui.downloadcard.DownloadMultipleBottomSheetDialog"
         android:label="DownloadMultipleBottomSheetDialog" >

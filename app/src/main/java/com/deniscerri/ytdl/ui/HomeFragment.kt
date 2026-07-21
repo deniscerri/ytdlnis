@@ -58,6 +58,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.HomeAdapter
 import com.deniscerri.ytdl.ui.adapter.SearchSuggestionsAdapter
 import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.NotificationUtil
@@ -774,7 +775,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         type: DownloadType,
         disableUpdateData : Boolean = false
     ){
-        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog} == null &&
+        if(findNavController().currentBackStack.value.firstOrNull {it.destination.id == R.id.downloadBottomSheetDialog || it.destination.id == R.id.youtubeDownloadBottomSheetDialog} == null &&
             findNavController().currentDestination?.id == R.id.homeFragment
             ){
             //show the fragment if its not in the backstack
@@ -785,7 +786,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
             if (disableUpdateData) {
                 bundle.putBoolean("disableUpdateData", true)
             }
-            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
+            findNavController().navigateDownloadSheet(requireContext(), bundle)
         }
     }
 
