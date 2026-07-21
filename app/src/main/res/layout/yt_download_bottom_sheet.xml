@@ -86,6 +86,16 @@
                     android:text="@string/audio" />
             </com.google.android.material.tabs.TabLayout>
 
+            <!-- Format Loading Centered Circular Progress Bar -->
+            <ProgressBar
+                android:id="@+id/yt_loading_spinner"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="32dp"
+                android:indeterminateTint="#3EA6FF"
+                android:visibility="gone" />
+
             <!-- Quality Radio Options RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/yt_quality_recycler_view"

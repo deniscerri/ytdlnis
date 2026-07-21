@@ -9,6 +9,7 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
@@ -64,6 +65,7 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var cancelButton: MaterialButton
     private lateinit var subtitlesButton: MaterialButton
     private lateinit var tabLayout: TabLayout
+    private lateinit var loadingSpinner: ProgressBar
 
     private lateinit var result: ResultItem
     private var currentDownloadItem: DownloadItem? = null
@@ -121,6 +123,7 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
         cancelButton = v.findViewById(R.id.yt_cancel_button)
         subtitlesButton = v.findViewById(R.id.yt_subtitles_button)
         tabLayout = v.findViewById(R.id.yt_tab_layout)
+        loadingSpinner = v.findViewById(R.id.yt_loading_spinner)
 
         updateSubtitleButtonUI()
 
@@ -137,16 +140,24 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun fetchRealFormatsIfNeeded() {
-        val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") }
+        val usingGenericFormatsOrEmpty = result.formats.isEmpty() || result.formats.any { it.format_note.contains("ytdlnisgeneric") || it.format_id.contains("ytdlnisgeneric") }
+        
         if (usingGenericFormatsOrEmpty) {
+            loadingSpinner.isVisible = true
+            qualityRecyclerView.isVisible = false
             lifecycleScope.launch(Dispatchers.IO) {
                 resultViewModel.updateFormatItemData(result)
             }
+        } else {
+            loadingSpinner.isVisible = false
+            qualityRecyclerView.isVisible = true
         }
 
         lifecycleScope.launch {
             resultViewModel.updateFormatsResultData.collectLatest { updatedFormats ->
                 if (!updatedFormats.isNullOrEmpty()) {
+                    loadingSpinner.isVisible = false
+                    qualityRecyclerView.isVisible = true
                     result.formats = updatedFormats
                     buildQualityOptions()
                 }
@@ -159,91 +170,79 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
         allAudioOptions.clear()
         val formats = result.formats
 
-        val extractedVideoFormats = formats.filter { it.height != null && it.height!! > 0 }.sortedByDescending { it.height }
-        val extractedAudioFormats = formats.filter { it.height == null || it.height == 0 }.sortedByDescending { f ->
+        val extractedVideoFormats = formats.filter { 
+            !it.format_note.contains("ytdlnisgeneric") && !it.format_id.contains("ytdlnisgeneric") && (it.height ?: 0) > 0 
+        }.sortedByDescending { it.height }
+
+        val extractedAudioFormats = formats.filter { 
+            !it.format_note.contains("ytdlnisgeneric") && !it.format_id.contains("ytdlnisgeneric") && (it.height ?: 0) == 0 && (it.vcodec == "none" || it.vcodec.isEmpty()) 
+        }.sortedByDescending { f ->
             f.tbr?.toDoubleOrNull() ?: f.filesize.toDouble()
         }
 
-        val maxVideoHeight = extractedVideoFormats.maxOfOrNull { it.height ?: 0 } ?: 0
+        // 1. VIDEO OPTIONS
+        if (extractedVideoFormats.isNotEmpty()) {
+            val addedHeights = mutableSetOf<Int>()
+            extractedVideoFormats.forEach { f ->
+                val h = f.height ?: 0
+                val resolutionGroup = when {
+                    h >= 2160 -> 2160
+                    h >= 1440 -> 1440
+                    h >= 1080 -> 1080
+                    h >= 720 -> 720
+                    h >= 480 -> 480
+                    h >= 360 -> 360
+                    h >= 240 -> 240
+                    else -> 144
+                }
 
-        // Define expected Video resolutions: 2160p (4K), 1440p (2K), 1080p, 720p, 480p, 360p
-        val targetVideoResolutions = listOf(
-            2160 to "2160p (4K)",
-            1440 to "1440p (2K)",
-            1080 to "1080p (Full HD)",
-            720 to "720p (HD)",
-            480 to "480p (SD)",
-            360 to "360p (Low)"
-        )
+                if (!addedHeights.contains(resolutionGroup)) {
+                    addedHeights.add(resolutionGroup)
+                    val label = when (resolutionGroup) {
+                        2160 -> "2160p (4K)"
+                        1440 -> "1440p (2K)"
+                        1080 -> "1080p (Full HD)"
+                        720 -> "720p (HD)"
+                        480 -> "480p (SD)"
+                        360 -> "360p (Low)"
+                        240 -> "240p (Low)"
+                        else -> "144p (Low)"
+                    }
+                    val sizeStr = if (f.filesize > 0) FileUtil.convertFileSize(f.filesize) else ""
 
-        // Filter resolutions dynamically based on the video's actual max available height
-        val filteredVideoResolutions = if (maxVideoHeight > 0) {
-            targetVideoResolutions.filter { (res, _) -> res <= (maxVideoHeight + 60) }
-        } else {
-            // Default cap at 1080p if formats are still loading
-            targetVideoResolutions.filter { (res, _) -> res <= 1080 }
+                    allVideoOptions.add(
+                        YTQualityOption(
+                            id = "video_$resolutionGroup",
+                            title = label,
+                            details = "",
+                            estimatedSize = sizeStr,
+                            isHd = resolutionGroup >= 720,
+                            downloadType = DownloadType.video,
+                            selectedFormat = f
+                        )
+                    )
+                }
+            }
         }
 
-        filteredVideoResolutions.forEach { (res, label) ->
-            val match = extractedVideoFormats.firstOrNull { (it.height ?: 0) in (res - 60)..(res + 60) }
-            val sizeStr = if (match != null && match.filesize > 0) FileUtil.convertFileSize(match.filesize) else ""
-            val fmt = match ?: Format(
-                format_id = "${res}p_ytdlnisgeneric",
-                container = "mp4",
-                vcodec = "h264",
-                acodec = "aac",
-                encoding = "",
-                filesize = 0,
-                format_note = "${res}p"
-            )
-
-            allVideoOptions.add(
-                YTQualityOption(
-                    id = "video_$res",
-                    title = label,
-                    details = "",
-                    estimatedSize = sizeStr,
-                    isHd = res >= 720,
-                    downloadType = DownloadType.video,
-                    selectedFormat = fmt
-                )
-            )
-        }
-
-        // Define expected Audio quality tiers: Best (~320 kbps), High (~256 kbps), Medium (~160 kbps), Standard (~128 kbps), Economy (~64 kbps)
-        val targetAudioTiers = listOf(
-            Triple("audio_best", "Best Audio (~320 kbps)", "best"),
-            Triple("audio_high", "High Quality (~256 kbps)", "256k"),
-            Triple("audio_mid", "Medium Quality (~160 kbps)", "160k"),
-            Triple("audio_std", "Standard Audio (~128 kbps)", "128k"),
-            Triple("audio_low", "Economy Audio (~64 kbps)", "64k")
-        )
-
-        targetAudioTiers.forEachIndexed { index, (id, label, defaultFmtId) ->
-            val match = extractedAudioFormats.getOrNull(index)
-            val sizeStr = if (match != null && match.filesize > 0) FileUtil.convertFileSize(match.filesize) else ""
-            val fmt = match ?: Format(
-                format_id = defaultFmtId,
-                container = "m4a",
-                vcodec = "none",
-                acodec = "aac",
-                encoding = "",
-                filesize = 0,
-                format_note = defaultFmtId
-            )
-
-            allAudioOptions.add(
-                YTQualityOption(
-                    id = id,
-                    title = label,
-                    details = "",
-                    estimatedSize = sizeStr,
-                    isHd = false,
-                    downloadType = DownloadType.audio,
-                    selectedFormat = fmt,
-                    isAudioOnly = true
-                )
-            )
+        // 2. AUDIO OPTIONS
+        if (extractedAudioFormats.isNotEmpty()) {
+            val addedBitrates = mutableSetOf<String>()
+            extractedAudioFormats.forEach { f ->
+                val bitrate = f.tbr?.takeIf { it.isNotBlank() } ?: "best"
+                val label = buildString {
+                    append(f.container.uppercase().ifEmpty { "M4A" })
+                    if (bitrate.isNotBlank()) append(" (~").append(bitrate).append(" kbps)")
+                }
+                val key = "${f.container}_$bitrate"
+                if (!addedBitrates.contains(key)) {
+                    addedBitrates.add(key)
+                    val sizeStr = if (f.filesize > 0) FileUtil.convertFileSize(f.filesize) else ""
+                    allAudioOptions.add(
+                        YTQualityOption("audio_${f.format_id}", label, "", sizeStr, false, DownloadType.audio, f, true)
+                    )
+                }
+            }
         }
 
         val currentTab = tabLayout.selectedTabPosition
