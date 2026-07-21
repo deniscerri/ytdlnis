@@ -434,7 +434,7 @@
     <string name="data_fetching_extra_command">أمر جلب البيانات الإضافي</string>
     <string name="data_fetching_extra_command_summary">فعّل قوالب الأوامر لاستخدامها في جلب البيانات كأوامر إضافية</string>
     <string name="disable_write_info_json">تعطيل كتابة معلومات Json</string>
-    <string name="disable_write_info_json_summary">في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم (مكروه).</string>
+    <string name="disable_write_info_json_summary">في كل مرة تقوم فيها بإعادة تشغيل/استئناف التنزيل، سيقوم yt-dlp بإعادة تنزيل بيانات json من الخوادم (مكروه)</string>
     <string name="ytdlp_watch_later">المشاهدة لاحقًا الخاصة بيوتيوب على yt-dlp (يحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_recommnedations">التوصيات الخاصة بيوتيوب على yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
     <string name="ytdlp_liked">الفيديوهات المعجب بها الخاصة بيوتيوب على yt-dlp (تحتاج إلى ملفات تعريف الارتباط)</string>
@@ -452,7 +452,7 @@
     <string name="grid">شبكة</string>
     <string name="player_client">عميل المشغل</string>
     <string name="list">قائمة</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[عملاء مشغّل اليوتيوب و رمز PO]]></string>
     <string name="cache_directory">مجلد الذاكرة المؤقتة</string>
     <string name="cache_directory_warning">قد يؤدي تغيير مجلد الذاكرة المؤقتة إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى الدليل الافتراضي للذاكرة المؤقتة الداخلية</string>
     <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل المشغل العميل)</string>
@@ -539,4 +539,59 @@
     <string name="package_version_ready_to_download">الحزمة %1$s مع نسخة %2$s جاهزة للتنزيل</string>
     <string name="tap_to_see_changes_and_install">اضغط لرؤية التغييرات والتثبيت</string>
     <string name="view">عرض</string>
+    <string name="next_run">التالي: %1$s</string>
+    <string name="paused">مُلبث</string>
+    <string name="check_complete">اكتمل التحقق</string>
+    <string name="reset_state">صفّر الحالة</string>
+    <string name="rescan_from_scratch">أعد الفحص من الصفر</string>
+    <string name="rescan_from_scratch_desc">تجاهل العناصر المعالجة وأعد تنزيل كل ما لم يُحفظ بعد</string>
+    <string name="skip_backlog">تخطي الأعمال المتراكمة الحالية</string>
+    <string name="skip_backlog_desc">ضع علامة «تم» على كل ما يوجد حاليًا في المصدر — نزّل المرفوعات المستقبلية فقط</string>
+    <string name="unskip_ignored">ألغِ المرفوعات المتجاهلة</string>
+    <string name="unskip_ignored_desc">نزّل الملفات التي رُفعت سابقًا والتي تخطّت عند التشغيل الأول</string>
+    <string name="observe_runs_chip">%d تشغيلات</string>
+    <string name="observe_processed_chip">%d تعالج</string>
+    <string name="observe_skipped_chip">%d تخطَّ</string>
+    <string name="observe_updating">يحدِّث…</string>
+    <string name="check_available_storage">تحقق من سعة التخزين المتاحة</string>
+    <plurals name="finished_runs">
+        <item quantity="zero">انتهى · %d تشغيلًا</item>
+        <item quantity="one">انتهى · تشغيل واحد</item>
+        <item quantity="two">انتهى تشغيلان</item>
+        <item quantity="few">انتهى · %d تشغيلات</item>
+        <item quantity="many">انتهى · %d تشغيلًا</item>
+        <item quantity="other">انتهى · %d تشغيل</item>
+    </plurals>
+    <plurals name="every_hours">
+        <item quantity="zero">كل %d ساعة</item>
+        <item quantity="one">كل ساعة</item>
+        <item quantity="two">كل ساعتين</item>
+        <item quantity="few">كل %d ساعات</item>
+        <item quantity="many">كل %d ساعة</item>
+        <item quantity="other">كل %d ساعة</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="zero">كل %d يوم</item>
+        <item quantity="one">كل يوم</item>
+        <item quantity="two">كل يومين</item>
+        <item quantity="few">كل %d أيام</item>
+        <item quantity="many">كل %d يومًا</item>
+        <item quantity="other">كل %d يوم</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="zero">كل %d أسبوع</item>
+        <item quantity="one">كل أسبوع</item>
+        <item quantity="two">كل أسبوعين</item>
+        <item quantity="few">كل %d أسابيع</item>
+        <item quantity="many">كل %d أسبوعًا</item>
+        <item quantity="other">كل %d أسبوع</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="zero">كل %d شهر</item>
+        <item quantity="one">كل شهر</item>
+        <item quantity="two">كل شهرين</item>
+        <item quantity="few">كل %d أشهر</item>
+        <item quantity="many">كل %d شهرًا</item>
+        <item quantity="other">كل %d شهر</item>
+    </plurals>
 </resources>
