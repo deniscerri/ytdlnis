@@ -164,6 +164,8 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
             f.tbr?.toDoubleOrNull() ?: f.filesize.toDouble()
         }
 
+        val maxVideoHeight = extractedVideoFormats.maxOfOrNull { it.height ?: 0 } ?: 0
+
         // Define expected Video resolutions: 2160p (4K), 1440p (2K), 1080p, 720p, 480p, 360p
         val targetVideoResolutions = listOf(
             2160 to "2160p (4K)",
@@ -174,7 +176,15 @@ class YouTubeDownloadBottomSheetDialog : BottomSheetDialogFragment() {
             360 to "360p (Low)"
         )
 
-        targetVideoResolutions.forEach { (res, label) ->
+        // Filter resolutions dynamically based on the video's actual max available height
+        val filteredVideoResolutions = if (maxVideoHeight > 0) {
+            targetVideoResolutions.filter { (res, _) -> res <= (maxVideoHeight + 60) }
+        } else {
+            // Default cap at 1080p if formats are still loading
+            targetVideoResolutions.filter { (res, _) -> res <= 1080 }
+        }
+
+        filteredVideoResolutions.forEach { (res, label) ->
             val match = extractedVideoFormats.firstOrNull { (it.height ?: 0) in (res - 60)..(res + 60) }
             val sizeStr = if (match != null && match.filesize > 0) FileUtil.convertFileSize(match.filesize) else ""
             val fmt = match ?: Format(
