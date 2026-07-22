@@ -8,7 +8,7 @@
     <string name="home">الرئيسية</string>
     <string name="directories">المجلدات</string>
     <string name="music_directory">مجلد الموسيقى</string>
-    <string name="video_directory">مجلد الفيديوهات</string>
+    <string name="video_directory">مجلد الفيديو</string>
     <string name="updating">التحديثات</string>
     <string name="ytdl_update_hint">نصيحة مفيدة أثناء تنزيل التحديثات</string>
     <string name="update_ytdl">حدِّث yt-dlp إلى الإصدار الجديد</string>
