@@ -3,13 +3,13 @@
     <string name="settings">الإعدادات</string>
     <string name="search">بحث</string>
     <string name="remove_all">إزالة الكل</string>
-    <string name="remove_results">مسح النتائج</string>
+    <string name="remove_results">إزالة الكُل</string>
     <string name="download_all">نزّل الكل</string>
     <string name="home">الرئيسية</string>
     <string name="directories">المجلدات</string>
-    <string name="music_directory">مجلد الموسيقى</string>
-    <string name="video_directory">مجلد الفيديو</string>
-    <string name="updating">تحديثات</string>
+    <string name="music_directory">مجلد الصوتيات</string>
+    <string name="video_directory">مجلد الفيديوهات</string>
+    <string name="updating">جارٍ التحديث</string>
     <string name="ytdl_update_hint">نصيحة مفيدة أثناء تنزيل التحديثات</string>
     <string name="update_ytdl">حدِّث yt-dlp إلى الإصدار الجديد</string>
     <string name="source_code">الرمز المصدري</string>
@@ -19,7 +19,7 @@
     <string name="download_notification_channel_name">تنزيلات الملفات</string>
     <string name="ok">تم</string>
     <string name="ytdl_already_updating">يثبت إصدار yt-dlp الجديد</string>
-    <string name="ytdl_updating_started">ينزل إصدار yt-dlp الجديد</string>
+    <string name="ytdl_updating_started">جارٍ تنزيل إصدار yt-dlp الجديد</string>
     <string name="cancel">إلغاء</string>
     <string name="Remove">إزالة</string>
     <string name="confirm_delete_history_desc">الإزالة من سجل التنزيلات تمامًا.</string>
@@ -147,7 +147,7 @@
     <string name="sponsorblock_intro">المقدمة</string>
     <string name="sponsorblock_fillers">الحشو/النكات</string>
     <string name="sponsorblock_reminders">تذكيرات الاشتراك</string>
-    <string name="select_sponsorblock_filtering">اختيار تصفية حجب الإعلانات</string>
+    <string name="select_sponsorblock_filtering">اختيار تصفية SponsorBlock</string>
     <string name="kill_app">إنهاء التطبيق</string>
     <string name="confirm_terminate">سيتم إيقاف جميع التنزيلات النشطة وفرض إغلاق التطبيق</string>
     <string name="dont_ask_again">لا تسألني بعد الآن</string>
@@ -242,7 +242,7 @@
     <string name="backup">عمل نسخة احتياطية</string>
     <string name="pause">إيقاف</string>
     <string name="resume">استئناف</string>
-    <string name="updating_download_data">يتم تحديث بيانات التنزيل</string>
+    <string name="updating_download_data">جارٍ تحديث بيانات عنصر التنزيل</string>
     <string name="keep_cache_summary">عدم حذف الملفات المؤقتة بعد اكتمال التنزيل</string>
     <string name="search_history">سجل البحث</string>
     <string name="appearance">المظهر</string>
@@ -310,7 +310,7 @@
     <string name="ignore">تجاهل</string>
     <string name="license">الترخيص</string>
     <string name="download_already_exists_summary">المضي بالتنزيل على أي حال؟</string>
-    <string name="modify_download_card">تعديل بطاقة التنزيل</string>
+    <string name="modify_download_card">تعديل بطاقة التحميل</string>
     <string name="security">سياسة الخصوصية والأمان</string>
     <string name="length">الطول</string>
     <string name="export_file">تصدير الملف</string>
