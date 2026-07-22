@@ -538,4 +538,49 @@
     <string name="package_version_ready_to_download">Пакет %1$s з версією %2$s готовий до завантаження</string>
     <string name="tap_to_see_changes_and_install">Натисніть, щоб побачити зміни та встановити</string>
     <string name="view">Переглянути</string>
+    <string name="next_run">Наступний: %1$s</string>
+    <string name="paused">Призупинено</string>
+    <string name="check_complete">Перевірка завершена</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Завершено · %d запуск</item>
+        <item quantity="few">Завершено · %d запуски</item>
+        <item quantity="many">Завершено · %d запусків</item>
+        <item quantity="other">Завершено · %d запусків</item>
+    </plurals>
+    <string name="reset_state">Скинути стан</string>
+    <string name="rescan_from_scratch">Повторне сканування з нуля</string>
+    <string name="rescan_from_scratch_desc">Забути оброблені елементи та заново завантажити все, що не збережено</string>
+    <string name="skip_backlog_desc">Позначити все, що тече в джерелі як виконано — завантажувати лише майбутні завантаження</string>
+    <string name="unskip_ignored">Скасувати пропуск ігнорованих завантажень</string>
+    <string name="unskip_ignored_desc">Завантажити існуючі завантаження, пропущені під час першого запуску</string>
+    <string name="observe_runs_chip">%d запусків</string>
+    <string name="observe_processed_chip">%d оброблено</string>
+    <string name="observe_skipped_chip">%d пропущено</string>
+    <string name="observe_updating">Оновлення…</string>
+    <string name="check_available_storage">Перевірте доступне сховище</string>
+    <plurals name="every_hours">
+        <item quantity="one">Кожну годину</item>
+        <item quantity="few">Кожені %d години</item>
+        <item quantity="many">Кожені %d годин</item>
+        <item quantity="other">Кожені %d годин</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Кожен день</item>
+        <item quantity="few">Кожні %d дні</item>
+        <item quantity="many">Кожні %d днів</item>
+        <item quantity="other">Кожні %d днів</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Кожен тиждень</item>
+        <item quantity="few">Кожені %d тижня</item>
+        <item quantity="many">Кожені %d тижнів</item>
+        <item quantity="other">Кожені %d тижнів</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Кожен місяць</item>
+        <item quantity="few">Кожені %d місяця</item>
+        <item quantity="many">Кожені %d місяців</item>
+        <item quantity="other">Кожені %d місяців</item>
+    </plurals>
+    <string name="skip_backlog">Пропустити поточну чергу завдань</string>
 </resources>

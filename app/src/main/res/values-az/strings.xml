@@ -539,4 +539,39 @@
     <string name="package_version_ready_to_download">%1$s paketi %2$s versiyası ilə yüklənilməyə hazırdır</string>
     <string name="tap_to_see_changes_and_install">Dəyişikliklərə baxmaq və quraşdırmaq üçün toxun</string>
     <string name="view">Baxın</string>
+    <string name="next_run">Növbəti: %1$s</string>
+    <string name="paused">Dayandırıldı</string>
+    <string name="check_complete">Yoxlanılma tamamlandı</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Bitdi · %d işlənir</item>
+        <item quantity="other">Bitdi · %d işlənir</item>
+    </plurals>
+    <string name="reset_state">Vəziyyəti sıfırla</string>
+    <string name="rescan_from_scratch">Sıfırdan təkrar skanla</string>
+    <string name="rescan_from_scratch_desc">Emal olunmuş elementləri unut və artıq saxlanılmayan hər şeyi yenidən yüklə</string>
+    <string name="skip_backlog">Hazırkı gözləmə siyahısını ötür</string>
+    <string name="skip_backlog_desc">Mənbədəki hər şeyi bitmiş kimi işarələ — yalnız gələcək yükləmələri endir</string>
+    <string name="unskip_ignored">Nəzərə alınmayan yükləmələri geri qaytar</string>
+    <string name="unskip_ignored_desc">İlk emal ötürüldükdə mövcud yükləmələri endir</string>
+    <string name="observe_runs_chip">%d işlənir</string>
+    <string name="observe_processed_chip">%d emal olundu</string>
+    <string name="observe_skipped_chip">%d ötürüldü</string>
+    <string name="observe_updating">Yenilənir…</string>
+    <string name="check_available_storage">Əlçatan yaddaşı yoxla</string>
+    <plurals name="every_hours">
+        <item quantity="one">Hər saat</item>
+        <item quantity="other">Hər %d saatdan bir</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Hər gün</item>
+        <item quantity="other">Hər %d gündən bir</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Hər həftə</item>
+        <item quantity="other">Hər %d həftədən bir</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Hər ay</item>
+        <item quantity="other">Hər %d aydan bir</item>
+    </plurals>
 </resources>

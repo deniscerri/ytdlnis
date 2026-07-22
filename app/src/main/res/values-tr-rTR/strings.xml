@@ -541,4 +541,5 @@
     <string name="package_version_ready_to_download">%1$s paketi, %2$s sürümüyle indirilmeye hazır</string>
     <string name="tap_to_see_changes_and_install">Değişiklikleri görmek ve kurmak için dokun</string>
     <string name="view">Görüntüle</string>
+    <string name="next_run">Sonraki: %1$s</string>
 </resources>
