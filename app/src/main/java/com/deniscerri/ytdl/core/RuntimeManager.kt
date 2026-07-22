@@ -266,6 +266,8 @@ object RuntimeManager {
             request.addOption("--no-cache-dir")
         }
 
+        request.addOption("--progress-delta", 0.1)
+
         val startTime = System.currentTimeMillis()
         val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
 

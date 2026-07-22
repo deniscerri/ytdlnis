@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/format_card_constraintLayout"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,6 +67,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            app:layout_optimizationLevel="none"
             app:layout_constraintStart_toEndOf="@+id/container"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -80,12 +82,12 @@
                 android:maxLines="2"
                 android:paddingHorizontal="10dp"
                 android:textSize="20sp"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintEnd_toStartOf="@+id/format_id"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constrainedWidth="true" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/format_id"
@@ -98,8 +100,17 @@
                 android:maxLines="1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/format_note"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBaseline_toBaselineOf="@id/format_note" />
+                app:layout_constraintTop_toTopOf="@id/format_note"
+                app:layout_constraintBottom_toBottomOf="@id/format_note"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <androidx.constraintlayout.widget.Barrier
+                android:id="@+id/formatnote_formatid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:barrierDirection="bottom"
+                app:constraint_referenced_ids="format_note,format_id" />
 
 
             <RelativeLayout
@@ -216,12 +227,6 @@
 
             </RelativeLayout>
 
-            <androidx.constraintlayout.widget.Barrier
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/formatnote_formatid"
-                app:barrierDirection="bottom"
-                app:constraint_referenced_ids="format_note, format_id" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
