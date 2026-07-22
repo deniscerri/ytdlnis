@@ -539,4 +539,44 @@
     <string name="package_version_ready_to_download">Le paquet %1$s, version %2$s, est prêt à être téléchargé</string>
     <string name="tap_to_see_changes_and_install">Appuyez ici pour voir les modifications et installer l\'application</string>
     <string name="view">Afficher</string>
+    <string name="next_run">Suivant : %1$s</string>
+    <string name="paused">En pause</string>
+    <string name="check_complete">Vérification terminée</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Terminé · %d exécution</item>
+        <item quantity="many">Terminé · %d exécutions</item>
+        <item quantity="other">Terminé · %d exécutions</item>
+    </plurals>
+    <string name="reset_state">Réinitialiser l\'état</string>
+    <string name="rescan_from_scratch">Relancer la numérisation depuis le début</string>
+    <string name="rescan_from_scratch_desc">Oubliez les éléments traités et téléchargez à nouveau tout ce qui n\'a pas encore été enregistré</string>
+    <string name="skip_backlog">Ignorer la file d\'attente actuelle</string>
+    <string name="skip_backlog_desc">Marquer comme « terminé » tout ce qui se trouve actuellement dans la source — ne télécharger que les futurs fichiers mis en ligne</string>
+    <string name="unskip_ignored">Réactiver les téléchargements ignorés</string>
+    <string name="unskip_ignored_desc">Télécharger les fichiers déjà mis en ligne que le premier cycle d\'exécution a ignorés</string>
+    <string name="observe_runs_chip">%d s\'exécutent</string>
+    <string name="observe_processed_chip">%d traité</string>
+    <string name="observe_skipped_chip">%d ont été ignorés</string>
+    <string name="observe_updating">Mise à jour en cours…</string>
+    <string name="check_available_storage">Vérifier l\'espace de stockage disponible</string>
+    <plurals name="every_hours">
+        <item quantity="one">Toutes les heures</item>
+        <item quantity="many">Toutes les %d heures</item>
+        <item quantity="other">Toutes les %d heures</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Tous les jours</item>
+        <item quantity="many">Tous les %d jours</item>
+        <item quantity="other">Tous les %d jours</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Chaque semaine</item>
+        <item quantity="many">Toutes les %d semaines</item>
+        <item quantity="other">Toutes les %d semaines</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Chaque mois</item>
+        <item quantity="many">Tous les %d mois</item>
+        <item quantity="other">Tous les %d mois</item>
+    </plurals>
 </resources>
