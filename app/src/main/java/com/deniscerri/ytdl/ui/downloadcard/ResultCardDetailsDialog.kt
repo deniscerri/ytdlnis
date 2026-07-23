@@ -32,6 +32,7 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.navigation.fragment.findNavController
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import androidx.paging.filter
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -334,7 +335,7 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
             downloadCardViewModel.setDownloadItem(null)
             bundle.putSerializable("type", type)
             findNavController().navigateUp()
-            findNavController().navigate(R.id.downloadBottomSheetDialog, bundle)
+            findNavController().navigateDownloadSheet(requireContext(), bundle)
         } else {
             lifecycleScope.launch{
                 val downloadItem = withContext(Dispatchers.IO){
@@ -485,10 +486,9 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
                     downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
                     downloadCardViewModel.setDownloadItem(it)
 
-                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                    findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                         Pair("type", it.type)
-                    )
-                    )
+                    ))
                 },
                 scheduleButtonClick = {}
             )

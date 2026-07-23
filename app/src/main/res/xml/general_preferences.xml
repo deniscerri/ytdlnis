@@ -54,6 +54,16 @@
             app:key="hide_thumbnails"
             app:title="@string/hide_thumbnails" />
 
+        <ListPreference
+            app:icon="@drawable/ic_card"
+            android:dialogTitle="@string/download_card_style"
+            android:entries="@array/download_card_style_entries"
+            android:entryValues="@array/download_card_style_values"
+            android:defaultValue="youtube"
+            app:key="download_card_style"
+            app:title="@string/download_card_style"
+            app:useSimpleSummaryProvider="true" />
+
         <MultiSelectListPreference
             app:icon="@drawable/ic_card"
             android:dialogTitle="@string/modify_download_card"

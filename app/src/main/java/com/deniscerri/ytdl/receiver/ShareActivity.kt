@@ -200,7 +200,14 @@ class ShareActivity : BaseActivity() {
                     downloadCardViewModel.setDownloadItem(null)
                     val bundle = Bundle()
                     bundle.putSerializable("type", downloadType)
-                    navController.setGraph(R.navigation.share_nav_graph, bundle)
+                    val graph = navController.navInflater.inflate(R.navigation.share_nav_graph)
+                    val style = sharedPreferences.getString("download_card_style", "youtube")
+                    if (style == "youtube") {
+                        graph.setStartDestination(R.id.youtubeDownloadBottomSheetDialog)
+                    } else {
+                        graph.setStartDestination(R.id.downloadBottomSheetDialog)
+                    }
+                    navController.setGraph(graph, bundle)
                 }else{
                     Toast.makeText(this@ShareActivity, "${getString(R.string.downloading)} $inputQuery", Toast.LENGTH_SHORT).show()
 

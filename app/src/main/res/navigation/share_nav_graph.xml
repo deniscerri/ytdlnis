@@ -20,6 +20,23 @@
             app:popUpToInclusive="true" />
     </dialog>
     <dialog
+        android:id="@+id/youtubeDownloadBottomSheetDialog"
+        android:name="com.deniscerri.ytdl.ui.downloadcard.YouTubeDownloadBottomSheetDialog"
+        android:label="YouTubeDownloadBottomSheetDialog" >
+        <action
+            android:id="@+id/action_youtubeDownloadBottomSheetDialog_to_selectPlaylistItemsDialog"
+            app:destination="@id/selectPlaylistItemsDialog"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/youtubeDownloadBottomSheetDialog"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_youtubeDownloadBottomSheetDialog_to_downloadsAlreadyExistDialog2"
+            app:destination="@id/downloadsAlreadyExistDialog2"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/youtubeDownloadBottomSheetDialog"
+            app:popUpToInclusive="true" />
+    </dialog>
+    <dialog
         android:id="@+id/selectPlaylistItemsDialog"
         android:name="com.deniscerri.ytdl.ui.downloadcard.SelectPlaylistItemsDialog"
         android:label="SelectPlaylistItemsDialog">

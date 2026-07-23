@@ -35,6 +35,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import androidx.paging.PagingData
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -497,7 +498,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                     downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(it))
                     downloadCardViewModel.setDownloadItem(null)
 
-                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                    findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                         Pair("type", it.type),
                         Pair("ignore_duplicates", true),
                     ))
@@ -625,7 +626,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                 downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(tmp))
                                 downloadCardViewModel.setDownloadItem(null)
 
-                                findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                                     Pair("type", tmp.type),
                                     Pair("ignore_duplicates", true)
                                 ))
@@ -730,7 +731,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                                 downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromHistory(item))
                                 downloadCardViewModel.setDownloadItem(null)
 
-                                findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                                     Pair("type", item.type),
                                     Pair("ignore_duplicates", true)
                                 ))

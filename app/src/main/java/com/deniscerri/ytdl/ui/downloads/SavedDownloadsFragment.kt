@@ -25,6 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -201,7 +202,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                 longClickDownloadButton = { it: DownloadItem ->
                     downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(it))
                     downloadCardViewModel.setDownloadItem(it)
-                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                    findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                         Pair("type", it.type),
                     ))
                 },
@@ -311,7 +312,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
                                 withContext(Dispatchers.Main) {
                                     downloadCardViewModel.setResultItem(downloadViewModel.createResultItemFromDownload(itm))
                                     downloadCardViewModel.setDownloadItem(itm)
-                                    findNavController().navigate(R.id.downloadBottomSheetDialog, bundleOf(
+                                    findNavController().navigateDownloadSheet(requireContext(), bundleOf(
                                         Pair("type", itm.type)
                                     ))
                                 }

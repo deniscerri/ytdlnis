@@ -1,4 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="download_card_style_entries">
+        <item>@string/download_card_style_youtube</item>
+        <item>@string/download_card_style_classic</item>
+    </string-array>
+
+    <string-array name="download_card_style_values">
+        <item>youtube</item>
+        <item>classic</item>
+    </string-array>
     <string-array name="audio_containers">
         <item>@string/defaultValue</item>
         <item>mp3</item>

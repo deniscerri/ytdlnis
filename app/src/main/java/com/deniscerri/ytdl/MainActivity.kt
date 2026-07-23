@@ -38,6 +38,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.deniscerri.ytdl.util.Extensions.navigateDownloadSheet
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
@@ -417,7 +418,7 @@ class MainActivity : BaseActivity() {
                         downloadCardViewModel.setResultItem(downloadViewModel.createEmptyResultItem(path))
                         downloadCardViewModel.setDownloadItem(null)
                         bundle.putSerializable("type", downloadType)
-                        navController.navigate(R.id.downloadBottomSheetDialog, bundle)
+                        navController.navigateDownloadSheet(this, bundle)
                         return
                     }
                 }
