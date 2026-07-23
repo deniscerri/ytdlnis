@@ -550,7 +550,7 @@
     <string name="reset_state">Сбросить состояние</string>
     <string name="rescan_from_scratch">Повторное сканирование с нуля</string>
     <string name="rescan_from_scratch_desc">Забыть обработанные елеметы и заново скачайть все, что не сохранено</string>
-    <string name="skip_backlog">Skip current backlog</string>
+    <string name="skip_backlog">Пропустить текущую очередь задач</string>
     <string name="skip_backlog_desc">Пометить всё, текущее в источнике как выполнено — загружать только будущие загрузки</string>
     <string name="unskip_ignored">Отменить пропуск игнорируемых загрузок</string>
     <string name="unskip_ignored_desc">Скачать существующие загрузки, пропущенные при первом запуске</string>
