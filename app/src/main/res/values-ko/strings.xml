@@ -538,4 +538,34 @@
     <string name="tap_to_see_changes_and_install">눌러서 변경 내역을 보고 설치하세요</string>
     <string name="view">보기</string>
     <string name="write_atleast_one_potoken">최소 하나 이상의 PO 토큰을 입력해야 합니다</string>
+    <string name="next_run">다음: %1$s</string>
+    <string name="paused">중지됨</string>
+    <string name="check_complete">확인 완료</string>
+    <plurals name="finished_runs">
+        <item quantity="other">완료 · %d건 실행</item>
+    </plurals>
+    <string name="reset_state">상태 초기화</string>
+    <string name="rescan_from_scratch">처음부터 다시 스캔</string>
+    <string name="rescan_from_scratch_desc">완료한 항목은 무시하고 아직 저장하지 않은 모든 항목을 다시 다운로드</string>
+    <string name="skip_backlog">현재 밀린 작업 건너뛰기</string>
+    <string name="skip_backlog_desc">현재 소스에 있는 모든 항목을 완료로 표시 — 향후 업로드되는 항목만 다운로드</string>
+    <string name="unskip_ignored">무시한 업로드의 건너뛰기 해제</string>
+    <string name="unskip_ignored_desc">첫 실행에서 건너뛴 기존 업로드 항목 다운로드</string>
+    <string name="observe_runs_chip">%d건 실행</string>
+    <string name="observe_processed_chip">%d건 처리됨</string>
+    <string name="observe_skipped_chip">%d건 건너뜀</string>
+    <string name="observe_updating">업데이트 중…</string>
+    <string name="check_available_storage">남은 저장공간 확인</string>
+    <plurals name="every_hours">
+        <item quantity="other">%d시간마다</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="other">%d일마다</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="other">%d주마다</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="other">%d개월마다</item>
+    </plurals>
 </resources>
