@@ -539,4 +539,49 @@
     <string name="package_version_ready_to_download">Balík %1$s s verziou %2$s je pripravený na stiahnutie</string>
     <string name="tap_to_see_changes_and_install">Klepnite pre zobrazenie zmien a inštaláciu</string>
     <string name="view">Zobraziť</string>
+    <string name="next_run">Ďalšie: %1$s</string>
+    <string name="paused">Pozastavené</string>
+    <string name="check_complete">Kontrola dokončená</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Dokončené · %d sťahovanie</item>
+        <item quantity="few">Dokončené · %d sťahovania</item>
+        <item quantity="many">Dokončené · %d sťahovaní</item>
+        <item quantity="other">Dokončené · %d sťahovaní</item>
+    </plurals>
+    <string name="reset_state">Obnoviť stav</string>
+    <string name="rescan_from_scratch">Opätovne prehľadať od začiatku</string>
+    <string name="rescan_from_scratch_desc">Zabudnúť na spracované položky a znova stiahnuť všetko, čo ešte nebolo uložené</string>
+    <string name="skip_backlog">Preskočiť aktuálny zoznam nevybavených úloh</string>
+    <string name="skip_backlog_desc">Označiť všetko, čo sa momentálne nachádza v zdroji, ako hotové —sťahovať len budúce nahrané súbory</string>
+    <string name="unskip_ignored">Zrušiť preskočenie ignorovaných nahraných súborov</string>
+    <string name="unskip_ignored_desc">Stiahnuť existujúce nahrané súbory, ktoré boli pri prvom sťahovaní preskočené</string>
+    <string name="observe_runs_chip">sťahované %d</string>
+    <string name="observe_processed_chip">spracované %d</string>
+    <string name="observe_skipped_chip">preskočené %d</string>
+    <string name="observe_updating">Aktualizácia…</string>
+    <string name="check_available_storage">Skontrolovať dostupné úložisko</string>
+    <plurals name="every_hours">
+        <item quantity="one">Každú hodinu</item>
+        <item quantity="few">Každé %d hodiny</item>
+        <item quantity="many">Každých %d hodín</item>
+        <item quantity="other">Každých %d hodín</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Každý deň</item>
+        <item quantity="few">Každé %d dni</item>
+        <item quantity="many">Každých %d dní</item>
+        <item quantity="other">Každých %d dní</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Každý týždeň</item>
+        <item quantity="few">Každé %d týždne</item>
+        <item quantity="many">Každých %d týždňov</item>
+        <item quantity="other">Každých %d týždňov</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Každý mesiac</item>
+        <item quantity="few">Každé %d mesiace</item>
+        <item quantity="many">Každých %d mesiacov</item>
+        <item quantity="other">Každých %d mesiacov</item>
+    </plurals>
 </resources>
