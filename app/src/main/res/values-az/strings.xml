@@ -543,8 +543,8 @@
     <string name="paused">Dayandırıldı</string>
     <string name="check_complete">Yoxlanılma tamamlandı</string>
     <plurals name="finished_runs">
-        <item quantity="one">Bitdi · %d işlənir</item>
-        <item quantity="other">Bitdi · %d işlənir</item>
+        <item quantity="one">Bitdi · %d icra</item>
+        <item quantity="other">Bitdi · %d icra</item>
     </plurals>
     <string name="reset_state">Vəziyyəti sıfırla</string>
     <string name="rescan_from_scratch">Sıfırdan təkrar skanla</string>
@@ -552,8 +552,8 @@
     <string name="skip_backlog">Hazırkı gözləmə siyahısını ötür</string>
     <string name="skip_backlog_desc">Mənbədəki hər şeyi bitmiş kimi işarələ — yalnız gələcək yükləmələri endir</string>
     <string name="unskip_ignored">Nəzərə alınmayan yükləmələri geri qaytar</string>
-    <string name="unskip_ignored_desc">İlk emal ötürüldükdə mövcud yükləmələri endir</string>
-    <string name="observe_runs_chip">%d işlənir</string>
+    <string name="unskip_ignored_desc">İlk icra zamanı ötürülən yükləmələri endir</string>
+    <string name="observe_runs_chip">%d icra</string>
     <string name="observe_processed_chip">%d emal olundu</string>
     <string name="observe_skipped_chip">%d ötürüldü</string>
     <string name="observe_updating">Yenilənir…</string>
