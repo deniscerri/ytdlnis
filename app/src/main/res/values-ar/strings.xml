@@ -3,7 +3,7 @@
     <string name="settings">الإعدادات</string>
     <string name="search">بحث</string>
     <string name="remove_all">إزالة الكل</string>
-    <string name="remove_results">إزالة الكُل</string>
+    <string name="remove_results">مسح النتائج</string>
     <string name="download_all">نزّل الكل</string>
     <string name="home">الرئيسية</string>
     <string name="directories">المجلدات</string>
@@ -19,7 +19,7 @@
     <string name="download_notification_channel_name">تنزيلات الملفات</string>
     <string name="ok">تم</string>
     <string name="ytdl_already_updating">يثبت إصدار yt-dlp الجديد</string>
-    <string name="ytdl_updating_started">جارٍ تنزيل إصدار yt-dlp الجديد</string>
+    <string name="ytdl_updating_started">جارٍ تنزيل إصدار جديد من yt-dlp</string>
     <string name="cancel">إلغاء</string>
     <string name="Remove">إزالة</string>
     <string name="confirm_delete_history_desc">الإزالة من سجل التنزيلات تمامًا.</string>
