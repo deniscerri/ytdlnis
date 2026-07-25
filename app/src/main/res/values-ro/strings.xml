@@ -501,4 +501,8 @@
     <string name="bundled">Inclus</string>
     <string name="trim_filenames">Scurtare numele fișierelor</string>
     <string name="install_downloaded_file">Instalați fișierul descărcat</string>
+    <string name="width">Lățime</string>
+    <string name="height">Înălțime</string>
+    <string name="player_client_not_empty">Eticheta clientului de redare nu poate fi goală</string>
+    <string name="player_client_already_created">Clientul de redare este deja creat</string>
 </resources>

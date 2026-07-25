@@ -148,7 +148,7 @@
     <string name="update">تحديث</string>
     <string name="preferred_download_type">النوع تاع التحميل المفضل</string>
     <string name="preferred_download_type_summary">التبويب الافتراضي اللي راح تتفتح عليه بطاقة التحميل</string>
-    <string name="confirm_delete_logs_desc">حذف كامل القائمة تاع السجلات، نهائياً</string>
+    <string name="confirm_delete_logs_desc">حذف كامل القائمة تاع السجلات، نهائياً.</string>
     <string name="select">اختيار</string>
     <string name="selected">تم الاختيار</string>
     <string name="all_items_selected">تم اختيار جميع العناصر</string>
@@ -303,7 +303,7 @@
     <string name="scheduling">الجدولة</string>
     <string name="use_scheduler">تنزيل مجدول</string>
     <string name="update_app_beta">إصدارات بيتا (تجريبي)</string>
-    <string name="update_app_beta_summary">انضم إلى برنامج بيتا، بصح بلاك تلقى فيه أخطاء</string>
+    <string name="update_app_beta_summary">انضم إلى برنامج بيتا، بصح بلاك تلقى فيه أخطاء.</string>
     <string name="auto">تلقائي</string>
     <string name="preferred_video_codec">ترميز الفيديو المفضل</string>
     <string name="preferred_audio_codec">ترميز الصوت المفضل</string>
@@ -473,8 +473,8 @@
     <string name="potoken">التوكين تاع PO</string>
     <string name="reverse">عكس</string>
     <string name="data_fetching_extra_command_summary">تفعيل استخدام قوالب الأوامر كأوامر إضافية لجلب البيانات</string>
-    <string name="disable_write_info_json">تعطيل كتابة الملف تاع المعلومات (JSON)</string>
-    <string name="disable_write_info_json_summary">في كل مرة تعاود تدير إعادة تشغيل/استئناف التنزيل، أداة yt-dlp راح تعاود تنزيل بيانات JSON من الخوادم (ماننصحوكش بهذا)</string>
+    <string name="disable_write_info_json">تعطيل كتابة الملف تاع المعلومات json</string>
+    <string name="disable_write_info_json_summary">في كل مرة تعاود تدير إعادة تشغيل/استئناف التنزيل، أداة yt-dlp راح تعاود تنزيل بيانات json من الخوادم (ماننصحوكش بهذا)</string>
     <string name="ytdlp_watch_later">تنزيل قائمة \'مشاهدة لاحقاً\' (لازم ملف تعريف الارتباط/Cookies)</string>
     <string name="write_subs_when_embed_subs_summary">سيؤدي هذا إلى تفعيل خياري \'حفظ الترجمات\' و\'حفظ الترجمات التلقائية\' لتنزيل ملفات الترجمة، ثم حذفها تلقائياً بعد دمجها</string>
     <string name="generate_potokens_warning">بتفعيل هذا الخيار، لازم عليك تحبس ملفات تعريف الارتباط (Cookies)</string>
@@ -484,7 +484,7 @@
     <string name="no_keep_subs_summary">عدم الاحتفاظ بملفات الترجمة بعد دمجها، وذلك عند استخدام خياري \'دمج الترجمة\' و\'حفظ الترجمة\' معاً</string>
     <string name="video_compatible">فيديو متوافق</string>
     <string name="video_compatible_summary">إعادة ترميز الفيديو باش يكون متوافق مع التطبيقات الأخرى</string>
-    <string name="no_free_space_warning">مكانش مساحة كافية لهذا الإعداد</string>
+    <string name="no_free_space_warning">مكانش مساحة كافية لهذا الإعداد.</string>
     <string name="preferred_format_size">حجم الصيغة المفضل</string>
     <string name="smallest">الأصغر</string>
     <string name="largest">الأكبر</string>
@@ -497,14 +497,14 @@
     <string name="desktop">سطح المكتب</string>
     <string name="url_regex">تعبير نمطي للرابط</string>
     <string name="disable_flat_playlist">تعطيل القائمة المسطحة</string>
-    <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. يؤدي هذا إلى إبطاء جلب البيانات، ولكنه يوفر معلومات أكثر ثراءً وتفصيلاً.</string>
+    <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. يؤدي هذا إلى إبطاء جلب البيانات، ولكنه يوفر معلومات أكثر ثراءً وتفصيلاً</string>
     <string name="chapters">الفصول</string>
     <string name="use_original_url_playlist">استخدم الرابط الأصلي لرابط قائمة التشغيل</string>
-    <string name="use_original_url_playlist_summary">استخدم رابط قائمة التشغيل اللي يقدمه المستخدم بدلًا من الوسم playlist_webpage_url الموجود في ملف JSON</string>
+    <string name="use_original_url_playlist_summary">استخدم رابط قائمة التشغيل اللي يقدمه المستخدم بدلًا من الوسم playlist_webpage_url الموجود في ملف json</string>
     <string name="update_ytdlp_while_downloading">حدّث yt-dlp أثناء التنزيل</string>
     <string name="update_ytdlp_while_downloading_summary">أضِف الخيار -U إلى yt-dlp لتحديثه إلى أحدث إصدار قبل بدء التنزيل</string>
     <string name="preview_filename">معاينة اسم الملف</string>
-    <string name="potoken_guide">"تسجيل الدخول (Auth)\n\n1. اضغط على \"Auth\" لفتح صفحة تسجيل الدخول داخل WebView.\n2. سجّل الدخول إلى حسابك في Google.\n3. شغّل أي فيديو يدعم الترجمة التلقائية المترجمة إلى لغات أخرى (Auto-translated subtitles).\n4. فعّل الترجمة التلقائية المترجمة وتحقق مما إذا كانت تعمل.\n   - 4.1 إذا لم تعمل، انتقل إلى فيديو آخر يدعم الترجمة التلقائية المترجمة ثم أعد تنفيذ الخطوة 4.\n5. اضغط \"OK\".\n\nبدون تسجيل الدخول (No Auth)\n\n1. اضغط على \"No Auth\".\n2. أدخل رابط أي فيديو من YouTube.\n3. انتظر حتى يتم تحميل الفيديو، ثم شغّله لمدة 3 ثوانٍ على الأقل.\n4. اضغط \"OK\""</string>
+    <string name="potoken_guide">تسجيل الدخول (Auth)\n-----------------------\n1. اضغط على \"Auth\" لفتح صفحة تسجيل الدخول داخل WebView.\n2. سجّل الدخول إلى حسابك في Google.\n3. شغّل أي فيديو يدعم الترجمة التلقائية المترجمة إلى لغات أخرى (Auto-translated subtitles).\n4. فعّل الترجمة التلقائية المترجمة وتحقق مما إذا كانت تعمل.\n- 4.1 إذا لم تعمل، انتقل إلى فيديو آخر يدعم الترجمة التلقائية المترجمة ثم أعد تنفيذ الخطوة 4.\n5. اضغط \"OK\".\n-----------------------\nبدون تسجيل الدخول (No Auth)\n1. اضغط على \"No Auth\".\n2. أدخل رابط أي فيديو من YouTube.\n3. انتظر حتى يتم تحميل الفيديو، ثم شغّله لمدة 3 ثوانٍ على الأقل.\n4. اضغط \"OK\".</string>
     <string name="no_auth">بدون تسجيل الدخول</string>
     <string name="auth">تسجيل الدخول</string>
     <string name="app_icon">أيقونة التطبيق</string>
@@ -514,7 +514,7 @@
     <string name="packages">الحزم</string>
     <string name="not_installed">غير مثبت</string>
     <string name="bundled">مُضمَّن</string>
-    <string name="use_app_language_for_metadata_summary">إذا كان هذا الخيار أصلا مفعّلًا، فستتبع حقول البيانات الوصفية لغة التطبيق، وقد يؤثر ذلك أيضًا في اختيار التنسيق، بحيث يُفضَّل الإصدار المدبلج بدلًا من الإصدار الأصلي.</string>
+    <string name="use_app_language_for_metadata_summary">إذا كان هذا الخيار أصلا مفعّلًا، فستتبع حقول البيانات الوصفية لغة التطبيق، وقد يؤثر ذلك أيضًا في اختيار التنسيق، بحيث يُفضَّل الإصدار المدبلج بدلًا من الإصدار الأصلي</string>
     <string name="installed">مثبت</string>
     <string name="auto_update_ytdlp_summary">من الأحسن ابقاء على هذا الخيار مفعّلًا، لأن yt-dlp يحتاج إلى التحديث بشكل متكرر ليواصل العمل. يتم جلب هذه البيانات من مستودع GitHub الخاص بـ yt-dlp.</string>
     <string name="save_subdirectory">الحفظ في المجلد الفرعي</string>
@@ -538,4 +538,39 @@
     <string name="package_version_ready_to_download">الحزمة %1$s مع نسخة %2$s راهي جاهزة للتنزيل</string>
     <string name="tap_to_see_changes_and_install">اضغط باش تشوف التغييرات والتثبيت</string>
     <string name="view">عرض</string>
+    <string name="next_run">التالي: %1$s</string>
+    <string name="paused">حابس مؤقتاً</string>
+    <string name="check_complete">خلاص الفحص</string>
+    <plurals name="finished_runs">
+        <item quantity="one">مكتمل · لم يتم أي تشغيل</item>
+        <item quantity="other">مكتمل · تشغيل واحد</item>
+    </plurals>
+    <string name="reset_state">إعادة ضبط الحالة</string>
+    <string name="rescan_from_scratch">إعادة الفحص من الصفر</string>
+    <string name="rescan_from_scratch_desc">تجاهل العناصر المعالجة وإعادة تنزيل أي حاجة مازال ماتحفظتش</string>
+    <string name="skip_backlog">تخطي التراكمات الحالية</string>
+    <string name="skip_backlog_desc">دير كاكل العناصر الحالية في المصدر كمكتملة — تنزيل الرفوعات المستقبلية برك</string>
+    <string name="unskip_ignored">إلغاء تخطي الرفوعات المتجاهلة</string>
+    <string name="unskip_ignored_desc">تنزيل المرفوعات الحالية التي تم تخطيها في التشغيل الأول</string>
+    <string name="observe_runs_chip">%d تشغيل</string>
+    <string name="observe_processed_chip">%d مُعالج</string>
+    <string name="observe_skipped_chip">تم تخطي %d</string>
+    <string name="observe_updating">تحديث…</string>
+    <string name="check_available_storage">شوف كاش مساحة الفارغة</string>
+    <plurals name="every_hours">
+        <item quantity="one">كل %d ساعة</item>
+        <item quantity="other">كل ساعة</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">كل %d يوم</item>
+        <item quantity="other">كل يوم</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">كل %d أسبوع</item>
+        <item quantity="other">كل أسبوع</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">كل %d شهر</item>
+        <item quantity="other">كل شهر</item>
+    </plurals>
 </resources>
