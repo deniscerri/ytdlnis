@@ -227,4 +227,10 @@
     <string name="orange">কমলা</string>
     <string name="monochrome">সাদা - কালো</string>
     <string name="crop">ক্রপ</string>
+    <string name="required">প্রয়োজনীয়</string>
+    <string name="blue">নীলাভ</string>
+    <string name="red">লাল</string>
+    <string name="green">সবুজ</string>
+    <string name="finished_download_notification_channel_description">ডাউনলোড করা সমাপ্ত হলে বিজ্ঞপ্তি</string>
+    <string name="errored_downloads">ত্রুটিযুক্ত ডাউনলোডসমূহ</string>
 </resources>
