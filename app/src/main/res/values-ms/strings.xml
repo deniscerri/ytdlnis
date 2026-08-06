@@ -21,7 +21,7 @@
     <string name="download_notification_channel_description">Notifikasi yang menunjukkan tahap muat turun bagi fail audio dan video</string>
     <string name="ytld_update_success">Versi baharu telah dipasang</string>
     <string name="ytdl_already_updating">Memasang versi baharu</string>
-    <string name="ytdl_updating_started">Sedang muat turun versi baharu</string>
+    <string name="ytdl_updating_started">Memuat turun versi baharu</string>
     <string name="Remove">Buang</string>
     <string name="ok">OK</string>
     <string name="cancel">Batal</string>
@@ -262,8 +262,8 @@
     <string name="finished_download_notification_channel_name">Muat Turun Selesai</string>
     <string name="finished_download_notification_channel_description">Notifikasi untuk muat turun selesai</string>
     <string name="quick_download">Muat turun pantas</string>
-    <string name="resume">Resume</string>
-    <string name="updating_download_data">Mengemas kini data item muat turun</string>
+    <string name="resume">Menyambung</string>
+    <string name="updating_download_data">Mengemas kini Data Item Muat Turun</string>
     <string name="keep_cache">Simpan serpihan</string>
     <string name="keep_cache_summary">Jangan buang file sementara selepas muat turun telah habis</string>
     <string name="backup">Sandaran</string>
@@ -272,7 +272,7 @@
     <string name="incognito">Penyamaran(Google Translate)</string>
     <string name="sponsorblock">SponsorBlock(Blok Penaja)</string>
     <string name="couldnt_parse_file">Tidak dapat menghuraikan fail</string>
-    <string name="restore_complete">Pemulihan aplikasi sudah selesai.Item berikut telah dipulihkan</string>
+    <string name="restore_complete">Pemulihan apl lengkap. Item berikut telah dipulihkan:</string>
     <string name="select_backup_categories">Pilih kategori sandaran</string>
     <string name="accents">Aksen</string>
     <string name="high_contrast">Kontras yang tinggi</string>
@@ -353,4 +353,7 @@
     <string name="generic">Generik</string>
     <string name="multiple_download_card">Kad muat turun berbilang</string>
     <string name="format_filter">Penapis format</string>
+    <string name="crop_validation_exceeds_w">https://hosted.weblate.org/translate/ytdlnis/strings/ms/?checksum=ea90cd56eef0f284</string>
+    <string name="crop">https://hosted.weblate.org/translate/ytdlnis/strings/ms/?checksum=f0a1ef162da9e40a</string>
+    <string name="use_alarm_manager">Guna AlarmManager selain WorkManager untuk Penjadualan</string>
 </resources>
