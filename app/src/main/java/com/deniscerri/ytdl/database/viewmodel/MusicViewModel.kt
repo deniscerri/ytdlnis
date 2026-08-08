@@ -61,10 +61,10 @@ class MusicViewModel : ViewModel() {
         launchSearch { MusicMetadataUtil.searchFromVideo(title, uploader) }
     }
 
-    /** Manual lookup with a user supplied artist and song name. */
-    fun search(artist: String, song: String) {
+    /** Manual lookup with a user supplied artist and song name, optionally aimed at one catalogue. */
+    fun search(artist: String, song: String, providerId: String?) {
         pin()
-        launchSearch { MusicMetadataUtil.search(artist, song) }
+        launchSearch { MusicMetadataUtil.search(artist, song, providerId) }
     }
 
     /** Shows another of the matches, completing its extended tags on the way in. */

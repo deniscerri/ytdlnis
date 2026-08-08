@@ -142,13 +142,24 @@ object MusicMetadataUtil {
      */
     private val providers = listOf(DeezerProvider, ItunesProvider)
 
-    /** Explicit search, used by the manual "artist + song" lookup. */
-    suspend fun search(artist: String, title: String, limit: Int = MATCH_LIMIT): List<MusicMetadata> =
-        withContext(Dispatchers.IO) {
-            val query = listOf(artist, title).filter { it.isNotBlank() }.joinToString(" ")
-            if (query.isBlank()) return@withContext emptyList()
-            providers.firstNotNullOfOrNull { it.search(query, limit).ifEmpty { null } }.orEmpty()
-        }
+    /** Id to brand name, in lookup order. Fills the catalogue picker of the manual search. */
+    val catalogues: List<Pair<String, String>> = providers.map { it.id to it.name }
+
+    /**
+     * Explicit search, used by the manual "artist + song" lookup. [providerId] narrows it to a
+     * single catalogue, null consults them all in order.
+     */
+    suspend fun search(
+        artist: String,
+        title: String,
+        providerId: String? = null,
+        limit: Int = MATCH_LIMIT
+    ): List<MusicMetadata> = withContext(Dispatchers.IO) {
+        val query = listOf(artist, title).filter { it.isNotBlank() }.joinToString(" ")
+        if (query.isBlank()) return@withContext emptyList()
+        val chosen = providerId?.let { id -> providers.filter { it.id == id } } ?: providers
+        chosen.firstNotNullOfOrNull { it.search(query, limit).ifEmpty { null } }.orEmpty()
+    }
 
     /**
      * Automatic lookup from the fetched video info. Tries every parsed candidate and
@@ -158,7 +169,7 @@ object MusicMetadataUtil {
         withContext(Dispatchers.IO) {
             buildSearchQueries(videoTitle, uploader)
                 .firstNotNullOfOrNull { (artist, title) ->
-                    search(artist, title, limit).ifEmpty { null }
+                    search(artist, title, limit = limit).ifEmpty { null }
                 }
                 ?.map { enrichWithFeaturing(it, videoTitle) }
                 .orEmpty()

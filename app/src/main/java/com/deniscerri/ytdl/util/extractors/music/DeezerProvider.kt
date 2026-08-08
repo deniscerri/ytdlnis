@@ -18,6 +18,7 @@ object DeezerProvider : MusicProvider {
     private const val API = "https://api.deezer.com"
 
     override val id = "deezer"
+    override val name = "Deezer"
 
     override suspend fun search(query: String, limit: Int): List<MusicMetadata> {
         val body = MusicHttp.json("$API/search?q=${MusicHttp.encode(query)}&limit=$limit") ?: return emptyList()

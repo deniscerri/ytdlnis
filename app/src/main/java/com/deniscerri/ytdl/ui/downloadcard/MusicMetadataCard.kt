@@ -10,12 +10,14 @@ import android.widget.TextView
 import androidx.core.view.setPadding
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.MusicMetadata
+import com.deniscerri.ytdl.util.extractors.music.MusicMetadataUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.CircularProgressIndicator
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 
@@ -35,7 +37,7 @@ class MusicMetadataCard(
     private val onModeChanged: (enabled: Boolean) -> Unit,
     private val onMetadataChanged: (metadata: MusicMetadata, byUser: Boolean) -> Unit,
     private val onMatchSelected: (index: Int) -> Unit,
-    private val onSearchRequested: (artist: String, song: String) -> Unit
+    private val onSearchRequested: (artist: String, song: String, providerId: String?) -> Unit
 ) {
     private val context: Context = root.context
 
@@ -201,12 +203,27 @@ class MusicMetadataCard(
         artistInput.setText(current.artist)
         songInput.setText(current.title)
 
+        //the catalogues, preceded by the default of consulting them in order
+        val providerIds = listOf(null) + MusicMetadataUtil.catalogues.map { (id, _) -> id }
+        val providerInput = input(view, R.id.music_search_provider) as MaterialAutoCompleteTextView
+        providerInput.setSimpleItems(
+            (listOf(context.getString(R.string.all_sources)) + MusicMetadataUtil.catalogues.map { (_, name) -> name })
+                .toTypedArray()
+        )
+        var provider = 0
+        providerInput.setText(context.getString(R.string.all_sources), false)
+        providerInput.setOnItemClickListener { _, _, index, _ -> provider = index }
+
         MaterialAlertDialogBuilder(context)
             .setTitle(R.string.search_song)
             .setView(view)
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.search) { _, _ ->
-                onSearchRequested(artistInput.text.toString().trim(), songInput.text.toString().trim())
+                onSearchRequested(
+                    artistInput.text.toString().trim(),
+                    songInput.text.toString().trim(),
+                    providerIds[provider]
+                )
             }
             .show()
     }

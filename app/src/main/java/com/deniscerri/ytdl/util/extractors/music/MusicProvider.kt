@@ -21,6 +21,9 @@ interface MusicProvider {
     /** Matches [MusicSource.provider], so a result finds its own catalogue again later. */
     val id: String
 
+    /** Brand name, shown when the manual search lets the user aim at one catalogue. */
+    val name: String
+
     suspend fun search(query: String, limit: Int): List<MusicMetadata>
 
     /**

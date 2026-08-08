@@ -587,4 +587,5 @@
     <string name="track_total">Total</string>
     <string name="disc_number">Disc</string>
     <string name="isrc">ISRC</string>
+    <string name="all_sources">All sources</string>
 </resources>
