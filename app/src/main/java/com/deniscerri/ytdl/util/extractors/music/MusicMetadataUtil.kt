@@ -1,26 +1,21 @@
 package com.deniscerri.ytdl.util.extractors.music
 
-import android.util.Log
 import com.deniscerri.ytdl.database.models.MusicMetadata
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import java.net.URLEncoder
-import java.util.concurrent.TimeUnit
 
 /**
- * Resolves music tags (song, artist, album, year, genre, cover) for a video title
- * by querying Deezer first and falling back to iTunes.
+ * Resolves music tags for a video title: turns it into something a catalogue can answer,
+ * then asks the [MusicProvider]s in turn.
  *
  * The title parsing is heuristic: a video title like
  * "Dhurata Dora ft. Soolking - Zemër (Official Video)" becomes
  * artist="Dhurata Dora", title="Zemër", which is what the APIs expect.
+ *
+ * This is the only place that decides where the lookup runs, so the providers themselves are
+ * free to block and to parallelise their own requests.
  */
 object MusicMetadataUtil {
-    private const val TAG = "MusicMetadataUtil"
 
     // ── Title parsing ──────────────────────────────────────────────────────────
 
@@ -139,78 +134,20 @@ object MusicMetadataUtil {
         return if (extension.isBlank()) name else "$name.$extension"
     }
 
-    // ── Networking ─────────────────────────────────────────────────────────────
+    // ── Lookup ─────────────────────────────────────────────────────────────
 
-    private val client by lazy {
-        OkHttpClient.Builder()
-            .connectTimeout(8, TimeUnit.SECONDS)
-            .readTimeout(8, TimeUnit.SECONDS)
-            .build()
-    }
-
-    internal fun httpGet(url: String): String? = runCatching {
-        val request = Request.Builder().url(url).header("User-Agent", "Mozilla/5.0").build()
-        client.newCall(request).execute().use { res ->
-            if (res.isSuccessful) res.body.string() else null
-        }
-    }.getOrElse { Log.w(TAG, "Request failed: $url", it); null }
-
-    internal fun downloadBytes(url: String): ByteArray? = runCatching {
-        val request = Request.Builder().url(url).header("User-Agent", "Mozilla/5.0").build()
-        client.newCall(request).execute().use { res ->
-            if (res.isSuccessful) res.body.bytes() else null
-        }
-    }.getOrElse { Log.w(TAG, "Download failed: $url", it); null }
-
-    private fun encode(value: String) = URLEncoder.encode(value, "UTF-8")
-
-    private fun JsonObject.str(key: String): String =
-        runCatching { get(key)?.takeIf { !it.isJsonNull }?.asString.orEmpty() }.getOrDefault("")
-
-    private fun JsonObject.obj(key: String): JsonObject? =
-        runCatching { getAsJsonObject(key) }.getOrNull()
-
-    // ── Providers ──────────────────────────────────────────────────────────────
-
-    private fun fetchFromDeezer(query: String, limit: Int): List<MusicMetadata> = runCatching {
-        val raw = httpGet("https://api.deezer.com/search?q=${encode(query)}&limit=$limit") ?: return emptyList()
-        JsonParser.parseString(raw).asJsonObject.getAsJsonArray("data").map { element ->
-            val track = element.asJsonObject
-            val album = track.obj("album")
-            MusicMetadata(
-                title = track.str("title"),
-                artist = track.obj("artist")?.str("name").orEmpty(),
-                album = album?.str("title").orEmpty(),
-                year = album?.str("release_date")?.take(4).orEmpty(),
-                coverUrl = album?.str("cover_xl").orEmpty()
-            )
-        }.filter { it.isUsable }
-    }.getOrElse { Log.w(TAG, "Deezer parsing failed", it); emptyList() }
-
-    private fun fetchFromItunes(query: String, limit: Int): List<MusicMetadata> = runCatching {
-        val raw = httpGet("https://itunes.apple.com/search?term=${encode(query)}&entity=song&limit=$limit")
-            ?: return emptyList()
-        JsonParser.parseString(raw).asJsonObject.getAsJsonArray("results").map { element ->
-            val track = element.asJsonObject
-            MusicMetadata(
-                title = track.str("trackName"),
-                artist = track.str("artistName"),
-                album = track.str("collectionName"),
-                year = track.str("releaseDate").take(4),
-                genre = track.str("primaryGenreName"),
-                coverUrl = track.str("artworkUrl100").replace("100x100bb", "1200x1200bb")
-            )
-        }.filter { it.isUsable }
-    }.getOrElse { Log.w(TAG, "iTunes parsing failed", it); emptyList() }
-
-    // ── Public API ─────────────────────────────────────────────────────────────
+    /**
+     * The catalogues, in the order they are consulted: the first one with a hit answers the
+     * lookup. Adding one is adding it here.
+     */
+    private val providers = listOf(DeezerProvider, ItunesProvider)
 
     /** Explicit search, used by the manual "artist + song" lookup. */
     suspend fun search(artist: String, title: String, limit: Int = MATCH_LIMIT): List<MusicMetadata> =
         withContext(Dispatchers.IO) {
             val query = listOf(artist, title).filter { it.isNotBlank() }.joinToString(" ")
             if (query.isBlank()) return@withContext emptyList()
-            fetchFromDeezer(query, limit).ifEmpty { fetchFromItunes(query, limit) }
+            providers.firstNotNullOfOrNull { it.search(query, limit).ifEmpty { null } }.orEmpty()
         }
 
     /**
@@ -224,8 +161,17 @@ object MusicMetadataUtil {
                     search(artist, title, limit).ifEmpty { null }
                 }
                 ?.map { enrichWithFeaturing(it, videoTitle) }
-                ?: emptyList()
+                .orEmpty()
         }
+
+    /**
+     * Fills in the extended tags the search results left out. Runs for a single match, the one
+     * on screen, so completing a result never costs more than the request the user waits for.
+     */
+    suspend fun details(metadata: MusicMetadata): MusicMetadata = withContext(Dispatchers.IO) {
+        val provider = providers.firstOrNull { it.id == metadata.source?.provider }
+        provider?.details(metadata) ?: metadata
+    }
 
     const val MATCH_LIMIT = 8
 }

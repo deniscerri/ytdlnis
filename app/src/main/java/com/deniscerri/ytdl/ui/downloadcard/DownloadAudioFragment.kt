@@ -180,8 +180,11 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     author.endIconMode = END_ICON_NONE
                 }
 
-                if (::musicCard.isInitialized) toggleTitleFields(musicCard.isEnabled)
-                else setupMusicCard(view)
+                if (::musicCard.isInitialized) {
+                    toggleTitleFields(musicCard.isEnabled)
+                    //the video info may have just landed, the lookup follows it
+                    syncMusicLookup()
+                } else setupMusicCard(view)
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
@@ -442,9 +445,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         musicCard = MusicMetadataCard(
             root = view,
             onModeChanged = { enabled -> setMusicMode(enabled) },
-            onMetadataChanged = { metadata ->
+            onMetadataChanged = { metadata, byUser ->
                 downloadItem.audioPreferences.musicMetadata = metadata.takeIf { it.isUsable }
+                //an edited or handpicked result is the users own, no later sync may replace it
+                if (byUser) musicViewModel.pin()
             },
+            onMatchSelected = { index -> musicViewModel.select(index) },
             onSearchRequested = { artist, song ->
                 downloadItem.audioPreferences.musicMetadata = null
                 musicViewModel.search(artist, song)
@@ -454,11 +460,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         lifecycleScope.launch {
             musicViewModel.state.collectLatest { state ->
                 when (state) {
+                    is MusicViewModel.SearchState.Waiting -> musicCard.showWaiting()
                     is MusicViewModel.SearchState.Loading -> musicCard.showLoading()
-                    is MusicViewModel.SearchState.Found -> musicCard.showMetadata(
-                        downloadItem.audioPreferences.musicMetadata ?: state.matches.first(),
-                        state.matches
-                    )
+                    is MusicViewModel.SearchState.Found -> musicCard.showMetadata(state.matches, state.selected)
                     is MusicViewModel.SearchState.NotFound -> musicCard.showNotFound(parsedSongGuess())
                     is MusicViewModel.SearchState.Idle -> {}
                 }
@@ -470,19 +474,31 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         musicCard.setChecked(enabled)
         toggleTitleFields(enabled)
 
-        if (enabled) {
-            if (saved != null) musicCard.showMetadata(saved)
-            else musicViewModel.searchFromVideo(downloadItem.title, downloadItem.author)
+        //a restored song was already settled, only a fresh card looks one up
+        if (saved != null) {
+            musicViewModel.pin()
+            musicCard.showMetadata(saved)
+        } else {
+            syncMusicLookup()
         }
     }
 
     private fun setMusicMode(enabled: Boolean) {
         downloadItem.audioPreferences.musicMode = enabled
-        toggleTitleFields(enabled)
         downloadItem.audioPreferences.musicMetadata = null
+        toggleTitleFields(enabled)
 
-        if (enabled) musicViewModel.searchFromVideo(downloadItem.title, downloadItem.author)
-        else musicViewModel.reset()
+        musicViewModel.reset()
+        if (enabled) syncMusicLookup()
+    }
+
+    /**
+     * Follows the video info, which is fetched after the card is built and can change again
+     * when the item is updated. Does nothing until there is a real title to look up.
+     */
+    private fun syncMusicLookup() {
+        if (!::musicCard.isInitialized || !musicCard.isEnabled) return
+        musicViewModel.syncWithVideo(downloadItem.title, downloadItem.author, downloadItem.url)
     }
 
     /** The song fields replace the video title/author fields while music mode is on. */

@@ -569,6 +569,7 @@
     <string name="music_mode">Download as music</string>
     <string name="music_mode_summary">Tag the file with the real song info</string>
     <string name="searching_song">Looking up song info…</string>
+    <string name="waiting_for_video_info">Waiting for video info…</string>
     <string name="song_not_found">No song found. Edit the fields or search manually</string>
     <string name="song">Song</string>
     <string name="artist">Artist</string>
@@ -577,4 +578,13 @@
     <string name="cover_art">Cover art</string>
     <string name="other_matches">Other matches</string>
     <string name="search_song">Search song</string>
+    <string name="more_details">More details</string>
+    <string name="fewer_details">Fewer details</string>
+    <string name="album_artist">Album artist</string>
+    <string name="genre">Genre</string>
+    <string name="record_label">Label</string>
+    <string name="track_number">Track</string>
+    <string name="track_total">Total</string>
+    <string name="disc_number">Disc</string>
+    <string name="isrc">ISRC</string>
 </resources>
