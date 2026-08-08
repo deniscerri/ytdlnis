@@ -65,6 +65,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var formatViewModel : FormatViewModel
     private lateinit var musicViewModel : MusicViewModel
     private lateinit var musicCard : MusicMetadataCard
+    private lateinit var coverDialog : MusicCoverDialog
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var genericAudioFormats: MutableList<Format>
@@ -451,10 +452,18 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 if (byUser) musicViewModel.pin()
             },
             onMatchSelected = { index -> musicViewModel.select(index) },
+            onCoverClicked = { cover -> coverDialog.show(cover) },
             onSearchRequested = { artist, song, providerId ->
                 downloadItem.audioPreferences.musicMetadata = null
                 musicViewModel.search(artist, song, providerId)
             }
+        )
+
+        coverDialog = MusicCoverDialog(
+            context = requireContext(),
+            scope = viewLifecycleOwner.lifecycleScope,
+            onPickRequested = { pickCover() },
+            onCoverConfirmed = { musicCard.setCover(it) }
         )
 
         lifecycleScope.launch {
@@ -542,6 +551,29 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
             disabledCutClicked = false
         }
         onViewCreated(requireView(),savedInstanceState = state)
+    }
+
+    /**
+     * The cover picker, opened on behalf of [coverDialog]. Registered here because this
+     * fragment is a dependable owner of an activity result, and launched the same way as the
+     * download folder picker below, which is the only such flow this screen already relies on.
+     */
+    private fun pickCover() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = "image/*"
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        coverResultLauncher.launch(intent)
+    }
+
+    private var coverResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+        //the card builds asynchronously, a result from before it was ready has nowhere to land
+        if (!::coverDialog.isInitialized) return@registerForActivityResult
+        result.data?.data?.let { coverDialog.preview(it) }
     }
 
     private var pathResultLauncher = registerForActivityResult(

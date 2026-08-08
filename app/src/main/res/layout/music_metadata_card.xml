@@ -92,16 +92,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/music_cover"
+            <!-- Sweeps the artwork while the song is being looked up, so the card reads as
+                 working rather than as an empty cover the user has to interpret -->
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/music_cover_shimmer"
                 android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:background="?attr/colorSurfaceVariant"
-                android:contentDescription="@string/cover_art"
-                android:padding="0dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_music"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
+                android:layout_height="100dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/music_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/colorSurfaceVariant"
+                    android:contentDescription="@string/cover_art"
+                    android:padding="0dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_music"
+                    app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
             <LinearLayout
                 android:layout_width="0dp"

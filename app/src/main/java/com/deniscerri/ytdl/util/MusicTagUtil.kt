@@ -44,20 +44,32 @@ object MusicTagUtil {
     private fun apply(files: List<File>, metadata: MusicMetadata): List<Pair<String, String>> {
         if (files.isEmpty() || !metadata.isUsable) return emptyList()
 
-        val cover = metadata.coverUrl.takeIf { it.isNotBlank() }?.let { downloadCover(it) }
+        val cover = metadata.coverUrl.takeIf { it.isNotBlank() }?.let { resolveCover(it) }
         val renames = mutableListOf<Pair<String, String>>()
 
         files.forEach { file ->
             if (file.extension.lowercase() in TAGGABLE) {
-                runCatching { writeTags(file, metadata, cover) }
+                runCatching { writeTags(file, metadata, cover?.file) }
                     .onFailure { Log.w(TAG, "Tagging failed for ${file.name}", it) }
             }
             renameToCleanName(file, metadata)?.let { renames.add(file.absolutePath to it) }
         }
 
-        cover?.delete()
+        //only the copy this run made is ours to remove, a picked cover belongs to the user
+        if (cover?.temporary == true) cover.file.delete()
         return renames
     }
+
+    /** The artwork to embed, and whether embedding it is the last thing it is needed for. */
+    private class Cover(val file: File, val temporary: Boolean)
+
+    private fun resolveCover(cover: String): Cover? = runCatching {
+        if (MusicCoverUtil.isLocal(cover)) {
+            return File(cover).takeIf { it.exists() }?.let { Cover(it, temporary = false) }
+        }
+        val bytes = MusicHttp.bytes(cover) ?: return null
+        Cover(File.createTempFile("cover_", ".jpg").apply { writeBytes(bytes) }, temporary = true)
+    }.getOrElse { Log.w(TAG, "Cover unavailable", it); null }
 
     private fun writeTags(file: File, metadata: MusicMetadata, cover: File?) {
         val audioFile = AudioFileIO.read(file)
@@ -96,9 +108,4 @@ object MusicTagUtil {
         if (target.absolutePath == file.absolutePath || target.exists()) return null
         return if (file.renameTo(target)) target.absolutePath else null
     }
-
-    private fun downloadCover(url: String): File? = runCatching {
-        val bytes = MusicHttp.bytes(url) ?: return null
-        File.createTempFile("cover_", ".jpg").apply { writeBytes(bytes) }
-    }.getOrElse { Log.w(TAG, "Cover download failed", it); null }
 }

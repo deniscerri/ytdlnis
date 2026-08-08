@@ -10,16 +10,17 @@ import android.widget.TextView
 import androidx.core.view.setPadding
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.MusicMetadata
+import com.deniscerri.ytdl.util.MusicCoverUtil
 import com.deniscerri.ytdl.util.extractors.music.MusicMetadataUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
-import com.squareup.picasso.Picasso
 
 /**
  * Binds the music metadata section of the audio download card: the mode switch, the editable
@@ -37,6 +38,7 @@ class MusicMetadataCard(
     private val onModeChanged: (enabled: Boolean) -> Unit,
     private val onMetadataChanged: (metadata: MusicMetadata, byUser: Boolean) -> Unit,
     private val onMatchSelected: (index: Int) -> Unit,
+    private val onCoverClicked: (cover: String) -> Unit,
     private val onSearchRequested: (artist: String, song: String, providerId: String?) -> Unit
 ) {
     private val context: Context = root.context
@@ -47,6 +49,7 @@ class MusicMetadataCard(
     private val progress: CircularProgressIndicator = root.findViewById(R.id.music_progress)
     private val content: View = root.findViewById(R.id.music_content)
     private val cover: ShapeableImageView = root.findViewById(R.id.music_cover)
+    private val coverShimmer: ShimmerFrameLayout = root.findViewById(R.id.music_cover_shimmer)
     private val extra: View = root.findViewById(R.id.music_extra)
     private val matchesChip: Chip = root.findViewById(R.id.music_matches)
     private val searchChip: Chip = root.findViewById(R.id.music_manual_search)
@@ -92,7 +95,17 @@ class MusicMetadataCard(
         matchesChip.setOnClickListener { showMatchPicker() }
         searchChip.setOnClickListener { showSearchDialog() }
         detailsChip.setOnClickListener { showExtra(!extraShown) }
+        cover.setOnClickListener { onCoverClicked(current.coverUrl) }
         showExtra(false)
+        //shimmer auto starts on inflation, the card is at rest until a lookup says otherwise
+        showCoverLoading(false)
+    }
+
+    /** Replaces the artwork with one the user chose themselves, which is theirs to keep. */
+    fun setCover(cover: String) {
+        current.coverUrl = cover
+        loadCover(cover)
+        onMetadataChanged(current.copy(), true)
     }
 
     // ── State rendering ────────────────────────────────────────────────────────
@@ -107,6 +120,7 @@ class MusicMetadataCard(
     }
 
     fun showLoading() {
+        showCoverLoading(true)
         progress.isVisible(true)
         status.text = context.getString(R.string.searching_song)
         matchesChip.isEnabled = false
@@ -114,6 +128,7 @@ class MusicMetadataCard(
 
     /** The video info is still being fetched, the lookup runs as soon as it lands. */
     fun showWaiting() {
+        showCoverLoading(true)
         progress.isVisible(true)
         status.text = context.getString(R.string.waiting_for_video_info)
         matchesChip.isEnabled = false
@@ -124,6 +139,7 @@ class MusicMetadataCard(
         val metadata = all.getOrNull(selected) ?: return
         matches = all
         selectedMatch = selected
+        showCoverLoading(false)
         progress.isVisible(false)
         matchesChip.isVisible(all.size > 1)
         matchesChip.isEnabled = true
@@ -137,6 +153,7 @@ class MusicMetadataCard(
     /** No API match: keeps the parsed guess editable so the user can correct it. */
     fun showNotFound(guess: MusicMetadata) {
         matches = emptyList()
+        showCoverLoading(false)
         progress.isVisible(false)
         matchesChip.isVisible(false)
         status.text = context.getString(R.string.song_not_found)
@@ -145,6 +162,7 @@ class MusicMetadataCard(
 
     private fun showIdle() {
         matches = emptyList()
+        showCoverLoading(false)
         progress.isVisible(false)
         status.text = context.getString(R.string.music_mode_summary)
     }
@@ -168,14 +186,14 @@ class MusicMetadataCard(
         onMetadataChanged(current.copy(), false)
     }
 
+    /** The artwork is the last thing to arrive, so it shimmers for as long as the lookup runs. */
+    private fun showCoverLoading(loading: Boolean) {
+        if (loading) coverShimmer.showShimmer(true) else coverShimmer.hideShimmer()
+    }
+
     private fun loadCover(url: String) {
-        if (url.isBlank()) {
-            cover.setImageResource(R.drawable.ic_music)
-            cover.setPadding(COVER_PLACEHOLDER_PADDING)
-        } else {
-            cover.setPadding(0)
-            Picasso.get().load(url).placeholder(R.drawable.ic_music).into(cover)
-        }
+        cover.setPadding(if (url.isBlank()) COVER_PLACEHOLDER_PADDING else 0)
+        MusicCoverUtil.load(url, cover)
     }
 
     // ── Dialogs ────────────────────────────────────────────────────────────────

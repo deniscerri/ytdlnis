@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cover_art"
+        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
+
+    <!-- The shimmer sweeps the preview itself, so reading a cover looks like the image
+         settling in rather than a separate placeholder being swapped out -->
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/cover_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <!-- Sizes itself to whatever it is showing: adjustViewBounds turns the image aspect into
+             the view height, bounded so neither a tiny nor a tall cover takes over the sheet -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/cover_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:background="?attr/colorSurfaceVariant"
+            android:contentDescription="@string/cover_art"
+            android:maxHeight="360dp"
+            android:minHeight="200dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_music"
+            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar2" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:divider="@drawable/divider_10dp"
+        android:orientation="horizontal"
+        android:showDividers="middle">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cover_choose"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/choose_image" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cover_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:enabled="false"
+            android:text="@string/use_this_cover" />
+
+    </LinearLayout>
+
+</LinearLayout>

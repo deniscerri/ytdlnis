@@ -588,4 +588,6 @@
     <string name="disc_number">Disc</string>
     <string name="isrc">ISRC</string>
     <string name="all_sources">All sources</string>
+    <string name="choose_image">Choose image</string>
+    <string name="use_this_cover">Use this cover</string>
 </resources>
