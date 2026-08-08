@@ -10,6 +10,8 @@ data class AudioPreferences(
     var splitByChapters: Boolean = false,
     var sponsorBlockFilters: ArrayList<String> = arrayListOf(),
     var bitrate: String = "",
-    /** Set when the item is downloaded as music: tags written and file renamed after downloading. */
+    /** User intent: download this item as music. Remembered for the next download. */
+    var musicMode: Boolean = false,
+    /** The song resolved for this item: tags written and file renamed after downloading. */
     var musicMetadata: MusicMetadata? = null
 ) : Parcelable

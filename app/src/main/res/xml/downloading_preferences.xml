@@ -91,11 +91,6 @@
             app:summary="@string/remember_download_type_summary"
             app:title="@string/remember_download_type" />
 
-        <Preference
-            android:defaultValue="video"
-            android:key="last_used_download_type"
-            app:isPreferenceVisible="false" />
-
         <SeekBarPreference
             android:defaultValue="3"
             android:icon="@drawable/ic_lines"

@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -181,10 +180,6 @@ class ConfigureDownloadBottomSheetDialog(private val currentDownloadItem: Downlo
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
                 runCatching {
-                    sharedPreferences.edit(commit = true) {
-                        putString("last_used_download_type",
-                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
-                    }
                     fragmentAdapter.updateWhenSwitching(viewPager2.currentItem)
                 }
             }

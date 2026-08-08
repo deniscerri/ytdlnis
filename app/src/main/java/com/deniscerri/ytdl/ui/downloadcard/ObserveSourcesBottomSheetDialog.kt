@@ -19,7 +19,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.edit
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -187,12 +186,6 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-        sharedPreferences.edit(commit = true) {
-            putString("last_used_download_type",
-                type.toString())
-        }
-
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab!!.position == 2 && commandTemplateNr == 0){
@@ -230,12 +223,6 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         viewPager2.registerOnPageChangeCallback(object: ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
-                runCatching {
-                    sharedPreferences.edit(commit = true) {
-                        putString("last_used_download_type",
-                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
-                    }
-                }
             }
         })
 

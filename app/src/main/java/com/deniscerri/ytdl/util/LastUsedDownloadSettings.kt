@@ -13,13 +13,17 @@ import com.google.gson.Gson
  * Remembers how the user configured their last download of each type and seeds the next one
  * with it, so the download card opens in the state it was left in.
  *
- * Stored as one snapshot per [DownloadType]. Only card level choices are kept: values that
- * belong to a single video (cut sections, crop, resolved music tags) and values that are a
- * projection of the app settings (the filename template) are deliberately left out, so the
- * settings screens stay authoritative over them.
+ * Stored as one snapshot per [DownloadType], plus the type itself so the card also reopens on
+ * the tab that was last downloaded from. A snapshot is written only when a download is actually
+ * committed: opening the card or swiping through its tabs is browsing, not a choice.
+ *
+ * Only card level choices are kept: values that belong to a single video (cut sections, crop,
+ * resolved music tags) and values that are a projection of the app settings (the filename
+ * template) are deliberately left out, so the settings screens stay authoritative over them.
  */
 object LastUsedDownloadSettings {
-    private const val KEY = "last_used_settings_"
+    private const val SNAPSHOT_KEY = "last_used_settings_"
+    private const val TYPE_KEY = "last_used_download_type"
     private val gson = Gson()
 
     private data class Snapshot(
@@ -32,6 +36,7 @@ object LastUsedDownloadSettings {
         val video: VideoPreferences? = null
     )
 
+    /** Call when a download is committed, never when the card is merely opened or browsed. */
     fun save(preferences: SharedPreferences, item: DownloadItem) {
         val snapshot = Snapshot(
             website = item.website,
@@ -46,7 +51,10 @@ object LastUsedDownloadSettings {
                 item.videoPreferences.copy(cropValues = "")
             } else null
         )
-        preferences.edit { putString(KEY + item.type, gson.toJson(snapshot)) }
+        preferences.edit {
+            putString(SNAPSHOT_KEY + item.type, gson.toJson(snapshot))
+            putString(TYPE_KEY, item.type.toString())
+        }
     }
 
     /** Seeds a freshly created item with the last used configuration of its type. */
@@ -81,9 +89,15 @@ object LastUsedDownloadSettings {
         return formats.firstOrNull { it.format_id == snapshot.formatId }
     }
 
+    /** The type of the last committed download, null while there is none to fall back on. */
+    fun lastType(preferences: SharedPreferences): DownloadType? = runCatching {
+        DownloadType.valueOf(preferences.getString(TYPE_KEY, "")!!)
+            .takeIf { it != DownloadType.auto }
+    }.getOrNull()
+
     /** A snapshot written by an older version may no longer parse, the defaults then stand. */
     private fun read(preferences: SharedPreferences, type: DownloadType): Snapshot? = runCatching {
-        gson.fromJson(preferences.getString(KEY + type, null), Snapshot::class.java)
+        gson.fromJson(preferences.getString(SNAPSHOT_KEY + type, null), Snapshot::class.java)
     }.getOrNull()
 
     private fun DownloadItem.keepKnownFormats(ids: List<String>) =

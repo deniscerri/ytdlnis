@@ -17,7 +17,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
@@ -39,6 +38,7 @@ import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.LastUsedDownloadSettings
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.extractors.music.MusicMetadataUtil
 import com.google.android.material.card.MaterialCardView
@@ -264,7 +264,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                         }
                         formats = allFormats.filter { !genericAudioFormats.contains(it) }.toMutableList()
                         formats.removeAll(genericAudioFormats)
-                        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.audio)
+                        val preferredFormat = LastUsedDownloadSettings.rememberedFormat(preferences, downloadItem, formats)
+                            ?: downloadViewModel.getFormat(formats, DownloadType.audio)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
                         val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat, null, showSize = downloadItem.downloadSections.isEmpty())
@@ -293,7 +294,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     )
                 )
 
-                if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
+                //the item already carries the app default or the last used container, only fix invalid ones
+                if (!containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
                 containerAutoCompleteTextView.setText(downloadItem.container.ifEmpty { getString(R.string.defaultValue) }, false)
@@ -464,7 +466,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         }
 
         val saved = downloadItem.audioPreferences.musicMetadata
-        val enabled = saved != null || preferences.getBoolean("music_mode", false)
+        val enabled = saved != null || downloadItem.audioPreferences.musicMode
         musicCard.setChecked(enabled)
         toggleTitleFields(enabled)
 
@@ -475,7 +477,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     }
 
     private fun setMusicMode(enabled: Boolean) {
-        preferences.edit { putBoolean("music_mode", enabled) }
+        downloadItem.audioPreferences.musicMode = enabled
         toggleTitleFields(enabled)
         downloadItem.audioPreferences.musicMetadata = null
 

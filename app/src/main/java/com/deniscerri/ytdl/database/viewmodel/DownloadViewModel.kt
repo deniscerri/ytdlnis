@@ -236,12 +236,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         var type = t
 
         if (type == null){
-            val preferredDownloadType = sharedPreferences.getString("preferred_download_type", DownloadType.auto.toString())
+            val preferredDownloadType = DownloadType.valueOf(
+                sharedPreferences.getString("preferred_download_type", DownloadType.auto.toString())!!)
             type = if (sharedPreferences.getBoolean("remember_download_type", false)){
-                DownloadType.valueOf(sharedPreferences.getString("last_used_download_type",
-                    preferredDownloadType)!!)
+                LastUsedDownloadSettings.lastType(sharedPreferences) ?: preferredDownloadType
             }else{
-                DownloadType.valueOf(preferredDownloadType!!)
+                preferredDownloadType
             }
         }
 
@@ -251,18 +251,13 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                     DownloadType.audio
                 }else{
                     //no site hint: open on the tab the user last downloaded from
-                    lastUsedDownloadType() ?: DownloadType.video
+                    LastUsedDownloadSettings.lastType(sharedPreferences) ?: DownloadType.video
                 }
             }
 
             else -> type
         }
     }
-
-    private fun lastUsedDownloadType() : DownloadType? = runCatching {
-        DownloadType.valueOf(sharedPreferences.getString("last_used_download_type", "")!!)
-            .takeIf { it != DownloadType.auto }
-    }.getOrNull()
 
     fun createDownloadItemFromResult(result: ResultItem?, url: String = "", givenType: DownloadType) : DownloadItem {
         val resultItem = result ?: createEmptyResultItem(url)

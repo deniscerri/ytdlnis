@@ -19,7 +19,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.edit
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -240,12 +239,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-        sharedPreferences.edit(commit = true) {
-            putString("last_used_download_type",
-                type.toString())
-        }
-
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 if (tab!!.position == 2 && commandTemplateNr == 0){
@@ -289,10 +282,6 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
                 runCatching {
-                    sharedPreferences.edit(commit = true) {
-                        putString("last_used_download_type",
-                            listOf(DownloadType.audio, DownloadType.video, DownloadType.command)[position].toString())
-                    }
                     fragmentAdapter.updateWhenSwitching(viewPager2.currentItem)
                 }
             }
@@ -320,7 +309,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
-                val item: DownloadItem = getDownloadItem()
+                val item: DownloadItem = commitDownloadItem()
                 item.status = DownloadRepository.Status.Scheduled.toString()
                 item.downloadStartTime = it.timeInMillis
                 if (item.videoPreferences.alsoDownloadAsAudio){
@@ -370,7 +359,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 resultViewModel.cancelUpdateFormatsItemData()
                 scheduleBtn.isEnabled = false
                 download.isEnabled = false
-                val item: DownloadItem = getDownloadItem()
+                val item: DownloadItem = commitDownloadItem()
                 if (item.videoPreferences.alsoDownloadAsAudio){
                     val itemsToQueue = mutableListOf<DownloadItem>()
                     itemsToQueue.add(item)
@@ -402,7 +391,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
             dd.setPositiveButton(getString(R.string.ok)) { _: DialogInterface?, _: Int ->
                 lifecycleScope.launch(Dispatchers.IO){
-                    downloadViewModel.putToSaved(getDownloadItem())
+                    downloadViewModel.putToSaved(commitDownloadItem())
                     dismiss()
                 }
             }
@@ -680,8 +669,15 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem {
-        return fragmentAdapter.getDownloadItem(selectedTabPosition).also {
-            //whatever the user configured here becomes the default of the next download
+        return fragmentAdapter.getDownloadItem(selectedTabPosition)
+    }
+
+    /**
+     * The item the user is committing to: whatever it was configured with becomes the starting
+     * point of the next download of that type. Browsing the card must not go through here.
+     */
+    private fun commitDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem {
+        return getDownloadItem(selectedTabPosition).also {
             LastUsedDownloadSettings.save(sharedPreferences, it)
         }
     }
