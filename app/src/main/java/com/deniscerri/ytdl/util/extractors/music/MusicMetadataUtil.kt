@@ -151,14 +151,14 @@ object MusicMetadataUtil {
     internal fun httpGet(url: String): String? = runCatching {
         val request = Request.Builder().url(url).header("User-Agent", "Mozilla/5.0").build()
         client.newCall(request).execute().use { res ->
-            if (res.isSuccessful) res.body?.string() else null
+            if (res.isSuccessful) res.body.string() else null
         }
     }.getOrElse { Log.w(TAG, "Request failed: $url", it); null }
 
     internal fun downloadBytes(url: String): ByteArray? = runCatching {
         val request = Request.Builder().url(url).header("User-Agent", "Mozilla/5.0").build()
         client.newCall(request).execute().use { res ->
-            if (res.isSuccessful) res.body?.bytes() else null
+            if (res.isSuccessful) res.body.bytes() else null
         }
     }.getOrElse { Log.w(TAG, "Download failed: $url", it); null }
 
