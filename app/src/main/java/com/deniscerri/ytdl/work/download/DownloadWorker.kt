@@ -25,8 +25,10 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
+import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
+import com.deniscerri.ytdl.database.models.MusicMetadata
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
@@ -37,6 +39,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.MusicTagUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
+import com.deniscerri.ytdl.util.extractors.music.MusicMetadataUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.deniscerri.ytdl.work.isRunning
 import com.deniscerri.ytdl.work.setForegroundSafely
@@ -257,8 +260,7 @@ class DownloadWorker(
                             var finalPaths = mutableListOf<String>()
 
                             //music mode: tags and renames the finished audio to "Artist - Title"
-                            val musicMetadata = downloadItem.audioPreferences.musicMetadata
-                                ?.takeIf { downloadItem.type == DownloadType.audio && it.isUsable }
+                            val musicMetadata = resolveMusicTags(downloadItem)
 
                             if (noCache){
                                 WorkerEventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
@@ -444,7 +446,20 @@ class DownloadWorker(
         return Result.success()
     }
 
-
+    /**
+     * The song tags to write into the finished audio, or null when this is not a music download.
+     *
+     * The card normally resolves them while the user is still looking at it, but a download can
+     * be started before the video info it looks up is even fetched. That is the quick path: the
+     * user trusts the video naming, so the lookup that could not run back then runs here, where
+     * the naming is finally known.
+     */
+    private suspend fun resolveMusicTags(item: DownloadItem): MusicMetadata? {
+        if (item.type != DownloadType.audio) return null
+        item.audioPreferences.musicMetadata?.takeIf { it.isUsable }?.let { return it }
+        if (!item.audioPreferences.musicMode) return null
+        return MusicMetadataUtil.resolveForVideo(item.title, item.author)
+    }
 
     companion object {
         val runningYTDLInstances: MutableList<Long> = mutableListOf()

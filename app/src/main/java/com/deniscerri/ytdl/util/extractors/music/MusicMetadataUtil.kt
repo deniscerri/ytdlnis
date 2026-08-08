@@ -165,6 +165,16 @@ object MusicMetadataUtil {
         }
 
     /**
+     * The single best match for a video, tags and all.
+     *
+     * Used where there is no card to pick in: a download started before the video info landed
+     * still has to end up tagged, and by the time it finishes the naming it was started from
+     * is finally known. Only one candidate is fetched, since nobody is there to choose.
+     */
+    suspend fun resolveForVideo(videoTitle: String, uploader: String): MusicMetadata? =
+        searchFromVideo(videoTitle, uploader, limit = 1).firstOrNull()?.let { details(it) }
+
+    /**
      * Fills in the extended tags the search results left out. Runs for a single match, the one
      * on screen, so completing a result never costs more than the request the user waits for.
      */
