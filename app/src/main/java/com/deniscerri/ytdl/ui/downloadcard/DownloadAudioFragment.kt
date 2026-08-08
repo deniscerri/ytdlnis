@@ -17,6 +17,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
@@ -27,9 +28,11 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
+import com.deniscerri.ytdl.database.models.MusicMetadata
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
+import com.deniscerri.ytdl.database.viewmodel.MusicViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
@@ -37,6 +40,7 @@ import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
+import com.deniscerri.ytdl.util.extractors.music.MusicMetadataUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -59,6 +63,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
     private lateinit var resultViewModel : ResultViewModel
     private lateinit var ytdlpViewModel : YTDLPViewModel
     private lateinit var formatViewModel : FormatViewModel
+    private lateinit var musicViewModel : MusicViewModel
+    private lateinit var musicCard : MusicMetadataCard
     private lateinit var saveDir : TextInputLayout
     private lateinit var freeSpace : TextView
     private lateinit var genericAudioFormats: MutableList<Format>
@@ -83,6 +89,7 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
         resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
+        musicViewModel = ViewModelProvider(this)[MusicViewModel::class.java]
         genericAudioFormats = FormatUtil(requireContext()).getGenericAudioFormats(requireContext().resources)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shownFields = preferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
@@ -173,6 +180,8 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                     author.endIconMode = END_ICON_NONE
                 }
 
+                if (::musicCard.isInitialized) toggleTitleFields(musicCard.isEnabled)
+                else setupMusicCard(view)
 
                 saveDir = view.findViewById(R.id.outputPath)
                 saveDir.editText!!.setText(
@@ -415,6 +424,75 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                 }
             }
         }
+    }
+
+    /**
+     * Music mode: resolves the real song info for the fetched video and keeps it on the
+     * download item, so the worker can tag and name the finished file with it.
+     */
+    private fun setupMusicCard(view: View) {
+        val card = view.findViewById<View>(R.id.music_card)
+        if (nonSpecific) {
+            card.visibility = View.GONE
+            return
+        }
+
+        musicCard = MusicMetadataCard(
+            root = view,
+            onModeChanged = { enabled -> setMusicMode(enabled) },
+            onMetadataChanged = { metadata ->
+                downloadItem.audioPreferences.musicMetadata = metadata.takeIf { it.isUsable }
+            },
+            onSearchRequested = { artist, song ->
+                downloadItem.audioPreferences.musicMetadata = null
+                musicViewModel.search(artist, song)
+            }
+        )
+
+        lifecycleScope.launch {
+            musicViewModel.state.collectLatest { state ->
+                when (state) {
+                    is MusicViewModel.SearchState.Loading -> musicCard.showLoading()
+                    is MusicViewModel.SearchState.Found -> musicCard.showMetadata(
+                        downloadItem.audioPreferences.musicMetadata ?: state.matches.first(),
+                        state.matches
+                    )
+                    is MusicViewModel.SearchState.NotFound -> musicCard.showNotFound(parsedSongGuess())
+                    is MusicViewModel.SearchState.Idle -> {}
+                }
+            }
+        }
+
+        val saved = downloadItem.audioPreferences.musicMetadata
+        val enabled = saved != null || preferences.getBoolean("music_mode", false)
+        musicCard.setChecked(enabled)
+        toggleTitleFields(enabled)
+
+        if (enabled) {
+            if (saved != null) musicCard.showMetadata(saved)
+            else musicViewModel.searchFromVideo(downloadItem.title, downloadItem.author)
+        }
+    }
+
+    private fun setMusicMode(enabled: Boolean) {
+        preferences.edit { putBoolean("music_mode", enabled) }
+        toggleTitleFields(enabled)
+        downloadItem.audioPreferences.musicMetadata = null
+
+        if (enabled) musicViewModel.searchFromVideo(downloadItem.title, downloadItem.author)
+        else musicViewModel.reset()
+    }
+
+    /** The song fields replace the video title/author fields while music mode is on. */
+    private fun toggleTitleFields(musicMode: Boolean) {
+        title.visibility = if (!musicMode && shownFields.contains("title")) View.VISIBLE else View.GONE
+        author.visibility = if (!musicMode && shownFields.contains("author")) View.VISIBLE else View.GONE
+    }
+
+    /** Best effort artist/song split of the video title, shown when no API match exists. */
+    private fun parsedSongGuess(): MusicMetadata {
+        val (artist, song) = MusicMetadataUtil.buildSearchQueries(downloadItem.title, downloadItem.author).first()
+        return MusicMetadata(title = song, artist = artist)
     }
 
     @SuppressLint("RestrictedApi")

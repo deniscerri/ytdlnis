@@ -1229,7 +1229,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     }
 
                     val cropThumb = downloadItem.audioPreferences.cropThumb ?: sharedPreferences.getBoolean("crop_thumbnail", true)
-                    if (downloadItem.audioPreferences.embedThumb){
+                    //music mode embeds the fetched album cover afterwards, so skip the video thumbnail
+                    val hasMusicCover = downloadItem.audioPreferences.musicMetadata?.coverUrl?.isNotBlank() == true
+                    if (downloadItem.audioPreferences.embedThumb && !hasMusicCover){
                         metadataCommands.addOption("--embed-thumbnail")
                         if (!request.toString().contains("--convert-thumbnails")) metadataCommands.addOption("--convert-thumbnails", thumbnailFormat!!)
 

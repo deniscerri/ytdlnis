@@ -13,6 +13,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <include layout="@layout/music_metadata_card" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/title_textinput"
                 android:layout_width="match_parent"

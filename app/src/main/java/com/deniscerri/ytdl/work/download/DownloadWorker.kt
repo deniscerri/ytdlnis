@@ -24,6 +24,7 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -33,6 +34,7 @@ import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.MusicTagUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
@@ -254,6 +256,10 @@ class DownloadWorker(
                         runBlocking {
                             var finalPaths = mutableListOf<String>()
 
+                            //music mode: tags and renames the finished audio to "Artist - Title"
+                            val musicMetadata = downloadItem.audioPreferences.musicMetadata
+                                ?.takeIf { downloadItem.type == DownloadType.audio && it.isUsable }
+
                             if (noCache){
                                 WorkerEventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
                                 val outputSequence = it.out.split("\n")
@@ -274,8 +280,13 @@ class DownloadWorker(
 
                                 finalPaths.sortBy { File(it).lastModified() }
                                 finalPaths = finalPaths.distinct().toMutableList()
+                                musicMetadata?.let {
+                                    finalPaths = MusicTagUtil.applyToPaths(finalPaths, it).toMutableList()
+                                }
                                 FileUtil.scanMedia(finalPaths, context)
                             }else{
+                                musicMetadata?.let { MusicTagUtil.applyToDirectory(tempFileDir, it) }
+
                                 //move file from internal to set download directory
                                 WorkerEventBus.post(WorkerProgress(100, "Moving file to ${FileUtil.formatPath(downloadLocation)}", downloadItem.id, downloadItem.logID))
                                 try {

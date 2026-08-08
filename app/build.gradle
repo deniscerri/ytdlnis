@@ -216,6 +216,7 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.13.2'
     implementation "com.squareup.okhttp3:okhttp:5.3.2"
+    implementation "net.jthink:jaudiotagger:3.0.1"
 
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0'
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.4'
