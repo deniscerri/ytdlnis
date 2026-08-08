@@ -28,8 +28,8 @@ data class DownloadItem(
     var website: String,
     val downloadSize: String,
     var playlistTitle: String,
-    val audioPreferences : AudioPreferences,
-    val videoPreferences: VideoPreferences,
+    var audioPreferences : AudioPreferences,
+    var videoPreferences: VideoPreferences,
     @ColumnInfo(defaultValue = "")
     var extraCommands: String,
     var customFileNameTemplate: String,

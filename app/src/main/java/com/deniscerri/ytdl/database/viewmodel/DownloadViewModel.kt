@@ -43,6 +43,7 @@ import com.deniscerri.ytdl.util.Extensions.needsDataUpdating
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.LastUsedDownloadSettings
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.deniscerri.ytdl.util.AlarmScheduler
@@ -249,13 +250,19 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                 if (urlsForAudioType.any { url.contains(it) }){
                     DownloadType.audio
                 }else{
-                    DownloadType.video
+                    //no site hint: open on the tab the user last downloaded from
+                    lastUsedDownloadType() ?: DownloadType.video
                 }
             }
 
             else -> type
         }
     }
+
+    private fun lastUsedDownloadType() : DownloadType? = runCatching {
+        DownloadType.valueOf(sharedPreferences.getString("last_used_download_type", "")!!)
+            .takeIf { it != DownloadType.auto }
+    }.getOrNull()
 
     fun createDownloadItemFromResult(result: ResultItem?, url: String = "", givenType: DownloadType) : DownloadItem {
         val resultItem = result ?: createEmptyResultItem(url)
@@ -355,7 +362,10 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             playlistIndex = resultItem.playlistIndex,
             incognito = sharedPreferences.getBoolean("incognito", false),
             availableSubtitles = resultItem.availableSubtitles
-        )
+        ).also {
+            //the settings above are the app defaults, the last used download overrides them
+            LastUsedDownloadSettings.apply(sharedPreferences, it)
+        }
     }
 
     fun createResultItemFromDownload(downloadItem: DownloadItem) : ResultItem {

@@ -37,6 +37,7 @@ import com.deniscerri.ytdl.util.Extensions.applyFilenameTemplateForCuts
 import com.deniscerri.ytdl.util.Extensions.createBadge
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.LastUsedDownloadSettings
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -289,7 +290,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             }
                         }
                         formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
-                        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.video)
+                        val preferredFormat = LastUsedDownloadSettings.rememberedFormat(preferences, downloadItem, formats)
+                            ?: downloadViewModel.getFormat(formats, DownloadType.video)
                         val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
                         downloadItem.format = preferredFormat
                         downloadItem.allFormats = formats
@@ -322,7 +324,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         containers
                     )
                 )
-                if (currentDownloadItem == null || !containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
+                //the item already carries the app default or the last used container, only fix invalid ones
+                if (!containers.contains(downloadItem.container.ifEmpty { getString(R.string.defaultValue) })){
                     downloadItem.container = if (containerPreference == getString(R.string.defaultValue)) "" else containerPreference!!
                 }
                 containerAutoCompleteTextView!!.setText(

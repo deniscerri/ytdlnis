@@ -43,6 +43,7 @@ import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.receiver.ShareActivity
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
+import com.deniscerri.ytdl.util.LastUsedDownloadSettings
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -679,7 +680,10 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     }
 
     private fun getDownloadItem(selectedTabPosition: Int = tabLayout.selectedTabPosition) : DownloadItem {
-        return fragmentAdapter.getDownloadItem(selectedTabPosition)
+        return fragmentAdapter.getDownloadItem(selectedTabPosition).also {
+            //whatever the user configured here becomes the default of the next download
+            LastUsedDownloadSettings.save(sharedPreferences, it)
+        }
     }
 
     private fun getAlsoAudioDownloadItem(finished: (it: DownloadItem) -> Unit) {
