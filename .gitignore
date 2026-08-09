@@ -13,3 +13,4 @@ app/src/main/jniLibs
 /ytdlnis-keystore
 *.jks
 *.keystore
+/context.txt
