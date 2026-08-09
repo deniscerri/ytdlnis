@@ -43,6 +43,7 @@ import androidx.lifecycle.withStarted
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -697,6 +698,19 @@ object Extensions {
 
     fun DownloadItem.needsDataUpdating() : Boolean {
         return this.title.isBlank() || this.author.isBlank() || this.thumb.isBlank()
+    }
+
+    /**
+     * The name this download is shown under: the song once music mode resolved one, the video
+     * title otherwise, and the bare url while that title is still being fetched.
+     */
+    fun DownloadItem.displayName() : String {
+        if (this.type == DownloadType.audio) {
+            this.audioPreferences.musicMetadata
+                ?.takeIf { it.isUsable }
+                ?.let { return it.displayName() }
+        }
+        return this.title.ifEmpty { this.url }
     }
 
     fun String.applyFilenameTemplateForCuts() : String {

@@ -33,9 +33,11 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.util.Extensions.displayName
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.MusicCoverUtil
 import com.deniscerri.ytdl.util.MusicTagUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
@@ -45,6 +47,8 @@ import com.deniscerri.ytdl.work.isRunning
 import com.deniscerri.ytdl.work.setForegroundSafely
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -169,7 +173,7 @@ class DownloadWorker(
             }
 
             eligibleDownloads.forEach{downloadItem ->
-                val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.title.ifEmpty { downloadItem.url })
+                val notification = notificationUtil.createDownloadServiceNotification(openDownloadQueue, downloadItem.displayName())
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -185,15 +189,23 @@ class DownloadWorker(
 //                    }
 
                     downloadItem.status = DownloadRepository.Status.Active.toString()
-                    CoroutineScope(Dispatchers.IO).launch {
+                    val dataUpdate = CoroutineScope(Dispatchers.IO).launch {
                         delay(1500)
                         //update item if its incomplete
-                        resultRepo.updateDownloadItem(downloadItem)?.apply {
-                            val status = dao.checkStatus(this.id)
-                            if (status == DownloadRepository.Status.Active){
-                                dao.updateWithoutUpsert(this)
+                        runCatching {
+                            resultRepo.updateDownloadItem(downloadItem)?.apply {
+                                val status = dao.checkStatus(this.id)
+                                if (status == DownloadRepository.Status.Active){
+                                    dao.updateWithoutUpsert(this)
+                                }
                             }
                         }
+                    }
+
+                    //music mode: resolved alongside the download, so the notification can already
+                    //name the song while the file it belongs to is still coming down
+                    val musicTags = CoroutineScope(Dispatchers.IO).async {
+                        resolveMusicTags(downloadItem, dataUpdate)
                     }
 
                     val cacheDir = FileUtil.getCacheDownloadsPath(context)
@@ -238,7 +250,7 @@ class DownloadWorker(
                             usingCacheDir = true
                         ){ progress, _, line ->
                             WorkerEventBus.post(WorkerProgress(progress.toInt(), line, downloadItem.id, downloadItem.logID))
-                            val title: String = downloadItem.title.ifEmpty { downloadItem.url }
+                            val title: String = downloadItem.displayName()
                             notificationUtil.updateDownloadNotification(
                                 downloadItem.id.toInt(),
                                 line, progress.toInt(), 0, title,
@@ -260,7 +272,7 @@ class DownloadWorker(
                             var finalPaths = mutableListOf<String>()
 
                             //music mode: tags and renames the finished audio to "Artist - Title"
-                            val musicMetadata = resolveMusicTags(downloadItem)
+                            val musicMetadata = musicTags.await()
 
                             if (noCache){
                                 WorkerEventBus.post(WorkerProgress(100, "Scanning Files", downloadItem.id, downloadItem.logID))
@@ -361,10 +373,15 @@ class DownloadWorker(
                                 }
                             }
 
+                            //the album art the finished notification carries, decoded off the main thread
+                            val artwork = musicMetadata?.coverUrl?.takeIf { it.isNotBlank() }?.let {
+                                MusicCoverUtil.notificationIcon(context, it)
+                            }
+
                             withContext(Dispatchers.Main) {
                                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                                 notificationUtil.createDownloadFinished(
-                                    downloadItem.id, downloadItem.title, downloadItem.type,  if (finalPaths.isEmpty()) null else finalPaths, resources
+                                    downloadItem.id, downloadItem.displayName(), downloadItem.type,  if (finalPaths.isEmpty()) null else finalPaths, resources, artwork
                                 )
                             }
 
@@ -389,6 +406,8 @@ class DownloadWorker(
                         }
 
                     }.onFailure {
+                        //nothing left to name: drop the lookup instead of letting it finish alone
+                        musicTags.cancel()
                         FileUtil.deleteConfigFiles(request)
                         withContext(Dispatchers.Main){
                             notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
@@ -423,7 +442,7 @@ class DownloadWorker(
 
                         notificationUtil.createDownloadErrored(
                             downloadItem.id,
-                            downloadItem.title.ifEmpty { downloadItem.url },
+                            downloadItem.displayName(),
                             it.message,
                             downloadItem.logID,
                             resources
@@ -447,18 +466,26 @@ class DownloadWorker(
     }
 
     /**
-     * The song tags to write into the finished audio, or null when this is not a music download.
+     * The song this download is, or null when it is not a music one.
      *
-     * The card normally resolves them while the user is still looking at it, but a download can
+     * The card normally resolves it while the user is still looking at it, but a download can
      * be started before the video info it looks up is even fetched. That is the quick path: the
-     * user trusts the video naming, so the lookup that could not run back then runs here, where
-     * the naming is finally known.
+     * user trusts the video naming, so the lookup that could not run back then runs here, once
+     * [dataUpdate] has filled that naming in.
+     *
+     * Resolved once and kept on the item, so the notification, the tags written into the file
+     * and the name it is saved under all speak of the same song.
      */
-    private suspend fun resolveMusicTags(item: DownloadItem): MusicMetadata? {
+    private suspend fun resolveMusicTags(item: DownloadItem, dataUpdate: Job): MusicMetadata? {
         if (item.type != DownloadType.audio) return null
         item.audioPreferences.musicMetadata?.takeIf { it.isUsable }?.let { return it }
         if (!item.audioPreferences.musicMode) return null
-        return MusicMetadataUtil.resolveForVideo(item.title, item.author)
+
+        dataUpdate.join()
+        if (item.title.isBlank()) return null
+        return runCatching { MusicMetadataUtil.resolveForVideo(item.title, item.author) }
+            .getOrNull()
+            ?.also { item.audioPreferences.musicMetadata = it }
     }
 
     companion object {

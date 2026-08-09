@@ -10,6 +10,7 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Icon
 import android.net.Uri
@@ -232,12 +233,17 @@ class NotificationUtil(var context: Context) {
     }
 
     @SuppressLint("MissingPermission")
+    /**
+     * @param artwork the picture that stands for what was downloaded, an album cover for a music
+     * download. Falls back to the generic icon of the download type when there is none.
+     */
     fun createDownloadFinished(
         id: Long,
         title: String?,
         downloadType: DownloadType,
         filepath: List<String>?,
-        res: Resources
+        res: Resources,
+        artwork: Bitmap? = null
     ) {
         val notificationBuilder = getBuilder(DOWNLOAD_FINISHED_CHANNEL_ID)
 
@@ -257,7 +263,7 @@ class NotificationUtil(var context: Context) {
 
         val contentText = StringBuilder("$title")
 
-        val bitmap = iconType.toBitmap(context)
+        val bitmap = artwork ?: iconType.toBitmap(context)
         notificationBuilder
             .setContentTitle("${res.getString(R.string.downloaded)} $title")
             .setSmallIcon(R.drawable.ic_launcher_foreground_large)

@@ -31,6 +31,9 @@ object MusicCoverUtil {
     /** Picked covers outlive their download by a week, long enough to survive a retry. */
     private val MAX_AGE_MS = TimeUnit.DAYS.toMillis(7)
 
+    /** The longest edge a notification large icon is drawn at, on the densest screens. */
+    private const val ICON_SIZE = 256
+
     /** @return the stored path to keep as the cover, or null when the image could not be read. */
     fun store(context: Context, uri: Uri): String? = runCatching {
         val dir = File(context.filesDir, DIR).apply { mkdirs(); prune() }
@@ -80,6 +83,15 @@ object MusicCoverUtil {
                 BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
             }.getOrElse { Log.w(TAG, "Could not read the cover", it); null }
         }
+
+    /**
+     * The cover as the large icon of a notification, or null when there is none to show.
+     *
+     * The same decode as the preview, capped at the size a notification icon is ever drawn at:
+     * the system scales anything larger down anyway, and pays for it in memory while it does.
+     */
+    suspend fun notificationIcon(context: Context, cover: String): Bitmap? =
+        preview(context, cover, ICON_SIZE)
 
     /** The three shapes a cover comes in, each read once into memory so it can be measured then decoded. */
     private fun open(context: Context, cover: String): ByteArray? = when {
