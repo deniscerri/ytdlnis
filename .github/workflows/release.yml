@@ -1,0 +1,289 @@
+name: release
+
+# Cloud release pipeline. Dispatched by scripts/release.sh (or manually from the
+# Actions tab). Everything that used to run on a laptop runs here instead, so a
+# dead battery or a dropped connection can no longer strand a half-published
+# release.
+#
+# Ordering is deliberate: nothing becomes publicly visible until every APK is
+# durably stored on GitHub. The release is created as a DRAFT, assets are
+# uploaded (with retry), main is pushed, and only then is the draft published —
+# which is also what creates the tag, on the release commit.
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: Release type
+        type: choice
+        options: [Stable, Beta]
+        default: Stable
+      bump:
+        description: Version bump (a Beta always takes 'build')
+        type: choice
+        options: [patch, minor, major, build]
+        default: patch
+      notes:
+        description: Release notes
+        type: string
+        default: Bug fixes and improvements.
+      source_branch:
+        description: Branch to merge into main
+        type: string
+        default: dev
+
+# One release at a time, ever. Queued rather than cancelled — cancelling a run
+# mid-push is exactly the failure mode this pipeline exists to eliminate.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+env:
+  MAIN_BRANCH: main
+  GRADLE_FILE: app/build.gradle
+  RELEASE_DIR: app/build/outputs/apk/github/release
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          # Explicit rather than relying on the default: the later steps push to
+          # main, which needs the token left in the local git config.
+          persist-credentials: true
+
+      # Inputs reach the shell through env, never through ${{ }} interpolation
+      # into script text — release notes are free-form user input.
+      - name: Merge source branch into main
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$SOURCE_BRANCH" != "$MAIN_BRANCH" ]; then
+            git fetch origin "$SOURCE_BRANCH"
+            git merge --no-edit "origin/${SOURCE_BRANCH}" \
+              || { echo "::error::Merge conflict ${SOURCE_BRANCH} → ${MAIN_BRANCH}. Resolve locally and re-run."; exit 1; }
+          fi
+
+      - name: Resolve and write next version
+        id: version
+        env:
+          RELEASE_TYPE: ${{ inputs.release_type }}
+          BUMP: ${{ inputs.bump }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          source scripts/lib/version.sh
+
+          # A beta keeps the version of the stable it precedes so users can move
+          # to stable without a downgrade; that leaves 'build' as its only bump.
+          BETA=false
+          if [ "$RELEASE_TYPE" = "Beta" ]; then BETA=true; BUMP=build; fi
+
+          version::read "$GRADLE_FILE"
+          version::bump "$BUMP"
+          NAME="$(version::name "$V_MAJOR" "$V_MINOR" "$V_PATCH" "$V_BUILD" "$BETA")"
+          CODE="$(version::code "$V_MAJOR" "$V_MINOR" "$V_PATCH" "$V_BUILD")"
+          TAG="v${NAME}"
+
+          # Only a *published* release blocks us; a leftover draft from a failed
+          # run is reclaimed by the "Create draft release" step below.
+          if [ "$(gh release view "$TAG" --json isDraft --jq .isDraft 2>/dev/null || echo absent)" = "false" ]; then
+            echo "::error::${TAG} is already published."; exit 1
+          fi
+
+          version::write "$GRADLE_FILE" "$V_MAJOR" "$V_MINOR" "$V_PATCH" "$V_BUILD" "$BETA"
+
+          version::read "$GRADLE_FILE"
+          VERIFY="$(version::name "$V_MAJOR" "$V_MINOR" "$V_PATCH" "$V_BUILD" "$V_BETA")"
+          [ "$VERIFY" = "$NAME" ] \
+            || { echo "::error::Version write failed (got ${VERIFY}, expected ${NAME})"; exit 1; }
+
+          {
+            echo "name=${NAME}"
+            echo "code=${CODE}"
+            echo "tag=${TAG}"
+          } >> "$GITHUB_OUTPUT"
+          echo "✓ ${NAME} (${CODE})"
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          # The action defaults this to true off the default branch, and we
+          # dispatch from the source branch — without this the cache would only
+          # ever be read, and every release would pay for a cold build.
+          cache-read-only: false
+
+      - name: Restore signing keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          [ -n "$KEYSTORE_BASE64" ] || { echo "::error::KEYSTORE_BASE64 secret is not set."; exit 1; }
+          KEYSTORE_PATH="${RUNNER_TEMP}/ytdlnis-keystore.jks"
+          echo "$KEYSTORE_BASE64" | base64 -d > "$KEYSTORE_PATH"
+          # The secrets-gradle-plugin wants this file to exist even when empty.
+          touch local.properties
+          # Absolute path: keystore.properties' storeFile is resolved relative to
+          # the app module locally, and that assumption doesn't hold here.
+          {
+            echo "signingConfig.storeFile=${KEYSTORE_PATH}"
+            echo "signingConfig.storePassword=${KEYSTORE_PASSWORD}"
+            echo "signingConfig.keyAlias=${KEY_ALIAS}"
+            echo "signingConfig.keyPassword=${KEY_PASSWORD}"
+          } > keystore.properties
+
+      - name: Build signed release APKs
+        run: ./gradlew :app:assembleGithubRelease -Dorg.gradle.jvmargs="-Xmx5g -Dfile.encoding=UTF-8"
+
+      # Classify every built APK by ABI. Longest identifier first, so x86_64 is
+      # never mistaken for x86. The result is the apks map that version.json
+      # publishes and that the in-app updater picks its own ABI out of.
+      - name: Collect APKs
+        id: apks
+        run: |
+          set -euo pipefail
+          [ -d "$RELEASE_DIR" ] || { echo "::error::${RELEASE_DIR} not found."; exit 1; }
+
+          MAP="${RUNNER_TEMP}/apks.json"
+          echo '{}' > "$MAP"
+          COUNT=0
+
+          for apk in "${RELEASE_DIR}"/*.apk; do
+            [ -f "$apk" ] || continue
+            base="$(basename "$apk")"
+            case "$base" in
+              *x86_64*)     abi=x86_64      ;;
+              *arm64-v8a*)  abi=arm64-v8a   ;;
+              *armeabi-v7a*) abi=armeabi-v7a ;;
+              *x86*)        abi=x86         ;;
+              *universal*)  abi=universal   ;;
+              *)            echo "  skipping unclassified ${base}"; continue ;;
+            esac
+            jq --arg abi "$abi" --arg file "$base" '.[$abi] = $file' "$MAP" > "${MAP}.tmp"
+            mv "${MAP}.tmp" "$MAP"
+            COUNT=$((COUNT + 1))
+            echo "✓ ${abi}: ${base}"
+          done
+
+          [ "$COUNT" -gt 0 ] || { echo "::error::No APKs found in ${RELEASE_DIR}"; exit 1; }
+          jq -e 'has("universal")' "$MAP" > /dev/null \
+            || { echo "::error::Universal APK missing — it is the updater's fallback."; exit 1; }
+
+          echo "map=${MAP}" >> "$GITHUB_OUTPUT"
+
+      # Draft, so publishing stays a single atomic act at the very end and no
+      # release is ever visible while its assets are still uploading.
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          NOTES: ${{ inputs.notes }}
+        run: |
+          set -euo pipefail
+          # Reclaim a draft left behind by a previous failed run.
+          gh release delete "$TAG" --yes --cleanup-tag > /dev/null 2>&1 || true
+          printf '%s\n' "$NOTES" > "${RUNNER_TEMP}/notes.md"
+          gh release create "$TAG" \
+            --draft \
+            --target "$MAIN_BRANCH" \
+            --title "$TAG" \
+            --notes-file "${RUNNER_TEMP}/notes.md"
+
+      # Per-asset with retry, instead of one all-or-nothing multi-file upload —
+      # a single transient 400 would otherwise roll the whole release back.
+      - name: Upload APKs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          for apk in "${RELEASE_DIR}"/*.apk; do
+            [ -f "$apk" ] || continue
+            for attempt in 1 2 3; do
+              if gh release upload "$TAG" "$apk" --clobber; then
+                echo "✓ $(basename "$apk")"; break
+              fi
+              [ "$attempt" -eq 3 ] && { echo "::error::Upload failed: $(basename "$apk")"; exit 1; }
+              echo "  retry ${attempt} for $(basename "$apk")…"
+              sleep $(( attempt * 10 ))
+            done
+          done
+
+      # version.json on main is what the app polls. versionCode is the *base*
+      # code from defaultConfig — the same number the app carries as
+      # BuildConfig.BASE_VERSION_CODE — so the comparison holds on every ABI,
+      # independent of AGP's per-split versionCodeOverride.
+      - name: Write version.json and push main
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          NOTES: ${{ inputs.notes }}
+          NAME: ${{ steps.version.outputs.name }}
+          CODE: ${{ steps.version.outputs.code }}
+          MAP: ${{ steps.apks.outputs.map }}
+        run: |
+          set -euo pipefail
+          BASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}"
+
+          jq -n \
+            --argjson versionCode "$CODE" \
+            --arg versionName "$NAME" \
+            --arg notes "$NOTES" \
+            --arg baseUrl "$BASE_URL" \
+            --slurpfile files "$MAP" \
+            '{
+               versionCode: $versionCode,
+               versionName: $versionName,
+               notes: $notes,
+               apks: ($files[0] | with_entries(.value = "\($baseUrl)/\(.value)"))
+             }' > version.json
+
+          git add "$GRADLE_FILE" version.json
+          git commit -m "release: ${TAG}"
+          git push origin "HEAD:${MAIN_BRANCH}"
+
+      # Publishing a draft creates the tag at --target, which now resolves to the
+      # release commit pushed above.
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          PRERELEASE: ${{ inputs.release_type != 'Stable' }}
+        run: gh release edit "$TAG" --draft=false --prerelease="$PRERELEASE"
+
+      # The source branch was merged into main, so main is a descendant of it and
+      # this is a plain fast-forward — no history rewrite, no force push.
+      - name: Fast-forward source branch
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+        run: |
+          if [ "$SOURCE_BRANCH" != "$MAIN_BRANCH" ]; then
+            git push origin "${MAIN_BRANCH}:refs/heads/${SOURCE_BRANCH}"
+          fi
+
+      - name: Summary
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          {
+            echo "### ✓ Released ${TAG}"
+            echo ""
+            echo "- **Manifest**: https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${MAIN_BRANCH}/version.json"
+            echo "- **Release**: https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}"
+          } >> "$GITHUB_STEP_SUMMARY"
