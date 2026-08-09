@@ -129,5 +129,21 @@
 -dontwarn com.google.re2j.Matcher
 -dontwarn com.google.re2j.Pattern
 
+# jaudiotagger writes the music tags, and reaches for three of its own packages by reflection
+# only, so R8 sees no caller, strips them, and tagging fails silently on a minified build while
+# debug works. Each keep needs the constructors, not just the class:
+#   framebody   ID3 frame bodies resolved by name, Class.forName("..FrameBody" + frameId)
+#   datatype    frame body fields copied through getConstructor(), on every ID3 version change
+#   asf.io      WMA chunk readers instantiated from their registered Class
+-keep class org.jaudiotagger.tag.id3.framebody.** { *; }
+-keep class org.jaudiotagger.tag.datatype.** { *; }
+-keep class org.jaudiotagger.audio.asf.io.** { *; }
+
+# The library also carries a desktop only artwork path that reaches for AWT and ImageIO, which
+# Android has neither of. It only has to link, never to run: embedding a cover reads the file
+# into bytes, and Artwork.getImage(), the one method that decodes, is on no writing path.
+-dontwarn java.awt.**
+-dontwarn javax.imageio.**
+
 -keepattributes RuntimeVisibleAnnotations,AnnotationDefault
 -dontobfuscate
