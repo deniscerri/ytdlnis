@@ -532,4 +532,9 @@
     <string name="y_offset">Desplazamiento Y</string>
     <string name="width">Ancho</string>
     <string name="height">Altura</string>
+    <string name="write_atleast_one_potoken">Necesitas escribir al menos un token PO</string>
+    <string name="version_ready_to_download">La version %s está lista para descargar</string>
+    <string name="package_version_ready_to_download">Paquete %1$s con la versión %2$s está listo para descargar</string>
+    <string name="tap_to_see_changes_and_install">Toca para ver los cambios y instalar</string>
+    <string name="view">Ver</string>
 </resources>

@@ -78,6 +78,17 @@
 - Nüsxələmə və bərpa xüsusiyyətləri. (Təqribən, hər şey nüsxələnə bilər)
 - MVVM Architecture w/ WorkManager
 
+## 🧩 Plagin Dəstəyi
+
+YTDLnis plaginləri idarə edir, beləliklə istifadəçilər aşağıdakı komponentlərin versiyasını sərbəst şəkildə yüksəldə və ya endirə bilər:
+- Python
+- JS Runtimes (NodeJS, Deno)
+- FFmpeg
+- Aria2c
+
+ytdlnis paketlərini bu depodan quraşdır [ytdlnis-packages](https://github.com/deniscerri/ytdlnis-packages/) və ya tətbiqdəki yeniləmə bölməsi vasitəsilə.
+Ətraflı məlumat üçün deponun README faylına müraciət edin.
+
 ## 📲 Ekran görüntüləri
 
 <div>

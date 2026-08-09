@@ -541,4 +541,39 @@
     <string name="package_version_ready_to_download">%1$s paketi, %2$s sürümüyle indirilmeye hazır</string>
     <string name="tap_to_see_changes_and_install">Değişiklikleri görmek ve kurmak için dokun</string>
     <string name="view">Görüntüle</string>
+    <string name="next_run">Sonraki: %1$s</string>
+    <string name="paused">Duraklatıldı</string>
+    <string name="check_complete">Kontrol tamamlandı</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Tamamlandı · %d çalışma</item>
+        <item quantity="other">Tamamlandı · %d çalışma</item>
+    </plurals>
+    <string name="reset_state">Durumu sıfırla</string>
+    <string name="rescan_from_scratch">Sıfırdan yeniden tara</string>
+    <string name="rescan_from_scratch_desc">İşlenen öğeleri unut ve kaydedilmemiş her şeyi yeniden indir</string>
+    <string name="skip_backlog">Bekleyen işleri atla</string>
+    <string name="skip_backlog_desc">Kaynaktaki her şeyi tamamlandı olarak işaretle — yalnızca gelecekteki yüklemeleri indir</string>
+    <string name="unskip_ignored">Yok sayılan yüklemeleri geri getir</string>
+    <string name="unskip_ignored_desc">İlk çalışmada atlanan yüklemeleri indir</string>
+    <string name="observe_runs_chip">%d çalışma</string>
+    <string name="observe_processed_chip">%d işlendi</string>
+    <string name="observe_skipped_chip">%d atlandı</string>
+    <string name="observe_updating">Yenileniyor…</string>
+    <string name="check_available_storage">Mevcut depolama alanını kontrol et</string>
+    <plurals name="every_hours">
+        <item quantity="one">Her saat</item>
+        <item quantity="other">Her %d saatta bir</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Her gün</item>
+        <item quantity="other">Her %d günde bir</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Her hafta</item>
+        <item quantity="other">Her %d haftada bir</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Her ay</item>
+        <item quantity="other">Her %d ayda bir</item>
+    </plurals>
 </resources>
