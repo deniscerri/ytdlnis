@@ -15,8 +15,8 @@ import org.junit.runner.RunWith
 class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
-        // Context of the app under test.
+        // Context of the app under test. The debug build appends its own suffix to the id.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        Assert.assertEquals("com.deniscerri.ytdl", appContext.packageName)
+        Assert.assertTrue(appContext.packageName.startsWith("com.deniscerri.ytdl"))
     }
 }

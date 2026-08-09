@@ -1,4 +1,11 @@
-<!-- The debug build ships its own copy of this, see src/debug/res/xml-v25/shortcuts.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    The debug copy of src/main/res/xml-v25/shortcuts.xml, launching the debug package.
+
+    A static shortcut has to name the package it opens, and res/xml is compiled before the
+    application id is known, so there is no placeholder to put there. This file is identical to
+    the main one apart from that package, and the build fails if the two ever drift apart.
+-->
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:shortcutId="search"
@@ -8,7 +15,7 @@
         android:shortcutDisabledMessage="@string/search">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.deniscerri.ytdl"
+            android:targetPackage="com.deniscerri.ytdl.debug"
             android:targetClass="com.deniscerri.ytdl.MainActivity">
 
             <extra android:name="destination" android:value="Search" />
@@ -25,7 +32,7 @@
         android:shortcutDisabledMessage="@string/downloads">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.deniscerri.ytdl"
+            android:targetPackage="com.deniscerri.ytdl.debug"
             android:targetClass="com.deniscerri.ytdl.MainActivity">
 
             <extra android:name="destination" android:value="Downloads" />
@@ -41,7 +48,7 @@
         android:shortcutDisabledMessage="@string/download_queue">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.deniscerri.ytdl"
+            android:targetPackage="com.deniscerri.ytdl.debug"
             android:targetClass="com.deniscerri.ytdl.MainActivity">
 
             <extra android:name="destination" android:value="Queue" />
@@ -57,7 +64,7 @@
         android:shortcutDisabledMessage="@string/terminal">
         <intent
             android:action="android.intent.category.DEFAULT"
-            android:targetPackage="com.deniscerri.ytdl"
+            android:targetPackage="com.deniscerri.ytdl.debug"
             android:targetClass="com.deniscerri.ytdl.ui.more.terminal.TerminalActivity">
 
         </intent>
