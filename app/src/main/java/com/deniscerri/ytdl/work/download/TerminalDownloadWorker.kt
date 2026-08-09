@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.work.download
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
 import android.os.Build
 import android.os.Handler
@@ -58,48 +59,10 @@ class TerminalDownloadWorker(
             setForegroundAsync(ForegroundInfo(itemId, notification))
         }
 
-        val request = YTDLRequest(emptyList())
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(context)
-
         val downloadLocation = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())
-        request.addOption(
-            "--config-locations",
-            File(context.cacheDir.absolutePath + "/config-TERMINAL[${System.currentTimeMillis()}].txt").apply {
-                writeText(command)
-            }.absolutePath
-        )
-
-        if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
-            }
-
-            val useHeader = sharedPreferences.getBoolean("use_header", false)
-            val header = sharedPreferences.getString("useragent_header", "")
-            if (useHeader && !header.isNullOrBlank()){
-                request.addOption("--add-header","User-Agent:${header}")
-            }
-        }
-
-        val commandPath = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
-        var noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
-
-        if (command.contains("-P ")) {
-            noCache = true
-        }else {
-            if (!noCache){
-                request.addOption("-P", FileUtil.getCachePath(context) + "TERMINAL/" + itemId)
-            }else if (!request.hasOption("-P")){
-                request.addOption("-P", FileUtil.formatPath(commandPath))
-            }
-        }
-
-
-
-
 
         val logDownloads = sharedPreferences.getBoolean("log_downloads", false) && !sharedPreferences.getBoolean("incognito", false)
-
         val initialLogDetails = "Terminal Task\n" +
                 "Command:\n${command.trim()}\n\n"
         val logItem = LogItem(
@@ -111,7 +74,7 @@ class TerminalDownloadWorker(
             System.currentTimeMillis(),
         )
 
-
+        var noCache = false
         runCatching {
             if (logDownloads){
                 runBlocking {
@@ -119,7 +82,7 @@ class TerminalDownloadWorker(
                 }
             }
 
-            RuntimeManager.getInstance().execute(request, itemId.toString(), true){ progress, _, line ->
+            val callback : (Float, Long, String) -> Unit = { progress, _, line ->
                 runBlocking {
                     WorkerEventBus.post(DownloadWorker.WorkerProgress(progress.toInt(), line, itemId.toLong(), logItem.id))
                 }
@@ -134,6 +97,20 @@ class TerminalDownloadWorker(
                     if (logDownloads) logRepo.update(line, logItem.id)
                     dao.updateLog(line, itemId.toLong())
                 }
+            }
+
+            val c = command.lowercase()
+            if (c.startsWith("ffmpeg")) {
+                RuntimeManager.getInstance().executeFFmpeg(command, itemId.toString(), callback = callback)
+            } else if (c.startsWith("deno")) {
+                RuntimeManager.getInstance().executeDeno(command, itemId.toString(), callback = callback)
+            } else if (c.startsWith("python")) {
+                RuntimeManager.getInstance().executePython(command, itemId.toString(), callback = callback)
+            }
+            else {
+                val (resp, isNoCache) = buildYTDLPRequest(command, sharedPreferences)
+                noCache = isNoCache
+                RuntimeManager.getInstance().execute(resp, itemId.toString(), true, callback = callback)
             }
         }.onSuccess {
             CoroutineScope(Dispatchers.IO).launch {
@@ -175,9 +152,46 @@ class TerminalDownloadWorker(
 
     }
 
+    private fun buildYTDLPRequest(command: String, sharedPreferences: SharedPreferences) : Pair<YTDLRequest, Boolean> {
+        val request = YTDLRequest(emptyList())
+        request.addOption(
+            "--config-locations",
+            File(context.cacheDir.absolutePath + "/config-TERMINAL[${System.currentTimeMillis()}].txt").apply {
+                writeText(command)
+            }.absolutePath
+        )
+
+        if (sharedPreferences.getBoolean("use_cookies", false)){
+            FileUtil.getCookieFile(context){
+                request.addOption("--cookies", it)
+            }
+
+            val useHeader = sharedPreferences.getBoolean("use_header", false)
+            val header = sharedPreferences.getString("useragent_header", "")
+            if (useHeader && !header.isNullOrBlank()){
+                request.addOption("--add-header","User-Agent:${header}")
+            }
+        }
+
+        val commandPath = sharedPreferences.getString("command_path", FileUtil.getDefaultCommandPath())!!
+        var noCache = !sharedPreferences.getBoolean("cache_downloads", true) && File(FileUtil.formatPath(commandPath)).canWrite()
+
+        if (command.contains("-P ")) {
+            noCache = true
+        }else {
+            if (!noCache){
+                request.addOption("-P", FileUtil.getCachePath(context) + "TERMINAL/" + itemId)
+            }else if (!request.hasOption("-P")){
+                request.addOption("-P", FileUtil.formatPath(commandPath))
+            }
+        }
+
+        return Pair(request, noCache)
+    }
+
     companion object {
         private var itemId : Int = 0
-        const val TAG = "DownloadWorker"
+        const val TAG = "TerminalDownloadWorker"
     }
 
 }

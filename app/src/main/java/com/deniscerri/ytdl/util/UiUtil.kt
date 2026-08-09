@@ -3108,4 +3108,94 @@ object UiUtil {
         bottomSheet.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
+    fun showDownloadDelayDialog(context: Activity, sharedPreferences: SharedPreferences, rangeSelected: (rangeSelected: Pair<Float, Float>) -> Unit, resetSelected: () -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.download_delay))
+        builder.setMessage(context.getString(R.string.download_delay_summary))
+        builder.setIcon(R.drawable.baseline_timer_24)
+        val view = context.layoutInflater.inflate(R.layout.download_delay_preference_dialog, null)
+
+        val downloadDelay = sharedPreferences.getString("download_delay", "0-0")!!
+        val minDelay = downloadDelay.split("-")[0]
+        val maxDelay = downloadDelay.split("-")[1]
+
+        val fromTextInput = view.findViewById<TextInputLayout>(R.id.from_textinput_layout)
+        fromTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789.")
+
+        val toTextInput = view.findViewById<TextInputLayout>(R.id.to_textinput_layout)
+        toTextInput.editText!!.keyListener = DigitsKeyListener.getInstance("0123456789.")
+
+
+        builder.setView(view)
+        builder.setPositiveButton(
+            context.getString(R.string.ok)
+        ) { _: DialogInterface?, _: Int ->
+            val firstIndex = fromTextInput.editText!!.text.toString().toFloat()
+            val secondIndex = toTextInput.editText!!.text.toString().toFloat()
+
+            rangeSelected(Pair(firstIndex,secondIndex))
+        }
+
+        // handle the negative button of the alert dialog
+        builder.setNegativeButton(
+            context.getString(R.string.cancel)
+        ) { _: DialogInterface?, _: Int -> }
+
+        builder.setNeutralButton(
+            context.getString(R.string.reset)
+        ) { _: DialogInterface?, _: Int ->
+            resetSelected()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
+
+        fun checkRanges(start: String, end: String) : Boolean {
+            val res: Boolean
+
+            fromTextInput.error = ""
+            toTextInput.error = ""
+
+            if (start.isBlank() || end.isBlank()){
+                res = false
+            }else{
+                val startValid = kotlin.runCatching {
+                    start.toFloat() >= 0f
+                }.getOrElse { false }
+
+                val endValid = kotlin.runCatching {
+                    end.toFloat() >= start.toFloat()
+                }.getOrElse { false }
+
+                if (!startValid) {
+                    fromTextInput.error = "Invalid Number"
+                }
+                if (!endValid) {
+                    toTextInput.error = "Invalid Number"
+                }
+
+                res = startValid && endValid
+            }
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = res
+            return res
+        }
+
+        fromTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
+            val start = text.toString()
+            val end = toTextInput.editText!!.text.toString()
+            checkRanges(start, end)
+        }
+
+        toTextInput.editText!!.doOnTextChanged { text, _, _, _ ->
+            val start = fromTextInput.editText!!.text.toString()
+            val end = text.toString()
+            checkRanges(start, end)
+        }
+
+        fromTextInput.editText!!.setText(minDelay)
+        toTextInput.editText!!.setText(maxDelay)
+    }
+
 }

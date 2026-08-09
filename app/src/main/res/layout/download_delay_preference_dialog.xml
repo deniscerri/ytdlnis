@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <!-- Min Delay Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/from_textinput_layout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:helperText="@string/min_delay"
+        app:helperTextEnabled="true"
+        app:suffixText="s">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/from_textinput_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:gravity="end"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Visual Separator -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="–"
+        android:textAppearance="?attr/textAppearanceBodyLarge"
+        android:textColor="?attr/colorOnSurfaceVariant" />
+
+    <!-- Max Delay Input -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/to_textinput_layout"
+        style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:helperText="@string/max_delay"
+        app:helperTextEnabled="true"
+        app:suffixText="s">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/to_textinput_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:maxLength="6"
+            android:gravity="end"
+            android:maxLines="1" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>

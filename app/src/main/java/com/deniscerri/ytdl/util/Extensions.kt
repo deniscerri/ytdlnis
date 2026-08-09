@@ -93,7 +93,7 @@ object Extensions {
             regex = "([\"'])(?:\\\\1|.)*?\\1".toRegex(),
             matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#FC8500"))),
         TextColorScheme(
-            regex = "yt-dlp".toRegex(),
+            regex = "(yt-dlp)|(ffmpeg)|(deno)|(python)".toRegex(),
             matcher = com.neoutils.highlight.core.util.Matcher.fully(UiColor.Hex("#77eb09"))),
         TextColorScheme(
             regex = "(https?://(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?://(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})".toRegex(),

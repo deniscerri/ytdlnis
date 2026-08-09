@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.core
 
 import android.content.Context
 import android.os.Build
+import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.core.models.ExecuteResponse
@@ -16,6 +17,7 @@ import com.deniscerri.ytdl.core.packages.QuickJS
 import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
 import com.deniscerri.ytdl.database.models.PackageItem
+import com.deniscerri.ytdl.util.FileUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
@@ -235,10 +237,6 @@ object RuntimeManager {
         assertInit()
         assertNoUpdate()
 
-        if (processId != null && idProcessMap.containsKey(processId)) {
-            throw ExecuteException("Process ID already exists")
-        }
-
         if (ffmpegLocation.isAvailable) {
             request.addOption("--ffmpeg-location", ffmpegLocation.executable.absolutePath)
         }
@@ -257,9 +255,9 @@ object RuntimeManager {
 
         if (request.buildCommand().contains("libaria2c.so")) {
             request.addOption(
-                    "--external-downloader-args",
-                    "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
-                )
+                "--external-downloader-args",
+                "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
+            )
         }
 
         if (!usingCacheDir) {
@@ -268,9 +266,57 @@ object RuntimeManager {
 
         request.addOption("--progress-delta", 0.1)
 
-        val startTime = System.currentTimeMillis()
         val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
+        return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
+    }
 
+    fun executeFFmpeg(
+        command: String,
+        processId: String? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        assertInit()
+
+        val fullCommand = mutableListOf<String>(ffmpegLocation.executable.absolutePath, command.removePrefix("ffmpeg "))
+        return executeImpl(fullCommand, processId, true, callback = callback)
+    }
+
+    fun executePython(
+        command: String,
+        processId: String? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        assertInit()
+
+        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, command.removePrefix("python "))
+        return executeImpl(fullCommand, processId, true, callback = callback)
+    }
+
+    fun executeDeno(
+        command: String,
+        processId: String? = null,
+        executeDirectory: File? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        assertInit()
+
+        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath) + command.removePrefix("deno ").split(" ")
+        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
+    }
+
+    fun executeImpl(
+        fullCommand: List<String>,
+        processId: String? = null,
+        redirectErrorStream: Boolean = false,
+        executeDirectory: File? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+
+        if (processId != null && idProcessMap.containsKey(processId)) {
+            throw ExecuteException("Process ID already exists")
+        }
+
+        val startTime = System.currentTimeMillis()
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
         processBuilder.environment().apply {
@@ -283,6 +329,10 @@ object RuntimeManager {
             this["PYTHONHOME"] = ENV_PYTHONHOME
             this["HOME"] = ENV_PYTHONHOME
             this["TMPDIR"] = TMPDIR
+        }
+
+        if (executeDirectory != null) {
+            processBuilder.directory(executeDirectory)
         }
 
         val outBuffer = StringBuffer()
