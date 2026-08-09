@@ -563,7 +563,6 @@
     <string name="download_delay">Download delay</string>
     <string name="download_delay_summary">Wait the configured seconds between each download. This feature disables concurrent downloads</string>
     <string name="min_delay">Min delay (seconds)</string>
-    <string name="max_dela">Max delay (seconds)</string>
     <string name="max_delay">Max delay (seconds)</string>
     <string name="no_delay">No delay set</string>
     <string name="waiting_download_delay">Waiting download delay (%s seconds)…</string>
