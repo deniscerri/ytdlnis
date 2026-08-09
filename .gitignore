@@ -10,3 +10,6 @@
 /benchmark
 *.png
 app/src/main/jniLibs
+/ytdlnis-keystore
+*.jks
+*.keystore
