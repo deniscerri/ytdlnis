@@ -71,7 +71,7 @@
     <string name="link_copied_to_clipboard">Link copied to clipboard</string>
     <string name="api_key">Use API key</string>
     <string name="api_key_summary">Video recommendations from YouTube API</string>
-    <string name="update_app_summary">Announce new versions of the app when it is opened. The data is extracted from the official GitHub Repository</string>
+    <string name="update_app_summary">Announce a new version of the app when it is opened. Turn this off to check only when you ask.</string>
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remove deleted</string>
     <string name="remove_duplicates">Remove duplicates</string>
@@ -592,4 +592,21 @@
     <string name="all_sources">All sources</string>
     <string name="choose_image">Choose image</string>
     <string name="use_this_cover">Use this cover</string>
+
+    <!-- In-app update -->
+    <string name="update_title">Update available</string>
+    <string name="update_message">A new version (%1$s) of YTDLnis is available. Update now to get the latest features and fixes.</string>
+    <string name="update_install">Install</string>
+    <string name="update_retry">Retry</string>
+    <string name="update_later">Later</string>
+    <string name="update_stop">Stop</string>
+    <string name="update_connecting">Connecting…</string>
+    <string name="update_offline">No internet connection. Connect to the internet to download the update.</string>
+    <string name="update_no_apk">This release has no build for your device.</string>
+    <string name="update_notif_channel">App update</string>
+    <string name="update_notif_title">Downloading update</string>
+    <string name="update_notif_ready">Update downloaded — tap to install</string>
+    <string name="update_check_now">Check for updates now</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_up_to_date">Up to date</string>
 </resources>

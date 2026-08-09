@@ -9,6 +9,8 @@ import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.update.UpdateManager
+import com.deniscerri.ytdl.update.UpdatePrefs
 import com.deniscerri.ytdl.util.Extensions.hasReachedEnd
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ObserveAlarmScheduler
@@ -27,7 +29,12 @@ class App : Application() {
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
         setDefaultValues()
+
+        // Seed the update flow before anything can read it, then re-hydrate what survived the last
+        // session — a saved manifest, or an APK downloaded but not yet installed.
+        UpdatePrefs.init(this)
         applicationScope = CoroutineScope(SupervisorJob())
+        applicationScope.launch(Dispatchers.IO) { UpdateManager.restore(this@App) }
         applicationScope.launch((Dispatchers.IO)) {
             try {
                 createNotificationChannels()

@@ -34,8 +34,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -63,6 +65,12 @@ import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
+import com.deniscerri.ytdl.update.UpdateChecker
+import com.deniscerri.ytdl.update.UpdateGate
+import com.deniscerri.ytdl.update.UpdateRegistry
+import com.deniscerri.ytdl.update.UpdateState
+import com.deniscerri.ytdl.update.UpdateStore
+import com.deniscerri.ytdl.util.NetworkMonitor
 import com.deniscerri.ytdl.util.UpdateUtil
 import com.deniscerri.ytdl.work.background.UpdateCheckWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -108,6 +116,9 @@ class MainActivity : BaseActivity() {
     private var navigationBarView: NavigationBarView? = null
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
+
+    /** Owns the in-app update dialog for this activity's whole lifetime. */
+    private val updateGate = UpdateGate(this)
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -289,7 +300,38 @@ class MainActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
 
+        // The prompt watches UpdateRegistry for the rest of the process; the check that fills it
+        // runs once per fresh launch, once the device is actually online.
+        updateGate.attach()
+        if (savedInstanceState == null) checkForAppUpdate()
+
         askAutoUpdatePreferences()
+    }
+
+    /**
+     * Connectivity-driven app update check. Populates [UpdateRegistry] and persists the manifest via
+     * [UpdateStore], so [UpdateGate] can prompt now and on any later launch, even offline. It waits
+     * for a validated connection rather than failing against none, and stands down while a download
+     * is in flight or an APK is already staged — neither is improved by finding the same update again.
+     */
+    private fun checkForAppUpdate() {
+        if (BuildConfig.FLAVOR != "github") return
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkMonitor.online(applicationContext).collect { online ->
+                    if (!online || UpdateRegistry.isActive) return@collect
+                    if (UpdateRegistry.stateOf() is UpdateState.Downloaded) return@collect
+                    UpdateChecker.check()?.let {
+                        UpdateStore.save(applicationContext, it)
+                        UpdateRegistry.setAvailable(it)
+                        // Same promise as before: a backup exists before a new version can land.
+                        if (preferences.getBoolean("automatic_backup", false)) {
+                            settingsViewModel.backup()
+                        }
+                    }
+                }
+            }
+        }
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -555,30 +597,11 @@ class MainActivity : BaseActivity() {
         RuntimeManager.reInit(this)
     }
 
+    // The app's own updates are handled by [checkForAppUpdate] and [UpdateGate]; what is left here
+    // is the yt-dlp runtime and the packages around it, which update on their own terms.
     private fun callAutoUpdates(firstRun : Boolean = false) {
-        if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
-            val updateUtil = UpdateUtil(this)
+        if (BuildConfig.FLAVOR == "github") {
             CoroutineScope(Dispatchers.IO).launch {
-                val res = updateUtil.tryGetNewVersion()
-                if (res.isSuccess) {
-                    if (preferences.getBoolean("automatic_backup", false)) {
-                        settingsViewModel.backup()
-                    }
-                    withContext(Dispatchers.Main) {
-                        UiUtil.showNewAppUpdateSnackBar(
-                            res.getOrNull()!!,
-                            this@MainActivity,
-                            findViewById<LinearLayout>(R.id.notification_container),
-                            findViewById(R.id.frame_layout),
-                            navigationBarView,
-                            layoutInflater,
-                            updateUtil,
-                            this@MainActivity,
-                            preferences
-                        )
-                    }
-                }
-
                 val skipRemindingPackageUpdate = preferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
                 RuntimeManager.packages.forEach { pkg ->
                     val instance = pkg.plugin.getInstance()

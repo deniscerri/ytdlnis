@@ -9,12 +9,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import androidx.preference.SwitchPreferenceCompat
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
+import com.deniscerri.ytdl.update.UpdateChecker
+import com.deniscerri.ytdl.update.UpdatePrefs
+import com.deniscerri.ytdl.update.UpdateRegistry
+import com.deniscerri.ytdl.update.UpdateStore
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -30,7 +34,6 @@ object UpdateSettingsModule : SettingModule {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         val updateUtil = UpdateUtil(context)
         val ytdlpViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[YTDLPViewModel::class.java]
-        val settingsViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[SettingsViewModel::class.java]
 
         val canUpdateApp = BuildConfig.FLAVOR == "github";
 
@@ -94,45 +97,63 @@ object UpdateSettingsModule : SettingModule {
                 pref.apply {
                     val nativeLibraryDir = context.applicationInfo?.nativeLibraryDir
                     summary = "${BuildConfig.VERSION_NAME} (${nativeLibraryDir?.split("/lib/")?.get(1)}) (${BuildConfig.FLAVOR})"
-
-                    if (canUpdateApp) {
-                        onPreferenceClickListener =
-                            Preference.OnPreferenceClickListener {
-                                host.hostLifecycleOwner.lifecycleScope.launch{
-                                    val updateUtil = UpdateUtil(context)
-                                    val res = withContext(Dispatchers.IO){
-                                        updateUtil.tryGetNewVersion()
-                                    }
-                                    if (res.isFailure) {
-                                        if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
-                                            Snackbar.make(host.hostView!!, res.exceptionOrNull()?.message ?: context.getString(R.string.network_error), Snackbar.LENGTH_LONG).show()
-                                        }
-                                    }else{
-                                        if (preferences.getBoolean("automatic_backup", false)) {
-                                            withContext(Dispatchers.IO){
-                                                settingsViewModel.backup()
-                                            }
-                                        }
-                                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences)
-                                    }
-                                }
-                                true
-                            }
-                    }
                 }
             }
             "update_app" -> {
                 pref.apply {
                     isVisible = canUpdateApp
+                    // The switch is the only writer of UpdatePrefs, so the flow the dialog reads
+                    // and the value stored here can never drift apart.
+                    setOnPreferenceChangeListener { _, value ->
+                        val auto = value as Boolean
+                        UpdatePrefs.setAutoPrompt(context, auto)
+                        host.findPref(KEY_UPDATE_CHECK)?.isEnabled = !auto
+                        true
+                    }
                 }
             }
-            "update_beta" -> {
+            KEY_UPDATE_CHECK -> {
                 pref.apply {
                     isVisible = canUpdateApp
+                    // With the alerts on, the app already checks on every launch — leaving nothing
+                    // for this row to do that has not been done.
+                    isEnabled = !UpdatePrefs.autoPrompt.value
+
+                    // Scoped to this binding rather than the module, which outlives the screen.
+                    var checking = false
+                    setOnPreferenceClickListener {
+                        // An update already in hand needs no lookup — including the APK downloaded
+                        // last session and still waiting to install. Reopen the prompt instead.
+                        if (UpdateRegistry.available.value != null) {
+                            UpdateRegistry.requestPrompt()
+                            return@setOnPreferenceClickListener true
+                        }
+                        if (checking) return@setOnPreferenceClickListener true
+
+                        checking = true
+                        isEnabled = false
+                        summary = context.getString(R.string.update_checking)
+                        host.hostLifecycleOwner.lifecycleScope.launch {
+                            val found = UpdateChecker.check()
+                            found?.let {
+                                UpdateStore.save(context, it)
+                                UpdateRegistry.setAvailable(it)
+                                UpdateRegistry.requestPrompt()
+                            }
+                            checking = false
+                            isEnabled = true
+                            // A found update speaks for itself through the dialog; only its
+                            // absence needs saying.
+                            summary = if (found == null) context.getString(R.string.update_up_to_date) else null
+                        }
+                        true
+                    }
                 }
             }
         }
     }
+
+    private const val KEY_UPDATE_CHECK = "update_check"
 
     private fun setYTDLPVersion(
         context: Context,

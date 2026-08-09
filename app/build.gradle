@@ -30,6 +30,12 @@ if (isBeta) {
     versionExt += "-beta"
 }
 
+// The version before AGP offsets it per ABI split. version.json publishes this
+// same number, so the in-app updater compares like for like whichever APK the
+// device happens to be running. BuildConfig.VERSION_CODE cannot serve: it is
+// 100 * base + abiCode, and which abiCode differs from device to device.
+def baseVersionCode = versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
+
 android {
     namespace 'com.deniscerri.ytdl'
     compileSdk = 36
@@ -54,8 +60,9 @@ android {
         applicationId appId
         minSdk 24
         targetSdk 36
-        versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
+        versionCode baseVersionCode
         versionName "${versionMajor}.${versionMinor}.${versionPatch}${versionExt}"
+        buildConfigField "int", "BASE_VERSION_CODE", "${baseVersionCode}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         archivesBaseName = "YTDLnis-$versionName"
         vectorDrawables {

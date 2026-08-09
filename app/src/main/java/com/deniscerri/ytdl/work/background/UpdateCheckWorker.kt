@@ -12,8 +12,10 @@ import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.update.UpdateChecker
+import com.deniscerri.ytdl.update.UpdateRegistry
+import com.deniscerri.ytdl.update.UpdateStore
 import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.util.UpdateUtil
 import java.util.concurrent.TimeUnit
 
 class UpdateCheckWorker(
@@ -21,13 +23,17 @@ class UpdateCheckWorker(
     workerParams: WorkerParameters
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
-        val updateUtil = UpdateUtil(App.instance)
         val notificationUtil = NotificationUtil(App.instance)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val newRelease = updateUtil.tryGetNewVersion()
-        if (newRelease.isSuccess && BuildConfig.FLAVOR == "github") {
-            notificationUtil.showNewAppUpdate(newRelease.getOrNull()!!.tag_name)
+        // Saving the manifest here is what lets the prompt be waiting the next time the app is
+        // opened, whether or not the notification was ever tapped.
+        if (BuildConfig.FLAVOR == "github") {
+            UpdateChecker.check()?.let {
+                UpdateStore.save(context, it)
+                UpdateRegistry.setAvailable(it)
+                notificationUtil.showNewAppUpdate(it.versionName)
+            }
         }
 
         val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()

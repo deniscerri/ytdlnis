@@ -49,6 +49,11 @@
             app:key="version"
             app:title="@string/version"/>
 
+        <!--
+            Two rows for one decision: whether a found update speaks up by itself, and — when it
+            does not — the way to ask it. Only one of them is ever live, because with the alerts
+            on there is nothing left to ask for.
+        -->
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
@@ -57,18 +62,10 @@
             app:summary="@string/update_app_summary"
             app:title="@string/update_app" />
 
-        <EditTextPreference
-            app:isPreferenceVisible="false"
-            app:key="skip_updates"
-            app:defaultValue="" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_experiment"
-            android:key="update_beta"
-            app:summary="@string/update_app_beta_summary"
-            app:title="@string/update_app_beta" />
+        <Preference
+            app:icon="@drawable/ic_update"
+            app:key="update_check"
+            app:title="@string/update_check_now" />
 
         <Preference
             app:icon="@drawable/ic_code"
