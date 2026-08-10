@@ -31,6 +31,7 @@ import java.io.IOException
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlin.collections.set
 import kotlin.concurrent.Volatile
 
 object RuntimeManager {
@@ -319,17 +320,7 @@ object RuntimeManager {
         val startTime = System.currentTimeMillis()
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
-        processBuilder.environment().apply {
-            this["LD_LIBRARY_PATH"] = ENV_LD_LIBRARY_PATH
-            if (OPEN_SSL_CONF != "") {
-                this["OPENSSL_CONF"] = OPEN_SSL_CONF
-            }
-            this["SSL_CERT_FILE"] = ENV_SSL_CERT_FILE
-            this["PATH"] = PATH
-            this["PYTHONHOME"] = ENV_PYTHONHOME
-            this["HOME"] = ENV_PYTHONHOME
-            this["TMPDIR"] = TMPDIR
-        }
+        processBuilder.environment().putAll(getEnvironment())
 
         if (executeDirectory != null) {
             processBuilder.directory(executeDirectory)
@@ -374,6 +365,31 @@ object RuntimeManager {
         } finally {
             if (processId != null) idProcessMap.remove(processId)
         }
+    }
+
+    fun getEnvironment() : Map<String, String?> {
+        val env = mutableMapOf<String, String?>()
+
+        env["LD_LIBRARY_PATH"] = ENV_LD_LIBRARY_PATH
+        if (OPEN_SSL_CONF != "") {
+            env["OPENSSL_CONF"] = OPEN_SSL_CONF
+        }
+        env["SSL_CERT_FILE"] = ENV_SSL_CERT_FILE
+        env["PATH"] = PATH
+        env["PYTHONHOME"] = ENV_PYTHONHOME
+        env["HOME"] = ENV_PYTHONHOME
+        env["TMPDIR"] = TMPDIR
+        env["TERM"] = "xterm-256color"
+
+        return env
+    }
+
+    fun getEnvironmentForTerminal(context: Context): Array<String> {
+        val env = getEnvironment().toMutableMap()
+        val homeDir = File(context.filesDir, "terminal_home")
+        homeDir.mkdirs()
+        env["HOME"] = homeDir.absolutePath
+        return getEnvironment().map { "${it.key}=${it.value}" }.toTypedArray()
     }
 
     @Synchronized

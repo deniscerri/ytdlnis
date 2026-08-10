@@ -6,56 +6,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
-        android:id="@+id/custom_command_scrollview"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/coordinatorLayout"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/coordinatorLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#000000">
 
-        <LinearLayout
+        <!-- Live Terminal Output -->
+        <com.termux.view.TerminalView
+            android:id="@+id/terminalView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <!-- Extra Keys Toolbar (CTRL, ALT, TAB, ESC, Arrows) -->
+        <com.deniscerri.ytdl.ui.more.terminal.ExtraKeysView
+            android:id="@+id/extra_keys"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:background="#121212" />
 
-            <HorizontalScrollView
-                android:id="@+id/horizontalscroll_output"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/custom_command_output"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
-                    android:gravity="bottom"
-                    android:scrollbars="horizontal|vertical"
-                    android:scrollHorizontally="true"
-                    android:textIsSelectable="true"
-                    android:textSize="15sp" />
-
-            </HorizontalScrollView>
-
-            <EditText
-                android:id="@+id/command_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:fontFamily="monospace"
-                android:gravity="start"
-                android:inputType="textMultiLine|textNoSuggestions"
-                android:maxLines="10000"
-                android:text="yt-dlp "
-                android:textSize="15sp" />
-
-        </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
@@ -75,17 +52,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             app:menu="@menu/terminal_menu" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/command_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/run_command"
-            android:elevation="0dp"
-            app:elevation="0dp"
-            android:stateListAnimator="@null"
-            app:icon="@drawable/ic_baseline_keyboard_arrow_right_24"
-            app:layout_anchor="@id/bottomAppBar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
