@@ -538,4 +538,18 @@
     <string name="package_version_ready_to_download">ਪੈਕੇਜ %1$s ਵਰਜਨ %2$s ਵਾਲਾ ਡਾਊਨਲੋਡ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ</string>
     <string name="tap_to_see_changes_and_install">ਬਦਲਾਅ ਵੇਖਣ ਅਤੇ ਸਥਾਪਿਤ ਕਰਨ ਲਈ ਟੈਪ ਕਰੋ</string>
     <string name="view">ਵੇਖੋ</string>
+    <string name="next_run">ਅਗਲਾ: %1$s</string>
+    <string name="paused">ਰੋਕਿਆ</string>
+    <string name="check_complete">ਚੈੱਕ ਪੂਰਨ ਹੋਇਆ</string>
+    <plurals name="finished_runs">
+        <item quantity="one">ਮੁਕੰਮਲ · %d run</item>
+        <item quantity="other">ਮੁਕੰਮਲ · %d runs</item>
+    </plurals>
+    <string name="reset_state">ਸਥਿੱਤੀ ਰੀਸੈੱਟ ਕਰੋ</string>
+    <string name="rescan_from_scratch">ਮੁੱਢ ਤੋਂ ਰੀ-ਸਕੈਨ ਕਰੋ</string>
+    <string name="rescan_from_scratch_desc">ਪ੍ਰੋਸੈਸ ਕੀਤੀਆਂ ਆਈਟਮਾਂ ਨੂੰ ਵਿਸਾਰ ਦਿਓ ਅਤੇ ਉਹ ਸਭ ਕੁਝ ਦੁਬਾਰਾ ਡਾਊਨਲੋਡ ਕਰੋ ਜੋ ਪਹਿਲਾਂ ਤੋਂ ਸੁਰੱਖਿਅਤ ਨਹੀਂ ਹੈ</string>
+    <string name="skip_backlog">ਮੌਜੂਦਾ ਬੈਕਲਾਗ ਛੱਡੋ</string>
+    <string name="skip_backlog_desc">ਸਰੋਤ ਵਿੱਚ ਮੌਜੂਦਾ ਹਰ ਚੀਜ਼ ਨੂੰ ਹੋ ਗਿਆ ਵਜੋਂ ਚਿੰਨ੍ਹਿਤ ਕਰੋ — ਸਿਰਫ਼ ਭਵਿੱਖ ਦੇ ਅੱਪਲੋਡ ਡਾਊਨਲੋਡ ਕਰੋ</string>
+    <string name="unskip_ignored">ਅਣਡਿੱਠ ਕੀਤੇ ਅੱਪਲੋਡਾਂ ਨੂੰ ਅਨ-ਸਕਿੱਪ ਕਰੋ</string>
+    <string name="unskip_ignored_desc">ਪਹਿਲੀ ਵਾਰ ਛੱਡੇ ਗਏ ਮੌਜੂਦ ਅੱਪਲੋਡਾਂ ਨੂੰ ਡਾਊਨਲੋਡ ਕਰੋ</string>
 </resources>
