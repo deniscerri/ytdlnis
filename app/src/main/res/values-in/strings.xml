@@ -531,4 +531,20 @@
     <string name="y_offset">Pergeseran Y</string>
     <string name="width">Lebar</string>
     <string name="height">Tinggi</string>
+    <string name="player_client_already_created">Klien pemain sudah dibuat</string>
+    <string name="write_atleast_one_potoken">Anda perlu membuat setidaknya satu Token PO</string>
+    <string name="version_ready_to_download">Versi %s siap diunduh</string>
+    <string name="package_version_ready_to_download">Paket %1$s dengan versi %2$s siap diunduh</string>
+    <string name="tap_to_see_changes_and_install">Ketuk untuk melihat perubahan dan menginstal</string>
+    <string name="view">Lihat</string>
+    <string name="next_run">Berikutnya: %1$s</string>
+    <string name="paused">Dijeda</string>
+    <string name="check_complete">Pemeriksaan selesai</string>
+    <plurals name="finished_runs">
+        <item quantity="other">Selesai · %d kali dijalankan</item>
+    </plurals>
+    <string name="reset_state">Atur ulang status</string>
+    <string name="rescan_from_scratch">Pindai ulang dari awal</string>
+    <string name="rescan_from_scratch_desc">Abaikan item yang telah diproses dan unduh ulang semua yang belum tersimpan</string>
+    <string name="skip_backlog">Lewati backlog saat ini</string>
 </resources>
