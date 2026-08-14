@@ -568,4 +568,10 @@
     <plurals name="every_months">
         <item quantity="other">每 %d 个月</item>
     </plurals>
+    <string name="download_delay">下载延迟</string>
+    <string name="download_delay_summary">每个下载间等待配置好的秒数。此功能禁用并行下载</string>
+    <string name="min_delay">最短延迟（秒数）</string>
+    <string name="max_delay">最长延迟（秒数）</string>
+    <string name="no_delay">未设置延迟</string>
+    <string name="waiting_download_delay">正在等待下载延迟（%s 秒）…</string>
 </resources>
