@@ -2,7 +2,7 @@
 <resources>
     <string name="delete_file_too">מחק קובץ מהמכשיר</string>
     <string name="sponsorblock_intro">פתיח</string>
-    <string name="ytdl_already_updating">מעדכן גירסה חדשה</string>
+    <string name="ytdl_already_updating">גרסה חדשה של yt-dlp מותקנת</string>
     <string name="sponsorblock_reminders">תזכורות הרשמה</string>
     <string name="cancel_task">ביטול משימה</string>
     <string name="audio_quality">איכות שמע</string>
@@ -11,7 +11,7 @@
     <string name="music_directory">תיקיית שמע</string>
     <string name="warning">אזהרה</string>
     <string name="couldnt_find_apk">לא מצליח למצוא יישום מתאים</string>
-    <string name="ytdl_updating_started">מוריד גירסה חדשה</string>
+    <string name="ytdl_updating_started">גרסה חדשה של yt-dlp מתקבלת</string>
     <string name="concurrent_downloads_summary">מספר הורדות בו זמנית</string>
     <string name="embed_subtitles">הטמעת כתוביות</string>
     <string name="processing">מעבד</string>
@@ -75,7 +75,7 @@
     <string name="exit_app">יציאה מהיישום</string>
     <string name="incognito_summary">הורד ללא הוספה להיסטוריה</string>
     <string name="audio">אודיו</string>
-    <string name="ytld_update_success">גירסה חדשה הותקנה</string>
+    <string name="ytld_update_success">גרסה חדשה של yt-dlp הותקנה</string>
     <string name="no_results">אין תוצאות</string>
     <string name="best_quality">האיכות הגבוהה ביותר</string>
     <string name="embed_subs_summary">הוסף כתוביות לוידאו</string>
@@ -196,7 +196,7 @@
     <string name="shortcuts_desc">השתמש בפקודות נפוצות ליצירת תבניות</string>
     <string name="metered_network_download_start_info">ההורדה תתחיל כשתתחבר לרשת לא סלולרית</string>
     <string name="confirm_delete_cookies_desc">מחק את כל העוגיות, לצמיתות</string>
-    <string name="embed_metadata_summary">הטמע ונתח נתוני מטא לקובץ האודיו</string>
+    <string name="embed_metadata_summary">ניתוח ושיבוץ נתוני על בקובץ</string>
     <string name="in_queue">‏בתור</string>
     <string name="split_by_chapters">פיצול לפי פרקים</string>
     <string name="pure_theme_summary">ערכת עיצוב שחורה טהורה / לבנה</string>
@@ -218,7 +218,7 @@
     <string name="save_subs">שמירת כתוביות</string>
     <string name="sponsorblock_nonmusic">קטעים שאינם מוזיקה ומחוץ לנושא</string>
     <string name="select_sponsorblock_filtering">בחירת סינון חסימת חסות</string>
-    <string name="clear_temporary_files">נקה קבצים זמניים</string>
+    <string name="clear_temporary_files">איפוס תיקיית המטמון</string>
     <string name="search_suggestions_summary">קבל הצעות חיפוש מגוגל</string>
     <string name="search_history">היסטוריית חיפוש</string>
     <string name="sponsorblock_previews">תצוגה מקדימה</string>
@@ -514,4 +514,55 @@
     <string name="installed">מותקנת</string>
     <string name="use_app_language_for_metadata_summary">אם האפשרות פעילה, שדות נתוני העל יצמדו לשפת היישומון שלך ואפילו ישפיע על בחירת תסדיר על ידי העדפת גרסאות מדובבות על פני המקוריות</string>
     <string name="auto_update_ytdlp_summary">מומלץ לשמור על האפשרות הזאת פעילה כדי לשמור על פעולה תקינה של היישום כיוון ש־yt-dlp מתעדכן לעתים מאוד תכופות! הנתונים מחולצים ממאגר ה־GitHub של yt-dlp.</string>
+    <string name="max_delay">עיכוב מרבי (שניות)</string>
+    <string name="no_delay">לא הוגדר עיכוב</string>
+    <string name="waiting_download_delay">עיכוב המתנה להורדה (%s שניות)…</string>
+    <plurals name="every_hours">
+        <item quantity="one">כל שעה</item>
+        <item quantity="two">כל שעתיים</item>
+        <item quantity="other">כל %d שעות</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">כל יום</item>
+        <item quantity="two">כל יומיים</item>
+        <item quantity="other">כל %d ימים</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">כל שבוע</item>
+        <item quantity="two">כל שבועיים</item>
+        <item quantity="other">כל %d שבועות</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">כל חודש</item>
+        <item quantity="two">כל חודשיים</item>
+        <item quantity="other">כל %d חודשים</item>
+    </plurals>
+    <string name="crop">חיתוך</string>
+    <string name="required">חובה</string>
+    <string name="crop_validation_exceeds_w">X+W חורג מ־%d</string>
+    <string name="crop_validation_exceeds_h">Y+H חורג מ־%d</string>
+    <string name="save_subdirectory">שמירה לתת־תיקייה</string>
+    <string name="save_subdirectory_summary">שמירת קבצים בתיקיות לפי תגיות נתוני העל</string>
+    <string name="trim_filenames">קיצוץ שמות קבצים</string>
+    <string name="install_downloaded_file">התקנת הקובץ שירד</string>
+    <string name="website">אתר</string>
+    <string name="playlist">רשימת נגינה</string>
+    <string name="media_type">סוג תוכן</string>
+    <string name="free_ratio">יחס חופשי</string>
+    <string name="aspect_ratio">יחס גובה־רוחב</string>
+    <string name="dimensions">ממדים</string>
+    <string name="x_offset">היסט ב־X</string>
+    <string name="y_offset">היסט ב־Y</string>
+    <string name="width">רוחב</string>
+    <string name="height">גובה</string>
+    <string name="player_client_not_empty">תגית לקוח הנגן לא אמורה להיות ריקה</string>
+    <string name="player_client_already_created">לקוח נגן כבר נוצר</string>
+    <string name="write_atleast_one_potoken">צריך לכתוב אסימון PO אחד לפחות</string>
+    <string name="version_ready_to_download">גרסה %s מוכנה להורדה</string>
+    <string name="package_version_ready_to_download">החבילה %1$s בגרסה %2$s מוכנה להורדה</string>
+    <string name="tap_to_see_changes_and_install">נגיעה תציג את השינויים ותתקין</string>
+    <string name="view">תצוגה</string>
+    <string name="next_run">הבא: %1$s</string>
+    <string name="paused">מושהה</string>
+    <string name="check_complete">הבדיקה הושלמה</string>
 </resources>
