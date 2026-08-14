@@ -565,4 +565,15 @@
     <string name="next_run">הבא: %1$s</string>
     <string name="paused">מושהה</string>
     <string name="check_complete">הבדיקה הושלמה</string>
+    <string name="reset_state">איפוס מצב</string>
+    <string name="rescan_from_scratch">סריקה מחדש מההתחלה</string>
+    <string name="unskip_ignored">ביטול דילוג העלאות שנפסחו</string>
+    <string name="observe_runs_chip">%d ריצות</string>
+    <string name="observe_processed_chip">%d עובדו</string>
+    <string name="observe_skipped_chip">%d נפסחו</string>
+    <string name="observe_updating">מתבצע עדכון…</string>
+    <string name="check_available_storage">לבדוק כמה נפח זמין באחסון</string>
+    <string name="download_delay">השהיית הורדה</string>
+    <string name="download_delay_summary">להמתין את כמות השניות שמוגדרת בין הורדה להורדה. היכולת הזאת משביתה את ההורדות המקביליות</string>
+    <string name="min_delay">השהיה מזערית (שניות)</string>
 </resources>
