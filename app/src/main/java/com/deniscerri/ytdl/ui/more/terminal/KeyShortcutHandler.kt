@@ -39,7 +39,7 @@ object KeyShortcutHandler {
         val clipboard: ClipboardManager = App.instance.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = clipboard.primaryClip
         if (clip != null) {
-            val clipText = clip.toString()
+            val clipText = clip.getItemAt(0).text.toString()
             if (clipText.trim().isNotEmpty()) {
                 viewModel.terminalView?.mEmulator?.paste(clipText)
             }

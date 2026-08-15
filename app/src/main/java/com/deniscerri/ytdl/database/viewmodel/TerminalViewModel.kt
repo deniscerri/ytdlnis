@@ -24,8 +24,10 @@ import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysListener
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysView
 import com.deniscerri.ytdl.ui.more.terminal.TerminalUtils
 import com.termux.view.TerminalView
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import java.lang.ref.WeakReference
 
 
@@ -96,11 +98,15 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
     private val _isBoundState = MutableStateFlow(false)
     val isBoundState: StateFlow<Boolean> = _isBoundState
 
+    private val _serviceConnectedEvent = Channel<Unit>(Channel.BUFFERED)
+    val serviceConnectedEvent = _serviceConnectedEvent.receiveAsFlow()
+
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             sessionBinder = service as SessionService.SessionBinder
             isBound = true
             _isBoundState.value = true
+            _serviceConnectedEvent.trySend(Unit)
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {

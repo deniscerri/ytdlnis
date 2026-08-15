@@ -23,7 +23,7 @@ import com.termux.terminal.TerminalSessionClient
 class SessionService : Service() {
     private val sessions = hashMapOf<String, TerminalSession>()
     val sessionList = mutableStateMapOf<String, Int>()
-    var currentSession = mutableStateOf("main")
+    var currentSession = mutableStateOf("main1")
 
     inner class SessionBinder : Binder() {
         fun getService(): SessionService = this@SessionService
@@ -59,7 +59,7 @@ class SessionService : Service() {
             }
             sessions.remove(id)
             sessionList.remove(id)
-            if (sessions.isNotEmpty()) {
+            if (sessions.isEmpty()) {
                 stopSelf()
             } else {
                 updateNotification()
@@ -114,7 +114,7 @@ class SessionService : Service() {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("ReTerminal")
+            .setContentTitle("YTDLnis Terminal")
             .setContentText(getNotificationContentText())
             .setSmallIcon(R.drawable.ic_terminal)
             .setContentIntent(pendingIntent)

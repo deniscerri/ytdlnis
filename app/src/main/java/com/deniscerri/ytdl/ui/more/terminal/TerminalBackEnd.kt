@@ -47,7 +47,7 @@ class TerminalBackEnd(
         val clipboard: ClipboardManager = activity.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
         val clip = clipboard.primaryClip
         if (clip != null) {
-            val clipText = clip.toString()
+            val clipText = clip.getItemAt(0).text.toString()
             if (clipText.trim().isNotEmpty() && terminal.mEmulator != null) {
                 terminal.mEmulator.paste(clipText)
             }

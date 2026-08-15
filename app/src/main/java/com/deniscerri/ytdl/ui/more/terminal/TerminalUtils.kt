@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import com.anggrayudi.storage.file.child
 import com.deniscerri.ytdl.App
+import com.google.android.material.color.MaterialColors
 
 object TerminalUtils {
     var typeface: Typeface = Typeface.MONOSPACE
@@ -20,13 +21,9 @@ object TerminalUtils {
         }
     }
 
-    fun getViewColor(): Int = Color.WHITE
+    fun getViewColor(context: Context): Int = MaterialColors.getColor(context, android.R.attr.textColorPrimary, Color.BLACK)
 
-    fun getBackgroundColor(context: Context): Int {
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(android.R.attr.windowBackground, typedValue, true)
-        return typedValue.data
-    }
+    fun getBackgroundColor(context: Context): Int = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.BLACK)
 
     fun getComposeColor(): androidx.compose.ui.graphics.Color =
         androidx.compose.ui.graphics.Color.White

@@ -2,6 +2,8 @@ package com.deniscerri.ytdl.ui.more.terminal
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ClipboardManager
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -41,6 +43,7 @@ import com.termux.view.TerminalView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.text.toInt
 
 
 class TerminalFragment : Fragment() {
@@ -68,6 +71,7 @@ class TerminalFragment : Fragment() {
     }
 
     override fun onResume() {
+        arguments?.remove("new")
         arguments?.remove("share")
         super.onResume()
     }
@@ -122,6 +126,19 @@ class TerminalFragment : Fragment() {
             }
 
         }
+
+        val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
+        slider?.apply {
+            valueFrom = 10f
+            valueTo = 37f
+            value = sharedPreferences.getFloat("terminal_zoom", 35f)
+
+            addOnChangeListener { _, value, _ ->
+                terminalView.setTextSize(value.toInt())
+                sharedPreferences.edit { putFloat("terminal_zoom", value) }
+            }
+        }
+
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.command_templates -> {
@@ -165,6 +182,9 @@ class TerminalFragment : Fragment() {
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
                 }
+                R.id.text_size -> {
+                    slider?.visibility = if (slider.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                }
 
             }
             true
@@ -173,10 +193,13 @@ class TerminalFragment : Fragment() {
         notificationUtil = NotificationUtil(requireContext())
         initMenu()
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                terminalViewModel.isBoundState.collect { isBound ->
-                    if (isBound) {
+        if (terminalViewModel.isBound && terminalViewModel.sessionBinder != null) {
+            initSession()
+        } else {
+            // If not bound yet, wait for the service connection event
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    terminalViewModel.serviceConnectedEvent.collect {
                         initSession()
                     }
                 }
@@ -187,14 +210,18 @@ class TerminalFragment : Fragment() {
     @SuppressLint("UseKtx")
     private fun initMenu() {
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
-        topAppBar.menu?.findItem(R.id.text_size)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
 
-        val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.add -> {
                     findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
                         NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
+                }
+                R.id.delete -> {
+                    sessionId?.apply {
+                        terminalViewModel.sessionBinder?.terminateSession(this)
+                    }
                 }
                 R.id.wrap -> {
 //                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
@@ -219,34 +246,15 @@ class TerminalFragment : Fragment() {
 //                    }
                 }
                 R.id.export_clipboard -> {
-//                    lifecycleScope.launch(Dispatchers.IO){
-//                        val clipboard: ClipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-//                        clipboard.setText(output.text)
-//                    }
-                }
-                R.id.text_size -> {
-                    slider?.visibility = if (slider.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                    lifecycleScope.launch(Dispatchers.IO){
+                        val clipboard: ClipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setText(session.emulator.screen.transcriptText)
+                    }
                 }
             }
             true
         }
 
-        slider?.apply {
-            valueFrom = 10f
-            valueTo = 30f
-            value = sharedPreferences.getFloat("terminal_zoom", 14f).coerceIn(10f, 30f)
-
-            addOnChangeListener { _, value, _ ->
-                terminalView.setTextSize(value.toInt())
-                sharedPreferences.edit { putFloat("terminal_zoom", value) }
-            }
-        }
-
-        sharedPreferences.getBoolean("wrap_text_terminal", false).apply {
-            if (this){
-                bottomAppBar.menu.performIdentifierAction(R.id.wrap, 0)
-            }
-        }
     }
 
     private fun initSession() {
@@ -262,15 +270,14 @@ class TerminalFragment : Fragment() {
 
         if (!sessionId.isNullOrBlank()) {
             terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
-            sessionId = null
         }
 
         val newSession = arguments?.getBoolean("new") ?: false
         val currentSession = sessionBinder.getSession(service.currentSession.value)
         session = if (newSession || currentSession == null) {
-            val sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
+            sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
             sessionBinder.createSession(
-                sessionId,
+                sessionId!!,
                 client
             )
         } else {
@@ -285,7 +292,7 @@ class TerminalFragment : Fragment() {
             val termView = view as TerminalView
 
             termView.setTextSize(
-                sharedPreferences.getFloat("terminal_zoom", 14f).coerceIn(10f, 30f).toInt()
+                sharedPreferences.getFloat("terminal_zoom", 35f).coerceIn(10f, 30f).toInt()
             )
             termView.setTypeface(TerminalUtils.typeface)
 
@@ -294,7 +301,7 @@ class TerminalFragment : Fragment() {
 
             termView.requestFocus()
 
-            val color = TerminalUtils.getViewColor()
+            val color = TerminalUtils.getViewColor(requireContext())
             val bgColor = TerminalUtils.getBackgroundColor(requireContext())
             termView.mEmulator?.mColors?.mCurrentColors?.apply {
                 set(256, color)
@@ -308,7 +315,7 @@ class TerminalFragment : Fragment() {
                         it
                     )
                 }
-                //buttonTextColor = TerminalUtils.getViewColor()
+                buttonTextColor = TerminalUtils.getViewColor(requireContext())
                 reload(VirtualKeysInfo(virtualKeys, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES))
             }
 

@@ -354,6 +354,7 @@
             android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />

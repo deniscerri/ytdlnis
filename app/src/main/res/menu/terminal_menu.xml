@@ -20,4 +20,10 @@
         android:title="@string/command_directory"
         android:icon="@drawable/baseline_folder_24"
         app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/text_size"
+        android:title="@string/text_size"
+        android:icon="@drawable/baseline_format_size_24"
+        app:showAsAction="always"/>
 </menu>

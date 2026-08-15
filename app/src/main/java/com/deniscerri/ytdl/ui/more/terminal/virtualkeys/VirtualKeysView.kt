@@ -76,9 +76,9 @@ class VirtualKeysView @JvmOverloads constructor(
             _repetitiveKeys = value
         }
 
-    var buttonTextColor: Int = DEFAULT_BUTTON_TEXT_COLOR
+    var buttonTextColor: Int = MaterialColors.getColor(context, android.R.attr.textColorPrimary, Color.BLACK)
     var buttonActiveTextColor: Int = DEFAULT_BUTTON_ACTIVE_TEXT_COLOR
-    var buttonBackgroundColor: Int = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurface, Color.BLACK)
+    var buttonBackgroundColor: Int = MaterialColors.getColor(context, com.google.android.material.R.attr.colorSurfaceContainer, Color.BLACK)
     var buttonActiveBackgroundColor: Int = DEFAULT_BUTTON_ACTIVE_BACKGROUND_COLOR
     var isButtonTextAllCaps: Boolean = true
 
@@ -110,10 +110,10 @@ class VirtualKeysView @JvmOverloads constructor(
         repetitiveKeys = VirtualKeysConstants.PRIMARY_REPETITIVE_KEYS
         specialButtons = getDefaultSpecialButtons(this)
         setButtonColors(
-            DEFAULT_BUTTON_TEXT_COLOR,
-            DEFAULT_BUTTON_ACTIVE_TEXT_COLOR,
-            DEFAULT_BUTTON_BACKGROUND_COLOR,
-            DEFAULT_BUTTON_ACTIVE_BACKGROUND_COLOR
+            buttonTextColor,
+            buttonActiveTextColor,
+            buttonBackgroundColor,
+            buttonActiveBackgroundColor
         )
         longPressTimeout = ViewConfiguration.getLongPressTimeout()
         longPressRepeatDelay = DEFAULT_LONG_PRESS_REPEAT_DELAY
