@@ -13,8 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/coordinatorLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="#000000">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Live Terminal Output -->
         <com.termux.view.TerminalView
@@ -23,14 +22,14 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:focusable="true"
+            android:keepScreenOn="true"
             android:focusableInTouchMode="true" />
 
         <!-- Extra Keys Toolbar (CTRL, ALT, TAB, ESC, Arrows) -->
-        <com.deniscerri.ytdl.ui.more.terminal.ExtraKeysView
-            android:id="@+id/extra_keys"
+        <com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysView
+            android:id="@+id/virtualKeys"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#121212" />
+            android:layout_height="70dp"/>
 
     </LinearLayout>
 
@@ -43,13 +42,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
 
-
-
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
             style="@style/Widget.Material3.BottomAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_gravity="bottom"
             app:menu="@menu/terminal_menu" />
 

@@ -1,63 +1,46 @@
 package com.deniscerri.ytdl.ui.more.terminal
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.app.Activity
-import android.content.ClipboardManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import android.content.ServiceConnection
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.IBinder
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
-import androidx.core.view.get
-import androidx.core.view.isVisible
+import androidx.core.os.bundleOf
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
-import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
-import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysConstants
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysInfo
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysListener
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysView
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.Slider
-import com.termux.shared.terminal.io.extrakeys.ExtraKeysInfo
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.properties.Delegates
 
 
 class TerminalFragment : Fragment() {
@@ -68,49 +51,23 @@ class TerminalFragment : Fragment() {
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var bottomAppBar: BottomAppBar
     private lateinit var terminalView: TerminalView
-    private lateinit var extraKeysView: ExtraKeysView
+    private lateinit var virtualKeysView: VirtualKeysView
 
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var imm : InputMethodManager
-    private lateinit var metrics: DisplayMetrics
 
-    private var terminalService: TerminalService? = null
-    private var activeSession: TerminalSession? = null
-    private var downloadID: Long = 0L
-    private var isBound = false
-
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as TerminalService.LocalBinder
-            terminalService = binder.getService()
-            isBound = true
-            attachOrCreateSession()
-        }
-
-        override fun onServiceDisconnected(name: ComponentName?) {
-            terminalService = null
-            isBound = false
-        }
-    }
+    private lateinit var session : TerminalSession
+    private var sessionId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        terminalViewModel = ViewModelProvider(this)[TerminalViewModel::class.java]
-        downloadID = 0
+        terminalViewModel = ViewModelProvider(requireActivity())[TerminalViewModel::class.java]
         return inflater.inflate(R.layout.fragment_terminal, container, false)
     }
 
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putLong("downloadID", downloadID)
-    }
-
     override fun onResume() {
-        arguments?.remove("id")
         arguments?.remove("share")
         super.onResume()
     }
@@ -122,11 +79,14 @@ class TerminalFragment : Fragment() {
         topAppBar.setNavigationOnClickListener { requireActivity().finish() }
 
         terminalView = view.findViewById(R.id.terminalView)
-        extraKeysView = view.findViewById(R.id.extra_keys)
+        virtualKeysView = view.findViewById(R.id.virtualKeys)
         bottomAppBar = view.findViewById(R.id.bottomAppBar)
-        downloadID = arguments?.getLong("id") ?: 0L
 
         var bundle = savedInstanceState
+        if (arguments?.containsKey("id") == true) {
+            sessionId = arguments?.getString("id")
+        }
+
         if (arguments?.containsKey("share") == true){
             if (bundle == null){
                 bundle = Bundle()
@@ -134,18 +94,11 @@ class TerminalFragment : Fragment() {
             bundle.putString("input", arguments?.getString("share"))
         }
 
+        terminalViewModel.setTerminalView(terminalView)
+        terminalViewModel.setVirtualKeysView(virtualKeysView)
+
         initMenu()
 
-        val serviceIntent = Intent(requireContext(), TerminalService::class.java)
-        requireContext().startService(serviceIntent)
-        requireContext().bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
-
-
-        metrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
-
-
-        bottomAppBar = view.findViewById(R.id.bottomAppBar)
         var templateCount = 0
         var shortcutCount = 0
 
@@ -154,18 +107,18 @@ class TerminalFragment : Fragment() {
                 commandTemplateViewModel.getTotalNumber()
             }
             if (templateCount == 0){
-                bottomAppBar.menu[0].icon?.alpha = 30
+                bottomAppBar.menu.findItem(R.id.command_templates).icon?.alpha = 30
             }else{
-                bottomAppBar.menu[0].icon?.alpha = 255
+                bottomAppBar.menu.findItem(R.id.command_templates).icon?.alpha = 255
             }
 
             shortcutCount = withContext(Dispatchers.IO){
                 commandTemplateViewModel.getTotalShortcutNumber()
             }
             if (shortcutCount == 0) {
-                bottomAppBar.menu[1].icon?.alpha = 30
+                bottomAppBar.menu.findItem(R.id.shortcuts).icon?.alpha = 30
             }else{
-                bottomAppBar.menu[1].icon?.alpha = 255
+                bottomAppBar.menu.findItem(R.id.shortcuts).icon?.alpha = 255
             }
 
         }
@@ -178,7 +131,7 @@ class TerminalFragment : Fragment() {
                         lifecycleScope.launch {
                             UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ templates ->
                                 templates.forEach {c ->
-                                    activeSession?.write(c.content + " ")
+                                    session.write(" ${c.content} ")
                                     terminalView.requestFocus()
                                 }
                             }
@@ -190,9 +143,10 @@ class TerminalFragment : Fragment() {
                         if (shortcutCount > 0){
                             UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
                                 itemSelected = {sh ->
-                                    activeSession?.write(sh)
+                                    session.write(" $sh ")
                                 },
                                 itemRemoved = { removed ->
+                                      //TODO
 //                                    input.setText(input.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trim())
 //                                    input.setSelection(input.text.length)
                                 })
@@ -201,7 +155,7 @@ class TerminalFragment : Fragment() {
                 }
                 R.id.filename_template -> {
                     UiUtil.showFilenameTemplateDialog(requireActivity(), "") { filenameSelected ->
-                        activeSession?.write(" -o $filenameSelected")
+                        session.write(""" "$filenameSelected" """)
                     }
                 }
                 R.id.folder -> {
@@ -218,100 +172,30 @@ class TerminalFragment : Fragment() {
 
         notificationUtil = NotificationUtil(requireContext())
         initMenu()
-    }
 
-    private fun attachOrCreateSession() {
-        lifecycleScope.launch {
-            var session: TerminalSession? = TerminalSessionManager.getSession(downloadID)
-
-            if (session == null || !session.isRunning) {
-                val initialCommand = arguments?.getString("share") ?: ""
-
-                if (downloadID == 0L) {
-                    downloadID = withContext(Dispatchers.IO) {
-                        terminalViewModel.insert(TerminalItem(command = initialCommand, log = ""))
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                terminalViewModel.isBoundState.collect { isBound ->
+                    if (isBound) {
+                        initSession()
                     }
                 }
-
-                session = terminalService?.startNewSession(downloadID, initialCommand)
             }
-
-            session?.let {
-                activeSession = it
-                terminalView.setTerminalViewClient(createTerminalViewClient())
-                val zoomLevel = sharedPreferences.getFloat("terminal_zoom", 14f)
-                terminalView.setTextSize(zoomLevel.toInt())
-                terminalView.attachSession(it)
-                terminalView.requestFocus()
-
-                it.write(arguments?.getString("input") ?: "yt-dlp")
-            }
-        }
-    }
-
-    private fun createTerminalViewClient(): com.termux.view.TerminalViewClient {
-        return object : com.termux.view.TerminalViewClient {
-            override fun onScale(scale: Float): Float = scale
-            override fun onSingleTapUp(e: android.view.MotionEvent) {
-                terminalView.requestFocus()
-                val imm = requireContext().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-                imm?.showSoftInput(terminalView, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
-            }
-
-            override fun shouldBackButtonBeMappedToEscape(): Boolean {
-                return false
-            }
-
-            override fun shouldEnforceCharBasedInput(): Boolean {
-                return true
-            }
-
-            override fun shouldUseCtrlSpaceWorkaround(): Boolean {
-                return true
-            }
-
-            override fun isTerminalViewSelected(): Boolean {
-                return true
-            }
-
-            override fun copyModeChanged(copyMode: Boolean) {
-
-            }
-
-            override fun onKeyDown(keyCode: Int, e: android.view.KeyEvent, session: TerminalSession): Boolean = false
-            override fun onKeyUp(keyCode: Int, e: android.view.KeyEvent): Boolean = false
-            override fun readControlKey(): Boolean = false
-            override fun readAltKey(): Boolean = false
-            override fun readShiftKey(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun readFnKey(): Boolean {
-                TODO("Not yet implemented")
-            }
-
-            override fun onCodePoint(codePoint: Int, ctrlDown: Boolean, session: TerminalSession): Boolean = false
-            override fun onLongPress(event: android.view.MotionEvent): Boolean = false
-            override fun onEmulatorSet() {}
-            override fun logError(tag: String?, message: String?) {}
-            override fun logWarn(tag: String?, message: String?) {}
-            override fun logInfo(tag: String?, message: String?) {}
-            override fun logDebug(tag: String?, message: String?) {}
-            override fun logVerbose(tag: String?, message: String?) {}
-            override fun logStackTraceWithMessage(tag: String?, message: String?, e: Exception?) {}
-            override fun logStackTrace(tag: String?, e: Exception?) {}
         }
     }
 
     @SuppressLint("UseKtx")
     private fun initMenu() {
-        topAppBar.menu?.findItem(R.id.wrap)?.isVisible = false
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
         topAppBar.menu?.findItem(R.id.text_size)?.isVisible = true
 
         val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
+                R.id.add -> {
+                    findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
+                        NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
+                }
                 R.id.wrap -> {
 //                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
 //                    if(scrollView != null){
@@ -365,6 +249,77 @@ class TerminalFragment : Fragment() {
         }
     }
 
+    private fun initSession() {
+        val sessionBinder = terminalViewModel.sessionBinder ?: return
+        val service = sessionBinder.getService()
+
+        val activity = requireActivity() as TerminalActivity
+        val client = TerminalBackEnd(terminalView, activity) {
+            if (isAdded) {
+                requireActivity().onBackPressedDispatcher.onBackPressed()
+            }
+        }
+
+        if (!sessionId.isNullOrBlank()) {
+            terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
+            sessionId = null
+        }
+
+        val newSession = arguments?.getBoolean("new") ?: false
+        val currentSession = sessionBinder.getSession(service.currentSession.value)
+        session = if (newSession || currentSession == null) {
+            val sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
+            sessionBinder.createSession(
+                sessionId,
+                client
+            )
+        } else {
+            currentSession
+        }
+
+        session.updateTerminalSessionClient(client)
+
+        terminalView.doOnLayout { view ->
+            if (!isAdded) return@doOnLayout
+
+            val termView = view as TerminalView
+
+            termView.setTextSize(
+                sharedPreferences.getFloat("terminal_zoom", 14f).coerceIn(10f, 30f).toInt()
+            )
+            termView.setTypeface(TerminalUtils.typeface)
+
+            termView.setTerminalViewClient(client)
+            termView.attachSession(session)
+
+            termView.requestFocus()
+
+            val color = TerminalUtils.getViewColor()
+            val bgColor = TerminalUtils.getBackgroundColor(requireContext())
+            termView.mEmulator?.mColors?.mCurrentColors?.apply {
+                set(256, color)
+                set(257, bgColor)
+                set(258, color)
+            }
+
+            terminalViewModel.virtualKeysView?.apply {
+                virtualKeysViewClient = terminalViewModel.terminalView?.mTermSession?.let {
+                    VirtualKeysListener(
+                        it
+                    )
+                }
+                //buttonTextColor = TerminalUtils.getViewColor()
+                reload(VirtualKeysInfo(virtualKeys, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES))
+            }
+
+        }
+    }
+
+    val virtualKeys = "[" +
+            "\n  [\"ESC\", {\"key\": \"/\", \"popup\": \"\\\\\"}, {\"key\": \"-\", \"popup\": \"|\"}, \"HOME\", \"UP\", \"END\", \"PGUP\"]," +
+            "\n  [\"TAB\", \"CTRL\", \"ALT\", \"LEFT\", \"DOWN\", \"RIGHT\", \"PGDN\"]" +
+            "\n]"
+
 
     private var commandPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -377,15 +332,7 @@ class TerminalFragment : Fragment() {
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
-            activeSession?.write(FileUtil.formatPath(result.data?.data.toString()))
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        if (isBound) {
-            requireContext().unbindService(serviceConnection)
-            isBound = false
+            session.write(""" "${FileUtil.formatPath(result.data?.data.toString())}" """)
         }
     }
 }

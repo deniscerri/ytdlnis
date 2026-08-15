@@ -5,8 +5,8 @@
     app:startDestination="@id/terminalDownloadsListFragment">
     <fragment
         android:id="@+id/terminalDownloadsListFragment"
-        android:name="com.deniscerri.ytdl.ui.more.terminal.TerminalDownloadsListFragment"
-        tools:layout="@layout/fragment_terminal_download_list"
+        android:name="com.deniscerri.ytdl.ui.more.terminal.TerminalSessionListFragment"
+        tools:layout="@layout/fragment_terminal_session_list"
         android:label="TerminalDownloadsListFragment" >
         <action
             android:id="@+id/action_terminalDownloadsListFragment_to_terminalFragment2"

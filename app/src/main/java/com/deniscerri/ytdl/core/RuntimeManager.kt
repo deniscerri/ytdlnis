@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.core
 
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.models.ExecuteException
@@ -268,50 +269,6 @@ object RuntimeManager {
         request.addOption("--progress-delta", 0.1)
 
         val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
-        return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
-    }
-
-    fun executeFFmpeg(
-        command: String,
-        processId: String? = null,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
-        assertInit()
-
-        val fullCommand = mutableListOf<String>(ffmpegLocation.executable.absolutePath, command.removePrefix("ffmpeg "))
-        return executeImpl(fullCommand, processId, true, callback = callback)
-    }
-
-    fun executePython(
-        command: String,
-        processId: String? = null,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
-        assertInit()
-
-        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, command.removePrefix("python "))
-        return executeImpl(fullCommand, processId, true, callback = callback)
-    }
-
-    fun executeDeno(
-        command: String,
-        processId: String? = null,
-        executeDirectory: File? = null,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
-        assertInit()
-
-        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath) + command.removePrefix("deno ").split(" ")
-        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
-    }
-
-    fun executeImpl(
-        fullCommand: List<String>,
-        processId: String? = null,
-        redirectErrorStream: Boolean = false,
-        executeDirectory: File? = null,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
 
         if (processId != null && idProcessMap.containsKey(processId)) {
             throw ExecuteException("Process ID already exists")
@@ -321,10 +278,6 @@ object RuntimeManager {
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
         processBuilder.environment().putAll(getEnvironment())
-
-        if (executeDirectory != null) {
-            processBuilder.directory(executeDirectory)
-        }
 
         val outBuffer = StringBuffer()
         val errBuffer = StringBuffer()
@@ -384,12 +337,10 @@ object RuntimeManager {
         return env
     }
 
-    fun getEnvironmentForTerminal(context: Context): Array<String> {
+    fun getEnvironmentForTerminal(): MutableMap<String, String?> {
         val env = getEnvironment().toMutableMap()
-        val homeDir = File(context.filesDir, "terminal_home")
-        homeDir.mkdirs()
-        env["HOME"] = homeDir.absolutePath
-        return getEnvironment().map { "${it.key}=${it.value}" }.toTypedArray()
+        env["HOME"] = Environment.getExternalStorageDirectory().path
+        return env
     }
 
     @Synchronized
