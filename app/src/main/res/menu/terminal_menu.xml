@@ -5,19 +5,25 @@
 
     <item android:title="@string/command_templates"
         android:icon="@drawable/ic_terminal"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:id="@+id/command_templates"/>
     <item android:title="@string/shortcuts"
         android:icon="@drawable/ic_shortcut"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:id="@+id/shortcuts"/>
     <item android:title="@string/file_name_template"
         android:icon="@drawable/ic_edit"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:id="@+id/filename_template"/>
     <item
         android:id="@+id/folder"
         android:title="@string/command_directory"
         android:icon="@drawable/baseline_folder_24"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/text_size"
+        android:title="@string/text_size"
+        android:icon="@drawable/baseline_format_size_24"
+        app:showAsAction="always"/>
 </menu>

@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.work.download
+package com.deniscerri.ytdl.work
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
@@ -36,26 +36,23 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
-import com.deniscerri.ytdl.work.isRunning
-import com.deniscerri.ytdl.work.setForegroundSafely
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
+import kotlin.collections.addAll
 import kotlin.random.Random
-
 
 class DownloadWorker(
     private val context: Context,
@@ -63,7 +60,7 @@ class DownloadWorker(
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
-        val workNotif = NotificationUtil(App.instance).createDefaultWorkerNotification()
+        val workNotif = NotificationUtil(App.Companion.instance).createDefaultWorkerNotification()
 
         return ForegroundInfo(
             1000000000,
@@ -81,18 +78,18 @@ class DownloadWorker(
     @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
-        val workManager = WorkManager.getInstance(context)
+        val workManager = WorkManager.Companion.getInstance(context)
         if (workManager.isRunning("download") || isStopped) return Result.Failure()
 
         setForegroundSafely()
 
         val parentContext = currentCoroutineContext()
         val workerScope = CoroutineScope(
-            parentContext + Dispatchers.IO + SupervisorJob(parentContext[Job])
+            parentContext + Dispatchers.IO + SupervisorJob(parentContext[Job.Key])
         )
 
-        val notificationUtil = NotificationUtil(App.instance)
-        val dbManager = DBManager.getInstance(context)
+        val notificationUtil = NotificationUtil(App.Companion.instance)
+        val dbManager = DBManager.Companion.getInstance(context)
         val dao = dbManager.downloadDao
         val historyDao = dbManager.historyDao
         val commandTemplateDao = dbManager.commandTemplateDao
@@ -156,19 +153,19 @@ class DownloadWorker(
             val running = ArrayList(runningYTDLInstances)
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
-                WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                 return@collectLatest
             }
 
             if (useScheduler){
                 if (items.none{it.downloadStartTime > 0L} && running.isEmpty() && !alarmScheduler.isDuringTheScheduledTime()) {
-                    WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                    WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                     return@collectLatest
                 }
             }
 
             if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
-                WorkManager.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                 return@collectLatest
             }
 
@@ -197,7 +194,7 @@ class DownloadWorker(
                         dao.update(downloadItem)
 
                         if (hasDownloadDelay) {
-                            val delaySec = if (minDelay >= maxDelay) minDelay else Random.nextFloat() * (maxDelay - minDelay) + minDelay
+                            val delaySec = if (minDelay >= maxDelay) minDelay else Random.Default.nextFloat() * (maxDelay - minDelay) + minDelay
                             if (delaySec > 0) {
 
                                 workerScope.launch {
@@ -299,7 +296,7 @@ class DownloadWorker(
                                 notificationUtil.updateDownloadNotification(
                                     downloadItem.id.toInt(),
                                     line, progress.toInt(), 0, title,
-                                    NotificationUtil.DOWNLOAD_SERVICE_CHANNEL_ID
+                                    NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID
                                 )
                                 CoroutineScope(Dispatchers.IO).launch {
                                     if (logDownloads) {
@@ -335,7 +332,11 @@ class DownloadWorker(
 
                                     finalPaths.addAll(
                                         outputSequence.asSequence()
-                                            .filter { it.startsWith("[SplitChapters]") && it.contains("Destination: ") }
+                                            .filter {
+                                                it.startsWith("[SplitChapters]") && it.contains(
+                                                    "Destination: "
+                                                )
+                                            }
                                             .map { it.split("Destination: ")[1] }
                                             .map { it.removeSuffix("\n") }
                                             .toList()
@@ -394,7 +395,11 @@ class DownloadWorker(
                                         e.printStackTrace()
                                         if (e.message?.isNotBlank() == true) {
                                             handler.postDelayed({
-                                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT)
+                                                Toast.makeText(
+                                                    context,
+                                                    e.message,
+                                                    Toast.LENGTH_SHORT
+                                                )
                                                     .show()
                                             }, 1000)
                                         }
@@ -474,18 +479,18 @@ class DownloadWorker(
                                     )
                                 }
 
-    //                            if (wasQuickDownloaded && createResultItem){
-    //                                runCatching {
-    //                                    eventBus.post(WorkerProgress(100, "Creating Result Items", downloadItem.id))
-    //                                    runBlocking {
-    //                                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
-    //                                            if (res != null) {
-    //                                                resultDao.insert(res)
-    //                                            }
-    //                                        }
-    //                                    }
-    //                                }
-    //                            }
+                                //                            if (wasQuickDownloaded && createResultItem){
+                                //                                runCatching {
+                                //                                    eventBus.post(WorkerProgress(100, "Creating Result Items", downloadItem.id))
+                                //                                    runBlocking {
+                                //                                        infoUtil.getFromYTDL(downloadItem.url).forEach { res ->
+                                //                                            if (res != null) {
+                                //                                                resultDao.insert(res)
+                                //                                            }
+                                //                                        }
+                                //                                    }
+                                //                                }
+                                //                            }
 
                                 dao.delete(downloadItem.id)
 
@@ -575,7 +580,7 @@ class DownloadWorker(
     companion object {
         val runningYTDLInstances: MutableList<Long> = mutableListOf()
         const val TAG = "DownloadWorker"
-        private val downloadLock = kotlinx.coroutines.sync.Mutex()
+        private val downloadLock = Mutex()
     }
 
     class WorkerProgress(

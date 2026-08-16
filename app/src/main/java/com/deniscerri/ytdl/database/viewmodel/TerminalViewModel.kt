@@ -1,73 +1,136 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
+import android.content.ComponentName
 import androidx.lifecycle.AndroidViewModel
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.deniscerri.ytdl.core.RuntimeManager
-import com.deniscerri.ytdl.database.DBManager
-import com.deniscerri.ytdl.database.dao.TerminalDao
-import com.deniscerri.ytdl.database.models.TerminalItem
-import com.deniscerri.ytdl.util.NotificationUtil
-import com.deniscerri.ytdl.work.download.TerminalDownloadWorker
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.graphics.Typeface
+import android.os.Build
+import android.os.IBinder
+import android.util.TypedValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.terminal.SessionService
+import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
+import com.deniscerri.ytdl.ui.more.terminal.TerminalBackEnd
+import com.google.android.material.R
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysListener
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysView
+import com.deniscerri.ytdl.ui.more.terminal.TerminalUtils
+import com.termux.view.TerminalView
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import java.lang.ref.WeakReference
 
 
 class TerminalViewModel(private val application: Application) : AndroidViewModel(application) {
-    private val dbManager: DBManager = DBManager.getInstance(application)
-    private val dao: TerminalDao = dbManager.terminalDao
-    private val notificationUtil = NotificationUtil(application)
-    fun getCount() : Int{
-        return dao.getActiveTerminalsCount()
+    private var terminalViewRef = WeakReference<TerminalView>(null)
+    private var virtualKeysViewRef = WeakReference<VirtualKeysView>(null)
+
+    val terminalView: TerminalView? get() = terminalViewRef.get()
+    val virtualKeysView: VirtualKeysView? get() = virtualKeysViewRef.get()
+
+    fun setTerminalView(view: TerminalView?) { terminalViewRef = WeakReference(view) }
+    fun setVirtualKeysView(view: VirtualKeysView?) { virtualKeysViewRef = WeakReference(view) }
+
+    fun setFont(typeface: Typeface) {
+        TerminalUtils.typeface = typeface
+        terminalView?.apply {
+            setTypeface(typeface)
+            onScreenUpdated()
+        }
     }
 
-    fun getTerminals() : Flow<List<TerminalItem>> {
-        return dao.getActiveTerminalDownloadsFlow()
+    fun changeSession(context: Context, sessionBinder: SessionService.SessionBinder, sessionId: String) {
+        val terminal = terminalView ?: return
+        val activity = context as? TerminalActivity ?: return
+        val client = TerminalBackEnd(terminal, activity)
+
+        val session = sessionBinder.getSession(sessionId)
+            ?: sessionBinder.createSession(sessionId, client)
+
+        session.updateTerminalSessionClient(client)
+        terminal.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+
+        val zoom = PreferenceManager.getDefaultSharedPreferences(context)
+            .getFloat("terminal_zoom", 14f).coerceIn(10f, 30f)
+        terminal.setTextSize(zoom.toInt())
+        terminal.setTypeface(TerminalUtils.typeface)
+
+        terminal.attachSession(session)
+        terminal.setTerminalViewClient(client)
+
+        terminal.post {
+            val typedValue = TypedValue()
+            context.theme.resolveAttribute(R.attr.colorOnSurface, typedValue, true)
+            terminal.keepScreenOn = true
+            terminal.requestFocus()
+            terminal.isFocusableInTouchMode = true
+
+            terminal.mEmulator?.mColors?.mCurrentColors?.apply {
+                set(256, typedValue.data)
+                set(257, TerminalUtils.getBackgroundColor(context))
+                set(258, typedValue.data)
+            }
+        }
+
+        virtualKeysView?.apply {
+            virtualKeysViewClient = terminal.mTermSession?.let { VirtualKeysListener(it) }
+        }
+
+        sessionBinder.getService().currentSession.value = sessionId
     }
 
-    fun getTerminal(id: Long) : Flow<TerminalItem?> {
-        return dao.getActiveTerminalFlow(id)
+    var sessionBinder by mutableStateOf<SessionService.SessionBinder?>(null)
+        private set
+
+    var isBound by mutableStateOf(false)
+        private set
+
+    private val _isBoundState = MutableStateFlow(false)
+    val isBoundState: StateFlow<Boolean> = _isBoundState
+
+    private val _serviceConnectedEvent = Channel<Unit>(Channel.BUFFERED)
+    val serviceConnectedEvent = _serviceConnectedEvent.receiveAsFlow()
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            sessionBinder = service as SessionService.SessionBinder
+            isBound = true
+            _isBoundState.value = true
+            _serviceConnectedEvent.trySend(Unit)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isBound = false
+            sessionBinder = null
+            _isBoundState.value = false
+        }
     }
 
-    suspend fun insert(item: TerminalItem) : Long {
-        return dao.insert(item)
+    fun startAndBindService(context: Context) {
+        val intent = Intent(context, SessionService::class.java)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent)
+        } else {
+            context.startService(intent)
+        }
+        context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
-    suspend fun delete(id: Long) = CoroutineScope(Dispatchers.IO).launch{
-        dao.delete(id)
+    fun unbindService(context: Context) {
+        if (isBound) {
+            context.unbindService(serviceConnection)
+            isBound = false
+            sessionBinder = null
+        }
     }
-
-    fun startTerminalDownloadWorker(item: TerminalItem) = CoroutineScope(Dispatchers.IO).launch {
-        val workRequest = OneTimeWorkRequestBuilder<TerminalDownloadWorker>()
-            .setInputData(
-                Data.Builder()
-                    .putInt("id", item.id.toInt())
-                    .putString("command", item.command)
-                    .build()
-            )
-            .addTag("terminal")
-            .addTag(item.id.toString())
-            .build()
-
-        WorkManager.getInstance(application).beginUniqueWork(
-            item.id.toString(),
-            ExistingWorkPolicy.KEEP,
-            workRequest
-        ).enqueue()
-    }
-
-    fun cancelTerminalDownload(id: Long) = CoroutineScope(Dispatchers.IO).launch{
-        RuntimeManager.getInstance().destroyProcessById(id.toString())
-        WorkManager.getInstance(application).cancelUniqueWork(id.toString())
-        Thread.sleep(200)
-        notificationUtil.cancelDownloadNotification(id.toInt())
-        delete(id)
-    }
-
-
 }

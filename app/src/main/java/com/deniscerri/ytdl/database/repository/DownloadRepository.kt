@@ -22,7 +22,7 @@ import com.deniscerri.ytdl.database.models.DownloadSizeMetadata
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.AlarmScheduler
-import com.deniscerri.ytdl.work.download.DownloadWorker
+import com.deniscerri.ytdl.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import java.io.File
