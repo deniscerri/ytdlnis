@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Prerja nuk është e mundur për këtë artikull</string>
     <string name="select_between_desc">Specifiko numrin e artikujve që do të zgjedhësh</string>
     <string name="potoken">Po Token</string>
-    <string name="web_client_po_token">Po Token nga Web</string>
+    <string name="manual_po_token_generator">Po Token nga Web</string>
     <string name="reverse">Mbrapsht</string>
     <string name="no_keep_subs">Fshi titrat pas vendosjes në video</string>
     <string name="no_keep_subs_summary">Duke përdorur --embed-subtitles dhe --write-subs, --write-auto-subs, mos i mbaj titrat pasi të vendosen në video</string>

@@ -476,7 +476,7 @@
     <string name="cut_unsupported">גזירה לא נתמכת לפריט הזה</string>
     <string name="select_between_desc">נא לציין טווח פריטים לבחירה</string>
     <string name="potoken">אסימון PO</string>
-    <string name="web_client_po_token">אסימון PO ללקוח דפדפן</string>
+    <string name="manual_po_token_generator">אסימון PO ללקוח דפדפן</string>
     <string name="reverse">היפוך</string>
     <string name="no_keep_subs">למחוק את הכתוביות לאחר ההטמעה</string>
     <string name="video_compatible">סרטון תואם</string>

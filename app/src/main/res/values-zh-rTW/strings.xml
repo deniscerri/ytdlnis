@@ -475,7 +475,7 @@
     <string name="cut_unsupported">無法於此項目使用剪切功能</string>
     <string name="select_between_desc">請指定選取項目的範圍</string>
     <string name="potoken">PO 權杖</string>
-    <string name="web_client_po_token">網路客戶端 PO 權杖</string>
+    <string name="manual_po_token_generator">網路客戶端 PO 權杖</string>
     <string name="reverse">反向</string>
     <string name="no_keep_subs">於嵌入後刪除字幕檔案</string>
     <string name="no_keep_subs_summary">當同時使用「嵌入字幕」與「寫入字幕」時將不會於添加後保留字幕檔案</string>

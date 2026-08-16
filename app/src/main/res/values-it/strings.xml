@@ -478,7 +478,7 @@
     <string name="reverse">Inverti</string>
     <string name="no_keep_subs_summary">Quando si utilizzano sia Incorpora sottotitoli che Scrivi sottotitoli, non mantenere i file dei sottotitoli dopo l’incorporamento</string>
     <string name="no_keep_subs">Elimina i file dei sottotitoli dopo l’incorporamento</string>
-    <string name="web_client_po_token">Token PO client web</string>
+    <string name="manual_po_token_generator">Token PO client web</string>
     <string name="video_compatible">Video Compatibile</string>
     <string name="video_compatible_summary">Ricodifica il video per renderlo compatibile con altre app</string>
     <string name="no_free_space_warning">Non esiste spazio libero per questa configurazione.</string>

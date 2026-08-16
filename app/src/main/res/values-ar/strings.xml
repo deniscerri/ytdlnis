@@ -475,7 +475,7 @@
     <string name="cut_unsupported">القص غير متاح لهذا العنصر</string>
     <string name="select_between_desc">حدد نطاق العناصر المراد تحديدها</string>
     <string name="potoken">رمز PO</string>
-    <string name="web_client_po_token">رمز عميل الويب PO</string>
+    <string name="manual_po_token_generator">رمز عميل الويب PO</string>
     <string name="reverse">اعكس</string>
     <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>

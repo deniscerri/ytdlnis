@@ -100,9 +100,7 @@ class TerminalDownloadWorker(
             }
 
             val c = command.lowercase()
-            if (c.startsWith("ffmpeg")) {
-                RuntimeManager.getInstance().executeFFmpeg(command, itemId.toString(), callback = callback)
-            } else if (c.startsWith("deno")) {
+            if (c.startsWith("deno")) {
                 RuntimeManager.getInstance().executeDeno(command, itemId.toString(), callback = callback)
             } else if (c.startsWith("python")) {
                 RuntimeManager.getInstance().executePython(command, itemId.toString(), callback = callback)

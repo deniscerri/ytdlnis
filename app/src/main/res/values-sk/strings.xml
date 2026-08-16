@@ -475,7 +475,7 @@
     <string name="cut_unsupported">Strihanie nie je pre túto položku k dispozícii</string>
     <string name="select_between_desc">Špecifikujte rozsah položiek pre výber</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Webový klient PO Token</string>
+    <string name="manual_po_token_generator">Webový klient PO Token</string>
     <string name="no_keep_subs">Vymazať súbory s titulkami po vložení</string>
     <string name="no_keep_subs_summary">Pri použití funkcií Vložiť titulky a Zapísať titulky nezachováva súbory s titulkami po vložení</string>
     <string name="reverse">Vrátiť</string>

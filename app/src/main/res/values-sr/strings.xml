@@ -475,7 +475,7 @@
     <string name="cut_unsupported">Сечење није доступно за овај предмет</string>
     <string name="select_between_desc">Наведите опсег предмета за избор</string>
     <string name="potoken">Токен PO</string>
-    <string name="web_client_po_token">Токен PO веб-клијента</string>
+    <string name="manual_po_token_generator">Токен PO веб-клијента</string>
     <string name="reverse">Обрнуто</string>
     <string name="no_keep_subs">Избриши фајлове титлова након уграђивања</string>
     <string name="no_keep_subs_summary">Када користите и „Уграђивање титлова“ и „Писање титлова“, неће се чувати фајлови титлова након уграђивања</string>

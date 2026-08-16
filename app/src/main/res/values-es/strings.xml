@@ -475,7 +475,7 @@
     <string name="cut_unsupported">El recorte no está disponible para este elemento</string>
     <string name="select_between_desc">Especifica el rango de elementos a seleccionar</string>
     <string name="potoken">Token PO</string>
-    <string name="web_client_po_token">Token PO del cliente web</string>
+    <string name="manual_po_token_generator">Token PO del cliente web</string>
     <string name="reverse">Revertir</string>
     <string name="no_keep_subs">Borrar archivos de subtítulos tras insertarlos</string>
     <string name="no_keep_subs_summary">Al usar tanto \"Integrar subtítulos\" como \"Escribir subtítulos\", no guardar los archivos de subtítulos tras insertarlos</string>

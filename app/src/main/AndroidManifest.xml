@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <!--    foreground service permission for android 14 and up-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <queries>
         <package android:name="com.deniscerri.ytdl.python" />
         <package android:name="com.deniscerri.ytdl.ffmpeg" />
@@ -579,6 +580,12 @@
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"/>
+
+        <service
+            android:name=".services.BgUtilsPoTokenGeneratorService"
+            android:foregroundServiceType="specialUse"
+            android:exported="true"
+            />
     </application>
 
 </manifest>

@@ -475,7 +475,7 @@
     <string name="write_subs_when_embed_subs">Écrire les sous-titres lors de l\'intégration</string>
     <string name="select_between_desc">Spécifier l\'intervalle d\'éléments à sélectionner</string>
     <string name="potoken">Token PO</string>
-    <string name="web_client_po_token">Token PO client web</string>
+    <string name="manual_po_token_generator">Token PO client web</string>
     <string name="reverse">Inverser</string>
     <string name="no_keep_subs">Supprimer les fichiers de sous-titres après l\'intégration</string>
     <string name="no_keep_subs_summary">Quand les options Intégrer les sous-titres et Écrire les sous-titres sont toutes les deux utilisées, ne pas garder les fichiers de sous-titres après l\'intégration</string>

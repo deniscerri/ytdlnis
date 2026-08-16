@@ -472,7 +472,7 @@
     <string name="cut_unsupported">Przycinanie jest niedostępne dla tego elementu</string>
     <string name="generate_potokens_warning">* Uruchamiając to, musisz wyłączyć Cookies</string>
     <string name="custom">Niestandardowe</string>
-    <string name="web_client_po_token">Token PO klienta sieci web</string>
+    <string name="manual_po_token_generator">Token PO klienta sieci web</string>
     <string name="use_code_highlighter">Użyj kodu koloru zakreślenia</string>
     <string name="potoken">Token \"Proof of Origin\" , Token dowodu pochodzenia</string>
     <string name="select_between_desc">Określ zakres elementów do wybrania</string>

@@ -475,7 +475,7 @@
     <string name="cut_unsupported">O corte não está disponível para este item</string>
     <string name="select_between_desc">Especifique o intervalo de itens para selecionar</string>
     <string name="potoken">Chave de acesso PO</string>
-    <string name="web_client_po_token">Chave de acesso PO do cliente web</string>
+    <string name="manual_po_token_generator">Chave de acesso PO do cliente web</string>
     <string name="reverse">Reverter</string>
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
     <string name="no_keep_subs_summary">Ao usar \"Incluir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>

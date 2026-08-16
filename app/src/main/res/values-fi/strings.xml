@@ -478,7 +478,7 @@
     <string name="cut_unsupported">Leikkaaminen ei ole käytettävissä tälle kohteelle</string>
     <string name="select_between_desc">Määritä valittavien kohteiden alue</string>
     <string name="potoken">PO-token</string>
-    <string name="web_client_po_token">Web-asiakkaan PO-token</string>
+    <string name="manual_po_token_generator">Web-asiakkaan PO-token</string>
     <string name="reverse">Käänteinen</string>
     <string name="no_keep_subs">Poista tekstitystiedostot upottamisen jälkeen</string>
     <string name="no_keep_subs_summary">Kun käytetään sekä Upota tekstitykset että Tallenna tekstitykset -asetuksia, älä säilytä tekstitystiedostoja upottamisen jälkeen</string>

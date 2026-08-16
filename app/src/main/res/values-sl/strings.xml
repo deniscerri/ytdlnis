@@ -451,7 +451,7 @@
     <string name="cut_unsupported">Rezanje ni na voljo za ta element</string>
     <string name="select_between_desc">Določite obseg elementov, ki jih želite izbrati</string>
     <string name="potoken">PO žeton</string>
-    <string name="web_client_po_token">PO žeton spletnega odjemalca</string>
+    <string name="manual_po_token_generator">PO žeton spletnega odjemalca</string>
     <string name="reverse">Obrni</string>
     <string name="no_keep_subs">Izbriši datoteke s podnapisi po vdelavi</string>
     <string name="no_keep_subs_summary">Pri uporabi možnosti Vdelaj podnapise in Zapiši podnapise ne shrani datotek s podnapisi po vdelavi</string>

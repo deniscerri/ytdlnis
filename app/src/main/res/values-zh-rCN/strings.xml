@@ -474,7 +474,7 @@
     <string name="cut_unsupported">剪切对此项目不可用</string>
     <string name="select_between_desc">指定要选择的项目的时间范围</string>
     <string name="potoken">PO 令牌</string>
-    <string name="web_client_po_token">Web 客户端 PO 令牌</string>
+    <string name="manual_po_token_generator">Web 客户端 PO 令牌</string>
     <string name="reverse">颠倒</string>
     <string name="no_keep_subs">嵌入后删除字幕文件</string>
     <string name="no_keep_subs_summary">同时使用内嵌字幕和写入字幕时，嵌入后不保留字幕文件</string>

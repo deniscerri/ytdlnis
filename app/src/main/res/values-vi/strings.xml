@@ -475,7 +475,7 @@
     <string name="generate_potokens_warning">Bạn cần phải tắt cookie để sử dụng tùy chọn này</string>
     <string name="custom">Tuỳ chỉnh</string>
     <string name="potoken">Mã PO</string>
-    <string name="web_client_po_token">Mã PO cho máy khách web</string>
+    <string name="manual_po_token_generator">Mã PO cho máy khách web</string>
     <string name="reverse">Đảo ngược</string>
     <string name="no_keep_subs">Xoá tệp phụ đề sau khi nhúng</string>
     <string name="no_keep_subs_summary">Khi dùng cả Phụ đề nhúng và Ghi phụ đề, không giữ các tệp phụ đề sau khi nhúng</string>

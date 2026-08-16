@@ -270,17 +270,6 @@ object RuntimeManager {
         return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
     }
 
-    fun executeFFmpeg(
-        command: String,
-        processId: String? = null,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
-        assertInit()
-
-        val fullCommand = mutableListOf<String>(ffmpegLocation.executable.absolutePath, command.removePrefix("ffmpeg "))
-        return executeImpl(fullCommand, processId, true, callback = callback)
-    }
-
     fun executePython(
         command: String,
         processId: String? = null,
@@ -288,7 +277,8 @@ object RuntimeManager {
     ) : ExecuteResponse {
         assertInit()
 
-        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, command.removePrefix("python "))
+        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath)
+        fullCommand.addAll(command.split(" "))
         return executeImpl(fullCommand, processId, true, callback = callback)
     }
 
@@ -300,7 +290,8 @@ object RuntimeManager {
     ) : ExecuteResponse {
         assertInit()
 
-        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath) + command.removePrefix("deno ").split(" ")
+        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath)
+        fullCommand.addAll(command.split(" "))
         return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
     }
 

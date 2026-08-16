@@ -474,7 +474,7 @@
     <string name="cut_unsupported">ਇਸ ਆਈਟਮ ਲਈ ਕਟਿੰਗ ਉਪਲਬਧ ਨਹੀਂ ਹੈ</string>
     <string name="select_between_desc">ਚੁਣਨ ਲਈ ਆਈਟਮਾਂ ਦੀ ਰੇਂਜ ਦੱਸੋ</string>
     <string name="potoken">PO ਟੋਕਨ</string>
-    <string name="web_client_po_token">ਵੈੱਬ ਕਲਾਈਂਟ PO ਟੋਕਨ</string>
+    <string name="manual_po_token_generator">ਵੈੱਬ ਕਲਾਈਂਟ PO ਟੋਕਨ</string>
     <string name="reverse">ਰਿਵਰਸ</string>
     <string name="no_keep_subs">ਏਮਬੈਡਿੰਗ ਤੋਂ ਬਾਅਦ ਸਬਟਾਈਟਲ ਫਾਈਲਾਂ ਨੂੰ ਮਿਟਾਓ</string>
     <string name="no_keep_subs_summary">ਏਮਬੈਡ ਸਬਟਾਈਟਲ ਅਤੇ ਸਬਟਾਈਟਲ ਲਿਖੋ ਦੋਵਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਸਮੇਂ, ਏਮਬੈਡ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸਬਟਾਈਟਲ ਫਾਈਲਾਂ ਨੂੰ ਨਾ ਰੱਖੋ</string>

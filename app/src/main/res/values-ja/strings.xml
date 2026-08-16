@@ -474,7 +474,7 @@
     <string name="regenerate">再生成</string>
     <string name="cut_unsupported">この項目はカットできません</string>
     <string name="select_between_desc">選択する項目の範囲を指定</string>
-    <string name="web_client_po_token">ウェブクライアントPOトークン</string>
+    <string name="manual_po_token_generator">ウェブクライアントPOトークン</string>
     <string name="potoken">POトークン</string>
     <string name="reverse">リバース</string>
     <string name="no_keep_subs_summary">「字幕の埋め込み」と「字幕の書き込み」を併用する時、埋め込み後に字幕ファイルを残さない</string>

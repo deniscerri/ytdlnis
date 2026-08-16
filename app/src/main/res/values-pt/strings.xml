@@ -476,7 +476,7 @@
     <string name="use_code_highlighter">Usar marcador de cores de código</string>
     <string name="reverse">Reverter</string>
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
-    <string name="web_client_po_token">Chave de acesso PO do cliente web</string>
+    <string name="manual_po_token_generator">Chave de acesso PO do cliente web</string>
     <string name="no_keep_subs_summary">Ao usar \"Incluir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
     <string name="video_compatible">Vídeo compatível</string>
     <string name="video_compatible_summary">Recodifica o vídeo tornando-o compatível com outros aplicativos</string>

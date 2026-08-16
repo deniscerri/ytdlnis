@@ -474,7 +474,7 @@
     <string name="sync_with_source_desc">다운로드한 항목이 출처에서 사라진 경우 삭제</string>
     <string name="app_icon_change">앱을 종료하고 설정을 적용합니다</string>
     <string name="potoken">PO 토큰</string>
-    <string name="web_client_po_token">웹 클라이언트 PO 토큰</string>
+    <string name="manual_po_token_generator">웹 클라이언트 PO 토큰</string>
     <string name="preferred_format_size">선호하는 형식 크기</string>
     <string name="smallest">최소</string>
     <string name="largest">최대</string>

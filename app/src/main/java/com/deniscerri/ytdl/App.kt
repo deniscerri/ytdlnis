@@ -1,14 +1,18 @@
 package com.deniscerri.ytdl
 
 import android.app.Application
+import android.content.Intent
 import android.os.Looper
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.models.ExecuteException
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.services.BgUtilsPoTokenGeneratorService
+import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import com.deniscerri.ytdl.util.Extensions.hasReachedEnd
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ObserveAlarmScheduler
@@ -55,6 +59,13 @@ class App : Application() {
                 db.observeSourcesDao.getAllSources()
                     .filter { it.status == ObserveSourcesRepository.SourceStatus.ACTIVE && !it.hasReachedEnd() }
                     .forEach { scheduler.schedule(it) }         // idempotent: FLAG_UPDATE_CURRENT updates in place
+            }
+        }
+
+        val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
+        if (useBgUtilPoTokenServer) {
+            CoroutineScope(Dispatchers.IO).launch {
+                BgUtilsPoTokenGeneratorUtil.runServer(this@App)
             }
         }
     }

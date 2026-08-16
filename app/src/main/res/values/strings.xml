@@ -481,7 +481,7 @@
     <string name="cut_unsupported">Cutting is not available for this item</string>
     <string name="select_between_desc">Specify the range of items to select</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Web Client PO Token</string>
+    <string name="manual_po_token_generator">Manual Web Po Token Generator</string>
     <string name="reverse">Reverse</string>
     <string name="no_keep_subs">Delete subtitle files after embedding</string>
     <string name="no_keep_subs_summary">When using both Embed Subtitles and Write Subtitles, don\'t keep the subtitle files after embedding</string>
@@ -566,6 +566,7 @@
     <string name="max_delay">Max delay (seconds)</string>
     <string name="no_delay">No delay set</string>
     <string name="waiting_download_delay">Waiting download delay (%s seconds)…</string>
+    <string name="bgutils_info">A proof-of-origin token (POT) provider for yt-dlp.\nWith it enabled, YTDLnis hosts the HTTP server that generates the POT and installs the related plugin that yt-dlp uses.</string>
     <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
