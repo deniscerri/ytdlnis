@@ -13,7 +13,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.Typeface
 import androidx.core.content.edit
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
@@ -319,6 +322,8 @@ class TerminalFragment : Fragment() {
                 reload(VirtualKeysInfo(virtualKeys, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES))
             }
 
+            terminalViewModel.setFont(ResourcesCompat.getFont(requireContext(), R.font.jetbrainsmono_medium)!!)
+            session.write("yt-dlp ")
         }
     }
 

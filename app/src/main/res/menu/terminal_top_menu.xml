@@ -8,7 +8,7 @@
         android:id="@+id/add"/>
 
     <item android:title="@string/Remove"
-        android:icon="@drawable/baseline_delete_24"
+        android:icon="@drawable/baseline_delete"
         app:showAsAction="always"
         android:id="@+id/delete"/>
 
