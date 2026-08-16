@@ -14,7 +14,6 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.widget.Toast
 import androidx.preference.PreferenceManager
-import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
@@ -57,7 +56,7 @@ import kotlin.random.Random
 class DownloadWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(context, workerParams) {
+) : YTDLPCoroutineWorker(context, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val workNotif = NotificationUtil(App.Companion.instance).createDefaultWorkerNotification()
@@ -77,7 +76,7 @@ class DownloadWorker(
 
     @OptIn(ExperimentalStdlibApi::class)
     @SuppressLint("RestrictedApi")
-    override suspend fun doWork(): Result {
+    override suspend fun runWork(): Result {
         val workManager = WorkManager.Companion.getInstance(context)
         if (workManager.isRunning("download") || isStopped) return Result.Failure()
 

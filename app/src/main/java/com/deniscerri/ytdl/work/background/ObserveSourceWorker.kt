@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ObserveAlarmScheduler
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
+import com.deniscerri.ytdl.work.YTDLPCoroutineWorker
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,23 +38,18 @@ import java.util.concurrent.TimeUnit
 class ObserveSourceWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : CoroutineWorker(context, workerParams) {
-    override suspend fun doWork(): Result {
+) : YTDLPCoroutineWorker(context, workerParams) {
+    override suspend fun runWork(): Result {
         val sourceID = inputData.getLong("id", 0)
         if (sourceID == 0L) return Result.success()
 
-        val notificationUtil = NotificationUtil(App.Companion.instance)
-        val dbManager = DBManager.Companion.getInstance(context)
-        val workManager = WorkManager.Companion.getInstance(context)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val notificationUtil = NotificationUtil(App.instance)
+        val dbManager = DBManager.getInstance(context)
         val repo =
             ObserveSourcesRepository(dbManager.observeSourcesDao)
         val historyRepo = HistoryRepository(dbManager.historyDao)
-        val downloadRepo = DownloadRepository(dbManager.downloadDao)
         val commandTemplateDao = dbManager.commandTemplateDao
         val resultRepository = ResultRepository(dbManager.resultDao, commandTemplateDao, context)
-
-        val ytdlpUtil = YTDLPUtil(context, commandTemplateDao)
 
         val item = runCatching { repo.getByID(sourceID) }.getOrNull() ?: return Result.success()
         if (item.status == ObserveSourcesRepository.SourceStatus.STOPPED) return Result.success()

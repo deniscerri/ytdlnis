@@ -44,6 +44,7 @@ import com.google.android.material.slider.Slider
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.text.toInt
@@ -213,18 +214,12 @@ class TerminalFragment : Fragment() {
     @SuppressLint("UseKtx")
     private fun initMenu() {
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
-        topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
 
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.add -> {
                     findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
                         NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
-                }
-                R.id.delete -> {
-                    sessionId?.apply {
-                        terminalViewModel.sessionBinder?.terminateSession(this)
-                    }
                 }
                 R.id.wrap -> {
 //                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
@@ -267,6 +262,7 @@ class TerminalFragment : Fragment() {
         val activity = requireActivity() as TerminalActivity
         val client = TerminalBackEnd(terminalView, activity) {
             if (isAdded) {
+                terminalViewModel.sessionBinder?.terminateSession(sessionId!!)
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }

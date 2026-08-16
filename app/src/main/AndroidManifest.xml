@@ -48,6 +48,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="tiramisu"
         android:memtagMode="async">
         <profileable
