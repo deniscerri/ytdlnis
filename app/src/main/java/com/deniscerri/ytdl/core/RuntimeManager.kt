@@ -317,6 +317,10 @@ object RuntimeManager {
         val outBuffer = StringBuffer()
         val errBuffer = StringBuffer()
 
+        if (executeDirectory != null) {
+            processBuilder.directory(executeDirectory)
+        }
+
         val process = try {
             processBuilder.start().also {
                 if (processId != null) idProcessMap[processId] = it

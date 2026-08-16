@@ -86,6 +86,8 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = useBgUtils
 
         requireView().findViewById<MaterialSwitch>(R.id.bgutils_potoken_provider_switch).apply {
+            this.isChecked = useBgUtils
+
             this.setOnClickListener {
                 val denoIsInstalled = RuntimeManager.getInstance().denoLocation.isAvailable
                 if (!denoIsInstalled) {
@@ -97,14 +99,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 preferences.edit(commit = true) {
                     putBoolean("use_bgutils_potoken_generator", this@apply.isChecked)
                 }
-
                 requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = this.isChecked
 
                 if (!this.isChecked) {
-                    val intent = Intent(context, BgUtilsPoTokenGeneratorService::class.java).apply {
-                        action = "ACTION_EXIT"
-                    }
-                    context.startService(intent)
+                    BgUtilsPoTokenGeneratorUtil.stopServer(context)
                 } else {
                     val builder = MaterialAlertDialogBuilder(context)
                     builder.setTitle("BgUtils POT Provider")

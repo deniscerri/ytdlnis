@@ -10,6 +10,7 @@ import android.content.pm.ServiceInfo
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.deniscerri.ytdl.App
@@ -62,19 +63,24 @@ class BgUtilsPoTokenGeneratorService : Service() {
         if (intent?.action == "ACTION_EXIT") {
             RuntimeManager.getInstance().destroyProcessById(currentRunningProcess)
             stopSelf()
+            return super.onStartCommand(intent, flags, startId)
         }
 
         serviceScope.launch {
             runCatching {
                 val serverFolder = BgUtilsPoTokenGeneratorUtil.getServerFolder(App.instance)
+                RuntimeManager.getInstance().destroyProcessById(currentRunningProcess)
                 RuntimeManager.getInstance().executeDeno(
                     command = "run -A src/main.ts",
+                    processId = currentRunningProcess,
                     executeDirectory = File(serverFolder, "server")
                 ) { _, _, line ->
+                    Log.e("BGUTILS_POT", line)
                     val notification = createNotification(line)
                     notificationManager.notify(notificationCode, notification)
                 }
-            }.onFailure {
+            }.onFailure { err ->
+                Log.e("BGUTILS_POT", err.message ?: "")
                 stopSelf()
             }
         }

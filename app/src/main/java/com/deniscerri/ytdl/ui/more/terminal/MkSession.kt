@@ -1,9 +1,11 @@
 package com.deniscerri.ytdl.ui.more.terminal
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.child
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.util.FileUtil
 import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
@@ -15,6 +17,8 @@ object MkSession {
         sessionClient: TerminalSessionClient,
         pendingCommand: PendingCommand? = null
     ): TerminalSession {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
         with(context) {
             val envVariables = mutableMapOf(
                 "ANDROID_ART_ROOT" to System.getenv("ANDROID_ART_ROOT"),
@@ -124,6 +128,12 @@ object MkSession {
                 }
                 if (runtimeManager.quickJsLocation.isAvailable) {
                     ytdlpExtraArgs.append(" --js-runtimes \"quickjs:${runtimeManager.quickJsLocation.executable.absolutePath}\"")
+                }
+
+                if (preferences.getBoolean("use_cookies", false)){
+                    FileUtil.getCookieFile(context){
+                        ytdlpExtraArgs.append(" --cookies \"${it}\"")
+                    }
                 }
 
                 rcBuilder.append(

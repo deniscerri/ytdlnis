@@ -38,8 +38,16 @@ object BgUtilsPoTokenGeneratorUtil {
         return Result.success(Unit)
     }
 
+    fun stopServer(context: Context) {
+        val intent = Intent(context, BgUtilsPoTokenGeneratorService::class.java).apply {
+            action = "ACTION_EXIT"
+        }
+        context.startService(intent)
+    }
 
     suspend fun downloadFiles(context: Context, progress: ((String) -> Unit)? = null) : Result<Unit> {
+        stopServer(context)
+
         val serverFolder = getServerFolder(context)
         serverFolder.listFiles()?.forEach { child ->
             child.deleteRecursively()
