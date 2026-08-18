@@ -105,6 +105,13 @@ android {
             } else {
                 output.versionCodeOverride = 100 * project.android.defaultConfig.versionCode
             }
+
+            def abi = output.getFilter(com.android.build.OutputFile.ABI) ?: "universal"
+            if (variant.flavorName == "github") {
+                output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}.apk"
+            } else {
+                output.outputFileName = "YTDLnis-${versionName}-foss-${abi}-${variant.buildType.name}.apk"
+            }
         }
     }
 
@@ -160,16 +167,15 @@ dependencies {
 //    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
 //    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
-
     implementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    //implementation "io.github.junkfood02.youtubedl-android:library:0.17.4"
 
     //implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1"
-    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
-
-//    implementation "io.github.junkfood02.youtubedl-android:library:0.17.4"
     //noinspection NewerVersionAvailable
     implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
-//    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
+
+    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
+    //implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"

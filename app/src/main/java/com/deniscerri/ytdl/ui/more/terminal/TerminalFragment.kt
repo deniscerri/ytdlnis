@@ -43,6 +43,7 @@ import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.slider.Slider
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -319,7 +320,10 @@ class TerminalFragment : Fragment() {
             }
 
             terminalViewModel.setFont(ResourcesCompat.getFont(requireContext(), R.font.jetbrainsmono_medium)!!)
-            session.write("yt-dlp ")
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(100)
+                session.write("yt-dlp ")
+            }
         }
     }
 

@@ -161,7 +161,7 @@ class UpdateUtil(var context: Context) {
     suspend fun downloadReleaseApk(release: GithubRelease, onProgress: (Long) -> Unit) : Result<File> {
         return withContext(Dispatchers.IO) {
             try {
-                val releaseVersion = release.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) && it.name.contains("github") }!!
+                val releaseVersion = release.assets.firstOrNull { it.name.contains(Build.SUPPORTED_ABIS[0]) && !it.name.contains("foss") }!!
                 File(FileUtil.getDefaultApksPath()).mkdirs()
                 val tempApk = File(FileUtil.getDefaultApksPath(), "${releaseVersion.browser_download_url.split("/").last()}")
 
