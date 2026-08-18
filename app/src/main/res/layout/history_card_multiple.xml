@@ -25,17 +25,17 @@
                 android:layout_marginVertical="5dp"
                 android:checkable="false"
                 app:cardCornerRadius="15dp"
-                app:cardElevation="0dp"
                 app:cardMaxElevation="12dp"
                 app:cardPreventCornerOverlap="true"
                 app:checkedIcon="@null"
+                android:backgroundTint="?attr/colorSurfaceContainer"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeWidth="0dp" />
 
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/downloads_card_view"
+                android:id="@+id/download_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cardCornerRadius="20dp"

@@ -232,6 +232,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 app:icon="@drawable/ic_baseline_delete_outline_24"
                 android:text="@string/Remove" />
 
@@ -241,19 +243,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/Open_File"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 android:layout_marginEnd="10dp"
                 app:icon="@drawable/ic_open_file"
                 />
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:id="@+id/bottomsheet_redownload_button"
+                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/redownload"
                 android:layout_marginEnd="10dp"
-                app:icon="@drawable/ic_refresh"
-                />
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
+                android:text="@string/redownload"
+                app:icon="@drawable/ic_refresh" />
 
         </LinearLayout>
 
