@@ -2,11 +2,11 @@
 <network-security-config>
     <!-- Keep HTTPS mandatory for standard network traffic -->
     <base-config cleartextTrafficPermitted="false">
+    </base-config>
     
     <!-- Grant cleartext HTTP permission ONLY for local server loopbacks -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">127.0.0.1</domain>
         <domain includeSubdomains="true">localhost</domain>
     </domain-config>
-    </base-config>
 </network-security-config>
