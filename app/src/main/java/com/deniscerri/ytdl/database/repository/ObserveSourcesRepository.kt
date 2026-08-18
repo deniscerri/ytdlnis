@@ -12,11 +12,12 @@ class ObserveSourcesRepository(private val observeSourcesDao: ObserveSourcesDao)
     }
 
     enum class EveryCategory {
-        HOUR, DAY, WEEK, MONTH
+        MINUTE, HOUR, DAY, WEEK, MONTH
     }
 
     companion object {
         val everyCategoryName = mapOf(
+            EveryCategory.MINUTE to R.string.minute,
             EveryCategory.HOUR to R.string.hour,
             EveryCategory.DAY to R.string.day,
             EveryCategory.WEEK to R.string.week,

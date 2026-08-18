@@ -295,9 +295,9 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         val cats = ObserveSourcesRepository.everyCategoryName.map { getString(it.value) }
         categoryAdapter = ArrayAdapter(requireActivity(),android.R.layout.simple_dropdown_item_1line, cats)
         everyCat.doAfterTextChanged {
-            everyTime.isVisible = it.toString() != cats[0]
-            weekDays.isVisible = it.toString() == cats[2]
-            startMonth.isVisible = it.toString() == cats[3]
+            everyTime.isVisible = it.toString() != cats[0] && it.toString() != cats[1]
+            weekDays.isVisible = it.toString() == cats[3]
+            startMonth.isVisible = it.toString() == cats[4]
             startTime.isVisible = !startMonth.isVisible
             everyMonthDay.isVisible = startMonth.isVisible
         }
@@ -547,6 +547,9 @@ class ObserveSourcesBottomSheetDialog : BottomSheetDialogFragment() {
         val everyTime = everyTime.editText?.text?.isNotBlank() == true
 
         val every = when(category){
+            ObserveSourcesRepository.EveryCategory.MINUTE -> {
+                everyNrBool
+            }
             ObserveSourcesRepository.EveryCategory.HOUR -> {
                 everyNrBool
             }

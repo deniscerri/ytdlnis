@@ -152,6 +152,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 app:icon="@drawable/ic_settings" />
 
             <View
@@ -165,6 +167,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 android:text="@string/Remove"
                 app:icon="@drawable/ic_baseline_delete_outline_24" />
 
@@ -174,6 +178,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit"
+                android:outlineProvider="none"
+                android:stateListAnimator="@null"
                 app:icon="@drawable/ic_edit" />
         </LinearLayout>
 
