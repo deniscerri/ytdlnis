@@ -38,7 +38,7 @@
     <string name="limit_rate">حد السرعة</string>
     <string name="embed_thumb_summary">استخدام الصور المصغرة كغلاف فني</string>
     <string name="add_chapters">فصول الفيديو</string>
-    <string name="worst_quality">أسوء جودة</string>
+    <string name="worst_quality">الأقل جودة</string>
     <string name="embed_thumb">الصور المصغرة</string>
     <string name="downloading_update">يتم تحميل أحدث إصدار</string>
     <string name="audio">الصوت</string>
@@ -594,4 +594,10 @@
         <item quantity="many">كل %d شهرًا</item>
         <item quantity="other">كل %d شهر</item>
     </plurals>
+    <string name="download_delay">تأخير التنزيل</string>
+    <string name="download_delay_summary">انتظر العدد المُحدّد من الثواني بين كل عملية تنزيل. تعمل هذه الميزة على تعطيل عمليات التنزيل المتزامنة</string>
+    <string name="min_delay">الحد الأدنى للتأخير (بالثواني)</string>
+    <string name="max_delay">الحد الأقصى للتأخير (بالثواني)</string>
+    <string name="no_delay">لم يُعيّن تأخير</string>
+    <string name="waiting_download_delay">ينتظر تأخير التنزيل (%s ثانية)…</string>
 </resources>

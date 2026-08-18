@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="worst_quality">Verstu gæði</string>
+    <string name="best_quality">Bestu gæði</string>
+    <string name="search">Leit</string>
+    <string name="remove_all">Fjarlægja allt</string>
+    <string name="remove_results">Hreinsa niðurstöður</string>
+    <string name="download_all">Niðurhala allt</string>
+    <string name="settings">Stillingar</string>
+    <string name="home">Heim</string>
+    <string name="directories">Möppur</string>
+    <string name="music_directory">Hljóð mappa</string>
+    <string name="video_directory">Myndskeið mappa</string>
+    <string name="updating">Uppfærir</string>
+    <string name="update_ytdl">Nýjasta uppfærsla</string>
+    <string name="about">Um</string>
+    <string name="source_code">Forritunar kóði</string>
+    <string name="search_hint">Leita</string>
+    <string name="failed_download">Niðurhal tókst ekki</string>
+    <string name="download_notification_channel_name">Niðurhal skráa</string>
+    <string name="download_notification_channel_description">Tilkynning sem sýnir framvindu niðurhals á hljóð- og myndskrám</string>
+    <string name="you_are_in_latest_version">Að nota nýjustu útgáfuna</string>
+</resources>

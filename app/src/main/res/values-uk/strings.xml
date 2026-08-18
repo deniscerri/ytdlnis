@@ -583,4 +583,10 @@
         <item quantity="other">Кожені %d місяців</item>
     </plurals>
     <string name="skip_backlog">Пропустити поточну чергу завдань</string>
+    <string name="download_delay">Затримка завантаження</string>
+    <string name="download_delay_summary">Зачекайте налаштовану кількість секунд між кожним завантаженням. Ця функція вимикає одночасні завантаження</string>
+    <string name="min_delay">Мін. затримка (секунд)</string>
+    <string name="max_delay">Макс. затримка (секунд)</string>
+    <string name="no_delay">Затримку не встановлено</string>
+    <string name="waiting_download_delay">Очікування затримки завантаження (%s секунд)…</string>
 </resources>
