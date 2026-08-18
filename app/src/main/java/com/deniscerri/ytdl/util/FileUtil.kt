@@ -304,11 +304,12 @@ object FileUtil {
 
     fun getBackupPath(context: Context) : String {
         val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("backup_path", "")
-        return if (preference.isNullOrBlank() || !File(formatPath(preference)).canWrite()) {
+        val path = if (preference.isNullOrBlank()) {
             getDefaultApplicationPath() + "/Backups"
         }else {
-            preference
+            formatPath(preference)
         }
+        return path
     }
 
     fun getCachePath(context: Context) : String {
