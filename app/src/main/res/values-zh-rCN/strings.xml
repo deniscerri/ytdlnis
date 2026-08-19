@@ -574,4 +574,7 @@
     <string name="max_delay">最长延迟（秒数）</string>
     <string name="no_delay">未设置延迟</string>
     <string name="waiting_download_delay">正在等待下载延迟（%s 秒）…</string>
+    <plurals name="every_minutes">
+        <item quantity="other">每 %d 分钟</item>
+    </plurals>
 </resources>
