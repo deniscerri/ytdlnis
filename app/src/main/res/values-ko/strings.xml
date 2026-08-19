@@ -574,4 +574,7 @@
     <string name="max_delay">최대 지연 (초)</string>
     <string name="no_delay">지연 설정 없음</string>
     <string name="waiting_download_delay">다운로드 지연 대기 중 (%s초)…</string>
+    <plurals name="every_minutes">
+        <item quantity="other">%d분마다</item>
+    </plurals>
 </resources>
