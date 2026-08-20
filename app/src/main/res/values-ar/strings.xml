@@ -600,4 +600,12 @@
     <string name="max_delay">الحد الأقصى للتأخير (بالثواني)</string>
     <string name="no_delay">لم يُعيّن تأخير</string>
     <string name="waiting_download_delay">ينتظر تأخير التنزيل (%s ثانية)…</string>
+    <plurals name="every_minutes">
+        <item quantity="zero">كل 0 دقيقة</item>
+        <item quantity="one">كل دقيقة</item>
+        <item quantity="two">كل دقيقتين</item>
+        <item quantity="few">كل %d دقائق</item>
+        <item quantity="many">كل %d دقيقة</item>
+        <item quantity="other">كل %d دقيقة</item>
+    </plurals>
 </resources>
