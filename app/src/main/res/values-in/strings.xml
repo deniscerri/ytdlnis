@@ -547,4 +547,34 @@
     <string name="rescan_from_scratch">Pindai ulang dari awal</string>
     <string name="rescan_from_scratch_desc">Abaikan item yang telah diproses dan unduh ulang semua yang belum tersimpan</string>
     <string name="skip_backlog">Lewati backlog saat ini</string>
+    <string name="player_client_not_empty">Tag Klien Pemain tidak boleh kosong</string>
+    <string name="skip_backlog_desc">Tandai semua yang saat ini ada di sumber sebagai selesai — hanya unduh unggahan di masa mendatang</string>
+    <string name="unskip_ignored">Batalkan unggahan yang diabaikan</string>
+    <string name="unskip_ignored_desc">Unduh unggahan yang sudah ada, proses pertama dilewati</string>
+    <string name="observe_runs_chip">%d jalan</string>
+    <string name="observe_processed_chip">%d proses</string>
+    <string name="observe_skipped_chip">%d lewati</string>
+    <string name="observe_updating">Memperbarui…</string>
+    <string name="check_available_storage">Periksa penyimpanan yang tersedia</string>
+    <string name="download_delay">Jeda unduh</string>
+    <string name="download_delay_summary">Tunggu detik yang dikonfigurasi di antara setiap unduhan. Fitur ini menonaktifkan unduhan bersamaan</string>
+    <string name="min_delay">Jeda minimum(detik)</string>
+    <string name="max_delay">Jeda maksimum(detik)</string>
+    <string name="no_delay">Tidak ada jeda yang di atur</string>
+    <string name="waiting_download_delay">Menunggu jeda unduhan(%d detik)…</string>
+    <plurals name="every_minutes">
+        <item quantity="other">Setiap menit\nSetiap%d menit</item>
+    </plurals>
+    <plurals name="every_hours">
+        <item quantity="other">Setiap jam\nSetiap%d jam</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="other">Setiap hari\nSetiap %d hari</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="other">Setiap minggu\nSetiap%d minggu</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="other">Setiap bulan\nSetiap %d bulan</item>
+    </plurals>
 </resources>
