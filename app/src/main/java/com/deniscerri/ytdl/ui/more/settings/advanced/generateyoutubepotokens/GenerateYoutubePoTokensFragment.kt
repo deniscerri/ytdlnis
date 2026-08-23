@@ -15,6 +15,8 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -83,16 +85,20 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
     private fun initBGUtils() {
         val useBgUtils = preferences.getBoolean("use_bgutils_potoken_generator", false)
+        val bgUtilsMethod = preferences.getString("bgutils_potoken_method", "generation_script")
+
+
         requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = useBgUtils
 
         requireView().findViewById<MaterialSwitch>(R.id.bgutils_potoken_provider_switch).apply {
             this.isChecked = useBgUtils
+            val denoIsInstalled = RuntimeManager.getInstance().denoLocation.isAvailable
+            val nodeIsInstalled = RuntimeManager.getInstance().nodeLocation.isAvailable
 
             this.setOnClickListener {
-                val denoIsInstalled = RuntimeManager.getInstance().denoLocation.isAvailable
-                if (!denoIsInstalled) {
+                if (!denoIsInstalled && !nodeIsInstalled) {
                     this.isChecked = false
-                    Snackbar.make(requireView(), "Install Deno Package!", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package_or_package, "NodeJS", "Deno"), Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
@@ -135,6 +141,51 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                     }
                 }
             }
+
+            val scriptRadio = requireView().findViewById<RadioButton>(R.id.bgutils_pot_script_radio)
+            val serverRadio = requireView().findViewById<RadioButton>(R.id.bgutils_pot_server_radio)
+
+            scriptRadio.apply {
+                isChecked = bgUtilsMethod == "generation_script" && nodeIsInstalled
+                alpha = if (nodeIsInstalled) 1f else 0.3f
+
+                setOnCheckedChangeListener { button, bool ->
+                    if (nodeIsInstalled) {
+                        preferences.edit(commit = true) {
+                            putString("bgutils_potoken_method", "generation_script")
+                        }
+                        BgUtilsPoTokenGeneratorUtil.stopServer(context)
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "NodeJS"), Snackbar.LENGTH_SHORT).show()
+                        post {
+                            serverRadio.performClick()
+                        }
+                    }
+                }
+            }
+
+            serverRadio.apply {
+                isChecked = bgUtilsMethod == "server" && denoIsInstalled
+                alpha = if (denoIsInstalled) 1f else 0.3f
+
+                setOnClickListener {
+                    if (denoIsInstalled) {
+                        preferences.edit(commit = true) {
+                            putString("bgutils_potoken_method", "server")
+                        }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                BgUtilsPoTokenGeneratorUtil.runServer(context) {}
+                            }
+                        }
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
+                        post {
+                            scriptRadio.performClick()
+                        }
+                    }
+                }
+            }
         }
 
         requireView().findViewById<Button>(R.id.redownload_bgutils).apply {
@@ -149,7 +200,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                 lifecycleScope.launch {
                     val resp = withContext(Dispatchers.IO) {
-                        BgUtilsPoTokenGeneratorUtil.downloadFiles(context) { progress ->
+                        BgUtilsPoTokenGeneratorUtil.downloadFiles(context, runServerAfterwards = bgUtilsMethod == "server") { progress ->
                             lifecycleScope.launch {
                                 withContext(Dispatchers.Main) {
                                     dialog.setMessage(progress)
@@ -281,15 +332,17 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         switch.setOnClickListener {
             requireView().findViewById<LinearLayout>(R.id.manual_potoken_generator_collapsible).isVisible = switch.isChecked
 
-            configuration.remove(conf)
-            conf.enabled = switch.isChecked
-            useVisitorData.isEnabled = switch.isChecked
-            configuration.add(conf)
-            preferences.edit()
-                .putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString())
-                .apply()
-            if (conf.poTokens.isEmpty()) {
-                regenerate.performClick()
+            if (switch.isChecked) {
+                configuration.remove(conf)
+                conf.enabled = switch.isChecked
+                useVisitorData.isEnabled = switch.isChecked
+                configuration.add(conf)
+                preferences.edit()
+                    .putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString())
+                    .apply()
+                if (conf.poTokens.isEmpty()) {
+                    regenerate.performClick()
+                }
             }
         }
 

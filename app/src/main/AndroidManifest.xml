@@ -590,7 +590,7 @@
             />
 
         <service
-            android:name=".terminal.SessionService"
+            android:name=".services.TerminalSessionService"
             android:foregroundServiceType="specialUse"
             android:exported="false" />
 

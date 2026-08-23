@@ -6,6 +6,8 @@ import android.os.Looper
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.edit
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.core.models.ExecuteException
@@ -17,16 +19,26 @@ import com.deniscerri.ytdl.util.Extensions.hasReachedEnd
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ObserveAlarmScheduler
 import com.deniscerri.ytdl.util.ThemeUtil
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class App : Application() {
+class App : Application(), DefaultLifecycleObserver {
+
+    val isForegroundLaunch = CompletableDeferred<Boolean>()
+
+    override fun onStart(owner: LifecycleOwner) {
+        if (!isForegroundLaunch.isCompleted) {
+            isForegroundLaunch.complete(true)
+        }
+    }
 
     override fun onCreate() {
-        super.onCreate()
+        super<Application>.onCreate()
         instance = this
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
@@ -43,6 +55,22 @@ class App : Application() {
                         putString("version", BuildConfig.VERSION_NAME)
                     }
                 }
+
+                val db = DBManager.getInstance(this@App)
+                val scheduler = ObserveAlarmScheduler(this@App)
+                db.observeSourcesDao.getAllSources()
+                    .filter { it.status == ObserveSourcesRepository.SourceStatus.ACTIVE && !it.hasReachedEnd() }
+                    .forEach { scheduler.schedule(it) }         // idempotent: FLAG_UPDATE_CURRENT updates in place
+
+                delay(300)
+                if (!isForegroundLaunch.isCompleted) {
+                    isForegroundLaunch.complete(false)
+                    val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
+                    val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
+                    if (useBgUtilPoTokenServer && bgUtilsMethod == "server") {
+                        BgUtilsPoTokenGeneratorUtil.runServer(this@App)
+                    }
+                }
             }catch (e: Exception){
                 Looper.prepare().runCatching {
                     Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
@@ -51,23 +79,6 @@ class App : Application() {
             }
         }
         ThemeUtil.init(this)
-
-        CoroutineScope(Dispatchers.IO).launch {
-            runCatching {
-                val db = DBManager.getInstance(this@App)
-                val scheduler = ObserveAlarmScheduler(this@App)
-                db.observeSourcesDao.getAllSources()
-                    .filter { it.status == ObserveSourcesRepository.SourceStatus.ACTIVE && !it.hasReachedEnd() }
-                    .forEach { scheduler.schedule(it) }         // idempotent: FLAG_UPDATE_CURRENT updates in place
-            }
-        }
-
-        val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-        if (useBgUtilPoTokenServer) {
-            CoroutineScope(Dispatchers.IO).launch {
-                BgUtilsPoTokenGeneratorUtil.runServer(this@App)
-            }
-        }
     }
     @Throws(ExecuteException::class)
     private fun initLibraries() {

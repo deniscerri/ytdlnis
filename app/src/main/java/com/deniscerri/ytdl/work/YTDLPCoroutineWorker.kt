@@ -24,7 +24,8 @@ abstract class YTDLPCoroutineWorker(
         return try {
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
             val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-            if (useBgUtilPoTokenServer) {
+            val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
+            if (useBgUtilPoTokenServer && bgUtilsMethod == "server") {
                 // 1. Ensure service is active before starting child worker logic
                 if (!isBgUtilsServerAlive()) {
                     val serviceRunning = isBgUtilsServiceRunning(context)

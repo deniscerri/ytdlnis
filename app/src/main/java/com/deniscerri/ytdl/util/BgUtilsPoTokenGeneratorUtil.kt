@@ -24,7 +24,7 @@ object BgUtilsPoTokenGeneratorUtil {
     suspend fun runServer(context: Context, progress: ((String) -> Unit)? = null) : Result<Unit> {
         val serverFolder = getServerFolder(context)
         if (serverFolder.isEmpty) {
-            return downloadFiles(context, progress)
+            return downloadFiles(context, true, progress)
         }
 
         progress?.invoke("Running server...")
@@ -45,7 +45,7 @@ object BgUtilsPoTokenGeneratorUtil {
         context.startService(intent)
     }
 
-    suspend fun downloadFiles(context: Context, progress: ((String) -> Unit)? = null) : Result<Unit> {
+    suspend fun downloadFiles(context: Context, runServerAfterwards: Boolean, progress: ((String) -> Unit)? = null) : Result<Unit> {
         stopServer(context)
 
         val serverFolder = getServerFolder(context)
@@ -109,6 +109,21 @@ object BgUtilsPoTokenGeneratorUtil {
             return Result.failure(Exception(denoResponse.err))
         }
 
-        return runServer(context, progress)
+        progress?.invoke("Building typescript files...")
+        val denoResponse2 = RuntimeManager.getInstance().executeDeno(
+            command = "run -A npm:typescript/tsc --outDir build",
+            executeDirectory = File(serverFolder, "server")) { _, _, line ->
+            progress?.invoke(line)
+        }
+        if (denoResponse2.exitCode != 0) {
+            progress?.invoke(denoResponse2.err)
+            return Result.failure(Exception(denoResponse2.err))
+        }
+
+        if (runServerAfterwards) {
+            return runServer(context, progress)
+        }
+
+        return Result.success(Unit)
     }
 }

@@ -567,6 +567,12 @@
     <string name="no_delay">No delay set</string>
     <string name="waiting_download_delay">Waiting download delay (%s seconds)…</string>
     <string name="bgutils_info">A proof-of-origin token (POT) provider for yt-dlp.\nWith it enabled, YTDLnis hosts the HTTP server that generates the POT and installs the related plugin that yt-dlp uses.</string>
+    <string name="bgutils_pot_generation_script">Generation script</string>
+    <string name="bgutils_pot_generation_server">HTTP Server</string>
+    <string name="bgutils_pot_generation_script_summary">Every yt-dlp call incurs the overhead of spawning a new js runtime process to run the script. This method is not recommended for high concurrency usage.</string>
+    <string name="bgutils_pot_server_summary">This is a JavaScript HTTP server, on port 4416. If down, it automatically starts the server when download queue starts executing, or observe sources is scheduled. To shut it down, you have to do it manually from notifications!</string>
+    <string name="please_install_package">Please install package %s</string>
+    <string name="please_install_package_or_package">Please install %1$s package or %2$s package</string>
     <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>

@@ -320,10 +320,6 @@ class TerminalFragment : Fragment() {
             }
 
             terminalViewModel.setFont(ResourcesCompat.getFont(requireContext(), R.font.jetbrainsmono_medium)!!)
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(100)
-                session.write("yt-dlp ")
-            }
         }
     }
 

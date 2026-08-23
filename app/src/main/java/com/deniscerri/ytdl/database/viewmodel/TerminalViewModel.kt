@@ -11,12 +11,10 @@ import android.os.Build
 import android.os.IBinder
 import android.util.TypedValue
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.preference.PreferenceManager
-import com.deniscerri.ytdl.terminal.SessionService
+import com.deniscerri.ytdl.services.TerminalSessionService
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.ui.more.terminal.TerminalBackEnd
 import com.google.android.material.R
@@ -49,7 +47,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
         }
     }
 
-    fun changeSession(context: Context, sessionBinder: SessionService.SessionBinder, sessionId: String) {
+    fun changeSession(context: Context, sessionBinder: TerminalSessionService.SessionBinder, sessionId: String) {
         val terminal = terminalView ?: return
         val activity = context as? TerminalActivity ?: return
         val client = TerminalBackEnd(terminal, activity)
@@ -89,7 +87,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
         sessionBinder.getService().currentSession.value = sessionId
     }
 
-    var sessionBinder by mutableStateOf<SessionService.SessionBinder?>(null)
+    var sessionBinder by mutableStateOf<TerminalSessionService.SessionBinder?>(null)
         private set
 
     var isBound by mutableStateOf(false)
@@ -103,7 +101,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            sessionBinder = service as SessionService.SessionBinder
+            sessionBinder = service as TerminalSessionService.SessionBinder
             isBound = true
             _isBoundState.value = true
             _serviceConnectedEvent.trySend(Unit)
@@ -117,7 +115,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun startAndBindService(context: Context) {
-        val intent = Intent(context, SessionService::class.java)
+        val intent = Intent(context, TerminalSessionService::class.java)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(intent)
         } else {

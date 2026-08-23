@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.terminal
+package com.deniscerri.ytdl.services
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -20,13 +20,13 @@ import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
 
-class SessionService : Service() {
+class TerminalSessionService : Service() {
     private val sessions = hashMapOf<String, TerminalSession>()
     val sessionList = mutableStateMapOf<String, Int>()
     var currentSession = mutableStateOf("main1")
 
     inner class SessionBinder : Binder() {
-        fun getService(): SessionService = this@SessionService
+        fun getService(): TerminalSessionService = this@TerminalSessionService
 
         fun terminateAllSessions() {
             sessions.values.forEach { it.finishIfRunning() }
@@ -40,7 +40,7 @@ class SessionService : Service() {
             client: TerminalSessionClient,
         ): TerminalSession {
             return MkSession.createSession(
-                context = this@SessionService,
+                context = this@TerminalSessionService,
                 sessionClient = client,
             ).also {
                 sessions[id] = it
@@ -106,7 +106,7 @@ class SessionService : Service() {
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val exitIntent = Intent(this, SessionService::class.java).apply {
+        val exitIntent = Intent(this, TerminalSessionService::class.java).apply {
             action = "ACTION_EXIT"
         }
         val exitPendingIntent = PendingIntent.getService(

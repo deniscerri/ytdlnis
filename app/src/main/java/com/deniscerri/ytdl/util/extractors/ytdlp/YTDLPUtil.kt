@@ -23,6 +23,7 @@ import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
@@ -822,6 +823,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val extArgs = extractorArgs.joinToString(";")
         if (extractorArgs.isNotEmpty()) {
             this.addOption("--extractor-args", "youtube:${extArgs}")
+        }
+
+        val useBgUtils = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
+        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
+        if (useBgUtils && bgUtilsMethod == "generation_script") {
+            val serverPath = File(BgUtilsPoTokenGeneratorUtil.getServerFolder(context), "server").absolutePath
+            this.addOption("--extractor-args", "youtubepot-bgutilscript:server_home=${serverPath}")
         }
     }
 

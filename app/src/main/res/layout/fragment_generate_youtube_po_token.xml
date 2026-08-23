@@ -59,6 +59,40 @@
                             android:layout_height="wrap_content"
                             android:text="@string/bgutils_info" />
 
+                        <RadioGroup
+                            android:id="@+id/bgutils_pot_radiogroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/bgutils_pot_script_radio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="5dp"
+                                android:text="@string/bgutils_pot_generation_script"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/bgutils_pot_generation_script_summary" />
+
+                            <RadioButton
+                                android:id="@+id/bgutils_pot_server_radio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="5dp"
+                                android:text="@string/bgutils_pot_generation_server"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/bgutils_pot_server_summary" />
+
+
+                        </RadioGroup>
+
                         <Button
                             android:id="@+id/redownload_bgutils"
                             style="@style/Widget.Material3.Button.ElevatedButton.Icon"
