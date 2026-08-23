@@ -440,7 +440,7 @@
     <string name="thumbnail">থাম্বনেইল</string>
     <string name="data_fetching_extra_command_summary">ডেটা সংগ্রহের জন্য অতিরিক্ত কমান্ড হিসেবে কমান্ড টেমপ্লেট ব্যবহার করতে দিন</string>
     <string name="disable_write_info_json">info json লেখা বন্ধ করুন</string>
-    <string name="disable_write_info_json_summary">প্রতি বার ডাউনলোড পুনরায় শুরু করলে yt-dlp সার্ভার থেকে আবার JSON ডেটা ডাউনলোড করবে (প্রস্তাবিত নয়)</string>
+    <string name="disable_write_info_json_summary">ডাউনলোড পুনরায় শুরু (resume) বা রিস্টার্ট করার প্রতিটি ক্ষেত্রে, yt-dlp সার্ভার থেকে পুনরায় JSON ডেটা ডাউনলোড করে নেবে (এটি এড়িয়ে চলাই ভালো)</string>
     <string name="ytdlp_watch_later">yt-dlp YouTube পরে দেখুন (কুকি প্রয়োজন)</string>
     <string name="ytdlp_recommnedations">yt-dlp YouTube সুপারিশ (কুকি প্রয়োজন)</string>
     <string name="ytdlp_liked">yt-dlp YouTube পছন্দ করা ভিডিও (কুকি প্রয়োজন)</string>
@@ -500,11 +500,11 @@
     <string name="disable_flat_playlist_summary">--flat-playlist ব্যবহার করবেন না। ডেটা সংগ্রহ ধীর হবে, তবে আরও সমৃদ্ধ ডেটা পাওয়া যাবে</string>
     <string name="chapters">অধ্যায়</string>
     <string name="use_original_url_playlist">প্লেলিস্ট URL-এর জন্য মূল URL ব্যবহার করুন</string>
-    <string name="use_original_url_playlist_summary">JSON ডাম্পের playlist_webpage_url ট্যাগের পরিবর্তে ব্যবহারকারীর দেওয়া প্লেলিস্ট URL ব্যবহার করুন</string>
+    <string name="use_original_url_playlist_summary">JSON ডাম্পের playlist_webpage_url ট্যাগের বদলে ব্যবহারকারীর দেওয়া প্লেলিস্ট ইউআরএল ব্যবহার করুন</string>
     <string name="update_ytdlp_while_downloading">ডাউনলোডের সময় yt-dlp আপডেট করুন</string>
     <string name="update_ytdlp_while_downloading_summary">ডাউনলোডের আগে সর্বশেষ সংস্করণে আপডেট করতে yt-dlp-তে -U যোগ করুন</string>
     <string name="preview_filename">ফাইলনাম পূর্বরূপ</string>
-    <string name="potoken_guide">Auth\n-----------------------\n১. WebView-এ সাইন-ইন পেজটি খুলতে \'Auth\'-এ ক্লিক করুন।\n২. আপনার Google অ্যাকাউন্ট দিয়ে সাইন-ইন করুন।\n৩. স্বয়ংক্রিয়-অনূদিত (auto-translated) সাবটাইটেল সাপোর্ট করে এমন যেকোনো ভিডিও প্লে করুন।\n৪. স্বয়ংক্রিয়-অনূদিত সাবটাইটেল অন করুন এবং এটি কাজ করছে কিনা দেখুন।\n৪.১ যদি স্বয়ংক্রিয়-অনূদিত সাবটাইটেল কাজ না করে, তবে সাপোর্ট করে এমন অন্য একটি ভিডিওতে যান এবং ৪ নম্বর ধাপটি আবার চেষ্টা করুন।\n৫. \'ঠিক আছে\' (OK) ক্লিক করুন।\nNo Auth\n-----------------------\n১. \'No Auth\'-এ ক্লিক করুন।\n২. যেকোনো ইউটিউব ভিডিওর ইউআরএল (URL) লিখুন।\n৩. ভিডিওটি লোড হওয়া পর্যন্ত অপেক্ষা করুন এবং অন্তত ৩ সেকেন্ড প্লে হতে দিন।\n৪. \'ঠিক আছে\' (OK) ক্লিক করুন।</string>
+    <string name="potoken_guide">Auth\n-----------------------\n১. WebView-এ সাইন-ইন পেজটি খুলতে \'Auth\'-এ ক্লিক করুন।\n২. আপনার Google অ্যাকাউন্ট দিয়ে সাইন-ইন করুন।\n৩. স্বয়ংক্রিয়-অনূদিত (auto-translated) সাবটাইটেল সাপোর্ট করে এমন যেকোনো ভিডিও প্লে করুন।\n৪. স্বয়ংক্রিয়-অনূদিত সাবটাইটেল অন করুন এবং এটি কাজ করছে কিনা দেখুন।\n৪.১ যদি স্বয়ংক্রিয়-অনূদিত সাবটাইটেল কাজ না করে, তবে সাপোর্ট করে এমন অন্য একটি ভিডিওতে যান এবং ৪ নম্বর ধাপটি আবার চেষ্টা করুন।\n৫. \'ঠিক আছে\' (OK) ক্লিক করুন।\n\nNo Auth\n-----------------------\n১. \'No Auth\'-এ ক্লিক করুন।\n২. যেকোনো ইউটিউব ভিডিওর ইউআরএল (URL) লিখুন।\n৩. ভিডিওটি লোড হওয়া পর্যন্ত অপেক্ষা করুন এবং অন্তত ৩ সেকেন্ড প্লে হতে দিন।\n৪. \'ঠিক আছে\' (OK) ক্লিক করুন।</string>
     <string name="no_auth">No Auth</string>
     <string name="auth">Auth</string>
     <string name="app_icon">অ্যাপ আইকন</string>
