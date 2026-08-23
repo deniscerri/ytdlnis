@@ -37,6 +37,7 @@
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:largeHeap="true"
         android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"

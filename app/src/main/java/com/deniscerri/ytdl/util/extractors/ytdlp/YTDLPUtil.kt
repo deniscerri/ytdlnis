@@ -31,19 +31,25 @@ import com.deniscerri.ytdl.util.Extensions.isSoundCloudURL
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
+import com.deniscerri.ytdl.util.Extensions.readJsonValue
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.google.gson.Gson
+import com.google.gson.Strictness
 import com.google.gson.reflect.TypeToken
+import com.google.gson.stream.JsonReader
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
+import org.json.JSONTokener
 import java.io.File
+import java.io.InputStreamReader
 import java.lang.reflect.Type
+import java.nio.charset.StandardCharsets
 import java.util.Locale
 import java.util.StringJoiner
 import java.util.UUID
@@ -482,7 +488,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
     fun getFormats(url: String) : List<Format> {
         val request = YTDLRequest(url)
-        request.addOption("--print", "%(formats)s")
+        request.addOption("--print", "%(formats)j")
         request.addOption("--print", "%(duration)s")
         request.applyDefaultOptionsForFetchingData(url)
         if (url.isYoutubeURL()) {
@@ -503,85 +509,116 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
-        val res = RuntimeManager.getInstance().execute(request)
-        val results: Array<String?> = try {
-            res.out.split(System.lineSeparator()).toTypedArray()
+        val formats = try {
+            RuntimeManager.getInstance().executeStreaming(request) { stream ->
+                JsonReader(InputStreamReader(stream, StandardCharsets.UTF_8)).use { reader ->
+                    reader.strictness = Strictness.LENIENT
+                    readFormatsList(reader)
+                }
+            }
         } catch (e: Exception) {
-            arrayOf(res.out)
+            arrayListOf()
         }
-        val json = results[0]
-        val jsonArray = runCatching { JSONArray(json) }.getOrElse { JSONArray() }
 
-        val formats = parseYTDLFormats(jsonArray)
         if (formats.isEmpty()) {
             runCatching {
-                getInfoJsonFile(url)?.apply {
-                    this.delete()
-                }
+                getInfoJsonFile(url)?.apply { this.delete() }
             }
         }
 
         return formats
     }
 
+    fun readFormatsList(reader: JsonReader): ArrayList<Format> {
+        val formats = arrayListOf<Format>()
+        val seenFormatIds = HashSet<String>()
+
+        reader.beginArray()
+        while (reader.hasNext()) {
+            val obj = readFormatObject(reader) // builds one JSONObject, keep-list filtered
+
+            val id = obj.optString("format_id").ifBlank { obj.optString("itag") }
+            if (id.isNotBlank() && !seenFormatIds.add(id)) {
+                continue // duplicate - discard immediately, never converted to Format
+            }
+
+            val formatProper = parseOneFormat(obj) ?: continue
+            formats.add(formatProper)
+            // `obj` falls out of scope here - eligible for GC immediately,
+            // nothing keeps N of them alive at once
+        }
+        reader.endArray()
+
+        formats.reverse()
+        return formats
+    }
+
+    private fun readFormatObject(reader: JsonReader): JSONObject {
+        val obj = JSONObject()
+        reader.beginObject()
+        while (reader.hasNext()) {
+            val name = reader.nextName()
+            obj.put(name, readJsonValue(reader))
+        }
+        reader.endObject()
+        return obj
+    }
+
+    private fun parseOneFormat(format: JSONObject): Format? {
+        runCatching {
+            if (format.get("filesize").toString() == "None") format.remove("filesize")
+        }
+        runCatching {
+            if (format.get("filesize_approx").toString() == "None") format.remove("filesize_approx")
+        }
+        runCatching {
+            if (format.get("format_note").toString() == "null") format.remove("format_note")
+        }
+
+        val formatProper = Gson().fromJson(format.toString(), Format::class.java)
+        if (formatProper.format_note == null) formatProper.format_note = ""
+
+        val resolution = format.optString("resolution")
+        if (format.has("format_note")) {
+            if (!formatProper.format_note.contains("audio only", true)) {
+                formatProper.format_note = format.getString("format_note")
+            } else {
+                if (!formatProper.format_note.endsWith("audio", true)) {
+                    formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO").trim() + " AUDIO"
+                }
+            }
+            if (!resolution.isNullOrBlank() && resolution != "audio only") {
+                formatProper.format_note = "${formatProper.format_note} (${resolution})"
+            }
+        }
+
+        if (formatProper.format_note.contains("storyboard", ignoreCase = true)) return null
+
+        formatProper.format_note = formatProper.format_note.trim()
+        formatProper.container = format.getString("ext")
+        if (formatProper.tbr == "None") formatProper.tbr = ""
+        if (!formatProper.tbr.isNullOrBlank()) {
+            formatProper.tbr += "k"
+        }
+
+        if (formatProper.vcodec.isNullOrEmpty() || formatProper.vcodec == "null") {
+            if (formatProper.acodec.isNullOrEmpty() || formatProper.acodec == "null") {
+                formatProper.vcodec = format.getStringByAny("video_ext", "ext").ifEmpty { "unknown" }
+            }
+        }
+
+        return formatProper
+    }
+
+
     private fun parseYTDLFormats(formatsInJSON: JSONArray?) : ArrayList<Format> {
         val formats = arrayListOf<Format>()
 
         if (formatsInJSON != null) {
             for (f in formatsInJSON.length() - 1 downTo 0){
-                val format = formatsInJSON.getJSONObject(f)
-                runCatching {
-                    if (format.get("filesize").toString() == "None") {
-                        format.remove("filesize")
-                    }
-                }
-
-                runCatching {
-                    if (format.get("filesize_approx").toString() == "None") {
-                        format.remove("filesize_approx")
-                    }
-                }
-
-                runCatching {
-                    if(format.get("format_note").toString() == "null"){
-                        format.remove("format_note")
-                    }
-                }
-
-                val formatProper = Gson().fromJson(format.toString(), Format::class.java)
-                if (formatProper.format_note == null) formatProper.format_note = ""
-
-                val resolution = format.getString("resolution")
-                if (format.has("format_note")){
-                    if (!formatProper!!.format_note.contains("audio only", true)) {
-                        formatProper.format_note = format.getString("format_note")
-                    }else{
-                        if (!formatProper.format_note.endsWith("audio", true)){
-                            formatProper.format_note = format.getString("format_note").uppercase().removeSuffix("AUDIO").trim() + " AUDIO"
-                        }
-                    }
-
-                    if (!resolution.isNullOrBlank() && resolution != "audio only") {
-                        formatProper.format_note = "${formatProper.format_note} (${resolution})"
-                    }
-                }
-
-                if (formatProper.format_note.contains("storyboard", ignoreCase = true)) continue
-
-                formatProper.format_note = formatProper.format_note.trim()
-                formatProper.container = format.getString("ext")
-                if (formatProper.tbr == "None") formatProper.tbr = ""
-                if (!formatProper.tbr.isNullOrBlank()){
-                    formatProper.tbr += "k"
-                }
-
-                if(formatProper.vcodec.isNullOrEmpty() || formatProper.vcodec == "null"){
-                    if(formatProper.acodec.isNullOrEmpty() || formatProper.acodec == "null"){
-                        formatProper.vcodec = format.getStringByAny("video_ext", "ext").ifEmpty { "unknown" }
-                    }
-                }
-
-                formats.add(formatProper)
+                val formatRaw = formatsInJSON.getJSONObject(f)
+                val format = parseOneFormat(formatRaw) ?: continue
+                formats.add(format)
             }
         }
         return formats

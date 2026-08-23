@@ -29,6 +29,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -229,13 +230,10 @@ object RuntimeManager {
 
     class CanceledException : Exception()
 
-    fun execute(
+    private fun buildYTDLCommand(
         request: YTDLRequest,
-        processId: String? = null,
-        redirectErrorStream: Boolean = false,
-        usingCacheDir: Boolean = false,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
+        usingCacheDir: Boolean
+    ): List<String> {
         assertInit()
         assertNoUpdate()
 
@@ -268,7 +266,17 @@ object RuntimeManager {
 
         request.addOption("--progress-delta", 0.1)
 
-        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
+        return mutableListOf(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
+    }
+
+    fun execute(
+        request: YTDLRequest,
+        processId: String? = null,
+        redirectErrorStream: Boolean = false,
+        usingCacheDir: Boolean = false,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        val fullCommand = buildYTDLCommand(request, usingCacheDir)
         return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
     }
 
@@ -351,6 +359,74 @@ object RuntimeManager {
             }
 
             ExecuteResponse(fullCommand, exitCode, System.currentTimeMillis() - startTime, out, err)
+        } catch (e: InterruptedException) {
+            process.destroy()
+            throw e
+        } finally {
+            if (processId != null) idProcessMap.remove(processId)
+        }
+    }
+
+    private fun startProcess(
+        fullCommand: List<String>,
+        processId: String?,
+        executeDirectory: File?
+    ): Process {
+        if (processId != null && idProcessMap.containsKey(processId)) {
+            throw ExecuteException("Process ID already exists")
+        }
+
+        val processBuilder = ProcessBuilder(fullCommand)
+        processBuilder.environment().putAll(getEnvironment())
+        if (executeDirectory != null) {
+            processBuilder.directory(executeDirectory)
+        }
+
+        return try {
+            processBuilder.start().also {
+                if (processId != null) idProcessMap[processId] = it
+            }
+        } catch (e: IOException) {
+            throw ExecuteException(e)
+        }
+    }
+
+    fun <T> executeStreaming(
+        request: YTDLRequest,
+        processId: String? = null,
+        usingCacheDir: Boolean = false,
+        outputHandler: (InputStream) -> T
+    ): T {
+        val fullCommand = buildYTDLCommand(request, usingCacheDir)
+        return executeStreamingImpl(fullCommand, processId, outputHandler = outputHandler)
+    }
+
+    fun <T> executeStreamingImpl(
+        fullCommand: List<String>,
+        processId: String? = null,
+        executeDirectory: File? = null,
+        outputHandler: (InputStream) -> T
+    ): T {
+        val process = startProcess(fullCommand, processId, executeDirectory = executeDirectory)
+        val errBuffer = StringBuffer()
+
+        return try {
+            val stdErrProcessor = StreamGobbler(errBuffer, process.errorStream)
+
+            // Consume + fully drain stdout via the caller's handler BEFORE waitFor(),
+            // to avoid deadlocking on a full stdout pipe while the process still runs.
+            val result = process.inputStream.use { outputHandler(it) }
+
+            stdErrProcessor.join()
+            val exitCode = process.waitFor()
+            val err = errBuffer.toString()
+
+            if (exitCode != 0) {
+                if (processId != null && !idProcessMap.containsKey(processId)) throw CanceledException()
+                throw ExecuteException(err)
+            }
+
+            result
         } catch (e: InterruptedException) {
             process.destroy()
             throw e
