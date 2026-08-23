@@ -211,25 +211,10 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
             author.text = item.author
 
             val formatNote = card.findViewById<TextView>(R.id.format_note)
-            if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
-                View.GONE
-            else formatNote!!.text = item.format.format_note.uppercase()
+            formatNote.visibility = View.GONE
 
             val codec = card.findViewById<TextView>(R.id.codec)
-            val codecText =
-                if (item.format.encoding != "") {
-                    item.format.encoding.uppercase()
-                }else if (item.format.vcodec != "none" && item.format.vcodec != ""){
-                    item.format.vcodec.uppercase()
-                } else {
-                    item.format.acodec.uppercase()
-                }
-            if (codecText == "" || codecText == "none"){
-                codec.visibility = View.GONE
-            }else{
-                codec.visibility = View.VISIBLE
-                codec.text = codecText
-            }
+            codec.visibility = View.GONE
 
             // TIME DOWNLOADED  ----------------------------------
             val datetime = card.findViewById<TextView>(R.id.file_size)
