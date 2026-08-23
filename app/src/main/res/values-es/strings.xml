@@ -580,4 +580,8 @@
         <item quantity="one">Cada mes</item>
         <item quantity="many">Cada %d meses</item>
     </plurals>
+    <plurals name="every_minutes">
+        <item quantity="one">Cada minuto</item>
+        <item quantity="many">Cada %d minutos</item>
+    </plurals>
 </resources>
