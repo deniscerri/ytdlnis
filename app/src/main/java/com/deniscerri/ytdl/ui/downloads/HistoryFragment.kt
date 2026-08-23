@@ -84,6 +84,7 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
     private lateinit var topAppBar: MaterialToolbar
     private lateinit var recyclerView: RecyclerView
     private lateinit var historyAdapter: HistoryPaginatedAdapter
+    private lateinit var toggleAdapterView: Chip
     private lateinit var sortSheet: BottomSheetDialog
     private lateinit var uiHandler: Handler
     private lateinit var noResults: RelativeLayout
@@ -127,6 +128,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
         historyAdapter = HistoryPaginatedAdapter(this, requireActivity())
         recyclerView = view.findViewById(R.id.recyclerviewhistorys)
         recyclerView.enableFastScroll()
+        toggleAdapterView = view.findViewById(R.id.toggleView)
+        toggleAdapterView.setOnClickListener {
+            historyAdapter.toggleCardDesign()
+        }
 
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().resources.getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("history")){

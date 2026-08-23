@@ -574,4 +574,10 @@
         <item quantity="one">Hər ay</item>
         <item quantity="other">Hər %d aydan bir</item>
     </plurals>
+    <string name="download_delay">Yükləmə gecikməsi</string>
+    <string name="download_delay_summary">Hər yükləmə arasında tənzimlənmiş saniyələri gözlə. Bu xüsusiyyət eynivaxtlı yükləmələri qapadır</string>
+    <string name="min_delay">Ən aşağı gecikmə (saniyə)</string>
+    <string name="max_delay">Ən yuxarı gecikmə (saniyə)</string>
+    <string name="no_delay">Gecikmə təyin edilməyib</string>
+    <string name="waiting_download_delay">Yükləmə gecikməsini gözləyir (%s saniyə)…</string>
 </resources>

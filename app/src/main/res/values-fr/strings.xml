@@ -579,4 +579,10 @@
         <item quantity="many">Tous les %d mois</item>
         <item quantity="other">Tous les %d mois</item>
     </plurals>
+    <string name="download_delay">Délai de téléchargement</string>
+    <string name="download_delay_summary">Attendez le nombre de secondes défini entre chaque téléchargement. Cette fonctionnalité désactive les téléchargements simultanés.</string>
+    <string name="min_delay">Délai minimal (en secondes)</string>
+    <string name="max_delay">Délai maximal (en secondes)</string>
+    <string name="no_delay">Aucun délai défini</string>
+    <string name="waiting_download_delay">Attente de téléchargement (%s secondes)…</string>
 </resources>

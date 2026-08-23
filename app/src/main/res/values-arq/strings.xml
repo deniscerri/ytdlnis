@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">أسوء جودة</string>
+    <string name="worst_quality">أسوأ جودة</string>
     <string name="best_quality">أحسن جودة</string>
     <string name="search">البحث</string>
-    <string name="remove_all">مسح كلش</string>
+    <string name="remove_all">أمسح كلشي</string>
     <string name="remove_results">مسح النتائج</string>
     <string name="download_all">هبط كلش</string>
     <string name="settings">الإعدادات</string>
@@ -504,7 +504,7 @@
     <string name="update_ytdlp_while_downloading">حدّث yt-dlp أثناء التنزيل</string>
     <string name="update_ytdlp_while_downloading_summary">أضِف الخيار -U إلى yt-dlp لتحديثه إلى أحدث إصدار قبل بدء التنزيل</string>
     <string name="preview_filename">معاينة اسم الملف</string>
-    <string name="potoken_guide">تسجيل الدخول (Auth)\n-----------------------\n1. اضغط على \"Auth\" لفتح صفحة تسجيل الدخول داخل WebView.\n2. سجّل الدخول إلى حسابك في Google.\n3. شغّل أي فيديو يدعم الترجمة التلقائية المترجمة إلى لغات أخرى (Auto-translated subtitles).\n4. فعّل الترجمة التلقائية المترجمة وتحقق مما إذا كانت تعمل.\n- 4.1 إذا لم تعمل، انتقل إلى فيديو آخر يدعم الترجمة التلقائية المترجمة ثم أعد تنفيذ الخطوة 4.\n5. اضغط \"OK\".\n-----------------------\nبدون تسجيل الدخول (No Auth)\n1. اضغط على \"No Auth\".\n2. أدخل رابط أي فيديو من YouTube.\n3. انتظر حتى يتم تحميل الفيديو، ثم شغّله لمدة 3 ثوانٍ على الأقل.\n4. اضغط \"OK\".</string>
+    <string name="potoken_guide">تسجيل الدخول (Auth)\n-----------------------\n1. اضغط على \"Auth\" لفتح صفحة تسجيل الدخول داخل WebView\n2. سجّل الدخول إلى حسابك في Google\n3. شغّل أي فيديو يدعم الترجمة التلقائية المترجمة إلى لغات أخرى (Auto-translated subtitles)\n4. فعّل الترجمة التلقائية المترجمة وتحقق مما إذا كانت تعمل\n- 4.1 إذا لم تعمل، انتقل إلى فيديو آخر يدعم الترجمة التلقائية المترجمة ثم أعد تنفيذ الخطوة 4\n5. اضغط \"OK\"\n-----------------------\nبدون تسجيل الدخول (No Auth)\n1. اضغط على \"No Auth\"\n2. أدخل رابط أي فيديو من YouTube\n3. انتظر حتى يتم تحميل الفيديو، ثم شغّله لمدة 3 ثوانٍ على الأقل\n4. اضغط \"OK\"</string>
     <string name="no_auth">بدون تسجيل الدخول</string>
     <string name="auth">تسجيل الدخول</string>
     <string name="app_icon">أيقونة التطبيق</string>
@@ -542,8 +542,8 @@
     <string name="paused">حابس مؤقتاً</string>
     <string name="check_complete">خلاص الفحص</string>
     <plurals name="finished_runs">
-        <item quantity="one">مكتمل · لم يتم أي تشغيل</item>
-        <item quantity="other">مكتمل · تشغيل واحد</item>
+        <item quantity="one">انتهى · لم يتم أي تشغيل</item>
+        <item quantity="other">انتهى · تشغيل واحد</item>
     </plurals>
     <string name="reset_state">إعادة ضبط الحالة</string>
     <string name="rescan_from_scratch">إعادة الفحص من الصفر</string>
@@ -558,19 +558,25 @@
     <string name="observe_updating">تحديث…</string>
     <string name="check_available_storage">شوف كاش مساحة الفارغة</string>
     <plurals name="every_hours">
-        <item quantity="one">كل %d ساعة</item>
+        <item quantity="one">لا تُطبّق</item>
         <item quantity="other">كل ساعة</item>
     </plurals>
     <plurals name="every_days">
-        <item quantity="one">كل %d يوم</item>
+        <item quantity="one">بدون</item>
         <item quantity="other">كل يوم</item>
     </plurals>
     <plurals name="every_weeks">
-        <item quantity="one">كل %d أسبوع</item>
+        <item quantity="one">بدون</item>
         <item quantity="other">كل أسبوع</item>
     </plurals>
     <plurals name="every_months">
-        <item quantity="one">كل %d شهر</item>
+        <item quantity="one">بدون</item>
         <item quantity="other">كل شهر</item>
     </plurals>
+    <string name="download_delay">تأخير التنزيل</string>
+    <string name="download_delay_summary">انتظار عدد الثواني المُعدّة بين كل تنزيل، هاذي الميزة تحبس التنزيلات المتزامنة</string>
+    <string name="min_delay">الحد الأدنى للتأخير (بالثواني)</string>
+    <string name="max_delay">الحد الأقصى للتأخير (بالثواني)</string>
+    <string name="no_delay">لم يتم تعيين تأخير</string>
+    <string name="waiting_download_delay">جارٍ انتظار تأخير التنزيل (%s ثانية)…</string>
 </resources>

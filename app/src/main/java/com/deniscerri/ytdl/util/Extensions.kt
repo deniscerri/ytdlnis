@@ -548,11 +548,15 @@ object Extensions {
                 hourMin.timeInMillis = item.everyTime
 
                 set(Calendar.HOUR_OF_DAY, hourMin.get(Calendar.HOUR_OF_DAY))
-                set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
+
+                if (item.everyCategory != EveryCategory.MINUTE) {
+                    set(Calendar.MINUTE, hourMin.get(Calendar.MINUTE))
+                }
             }
 
             while (timeInMillis < now){
                 when(item.everyCategory){
+                    EveryCategory.MINUTE -> { add(Calendar.MINUTE, everyNr) }
                     EveryCategory.HOUR -> { add(Calendar.HOUR, everyNr) }
                     EveryCategory.DAY  -> { add(Calendar.DAY_OF_MONTH, everyNr) }
                     EveryCategory.WEEK -> {
@@ -604,6 +608,7 @@ object Extensions {
     fun ObserveSourcesItem.scheduleSummary(context: Context): String {
         val nr = everyNr
         return when (everyCategory) {
+            EveryCategory.MINUTE  -> context.resources.getQuantityString(R.plurals.every_minutes, nr, nr)
             EveryCategory.HOUR  -> context.resources.getQuantityString(R.plurals.every_hours, nr, nr)
             EveryCategory.DAY   -> context.resources.getQuantityString(R.plurals.every_days, nr, nr)
             EveryCategory.WEEK  -> context.resources.getQuantityString(R.plurals.every_weeks, nr, nr)

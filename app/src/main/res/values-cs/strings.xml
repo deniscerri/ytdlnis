@@ -584,4 +584,10 @@
         <item quantity="many">Každých %d měsíců</item>
         <item quantity="other">Každých %d měsíců</item>
     </plurals>
+    <string name="download_delay">Zpoždění stahování</string>
+    <string name="download_delay_summary">Mezi jednotlivými stahováními počkejte nastavený počet sekund. Tato funkce znemožňuje souběžné stahování</string>
+    <string name="min_delay">Min. zpoždění (sekundy)</string>
+    <string name="max_delay">Max. zpoždění (sekundy)</string>
+    <string name="no_delay">Zpoždění není nastaveno</string>
+    <string name="waiting_download_delay">Čekání na stahování (sekundy: %s)…</string>
 </resources>

@@ -583,4 +583,10 @@
         <item quantity="many">Каждый %d месяцев</item>
         <item quantity="other">Каждый %d месяцев</item>
     </plurals>
+    <string name="download_delay">Задержка загрузки</string>
+    <string name="download_delay_summary">Подождите заданное время между каждой загрузкой. Эта функция отключает одновременную загрузку</string>
+    <string name="min_delay">Минимальная задержка (секунды)</string>
+    <string name="max_delay">Макс. задержка (секунды)</string>
+    <string name="no_delay">Задержка не установлена</string>
+    <string name="waiting_download_delay">Ожидание задержки загрузки (%s секунд)…</string>
 </resources>

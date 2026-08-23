@@ -566,6 +566,7 @@
     <string name="max_delay">Max delay (seconds)</string>
     <string name="no_delay">No delay set</string>
     <string name="waiting_download_delay">Waiting download delay (%s seconds)…</string>
+    <plurals name="every_minutes"><item quantity="one">Every minute</item><item quantity="other">Every %d minutes</item></plurals>
     <string name="bgutils_info">A proof-of-origin token (POT) provider for yt-dlp.\nWith it enabled, YTDLnis hosts the HTTP server that generates the POT and installs the related plugin that yt-dlp uses.</string>
     <string name="bgutils_pot_generation_script">Generation script</string>
     <string name="bgutils_pot_generation_server">HTTP Server</string>

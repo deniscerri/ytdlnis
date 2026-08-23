@@ -568,4 +568,10 @@
     <plurals name="every_months">
         <item quantity="other">%d개월마다</item>
     </plurals>
+    <string name="download_delay">다운로드 지연</string>
+    <string name="download_delay_summary">각 다운로드 사이에 설정한 시간만큼 기다립니다. 이 기능을 켜면 동시 다운로드는 비활성화됩니다</string>
+    <string name="min_delay">최소 지연 (초)</string>
+    <string name="max_delay">최대 지연 (초)</string>
+    <string name="no_delay">지연 설정 없음</string>
+    <string name="waiting_download_delay">다운로드 지연 대기 중 (%s초)…</string>
 </resources>
