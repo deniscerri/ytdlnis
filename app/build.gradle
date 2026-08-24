@@ -94,6 +94,9 @@ android {
         foss {
             dimension "version"
         }
+        izzy {
+            dimension "version"
+        }
     }
 
 
@@ -156,20 +159,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
-//    implementation "com.github.yausername.youtubedl-android:library:$youtubedlAndroidVer"
-//    implementation "com.github.yausername.youtubedl-android:ffmpeg:$youtubedlAndroidVer"
-//    implementation "com.github.yausername.youtubedl-android:aria2c:$youtubedlAndroidVer"
 
+    githubImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    githubImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
+    githubImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
 
-    implementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    fossImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    fossImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
+    fossImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
 
-    //implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.18.1"
-    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
-
-//    implementation "io.github.junkfood02.youtubedl-android:library:0.17.4"
-    //noinspection NewerVersionAvailable
-    implementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
-//    implementation "io.github.junkfood02.youtubedl-android:aria2c:0.17.2"
+    izzyImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    izzyImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
+    izzyImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"
