@@ -319,10 +319,12 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                 configuration.add(conf)
                 setValues(conf)
-                preferences.edit().putString(
-                    "youtube_generated_po_tokens",
-                    Gson().toJson(configuration).toString()
-                ).apply()
+                preferences.edit(commit = true) {
+                    putString(
+                        "youtube_generated_po_tokens",
+                        Gson().toJson(configuration).toString()
+                    )
+                }
             }
         }
 
@@ -333,17 +335,17 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         switch.setOnClickListener {
             requireView().findViewById<LinearLayout>(R.id.manual_potoken_generator_collapsible).isVisible = switch.isChecked
 
+            configuration.remove(conf)
+            conf.enabled = switch.isChecked
+            useVisitorData.isEnabled = switch.isChecked
+            configuration.add(conf)
+            preferences.edit(commit = true) {
+                putString(
+                    "youtube_generated_po_tokens",
+                    Gson().toJson(configuration).toString()
+                )
+            }
             if (switch.isChecked) {
-                configuration.remove(conf)
-                conf.enabled = switch.isChecked
-                useVisitorData.isEnabled = switch.isChecked
-                configuration.add(conf)
-                preferences.edit(commit = true) {
-                    putString(
-                        "youtube_generated_po_tokens",
-                        Gson().toJson(configuration).toString()
-                    )
-                }
                 if (conf.poTokens.isEmpty()) {
                     regenerate.performClick()
                 }
