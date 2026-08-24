@@ -79,6 +79,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             ).toMutableList()
         }.getOrDefault(mutableListOf())
 
+        RuntimeManager.getInstance().assertInit()
         initBGUtils()
         initWeb()
     }
@@ -337,9 +338,12 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 conf.enabled = switch.isChecked
                 useVisitorData.isEnabled = switch.isChecked
                 configuration.add(conf)
-                preferences.edit()
-                    .putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString())
-                    .apply()
+                preferences.edit(commit = true) {
+                    putString(
+                        "youtube_generated_po_tokens",
+                        Gson().toJson(configuration).toString()
+                    )
+                }
                 if (conf.poTokens.isEmpty()) {
                     regenerate.performClick()
                 }
