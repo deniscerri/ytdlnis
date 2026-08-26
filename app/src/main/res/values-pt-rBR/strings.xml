@@ -546,4 +546,48 @@
     <string name="rescan_from_scratch">Re-escaneie do zero</string>
     <string name="rescan_from_scratch_desc">Esqueça os itens processados e reinstale tudo que não está salvo</string>
     <string name="skip_backlog">Pule o backlog atual</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Concluído · %d execução</item>
+        <item quantity="many">Concluído · %d execuções</item>
+        <item quantity="other">Concluído · %d execuções</item>
+    </plurals>
+    <string name="skip_backlog_desc">Marque tudo o que está atualmente na fonte como concluído — baixe apenas novos envios</string>
+    <string name="unskip_ignored">Incluir novamente uploads ignorados</string>
+    <string name="unskip_ignored_desc">Baixe os uploads existentes que foram ignorados na primeira execução</string>
+    <string name="observe_runs_chip">%d executado(s)</string>
+    <string name="observe_processed_chip">%d processado(s)</string>
+    <string name="observe_skipped_chip">%d ignorado(s)</string>
+    <string name="observe_updating">Atualizando…</string>
+    <string name="check_available_storage">Verifique o armazenamento disponível</string>
+    <string name="download_delay">Atraso de download</string>
+    <string name="download_delay_summary">Aguarda o número de segundos configurado entre cada download. Esse recurso desativa downloads simultâneos</string>
+    <string name="min_delay">Atraso mínimo (segundos)</string>
+    <string name="max_delay">Atraso máximo (segundos)</string>
+    <string name="no_delay">Nenhum atraso definido</string>
+    <string name="waiting_download_delay">Aguardando atraso no download (%s segundos)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">A cada minuto</item>
+        <item quantity="many">A cada %d minutos</item>
+        <item quantity="other">A cada %d minutos</item>
+    </plurals>
+    <plurals name="every_hours">
+        <item quantity="one">A cada hora</item>
+        <item quantity="many">A cada %d horas</item>
+        <item quantity="other">A cada %d horas</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Todo os dias</item>
+        <item quantity="many">A cada %d dias</item>
+        <item quantity="other">A cada %d dias</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Toda semana</item>
+        <item quantity="many">A cada %d semanas</item>
+        <item quantity="other">A cada %d semanas</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Todo mês</item>
+        <item quantity="many">A cada %d meses</item>
+        <item quantity="other">A cada %d meses</item>
+    </plurals>
 </resources>
