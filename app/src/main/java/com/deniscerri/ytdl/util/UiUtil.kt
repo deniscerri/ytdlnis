@@ -2490,9 +2490,7 @@ object UiUtil {
             text = command
             isLongClickable = true
             setTextIsSelectable(true)
-            if (preferences.getBoolean("use_code_color_highlighter", true)) {
-                enableTextHighlight()
-            }
+            enableTextHighlight()
             setPadding(20, 0, 20, 0)
         }
 
