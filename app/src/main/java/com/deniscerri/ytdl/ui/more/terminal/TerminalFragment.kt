@@ -157,13 +157,10 @@ class TerminalFragment : Fragment() {
                         if (shortcutCount > 0){
                             UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
                                 itemSelected = {sh ->
-                                    session.write(" $sh ")
+                                    session.write(" $sh")
                                 },
-                                itemRemoved = { removed ->
-                                      //TODO
-//                                    input.setText(input.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trim())
-//                                    input.setSelection(input.text.length)
-                                })
+                                itemRemoved = {}
+                            )
                         }
                     }
                 }
