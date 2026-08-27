@@ -187,10 +187,9 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                     removeItem(it, sheet)
                 },
                 downloadItem = {
-                    downloadViewModel.deleteDownload(it.id)
                     it.downloadStartTime = 0
                     runBlocking {
-                        downloadViewModel.queueDownloads(listOf(it))
+                        downloadViewModel.queueDownloads(listOf(it), ignoreDuplicates = true)
                     }
                 },
                 longClickDownloadButton = {
@@ -204,11 +203,9 @@ class ScheduledDownloadsFragment : Fragment(), ScheduledDownloadAdapter.OnItemCl
                 scheduleButtonClick = {downloadItem ->
                     UiUtil.showDatePicker(parentFragmentManager, preferences) {
                         Toast.makeText(context, getString(R.string.download_rescheduled_to) + " " + it.time, Toast.LENGTH_LONG).show()
-                        downloadViewModel.deleteDownload(downloadItem.id)
                         downloadItem.downloadStartTime = it.timeInMillis
                         runBlocking {
-                            downloadViewModel.queueDownloads(listOf(downloadItem))
-                            adapter.notifyItemChanged(position)
+                            downloadViewModel.queueDownloads(listOf(downloadItem), ignoreDuplicates = true)
                         }
                     }
                 }
