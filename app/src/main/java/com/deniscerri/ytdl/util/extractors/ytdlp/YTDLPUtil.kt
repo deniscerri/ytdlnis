@@ -797,11 +797,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
         }
 
-        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
-        if (dataSyncID.isNotBlank()) {
-            extractorArgs.add("player_skip=webpage,configs")
-            extractorArgs.add("data_sync_id=${dataSyncID}")
-        }
+//        val dataSyncID = sharedPreferences.getString("youtube_data_sync_id", "")!!
+//        if (dataSyncID.isNotBlank()) {
+//            extractorArgs.add("player_skip=webpage,configs")
+//            extractorArgs.add("data_sync_id=${dataSyncID}")
+//        }
 
         val generatedPoTokensRaw = sharedPreferences.getString("youtube_generated_po_tokens", "[]")!!.ifEmpty { "[]" }
         kotlin.runCatching {
@@ -818,10 +818,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                             }
                         }
 
-                        if (dataSyncID.isBlank() && value.useVisitorData) {
-                            extractorArgs.add("player_skip=webpage,configs")
-                            extractorArgs.add("visitor_data=${value.visitorData}")
-                        }
+//                        if (dataSyncID.isBlank() && value.useVisitorData) {
+//                            extractorArgs.add("player_skip=webpage,configs")
+//                            extractorArgs.add("visitor_data=${value.visitorData}")
+//                        }
 
                     }
                 }

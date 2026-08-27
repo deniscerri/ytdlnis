@@ -24,12 +24,12 @@
             android:key="use_app_language_for_metadata"
             android:title="@string/use_app_language_for_metadata" />
 
-        <EditTextPreference
-            android:defaultValue=""
-            android:icon="@drawable/ic_code"
-            android:key="youtube_data_sync_id"
-            app:useSimpleSummaryProvider="true"
-            android:title="Data Sync ID" />
+<!--        <EditTextPreference-->
+<!--            android:defaultValue=""-->
+<!--            android:icon="@drawable/ic_code"-->
+<!--            android:key="youtube_data_sync_id"-->
+<!--            app:useSimpleSummaryProvider="true"-->
+<!--            android:title="Data Sync ID" />-->
 
         <EditTextPreference
             android:defaultValue=""

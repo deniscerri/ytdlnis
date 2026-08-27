@@ -19,6 +19,7 @@ import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.doOnLayout
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -91,22 +92,13 @@ class TerminalFragment : Fragment() {
         virtualKeysView = view.findViewById(R.id.virtualKeys)
         bottomAppBar = view.findViewById(R.id.bottomAppBar)
 
-        var bundle = savedInstanceState
         if (arguments?.containsKey("id") == true) {
             sessionId = arguments?.getString("id")
-        }
-
-        if (arguments?.containsKey("share") == true){
-            if (bundle == null){
-                bundle = Bundle()
-            }
-            bundle.putString("input", arguments?.getString("share"))
         }
 
         terminalViewModel.setTerminalView(terminalView)
         terminalViewModel.setVirtualKeysView(virtualKeysView)
 
-        initMenu()
 
         var templateCount = 0
         var shortcutCount = 0
@@ -214,13 +206,22 @@ class TerminalFragment : Fragment() {
 
     @SuppressLint("UseKtx")
     private fun initMenu() {
+        topAppBar.menu?.forEach { it.isVisible = false }
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.add)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
 
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
             when (menuItem.itemId) {
                 R.id.add -> {
                     findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
                         NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
+                }
+                R.id.delete -> {
+                    sessionId?.apply {
+                        terminalViewModel.sessionBinder?.terminateSession(this)
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
+                    }
                 }
                 R.id.wrap -> {
 //                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
@@ -273,6 +274,8 @@ class TerminalFragment : Fragment() {
         }
 
         val newSession = arguments?.getBoolean("new") ?: false
+        val sessionShareURL = arguments?.getString("share")?.ifEmpty { null }
+
         val currentSession = sessionBinder.getSession(service.currentSession.value)
         session = if (newSession || currentSession == null) {
             sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
@@ -292,7 +295,7 @@ class TerminalFragment : Fragment() {
             val termView = view as TerminalView
 
             termView.setTextSize(
-                sharedPreferences.getFloat("terminal_zoom", 35f).coerceIn(10f, 30f).toInt()
+                sharedPreferences.getFloat("terminal_zoom", 35f).toInt()
             )
             termView.setTypeface(TerminalUtils.typeface)
 
@@ -319,7 +322,14 @@ class TerminalFragment : Fragment() {
                 reload(VirtualKeysInfo(virtualKeys, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES))
             }
 
-            terminalViewModel.setFont(ResourcesCompat.getFont(requireContext(), R.font.jetbrainsmono_medium)!!)
+            sessionShareURL?.apply {
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(500)
+                    withContext(Dispatchers.Main) {
+                        session.write("yt-dlp \"$sessionShareURL\"")
+                    }
+                }
+            }
         }
     }
 
