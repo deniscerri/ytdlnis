@@ -107,4 +107,38 @@
     <string name="adjust_video">Rekebisha video</string>
     <string name="concurrent_downloads">Upakuaji wa mpigo</string>
     <string name="concurrent_downloads_summary">Idadi ya vipakuliwa vinavyotekelezwa kwa wakati mmoja</string>
+    <string name="select_sponsorblock_filtering">Chagua kichujio cha kizuizi cha mfadhili matangazo</string>
+    <string name="defaultValue">Chaguo-msingi</string>
+    <string name="language">Lugha</string>
+    <string name="enable_mtime">Ruhusu mtime</string>
+    <string name="cancelled">imeghairiwa</string>
+    <string name="errored">yenye hitilafu</string>
+    <string name="create_shortcut">Tengeneza njia ya mkato</string>
+    <string name="error_restarting_download">Hitilafu imetokea ikijaribu kudownload upya</string>
+    <string name="create">Tengeneza</string>
+    <string name="select">Chagua</string>
+    <string name="selected">Iliyochaguliwa/Vilivyochaguliwa</string>
+    <string name="all_items_selected">Vyote vimechaguliwa</string>
+    <string name="access_all_directories">Ruhusu ufikiaji kwa mipangilio orodha yote</string>
+    <string name="also_download_audio">Pia download kama audio</string>
+    <string name="view">Angalia</string>
+    <string name="new_source">Chanzo kipya</string>
+    <string name="delete_all_sources">Futa vyanzo vyote</string>
+    <string name="confirm_delete_sources_desc">Futa vyanzo vyote, kabisa</string>
+    <plurals name="every_hours">
+        <item quantity="one">Kila saa</item>
+        <item quantity="other">Kila masaa</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Kila siku</item>
+        <item quantity="other">Kila siku</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Kila wiki</item>
+        <item quantity="other">Kila wiki</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Kila mwezi</item>
+        <item quantity="other">Kila miezi</item>
+    </plurals>
 </resources>

@@ -537,4 +537,51 @@
     <string name="package_version_ready_to_download">Paquete %1$s con la versión %2$s está listo para descargar</string>
     <string name="tap_to_see_changes_and_install">Toca para ver los cambios y instalar</string>
     <string name="view">Ver</string>
+    <string name="player_client_not_empty">La etiqueta del cliente del reproductor no debe estar vacía</string>
+    <string name="player_client_already_created">El cliente del reproductor ya está creado</string>
+    <string name="next_run">Siguiente: %1$s</string>
+    <string name="paused">En pausa</string>
+    <string name="check_complete">Revisión completa</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Terminado · %d carrera</item>
+        <item quantity="many">Finalizado · %d ejecuciones</item>
+    </plurals>
+    <string name="reset_state">Restablecer estado</string>
+    <string name="rescan_from_scratch">Volver a escanear desde cero</string>
+    <string name="rescan_from_scratch_desc">Olvídate de los elementos procesados y vuelve a descargar todo lo que aún no hayas guardado</string>
+    <string name="skip_backlog">Saltar la lista de tareas pendientes actual</string>
+    <string name="skip_backlog_desc">Marca como completado todo lo que hay actualmente en la fuente; descarga solo las subidas futuras</string>
+    <string name="unskip_ignored">Desactivar la omisión de las subidas ignoradas</string>
+    <string name="unskip_ignored_desc">Descargar los archivos que ya se subieron y que se omitieron en la primera ejecución</string>
+    <string name="observe_runs_chip">%d carreras</string>
+    <string name="observe_processed_chip">%d procesados</string>
+    <string name="observe_skipped_chip">%d omitidos</string>
+    <string name="observe_updating">Actualizando…</string>
+    <string name="check_available_storage">Verifica el espacio de almacenamiento disponible</string>
+    <string name="download_delay">Retraso en la descarga</string>
+    <string name="download_delay_summary">Espera el número de segundos configurado entre cada descarga. Esta función desactiva las descargas simultáneas</string>
+    <string name="min_delay">Retardo mínimo (segundos)</string>
+    <string name="max_delay">Retardo máximo (segundos)</string>
+    <string name="no_delay">No se ha establecido ningún retraso</string>
+    <string name="waiting_download_delay">Esperando a que finalice la descarga (%s segundos)…</string>
+    <plurals name="every_hours">
+        <item quantity="one">Cada hora</item>
+        <item quantity="many">Cada %d horas</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Todos los días</item>
+        <item quantity="many">Cada %d días</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Cada semana</item>
+        <item quantity="many">Cada %d semanas</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Cada mes</item>
+        <item quantity="many">Cada %d meses</item>
+    </plurals>
+    <plurals name="every_minutes">
+        <item quantity="one">Cada minuto</item>
+        <item quantity="many">Cada %d minutos</item>
+    </plurals>
 </resources>

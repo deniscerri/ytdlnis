@@ -589,4 +589,10 @@
     <string name="max_delay">Макс. затримка (секунд)</string>
     <string name="no_delay">Затримку не встановлено</string>
     <string name="waiting_download_delay">Очікування затримки завантаження (%s секунд)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Кожну хвилину</item>
+        <item quantity="few">Кожних %d хвилин</item>
+        <item quantity="many">Кожні %d хвилини</item>
+        <item quantity="other">Кожні %d хвилини</item>
+    </plurals>
 </resources>

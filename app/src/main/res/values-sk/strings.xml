@@ -590,4 +590,10 @@
     <string name="max_delay">Max. odklad (sekundy)</string>
     <string name="no_delay">Odklad nie je nastavený</string>
     <string name="waiting_download_delay">Čakanie na odložené sťahovanie (sekundy: %s)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Každú minútu</item>
+        <item quantity="few">Každé %d minúty</item>
+        <item quantity="many">Každých %d minút</item>
+        <item quantity="other">Každých %d minút</item>
+    </plurals>
 </resources>

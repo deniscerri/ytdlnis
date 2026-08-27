@@ -585,4 +585,9 @@
     <string name="max_delay">Délai maximal (en secondes)</string>
     <string name="no_delay">Aucun délai défini</string>
     <string name="waiting_download_delay">Attente de téléchargement (%s secondes)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Chaque minute</item>
+        <item quantity="many">Toutes les %d minutes</item>
+        <item quantity="other">Toutes les %d minutes</item>
+    </plurals>
 </resources>

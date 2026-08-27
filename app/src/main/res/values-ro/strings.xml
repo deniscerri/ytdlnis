@@ -20,9 +20,9 @@
     <string name="directories">Dosare</string>
     <string name="music_directory">Dosar de audio</string>
     <string name="you_are_in_latest_version">Utilizezi cea mai recentă versiune a aplicației</string>
-    <string name="ytld_update_success">Noua versiune a aplicației a fost instalată cu succes</string>
-    <string name="ytdl_already_updating">Instalez noua versiune</string>
-    <string name="ytdl_updating_started">Se descarcă versiunea nouă</string>
+    <string name="ytld_update_success">Noua versiune de yt-dlp a fost instalată cu succes</string>
+    <string name="ytdl_already_updating">Se instalează noua versiune de yt-dlp</string>
+    <string name="ytdl_updating_started">Se descarcă versiunea nouă de yt-dlp</string>
     <string name="Remove">Elimină</string>
     <string name="cancel">Anulează</string>
     <string name="ok">OK</string>
@@ -42,7 +42,7 @@
     <string name="concurrent_fragments">Fragmente concurente</string>
     <string name="concurrent_fragments_summary">Numărul de fragmente dintr-un videoclip nativ DASH/HLS de descărcat simultan</string>
     <string name="downloading">Descărcare</string>
-    <string name="limit_rate">Rată limită</string>
+    <string name="limit_rate">Limită de rată</string>
     <string name="limit_rate_summary">Rata maximă de descărcare (în baiți pe secundă), de ex. 50K sau 4,2M</string>
     <string name="aria2_summary">Utilizați aria2c ca program de descărcare în loc de cel implicit</string>
     <string name="processing">Prelucrare</string>
@@ -65,7 +65,7 @@
     <string name="defaultValue">Mod implicit</string>
     <string name="template">Șablon</string>
     <string name="date_added">Data adaugata</string>
-    <string name="update_ytdl_nightly">Versiunea de noapte a yt-dlp</string>
+    <string name="update_ytdl_nightly">Versiunea de nightly a yt-dlp</string>
     <string name="adjust_audio">Reglați sunetul</string>
     <string name="command_templates">Șabloane de comandă</string>
     <string name="terminal">Terminal</string>
@@ -82,8 +82,8 @@
     <string name="container">Stocare</string>
     <string name="audio_quality_summary">0 (cel mai bun) 10 (cel mai rău)</string>
     <string name="edit">Editați</string>
-    <string name="audio_format">Format audio</string>
-    <string name="video_format">Format video</string>
+    <string name="audio_format">Format-ul audio</string>
+    <string name="video_format">Format-ul video</string>
     <string name="save_thumb">Salvați miniatura</string>
     <string name="command_download_notification_channel_description">Notificare care arată progresul descărcării folosind o comandă yt-dlp</string>
     <string name="you_are_going_to_delete">Se șterge</string>
@@ -279,7 +279,7 @@
     <string name="sponsorblock">Sponsor Block</string>
     <string name="configure_download">Ajustați descărcarea</string>
     <string name="write_description">Salvați descrierea</string>
-    <string name="update_app_summary">Anunță versiuni noi ale aplicației atunci când este deschisă. Datele sunt extrase din Repository-ul oficial de pe Github</string>
+    <string name="update_app_summary">Anunță versiuni noi ale aplicației atunci când este deschisă. Datele sunt extrase din Repository-ul oficial de pe GitHub</string>
     <string name="retries">Reîncercări</string>
     <string name="fragment_retries">Reîncercări de fragmente</string>
     <string name="format_order">Ordine de formaturi</string>
@@ -505,4 +505,7 @@
     <string name="height">Înălțime</string>
     <string name="player_client_not_empty">Eticheta clientului de redare nu poate fi goală</string>
     <string name="player_client_already_created">Clientul de redare este deja creat</string>
+    <string name="required">Nevoită</string>
+    <string name="crop_validation_exceeds_w">X+W excedă %d</string>
+    <string name="crop_validation_exceeds_h">Y+H depășește %d</string>
 </resources>

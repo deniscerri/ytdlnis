@@ -580,4 +580,8 @@
     <string name="max_delay">Ən yuxarı gecikmə (saniyə)</string>
     <string name="no_delay">Gecikmə təyin edilməyib</string>
     <string name="waiting_download_delay">Yükləmə gecikməsini gözləyir (%s saniyə)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Hər dəqiqə</item>
+        <item quantity="other">Hər %d dəqiqədən bir</item>
+    </plurals>
 </resources>
