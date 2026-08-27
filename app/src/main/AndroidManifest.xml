@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 <!--    foreground service permission for android 14 and up-->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <queries>
         <package android:name="com.deniscerri.ytdl.python" />
         <package android:name="com.deniscerri.ytdl.ffmpeg" />
@@ -36,6 +37,7 @@
     <application
         android:name=".App"
         android:allowBackup="false"
+        android:largeHeap="true"
         android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|locale"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -47,6 +49,7 @@
         android:supportsRtl="true"
         android:theme="@style/BaseTheme"
         tools:ignore="DataExtractionRules"
+        android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="tiramisu"
         android:memtagMode="async">
         <profileable
@@ -353,6 +356,7 @@
             android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:exported="true"
             android:label="@string/terminal"
+            android:windowSoftInputMode="adjustResize"
             android:parentActivityName=".MainActivity">
             <intent-filter>
                 <action android:name="ytdlnis.TerminalActivity" />
@@ -579,6 +583,18 @@
         <service
             android:name="androidx.work.impl.foreground.SystemForegroundService"
             android:foregroundServiceType="dataSync"/>
+
+        <service
+            android:name=".services.BgUtilsPoTokenGeneratorService"
+            android:foregroundServiceType="specialUse"
+            android:exported="true"
+            />
+
+        <service
+            android:name=".services.TerminalSessionService"
+            android:foregroundServiceType="specialUse"
+            android:exported="false" />
+
     </application>
 
 </manifest>

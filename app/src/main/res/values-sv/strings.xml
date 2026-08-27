@@ -485,7 +485,7 @@
     <string name="cut_unsupported">Klippning är inte tillgängligt för detta objekt</string>
     <string name="select_between_desc">Bestäm urvalet av objekt att välja</string>
     <string name="potoken">PO-nyckel</string>
-    <string name="web_client_po_token">Webbklients PO-nyckel</string>
+    <string name="manual_po_token_generator">Webbklients PO-nyckel</string>
     <string name="no_keep_subs_summary">När du använder både inbäddade undertexter och skrivna undertexter, inte behålla undertextfilerna efter inbäddning</string>
     <string name="preferred_format_size">Föredragen formatstorlek</string>
     <string name="prefer_drc_audio">Föredra DRC ljud</string>

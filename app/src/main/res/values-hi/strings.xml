@@ -475,7 +475,7 @@
     <string name="cut_unsupported">इस आइटम के लिए कटिंग की सुविधा उपलब्ध नहीं है</string>
     <string name="select_between_desc">चयन किए जाने वाले आइटमों की सीमा निर्दिष्ट करें</string>
     <string name="potoken">पीओ टोकन</string>
-    <string name="web_client_po_token">वेब क्लाइंट पीओ टोकन</string>
+    <string name="manual_po_token_generator">वेब क्लाइंट पीओ टोकन</string>
     <string name="reverse">रिवर्स</string>
     <string name="no_keep_subs">एम्बेड करने के बाद सबटाइटल फ़ाइल हटा दें</string>
     <string name="no_keep_subs_summary">एम्बेड सबटाइटल और राइट सबटाइटल दोनों का उपयोग करते समय, एम्बेड करने के बाद सबटाइटल फ़ाइलों को न रखें।</string>

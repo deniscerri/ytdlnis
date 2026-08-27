@@ -338,10 +338,6 @@ object FileUtil {
         return "${getCachePath(context)}infojsons"
     }
 
-    fun getYTDLPPluginsPath(context: Context) : String {
-        return "${getCachePath(context)}ytdlp_plugins"
-    }
-
     fun deleteConfigFiles(request: YTDLRequest) {
         runCatching {
             request.getArguments("--config")?.forEach {

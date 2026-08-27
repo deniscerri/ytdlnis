@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.core
 
 import android.content.Context
 import android.os.Build
+import android.os.Environment
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.models.ExecuteException
@@ -28,9 +29,11 @@ import kotlinx.coroutines.withTimeoutOrNull
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
+import java.io.InputStream
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import kotlin.collections.set
 import kotlin.concurrent.Volatile
 
 object RuntimeManager {
@@ -227,13 +230,10 @@ object RuntimeManager {
 
     class CanceledException : Exception()
 
-    fun execute(
+    private fun buildYTDLCommand(
         request: YTDLRequest,
-        processId: String? = null,
-        redirectErrorStream: Boolean = false,
-        usingCacheDir: Boolean = false,
-        callback: ((Float, Long, String) -> Unit)? = null
-    ) : ExecuteResponse {
+        usingCacheDir: Boolean
+    ): List<String> {
         assertInit()
         assertNoUpdate()
 
@@ -266,19 +266,18 @@ object RuntimeManager {
 
         request.addOption("--progress-delta", 0.1)
 
-        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
-        return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
+        return mutableListOf(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
     }
 
-    fun executeFFmpeg(
-        command: String,
+    fun execute(
+        request: YTDLRequest,
         processId: String? = null,
+        redirectErrorStream: Boolean = false,
+        usingCacheDir: Boolean = false,
         callback: ((Float, Long, String) -> Unit)? = null
     ) : ExecuteResponse {
-        assertInit()
-
-        val fullCommand = mutableListOf<String>(ffmpegLocation.executable.absolutePath, command.removePrefix("ffmpeg "))
-        return executeImpl(fullCommand, processId, true, callback = callback)
+        val fullCommand = buildYTDLCommand(request, usingCacheDir)
+        return executeImpl(fullCommand, processId, redirectErrorStream, callback = callback)
     }
 
     fun executePython(
@@ -288,7 +287,8 @@ object RuntimeManager {
     ) : ExecuteResponse {
         assertInit()
 
-        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath, command.removePrefix("python "))
+        val fullCommand = mutableListOf<String>(pythonLocation.executable.absolutePath)
+        fullCommand.addAll(command.split(" "))
         return executeImpl(fullCommand, processId, true, callback = callback)
     }
 
@@ -300,7 +300,8 @@ object RuntimeManager {
     ) : ExecuteResponse {
         assertInit()
 
-        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath) + command.removePrefix("deno ").split(" ")
+        val fullCommand = mutableListOf<String>(denoLocation.executable.absolutePath)
+        fullCommand.addAll(command.split(" "))
         return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
     }
 
@@ -319,24 +320,14 @@ object RuntimeManager {
         val startTime = System.currentTimeMillis()
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
-        processBuilder.environment().apply {
-            this["LD_LIBRARY_PATH"] = ENV_LD_LIBRARY_PATH
-            if (OPEN_SSL_CONF != "") {
-                this["OPENSSL_CONF"] = OPEN_SSL_CONF
-            }
-            this["SSL_CERT_FILE"] = ENV_SSL_CERT_FILE
-            this["PATH"] = PATH
-            this["PYTHONHOME"] = ENV_PYTHONHOME
-            this["HOME"] = ENV_PYTHONHOME
-            this["TMPDIR"] = TMPDIR
-        }
+        processBuilder.environment().putAll(getEnvironment())
+
+        val outBuffer = StringBuffer()
+        val errBuffer = StringBuffer()
 
         if (executeDirectory != null) {
             processBuilder.directory(executeDirectory)
         }
-
-        val outBuffer = StringBuffer()
-        val errBuffer = StringBuffer()
 
         val process = try {
             processBuilder.start().also {
@@ -374,6 +365,97 @@ object RuntimeManager {
         } finally {
             if (processId != null) idProcessMap.remove(processId)
         }
+    }
+
+    private fun startProcess(
+        fullCommand: List<String>,
+        processId: String?,
+        executeDirectory: File?
+    ): Process {
+        if (processId != null && idProcessMap.containsKey(processId)) {
+            throw ExecuteException("Process ID already exists")
+        }
+
+        val processBuilder = ProcessBuilder(fullCommand)
+        processBuilder.environment().putAll(getEnvironment())
+        if (executeDirectory != null) {
+            processBuilder.directory(executeDirectory)
+        }
+
+        return try {
+            processBuilder.start().also {
+                if (processId != null) idProcessMap[processId] = it
+            }
+        } catch (e: IOException) {
+            throw ExecuteException(e)
+        }
+    }
+
+    fun <T> executeStreaming(
+        request: YTDLRequest,
+        processId: String? = null,
+        usingCacheDir: Boolean = false,
+        outputHandler: (InputStream) -> T
+    ): T {
+        val fullCommand = buildYTDLCommand(request, usingCacheDir)
+        return executeStreamingImpl(fullCommand, processId, outputHandler = outputHandler)
+    }
+
+    fun <T> executeStreamingImpl(
+        fullCommand: List<String>,
+        processId: String? = null,
+        executeDirectory: File? = null,
+        outputHandler: (InputStream) -> T
+    ): T {
+        val process = startProcess(fullCommand, processId, executeDirectory = executeDirectory)
+        val errBuffer = StringBuffer()
+
+        return try {
+            val stdErrProcessor = StreamGobbler(errBuffer, process.errorStream)
+
+            // Consume + fully drain stdout via the caller's handler BEFORE waitFor(),
+            // to avoid deadlocking on a full stdout pipe while the process still runs.
+            val result = process.inputStream.use { outputHandler(it) }
+
+            stdErrProcessor.join()
+            val exitCode = process.waitFor()
+            val err = errBuffer.toString()
+
+            if (exitCode != 0) {
+                if (processId != null && !idProcessMap.containsKey(processId)) throw CanceledException()
+                throw ExecuteException(err)
+            }
+
+            result
+        } catch (e: InterruptedException) {
+            process.destroy()
+            throw e
+        } finally {
+            if (processId != null) idProcessMap.remove(processId)
+        }
+    }
+
+    fun getEnvironment() : Map<String, String?> {
+        val env = mutableMapOf<String, String?>()
+
+        env["LD_LIBRARY_PATH"] = ENV_LD_LIBRARY_PATH
+        if (OPEN_SSL_CONF != "") {
+            env["OPENSSL_CONF"] = OPEN_SSL_CONF
+        }
+        env["SSL_CERT_FILE"] = ENV_SSL_CERT_FILE
+        env["PATH"] = PATH
+        env["PYTHONHOME"] = ENV_PYTHONHOME
+        env["HOME"] = ENV_PYTHONHOME
+        env["TMPDIR"] = TMPDIR
+        env["TERM"] = "xterm-256color"
+
+        return env
+    }
+
+    fun getEnvironmentForTerminal(): MutableMap<String, String?> {
+        val env = getEnvironment().toMutableMap()
+        env["HOME"] = Environment.getExternalStorageDirectory().path
+        return env
     }
 
     @Synchronized

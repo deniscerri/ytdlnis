@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Pemotongan tidak tersedia untuk item ini</string>
     <string name="select_between_desc">Tentukan rentang item yang akan dipilih</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">PO Token Klien Web</string>
+    <string name="manual_po_token_generator">PO Token Klien Web</string>
     <string name="reverse">Balik</string>
     <string name="no_keep_subs">Hapus berkas subtitle setelah penyematan</string>
     <string name="no_keep_subs_summary">Saat menggunakan Subtitle Semat dan Subtitle Tulis, jangan simpan berkas subtitle setelah penyematan</string>

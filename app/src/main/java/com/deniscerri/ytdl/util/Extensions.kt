@@ -56,6 +56,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayout
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonToken
 import com.neoutils.highlight.core.Highlight
 import com.neoutils.highlight.core.scheme.TextColorScheme
 import com.neoutils.highlight.core.util.UiColor
@@ -69,6 +71,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.net.HttpCookie
@@ -722,6 +725,48 @@ object Extensions {
             match.groupValues[1]
         }else {
             null
+        }
+    }
+
+    fun readJsonValue(reader: JsonReader, skipKeys: Set<String> = setOf()): Any {
+        return when (reader.peek()) {
+            JsonToken.BEGIN_ARRAY -> {
+                val array = JSONArray()
+                reader.beginArray()
+                while (reader.hasNext()) {
+                    array.put(readJsonValue(reader))
+                }
+                reader.endArray()
+                array
+            }
+            JsonToken.BEGIN_OBJECT -> {
+                val obj = JSONObject()
+                reader.beginObject()
+                while (reader.hasNext()) {
+                    val name = reader.nextName()
+                    if (name in skipKeys) {
+                        reader.skipValue()   // never parsed, never allocated
+                        continue
+                    }
+                    obj.put(name, readJsonValue(reader))
+                }
+                reader.endObject()
+                obj
+            }
+            JsonToken.STRING -> reader.nextString()
+            JsonToken.NUMBER -> {
+                val raw = reader.nextString()
+                raw.toLongOrNull() ?: raw.toDoubleOrNull() ?: raw
+            }
+            JsonToken.BOOLEAN -> reader.nextBoolean()
+            JsonToken.NULL -> {
+                reader.nextNull()
+                JSONObject.NULL
+            }
+            else -> {
+                reader.skipValue()
+                JSONObject.NULL
+            }
         }
     }
 

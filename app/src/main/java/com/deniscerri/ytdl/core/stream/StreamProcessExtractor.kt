@@ -25,18 +25,30 @@ internal class StreamProcessExtractor(
 
     override fun run() {
         try {
-            val input: Reader = InputStreamReader(stream, StandardCharsets.UTF_8)
             val currentLine = StringBuilder()
             var nextChar: Int
-            while (input.read().also { nextChar = it } != -1) {
-                buffer.append(nextChar.toChar())
-                if (nextChar == '\r'.code || nextChar == '\n'.code && callback != null) {
-                    val line = currentLine.toString()
-                    processOutputLine(line)
-                    currentLine.setLength(0)
-                    continue
+
+            while (stream.read().also { nextChar = it } != -1) {
+                val c = nextChar.toChar()
+
+                if (c == '\r' || c == '\n') {
+                    if (currentLine.isNotEmpty()) {
+                        val line = currentLine.toString()
+
+                        // 1. Process progress updates for UI callback
+                        processOutputLine(line)
+
+                        // 2. Prevent OOM: Don't store rapid \r progress lines in the permanent buffer.
+                        // Only save actual newlines or capped logs for debugging.
+                        if (c == '\n' && buffer.length < 500_000) {
+                            buffer.append(line).append("\n")
+                        }
+
+                        currentLine.setLength(0)
+                    }
+                } else {
+                    currentLine.append(c)
                 }
-                currentLine.append(nextChar.toChar())
             }
         } catch (e: IOException) {
             Log.e(TAG, "failed to read stream", e)

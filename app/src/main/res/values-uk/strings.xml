@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Цей елемент не можна вирізати</string>
     <string name="select_between_desc">Вкажіть діапазон елементів для вибору</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Веб Клієнт PO Token</string>
+    <string name="manual_po_token_generator">Веб Клієнт PO Token</string>
     <string name="reverse">Зворотній</string>
     <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
     <string name="no_keep_subs_summary">У разі використання функцій Вбудувати субтитри та Написати субтитри не зберігайте файли субтитрів після вбудовування</string>

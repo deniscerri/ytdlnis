@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Vágás ehez a tárgyhoz nem elérhető</string>
     <string name="select_between_desc">Adja meg a kiválasztandó elemek tartományát a kiválasztáshoz</string>
     <string name="potoken">PO token</string>
-    <string name="web_client_po_token">Web kliens PO Token</string>
+    <string name="manual_po_token_generator">Web kliens PO Token</string>
     <string name="reverse">Fordított</string>
     <string name="no_keep_subs">Feliratfájlok törlése beágyazás után</string>
     <string name="no_keep_subs_summary">„Ha egyszerre használja a „Feliratok beágyazása” és „Feliratok mentése” opciókat, a feliratfájlokat ne tartsa meg beágyazás után</string>

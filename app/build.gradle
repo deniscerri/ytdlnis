@@ -108,6 +108,13 @@ android {
             } else {
                 output.versionCodeOverride = 100 * project.android.defaultConfig.versionCode
             }
+
+            def abi = output.getFilter(com.android.build.OutputFile.ABI) ?: "universal"
+            if (variant.flavorName == "github") {
+                output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}.apk"
+            } else {
+                output.outputFileName = "YTDLnis-${versionName}-foss-${abi}-${variant.buildType.name}.apk"
+            }
         }
     }
 
@@ -238,9 +245,15 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-webview:0.36.0'
     implementation 'androidx.compose.material3:material3-android:1.4.0'
     implementation "io.noties.markwon:core:4.6.2"
-    implementation("com.github.teamnewpipe:newpipeextractor:v0.26.4")
+    implementation("com.github.teamnewpipe:newpipeextractor:v0.26.5")
 
     implementation("commons-io:commons-io:2.5")
     implementation("org.apache.commons:commons-compress:1.12")
     implementation("androidx.core:core-splashscreen:1.2.0")
+
+    implementation 'com.github.termux.termux-app:terminal-view:v0.118.3'
+    implementation 'com.github.termux.termux-app:termux-shared:v0.118.3'
+    //noinspection Aligned16KB
+    implementation 'com.github.termux.termux-app:terminal-emulator:v0.118.3'
+
 }

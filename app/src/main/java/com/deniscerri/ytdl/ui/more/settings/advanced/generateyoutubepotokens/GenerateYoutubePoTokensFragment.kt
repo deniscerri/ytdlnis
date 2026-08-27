@@ -6,25 +6,35 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePoTokenItem
+import com.deniscerri.ytdl.services.BgUtilsPoTokenGeneratorService
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity
+import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.UiUtil
@@ -33,8 +43,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GenerateYoutubePoTokensFragment : Fragment() {
     private lateinit var settingsActivity: SettingsActivity
@@ -66,15 +79,156 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             ).toMutableList()
         }.getOrDefault(mutableListOf())
 
+        RuntimeManager.getInstance().assertInit()
+        initBGUtils()
         initWeb()
     }
 
+    private fun initBGUtils() {
+        val useBgUtils = preferences.getBoolean("use_bgutils_potoken_generator", false)
+        val bgUtilsMethod = preferences.getString("bgutils_potoken_method", "generation_script")
+
+
+        requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = useBgUtils
+
+        requireView().findViewById<MaterialSwitch>(R.id.bgutils_potoken_provider_switch).apply {
+            this.isChecked = useBgUtils
+            val denoIsInstalled = RuntimeManager.getInstance().denoLocation.isAvailable
+            val nodeIsInstalled = RuntimeManager.getInstance().nodeLocation.isAvailable
+
+            this.setOnClickListener {
+                if (!denoIsInstalled && !nodeIsInstalled) {
+                    this.isChecked = false
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package_or_package, "NodeJS", "Deno"), Snackbar.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                preferences.edit(commit = true) {
+                    putBoolean("use_bgutils_potoken_generator", this@apply.isChecked)
+                }
+                requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = this.isChecked
+
+                if (!this.isChecked) {
+                    BgUtilsPoTokenGeneratorUtil.stopServer(context)
+                } else {
+                    val builder = MaterialAlertDialogBuilder(context)
+                    builder.setTitle("BgUtils POT Provider")
+                    builder.setMessage(getString(R.string.please_wait))
+                    builder.setCancelable(false)
+
+                    val dialog = builder.create()
+                    dialog.show()
+
+                    lifecycleScope.launch {
+                        val resp = withContext(Dispatchers.IO) {
+                            BgUtilsPoTokenGeneratorUtil.runServer(context) { progress ->
+                                lifecycleScope.launch {
+                                    withContext(Dispatchers.Main) {
+                                        dialog.setMessage(progress)
+                                    }
+                                }
+                            }
+                        }
+
+                        resp.onSuccess {
+                            dialog.dismiss()
+                        }
+                        resp.onFailure { error ->
+                            dialog.dismiss()
+                            view?.apply {
+                                Snackbar.make(this, error.message ?: "", Snackbar.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                }
+            }
+
+            val scriptRadio = requireView().findViewById<RadioButton>(R.id.bgutils_pot_script_radio)
+            val serverRadio = requireView().findViewById<RadioButton>(R.id.bgutils_pot_server_radio)
+
+            scriptRadio.apply {
+                isChecked = bgUtilsMethod == "generation_script" && nodeIsInstalled
+                alpha = if (nodeIsInstalled) 1f else 0.3f
+
+                setOnCheckedChangeListener { button, bool ->
+                    if (nodeIsInstalled) {
+                        preferences.edit(commit = true) {
+                            putString("bgutils_potoken_method", "generation_script")
+                        }
+                        BgUtilsPoTokenGeneratorUtil.stopServer(context)
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "NodeJS"), Snackbar.LENGTH_SHORT).show()
+                        post {
+                            serverRadio.performClick()
+                        }
+                    }
+                }
+            }
+
+            serverRadio.apply {
+                isChecked = bgUtilsMethod == "server" && denoIsInstalled
+                alpha = if (denoIsInstalled) 1f else 0.3f
+
+                setOnClickListener {
+                    if (denoIsInstalled) {
+                        preferences.edit(commit = true) {
+                            putString("bgutils_potoken_method", "server")
+                        }
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                BgUtilsPoTokenGeneratorUtil.runServer(context) {}
+                            }
+                        }
+                    } else {
+                        Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
+                        post {
+                            scriptRadio.performClick()
+                        }
+                    }
+                }
+            }
+        }
+
+        requireView().findViewById<Button>(R.id.redownload_bgutils).apply {
+            this.setOnClickListener {
+                val builder = MaterialAlertDialogBuilder(context)
+                builder.setTitle("BgUtils POT Provider")
+                builder.setMessage(getString(R.string.downloading_update))
+                builder.setCancelable(false)
+
+                val dialog = builder.create()
+                dialog.show()
+
+                lifecycleScope.launch {
+                    val resp = withContext(Dispatchers.IO) {
+                        BgUtilsPoTokenGeneratorUtil.downloadFiles(context, runServerAfterwards = bgUtilsMethod == "server") { progress ->
+                            lifecycleScope.launch {
+                                withContext(Dispatchers.Main) {
+                                    dialog.setMessage(progress)
+                                }
+                            }
+                        }
+                    }
+
+                    resp.onSuccess {
+                        dialog.dismiss()
+                    }
+                    resp.onFailure { error ->
+                        dialog.dismiss()
+                        view?.apply {
+                            Snackbar.make(this, error.message ?: "", Snackbar.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private fun initWeb() {
-        val conf = configuration.find { it.clients.any { it2 -> it2.contains("web") } }
-            ?: YoutubeGeneratePoTokenItem(false, mutableListOf("mweb"), mutableListOf(), "", false)
+        val confTmp = configuration.find { it.clients.any { it2 -> it2.contains("web") } }
+        val conf = confTmp ?: YoutubeGeneratePoTokenItem(false, mutableListOf("mweb"), mutableListOf(), "", false)
 
-
-        val switch = requireView().findViewById<MaterialSwitch>(R.id.web_client_switch)
+        val switch = requireView().findViewById<MaterialSwitch>(R.id.manual_potoken_generator_switch)
         val gvs = requireView().findViewById<TextView>(R.id.content_gvs)
         val player = requireView().findViewById<TextView>(R.id.content_player)
         val subs = requireView().findViewById<TextView>(R.id.content_subs)
@@ -88,6 +242,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         val useVisitorData = requireView().findViewById<MaterialSwitch>(R.id.use_visitor_data)
 
         switch.isChecked = conf.enabled
+        requireView().findViewById<LinearLayout>(R.id.manual_potoken_generator_collapsible).isVisible = conf.enabled
         switch.jumpDrawablesToCurrentState()
         useVisitorData.isEnabled = conf.enabled
 
@@ -164,10 +319,12 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
                 configuration.add(conf)
                 setValues(conf)
-                preferences.edit().putString(
-                    "youtube_generated_po_tokens",
-                    Gson().toJson(configuration).toString()
-                ).apply()
+                preferences.edit(commit = true) {
+                    putString(
+                        "youtube_generated_po_tokens",
+                        Gson().toJson(configuration).toString()
+                    )
+                }
             }
         }
 
@@ -176,15 +333,22 @@ class GenerateYoutubePoTokensFragment : Fragment() {
         }
 
         switch.setOnClickListener {
+            requireView().findViewById<LinearLayout>(R.id.manual_potoken_generator_collapsible).isVisible = switch.isChecked
+
             configuration.remove(conf)
             conf.enabled = switch.isChecked
             useVisitorData.isEnabled = switch.isChecked
             configuration.add(conf)
-            preferences.edit()
-                .putString("youtube_generated_po_tokens", Gson().toJson(configuration).toString())
-                .apply()
-            if (conf.poTokens.isEmpty()) {
-                regenerate.performClick()
+            preferences.edit(commit = true) {
+                putString(
+                    "youtube_generated_po_tokens",
+                    Gson().toJson(configuration).toString()
+                )
+            }
+            if (switch.isChecked) {
+                if (conf.poTokens.isEmpty()) {
+                    regenerate.performClick()
+                }
             }
         }
 

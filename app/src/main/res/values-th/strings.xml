@@ -476,7 +476,7 @@
     <string name="cut_unsupported">การตัดไม่พร้อมใช้งานกับรายการนี้</string>
     <string name="select_between_desc">ระบุช่วงของรายการที่จะเลือก</string>
     <string name="potoken">โทเค็น PO</string>
-    <string name="web_client_po_token">โทเค็น PO ของเว็บไคลเอ็นต์</string>
+    <string name="manual_po_token_generator">โทเค็น PO ของเว็บไคลเอ็นต์</string>
     <string name="reverse">ย้อนกลับ</string>
     <string name="no_keep_subs">ลบไฟล์คำบรรยายหลังจากฝังแล้ว</string>
     <string name="no_keep_subs_summary">เมื่อใช้ทั้งฝังคำบรรยายและเขียนคำบรรยาย ไม่ต้องเก็บไฟล์คำบรรยายไว้หลังจากฝังแล้ว</string>

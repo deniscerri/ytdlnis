@@ -474,7 +474,7 @@
     <string name="select_between_desc">தேர்ந்தெடுக்க பொருட்களின் வரம்பைக் குறிப்பிடவும்</string>
     <string name="cut_unsupported">இந்த உருப்படிக்கு வெட்டு கிடைக்கவில்லை</string>
     <string name="potoken">போடோ மாகாணம்</string>
-    <string name="web_client_po_token">வலை வாங்கி PO கிள்ளாக்கு</string>
+    <string name="manual_po_token_generator">வலை வாங்கி PO கிள்ளாக்கு</string>
     <string name="reverse">தலைகீழ்</string>
     <string name="no_keep_subs">உட்பொதித்த பிறகு வசன கோப்புகளை நீக்கவும்</string>
     <string name="no_keep_subs_summary">உட்பொதிக்கப்பட்ட வசனங்கள் மற்றும் எழுதும் வசனங்கள் இரண்டையும் பயன்படுத்தும் போது, உட்பொதித்த பிறகு வசனக் கோப்புகளை வைத்திருக்க வேண்டாம்</string>

@@ -11,13 +11,14 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.work.YTDLPCoroutineWorker
 import kotlinx.coroutines.runBlocking
 
 class UpdateMultipleDownloadsFormatsWorker(
     private val context: Context,
     workerParams: WorkerParameters
-) : Worker(context, workerParams) {
-    override fun doWork(): Result {
+) : YTDLPCoroutineWorker(context, workerParams) {
+    override suspend fun runWork(): Result {
         val dbManager = DBManager.Companion.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao

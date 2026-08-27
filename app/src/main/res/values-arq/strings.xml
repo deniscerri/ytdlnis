@@ -479,7 +479,7 @@
     <string name="write_subs_when_embed_subs_summary">سيؤدي هذا إلى تفعيل خياري \'حفظ الترجمات\' و\'حفظ الترجمات التلقائية\' لتنزيل ملفات الترجمة، ثم حذفها تلقائياً بعد دمجها</string>
     <string name="generate_potokens_warning">بتفعيل هذا الخيار، لازم عليك تحبس ملفات تعريف الارتباط (Cookies)</string>
     <string name="select_between_desc">حدد نطاق العناصر المراد اختيارها</string>
-    <string name="web_client_po_token">التوكين تاع PO للعميل الالكتروني</string>
+    <string name="manual_po_token_generator">التوكين تاع PO للعميل الالكتروني</string>
     <string name="no_keep_subs">حذف ملفات الترجمة بعد ما يتم دمجها</string>
     <string name="no_keep_subs_summary">عدم الاحتفاظ بملفات الترجمة بعد دمجها، وذلك عند استخدام خياري \'دمج الترجمة\' و\'حفظ الترجمة\' معاً</string>
     <string name="video_compatible">فيديو متوافق</string>

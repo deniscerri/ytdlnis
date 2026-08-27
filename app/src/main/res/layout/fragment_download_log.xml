@@ -113,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/copy_log"
+            android:stateListAnimator="@null"
             android:text="@string/copy_log"
             app:icon="@drawable/ic_copy"
             app:layout_anchor="@id/bottomAppBar" />

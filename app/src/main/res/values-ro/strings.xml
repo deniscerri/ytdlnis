@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Tăierea nu este disponibilă pentru acest element</string>
     <string name="select_between_desc">Specificați intervalul de elemente pentru selectare</string>
     <string name="potoken">Token PO</string>
-    <string name="web_client_po_token">Token PO pentru clientul web</string>
+    <string name="manual_po_token_generator">Token PO pentru clientul web</string>
     <string name="reverse">Invers</string>
     <string name="no_keep_subs">Șterge fișierele de subtitrare după încorporare</string>
     <string name="video_compatible">Video Compatibil</string>

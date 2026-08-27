@@ -1550,7 +1550,9 @@
         <item>ios</item>
         <item>mweb</item>
         <item>tv</item>
-        <item>tv_embedded</item>
+        <item>tv_downgraded</item>
+        <item>tv_simply</item>
+        <item>visionos</item>
         <item>web</item>
         <item>web_creator</item>
         <item>web_embedded</item>

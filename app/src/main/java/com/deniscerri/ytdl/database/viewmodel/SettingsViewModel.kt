@@ -117,17 +117,14 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
             Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
             Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json")
 
-        saveFile.delete()
         withContext(Dispatchers.IO) {
+            if (saveFile.exists()) saveFile.delete()
             saveFile.createNewFile()
-        }
-        saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
-
-        val res = withContext(Dispatchers.IO) {
-            FileUtil.moveFile(saveFile.parentFile!!, application, FileUtil.getBackupPath(application), false) {}
+            saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
+            FileUtil.scanMedia(listOf(saveFile.absolutePath), application)
         }
 
-        return Result.success(res[0])
+        return Result.success(saveFile.absolutePath)
     }
 
     suspend fun restoreData(data: RestoreAppDataItem, context: Context, resetData: Boolean = false) : Boolean {

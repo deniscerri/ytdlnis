@@ -15,285 +15,405 @@
             android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical"
             android:paddingBottom="120dp">
 
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/web_client_switch"
-                android:layout_width="match_parent"
-                android:background="?attr/colorSurfaceContainer"
-                android:paddingHorizontal="20dp"
-                android:layout_height="70dp"
-                android:checked="false"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/web_client_po_token"
-                tools:ignore="HardcodedText" />
-
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/bgutils_potoken_provider"
                 android:layout_width="match_parent"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:backgroundTint="@android:color/transparent"
-                app:checkedIcon="@null"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-                app:strokeWidth="0dp"
-                app:cardPreventCornerOverlap="true"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/title_gvs"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:text="@string/potoken_gvs"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/content_gvs"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title_gvs" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:backgroundTint="@android:color/transparent"
-                app:checkedIcon="@null"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-                app:strokeWidth="0dp"
-                app:cardPreventCornerOverlap="true"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/title_player"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:text="@string/potoken_player"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/content_player"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title_player" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:backgroundTint="@android:color/transparent"
-                app:checkedIcon="@null"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-                app:strokeWidth="0dp"
-                app:cardPreventCornerOverlap="true"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/title_subs"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:text="@string/potoken_subs"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/content_subs"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title_subs" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:backgroundTint="@android:color/transparent"
-                app:checkedIcon="@null"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-                app:strokeWidth="0dp"
-                app:cardPreventCornerOverlap="true"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/title_visitordata"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:text="@string/visitor_data"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/content_visitordata"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title_visitordata" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:checkable="true"
-                android:clickable="true"
-                android:focusable="true"
-                android:backgroundTint="@android:color/transparent"
-                app:checkedIcon="@null"
-                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
-                app:strokeWidth="0dp"
-                app:cardPreventCornerOverlap="true"
-                android:layout_height="wrap_content">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/playerclient_div"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="15dp">
-
-                    <TextView
-                        android:id="@+id/title_playerclients"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:text="@string/player_client"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/content_playerclient"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:maxLines="3"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/title_playerclients" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </com.google.android.material.card.MaterialCardView>
-
-            <Button
-                android:id="@+id/regenerate_webview_potokens"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:text="@string/regenerate"
-                android:outlineProvider="none"
-                android:layout_gravity="end"
-                android:layout_margin="20dp"
-                app:icon="@drawable/baseline_stars_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:backgroundTint="@android:color/transparent"
+                app:cardPreventCornerOverlap="true"
+                app:checkedIcon="@null"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                app:strokeWidth="0dp">
 
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:id="@+id/use_visitor_data"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/bgutils_potoken_provider_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingHorizontal="20dp"
+                        android:background="?attr/colorSurfaceContainer"
+                        android:text="BgUtils POT Provider"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <LinearLayout
+                        android:id="@+id/bgutils_potoken_provider_collapsible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/bgutils_info" />
+
+                        <RadioGroup
+                            android:id="@+id/bgutils_pot_radiogroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RadioButton
+                                android:id="@+id/bgutils_pot_script_radio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="5dp"
+                                android:text="@string/bgutils_pot_generation_script"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/bgutils_pot_generation_script_summary" />
+
+                            <RadioButton
+                                android:id="@+id/bgutils_pot_server_radio"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingHorizontal="5dp"
+                                android:text="@string/bgutils_pot_generation_server"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="35dp"
+                                android:text="@string/bgutils_pot_server_summary" />
+
+
+                        </RadioGroup>
+
+                        <Button
+                            android:id="@+id/redownload_bgutils"
+                            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_margin="20dp"
+                            android:autoLink="all"
+                            android:outlineProvider="none"
+                            android:text="@string/redownload"
+                            app:icon="@drawable/ic_retries"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/manual_potoken_generator"
                 android:layout_width="match_parent"
-                android:paddingHorizontal="20dp"
-                android:layout_height="70dp"
-                android:checked="true"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:text="@string/visitor_data" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                app:cardPreventCornerOverlap="true"
+                app:checkedIcon="@null"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                app:strokeWidth="0dp">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_margin="15dp"-->
-<!--                android:textStyle="bold"-->
-<!--                android:text="@string/generate_potokens_warning"/>-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/manual_potoken_generator_switch"
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:paddingHorizontal="20dp"
+                        android:background="?attr/colorSurfaceContainer"
+                        android:text="@string/manual_po_token_generator"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+
+                    <LinearLayout
+                        android:id="@+id/manual_potoken_generator_collapsible"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardPreventCornerOverlap="true"
+                            app:checkedIcon="@null"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="15dp">
+
+                                <TextView
+                                    android:id="@+id/title_gvs"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="@string/potoken_gvs"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/content_gvs"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="15dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/title_gvs" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardPreventCornerOverlap="true"
+                            app:checkedIcon="@null"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="15dp">
+
+                                <TextView
+                                    android:id="@+id/title_player"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="@string/potoken_player"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/content_player"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="15dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/title_player" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardPreventCornerOverlap="true"
+                            app:checkedIcon="@null"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="15dp">
+
+                                <TextView
+                                    android:id="@+id/title_subs"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="@string/potoken_subs"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/content_subs"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="15dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/title_subs" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardPreventCornerOverlap="true"
+                            app:checkedIcon="@null"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="15dp">
+
+                                <TextView
+                                    android:id="@+id/title_visitordata"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="@string/visitor_data"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/content_visitordata"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="15dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/title_visitordata" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:backgroundTint="@android:color/transparent"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:cardPreventCornerOverlap="true"
+                            app:checkedIcon="@null"
+                            app:shapeAppearance="@style/ShapeAppearanceOverlay.Avatar"
+                            app:strokeWidth="0dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/playerclient_div"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="15dp">
+
+                                <TextView
+                                    android:id="@+id/title_playerclients"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="10dp"
+                                    android:text="@string/player_client"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                                <TextView
+                                    android:id="@+id/content_playerclient"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="15dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="3"
+                                    android:textSize="12sp"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@+id/title_playerclients" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                        <Button
+                            android:id="@+id/regenerate_webview_potokens"
+                            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_margin="20dp"
+                            android:autoLink="all"
+                            android:outlineProvider="none"
+                            android:text="@string/regenerate"
+                            app:icon="@drawable/baseline_stars_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.materialswitch.MaterialSwitch
+                            android:id="@+id/use_visitor_data"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:checked="true"
+                            android:paddingHorizontal="20dp"
+                            android:text="@string/visitor_data"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+
+
 
         </LinearLayout>
 
     </ScrollView>
-
-
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -467,7 +467,7 @@
     <string name="free_ratio">ڕێژەی سەربەست</string>
     <string name="app_icon">وێنۆچکەی بەرنامە</string>
     <string name="select_between_desc">مەودای هەڵبژاردنی بڕگەکان دیاری بکە</string>
-    <string name="web_client_po_token">کۆدی پشتڕاستکردنەوەی کڕیاری وێب</string>
+    <string name="manual_po_token_generator">کۆدی پشتڕاستکردنەوەی کڕیاری وێب</string>
     <string name="no_keep_subs">سڕینەوەی فایلەکانی ژێرنووس دوای جێگیرکردن</string>
     <string name="no_keep_subs_summary">دوای جێگیرکردن ، فایلی ژێرنووس مەهێڵەرەوە، کاتێک هەم Embed و هەمیش Write بەکاردێنیت</string>
     <string name="video_compatible_summary">دووبارە کۆدڕێژیکردنەوەی ڤیدیۆکە بۆ گونجاندنی لەگەڵ ئەپەکانی تر</string>

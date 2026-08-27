@@ -1,131 +1,105 @@
 package com.deniscerri.ytdl.ui.more.terminal
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.Typeface
 import androidx.core.content.edit
-import androidx.core.view.get
-import androidx.core.view.isVisible
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
+import androidx.core.view.doOnLayout
+import androidx.core.view.forEach
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.models.TerminalItem
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
-import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
-import com.deniscerri.ytdl.util.Extensions.setCustomTextSize
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysConstants
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysInfo
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysListener
+import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysView
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.Slider
+import com.termux.terminal.TerminalSession
+import com.termux.view.TerminalView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.properties.Delegates
+import kotlin.text.toInt
 
 
 class TerminalFragment : Fragment() {
-    private lateinit var topAppBar: MaterialToolbar
     private lateinit var notificationUtil: NotificationUtil
     private lateinit var terminalViewModel: TerminalViewModel
-    private lateinit var output: TextView
-    private lateinit var input: EditText
-    private lateinit var fab: ExtendedFloatingActionButton
-    private lateinit var scrollView: ScrollView
-    private lateinit var bottomAppBar: BottomAppBar
     private lateinit var commandTemplateViewModel: CommandTemplateViewModel
+
+    private lateinit var topAppBar: MaterialToolbar
+    private lateinit var bottomAppBar: BottomAppBar
+    private lateinit var terminalView: TerminalView
+    private lateinit var virtualKeysView: VirtualKeysView
+
     private lateinit var sharedPreferences: SharedPreferences
-    private var downloadID by Delegates.notNull<Long>()
-    private lateinit var imm : InputMethodManager
-    private lateinit var metrics: DisplayMetrics
+
+    private lateinit var session : TerminalSession
+    private var sessionId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        terminalViewModel = ViewModelProvider(this)[TerminalViewModel::class.java]
-        downloadID = 0
+        terminalViewModel = ViewModelProvider(requireActivity())[TerminalViewModel::class.java]
         return inflater.inflate(R.layout.fragment_terminal, container, false)
     }
 
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("input", input.text.toString())
-        outState.putString("output", output.text.toString())
-        outState.putBoolean("run", fab.text == requireActivity().getString(R.string.run_command))
-        outState.putLong("downloadID", downloadID)
-    }
-
     override fun onResume() {
-        arguments?.remove("id")
+        arguments?.remove("new")
         arguments?.remove("share")
         super.onResume()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var bundle = savedInstanceState
-        imm = requireActivity().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        scrollView = view.findViewById(R.id.custom_command_scrollview)
-        topAppBar = requireActivity().findViewById(R.id.custom_command_toolbar)
-        topAppBar.setNavigationOnClickListener { requireActivity().finish() }
-        topAppBar.setOnClickListener { scrollView.scrollTo(0,0) }
-
-        input = view.findViewById(R.id.command_edittext)
-        fab = view.findViewById(R.id.command_fab)
-
-        if (arguments?.getLong("id") != null){
-            downloadID = requireArguments().getLong("id")
-            if(downloadID != 0L){
-                input.visibility = View.GONE
-                showCancelFab()
-            }
-        }
-
-        if (arguments?.containsKey("share") == true){
-            if (bundle == null){
-                bundle = Bundle()
-            }
-            bundle.putString("input", arguments?.getString("share"))
-        }
-
         commandTemplateViewModel = ViewModelProvider(this)[CommandTemplateViewModel::class.java]
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        metrics = DisplayMetrics()
-        requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
+        topAppBar = requireActivity().findViewById(R.id.custom_command_toolbar)
+        topAppBar.setNavigationOnClickListener { requireActivity().finish() }
 
-
+        terminalView = view.findViewById(R.id.terminalView)
+        virtualKeysView = view.findViewById(R.id.virtualKeys)
         bottomAppBar = view.findViewById(R.id.bottomAppBar)
+
+        if (arguments?.containsKey("id") == true) {
+            sessionId = arguments?.getString("id")
+        }
+
+        terminalViewModel.setTerminalView(terminalView)
+        terminalViewModel.setVirtualKeysView(virtualKeysView)
+
+
         var templateCount = 0
         var shortcutCount = 0
 
@@ -134,21 +108,34 @@ class TerminalFragment : Fragment() {
                 commandTemplateViewModel.getTotalNumber()
             }
             if (templateCount == 0){
-                bottomAppBar.menu[0].icon?.alpha = 30
+                bottomAppBar.menu.findItem(R.id.command_templates).icon?.alpha = 30
             }else{
-                bottomAppBar.menu[0].icon?.alpha = 255
+                bottomAppBar.menu.findItem(R.id.command_templates).icon?.alpha = 255
             }
 
             shortcutCount = withContext(Dispatchers.IO){
                 commandTemplateViewModel.getTotalShortcutNumber()
             }
             if (shortcutCount == 0) {
-                bottomAppBar.menu[1].icon?.alpha = 30
+                bottomAppBar.menu.findItem(R.id.shortcuts).icon?.alpha = 30
             }else{
-                bottomAppBar.menu[1].icon?.alpha = 255
+                bottomAppBar.menu.findItem(R.id.shortcuts).icon?.alpha = 255
             }
 
         }
+
+        val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
+        slider?.apply {
+            valueFrom = 10f
+            valueTo = 37f
+            value = sharedPreferences.getFloat("terminal_zoom", 35f)
+
+            addOnChangeListener { _, value, _ ->
+                terminalView.setTextSize(value.toInt())
+                sharedPreferences.edit { putFloat("terminal_zoom", value) }
+            }
+        }
+
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.command_templates -> {
@@ -158,12 +145,9 @@ class TerminalFragment : Fragment() {
                         lifecycleScope.launch {
                             UiUtil.showCommandTemplates(requireActivity(), commandTemplateViewModel){ templates ->
                                 templates.forEach {c ->
-                                    input.text.insert(input.selectionStart, c.content + " ")
+                                    session.write(" ${c.content} ")
+                                    terminalView.requestFocus()
                                 }
-                                input.postDelayed({
-                                    input.requestFocus()
-                                    imm.showSoftInput(input, 0)
-                                }, 200)
                             }
                         }
                     }
@@ -173,22 +157,16 @@ class TerminalFragment : Fragment() {
                         if (shortcutCount > 0){
                             UiUtil.showShortcuts(requireActivity(), commandTemplateViewModel,
                                 itemSelected = {sh ->
-                                    val txt = "${input.text.trim()} $sh"
-                                    input.setText(txt)
-                                    input.setSelection(input.text.length)
+                                    session.write(" $sh")
                                 },
-                                itemRemoved = {removed ->
-                                    input.setText(input.text.replace("(${Regex.escape(removed)})(?!.*\\1)".toRegex(), "").trim())
-                                    input.setSelection(input.text.length)
-                                })
+                                itemRemoved = {}
+                            )
                         }
                     }
                 }
                 R.id.filename_template -> {
                     UiUtil.showFilenameTemplateDialog(requireActivity(), "") { filenameSelected ->
-                        val txt = "${input.text.replace("-o\\s+(?:\"([^\"]+)\"|(\\S+))".toRegex(), "").trim()} -o \"$filenameSelected\""
-                        input.setText(txt)
-                        input.setSelection(input.text.length)
+                        session.write(""" "$filenameSelected" """)
                     }
                 }
                 R.id.folder -> {
@@ -198,137 +176,165 @@ class TerminalFragment : Fragment() {
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
                 }
+                R.id.text_size -> {
+                    slider?.visibility = if (slider.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                }
 
             }
             true
         }
 
-        output = view.findViewById(R.id.custom_command_output)
-        output.setTextIsSelectable(true)
-        output.layoutParams!!.width = LayoutParams.WRAP_CONTENT
-        input.requestFocus()
-        fab.setOnClickListener {
-            if (fab.text == requireActivity().getString(R.string.run_command)){
-                input.visibility = View.GONE
-                val txt = "${output.text}\n~ $ ${input.text}\n"
-                output.text = txt
-                showCancelFab()
-                imm.hideSoftInputFromWindow(input.windowToken, 0)
-                lifecycleScope.launch {
-                    val command = input.text.toString().replaceFirst("yt-dlp", "")
-                    downloadID = withContext(Dispatchers.IO){
-                        terminalViewModel.insert(TerminalItem(command = command, log = output.text.toString()))
-                    }
-                    terminalViewModel.startTerminalDownloadWorker(TerminalItem(downloadID, command))
-                    input.visibility = View.GONE
-                    showCancelFab()
-                    runWorkerListener()
-                }
-            }else {
-                terminalViewModel.cancelTerminalDownload(downloadID)
-                input.visibility = View.VISIBLE
-                hideCancelFab()
-            }
-        }
         notificationUtil = NotificationUtil(requireContext())
         initMenu()
 
-        requireView().post {
-            if (sharedPreferences.getBoolean("use_code_color_highlighter", true)) {
-                input.enableTextHighlight()
+        if (terminalViewModel.isBound && terminalViewModel.sessionBinder != null) {
+            initSession()
+        } else {
+            // If not bound yet, wait for the service connection event
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    terminalViewModel.serviceConnectedEvent.collect {
+                        initSession()
+                    }
+                }
             }
-
-            input.append(bundle?.getString("input") ?: "")
-            input.requestFocus()
-            input.setSelection(input.text.length)
-            output.text = bundle?.getString("output") ?: output.text
-            output.isVisible = output.text.toString().isNotEmpty()
         }
-
-        if (bundle?.getBoolean("run") == true){
-            showCancelFab()
-        }
-        runWorkerListener()
     }
 
     @SuppressLint("UseKtx")
     private fun initMenu() {
-        topAppBar.menu?.get(0)?.isVisible = false
-        topAppBar.menu?.get(1)?.isVisible = true
-        topAppBar.menu?.get(2)?.isVisible = true
-        topAppBar.menu?.get(3)?.isVisible = true
-        val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
-        topAppBar.setOnMenuItemClickListener { m: MenuItem ->
-            when(m.itemId){
-                R.id.wrap -> {
-                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
-                    if(scrollView != null){
-                        val parent = (scrollView.parent as ViewGroup)
-                        scrollView.removeAllViews()
-                        parent.removeView(scrollView)
-                        parent.addView(output, 0)
-                        sharedPreferences.edit().putBoolean("wrap_text_terminal", true).apply()
-                    }else{
-                        val parent = output.parent as ViewGroup
-                        parent.removeView(output)
-                        scrollView = HorizontalScrollView(requireContext())
-                        scrollView.layoutParams = LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.MATCH_PARENT
-                        )
-                        scrollView.addView(output)
-                        scrollView.id = R.id.horizontalscroll_output
-                        parent.addView(scrollView, 0)
-                        sharedPreferences.edit().putBoolean("wrap_text_terminal", false).apply()
+        topAppBar.menu?.forEach { it.isVisible = false }
+        topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.add)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
+
+        topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when (menuItem.itemId) {
+                R.id.add -> {
+                    findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
+                        NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
+                }
+                R.id.delete -> {
+                    sessionId?.apply {
+                        terminalViewModel.sessionBinder?.terminateSession(this)
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
                     }
+                }
+                R.id.wrap -> {
+//                    var scrollView = requireView().findViewById<HorizontalScrollView>(R.id.horizontalscroll_output)
+//                    if(scrollView != null){
+//                        val parent = (scrollView.parent as ViewGroup)
+//                        scrollView.removeAllViews()
+//                        parent.removeView(scrollView)
+//                        parent.addView(output, 0)
+//                        sharedPreferences.edit().putBoolean("wrap_text_terminal", true).apply()
+//                    }else{
+//                        val parent = output.parent as ViewGroup
+//                        parent.removeView(output)
+//                        scrollView = HorizontalScrollView(requireContext())
+//                        scrollView.layoutParams = LinearLayout.LayoutParams(
+//                            ViewGroup.LayoutParams.MATCH_PARENT,
+//                            ViewGroup.LayoutParams.MATCH_PARENT
+//                        )
+//                        scrollView.addView(output)
+//                        scrollView.id = R.id.horizontalscroll_output
+//                        parent.addView(scrollView, 0)
+//                        sharedPreferences.edit().putBoolean("wrap_text_terminal", false).apply()
+//                    }
                 }
                 R.id.export_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
                         val clipboard: ClipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setText(output.text)
+                        clipboard.setText(session.emulator.screen.transcriptText)
                     }
-                }
-
-                R.id.text_size -> {
-                    slider?.isVisible = !slider.isVisible
                 }
             }
             true
         }
 
-        slider?.apply {
-            this.valueFrom = 0f
-            this.valueTo = 10f
-            this.value = sharedPreferences.getFloat("terminal_zoom", 2f)
-            output.setCustomTextSize(this.value + 13f)
-            input.setCustomTextSize(this.value + 13f)
-            this.addOnChangeListener { slider, value, fromUser ->
-                output.setCustomTextSize(value + 13f)
-                input.setCustomTextSize(value + 13f)
-                sharedPreferences.edit(true){
-                    putFloat("terminal_zoom", value)
-                }
+    }
+
+    private fun initSession() {
+        val sessionBinder = terminalViewModel.sessionBinder ?: return
+        val service = sessionBinder.getService()
+
+        val activity = requireActivity() as TerminalActivity
+        val client = TerminalBackEnd(terminalView, activity) {
+            if (isAdded) {
+                terminalViewModel.sessionBinder?.terminateSession(sessionId!!)
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
 
-        sharedPreferences.getBoolean("wrap_text_terminal", false).apply {
-            if (this){
-                bottomAppBar.menu.performIdentifierAction(R.id.wrap, 0)
+        if (!sessionId.isNullOrBlank()) {
+            terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
+        }
+
+        val newSession = arguments?.getBoolean("new") ?: false
+        val sessionShareURL = arguments?.getString("share")?.ifEmpty { null }
+
+        val currentSession = sessionBinder.getSession(service.currentSession.value)
+        session = if (newSession || currentSession == null) {
+            sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
+            sessionBinder.createSession(
+                sessionId!!,
+                client
+            )
+        } else {
+            currentSession
+        }
+
+        session.updateTerminalSessionClient(client)
+
+        terminalView.doOnLayout { view ->
+            if (!isAdded) return@doOnLayout
+
+            val termView = view as TerminalView
+
+            termView.setTextSize(
+                sharedPreferences.getFloat("terminal_zoom", 35f).toInt()
+            )
+            termView.setTypeface(TerminalUtils.typeface)
+
+            termView.setTerminalViewClient(client)
+            termView.attachSession(session)
+
+            termView.requestFocus()
+
+            val color = TerminalUtils.getViewColor(requireContext())
+            val bgColor = TerminalUtils.getBackgroundColor(requireContext())
+            termView.mEmulator?.mColors?.mCurrentColors?.apply {
+                set(256, color)
+                set(257, bgColor)
+                set(258, color)
+            }
+
+            terminalViewModel.virtualKeysView?.apply {
+                virtualKeysViewClient = terminalViewModel.terminalView?.mTermSession?.let {
+                    VirtualKeysListener(
+                        it
+                    )
+                }
+                buttonTextColor = TerminalUtils.getViewColor(requireContext())
+                reload(VirtualKeysInfo(virtualKeys, "", VirtualKeysConstants.CONTROL_CHARS_ALIASES))
+            }
+
+            sessionShareURL?.apply {
+                CoroutineScope(Dispatchers.IO).launch {
+                    delay(500)
+                    withContext(Dispatchers.Main) {
+                        session.write("yt-dlp \"$sessionShareURL\"")
+                    }
+                }
             }
         }
     }
-    private fun hideCancelFab() {
-        kotlin.runCatching {
-            fab.text = getString(R.string.run_command)
-            fab.setIconResource(R.drawable.ic_baseline_keyboard_arrow_right_24)
-        }
-    }
-    private fun showCancelFab() {
-        kotlin.runCatching {
-            fab.text = getString(R.string.cancel_task)
-            fab.setIconResource(R.drawable.ic_cancel)
-        }
-    }
+
+    val virtualKeys = "[" +
+            "\n  [\"ESC\", {\"key\": \"/\", \"popup\": \"\\\\\"}, {\"key\": \"-\", \"popup\": \"|\"}, \"HOME\", \"UP\", \"END\", \"PGUP\"]," +
+            "\n  [\"TAB\", \"CTRL\", \"ALT\", \"LEFT\", \"DOWN\", \"RIGHT\", \"PGDN\"]" +
+            "\n]"
+
 
     private var commandPathResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -341,61 +347,7 @@ class TerminalFragment : Fragment() {
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
-            input.text.insert(input.selectionStart, FileUtil.formatPath(result.data?.data.toString()))
+            session.write(""" "${FileUtil.formatPath(result.data?.data.toString())}" """)
         }
     }
-
-    private fun runWorkerListener(){
-        CoroutineScope(Dispatchers.IO).launch {
-            terminalViewModel.getTerminal(downloadID).collectLatest {
-                kotlin.runCatching {
-                    requireActivity().runOnUiThread{
-                        if (it != null){
-                            if (!it.log.isNullOrBlank()) {
-                                output.isVisible = true
-                                output.text = it.log
-                            }
-                            output.scrollTo(0, output.height)
-                            scrollView.fullScroll(View.FOCUS_DOWN)
-                            input.visibility = View.GONE
-                            showCancelFab()
-                        }
-                    }
-                }
-
-            }
-        }
-
-        WorkManager.getInstance(requireContext())
-            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
-            .removeObserver(workerObserver)
-
-        WorkManager.getInstance(requireContext())
-            .getWorkInfosForUniqueWorkLiveData(downloadID.toString())
-            .observe(viewLifecycleOwner, workerObserver)
-    }
-
-    private val workerObserver = object: Observer<List<WorkInfo>> {
-        @SuppressLint("SetTextI18n")
-        override fun onChanged(value: List<WorkInfo>) {
-            value.forEach { work ->
-                if (listOf(WorkInfo.State.SUCCEEDED, WorkInfo.State.FAILED, WorkInfo.State.CANCELLED).contains(work.state)) {
-                    requireActivity().runOnUiThread {
-                        kotlin.runCatching {
-                            input.setText("yt-dlp ")
-                            input.visibility = View.VISIBLE
-                            input.requestFocus()
-                            input.setSelection(input.text.length)
-                            hideCancelFab()
-                        }
-                    }
-                    return@forEach
-                }
-            }
-        }
-
-    }
-
-
-
 }

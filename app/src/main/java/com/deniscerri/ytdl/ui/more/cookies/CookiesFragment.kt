@@ -196,9 +196,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             item?.apply {
                 current.findViewById<TextView>(R.id.currentText).apply {
                     setText(item.content)
-                    if (preferences.getBoolean("use_code_color_highlighter", true)) {
-                        enableTextHighlight()
-                    }
+                    enableTextHighlight()
                 }
             }
 

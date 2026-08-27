@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Изрязване не е налично за този елемент</string>
     <string name="select_between_desc">Посочете диапазона от елементи за избор</string>
     <string name="potoken">PO Токен</string>
-    <string name="web_client_po_token">Уеб -Клиент PO Токен</string>
+    <string name="manual_po_token_generator">Уеб -Клиент PO Токен</string>
     <string name="no_keep_subs">Изтриване на файлове със субтитри след вграждане</string>
     <string name="no_keep_subs_summary">Когато използвате „Вграждане на субтитри“ и „Записване на субтитри“, не запазвайте файловете със субтитри след вграждане</string>
     <string name="video_compatible">Съвместимо видео</string>

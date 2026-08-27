@@ -104,7 +104,7 @@
             app:isPreferenceVisible="false" />
 
         <SeekBarPreference
-            android:defaultValue="3"
+            android:defaultValue="1"
             android:icon="@drawable/ic_lines"
             android:max="25"
             app:key="concurrent_fragments"

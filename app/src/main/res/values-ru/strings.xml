@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Веб-клиент PO Token</string>
+    <string name="manual_po_token_generator">Веб-клиент PO Token</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
     <string name="no_keep_subs_summary">При использовании функций Встроить субтитры и Написать субтитры не сохраняйте файлы субтитров после встраивания</string>

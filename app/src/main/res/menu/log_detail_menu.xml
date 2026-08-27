@@ -18,7 +18,7 @@
     <item
         android:id="@+id/text_size"
         android:title="@string/text_size"
-        android:icon="@drawable/ic_textformat"
+        android:icon="@drawable/baseline_format_size_24"
         app:showAsAction="always" />
 
     <item

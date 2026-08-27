@@ -10,10 +10,14 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.work.YTDLPCoroutineWorker
 import com.deniscerri.ytdl.work.setForegroundSafely
 import kotlinx.coroutines.runBlocking
 
-class UpdateMultipleDownloadsDataWorker(private val context: Context, workerParams: WorkerParameters) : CoroutineWorker(context, workerParams) {
+class UpdateMultipleDownloadsDataWorker(
+    private val context: Context,
+    workerParams: WorkerParameters
+) : YTDLPCoroutineWorker(context, workerParams) {
 
     override suspend fun getForegroundInfo(): ForegroundInfo {
         val workNotif = NotificationUtil(App.Companion.instance).createDataUpdateNotification()
@@ -30,7 +34,7 @@ class UpdateMultipleDownloadsDataWorker(private val context: Context, workerPara
     }
 
 
-    override suspend fun doWork(): Result {
+    override suspend fun runWork(): Result {
         val dbManager = DBManager.Companion.getInstance(context)
         val dao = dbManager.downloadDao
         val resDao = dbManager.resultDao

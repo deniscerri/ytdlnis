@@ -6,8 +6,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavArgument
 import androidx.navigation.NavGraph
 import androidx.navigation.NavType
@@ -23,9 +26,8 @@ import kotlin.properties.Delegates
 
 
 class TerminalActivity : BaseActivity() {
-    private lateinit var terminalViewModel: TerminalViewModel
+    lateinit var terminalViewModel: TerminalViewModel
     private lateinit var navHostFragment: NavHostFragment
-    private var downloadID by Delegates.notNull<Long>()
     private lateinit var graph: NavGraph
 
     @SuppressLint("SetTextI18n")
@@ -33,7 +35,6 @@ class TerminalActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_terminal)
         terminalViewModel = ViewModelProvider(this)[TerminalViewModel::class.java]
-        downloadID = savedInstanceState?.getLong("downloadID") ?: 0L
         handleIntent(intent)
     }
 
@@ -62,21 +63,26 @@ class TerminalActivity : BaseActivity() {
         }
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         graph = navHostFragment.navController.navInflater.inflate(R.navigation.terminal_graph)
+
         lifecycleScope.launch {
-            val count = withContext(Dispatchers.IO){
-                terminalViewModel.getCount()
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                terminalViewModel.isBoundState.collect { isBound ->
+                    if (isBound) {
+                        val bundle = Bundle()
+                        val count = terminalViewModel.sessionBinder?.getService()?.sessionList?.keys?.count() ?: 0
+                        if (count == 0){
+                            bundle.putString("share", text ?: "")
+                            graph.setStartDestination(R.id.terminalFragment)
+                            graph.findNode(graph.startDestinationId)?.addArgument("share", NavArgument.Builder()
+                                .setType(NavType.StringType)
+                                .setDefaultValue(text ?: "")
+                                .build()
+                            )
+                        }
+                        navHostFragment.navController.setGraph(graph, bundle)
+                    }
+                }
             }
-            val bundle = Bundle()
-            if (count == 0){
-                bundle.putString("share", text ?: "")
-                graph.setStartDestination(R.id.terminalFragment)
-                graph.findNode(graph.startDestinationId)?.addArgument("share", NavArgument.Builder()
-                    .setType(NavType.StringType)
-                    .setDefaultValue(text ?: "")
-                    .build()
-                )
-            }
-            navHostFragment.navController.setGraph(graph, bundle)
         }
     }
 
@@ -84,4 +90,13 @@ class TerminalActivity : BaseActivity() {
         private const val TAG = "TerminalActivity"
     }
 
+    override fun onStart() {
+        super.onStart()
+        terminalViewModel.startAndBindService(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        terminalViewModel.unbindService(this)
+    }
 }
