@@ -478,7 +478,6 @@
     <string name="cut_unsupported">এই আইটেমের জন্য কাটিং উপলব্ধ নয়</string>
     <string name="select_between_desc">নির্বাচনের জন্য আইটেমের পরিসর নির্দিষ্ট করুন</string>
     <string name="potoken">PO Token</string>
-    <string name="web_client_po_token">Web Client PO Token</string>
     <string name="reverse">উল্টো করুন</string>
     <string name="no_keep_subs">এম্বেড করার পরে সাবটাইটেল ফাইল মুছুন</string>
     <string name="no_keep_subs_summary">Embed Subtitles এবং Write Subtitles দুটো ব্যবহার করলে এম্বেড করার পরে সাবটাইটেল ফাইলগুলো রাখবেন না</string>
