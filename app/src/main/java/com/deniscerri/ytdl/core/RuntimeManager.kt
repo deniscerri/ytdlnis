@@ -257,7 +257,7 @@ object RuntimeManager {
         }
 
         if (nodeLocation.isAvailable) {
-            request.addOption("--js-runtimes", "node:${nodeLocation.executable.absolutePath} --allow-fs-read=*")
+            request.addOption("--js-runtimes", "node:${nodeLocation.executable.absolutePath}")
         }
 
         if (denoLocation.isAvailable) {

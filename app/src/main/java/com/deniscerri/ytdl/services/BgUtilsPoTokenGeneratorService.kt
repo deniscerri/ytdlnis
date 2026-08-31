@@ -75,7 +75,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
 
                 if (runtimeManager.nodeLocation.isAvailable) {
                     runtimeManager.executeNode(
-                        command = "build/main.js",
+                        command = "--allow-fs-read=* build/main.js",
                         processId = currentRunningProcess,
                         executeDirectory = File(serverFolder, "server")
                     ) { _, _, line ->
@@ -107,10 +107,6 @@ class BgUtilsPoTokenGeneratorService : Service() {
     }
 
     private fun createNotification(description: String = ""): Notification {
-        val intent = Intent(this, TerminalActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        )
         val exitIntent = Intent(this, BgUtilsPoTokenGeneratorService::class.java).apply {
             action = "ACTION_EXIT"
         }
@@ -121,8 +117,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("BgUtils POT Provider\n")
             .setContentText(description)
-            .setSmallIcon(R.drawable.ic_terminal)
-            .setContentIntent(pendingIntent)
+            .setSmallIcon(R.drawable.baseline_token_24)
             .addAction(
                 NotificationCompat.Action.Builder(
                     null,
