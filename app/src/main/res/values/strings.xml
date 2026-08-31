@@ -578,4 +578,5 @@
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
     <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
+    <string name="http_recovery_retry">HTTP %1$d was temporary. Retrying in %2$d seconds…</string>
 </resources>
