@@ -35,6 +35,8 @@ import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.HttpRetryPolicy
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
+import com.deniscerri.ytdl.util.SubtitleRecoveryCoordinator
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import kotlinx.coroutines.CancellationException
@@ -222,7 +224,7 @@ class DownloadWorker(
                             true
                         ) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
-                        val request = ytdlpUtil.buildYTDLRequest(downloadItem)
+                        var request = ytdlpUtil.buildYTDLRequest(downloadItem)
 
                         // DISABLED BECAUSE YT_DLP CONSIDERS DOWNLOAD FAILURE IF -U PART FAILS, ytdlnis #1043
     //                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
@@ -336,38 +338,96 @@ class DownloadWorker(
                                         completedTransientRetries = completedTransientRetries,
                                         completedExpiredMediaUrlRetries =
                                             completedExpiredMediaUrlRetries,
-                                    ) ?: throw error
+                                    )
 
-                                    when (retry.reason) {
-                                        HttpRetryPolicy.Reason.TRANSIENT_HTTP ->
-                                            completedTransientRetries += 1
-                                        HttpRetryPolicy.Reason.EXPIRED_MEDIA_URL ->
-                                            completedExpiredMediaUrlRetries += 1
+                                    if (retry != null) {
+                                        when (retry.reason) {
+                                            HttpRetryPolicy.Reason.TRANSIENT_HTTP ->
+                                                completedTransientRetries += 1
+                                            HttpRetryPolicy.Reason.EXPIRED_MEDIA_URL ->
+                                                completedExpiredMediaUrlRetries += 1
+                                        }
+
+                                        val retryMessage = context.getString(
+                                            R.string.http_recovery_retry,
+                                            retry.statusCode,
+                                            retry.delaySeconds,
+                                        )
+                                        logString.appendLine(retryMessage)
+                                        WorkerEventBus.post(
+                                            WorkerProgress(
+                                                0,
+                                                retryMessage,
+                                                downloadItem.id,
+                                                downloadItem.logID,
+                                            ),
+                                        )
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            retryMessage,
+                                            0,
+                                            0,
+                                            downloadItem.title.ifEmpty { downloadItem.url },
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                        )
+                                        delay(retry.delaySeconds * 1000)
+                                        continue
                                     }
 
-                                    val retryMessage = context.getString(
-                                        R.string.http_recovery_retry,
-                                        retry.statusCode,
-                                        retry.delaySeconds,
-                                    )
-                                    logString.appendLine(retryMessage)
-                                    WorkerEventBus.post(
-                                        WorkerProgress(
+                                    if (SubtitleLanguagePolicy.isDownloadFailure(failureOutput)) {
+                                        val decisionMessage = context.getString(
+                                            R.string.subtitle_failure_decision_message,
+                                        )
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            context.getString(R.string.action_required_open_app),
                                             0,
-                                            retryMessage,
-                                            downloadItem.id,
-                                            downloadItem.logID,
-                                        ),
-                                    )
-                                    notificationUtil.updateDownloadNotification(
-                                        downloadItem.id.toInt(),
-                                        retryMessage,
-                                        0,
-                                        0,
-                                        downloadItem.title.ifEmpty { downloadItem.url },
-                                        NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
-                                    )
-                                    delay(retry.delaySeconds * 1000)
+                                            0,
+                                            downloadItem.title.ifEmpty { downloadItem.url },
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                        )
+
+                                        when (SubtitleRecoveryCoordinator.awaitDecision(
+                                            SubtitleRecoveryCoordinator.Request(
+                                                downloadId = downloadItem.id,
+                                                title = downloadItem.title.ifEmpty {
+                                                    downloadItem.url
+                                                },
+                                                message = decisionMessage,
+                                            ),
+                                        )) {
+                                            SubtitleRecoveryCoordinator.Action.CONTINUE -> {
+                                                FileUtil.deleteConfigFiles(request)
+                                                request = ytdlpUtil.buildYTDLRequest(
+                                                    downloadItem,
+                                                    suppressSubtitles = true,
+                                                )
+                                                completedTransientRetries = 0
+                                                completedExpiredMediaUrlRetries = 0
+                                                logString.appendLine(
+                                                    context.getString(
+                                                        R.string.continuing_without_subtitles,
+                                                    ),
+                                                )
+                                                continue
+                                            }
+
+                                            SubtitleRecoveryCoordinator.Action.RETRY -> {
+                                                completedTransientRetries = 0
+                                                completedExpiredMediaUrlRetries = 0
+                                                continue
+                                            }
+
+                                            SubtitleRecoveryCoordinator.Action.CANCEL -> {
+                                                downloadItem.status =
+                                                    DownloadRepository.Status.Cancelled.toString()
+                                                dao.update(downloadItem)
+                                                throw SubtitleRecoveryCanceledException()
+                                            }
+                                        }
+                                    }
+
+                                    throw error
                                 }
                             }
 
@@ -657,5 +717,7 @@ class DownloadWorker(
         val downloadItemID: Long,
         val logItemID: Long?
     )
+
+    private class SubtitleRecoveryCanceledException : CancellationException()
 
 }

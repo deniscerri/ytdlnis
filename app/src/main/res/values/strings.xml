@@ -111,6 +111,12 @@
     <string name="adjust_video">Adjust video</string>
     <string name="concurrent_downloads">Concurrent downloads</string>
     <string name="concurrent_downloads_summary">Number of downloads executing at the same time</string>
+    <string name="action_required_open_app">Action required — open YTDLnis</string>
+    <string name="subtitle_download_failed">Subtitles couldn’t be downloaded</string>
+    <string name="subtitle_failure_decision_message">The media download can continue without subtitles. Choose Continue to remove subtitle options, Retry to try subtitles again, or Cancel to stop this item.</string>
+    <string name="continue_download">Continue</string>
+    <string name="retry">Retry</string>
+    <string name="continuing_without_subtitles">Continuing without subtitles after your confirmation.</string>
     <string name="defaultValue">Default</string>
     <string name="container">Container</string>
     <string name="template">Template</string>
