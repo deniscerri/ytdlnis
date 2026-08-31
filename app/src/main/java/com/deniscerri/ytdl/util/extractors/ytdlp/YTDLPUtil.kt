@@ -33,6 +33,7 @@ import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.readJsonValue
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.util.DownloadNetworkPolicy
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
@@ -973,7 +974,29 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
-        val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
+        val requestedDownloads = sharedPreferences.getInt(
+            "concurrent_downloads",
+            DownloadNetworkPolicy.DEFAULT_CONCURRENT_DOWNLOADS,
+        )
+        val requestedFragments = sharedPreferences.getInt(
+            "concurrent_fragments",
+            DownloadNetworkPolicy.DEFAULT_CONCURRENT_FRAGMENTS,
+        )
+        val maxParallelRequests = sharedPreferences.getInt(
+            "max_parallel_requests",
+            DownloadNetworkPolicy.DEFAULT_MAX_PARALLEL_REQUESTS,
+        )
+        // Calculate -N from the same budget used by DownloadWorker so item and
+        // fragment concurrency cannot multiply past the configured ceiling.
+        val concurrentFragments = DownloadNetworkPolicy.effectiveFragmentLimit(
+            requestedFragments = requestedFragments,
+            requestedDownloads = requestedDownloads,
+            maxParallelRequests = maxParallelRequests,
+            budgetingEnabled = sharedPreferences.getBoolean(
+                "smart_request_budget",
+                true,
+            ),
+        )
         if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
 
         val retries = sharedPreferences.getString("retries", "")!!

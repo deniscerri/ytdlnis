@@ -33,6 +33,7 @@ import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.DownloadNetworkPolicy
 import com.deniscerri.ytdl.util.HttpRetryPolicy
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
@@ -173,9 +174,27 @@ class DownloadWorker(
                 return@collectLatest
             }
 
-            var concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
+            val requestedDownloads = sharedPreferences.getInt(
+                "concurrent_downloads",
+                DownloadNetworkPolicy.DEFAULT_CONCURRENT_DOWNLOADS,
+            )
+            val maxParallelRequests = sharedPreferences.getInt(
+                "max_parallel_requests",
+                DownloadNetworkPolicy.DEFAULT_MAX_PARALLEL_REQUESTS,
+            )
+            val downloadLimit = DownloadNetworkPolicy.effectiveDownloadLimit(
+                requestedDownloads = requestedDownloads,
+                maxParallelRequests = maxParallelRequests,
+                budgetingEnabled = sharedPreferences.getBoolean(
+                    "smart_request_budget",
+                    true,
+                ),
+            )
+            // Existing active jobs consume slots first. A lower setting must never
+            // produce a negative value that would make take() throw below.
+            var concurrentDownloads = (downloadLimit - running.size).coerceAtLeast(0)
             if (hasDownloadDelay) {
-                concurrentDownloads = 1 - running.size
+                concurrentDownloads = (1 - running.size).coerceAtLeast(0)
             }
 
             val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
