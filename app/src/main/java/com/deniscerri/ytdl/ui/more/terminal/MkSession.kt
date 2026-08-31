@@ -108,6 +108,35 @@ object MkSession {
             }
 
             val pythonBin = runtimeManager.pythonLocation.executable
+            val pythonExec = if (pythonBin.name.endsWith(".so")) {
+                "$linker \"${pythonBin.absolutePath}\""
+            } else {
+                "\"${pythonBin.absolutePath}\""
+            }
+
+            rcBuilder.append(
+                shellFunction(
+                    "pip",
+                    "$pythonExec -m pip"
+                )
+            )
+
+            val nodeBin = runtimeManager.nodeLocation.executable
+            if (nodeBin.exists()) {
+                val nodeExec = if (nodeBin.name.endsWith(".so")) {
+                    "$linker \"${nodeBin.absolutePath}\""
+                } else {
+                    "\"${nodeBin.absolutePath}\""
+                }
+
+                rcBuilder.append(
+                    shellFunction(
+                        "npm",
+                        "$nodeExec ${$$"$NPM_CLI_PATH"}"
+                    )
+                )
+            }
+
             val ytdlpBin = runtimeManager.ytdlpPath
             if (pythonBin.exists() && ytdlpBin != null && ytdlpBin.exists()) {
                 val pythonExec = if (pythonBin.name.endsWith(".so")) {

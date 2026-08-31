@@ -51,7 +51,8 @@ abstract class PackageBase {
         var version: String = "",
         var downloadSize: Long = 0,
         var isInstalled: Boolean = false,
-        var isBundled: Boolean = false
+        var isBundled: Boolean = false,
+        var oldVersion: Boolean = false
     )
 
     data class PackageLocation(
@@ -285,6 +286,11 @@ abstract class PackageBase {
                             it.downloadSize = it.assets.first().size
                             it.isInstalled = downloadedVersion == "v${it.version}"
                             it.isBundled = bundledVersion == "v${it.version}"
+
+                            val latestVersion = bundledVersion?.replace("v|.".toRegex(), "")?.toInt()
+                                ?: downloadedVersion?.replace("v|.".toRegex(), "")?.toInt() ?: 0
+
+                            it.oldVersion = latestVersion > it.version.replace(".", "").toInt()
                         }
 
                     Result.success(releases)

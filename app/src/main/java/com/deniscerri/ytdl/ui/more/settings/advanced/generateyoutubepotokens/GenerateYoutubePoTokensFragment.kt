@@ -166,23 +166,14 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             }
 
             serverRadio.apply {
-                isChecked = bgUtilsMethod == "server" && denoIsInstalled
-                alpha = if (denoIsInstalled) 1f else 0.3f
-
+                isChecked = bgUtilsMethod == "server"
                 setOnClickListener {
-                    if (denoIsInstalled) {
-                        preferences.edit(commit = true) {
-                            putString("bgutils_potoken_method", "server")
-                        }
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO) {
-                                BgUtilsPoTokenGeneratorUtil.runServer(context) {}
-                            }
-                        }
-                    } else {
-                        Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
-                        post {
-                            scriptRadio.performClick()
+                    preferences.edit(commit = true) {
+                        putString("bgutils_potoken_method", "server")
+                    }
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                            BgUtilsPoTokenGeneratorUtil.runServer(context) {}
                         }
                     }
                 }

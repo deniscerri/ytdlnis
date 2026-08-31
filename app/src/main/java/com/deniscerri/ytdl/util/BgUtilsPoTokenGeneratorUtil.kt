@@ -97,27 +97,54 @@ object BgUtilsPoTokenGeneratorUtil {
             progress?.invoke(ytdlResponse.err)
             return Result.failure(Exception(ytdlResponse.err))
         }
+        val hasNode = RuntimeManager.getInstance().nodeLocation.isAvailable
+        val hasDeno = RuntimeManager.getInstance().denoLocation.isAvailable
 
         progress?.invoke("Downloading node-modules...")
-        val denoResponse = RuntimeManager.getInstance().executeDeno(
-            command = "install",
-            executeDirectory = File(serverFolder, "server")) { _, _, line ->
-            progress?.invoke(line)
-        }
-        if (denoResponse.exitCode != 0) {
-            progress?.invoke(denoResponse.err)
-            return Result.failure(Exception(denoResponse.err))
+        if (hasNode) {
+            val nodeResponse = RuntimeManager.getInstance().executeNpm(
+                command = "install --ignore-scripts",
+                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+                progress?.invoke(line)
+            }
+            if (nodeResponse.exitCode != 0) {
+                progress?.invoke(nodeResponse.err)
+                return Result.failure(Exception(nodeResponse.err))
+            }
+
+            progress?.invoke("Building typescript files...")
+            val nodeResponse2 = RuntimeManager.getInstance().executeNode(
+                command = "node_modules/typescript/bin/tsc",
+                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+                progress?.invoke(line)
+            }
+            if (nodeResponse2.exitCode != 0) {
+                progress?.invoke(nodeResponse2.err)
+                return Result.failure(Exception(nodeResponse2.err))
+            }
         }
 
-        progress?.invoke("Building typescript files...")
-        val denoResponse2 = RuntimeManager.getInstance().executeDeno(
-            command = "run -A npm:typescript/tsc --outDir build",
-            executeDirectory = File(serverFolder, "server")) { _, _, line ->
-            progress?.invoke(line)
-        }
-        if (denoResponse2.exitCode != 0) {
-            progress?.invoke(denoResponse2.err)
-            return Result.failure(Exception(denoResponse2.err))
+        if (hasDeno) {
+            val denoResponse = RuntimeManager.getInstance().executeDeno(
+                command = "install",
+                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+                progress?.invoke(line)
+            }
+            if (denoResponse.exitCode != 0) {
+                progress?.invoke(denoResponse.err)
+                return Result.failure(Exception(denoResponse.err))
+            }
+
+            progress?.invoke("Building typescript files...")
+            val denoResponse2 = RuntimeManager.getInstance().executeDeno(
+                command = "run -A npm:typescript/tsc --outDir build",
+                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+                progress?.invoke(line)
+            }
+            if (denoResponse2.exitCode != 0) {
+                progress?.invoke(denoResponse2.err)
+                return Result.failure(Exception(denoResponse2.err))
+            }
         }
 
         if (runServerAfterwards) {

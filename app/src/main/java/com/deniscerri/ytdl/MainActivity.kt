@@ -590,6 +590,7 @@ class MainActivity : BaseActivity() {
 
                         val latestRelease = releases.first()
                         if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
+                        if (latestRelease.oldVersion) return@apply
                         if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
 
                         skipRemindingPackageUpdate.add(latestRelease.tag_name)

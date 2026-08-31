@@ -67,6 +67,11 @@ object RuntimeManager {
     private var ENV_PYTHONHOME: String? = null
     private var TMPDIR: String = ""
 
+    private var NPM_CONFIG_PREFIX: String = ""
+    private var NPM_CONFIG_CACHE: String = ""
+    private var NPM_CLI_PATH: String = ""
+    private var NODE_OPTIONS: String = ""
+
     val packages: List<PackageItem> = listOf(
         PackageItem("Python", Python),
         PackageItem("FFmpeg", FFmpeg),
@@ -153,6 +158,16 @@ object RuntimeManager {
                 pythonLocation.ldDir.absolutePath + "/usr"
             }
             TMPDIR = appContext.cacheDir.absolutePath
+
+            NPM_CONFIG_PREFIX = File(appContext.filesDir, ".npm-global").absolutePath
+            NPM_CONFIG_CACHE = File(appContext.filesDir, ".npm-cache").absolutePath
+            if (nodeLocation.executable.exists()) {
+                NPM_CLI_PATH = File(nodeLocation.ldDir.absolutePath, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
+
+                val optionsFile = File(appContext.filesDir, "node_dns_setup.js")
+                optionsFile.writeText(NodeJS.getDNSSetup())
+                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
+            }
 
             initialized = true
             initLatch.countDown()
@@ -291,6 +306,33 @@ object RuntimeManager {
         fullCommand.addAll(command.split(" "))
         return executeImpl(fullCommand, processId, true, callback = callback)
     }
+
+    fun executeNode(
+        command: String,
+        processId: String? = null,
+        executeDirectory: File? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        assertInit()
+
+        val fullCommand = mutableListOf<String>(nodeLocation.executable.absolutePath)
+        fullCommand.addAll(command.split(" "))
+        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
+    }
+
+    fun executeNpm(
+        command: String,
+        processId: String? = null,
+        executeDirectory: File? = null,
+        callback: ((Float, Long, String) -> Unit)? = null
+    ) : ExecuteResponse {
+        assertInit()
+
+        val fullCommand = mutableListOf<String>(nodeLocation.executable.absolutePath, NPM_CLI_PATH)
+        fullCommand.addAll(command.split(" "))
+        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
+    }
+
 
     fun executeDeno(
         command: String,
@@ -447,6 +489,10 @@ object RuntimeManager {
         env["PYTHONHOME"] = ENV_PYTHONHOME
         env["HOME"] = ENV_PYTHONHOME
         env["TMPDIR"] = TMPDIR
+        env["NPM_CONFIG_PREFIX"] = NPM_CONFIG_PREFIX
+        env["NPM_CONFIG_CACHE"] = NPM_CONFIG_CACHE
+        env["NPM_CLI_PATH"] = NPM_CLI_PATH
+        env["NODE_OPTIONS"] = NODE_OPTIONS
         env["TERM"] = "xterm-256color"
 
         return env

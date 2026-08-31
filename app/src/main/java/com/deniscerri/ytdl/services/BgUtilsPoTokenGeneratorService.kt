@@ -60,8 +60,10 @@ class BgUtilsPoTokenGeneratorService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val runtimeManager = RuntimeManager.getInstance()
+
         if (intent?.action == "ACTION_EXIT") {
-            RuntimeManager.getInstance().destroyProcessById(currentRunningProcess)
+            runtimeManager.destroyProcessById(currentRunningProcess)
             stopSelf()
             return super.onStartCommand(intent, flags, startId)
         }
@@ -69,16 +71,32 @@ class BgUtilsPoTokenGeneratorService : Service() {
         serviceScope.launch {
             runCatching {
                 val serverFolder = BgUtilsPoTokenGeneratorUtil.getServerFolder(App.instance)
-                RuntimeManager.getInstance().destroyProcessById(currentRunningProcess)
-                RuntimeManager.getInstance().executeDeno(
-                    command = "run -A src/main.ts",
-                    processId = currentRunningProcess,
-                    executeDirectory = File(serverFolder, "server")
-                ) { _, _, line ->
-                    Log.e("BGUTILS_POT", line)
-                    val notification = createNotification(line)
-                    notificationManager.notify(notificationCode, notification)
+                runtimeManager.destroyProcessById(currentRunningProcess)
+
+                if (runtimeManager.nodeLocation.isAvailable) {
+                    runtimeManager.executeNode(
+                        command = "build/main.js",
+                        processId = currentRunningProcess,
+                        executeDirectory = File(serverFolder, "server")
+                    ) { _, _, line ->
+                        Log.e("BGUTILS_POT", line)
+                        val notification = createNotification(line)
+                        notificationManager.notify(notificationCode, notification)
+                    }
+
+                } else {
+                    runtimeManager.executeDeno(
+                        command = "run -A src/main.ts",
+                        processId = currentRunningProcess,
+                        executeDirectory = File(serverFolder, "server")
+                    ) { _, _, line ->
+                        Log.e("BGUTILS_POT", line)
+                        val notification = createNotification(line)
+                        notificationManager.notify(notificationCode, notification)
+                    }
                 }
+
+
             }.onFailure { err ->
                 Log.e("BGUTILS_POT", err.message ?: "")
                 stopSelf()
