@@ -161,13 +161,14 @@ object RuntimeManager {
 
             NPM_CONFIG_PREFIX = File(appContext.filesDir, ".npm-global").absolutePath
             NPM_CONFIG_CACHE = File(appContext.filesDir, ".npm-cache").absolutePath
-            if (nodeLocation.executable.exists()) {
-                NPM_CLI_PATH = File(nodeLocation.ldDir.absolutePath, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
-
-                val optionsFile = File(appContext.filesDir, "node_dns_setup.js")
-                optionsFile.writeText(NodeJS.getDNSSetup())
-                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
-            }
+            //TODO
+//            if (nodeLocation.executable.exists()) {
+//                NPM_CLI_PATH = File(nodeLocation.ldDir.absolutePath, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
+//
+//                val optionsFile = File(appContext.filesDir, "node_dns_setup.js")
+//                optionsFile.writeText(NodeJS.getDNSSetup())
+//                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
+//            }
 
             initialized = true
             initLatch.countDown()
@@ -492,7 +493,8 @@ object RuntimeManager {
         env["NPM_CONFIG_PREFIX"] = NPM_CONFIG_PREFIX
         env["NPM_CONFIG_CACHE"] = NPM_CONFIG_CACHE
         env["NPM_CLI_PATH"] = NPM_CLI_PATH
-        env["NODE_OPTIONS"] = NODE_OPTIONS
+        //TODO
+        //env["NODE_OPTIONS"] = NODE_OPTIONS
         env["TERM"] = "xterm-256color"
 
         return env

@@ -97,9 +97,9 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             val nodeIsInstalled = RuntimeManager.getInstance().nodeLocation.isAvailable
 
             this.setOnClickListener {
-                if (!denoIsInstalled && !nodeIsInstalled) {
+                if (!denoIsInstalled) {
                     this.isChecked = false
-                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package_or_package, "NodeJS", "Deno"), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
