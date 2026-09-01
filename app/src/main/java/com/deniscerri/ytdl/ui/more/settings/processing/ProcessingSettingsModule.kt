@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
+import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
 import com.deniscerri.ytdl.util.UiUtil
 import kotlinx.coroutines.launch
 import kotlin.collections.indexOf
@@ -85,9 +86,18 @@ object ProcessingSettingsModule : SettingModule {
             }
             "subs_lang" -> {
                 pref.apply {
-                    summary = prefs.getString("subs_lang", "en.*,.*-orig")!!
+                    val subtitleLanguages = SubtitleLanguagePolicy.normalize(
+                        prefs.getString("subs_lang", SubtitleLanguagePolicy.SAFE_DEFAULT),
+                    )
+                    summary = subtitleLanguages
                     setOnPreferenceClickListener {
-                        UiUtil.showSubtitleLanguagesDialog(host.getHostContext(), listOf(), prefs.getString("subs_lang", "en.*,.*-orig")!!){
+                        UiUtil.showSubtitleLanguagesDialog(
+                            host.getHostContext(),
+                            listOf(),
+                            SubtitleLanguagePolicy.normalize(
+                                prefs.getString("subs_lang", SubtitleLanguagePolicy.SAFE_DEFAULT),
+                            ),
+                        ) {
                             prefs.edit(commit = true) {
                                 putString(pref.key, it)
                             }

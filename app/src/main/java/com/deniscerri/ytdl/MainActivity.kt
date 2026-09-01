@@ -34,8 +34,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -61,6 +63,7 @@ import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
+import com.deniscerri.ytdl.util.DownloadRecoveryCoordinator
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -109,6 +112,8 @@ class MainActivity : BaseActivity() {
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
+    private var downloadRecoveryDialog: AlertDialog? = null
+    private var shownRecoveryRequestId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -285,12 +290,83 @@ class MainActivity : BaseActivity() {
             getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this@MainActivity)
         }
 
+        observeDownloadRecoveryRequests()
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
 
         askAutoUpdatePreferences()
     }
+
+    /** Presents retained worker decisions after the user returns to the foreground. */
+    private fun observeDownloadRecoveryRequests() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                DownloadRecoveryCoordinator.requests.collectLatest { requests ->
+                    val request = requests.firstOrNull()
+                    if (request == null) {
+                        downloadRecoveryDialog?.dismiss()
+                        downloadRecoveryDialog = null
+                        shownRecoveryRequestId = null
+                    } else if (shownRecoveryRequestId != request.requestId) {
+                        showDownloadRecoveryDialog(request)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showDownloadRecoveryDialog(request: DownloadRecoveryCoordinator.Request) {
+        downloadRecoveryDialog?.dismiss()
+        shownRecoveryRequestId = request.requestId
+
+        val builder = MaterialAlertDialogBuilder(this)
+            .setMessage(request.message)
+            .setCancelable(false)
+
+        when (request.kind) {
+            DownloadRecoveryCoordinator.Kind.SUBTITLE_FAILURE -> {
+                builder.setTitle(R.string.subtitle_download_failed)
+                builder.setPositiveButton(R.string.continue_download) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CONTINUE,
+                    )
+                }
+                builder.setNeutralButton(R.string.retry) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.RETRY,
+                    )
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CANCEL,
+                    )
+                }
+            }
+
+            DownloadRecoveryCoordinator.Kind.LOW_STORAGE -> {
+                builder.setTitle(R.string.disk_space_warning)
+                builder.setPositiveButton(R.string.continue_download) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CONTINUE,
+                    )
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CANCEL,
+                    )
+                }
+            }
+        }
+
+        downloadRecoveryDialog = builder.create().also { it.show() }
+    }
+
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putBundle("nav_state", navController.saveState())

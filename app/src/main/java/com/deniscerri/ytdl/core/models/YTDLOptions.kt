@@ -49,6 +49,21 @@ class YTDLOptions {
         return options.containsKey(option)
     }
 
+    /**
+     * Extends one namespaced yt-dlp argument in place. Retried requests therefore
+     * keep one aria2 argument instead of adding a second option that may override it.
+     */
+    fun appendToArgument(option: String, argumentPrefix: String, suffix: String): Boolean {
+        val arguments = options[option] ?: return false
+        val index = arguments.indexOfFirst { it.startsWith(argumentPrefix) }
+        if (index < 0) return false
+
+        if (!arguments[index].contains(suffix)) {
+            arguments[index] = "${arguments[index].trim()} ${suffix.trim()}"
+        }
+        return true
+    }
+
     fun buildOptions(): List<String> {
         val commandList: MutableList<String> = mutableListOf()
         for ((option, value) in options) {
