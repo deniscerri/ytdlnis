@@ -31,6 +31,19 @@ object DownloadSettingsModule : SettingModule {
         val context = pref.context
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
         when(pref.key) {
+            "smart_request_budget" -> {
+                // The ceiling is editable only when shared budgeting is active.
+                host.findPref("max_parallel_requests")?.isEnabled =
+                    preferences.getBoolean("smart_request_budget", true)
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    host.findPref("max_parallel_requests")?.isEnabled = newValue as Boolean
+                    host.refreshUI()
+                    true
+                }
+            }
+            "max_parallel_requests" -> {
+                pref.isEnabled = preferences.getBoolean("smart_request_budget", true)
+            }
             "remember_download_type" -> {
                 val rememberDownloadType = pref as SwitchPreferenceCompat
                 rememberDownloadType.setOnPreferenceChangeListener { _, newValue ->
