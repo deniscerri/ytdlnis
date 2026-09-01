@@ -133,6 +133,16 @@
             app:summary="@string/smart_request_budget_summary"
             app:title="@string/smart_request_budget" />
 
+        <!-- The active .part file is never processed; only a completed item may
+             overlap the next network transfer during local FFmpeg work. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_concurrent_downloads"
+            android:key="pipeline_postprocessing"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/pipeline_postprocessing_summary"
+            app:title="@string/pipeline_postprocessing" />
+
         <SeekBarPreference
             android:defaultValue="8"
             android:icon="@drawable/ic_speed"

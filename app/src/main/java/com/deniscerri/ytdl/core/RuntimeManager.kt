@@ -277,14 +277,25 @@ object RuntimeManager {
             request.addOption("--js-runtimes", "quickjs:${quickJsLocation.executable.absolutePath}")
         }
 
-        if (request.buildCommand().contains("libaria2c.so") &&
-            request.getArguments("--external-downloader-args")
-                ?.none { it?.contains("--ca-certificate=") == true } != false
-        ) {
-            request.addOption(
+        if (request.buildCommand().contains("libaria2c.so")) {
+            // Keep the CA path in the same aria2 namespace as its resume/tuning
+            // arguments. Separate aliases can override rather than merge in yt-dlp.
+            val certificateArgument = "--ca-certificate=$ENV_SSL_CERT_FILE"
+            val appended = request.appendToOptionArgument(
+                "--downloader-args",
+                "aria2c:",
+                certificateArgument,
+            ) || request.appendToOptionArgument(
                 "--external-downloader-args",
-                "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
+                "aria2c:",
+                certificateArgument,
             )
+            if (!appended) {
+                request.addOption(
+                    "--external-downloader-args",
+                    "aria2c:$certificateArgument",
+                )
+            }
         }
 
         if (!usingCacheDir && !request.hasOption("--no-cache-dir")) {

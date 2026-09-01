@@ -969,9 +969,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val aria2 = sharedPreferences.getBoolean("aria2", false)
         if (aria2) {
             ytDlRequest.addOption("--downloader", "libaria2c.so")
-            //request.addOption("--external-downloader-args", "aria2c:\"--summary-interval=1\"")
-            //ytDlRequest.addOption("--no-check-certificates")
-            //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
         val requestedDownloads = sharedPreferences.getInt(
@@ -998,6 +995,26 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             ),
         )
         if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
+        if (aria2) {
+            // Reuse partial data and keep aria2 inside the same bounded fragment
+            // concurrency selected by DownloadNetworkPolicy.
+            request.addOption(
+                "--downloader-args",
+                "aria2c:-x$concurrentFragments -s$concurrentFragments -k1M " +
+                    "--continue=true --file-allocation=none --auto-file-renaming=false " +
+                    "--max-tries=5 --retry-wait=3 --connect-timeout=15 --timeout=30",
+            )
+        }
+
+        if (sharedPreferences.getBoolean("smart_request_budget", true)) {
+            // Let yt-dlp perform its normal bounded recovery before the worker-level
+            // HTTP policy decides whether another complete attempt is justified.
+            request.addOption("--retry-sleep", "http:exp=1:20")
+            request.addOption("--retry-sleep", "fragment:exp=1:10")
+            request.addOption("--retry-sleep", "extractor:exp=1:20")
+            request.addOption("--extractor-retries", 5)
+            request.addOption("--sleep-requests", "0.15")
+        }
 
         val retries = sharedPreferences.getString("retries", "")!!
         val fragmentRetries = sharedPreferences.getString("fragment_retries", "")!!
@@ -1050,6 +1067,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if(downloadItem.type != DownloadType.command){
             if (sharedPreferences.getBoolean("no_part", false)){
                 request.addOption("--no-part")
+            } else {
+                // Explicit .part files keep interrupted media resumable. FFmpeg only
+                // sees the file after yt-dlp reports a completed download stage.
+                request.addOption("--part")
             }
 
             if (sharedPreferences.getBoolean("trim_filenames", true)) {

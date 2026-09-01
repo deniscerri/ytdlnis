@@ -99,6 +99,11 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
+    // Emits a Room table change when an active item releases its network slot and
+    // enters local FFmpeg work, without reviving a cancelled item.
+    @Query("UPDATE downloads SET status='Active' WHERE id=:id AND status='Active'")
+    suspend fun notifyActiveDownloadChanged(id: Long)
+
     @Query("SELECT * FROM downloads WHERE url=:url AND status='Processing'")
     fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem>
 

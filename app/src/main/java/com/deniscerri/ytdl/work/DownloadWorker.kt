@@ -34,6 +34,7 @@ import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.DownloadNetworkPolicy
+import com.deniscerri.ytdl.util.DownloadPipelinePolicy
 import com.deniscerri.ytdl.util.HttpRetryPolicy
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
@@ -56,6 +57,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.collections.addAll
 import kotlin.random.Random
 
@@ -145,6 +148,11 @@ class DownloadWorker(
         val minDelay = downloadDelay.split("-")[0].toFloat()
         val maxDelay = downloadDelay.split("-")[1].toFloat()
         val hasDownloadDelay = minDelay > 0 || maxDelay > 0
+        val pipelinePostProcessing = sharedPreferences.getBoolean(
+            "pipeline_postprocessing",
+            true,
+        )
+        postProcessingYTDLInstances.clear()
 
         queuedItems.collectLatest { items ->
             if (this@DownloadWorker.isStopped) return@collectLatest
@@ -156,6 +164,7 @@ class DownloadWorker(
             }
 
             val running = ArrayList(runningYTDLInstances)
+            postProcessingYTDLInstances.retainAll(running.toSet())
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
                 WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
@@ -190,18 +199,30 @@ class DownloadWorker(
                     true,
                 ),
             )
-            // Existing active jobs consume slots first. A lower setting must never
-            // produce a negative value that would make take() throw below.
-            var concurrentDownloads = (downloadLimit - running.size).coerceAtLeast(0)
+            var concurrentDownloads = DownloadPipelinePolicy.availableNetworkSlots(
+                networkLimit = downloadLimit,
+                runningIds = running,
+                postProcessingIds = postProcessingYTDLInstances,
+                pipelineEnabled = pipelinePostProcessing,
+            )
             if (hasDownloadDelay) {
                 concurrentDownloads = (1 - running.size).coerceAtLeast(0)
             }
 
             val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
-                val tmp = priorityItemIDs.take(concurrentDownloads)
-                items.filter { it.id !in running && tmp.contains(it.id) }
+                val tmp = priorityItemIDs.asSequence()
+                    .filter { priorityId -> items.any { it.id == priorityId && it.id !in running } }
+                    .take(concurrentDownloads)
+                    .toSet()
+                items.asSequence()
+                    .filter { it.id !in running && it.id in tmp }
+                    .take(concurrentDownloads)
+                    .toList()
             }else{
-                items.take(concurrentDownloads).filter {  it.id !in running }
+                items.asSequence()
+                    .filter { it.id !in running }
+                    .take(concurrentDownloads)
+                    .toList()
             }
 
             eligibleDownloads.forEach{downloadItem ->
@@ -303,6 +324,7 @@ class DownloadWorker(
                             var completedTransientRetries = 0
                             var completedExpiredMediaUrlRetries = 0
                             var response: ExecuteResponse? = null
+                            val postProcessingReported = AtomicBoolean(false)
 
                             // Re-running the original yt-dlp request re-extracts remote URLs
                             // while preserving its output paths, so existing .part data resumes.
@@ -318,6 +340,17 @@ class DownloadWorker(
                                         usingCacheDir = true
                                     ) { progress, _, line ->
                                         attemptOutput.appendLine(line)
+                                        if (pipelinePostProcessing &&
+                                            DownloadPipelinePolicy.isPostProcessingOutput(line) &&
+                                            postProcessingReported.compareAndSet(false, true)
+                                        ) {
+                                            // Wake the observed queue as soon as yt-dlp switches
+                                            // from network I/O to local FFmpeg/post-processing.
+                                            postProcessingYTDLInstances.add(downloadItem.id)
+                                            workerScope.launch {
+                                                dao.notifyActiveDownloadChanged(downloadItem.id)
+                                            }
+                                        }
                                         WorkerEventBus.post(
                                             WorkerProgress(
                                                 progress.toInt(),
@@ -452,6 +485,12 @@ class DownloadWorker(
 
                             response
                         }.onSuccess {
+                            // Scanning and moving output files is local work too, so it
+                            // does not need to occupy a network-download slot.
+                            if (pipelinePostProcessing) {
+                                postProcessingYTDLInstances.add(downloadItem.id)
+                                dao.notifyActiveDownloadChanged(downloadItem.id)
+                            }
                             resultRepo.updateDownloadItem(downloadItem)?.apply {
                                 dao.updateWithoutUpsert(this)
                             }
@@ -639,6 +678,7 @@ class DownloadWorker(
                                 //                            }
 
                                 dao.delete(downloadItem.id)
+                                postProcessingYTDLInstances.remove(downloadItem.id)
 
                                 if (logDownloads) {
                                     logRepo.update(initialLogDetails + it.out, logItem.id, true)
@@ -646,6 +686,7 @@ class DownloadWorker(
                             }
 
                         }.onFailure {
+                            postProcessingYTDLInstances.remove(downloadItem.id)
                             FileUtil.deleteConfigFiles(request)
                             withContext(Dispatchers.Main) {
                                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
@@ -726,6 +767,8 @@ class DownloadWorker(
 
     companion object {
         val runningYTDLInstances: MutableList<Long> = mutableListOf()
+        private val postProcessingYTDLInstances: MutableSet<Long> =
+            ConcurrentHashMap.newKeySet()
         const val TAG = "DownloadWorker"
         private val downloadLock = Mutex()
     }
