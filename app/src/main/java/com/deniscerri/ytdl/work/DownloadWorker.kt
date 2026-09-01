@@ -30,6 +30,8 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.util.DeviceResourceMonitor
+import com.deniscerri.ytdl.util.DeviceResourcePolicy
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
@@ -49,6 +51,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -107,6 +110,7 @@ class DownloadWorker(
         val handler = Handler(Looper.getMainLooper())
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val deviceResourceMonitor = DeviceResourceMonitor(context)
         val time = System.currentTimeMillis() + 6000
         val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
         val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
@@ -154,6 +158,22 @@ class DownloadWorker(
         )
         postProcessingYTDLInstances.clear()
 
+        // Resource state changes independently of Room. Wake the queue when pressure
+        // changes so held items resume without requiring a manual database action.
+        workerScope.launch {
+            var previousPressure: DeviceResourcePolicy.Pressure? = null
+            while (isActive) {
+                val pressure = DeviceResourcePolicy.pressure(
+                    deviceResourceMonitor.snapshot(),
+                )
+                if (previousPressure != null && pressure != previousPressure) {
+                    dao.notifyQueuedDownloadsChanged()
+                }
+                previousPressure = pressure
+                delay(15_000L)
+            }
+        }
+
         queuedItems.collectLatest { items ->
             if (this@DownloadWorker.isStopped) return@collectLatest
 
@@ -191,7 +211,7 @@ class DownloadWorker(
                 "max_parallel_requests",
                 DownloadNetworkPolicy.DEFAULT_MAX_PARALLEL_REQUESTS,
             )
-            val downloadLimit = DownloadNetworkPolicy.effectiveDownloadLimit(
+            var downloadLimit = DownloadNetworkPolicy.effectiveDownloadLimit(
                 requestedDownloads = requestedDownloads,
                 maxParallelRequests = maxParallelRequests,
                 budgetingEnabled = sharedPreferences.getBoolean(
@@ -199,12 +219,28 @@ class DownloadWorker(
                     true,
                 ),
             )
+            val protectDevice = sharedPreferences.getBoolean(
+                "device_resource_protection",
+                true,
+            )
+            val devicePressure = if (protectDevice) {
+                DeviceResourcePolicy.pressure(deviceResourceMonitor.snapshot())
+            } else {
+                DeviceResourcePolicy.Pressure.NORMAL
+            }
+            downloadLimit = DeviceResourcePolicy.limitDownloads(
+                downloadLimit,
+                devicePressure,
+            )
+            val pipelineAllowed = pipelinePostProcessing &&
+                (!protectDevice || DeviceResourcePolicy.allowPostProcessingOverlap(devicePressure))
             var concurrentDownloads = DownloadPipelinePolicy.availableNetworkSlots(
-                networkLimit = downloadLimit,
+                networkLimit = downloadLimit.coerceAtLeast(1),
                 runningIds = running,
                 postProcessingIds = postProcessingYTDLInstances,
-                pipelineEnabled = pipelinePostProcessing,
+                pipelineEnabled = pipelineAllowed,
             )
+            if (downloadLimit == 0) concurrentDownloads = 0
             if (hasDownloadDelay) {
                 concurrentDownloads = (1 - running.size).coerceAtLeast(0)
             }
@@ -340,7 +376,7 @@ class DownloadWorker(
                                         usingCacheDir = true
                                     ) { progress, _, line ->
                                         attemptOutput.appendLine(line)
-                                        if (pipelinePostProcessing &&
+                                        if (pipelineAllowed &&
                                             DownloadPipelinePolicy.isPostProcessingOutput(line) &&
                                             postProcessingReported.compareAndSet(false, true)
                                         ) {
@@ -487,7 +523,7 @@ class DownloadWorker(
                         }.onSuccess {
                             // Scanning and moving output files is local work too, so it
                             // does not need to occupy a network-download slot.
-                            if (pipelinePostProcessing) {
+                            if (pipelineAllowed) {
                                 postProcessingYTDLInstances.add(downloadItem.id)
                                 dao.notifyActiveDownloadChanged(downloadItem.id)
                             }

@@ -117,6 +117,8 @@
     <string name="max_parallel_requests_summary">Upper connection limit shared by active downloads and media fragments</string>
     <string name="pipeline_postprocessing">Pipeline downloads and FFmpeg</string>
     <string name="pipeline_postprocessing_summary">Start the next network download while one completed item is being merged or converted locally</string>
+    <string name="device_resource_protection">CPU and temperature protection</string>
+    <string name="device_resource_protection_summary">Reduce transfer concurrency and FFmpeg overlap while the device is busy or hot</string>
     <string name="action_required_open_app">Action required — open YTDLnis</string>
     <string name="subtitle_download_failed">Subtitles couldn’t be downloaded</string>
     <string name="subtitle_failure_decision_message">The media download can continue without subtitles. Choose Continue to remove subtitle options, Retry to try subtitles again, or Cancel to stop this item.</string>

@@ -24,6 +24,8 @@ import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
+import com.deniscerri.ytdl.util.DeviceResourceMonitor
+import com.deniscerri.ytdl.util.DeviceResourcePolicy
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.getIntByAny
 import com.deniscerri.ytdl.util.Extensions.getStringByAny
@@ -985,7 +987,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         )
         // Calculate -N from the same budget used by DownloadWorker so item and
         // fragment concurrency cannot multiply past the configured ceiling.
-        val concurrentFragments = DownloadNetworkPolicy.effectiveFragmentLimit(
+        var concurrentFragments = DownloadNetworkPolicy.effectiveFragmentLimit(
             requestedFragments = requestedFragments,
             requestedDownloads = requestedDownloads,
             maxParallelRequests = maxParallelRequests,
@@ -994,6 +996,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 true,
             ),
         )
+        if (sharedPreferences.getBoolean("device_resource_protection", true)) {
+            val pressure = DeviceResourcePolicy.pressure(
+                DeviceResourceMonitor(context).snapshot(),
+            )
+            concurrentFragments = DeviceResourcePolicy.limitFragments(
+                concurrentFragments,
+                pressure,
+            )
+        }
         if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
         if (aria2) {
             // Reuse partial data and keep aria2 inside the same bounded fragment

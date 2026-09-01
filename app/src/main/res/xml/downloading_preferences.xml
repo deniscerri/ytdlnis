@@ -143,6 +143,16 @@
             app:summary="@string/pipeline_postprocessing_summary"
             app:title="@string/pipeline_postprocessing" />
 
+        <!-- Lower parallel work automatically when Android thermal state, battery
+             temperature, or normalized CPU load indicates device pressure. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_speed"
+            android:key="device_resource_protection"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/device_resource_protection_summary"
+            app:title="@string/device_resource_protection" />
+
         <SeekBarPreference
             android:defaultValue="8"
             android:icon="@drawable/ic_speed"
