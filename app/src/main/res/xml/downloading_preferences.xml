@@ -163,6 +163,16 @@
             app:summary="@string/connectivity_aware_downloads_summary"
             app:title="@string/connectivity_aware_downloads" />
 
+        <!-- Estimate input streams, a concurrent merged output, and a reserve before
+             starting; unknown SAF capacities remain warning-free. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/outline_storage_24"
+            android:key="disk_space_warning"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/disk_space_warning_summary"
+            app:title="@string/disk_space_warning" />
+
         <SeekBarPreference
             android:defaultValue="8"
             android:icon="@drawable/ic_speed"

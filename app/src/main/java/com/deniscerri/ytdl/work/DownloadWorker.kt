@@ -38,10 +38,11 @@ import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.DownloadNetworkPolicy
 import com.deniscerri.ytdl.util.DownloadPipelinePolicy
+import com.deniscerri.ytdl.util.DownloadRecoveryCoordinator
+import com.deniscerri.ytdl.util.DownloadStoragePolicy
 import com.deniscerri.ytdl.util.HttpRetryPolicy
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
-import com.deniscerri.ytdl.util.SubtitleRecoveryCoordinator
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import kotlinx.coroutines.CancellationException
@@ -290,7 +291,7 @@ class DownloadWorker(
                 notificationUtil.notify(downloadItem.id.toInt(), notification)
 
                 workerScope.launch {
-                    val processDownloadBlock : suspend () -> Unit = {
+                    val processDownloadBlock : suspend () -> Unit = processDownloadBlock@{
 
                         downloadItem.status = DownloadRepository.Status.Active.toString()
                         dao.update(downloadItem)
@@ -321,6 +322,48 @@ class DownloadWorker(
                             "cache_downloads",
                             true
                         ) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
+
+                        if (sharedPreferences.getBoolean("disk_space_warning", true)) {
+                            val workingDirectory = if (noCache) {
+                                File(FileUtil.formatPath(downloadItem.downloadPath))
+                            } else {
+                                File(FileUtil.getCacheDownloadsPath(context))
+                            }
+                            val requiredBytes = DownloadStoragePolicy.estimateRequiredBytes(downloadItem)
+                            val availableBytes = DownloadStoragePolicy.availableBytes(workingDirectory)
+                            if (DownloadStoragePolicy.shouldWarn(requiredBytes, availableBytes)) {
+                                val message = context.getString(
+                                    R.string.low_storage_download_message,
+                                    FileUtil.convertFileSize(requiredBytes),
+                                    FileUtil.convertFileSize(availableBytes),
+                                )
+                                notificationUtil.updateDownloadNotification(
+                                    downloadItem.id.toInt(),
+                                    context.getString(R.string.action_required_open_app),
+                                    0,
+                                    0,
+                                    downloadItem.title.ifEmpty { downloadItem.url },
+                                    NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                )
+                                val action = DownloadRecoveryCoordinator.awaitDecision(
+                                    DownloadRecoveryCoordinator.Request(
+                                        downloadId = downloadItem.id,
+                                        title = downloadItem.title.ifEmpty { downloadItem.url },
+                                        kind = DownloadRecoveryCoordinator.Kind.LOW_STORAGE,
+                                        message = message,
+                                    ),
+                                )
+                                if (action == DownloadRecoveryCoordinator.Action.CANCEL) {
+                                    downloadItem.status =
+                                        DownloadRepository.Status.Cancelled.toString()
+                                    dao.update(downloadItem)
+                                    notificationUtil.cancelDownloadNotification(
+                                        downloadItem.id.toInt(),
+                                    )
+                                    return@processDownloadBlock
+                                }
+                            }
+                        }
 
                         var request = ytdlpUtil.buildYTDLRequest(downloadItem)
 
@@ -550,16 +593,17 @@ class DownloadWorker(
                                             NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
                                         )
 
-                                        when (SubtitleRecoveryCoordinator.awaitDecision(
-                                            SubtitleRecoveryCoordinator.Request(
+                                        when (DownloadRecoveryCoordinator.awaitDecision(
+                                            DownloadRecoveryCoordinator.Request(
                                                 downloadId = downloadItem.id,
                                                 title = downloadItem.title.ifEmpty {
                                                     downloadItem.url
                                                 },
+                                                kind = DownloadRecoveryCoordinator.Kind.SUBTITLE_FAILURE,
                                                 message = decisionMessage,
                                             ),
                                         )) {
-                                            SubtitleRecoveryCoordinator.Action.CONTINUE -> {
+                                            DownloadRecoveryCoordinator.Action.CONTINUE -> {
                                                 FileUtil.deleteConfigFiles(request)
                                                 request = ytdlpUtil.buildYTDLRequest(
                                                     downloadItem,
@@ -575,17 +619,17 @@ class DownloadWorker(
                                                 continue
                                             }
 
-                                            SubtitleRecoveryCoordinator.Action.RETRY -> {
+                                            DownloadRecoveryCoordinator.Action.RETRY -> {
                                                 completedTransientRetries = 0
                                                 completedExpiredMediaUrlRetries = 0
                                                 continue
                                             }
 
-                                            SubtitleRecoveryCoordinator.Action.CANCEL -> {
+                                            DownloadRecoveryCoordinator.Action.CANCEL -> {
                                                 downloadItem.status =
                                                     DownloadRepository.Status.Cancelled.toString()
                                                 dao.update(downloadItem)
-                                                throw SubtitleRecoveryCanceledException()
+                                                throw UserDecisionCanceledException()
                                             }
                                         }
                                     }
@@ -893,6 +937,6 @@ class DownloadWorker(
         val logItemID: Long?
     )
 
-    private class SubtitleRecoveryCanceledException : CancellationException()
+    private class UserDecisionCanceledException : CancellationException()
 
 }

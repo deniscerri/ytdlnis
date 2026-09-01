@@ -6,10 +6,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.concurrent.atomic.AtomicLong
 
 /**
- * Keeps subtitle decisions pending while the app is backgrounded, then delivers the
- * user's choice back to the worker when MainActivity is opened.
+ * Bridges background download work to foreground-only user decisions. Requests stay
+ * in StateFlow while the app is backgrounded so opening MainActivity cannot miss one.
  */
-object SubtitleRecoveryCoordinator {
+object DownloadRecoveryCoordinator {
+    enum class Kind {
+        SUBTITLE_FAILURE,
+        LOW_STORAGE,
+    }
+
     enum class Action {
         CONTINUE,
         RETRY,
@@ -17,9 +22,10 @@ object SubtitleRecoveryCoordinator {
     }
 
     data class Request(
-        val requestId: Long = SubtitleRecoveryCoordinator.nextRequestId.incrementAndGet(),
+        val requestId: Long = nextRequestId.incrementAndGet(),
         val downloadId: Long,
         val title: String,
+        val kind: Kind,
         val message: String,
     )
 

@@ -63,7 +63,7 @@ import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
-import com.deniscerri.ytdl.util.SubtitleRecoveryCoordinator
+import com.deniscerri.ytdl.util.DownloadRecoveryCoordinator
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -112,8 +112,8 @@ class MainActivity : BaseActivity() {
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
-    private var subtitleRecoveryDialog: AlertDialog? = null
-    private var shownSubtitleRecoveryRequestId: Long? = null
+    private var downloadRecoveryDialog: AlertDialog? = null
+    private var shownRecoveryRequestId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -290,7 +290,7 @@ class MainActivity : BaseActivity() {
             getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this@MainActivity)
         }
 
-        observeSubtitleRecoveryRequests()
+        observeDownloadRecoveryRequests()
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
@@ -298,52 +298,73 @@ class MainActivity : BaseActivity() {
         askAutoUpdatePreferences()
     }
 
-    /** Presents subtitle recovery after the user returns to the foreground. */
-    private fun observeSubtitleRecoveryRequests() {
+    /** Presents retained worker decisions after the user returns to the foreground. */
+    private fun observeDownloadRecoveryRequests() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                SubtitleRecoveryCoordinator.requests.collectLatest { requests ->
+                DownloadRecoveryCoordinator.requests.collectLatest { requests ->
                     val request = requests.firstOrNull()
                     if (request == null) {
-                        subtitleRecoveryDialog?.dismiss()
-                        subtitleRecoveryDialog = null
-                        shownSubtitleRecoveryRequestId = null
-                    } else if (shownSubtitleRecoveryRequestId != request.requestId) {
-                        showSubtitleRecoveryDialog(request)
+                        downloadRecoveryDialog?.dismiss()
+                        downloadRecoveryDialog = null
+                        shownRecoveryRequestId = null
+                    } else if (shownRecoveryRequestId != request.requestId) {
+                        showDownloadRecoveryDialog(request)
                     }
                 }
             }
         }
     }
 
-    private fun showSubtitleRecoveryDialog(request: SubtitleRecoveryCoordinator.Request) {
-        subtitleRecoveryDialog?.dismiss()
-        shownSubtitleRecoveryRequestId = request.requestId
+    private fun showDownloadRecoveryDialog(request: DownloadRecoveryCoordinator.Request) {
+        downloadRecoveryDialog?.dismiss()
+        shownRecoveryRequestId = request.requestId
 
-        subtitleRecoveryDialog = MaterialAlertDialogBuilder(this)
-            .setTitle(R.string.subtitle_download_failed)
+        val builder = MaterialAlertDialogBuilder(this)
             .setMessage(request.message)
             .setCancelable(false)
-            .setPositiveButton(R.string.continue_download) { _, _ ->
-                SubtitleRecoveryCoordinator.resolve(
-                    request.requestId,
-                    SubtitleRecoveryCoordinator.Action.CONTINUE,
-                )
+
+        when (request.kind) {
+            DownloadRecoveryCoordinator.Kind.SUBTITLE_FAILURE -> {
+                builder.setTitle(R.string.subtitle_download_failed)
+                builder.setPositiveButton(R.string.continue_download) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CONTINUE,
+                    )
+                }
+                builder.setNeutralButton(R.string.retry) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.RETRY,
+                    )
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CANCEL,
+                    )
+                }
             }
-            .setNeutralButton(R.string.retry) { _, _ ->
-                SubtitleRecoveryCoordinator.resolve(
-                    request.requestId,
-                    SubtitleRecoveryCoordinator.Action.RETRY,
-                )
+
+            DownloadRecoveryCoordinator.Kind.LOW_STORAGE -> {
+                builder.setTitle(R.string.disk_space_warning)
+                builder.setPositiveButton(R.string.continue_download) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CONTINUE,
+                    )
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CANCEL,
+                    )
+                }
             }
-            .setNegativeButton(R.string.cancel) { _, _ ->
-                SubtitleRecoveryCoordinator.resolve(
-                    request.requestId,
-                    SubtitleRecoveryCoordinator.Action.CANCEL,
-                )
-            }
-            .create()
-            .also { it.show() }
+        }
+
+        downloadRecoveryDialog = builder.create().also { it.show() }
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
