@@ -475,7 +475,7 @@
     <string name="cut_unsupported">Bu element üçün kəsmə əlçatan deyil</string>
     <string name="select_between_desc">Seçmək üçün elementlərin həddini təyin et</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Web Qəbuledici PO Token</string>
+    <string name="manual_po_token_generator">Əl İlə Web Po Token Yaradıcı</string>
     <string name="reverse">Dəyişdir</string>
     <string name="no_keep_subs">Yerləşdirmə sonrası titr fayllarını sil</string>
     <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
@@ -584,4 +584,11 @@
         <item quantity="one">Hər dəqiqə</item>
         <item quantity="other">Hər %d dəqiqədən bir</item>
     </plurals>
+    <string name="bgutils_info">Yt-dlp üçün proof-of-origin tokeni (POT) provayderi.\nBu aktiv olduqda, YTDLnis POT generatoru olan HTTP serverini yerləşdirir və yt-dlp-nin istifadə etdiyi əlaqəli plagini quraşdırır.</string>
+    <string name="bgutils_pot_generation_script">Yaratma skripti</string>
+    <string name="bgutils_pot_generation_server">HTTP Serveri</string>
+    <string name="bgutils_pot_generation_script_summary">Hər bir yt-dlp çağırışı skripti icra etmək üçün yeni JS runtime prosesinin yuxarı yüklənməsinə səbəb olur. Yüksək eynivaxtlılıq istifadəsi üçün bu üsul tövsiyə olunmur.</string>
+    <string name="bgutils_pot_server_summary">Bu, 4416 portunda işləyən JavaScript HTTP serveridir. Qapalıdırsa, yükləmə növbəsi icra olunmağa başladıqda və ya mənbələrə nəzarət et planlaşdırıldıqda server avtomatik olaraq işə düşür. Onu qapatmaq üçün bildirişlərdən əl ilə etməlisiniz!</string>
+    <string name="please_install_package">Xahiş olunur, %s paketini quraşdır</string>
+    <string name="please_install_package_or_package">Xahiş olunur, %1$s və ya %2$s paketini quraşdır</string>
 </resources>
