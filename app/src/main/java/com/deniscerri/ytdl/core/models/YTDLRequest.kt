@@ -45,6 +45,11 @@ class YTDLRequest {
         return options.hasOption(option)
     }
 
+    /** Extends an existing namespaced downloader argument without duplicating it. */
+    fun appendToOptionArgument(option: String, argumentPrefix: String, suffix: String): Boolean {
+        return options.appendToArgument(option, argumentPrefix, suffix)
+    }
+
     fun buildCommand(): List<String> {
         val commandList: MutableList<String> = ArrayList()
         commandList.addAll(options.buildOptions())

@@ -22,6 +22,7 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.models.ExecuteResponse
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
@@ -29,12 +30,20 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.util.DeviceResourceMonitor
+import com.deniscerri.ytdl.util.DeviceResourcePolicy
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.DownloadNetworkPolicy
+import com.deniscerri.ytdl.util.DownloadPipelinePolicy
+import com.deniscerri.ytdl.util.HttpRetryPolicy
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
+import com.deniscerri.ytdl.util.SubtitleRecoveryCoordinator
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -42,6 +51,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
@@ -50,6 +60,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 import java.security.MessageDigest
 import java.util.Locale
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.collections.addAll
 import kotlin.random.Random
 
@@ -98,6 +110,7 @@ class DownloadWorker(
         val handler = Handler(Looper.getMainLooper())
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val deviceResourceMonitor = DeviceResourceMonitor(context)
         val time = System.currentTimeMillis() + 6000
         val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
         val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
@@ -139,6 +152,27 @@ class DownloadWorker(
         val minDelay = downloadDelay.split("-")[0].toFloat()
         val maxDelay = downloadDelay.split("-")[1].toFloat()
         val hasDownloadDelay = minDelay > 0 || maxDelay > 0
+        val pipelinePostProcessing = sharedPreferences.getBoolean(
+            "pipeline_postprocessing",
+            true,
+        )
+        postProcessingYTDLInstances.clear()
+
+        // Resource state changes independently of Room. Wake the queue when pressure
+        // changes so held items resume without requiring a manual database action.
+        workerScope.launch {
+            var previousPressure: DeviceResourcePolicy.Pressure? = null
+            while (isActive) {
+                val pressure = DeviceResourcePolicy.pressure(
+                    deviceResourceMonitor.snapshot(),
+                )
+                if (previousPressure != null && pressure != previousPressure) {
+                    dao.notifyQueuedDownloadsChanged()
+                }
+                previousPressure = pressure
+                delay(15_000L)
+            }
+        }
 
         queuedItems.collectLatest { items ->
             if (this@DownloadWorker.isStopped) return@collectLatest
@@ -150,6 +184,7 @@ class DownloadWorker(
             }
 
             val running = ArrayList(runningYTDLInstances)
+            postProcessingYTDLInstances.retainAll(running.toSet())
             val useScheduler = sharedPreferences.getBoolean("use_scheduler", false)
             if (items.isEmpty() && running.isEmpty()) {
                 WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
@@ -168,16 +203,62 @@ class DownloadWorker(
                 return@collectLatest
             }
 
-            var concurrentDownloads = sharedPreferences.getInt("concurrent_downloads", 1) - running.size
+            val requestedDownloads = sharedPreferences.getInt(
+                "concurrent_downloads",
+                DownloadNetworkPolicy.DEFAULT_CONCURRENT_DOWNLOADS,
+            )
+            val maxParallelRequests = sharedPreferences.getInt(
+                "max_parallel_requests",
+                DownloadNetworkPolicy.DEFAULT_MAX_PARALLEL_REQUESTS,
+            )
+            var downloadLimit = DownloadNetworkPolicy.effectiveDownloadLimit(
+                requestedDownloads = requestedDownloads,
+                maxParallelRequests = maxParallelRequests,
+                budgetingEnabled = sharedPreferences.getBoolean(
+                    "smart_request_budget",
+                    true,
+                ),
+            )
+            val protectDevice = sharedPreferences.getBoolean(
+                "device_resource_protection",
+                true,
+            )
+            val devicePressure = if (protectDevice) {
+                DeviceResourcePolicy.pressure(deviceResourceMonitor.snapshot())
+            } else {
+                DeviceResourcePolicy.Pressure.NORMAL
+            }
+            downloadLimit = DeviceResourcePolicy.limitDownloads(
+                downloadLimit,
+                devicePressure,
+            )
+            val pipelineAllowed = pipelinePostProcessing &&
+                (!protectDevice || DeviceResourcePolicy.allowPostProcessingOverlap(devicePressure))
+            var concurrentDownloads = DownloadPipelinePolicy.availableNetworkSlots(
+                networkLimit = downloadLimit.coerceAtLeast(1),
+                runningIds = running,
+                postProcessingIds = postProcessingYTDLInstances,
+                pipelineEnabled = pipelineAllowed,
+            )
+            if (downloadLimit == 0) concurrentDownloads = 0
             if (hasDownloadDelay) {
-                concurrentDownloads = 1 - running.size
+                concurrentDownloads = (1 - running.size).coerceAtLeast(0)
             }
 
             val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
-                val tmp = priorityItemIDs.take(concurrentDownloads)
-                items.filter { it.id !in running && tmp.contains(it.id) }
+                val tmp = priorityItemIDs.asSequence()
+                    .filter { priorityId -> items.any { it.id == priorityId && it.id !in running } }
+                    .take(concurrentDownloads)
+                    .toSet()
+                items.asSequence()
+                    .filter { it.id !in running && it.id in tmp }
+                    .take(concurrentDownloads)
+                    .toList()
             }else{
-                items.take(concurrentDownloads).filter {  it.id !in running }
+                items.asSequence()
+                    .filter { it.id !in running }
+                    .take(concurrentDownloads)
+                    .toList()
             }
 
             eligibleDownloads.forEach{downloadItem ->
@@ -219,7 +300,7 @@ class DownloadWorker(
                             true
                         ) && File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite())
 
-                        val request = ytdlpUtil.buildYTDLRequest(downloadItem)
+                        var request = ytdlpUtil.buildYTDLRequest(downloadItem)
 
                         // DISABLED BECAUSE YT_DLP CONSIDERS DOWNLOAD FAILURE IF -U PART FAILS, ytdlnis #1043
     //                    val updateYTDLP = sharedPreferences.getBoolean("update_ytdlp_while_downloading", false)
@@ -276,35 +357,176 @@ class DownloadWorker(
                         }
 
                         runCatching {
-                            RuntimeManager.getInstance().destroyProcessById(downloadItem.id.toString())
-                            RuntimeManager.getInstance().execute(
-                                request = request,
-                                processId = downloadItem.id.toString(),
-                                redirectErrorStream = true,
-                                usingCacheDir = true
-                            ) { progress, _, line ->
-                                WorkerEventBus.post(
-                                    WorkerProgress(
-                                        progress.toInt(),
-                                        line,
-                                        downloadItem.id,
-                                        downloadItem.logID
-                                    )
-                                )
-                                val title: String = downloadItem.title.ifEmpty { downloadItem.url }
-                                notificationUtil.updateDownloadNotification(
-                                    downloadItem.id.toInt(),
-                                    line, progress.toInt(), 0, title,
-                                    NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID
-                                )
-                                CoroutineScope(Dispatchers.IO).launch {
-                                    if (logDownloads) {
-                                        logRepo.update(line, logItem.id)
+                            var completedTransientRetries = 0
+                            var completedExpiredMediaUrlRetries = 0
+                            var response: ExecuteResponse? = null
+                            val postProcessingReported = AtomicBoolean(false)
+
+                            // Re-running the original yt-dlp request re-extracts remote URLs
+                            // while preserving its output paths, so existing .part data resumes.
+                            while (response == null) {
+                                val attemptOutput = StringBuilder()
+                                try {
+                                    RuntimeManager.getInstance()
+                                        .destroyProcessById(downloadItem.id.toString())
+                                    response = RuntimeManager.getInstance().execute(
+                                        request = request,
+                                        processId = downloadItem.id.toString(),
+                                        redirectErrorStream = true,
+                                        usingCacheDir = true
+                                    ) { progress, _, line ->
+                                        attemptOutput.appendLine(line)
+                                        if (pipelineAllowed &&
+                                            DownloadPipelinePolicy.isPostProcessingOutput(line) &&
+                                            postProcessingReported.compareAndSet(false, true)
+                                        ) {
+                                            // Wake the observed queue as soon as yt-dlp switches
+                                            // from network I/O to local FFmpeg/post-processing.
+                                            postProcessingYTDLInstances.add(downloadItem.id)
+                                            workerScope.launch {
+                                                dao.notifyActiveDownloadChanged(downloadItem.id)
+                                            }
+                                        }
+                                        WorkerEventBus.post(
+                                            WorkerProgress(
+                                                progress.toInt(),
+                                                line,
+                                                downloadItem.id,
+                                                downloadItem.logID
+                                            )
+                                        )
+                                        val title: String =
+                                            downloadItem.title.ifEmpty { downloadItem.url }
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            line, progress.toInt(), 0, title,
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID
+                                        )
+                                        CoroutineScope(Dispatchers.IO).launch {
+                                            if (logDownloads) {
+                                                logRepo.update(line, logItem.id)
+                                            }
+                                            logString.append("$line\n")
+                                        }
                                     }
-                                    logString.append("$line\n")
+                                } catch (error: Exception) {
+                                    if (this@DownloadWorker.isStopped ||
+                                        error is RuntimeManager.CanceledException
+                                    ) {
+                                        throw error
+                                    }
+
+                                    val failureOutput = buildString {
+                                        append(attemptOutput)
+                                        appendLine()
+                                        append(error.message.orEmpty())
+                                    }
+                                    val retry = HttpRetryPolicy.nextRetry(
+                                        output = failureOutput,
+                                        completedTransientRetries = completedTransientRetries,
+                                        completedExpiredMediaUrlRetries =
+                                            completedExpiredMediaUrlRetries,
+                                    )
+
+                                    if (retry != null) {
+                                        when (retry.reason) {
+                                            HttpRetryPolicy.Reason.TRANSIENT_HTTP ->
+                                                completedTransientRetries += 1
+                                            HttpRetryPolicy.Reason.EXPIRED_MEDIA_URL ->
+                                                completedExpiredMediaUrlRetries += 1
+                                        }
+
+                                        val retryMessage = context.getString(
+                                            R.string.http_recovery_retry,
+                                            retry.statusCode,
+                                            retry.delaySeconds,
+                                        )
+                                        logString.appendLine(retryMessage)
+                                        WorkerEventBus.post(
+                                            WorkerProgress(
+                                                0,
+                                                retryMessage,
+                                                downloadItem.id,
+                                                downloadItem.logID,
+                                            ),
+                                        )
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            retryMessage,
+                                            0,
+                                            0,
+                                            downloadItem.title.ifEmpty { downloadItem.url },
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                        )
+                                        delay(retry.delaySeconds * 1000)
+                                        continue
+                                    }
+
+                                    if (SubtitleLanguagePolicy.isDownloadFailure(failureOutput)) {
+                                        val decisionMessage = context.getString(
+                                            R.string.subtitle_failure_decision_message,
+                                        )
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            context.getString(R.string.action_required_open_app),
+                                            0,
+                                            0,
+                                            downloadItem.title.ifEmpty { downloadItem.url },
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                        )
+
+                                        when (SubtitleRecoveryCoordinator.awaitDecision(
+                                            SubtitleRecoveryCoordinator.Request(
+                                                downloadId = downloadItem.id,
+                                                title = downloadItem.title.ifEmpty {
+                                                    downloadItem.url
+                                                },
+                                                message = decisionMessage,
+                                            ),
+                                        )) {
+                                            SubtitleRecoveryCoordinator.Action.CONTINUE -> {
+                                                FileUtil.deleteConfigFiles(request)
+                                                request = ytdlpUtil.buildYTDLRequest(
+                                                    downloadItem,
+                                                    suppressSubtitles = true,
+                                                )
+                                                completedTransientRetries = 0
+                                                completedExpiredMediaUrlRetries = 0
+                                                logString.appendLine(
+                                                    context.getString(
+                                                        R.string.continuing_without_subtitles,
+                                                    ),
+                                                )
+                                                continue
+                                            }
+
+                                            SubtitleRecoveryCoordinator.Action.RETRY -> {
+                                                completedTransientRetries = 0
+                                                completedExpiredMediaUrlRetries = 0
+                                                continue
+                                            }
+
+                                            SubtitleRecoveryCoordinator.Action.CANCEL -> {
+                                                downloadItem.status =
+                                                    DownloadRepository.Status.Cancelled.toString()
+                                                dao.update(downloadItem)
+                                                throw SubtitleRecoveryCanceledException()
+                                            }
+                                        }
+                                    }
+
+                                    throw error
                                 }
                             }
+
+                            response
                         }.onSuccess {
+                            // Scanning and moving output files is local work too, so it
+                            // does not need to occupy a network-download slot.
+                            if (pipelineAllowed) {
+                                postProcessingYTDLInstances.add(downloadItem.id)
+                                dao.notifyActiveDownloadChanged(downloadItem.id)
+                            }
                             resultRepo.updateDownloadItem(downloadItem)?.apply {
                                 dao.updateWithoutUpsert(this)
                             }
@@ -492,6 +714,7 @@ class DownloadWorker(
                                 //                            }
 
                                 dao.delete(downloadItem.id)
+                                postProcessingYTDLInstances.remove(downloadItem.id)
 
                                 if (logDownloads) {
                                     logRepo.update(initialLogDetails + it.out, logItem.id, true)
@@ -499,12 +722,14 @@ class DownloadWorker(
                             }
 
                         }.onFailure {
+                            postProcessingYTDLInstances.remove(downloadItem.id)
                             FileUtil.deleteConfigFiles(request)
                             withContext(Dispatchers.Main) {
                                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
                             }
                             if (this@DownloadWorker.isStopped) return@onFailure
                             if (it is RuntimeManager.CanceledException) return@onFailure
+                            if (it is CancellationException) return@onFailure
                             if (it.message?.contains("JSONDecodeError") == true) {
                                 val cachePath = FileUtil.getInfoJsonPath(context)
                                 val infoJsonName = MessageDigest.getInstance("MD5")
@@ -578,6 +803,8 @@ class DownloadWorker(
 
     companion object {
         val runningYTDLInstances: MutableList<Long> = mutableListOf()
+        private val postProcessingYTDLInstances: MutableSet<Long> =
+            ConcurrentHashMap.newKeySet()
         const val TAG = "DownloadWorker"
         private val downloadLock = Mutex()
     }
@@ -588,5 +815,7 @@ class DownloadWorker(
         val downloadItemID: Long,
         val logItemID: Long?
     )
+
+    private class SubtitleRecoveryCanceledException : CancellationException()
 
 }

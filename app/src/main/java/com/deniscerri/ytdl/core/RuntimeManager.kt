@@ -253,34 +253,58 @@ object RuntimeManager {
         assertInit()
         assertNoUpdate()
 
-        if (ffmpegLocation.isAvailable) {
+        // Worker-level retries reuse the same request. Add runtime-owned options only
+        // once so each attempt executes an equivalent command.
+        if (ffmpegLocation.isAvailable && !request.hasOption("--ffmpeg-location")) {
             request.addOption("--ffmpeg-location", ffmpegLocation.executable.absolutePath)
         }
 
-        if (nodeLocation.isAvailable) {
+        if (nodeLocation.isAvailable && request.getArguments("--js-runtimes")
+                ?.none { it?.startsWith("node:") == true } != false
+        ) {
             request.addOption("--js-runtimes", "node:${nodeLocation.executable.absolutePath}")
         }
 
-        if (denoLocation.isAvailable) {
+        if (denoLocation.isAvailable && request.getArguments("--js-runtimes")
+                ?.none { it?.startsWith("deno:") == true } != false
+        ) {
             request.addOption("--js-runtimes", "deno:${denoLocation.executable.absolutePath}")
         }
 
-        if (quickJsLocation.isAvailable) {
+        if (quickJsLocation.isAvailable && request.getArguments("--js-runtimes")
+                ?.none { it?.startsWith("quickjs:") == true } != false
+        ) {
             request.addOption("--js-runtimes", "quickjs:${quickJsLocation.executable.absolutePath}")
         }
 
         if (request.buildCommand().contains("libaria2c.so")) {
-            request.addOption(
+            // Keep the CA path in the same aria2 namespace as its resume/tuning
+            // arguments. Separate aliases can override rather than merge in yt-dlp.
+            val certificateArgument = "--ca-certificate=$ENV_SSL_CERT_FILE"
+            val appended = request.appendToOptionArgument(
+                "--downloader-args",
+                "aria2c:",
+                certificateArgument,
+            ) || request.appendToOptionArgument(
                 "--external-downloader-args",
-                "aria2c:--ca-certificate=$ENV_SSL_CERT_FILE"
+                "aria2c:",
+                certificateArgument,
             )
+            if (!appended) {
+                request.addOption(
+                    "--external-downloader-args",
+                    "aria2c:$certificateArgument",
+                )
+            }
         }
 
-        if (!usingCacheDir) {
+        if (!usingCacheDir && !request.hasOption("--no-cache-dir")) {
             request.addOption("--no-cache-dir")
         }
 
-        request.addOption("--progress-delta", 0.1)
+        if (!request.hasOption("--progress-delta")) {
+            request.addOption("--progress-delta", 0.1)
+        }
 
         return mutableListOf(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
     }
@@ -398,7 +422,9 @@ object RuntimeManager {
             if (!successCodes.contains(exitCode)) {
                 // Check if process was manually killed (removed from map)
                 if (processId != null && !idProcessMap.containsKey(processId)) throw CanceledException()
-                throw ExecuteException(err)
+                // stderr is empty when redirectErrorStream is enabled. Preserve the
+                // merged output so the worker can classify the final HTTP failure.
+                throw ExecuteException(err.ifBlank { out }.takeLast(16_384))
             }
 
             ExecuteResponse(fullCommand, exitCode, System.currentTimeMillis() - startTime, out, err)

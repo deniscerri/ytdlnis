@@ -44,6 +44,7 @@ import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.NotificationUtil
+import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
 import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.DownloadQueueUtil
@@ -302,7 +303,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
         val preferredAudioFormats = getPreferredAudioFormats(resultItem.formats)
-        val subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
+        val subsLanguages = SubtitleLanguagePolicy.normalize(
+            sharedPreferences.getString("subs_lang", SubtitleLanguagePolicy.SAFE_DEFAULT),
+        )
 
         val videoPreferences = VideoPreferences(
             embedSubs,
@@ -462,7 +465,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val saveThumb = sharedPreferences.getBoolean("write_thumbnail", false)
         val embedThumb = sharedPreferences.getBoolean("embed_thumbnail", false)
         val cropThumb = sharedPreferences.getBoolean("crop_thumbnail", false)
-        val subsLanguages = sharedPreferences.getString("subs_lang", "en.*,.*-orig")!!
+        val subsLanguages = SubtitleLanguagePolicy.normalize(
+            sharedPreferences.getString("subs_lang", SubtitleLanguagePolicy.SAFE_DEFAULT),
+        )
 
         var customFileNameTemplate = when(historyItem.type) {
             DownloadType.audio -> sharedPreferences.getString("file_name_template_audio", "%(uploader).30B - %(title).170B")!!

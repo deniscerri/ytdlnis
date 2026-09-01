@@ -99,6 +99,16 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Active'")
     fun getActiveDownloadsList() : List<DownloadItem>
 
+    // Emits a Room table change when an active item releases its network slot and
+    // enters local FFmpeg work, without reviving a cancelled item.
+    @Query("UPDATE downloads SET status='Active' WHERE id=:id AND status='Active'")
+    suspend fun notifyActiveDownloadChanged(id: Long)
+
+    // External resource changes do not update a row naturally. This no-op update
+    // wakes the observed queue without reviving paused or cancelled downloads.
+    @Query("UPDATE downloads SET status='Queued' WHERE status='Queued'")
+    suspend fun notifyQueuedDownloadsChanged()
+
     @Query("SELECT * FROM downloads WHERE url=:url AND status='Processing'")
     fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem>
 
