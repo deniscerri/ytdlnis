@@ -24,6 +24,7 @@ import com.deniscerri.ytdl.database.models.YoutubeGeneratePoTokenItem
 import com.deniscerri.ytdl.database.models.YoutubePlayerClientItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
+import com.deniscerri.ytdl.util.CookieFileUtil
 import com.deniscerri.ytdl.util.DeviceResourceMonitor
 import com.deniscerri.ytdl.util.DeviceResourcePolicy
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
@@ -1052,8 +1053,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.addOption("-4")
         }
         if (sharedPreferences.getBoolean("use_cookies", false)){
-            FileUtil.getCookieFile(context){
-                request.addOption("--cookies", it)
+            FileUtil.getCookieFile(context){ cookiePath ->
+                // yt-dlp may update the cookie file. Give every concurrent download
+                // a private snapshot so processes cannot race over the master jar.
+                val sessionCookieFile = CookieFileUtil.createSessionCopy(
+                    context.cacheDir,
+                    File(cookiePath),
+                    downloadItem.id,
+                )
+                request.addOption("--cookies", sessionCookieFile.absolutePath)
             }
         }
 

@@ -30,6 +30,8 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.util.CookieAuthFailurePolicy
+import com.deniscerri.ytdl.util.CookieFileUtil
 import com.deniscerri.ytdl.util.DeviceResourceMonitor
 import com.deniscerri.ytdl.util.DeviceResourcePolicy
 import com.deniscerri.ytdl.util.DownloadConnectivityMonitor
@@ -162,6 +164,7 @@ class DownloadWorker(
             true,
         )
         postProcessingYTDLInstances.clear()
+        CookieFileUtil.deleteAllSessionCopies(context.cacheDir)
 
         // Connectivity changes independently of Room. Wake queued downloads when a
         // validated connection disappears or returns.
@@ -268,18 +271,24 @@ class DownloadWorker(
                 concurrentDownloads = 0
             }
 
+            val youtubeLoginBlocked = DownloadRecoveryCoordinator.hasPendingCookieLogin()
+            fun canStart(item: com.deniscerri.ytdl.database.models.DownloadItem): Boolean {
+                return item.id !in running &&
+                    !(youtubeLoginBlocked && CookieAuthFailurePolicy.isYoutubeUrl(item.url))
+            }
+
             val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
                 val tmp = priorityItemIDs.asSequence()
-                    .filter { priorityId -> items.any { it.id == priorityId && it.id !in running } }
+                    .filter { priorityId -> items.any { it.id == priorityId && canStart(it) } }
                     .take(concurrentDownloads)
                     .toSet()
                 items.asSequence()
-                    .filter { it.id !in running && it.id in tmp }
+                    .filter { canStart(it) && it.id in tmp }
                     .take(concurrentDownloads)
                     .toList()
             }else{
                 items.asSequence()
-                    .filter { it.id !in running }
+                    .filter(::canStart)
                     .take(concurrentDownloads)
                     .toList()
             }
@@ -365,6 +374,7 @@ class DownloadWorker(
                             }
                         }
 
+                        var subtitlesSuppressed = false
                         var request = ytdlpUtil.buildYTDLRequest(downloadItem)
 
                         // DISABLED BECAUSE YT_DLP CONSIDERS DOWNLOAD FAILURE IF -U PART FAILS, ytdlnis #1043
@@ -424,6 +434,7 @@ class DownloadWorker(
                         runCatching {
                             var completedTransientRetries = 0
                             var completedExpiredMediaUrlRetries = 0
+                            var completedCookiePrompts = 0
                             var response: ExecuteResponse? = null
                             val postProcessingReported = AtomicBoolean(false)
                             val connectivityAware = sharedPreferences.getBoolean(
@@ -539,6 +550,52 @@ class DownloadWorker(
                                         appendLine()
                                         append(error.message.orEmpty())
                                     }
+
+                                    if (CookieAuthFailurePolicy.shouldRequestYoutubeLogin(
+                                            downloadItem.url,
+                                            failureOutput,
+                                            completedCookiePrompts,
+                                        )
+                                    ) {
+                                        completedCookiePrompts += 1
+                                        notificationUtil.updateDownloadNotification(
+                                            downloadItem.id.toInt(),
+                                            context.getString(R.string.action_required_open_app),
+                                            0,
+                                            0,
+                                            downloadItem.title.ifEmpty { downloadItem.url },
+                                            NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                        )
+                                        val action = DownloadRecoveryCoordinator.awaitDecision(
+                                            DownloadRecoveryCoordinator.Request(
+                                                downloadId = downloadItem.id,
+                                                title = downloadItem.title.ifEmpty { downloadItem.url },
+                                                kind = DownloadRecoveryCoordinator.Kind.COOKIE_LOGIN,
+                                                message = context.getString(
+                                                    R.string.cookie_relogin_required,
+                                                ),
+                                            ),
+                                        )
+                                        if (action == DownloadRecoveryCoordinator.Action.RETRY) {
+                                            FileUtil.deleteConfigFiles(request)
+                                            request = ytdlpUtil.buildYTDLRequest(
+                                                downloadItem,
+                                                suppressSubtitles = subtitlesSuppressed,
+                                            )
+                                            completedTransientRetries = 0
+                                            completedExpiredMediaUrlRetries = 0
+                                            postProcessingYTDLInstances.remove(downloadItem.id)
+                                            postProcessingReported.set(false)
+                                            dao.notifyQueuedDownloadsChanged()
+                                            continue
+                                        }
+
+                                        downloadItem.status =
+                                            DownloadRepository.Status.Cancelled.toString()
+                                        dao.update(downloadItem)
+                                        throw UserDecisionCanceledException()
+                                    }
+
                                     val retry = HttpRetryPolicy.nextRetry(
                                         output = failureOutput,
                                         completedTransientRetries = completedTransientRetries,
@@ -605,6 +662,7 @@ class DownloadWorker(
                                         )) {
                                             DownloadRecoveryCoordinator.Action.CONTINUE -> {
                                                 FileUtil.deleteConfigFiles(request)
+                                                subtitlesSuppressed = true
                                                 request = ytdlpUtil.buildYTDLRequest(
                                                     downloadItem,
                                                     suppressSubtitles = true,
@@ -642,6 +700,7 @@ class DownloadWorker(
 
                             response
                         }.onSuccess {
+                            CookieFileUtil.deleteSessionCopy(context.cacheDir, downloadItem.id)
                             // Scanning and moving output files is local work too, so it
                             // does not need to occupy a network-download slot.
                             if (pipelineAllowed) {
@@ -844,6 +903,7 @@ class DownloadWorker(
 
                         }.onFailure {
                             postProcessingYTDLInstances.remove(downloadItem.id)
+                            CookieFileUtil.deleteSessionCopy(context.cacheDir, downloadItem.id)
                             FileUtil.deleteConfigFiles(request)
                             withContext(Dispatchers.Main) {
                                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())

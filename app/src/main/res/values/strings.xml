@@ -125,6 +125,11 @@
     <string name="disk_space_warning">Disk space warning</string>
     <string name="disk_space_warning_summary">Warn before starting when the download, temporary streams, FFmpeg output, and safety reserve may not fit</string>
     <string name="low_storage_download_message">This download may need %1$s, but only %2$s is available in its working storage. Continue anyway?</string>
+    <string name="important">Important</string>
+    <string name="login">Login</string>
+    <string name="cookie_relogin_required">Downloads requiring YouTube authentication are paused until you sign in again. Public downloads can continue without cookies.</string>
+    <string name="cookie_relogin_description">Sign in to YouTube, then generate a fresh cookie file so queued downloads can retry.</string>
+    <string name="cookie_capture_failed">No fresh cookies were saved. Finish signing in and try Generate again.</string>
     <string name="action_required_open_app">Action required — open YTDLnis</string>
     <string name="subtitle_download_failed">Subtitles couldn’t be downloaded</string>
     <string name="subtitle_failure_decision_message">The media download can continue without subtitles. Choose Continue to remove subtitle options, Retry to try subtitles again, or Cancel to stop this item.</string>

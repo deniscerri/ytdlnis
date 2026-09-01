@@ -13,6 +13,7 @@ object DownloadRecoveryCoordinator {
     enum class Kind {
         SUBTITLE_FAILURE,
         LOW_STORAGE,
+        COOKIE_LOGIN,
     }
 
     enum class Action {
@@ -58,12 +59,24 @@ object DownloadRecoveryCoordinator {
     }
 
     fun resolve(requestId: Long, action: Action) {
-        val result = synchronized(lock) {
-            val target = pending.remove(requestId) ?: return
+        val results = synchronized(lock) {
+            val target = pending[requestId] ?: return
+            // One successful refresh updates the shared master jar. Resolve every
+            // YouTube item waiting on the same stale authentication state together.
+            val matching = if (target.request.kind == Kind.COOKIE_LOGIN) {
+                pending.values.filter { it.request.kind == Kind.COOKIE_LOGIN }
+            } else {
+                listOf(target)
+            }
+            matching.forEach { pending.remove(it.request.requestId) }
             publishLocked()
-            target.result
+            matching.map { it.result }
         }
-        result.complete(action)
+        results.forEach { it.complete(action) }
+    }
+
+    fun hasPendingCookieLogin(): Boolean = synchronized(lock) {
+        pending.values.any { it.request.kind == Kind.COOKIE_LOGIN }
     }
 
     private fun publishLocked() {

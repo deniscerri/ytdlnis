@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.more.cookies
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -50,6 +51,13 @@ class WebViewActivity : BaseActivity() {
         url = intent.getStringExtra("url") ?: return finish()
         description = intent.getStringExtra("description") ?: ""
         incognito = intent.getBooleanExtra("incognito", false)
+        val recoveryRequestId = intent.getLongExtra(EXTRA_RECOVERY_REQUEST_ID, -1L)
+        // Preserve the ID when the user backs out so the waiting worker receives
+        // Cancel instead of remaining suspended indefinitely.
+        setResult(
+            RESULT_CANCELED,
+            Intent().putExtra(EXTRA_RECOVERY_REQUEST_ID, recoveryRequestId),
+        )
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
@@ -108,33 +116,36 @@ class WebViewActivity : BaseActivity() {
 
             generateBtn.setOnClickListener {
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+                    val saved = withContext(Dispatchers.IO) {
+                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let { cookieText ->
                             runCatching {
                                 cookiesViewModel.insert(
                                     com.deniscerri.ytdl.database.models.CookieItem(
                                         0,
                                         url,
-                                        it,
+                                        cookieText,
                                         description,
                                         true
                                     )
                                 )
-                                cookiesViewModel.updateCookiesFile()
-                            }.onFailure {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@WebViewActivity,
-                                        "Something went wrong",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                        withContext(Dispatchers.Main) {
-                            this@WebViewActivity.setResult(RESULT_OK)
-                            this@WebViewActivity.finish()
-                        }
+                                // Release the worker only after the fresh master jar
+                                // has been written successfully.
+                                cookiesViewModel.updateCookiesFileNow()
+                            }.isSuccess
+                        } ?: false
+                    }
+                    if (saved) {
+                        setResult(
+                            RESULT_OK,
+                            Intent().putExtra(EXTRA_RECOVERY_REQUEST_ID, recoveryRequestId),
+                        )
+                        finish()
+                    } else {
+                        Toast.makeText(
+                            this@WebViewActivity,
+                            R.string.cookie_capture_failed,
+                            Toast.LENGTH_SHORT,
+                        ).show()
                     }
                 }
             }
@@ -223,6 +234,7 @@ class WebViewActivity : BaseActivity() {
 
     companion object {
         const val TAG = "WebViewActivity"
+        const val EXTRA_RECOVERY_REQUEST_ID = "recovery_request_id"
     }
 
     data class CookieItem(

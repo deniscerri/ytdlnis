@@ -59,6 +59,7 @@ import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
+import com.deniscerri.ytdl.ui.more.cookies.WebViewActivity
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
@@ -114,6 +115,26 @@ class MainActivity : BaseActivity() {
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
     private var downloadRecoveryDialog: AlertDialog? = null
     private var shownRecoveryRequestId: Long? = null
+    private var pendingCookieRecoveryRequestId: Long? = null
+
+    private val cookieReloginLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) { result ->
+        val requestId = result.data
+            ?.getLongExtra(WebViewActivity.EXTRA_RECOVERY_REQUEST_ID, -1L)
+            ?.takeIf { it >= 0L }
+            ?: pendingCookieRecoveryRequestId
+        pendingCookieRecoveryRequestId = null
+        if (requestId != null) {
+            val action = if (result.resultCode == RESULT_OK) {
+                preferences.edit().putBoolean("use_cookies", true).apply()
+                DownloadRecoveryCoordinator.Action.RETRY
+            } else {
+                DownloadRecoveryCoordinator.Action.CANCEL
+            }
+            DownloadRecoveryCoordinator.resolve(requestId, action)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -353,6 +374,26 @@ class MainActivity : BaseActivity() {
                     DownloadRecoveryCoordinator.resolve(
                         request.requestId,
                         DownloadRecoveryCoordinator.Action.CONTINUE,
+                    )
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ ->
+                    DownloadRecoveryCoordinator.resolve(
+                        request.requestId,
+                        DownloadRecoveryCoordinator.Action.CANCEL,
+                    )
+                }
+            }
+
+            DownloadRecoveryCoordinator.Kind.COOKIE_LOGIN -> {
+                builder.setTitle(R.string.important)
+                builder.setPositiveButton(R.string.login) { _, _ ->
+                    pendingCookieRecoveryRequestId = request.requestId
+                    cookieReloginLauncher.launch(
+                        Intent(this, WebViewActivity::class.java).apply {
+                            putExtra("url", "https://www.youtube.com/")
+                            putExtra("description", getString(R.string.cookie_relogin_description))
+                            putExtra(WebViewActivity.EXTRA_RECOVERY_REQUEST_ID, request.requestId)
+                        },
                     )
                 }
                 builder.setNegativeButton(R.string.cancel) { _, _ ->
