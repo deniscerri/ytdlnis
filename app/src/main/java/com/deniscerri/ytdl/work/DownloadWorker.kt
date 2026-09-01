@@ -32,6 +32,7 @@ import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.DeviceResourceMonitor
 import com.deniscerri.ytdl.util.DeviceResourcePolicy
+import com.deniscerri.ytdl.util.DownloadConnectivityMonitor
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
@@ -51,6 +52,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -111,6 +114,7 @@ class DownloadWorker(
         val alarmScheduler = AlarmScheduler(context)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val deviceResourceMonitor = DeviceResourceMonitor(context)
+        val connectivityMonitor = DownloadConnectivityMonitor.getInstance(context)
         val time = System.currentTimeMillis() + 6000
         val priorityItemIDs = (inputData.getLongArray("priority_item_ids") ?: longArrayOf()).toMutableList()
         val continueAfterPriorityIds = inputData.getBoolean("continue_after_priority_ids", true)
@@ -157,6 +161,19 @@ class DownloadWorker(
             true,
         )
         postProcessingYTDLInstances.clear()
+
+        // Connectivity changes independently of Room. Wake queued downloads when a
+        // validated connection disappears or returns.
+        workerScope.launch {
+            var firstState = true
+            connectivityMonitor.isOnline.collectLatest {
+                if (firstState) {
+                    firstState = false
+                } else {
+                    dao.notifyQueuedDownloadsChanged()
+                }
+            }
+        }
 
         // Resource state changes independently of Room. Wake the queue when pressure
         // changes so held items resume without requiring a manual database action.
@@ -243,6 +260,11 @@ class DownloadWorker(
             if (downloadLimit == 0) concurrentDownloads = 0
             if (hasDownloadDelay) {
                 concurrentDownloads = (1 - running.size).coerceAtLeast(0)
+            }
+            if (sharedPreferences.getBoolean("connectivity_aware_downloads", true) &&
+                !connectivityMonitor.isOnline.value
+            ) {
+                concurrentDownloads = 0
             }
 
             val eligibleDownloads = if (priorityItemIDs.isNotEmpty()) {
@@ -361,14 +383,50 @@ class DownloadWorker(
                             var completedExpiredMediaUrlRetries = 0
                             var response: ExecuteResponse? = null
                             val postProcessingReported = AtomicBoolean(false)
+                            val connectivityAware = sharedPreferences.getBoolean(
+                                "connectivity_aware_downloads",
+                                true,
+                            )
 
                             // Re-running the original yt-dlp request re-extracts remote URLs
                             // while preserving its output paths, so existing .part data resumes.
                             while (response == null) {
+                                if (connectivityAware && !connectivityMonitor.isOnline.value) {
+                                    val waitingMessage = context.getString(R.string.waiting_for_network)
+                                    WorkerEventBus.post(
+                                        WorkerProgress(
+                                            0,
+                                            waitingMessage,
+                                            downloadItem.id,
+                                            downloadItem.logID,
+                                        ),
+                                    )
+                                    notificationUtil.updateDownloadNotification(
+                                        downloadItem.id.toInt(),
+                                        waitingMessage,
+                                        0,
+                                        0,
+                                        downloadItem.title.ifEmpty { downloadItem.url },
+                                        NotificationUtil.Companion.DOWNLOAD_SERVICE_CHANNEL_ID,
+                                    )
+                                    connectivityMonitor.awaitOnline()
+                                }
+
                                 val attemptOutput = StringBuilder()
+                                val networkInterrupted = AtomicBoolean(false)
+                                RuntimeManager.getInstance()
+                                    .destroyProcessById(downloadItem.id.toString())
+                                val connectivityWatcher = if (connectivityAware) {
+                                    workerScope.launch {
+                                        connectivityMonitor.isOnline.filter { !it }.first()
+                                        networkInterrupted.set(true)
+                                        RuntimeManager.getInstance()
+                                            .destroyProcessById(downloadItem.id.toString())
+                                    }
+                                } else {
+                                    null
+                                }
                                 try {
-                                    RuntimeManager.getInstance()
-                                        .destroyProcessById(downloadItem.id.toString())
                                     response = RuntimeManager.getInstance().execute(
                                         request = request,
                                         processId = downloadItem.id.toString(),
@@ -410,11 +468,28 @@ class DownloadWorker(
                                         }
                                     }
                                 } catch (error: Exception) {
-                                    if (this@DownloadWorker.isStopped ||
-                                        error is RuntimeManager.CanceledException
-                                    ) {
+                                    if (this@DownloadWorker.isStopped) {
                                         throw error
                                     }
+                                    if (connectivityAware &&
+                                        (networkInterrupted.get() || !connectivityMonitor.isOnline.value)
+                                    ) {
+                                        postProcessingYTDLInstances.remove(downloadItem.id)
+                                        postProcessingReported.set(false)
+                                        val waitingMessage = context.getString(R.string.waiting_for_network)
+                                        logString.appendLine(waitingMessage)
+                                        WorkerEventBus.post(
+                                            WorkerProgress(
+                                                0,
+                                                waitingMessage,
+                                                downloadItem.id,
+                                                downloadItem.logID,
+                                            ),
+                                        )
+                                        connectivityMonitor.awaitOnline()
+                                        continue
+                                    }
+                                    if (error is RuntimeManager.CanceledException) throw error
 
                                     val failureOutput = buildString {
                                         append(attemptOutput)
@@ -516,6 +591,8 @@ class DownloadWorker(
                                     }
 
                                     throw error
+                                } finally {
+                                    connectivityWatcher?.cancel()
                                 }
                             }
 
