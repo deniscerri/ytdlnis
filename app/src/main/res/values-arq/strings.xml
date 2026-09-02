@@ -479,7 +479,7 @@
     <string name="write_subs_when_embed_subs_summary">سيؤدي هذا إلى تفعيل خياري \'حفظ الترجمات\' و\'حفظ الترجمات التلقائية\' لتنزيل ملفات الترجمة، ثم حذفها تلقائياً بعد دمجها</string>
     <string name="generate_potokens_warning">بتفعيل هذا الخيار، لازم عليك تحبس ملفات تعريف الارتباط (Cookies)</string>
     <string name="select_between_desc">حدد نطاق العناصر المراد اختيارها</string>
-    <string name="manual_po_token_generator">التوكين تاع PO للعميل الالكتروني</string>
+    <string name="manual_po_token_generator">مولّد رمز Po Token اليدوي عبر الويب</string>
     <string name="no_keep_subs">حذف ملفات الترجمة بعد ما يتم دمجها</string>
     <string name="no_keep_subs_summary">عدم الاحتفاظ بملفات الترجمة بعد دمجها، وذلك عند استخدام خياري \'دمج الترجمة\' و\'حفظ الترجمة\' معاً</string>
     <string name="video_compatible">فيديو متوافق</string>
@@ -583,4 +583,11 @@
         <item quantity="one">كل 0 دقيقة</item>
         <item quantity="other">كل دقيقة</item>
     </plurals>
+    <string name="bgutils_info">مزوّد رمز إثبات المصدر (POT) تاع أداة yt-dlp.\nكي تديرله تفعيل، تطبيق YTDLnis يستضيف خادم تاع HTTP اللي يولّد رمز POT، ويثبّت الإضافة لي المرتبطة اللي تستخدمها yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">السكربت تاع التوليد</string>
+    <string name="bgutils_pot_generation_server">خادم الـHTTP</string>
+    <string name="bgutils_pot_generation_script_summary">كل استدعاء تديره بـyt-dlp راه يتحمّل عبء تاع إنشاء عملية جديدة لبيئة تشغيل JavaScript باش ينفذ السكربت. مش مستحسن استخدام هاذي الطريقة في الحالات تاع الاستخدام العالي التزامن.</string>
+    <string name="bgutils_pot_server_summary">هذا راه خادم HTTP ومبني بلغة JavaScript، يمشي عبر منفذ 4416. إذا كان حابس، راه يشتغل تلقائيا كي تبدأ تنفيذ قائمة تشغيل ولا كي تدير جدولة مراقبة المصادر. باش تحبسه، لازم يدويا من شريط الاشعارات!</string>
+    <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
+    <string name="please_install_package_or_package">من فضلك ثبت حزمة %1$s ولا حزمة %2$s</string>
 </resources>
