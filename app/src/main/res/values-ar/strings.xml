@@ -475,7 +475,7 @@
     <string name="cut_unsupported">القص غير متاح لهذا العنصر</string>
     <string name="select_between_desc">حدد نطاق العناصر المراد تحديدها</string>
     <string name="potoken">رمز PO</string>
-    <string name="manual_po_token_generator">رمز عميل الويب PO</string>
+    <string name="manual_po_token_generator">مولّد رمز Po Token اليدوي عبر الويب</string>
     <string name="reverse">اعكس</string>
     <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
@@ -608,4 +608,11 @@
         <item quantity="many">كل %d دقيقة</item>
         <item quantity="other">كل %d دقيقة</item>
     </plurals>
+    <string name="bgutils_info">مزوّد رمز إثبات المصدر (POT) لأداة yt-dlp.\nعند تفعيله، يقوم YTDLnis باستضافة خادم HTTP الذي يولّد رمز POT، ويثبّت الإضافة المرتبطة التي تستخدمها yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">سكربت التوليد</string>
+    <string name="bgutils_pot_generation_server">خادم HTTP</string>
+    <string name="bgutils_pot_generation_script_summary">كل استدعاء لـ yt-dlp يتحمّل عبء إنشاء عملية جديدة لبيئة تشغيل JavaScript لتنفيذ السكربت. لا يُنصح باستخدام هذه الطريقة في حالات الاستخدام العالي التزامن.</string>
+    <string name="bgutils_pot_server_summary">هذا خادم HTTP مبني بلغة JavaScript، يعمل على المنفذ 4416. إذا كان متوقفًا، يبدأ تشغيله تلقائيًا عند بدء تنفيذ قائمة التنزيل أو عند جدولة مراقبة المصادر. لإيقافه، يجب عليك فعل ذلك يدويًا من الإشعارات!</string>
+    <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
+    <string name="please_install_package_or_package">رجاءا ثبت حزمة %1$s أو حزمة %2$s</string>
 </resources>
