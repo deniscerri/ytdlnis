@@ -577,4 +577,11 @@
     <plurals name="every_minutes">
         <item quantity="other">%d분마다</item>
     </plurals>
+    <string name="bgutils_pot_generation_script">생성 스크립트</string>
+    <string name="bgutils_pot_generation_server">HTTP 서버</string>
+    <string name="please_install_package">%s 패키지를 설치하세요</string>
+    <string name="please_install_package_or_package">%1$s 패키지나 %2$s 패키지를 설치하세요</string>
+    <string name="bgutils_info">yt-dlp용 Proof-of-origin 토큰 (POT) 제공자입니다.\n켜면 YTDLnis에서 POT를 생성하고 yt-dlp 관련 플러그인을 설치하는 HTTP 서버를 호스팅합니다.</string>
+    <string name="bgutils_pot_generation_script_summary">yt-dlp 호출 시마다 스크립트를 실행하기 위해 새로운 JavaScript 런타임 프로세스가 생성되는 오버헤드가 발생합니다. 이 방법은 동시 접속량이 많은 경우에는 권장되지 않습니다.</string>
+    <string name="bgutils_pot_server_summary">4416번 포트에서 실행되는 자바스크립트 HTTP 서버입니다. 서버가 꺼진 경우, 다운로드 대기열의 실행이 시작되거나 소스 관찰 작업이 예약되면 자동으로 서버가 시작됩니다. 서버를 완전히 종료하려면 알림에서 수동으로 종료해야 합니다!</string>
 </resources>
