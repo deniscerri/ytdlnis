@@ -111,6 +111,12 @@
     <string name="adjust_video">Adjust video</string>
     <string name="concurrent_downloads">Concurrent downloads</string>
     <string name="concurrent_downloads_summary">Number of downloads executing at the same time</string>
+    <string name="action_required_open_app">Action required — open YTDLnis</string>
+    <string name="subtitle_download_failed">Subtitles couldn’t be downloaded</string>
+    <string name="subtitle_failure_decision_message">The media download can continue without subtitles. Choose Continue to remove subtitle options, Retry to try subtitles again, or Cancel to stop this item.</string>
+    <string name="continue_download">Continue</string>
+    <string name="retry">Retry</string>
+    <string name="continuing_without_subtitles">Continuing without subtitles after your confirmation.</string>
     <string name="defaultValue">Default</string>
     <string name="container">Container</string>
     <string name="template">Template</string>
@@ -578,4 +584,5 @@
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
     <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
+    <string name="http_recovery_retry">HTTP %1$d was temporary. Retrying in %2$d seconds…</string>
 </resources>

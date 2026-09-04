@@ -34,8 +34,10 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -61,6 +63,7 @@ import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
+import com.deniscerri.ytdl.util.SubtitleRecoveryCoordinator
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -109,6 +112,8 @@ class MainActivity : BaseActivity() {
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
+    private var subtitleRecoveryDialog: AlertDialog? = null
+    private var shownSubtitleRecoveryRequestId: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -285,12 +290,62 @@ class MainActivity : BaseActivity() {
             getHeaderView(0).findViewById<TextView>(R.id.title).text = ThemeUtil.getStyledAppName(this@MainActivity)
         }
 
+        observeSubtitleRecoveryRequests()
         cookieViewModel.updateCookiesFile()
         val intent = intent
         handleIntents(intent)
 
         askAutoUpdatePreferences()
     }
+
+    /** Presents subtitle recovery after the user returns to the foreground. */
+    private fun observeSubtitleRecoveryRequests() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                SubtitleRecoveryCoordinator.requests.collectLatest { requests ->
+                    val request = requests.firstOrNull()
+                    if (request == null) {
+                        subtitleRecoveryDialog?.dismiss()
+                        subtitleRecoveryDialog = null
+                        shownSubtitleRecoveryRequestId = null
+                    } else if (shownSubtitleRecoveryRequestId != request.requestId) {
+                        showSubtitleRecoveryDialog(request)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showSubtitleRecoveryDialog(request: SubtitleRecoveryCoordinator.Request) {
+        subtitleRecoveryDialog?.dismiss()
+        shownSubtitleRecoveryRequestId = request.requestId
+
+        subtitleRecoveryDialog = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.subtitle_download_failed)
+            .setMessage(request.message)
+            .setCancelable(false)
+            .setPositiveButton(R.string.continue_download) { _, _ ->
+                SubtitleRecoveryCoordinator.resolve(
+                    request.requestId,
+                    SubtitleRecoveryCoordinator.Action.CONTINUE,
+                )
+            }
+            .setNeutralButton(R.string.retry) { _, _ ->
+                SubtitleRecoveryCoordinator.resolve(
+                    request.requestId,
+                    SubtitleRecoveryCoordinator.Action.RETRY,
+                )
+            }
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                SubtitleRecoveryCoordinator.resolve(
+                    request.requestId,
+                    SubtitleRecoveryCoordinator.Action.CANCEL,
+                )
+            }
+            .create()
+            .also { it.show() }
+    }
+
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
         savedInstanceState.putBundle("nav_state", navController.saveState())
