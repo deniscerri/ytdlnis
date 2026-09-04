@@ -346,7 +346,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         shimmerCards!!.stopShimmer()
                         shimmerCards!!.visibility = GONE
 
-                        showDownloadAllFab = totalCount > 1 && firstResult!!.playlistTitle.isNotEmpty()
+                        showDownloadAllFab = totalCount > 1 && firstResult?.playlistTitle.orEmpty().isNotEmpty()
                         downloadAllFab!!.isVisible = showDownloadAllFab
                     }
                 }

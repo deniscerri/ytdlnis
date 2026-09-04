@@ -167,13 +167,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
 
-    githubImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    githubImplementation "io.github.deniscerri:ytdlnis_packages.python:3.14.6"
     githubImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
     githubImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
+    //githubImplementation "io.github.deniscerri:ytdlnis_packages.deno:2.7.7"
 
-    fossImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
+    fossImplementation "io.github.deniscerri:ytdlnis_packages.python:3.14.6"
     fossImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
     fossImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
+    //fossImplementation "io.github.deniscerri:ytdlnis_packages.deno:2.7.7"
 
     izzyImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
     izzyImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"

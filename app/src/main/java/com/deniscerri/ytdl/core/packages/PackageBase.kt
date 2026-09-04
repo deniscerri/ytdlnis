@@ -285,11 +285,12 @@ abstract class PackageBase {
                             it.assets = it.assets.filter { a -> a.name.contains(supportedArch) }
                             it.downloadSize = it.assets.first().size
                             it.isInstalled = downloadedVersion == "v${it.version}"
-                            it.isBundled = bundledVersion == "v${it.version}"
+                            it.isBundled = location.isBundled && bundledVersion == "v${it.version}"
 
-                            val latestVersion = bundledVersion?.replace("v|.".toRegex(), "")?.toInt()
-                                ?: downloadedVersion?.replace("v|.".toRegex(), "")?.toInt() ?: 0
+                            val bundledRaw = (bundledVersion ?: "0").ifEmpty{ "0" }.replace("[v.]".toRegex(), "").toInt()
+                            val downloadedRaw = (downloadedVersion ?: "0").ifEmpty{ "0" }.replace("[v.]".toRegex(), "").toInt()
 
+                            val latestVersion = bundledRaw.coerceAtLeast(downloadedRaw)
                             it.oldVersion = latestVersion > it.version.replace(".", "").toInt()
                         }
 

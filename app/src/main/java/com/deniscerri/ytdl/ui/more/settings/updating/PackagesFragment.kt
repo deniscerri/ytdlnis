@@ -115,10 +115,10 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         lifecycleScope.launch {
             val instance = tmpItem!!.getInstance()
             instance.getReleases().apply {
-                this.onFailure {
+                this.onFailure { failure ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(requireContext(), it.message ?: getString(R.string.errored), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), failure.message ?: getString(R.string.errored), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

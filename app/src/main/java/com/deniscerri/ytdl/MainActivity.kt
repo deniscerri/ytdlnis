@@ -580,6 +580,7 @@ class MainActivity : BaseActivity() {
                 }
 
                 val skipRemindingPackageUpdate = preferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
+                RuntimeManager.getInstance().assertInit()
                 RuntimeManager.packages.forEach { pkg ->
                     val instance = pkg.plugin.getInstance()
                     if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
