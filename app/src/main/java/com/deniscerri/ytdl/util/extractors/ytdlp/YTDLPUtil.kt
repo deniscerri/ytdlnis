@@ -33,8 +33,10 @@ import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.isYoutubeWatchVideosURL
 import com.deniscerri.ytdl.util.Extensions.readJsonValue
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
+import com.deniscerri.ytdl.util.DownloadNetworkPolicy
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.SubtitleLanguagePolicy
 import com.google.gson.Gson
 import com.google.gson.Strictness
 import com.google.gson.reflect.TypeToken
@@ -761,13 +763,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         return final
     }
 
-    private fun MutableList<String>.addOption(vararg options: String) {
-        options.forEach {
-            this.add(it)
-        }
-    }
-
-
     private fun YTDLRequest.setYoutubeExtractorArgs(url: String?) {
         val extractorArgs = mutableListOf<String>()
         val playerClients = mutableSetOf<String>()
@@ -893,7 +888,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
     @SuppressLint("RestrictedApi")
-    fun buildYTDLRequest(downloadItem: DownloadItem) : YTDLRequest {
+    fun buildYTDLRequest(
+        downloadItem: DownloadItem,
+        suppressSubtitles: Boolean = false,
+    ) : YTDLRequest {
         var useItemURL = sharedPreferences.getBoolean("use_itemurl_instead_playlisturl", false)
         // for /releases youtube channel playlists that have playlists inside of them, cant use indexing or match filter id, so download on its own
         if (downloadItem.url.isYoutubeURL() && downloadItem.url.getIDFromYoutubeURL() == null) {
@@ -976,7 +974,29 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             //request.addOption("--external-downloader-args", "aria2c:\"--check-certificate=false\"")
         }
 
-        val concurrentFragments = sharedPreferences.getInt("concurrent_fragments", 1)
+        val requestedDownloads = sharedPreferences.getInt(
+            "concurrent_downloads",
+            DownloadNetworkPolicy.DEFAULT_CONCURRENT_DOWNLOADS,
+        )
+        val requestedFragments = sharedPreferences.getInt(
+            "concurrent_fragments",
+            DownloadNetworkPolicy.DEFAULT_CONCURRENT_FRAGMENTS,
+        )
+        val maxParallelRequests = sharedPreferences.getInt(
+            "max_parallel_requests",
+            DownloadNetworkPolicy.DEFAULT_MAX_PARALLEL_REQUESTS,
+        )
+        // Calculate -N from the same budget used by DownloadWorker so item and
+        // fragment concurrency cannot multiply past the configured ceiling.
+        val concurrentFragments = DownloadNetworkPolicy.effectiveFragmentLimit(
+            requestedFragments = requestedFragments,
+            requestedDownloads = requestedDownloads,
+            maxParallelRequests = maxParallelRequests,
+            budgetingEnabled = sharedPreferences.getBoolean(
+                "smart_request_budget",
+                true,
+            ),
+        )
         if (concurrentFragments > 1) request.addOption("-N", concurrentFragments)
 
         val retries = sharedPreferences.getString("retries", "")!!
@@ -1560,15 +1580,15 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
 
-                if (downloadItem.videoPreferences.writeSubs){
+                if (!suppressSubtitles && downloadItem.videoPreferences.writeSubs){
                     request.addOption("--write-subs")
                 }
 
-                if(downloadItem.videoPreferences.writeAutoSubs){
+                if (!suppressSubtitles && downloadItem.videoPreferences.writeAutoSubs){
                     request.addOption("--write-auto-subs")
                 }
 
-                if (downloadItem.videoPreferences.embedSubs) {
+                if (!suppressSubtitles && downloadItem.videoPreferences.embedSubs) {
                     if (sharedPreferences.getBoolean("no_keep_subs", false) && (downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs)) {
                         request.addOption("--compat-options", "no-keep-subs")
                     }
@@ -1576,13 +1596,22 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--embed-subs")
                 }
 
-                if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
+                if (!suppressSubtitles &&
+                    (downloadItem.videoPreferences.embedSubs ||
+                        downloadItem.videoPreferences.writeSubs ||
+                        downloadItem.videoPreferences.writeAutoSubs)
+                ) {
                     val subFormat = sharedPreferences.getString("sub_format", "")
                     if(subFormat!!.isNotBlank()){
                         request.addOption("--sub-format", "${subFormat}/best")
                         request.addOption("--convert-subtitles", subFormat)
                     }
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
+                    request.addOption(
+                        "--sub-langs",
+                        SubtitleLanguagePolicy.normalize(
+                            downloadItem.videoPreferences.subsLanguages,
+                        ),
+                    )
                 }
 
                 var copyStream = ""
@@ -1671,9 +1700,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
         conf.createNewFile()
         conf.writeText(request.toString())
-        val tmp = mutableListOf<String>()
-        tmp.addOption("--config-locations", conf.absolutePath)
-        ytDlRequest.addCommands(tmp)
+        // Keep the generated config visible to cleanup when a recovery action
+        // rebuilds the request without subtitle options.
+        ytDlRequest.addOption("--config-locations", conf.absolutePath)
 
         val ytdlpCache = File(FileUtil.getCacheYTDLPPath(context))
         ytDlRequest.addOption("--cache-dir", ytdlpCache.absolutePath)
