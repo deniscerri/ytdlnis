@@ -475,7 +475,7 @@
     <string name="write_subs_when_embed_subs">Écrire les sous-titres lors de l\'intégration</string>
     <string name="select_between_desc">Spécifier l\'intervalle d\'éléments à sélectionner</string>
     <string name="potoken">Token PO</string>
-    <string name="manual_po_token_generator">Token PO client web</string>
+    <string name="manual_po_token_generator">Générateur manuel de jetons Web Po</string>
     <string name="reverse">Inverser</string>
     <string name="no_keep_subs">Supprimer les fichiers de sous-titres après l\'intégration</string>
     <string name="no_keep_subs_summary">Quand les options Intégrer les sous-titres et Écrire les sous-titres sont toutes les deux utilisées, ne pas garder les fichiers de sous-titres après l\'intégration</string>
@@ -590,4 +590,11 @@
         <item quantity="many">Toutes les %d minutes</item>
         <item quantity="other">Toutes les %d minutes</item>
     </plurals>
+    <string name="bgutils_info">Un fournisseur de jetons de preuve d\'origine (POT) pour yt-dlp.\nLorsque cette fonctionnalité est activée, YTDLnis héberge le serveur HTTP qui génère le POT et installe le plugin associé utilisé par yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Script de génération</string>
+    <string name="bgutils_pot_generation_server">Serveur HTTP</string>
+    <string name="bgutils_pot_generation_script_summary">Chaque appel à yt-dlp entraîne la création d\'un nouveau processus d\'exécution JavaScript pour exécuter le script. Cette méthode n\'est pas recommandée en cas d\'utilisation avec un niveau élevé de concurrence.</string>
+    <string name="bgutils_pot_server_summary">Il s\'agit d\'un serveur HTTP JavaScript, sur le port 4416. S\'il est hors service, il redémarre automatiquement dès que la file d\'attente de téléchargement commence à s\'exécuter ou qu\'une analyse du code source est programmée. Pour l\'arrêter, vous devez le faire manuellement depuis les notifications !</string>
+    <string name="please_install_package">Veuillez installer le paquet %s</string>
+    <string name="please_install_package_or_package">Veuillez installer le package %1$s ou le package %2$s</string>
 </resources>

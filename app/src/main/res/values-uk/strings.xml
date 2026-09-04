@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Цей елемент не можна вирізати</string>
     <string name="select_between_desc">Вкажіть діапазон елементів для вибору</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Веб Клієнт PO Token</string>
+    <string name="manual_po_token_generator">Ручний Веб Po Token генератор</string>
     <string name="reverse">Зворотній</string>
     <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
     <string name="no_keep_subs_summary">У разі використання функцій Вбудувати субтитри та Написати субтитри не зберігайте файли субтитрів після вбудовування</string>
@@ -582,7 +582,7 @@
         <item quantity="many">Кожені %d місяців</item>
         <item quantity="other">Кожені %d місяців</item>
     </plurals>
-    <string name="skip_backlog">Пропустити поточну чергу завдань</string>
+    <string name="skip_backlog">Пропустити поточний список журналів</string>
     <string name="download_delay">Затримка завантаження</string>
     <string name="download_delay_summary">Зачекайте налаштовану кількість секунд між кожним завантаженням. Ця функція вимикає одночасні завантаження</string>
     <string name="min_delay">Мін. затримка (секунд)</string>
@@ -595,4 +595,11 @@
         <item quantity="many">Кожні %d хвилини</item>
         <item quantity="other">Кожні %d хвилини</item>
     </plurals>
+    <string name="bgutils_info">Постачальник токенів підтвердження походження (POT) для yt-dlp.\nЯкщо ця опція увімкнена, YTDLnis запускає HTTP-сервер, який генерує POT і встановлює відповідний плагін, що використовує yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Скрипт генерації</string>
+    <string name="bgutils_pot_generation_server">HTTP Сервер</string>
+    <string name="bgutils_pot_generation_script_summary">Кожен виклик yt-dlp спричиняє додаткові витрати на створення нового процесу виконання js для запуску скрипта. Цей метод не рекомендується використовувати при високому рівні паралелізму.</string>
+    <string name="bgutils_pot_server_summary">Це HTTP-сервер JavaScript на порту 4416. Якщо він не працює, він автоматично запускається, коли починається виконання черги завантаження або заплановано моніторинг джерел. Щоб вимкнути його, потрібно зробити це вручну в розділі сповіщень!</string>
+    <string name="please_install_package">Будь ласка, встановіть пакет %s</string>
+    <string name="please_install_package_or_package">Будь ласка, встановіть %1$s пакет або %2$s пакет</string>
 </resources>
