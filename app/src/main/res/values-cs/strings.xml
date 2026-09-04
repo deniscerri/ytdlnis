@@ -596,4 +596,11 @@
         <item quantity="many">Každých %d minut</item>
         <item quantity="other">Každých %d minut</item>
     </plurals>
+    <string name="bgutils_info">Poskytovatel tokenu ověření původu (POT) pro yt-dlp.\nPokud je zapnutý, YTDLnis hostí HTTP server, který generuje POT a nainstaluje související plugin, který yt-dlp používá.</string>
+    <string name="bgutils_pot_generation_script">Generovací skript</string>
+    <string name="bgutils_pot_generation_server">HTTP server</string>
+    <string name="bgutils_pot_generation_script_summary">Každé volání yt-dlp přináší režijní náklady na spuštění nového procesu js runtime pro provedení skriptu. Tato metoda se nedoporučuje pro použití s vysokou mírou souběžnosti.</string>
+    <string name="bgutils_pot_server_summary">Toto je JavaScript HTTP server na portu 4416. Pokud je vypnutý, server se automaticky spustí, když se začne vykonávat fronta stahování, nebo když je naplánováno sledování zdrojů. Pro vypnutí jej musíte manuálně vypnout z notifikací!</string>
+    <string name="please_install_package">Prosím, nainstalujte balíček %s</string>
+    <string name="please_install_package_or_package">Prosím, nainstalujte balíček %1$s nebo balíček %2$s</string>
 </resources>

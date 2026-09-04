@@ -590,4 +590,11 @@
         <item quantity="many">A cada %d meses</item>
         <item quantity="other">A cada %d meses</item>
     </plurals>
+    <string name="bgutils_info">Um provedor de token de prova de origem (POT) para yt-dlp.\nCom ele ativado, o YTDLnis hospeda o servidor HTTP que gera o POT e instala o plugin relacionado que o yt-dlp utiliza.</string>
+    <string name="bgutils_pot_generation_server">Servidor HTTP</string>
+    <string name="bgutils_pot_generation_script_summary">Cada chamada do yt-dlp acarreta a sobrecarga de iniciar um novo processo de tempo de execução (runtime) de JS para executar o script. Este método não é recomendado para cenários de alta concorrência.</string>
+    <string name="bgutils_pot_server_summary">Este é um servidor HTTP em JavaScript, na porta 4416. Se estiver inativo, ele inicia automaticamente quando a fila de downloads começa a ser executada ou quando a verificação de fontes é agendada. Para encerrá-lo, é preciso fazê-lo manualmente através das notificações!</string>
+    <string name="please_install_package">Por favor, instale o pacote %s</string>
+    <string name="please_install_package_or_package">Por favor, instale o pacote %1$s ou o pacote %2$s</string>
+    <string name="bgutils_pot_generation_script">Gerando script</string>
 </resources>

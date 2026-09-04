@@ -474,7 +474,7 @@
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Веб-клиент PO Token</string>
+    <string name="manual_po_token_generator">Ручной Веб Po Token генератор</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
     <string name="no_keep_subs_summary">При использовании функций Встроить субтитры и Написать субтитры не сохраняйте файлы субтитров после встраивания</string>
@@ -550,7 +550,7 @@
     <string name="reset_state">Сбросить состояние</string>
     <string name="rescan_from_scratch">Повторное сканирование с нуля</string>
     <string name="rescan_from_scratch_desc">Забыть обработанные елеметы и заново скачайть все, что не сохранено</string>
-    <string name="skip_backlog">Пропустить текущую очередь задач</string>
+    <string name="skip_backlog">Пропустить текущий список журналов</string>
     <string name="skip_backlog_desc">Пометить всё, текущее в источнике как выполнено — загружать только будущие загрузки</string>
     <string name="unskip_ignored">Отменить пропуск игнорируемых загрузок</string>
     <string name="unskip_ignored_desc">Скачать существующие загрузки, пропущенные при первом запуске</string>
@@ -595,4 +595,11 @@
         <item quantity="many">Каждые %d минуты</item>
         <item quantity="other">Каждые %d минуты</item>
     </plurals>
+    <string name="bgutils_info">Поставщик токенов подтверждения происхождения (POT) для yt-dlp.\nЕсли это включено, YTDLnis размещает HTTP сервер, который генерирует POT и устанавливает соответствующий плагин, использующий yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Скрипт генерации</string>
+    <string name="bgutils_pot_generation_server">HTTP Сервер</string>
+    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp влечет за собой накладные расходы на создание нового процесса выполнения js для запуска скрипта. Этот метод не рекомендуется для использования с высоким уровнем параллелизма.</string>
+    <string name="bgutils_pot_server_summary">Это HTTP-сервер JavaScript на порте 4416. Если он не работает, он автоматически запускается, когда начинается выполнение очереди загрузки или запланировано наблюдение за источниками. Чтобы отключить его, нужно сделать это вручную из уведомлений!</string>
+    <string name="please_install_package">Пожалуйста, установите пакет %s</string>
+    <string name="please_install_package_or_package">Пожалуйста, установите %1$s пакет или %2$s пакет</string>
 </resources>
