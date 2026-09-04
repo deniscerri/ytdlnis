@@ -103,8 +103,10 @@
             android:key="last_used_download_type"
             app:isPreferenceVisible="false" />
 
+        <!-- Balanced defaults improve throughput without starting an aggressive
+             number of connections on a typical mobile network. -->
         <SeekBarPreference
-            android:defaultValue="1"
+            android:defaultValue="4"
             android:icon="@drawable/ic_lines"
             android:max="25"
             app:key="concurrent_fragments"
@@ -114,7 +116,7 @@
             app:title="@string/concurrent_fragments" />
 
         <SeekBarPreference
-            android:defaultValue="1"
+            android:defaultValue="2"
             android:icon="@drawable/ic_concurrent_downloads"
             android:max="10"
             app:key="concurrent_downloads"
@@ -122,6 +124,54 @@
             app:showSeekBarValue="true"
             app:summary="@string/concurrent_downloads_summary"
             app:title="@string/concurrent_downloads" />
+
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_speed"
+            android:key="smart_request_budget"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/smart_request_budget_summary"
+            app:title="@string/smart_request_budget" />
+
+        <!-- The active .part file is never processed; only a completed item may
+             overlap the next network transfer during local FFmpeg work. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_concurrent_downloads"
+            android:key="pipeline_postprocessing"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/pipeline_postprocessing_summary"
+            app:title="@string/pipeline_postprocessing" />
+
+        <!-- Lower parallel work automatically when Android thermal state, battery
+             temperature, or normalized CPU load indicates device pressure. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_speed"
+            android:key="device_resource_protection"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/device_resource_protection_summary"
+            app:title="@string/device_resource_protection" />
+
+        <!-- Stop the active process on local network loss, preserve its .part data,
+             and resume only after Android validates the restored connection. -->
+        <SwitchPreferenceCompat
+            android:icon="@drawable/ic_speed"
+            android:key="connectivity_aware_downloads"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:summary="@string/connectivity_aware_downloads_summary"
+            app:title="@string/connectivity_aware_downloads" />
+
+        <SeekBarPreference
+            android:defaultValue="8"
+            android:icon="@drawable/ic_speed"
+            android:max="24"
+            app:key="max_parallel_requests"
+            app:min="2"
+            app:showSeekBarValue="true"
+            app:summary="@string/max_parallel_requests_summary"
+            app:title="@string/max_parallel_requests" />
 
         <EditTextPreference
             android:icon="@drawable/ic_limitrate"
