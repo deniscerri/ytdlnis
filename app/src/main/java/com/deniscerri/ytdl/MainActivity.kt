@@ -290,6 +290,7 @@ class MainActivity : BaseActivity() {
         }
 
         cookieViewModel.updateCookiesFile()
+        installLauncher = ApkInstallUtil.registerInstallLauncher(this)
         val intent = intent
         handleIntents(intent)
 

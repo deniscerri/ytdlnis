@@ -101,28 +101,29 @@ object BgUtilsPoTokenGeneratorUtil {
         val hasDeno = RuntimeManager.getInstance().denoLocation.isAvailable
 
         progress?.invoke("Downloading node-modules...")
-        if (hasNode) {
-            val nodeResponse = RuntimeManager.getInstance().executeNpm(
-                command = "install --ignore-scripts",
-                executeDirectory = File(serverFolder, "server")) { _, _, line ->
-                progress?.invoke(line)
-            }
-            if (nodeResponse.exitCode != 0) {
-                progress?.invoke(nodeResponse.err)
-                return Result.failure(Exception(nodeResponse.err))
-            }
-
-            progress?.invoke("Building typescript files...")
-            val nodeResponse2 = RuntimeManager.getInstance().executeNode(
-                command = "node_modules/typescript/bin/tsc",
-                executeDirectory = File(serverFolder, "server")) { _, _, line ->
-                progress?.invoke(line)
-            }
-            if (nodeResponse2.exitCode != 0) {
-                progress?.invoke(nodeResponse2.err)
-                return Result.failure(Exception(nodeResponse2.err))
-            }
-        }
+        //TODO READD
+//        if (hasNode) {
+//            val nodeResponse = RuntimeManager.getInstance().executeNpm(
+//                command = "install --ignore-scripts",
+//                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+//                progress?.invoke(line)
+//            }
+//            if (nodeResponse.exitCode != 0) {
+//                progress?.invoke(nodeResponse.err)
+//                return Result.failure(Exception(nodeResponse.err))
+//            }
+//
+//            progress?.invoke("Building typescript files...")
+//            val nodeResponse2 = RuntimeManager.getInstance().executeNode(
+//                command = "node_modules/typescript/bin/tsc",
+//                executeDirectory = File(serverFolder, "server")) { _, _, line ->
+//                progress?.invoke(line)
+//            }
+//            if (nodeResponse2.exitCode != 0) {
+//                progress?.invoke(nodeResponse2.err)
+//                return Result.failure(Exception(nodeResponse2.err))
+//            }
+//        }
 
         if (hasDeno) {
             val denoResponse = RuntimeManager.getInstance().executeDeno(

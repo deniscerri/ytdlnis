@@ -2764,6 +2764,7 @@ object UiUtil {
         installLauncher: ActivityResultLauncher<Intent>
     ) {
         val customView = layoutInflater.inflate(R.layout.layout_update_snackbar, null)
+        customView.findViewById<TextView>(R.id.newVersionTitle).text = context.getString(R.string.version_ready_to_download, v.tag_name)
         val triggerAction = View.OnClickListener {
             container.removeView(customView)
             showNewAppUpdateDialog(v, context, updateUtil, lifecycleOwner, preferences, installLauncher)
@@ -2788,6 +2789,8 @@ object UiUtil {
     ) {
         if (context.isFinishing || context.isDestroyed) return
         var positiveButton: Button? = null
+        var negativeButton: Button? = null
+        var neutralButton: Button? = null
         var tmpDownloadJob: Job? = null
 
         val skippedVersions = preferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
@@ -2822,6 +2825,9 @@ object UiUtil {
         mw.setMarkdown(textView, v.body)
 
         positiveButton = view.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+        negativeButton = view.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+        neutralButton = view.getButton(android.app.AlertDialog.BUTTON_NEUTRAL)
+
         positiveButton?.setOnClickListener {
             positiveButton.isEnabled = false
             positiveButton.text = "0%"
@@ -2853,13 +2859,17 @@ object UiUtil {
                 fileResp.onSuccess { file ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
+                            positiveButton.text = context.getString(R.string.please_wait)
+                            negativeButton.isEnabled = false
+                            neutralButton.isEnabled = false
+
                             ApkInstallUtil.installApk(context, file, installLauncher) { result ->
                                 result.onSuccess {
                                 }.onFailure { f ->
                                     Snackbar.make(context.findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).show()
                                 }
+                                view.dismiss()
                             }
-                            view.dismiss()
                         }
                     }
                 }
