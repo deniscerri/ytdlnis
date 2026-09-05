@@ -26,6 +26,8 @@ object ApkInstallUtil {
     // can't take a per-call lambda directly.
     private var pendingInstallCallback: ((Result<Unit>) -> Unit)? = null
 
+    private var pendingShizukuPermissionCallback: ((Boolean) -> Unit)? = null
+
     /**
      * Call this once per Activity/Fragment (e.g. in onCreate) to create the launcher.
      * Wires the launcher's result back into whatever callback was passed to installApk().
@@ -44,6 +46,62 @@ object ApkInstallUtil {
             pendingInstallCallback = null
         }
     }
+
+    private val shizukuPermissionListener =
+        Shizuku.OnRequestPermissionResultListener { requestCode, grantResult ->
+            if (requestCode != REQUEST_CODE_SHIZUKU) return@OnRequestPermissionResultListener
+
+            val granted = grantResult == android.content.pm.PackageManager.PERMISSION_GRANTED
+            val callback = pendingShizukuPermissionCallback
+            pendingShizukuPermissionCallback = null
+
+            callback?.let {
+                Handler(Looper.getMainLooper()).post { it(granted) }
+            }
+        }
+
+    fun registerShizukuPermissionListener() {
+        Shizuku.addRequestPermissionResultListener(shizukuPermissionListener)
+    }
+
+    fun unregisterShizukuPermissionListener() {
+        Shizuku.removeRequestPermissionResultListener(shizukuPermissionListener)
+    }
+
+    fun requestShizukuPermission(onResult: (granted: Boolean, error: String?) -> Unit) {
+        if (!Shizuku.pingBinder()) {
+            onResult(false, "Please start the Shizuku service first")
+            return
+        }
+        if (Shizuku.isPreV11()) {
+            onResult(false, "Shizuku version not supported")
+            return
+        }
+
+        try {
+            when {
+                Shizuku.checkSelfPermission() == android.content.pm.PackageManager.PERMISSION_GRANTED -> {
+                    onResult(true, null)
+                }
+                Shizuku.shouldShowRequestPermissionRationale() -> {
+                    onResult(false, "Shizuku permission was denied. Please enable it manually.")
+                }
+                else -> {
+                    pendingShizukuPermissionCallback = { granted ->
+                        if (granted) onResult(true, null)
+                        else onResult(false, "Shizuku permission denied")
+                    }
+                    Shizuku.requestPermission(REQUEST_CODE_SHIZUKU)
+                }
+            }
+        } catch (e: IllegalStateException) {
+            // Binder wasn't actually available despite pingBinder() check —
+            // service likely died/restarted between the check and this call.
+            pendingShizukuPermissionCallback = null
+            onResult(false, "Shizuku service is not ready. Please try again.")
+        }
+    }
+
 
     fun installApk(
         context: Context,
@@ -75,14 +133,16 @@ object ApkInstallUtil {
                 }
             }
             "shizuku" -> {
-                if (!checkShizukuPermission()) {
-                    onResult(Result.failure(Exception("Please start Shizuku service!")))
-                    return
+                requestShizukuPermission { granted, error ->
+                    if (!granted) {
+                        onResult(Result.failure(Exception(error)))
+                        return@requestShizukuPermission
+                    }
+                    Thread {
+                        val result = installApkWithShizuku(apkFile)
+                        Handler(Looper.getMainLooper()).post { onResult(result) }
+                    }.start()
                 }
-                Thread {
-                    val result = installApkWithShizuku(apkFile)
-                    Handler(Looper.getMainLooper()).post { onResult(result) }
-                }.start()
             }
             "external" -> {
                 val packageName = preferences.getString("apk_install_external_apk_id", "")!!
@@ -96,7 +156,7 @@ object ApkInstallUtil {
         }
     }
 
-    private const val REQUEST_CODE_SHIZUKU = 1001
+    const val REQUEST_CODE_SHIZUKU = 1001
 
     fun checkShizukuPermission(): Boolean {
         if (!Shizuku.pingBinder()) {
@@ -131,7 +191,8 @@ object ApkInstallUtil {
 
     private fun installApkWithShizuku(apkFile: File): Result<Unit> {
         return try {
-            val command = arrayOf("pm", "install", "-r", apkFile.absolutePath)
+            val apkSize = apkFile.length()
+            val command = arrayOf("pm", "install", "-r", "-S", apkSize.toString())
             val process: Process = newShizukuProcess(command, null, null)
 
             process.outputStream.use { stdin ->
@@ -144,7 +205,7 @@ object ApkInstallUtil {
             val errorOutput = process.errorStream.bufferedReader().readText()
             val exitCode = process.waitFor()
 
-            if (exitCode == 0) Result.success(Unit)
+            if (exitCode == 0 && output.contains("Success")) Result.success(Unit)
             else Result.failure(Exception(errorOutput.ifBlank { output }))
         } catch (e: Exception) {
             e.printStackTrace()

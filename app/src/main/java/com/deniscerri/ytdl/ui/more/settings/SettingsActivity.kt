@@ -179,6 +179,13 @@ class SettingsActivity : BaseActivity(), SettingHost {
                 }
             }
         }
+
+        ApkInstallUtil.registerShizukuPermissionListener()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ApkInstallUtil.unregisterShizukuPermissionListener()
     }
 
     override fun onResume() {

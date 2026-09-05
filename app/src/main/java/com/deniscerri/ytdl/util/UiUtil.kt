@@ -2907,10 +2907,13 @@ object UiUtil {
         var tmpDownloadJob : Job? = null
 
         var positiveButton: Button? = null
+        var negativeButton: Button? = null
+
         val updateDialog = MaterialAlertDialogBuilder(context)
             .setTitle("${item.tag_name} (${FileUtil.convertFileSize(item.downloadSize)})")
             .setMessage(item.body)
             .setIcon(R.drawable.ic_update_app)
+            .setCancelable(false)
             .setNegativeButton(context.getString(R.string.cancel)) { _: DialogInterface?, _: Int ->
                 tmpDownloadJob?.cancel()
             }
@@ -2932,6 +2935,8 @@ object UiUtil {
         val lifecycleScope = lifecycleOwner.lifecycleScope
 
         positiveButton = view.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+        negativeButton = view.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+
         positiveButton?.setOnClickListener {
             positiveButton.isEnabled = false
             positiveButton.text = "0%"
@@ -2960,8 +2965,13 @@ object UiUtil {
                 fileResp.onSuccess { file ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            view.dismiss()
-                            ApkInstallUtil.installApk(context, file, installLauncher, onResult)
+                            positiveButton.text = context.getString(R.string.please_wait)
+                            negativeButton.isEnabled = false
+
+                            ApkInstallUtil.installApk(context, file, installLauncher) { result ->
+                                onResult(result)
+                                view.dismiss()
+                            }
                         }
                     }
                 }

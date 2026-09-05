@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.PackageManagerCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.util.ApkInstallUtil
+import com.deniscerri.ytdl.util.ApkInstallUtil.REQUEST_CODE_SHIZUKU
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -25,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import rikka.shizuku.Shizuku
 import java.io.File
 
 
@@ -97,9 +100,22 @@ object UpdateSettingsModule : SettingModule {
             "apk_install_method" -> {
                 pref.apply {
                     setOnPreferenceChangeListener { _, newValue ->
-                        host.findPref("apk_install_external_apk_id")?.isVisible = (newValue as String) == "external"
-                        host.refreshUI()
-                        true
+                        var resp = true
+                        if ((newValue as String) == "shizuku") {
+                            ApkInstallUtil.requestShizukuPermission { granted, error ->
+                                if (!granted) {
+                                    Snackbar.make(host.hostView!!, error ?: "Shizuku permission not granted", Snackbar.LENGTH_LONG).show()
+                                    resp = false
+                                }
+                            }
+                        }
+
+                        if (resp) {
+                            host.findPref("apk_install_external_apk_id")?.isVisible = (newValue as String) == "external"
+                            host.refreshUI()
+                        }
+
+                        resp
                     }
                 }
             }
