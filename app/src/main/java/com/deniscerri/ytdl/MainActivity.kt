@@ -600,7 +600,6 @@ class MainActivity : BaseActivity() {
                         skipRemindingPackageUpdate.add(latestRelease.tag_name)
                         preferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
                         withContext(Dispatchers.Main) {
-                            val installIntent = ApkInstallUtil.registerInstallLauncher(this@MainActivity)
                             UiUtil.showNewPackageUpdateSnackBar(
                                 latestRelease,
                                 pkg,
@@ -610,7 +609,7 @@ class MainActivity : BaseActivity() {
                                 navigationBarView,
                                 layoutInflater,
                                 this@MainActivity,
-                                installIntent
+                                installLauncher
                             ) { result ->
                                 result.onSuccess {
                                     RuntimeManager.reInit(this@MainActivity)

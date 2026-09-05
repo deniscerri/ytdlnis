@@ -39,7 +39,17 @@
         <item name="colorOnSurface">@color/red_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/red_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/red_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/red_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/red_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/red_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/red_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/red_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/red_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/red_md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutline">@color/red_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/red_md_theme_dark_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/red_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/red_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/red_md_theme_dark_inversePrimary</item>
@@ -48,29 +58,54 @@
 
     <style name="Theme.Blue" parent="BaseTheme">
 
+        <!-- Primary -->
         <item name="colorPrimary">@color/blue_md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/blue_md_theme_dark_onPrimary</item>
         <item name="colorPrimaryContainer">@color/blue_md_theme_dark_primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/blue_md_theme_dark_onPrimaryContainer</item>
+
+        <!-- Secondary -->
         <item name="colorSecondary">@color/blue_md_theme_dark_secondary</item>
         <item name="colorOnSecondary">@color/blue_md_theme_dark_onSecondary</item>
         <item name="colorSecondaryContainer">@color/blue_md_theme_dark_secondaryContainer</item>
         <item name="colorOnSecondaryContainer">@color/blue_md_theme_dark_onSecondaryContainer</item>
+
+        <!-- Tertiary -->
         <item name="colorTertiary">@color/blue_md_theme_dark_tertiary</item>
         <item name="colorOnTertiary">@color/blue_md_theme_dark_onTertiary</item>
         <item name="colorTertiaryContainer">@color/blue_md_theme_dark_tertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/blue_md_theme_dark_onTertiaryContainer</item>
+
+        <!-- Error -->
         <item name="colorError">@color/blue_md_theme_dark_error</item>
-        <item name="colorErrorContainer">@color/blue_md_theme_dark_errorContainer</item>
         <item name="colorOnError">@color/blue_md_theme_dark_onError</item>
+        <item name="colorErrorContainer">@color/blue_md_theme_dark_errorContainer</item>
         <item name="colorOnErrorContainer">@color/blue_md_theme_dark_onErrorContainer</item>
+
+        <!-- Background -->
         <item name="android:colorBackground">@color/blue_md_theme_dark_background</item>
         <item name="colorOnBackground">@color/blue_md_theme_dark_onBackground</item>
+
+        <!-- Surface -->
         <item name="colorSurface">@color/blue_md_theme_dark_surface</item>
         <item name="colorOnSurface">@color/blue_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/blue_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/blue_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/blue_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/blue_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/blue_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/blue_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/blue_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/blue_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/blue_md_theme_dark_surfaceContainerHighest</item>
+
+        <!-- Outline -->
         <item name="colorOutline">@color/blue_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/blue_md_theme_dark_outlineVariant</item>
+
+        <!-- Inverse -->
         <item name="colorOnSurfaceInverse">@color/blue_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/blue_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/blue_md_theme_dark_inversePrimary</item>
@@ -101,7 +136,17 @@
         <item name="colorOnSurface">@color/yellow_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/yellow_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/yellow_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/yellow_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/yellow_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/yellow_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/yellow_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/yellow_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/yellow_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/yellow_md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutline">@color/yellow_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/yellow_md_theme_dark_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/yellow_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/yellow_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/yellow_md_theme_dark_inversePrimary</item>
@@ -133,7 +178,17 @@
         <item name="colorOnSurface">@color/green_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/green_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/green_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/green_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/green_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/green_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/green_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/green_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/green_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/green_md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutline">@color/green_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/green_md_theme_dark_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/green_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/green_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/green_md_theme_dark_inversePrimary</item>
@@ -165,7 +220,17 @@
         <item name="colorOnSurface">@color/purple_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/purple_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/purple_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/purple_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/purple_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/purple_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/purple_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/purple_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/purple_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/purple_md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutline">@color/purple_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/purple_md_theme_dark_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/purple_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/purple_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/purple_md_theme_dark_inversePrimary</item>
@@ -228,7 +293,17 @@
         <item name="colorOnSurface">@color/orange_md_theme_dark_onSurface</item>
         <item name="colorSurfaceVariant">@color/orange_md_theme_dark_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/orange_md_theme_dark_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/orange_md_theme_dark_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/orange_md_theme_dark_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/orange_md_theme_dark_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/orange_md_theme_dark_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/orange_md_theme_dark_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/orange_md_theme_dark_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/orange_md_theme_dark_surfaceContainerHighest</item>
         <item name="colorOutline">@color/orange_md_theme_dark_outline</item>
+        <item name="colorOutlineVariant">@color/orange_md_theme_dark_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/orange_md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/orange_md_theme_dark_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/orange_md_theme_dark_inversePrimary</item>
@@ -236,8 +311,30 @@
 
     <style name="Pure">
 
+        <!-- Base Canvas (Pure Black Background & Cards) -->
         <item name="android:colorBackground">@android:color/black</item>
         <item name="colorSurface">@android:color/black</item>
+
+        <!-- Bottom Sheets, Dialogs & Base Containers (Pure Black) -->
+        <item name="colorSurfaceDim">@android:color/black</item>
+        <item name="colorSurfaceContainerLowest">@android:color/black</item>
+        <item name="colorSurfaceContainerLow">@android:color/black</item>
+        <item name="colorSurfaceContainer">@android:color/black</item>
+
+        <!-- Interactive Inputs & High-Priority Components (Dark Grays) -->
+        <!-- Used by Chips, Elevated Buttons, and Search Bars -->
+        <item name="colorSurfaceContainerHigh">#1E1E1E</item>
+        <!-- Used by Filled TextFields (TextInputLayout) -->
+        <item name="colorSurfaceContainerHighest">#252525</item>
+        <item name="colorSurfaceBright">#2C2C2C</item>
+
+        <!-- Outlines & Borders (Critical for Outlined Inputs & Unfilled Chips) -->
+        <item name="colorOutline">#79747E</item>
+        <item name="colorOutlineVariant">#49454F</item>
+
+        <!-- Disables automatic elevation white tint so pure black stays black -->
+        <item name="elevationOverlayColor">@android:color/transparent</item>
+        <item name="elevationOverlayEnabled">false</item>
 
     </style>
 

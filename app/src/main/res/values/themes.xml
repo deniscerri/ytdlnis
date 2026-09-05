@@ -37,7 +37,17 @@
         <item name="colorOnSurface">@color/red_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/red_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/red_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/red_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/red_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/red_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/red_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/red_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/red_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/red_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/red_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/red_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/red_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/red_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/red_md_theme_light_inversePrimary</item>
@@ -69,7 +79,17 @@
         <item name="colorOnSurface">@color/blue_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/blue_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/blue_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/blue_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/blue_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/blue_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/blue_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/blue_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/blue_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/blue_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/blue_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/blue_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/blue_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/blue_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/blue_md_theme_light_inversePrimary</item>
@@ -102,7 +122,17 @@
         <item name="colorOnSurface">@color/yellow_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/yellow_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/yellow_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/yellow_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/yellow_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/yellow_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/yellow_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/yellow_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/yellow_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/yellow_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/yellow_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/yellow_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/yellow_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/yellow_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/yellow_md_theme_light_inversePrimary</item>
@@ -134,7 +164,17 @@
         <item name="colorOnSurface">@color/green_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/green_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/green_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/green_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/green_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/green_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/green_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/green_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/green_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/green_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/green_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/green_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/green_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/green_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/green_md_theme_light_inversePrimary</item>
@@ -167,7 +207,17 @@
         <item name="colorOnSurface">@color/purple_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/purple_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/purple_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/purple_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/purple_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/purple_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/purple_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/purple_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/purple_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/purple_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/purple_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/purple_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/purple_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/purple_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/purple_md_theme_light_inversePrimary</item>
@@ -230,7 +280,17 @@
         <item name="colorOnSurface">@color/orange_md_theme_light_onSurface</item>
         <item name="colorSurfaceVariant">@color/orange_md_theme_light_surfaceVariant</item>
         <item name="colorOnSurfaceVariant">@color/orange_md_theme_light_onSurfaceVariant</item>
+
+        <!-- Expanded Material 3 surface roles -->
+        <item name="colorSurfaceDim">@color/orange_md_theme_light_surfaceDim</item>
+        <item name="colorSurfaceBright">@color/orange_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceContainerLowest">@color/orange_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerLow">@color/orange_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/orange_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/orange_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerHighest">@color/orange_md_theme_light_surfaceContainerHighest</item>
         <item name="colorOutline">@color/orange_md_theme_light_outline</item>
+        <item name="colorOutlineVariant">@color/orange_md_theme_light_outlineVariant</item>
         <item name="colorOnSurfaceInverse">@color/orange_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/orange_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/orange_md_theme_light_inversePrimary</item>
@@ -242,5 +302,4 @@
         <item name="colorSurface">@android:color/white</item>
 
     </style>
-
 </resources>

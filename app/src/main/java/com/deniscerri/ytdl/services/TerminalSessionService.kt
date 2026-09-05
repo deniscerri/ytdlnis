@@ -121,7 +121,7 @@ class TerminalSessionService : Service() {
             .addAction(
                 NotificationCompat.Action.Builder(
                     null,
-                    "EXIT",
+                    getString(R.string.exit),
                     exitPendingIntent
                 ).build()
             )

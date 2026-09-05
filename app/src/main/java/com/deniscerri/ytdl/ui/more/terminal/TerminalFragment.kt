@@ -214,7 +214,7 @@ class TerminalFragment : Fragment() {
                     findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
                         NavOptions.Builder().setPopUpTo(R.id.terminalFragment, true).build())
                 }
-                R.id.delete -> {
+                R.id.exit -> {
                     sessionId?.apply {
                         terminalViewModel.sessionBinder?.terminateSession(this)
                         requireActivity().onBackPressedDispatcher.onBackPressed()

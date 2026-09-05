@@ -52,6 +52,8 @@
                 android:layout_height="wrap_content"
                 android:autoLink="all"
                 android:text="@string/ok"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
                 app:icon="@drawable/ic_check"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

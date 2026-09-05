@@ -345,6 +345,8 @@
                     android:autoLink="all"
                     android:text="@string/new_cut"
                     app:icon="@drawable/ic_cut"
+                    android:elevation="0dp"
+                    android:stateListAnimator="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

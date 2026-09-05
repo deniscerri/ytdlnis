@@ -7,10 +7,10 @@
         app:showAsAction="always"
         android:id="@+id/add"/>
 
-    <item android:title="@string/Remove"
+    <item android:title="@string/exit"
         android:icon="@drawable/baseline_delete"
         app:showAsAction="always"
-        android:id="@+id/delete"/>
+        android:id="@+id/exit"/>
 
     <item
         android:id="@+id/export_clipboard"
