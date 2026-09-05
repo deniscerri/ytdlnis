@@ -2,10 +2,12 @@ package com.deniscerri.ytdl.ui.more.settings
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -25,6 +27,7 @@ import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.databinding.ActivitySettingsBinding
 import com.deniscerri.ytdl.ui.BaseActivity
 import com.deniscerri.ytdl.ui.more.settings.search.SettingsSearchAdapter
+import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -40,6 +43,8 @@ class SettingsActivity : BaseActivity(), SettingHost {
     private lateinit var navController: NavController
     private lateinit var searchAdapter: SettingsSearchAdapter
 
+    private lateinit var installLauncher: ActivityResultLauncher<Intent>
+
     override fun findPref(key: String): Preference? {
         return settingViewModel.settingsFlow.value.first.find { it.preference.key == key }?.preference
     }
@@ -48,6 +53,7 @@ class SettingsActivity : BaseActivity(), SettingHost {
         settingViewModel.indexSearchSettings()
     }
     override fun getHostContext() = this
+    override fun getAppInstallLauncher() = installLauncher
     override val activityResultDelegate = PreferenceActivityResultDelegate(this)
     override val hostViewModelStoreOwner by lazy {
         this
@@ -82,6 +88,8 @@ class SettingsActivity : BaseActivity(), SettingHost {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         settingViewModel = ViewModelProvider(this)[SettingsViewModel::class.java]
         setContentView(binding.root)
+
+        installLauncher = ApkInstallUtil.registerInstallLauncher(this)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.appBar) { v, insets ->
             val topInset = insets.getInsets(

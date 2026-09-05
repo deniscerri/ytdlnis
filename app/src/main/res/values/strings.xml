@@ -574,6 +574,11 @@
     <string name="bgutils_pot_server_summary">This is a JavaScript HTTP server, on port 4416. If down, it automatically starts the server when download queue starts executing, or observe sources is scheduled. To shut it down, you have to do it manually from notifications!</string>
     <string name="please_install_package">Please install package %s</string>
     <string name="please_install_package_or_package">Please install %1$s package or %2$s package</string>
+    <string name="installation_method">Installation method</string>
+    <string name="system_install_failed">System install failed. Please choose another installation method in the settings!</string>
+    <string name="choose_installer_app">Choose an installer app</string>
+    <string name="notset">Not set</string>
+    <string name="external">External</string>
     <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>

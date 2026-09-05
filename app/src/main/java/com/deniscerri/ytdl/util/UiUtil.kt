@@ -11,6 +11,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.text.Editable
@@ -93,6 +95,7 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
@@ -2757,12 +2760,13 @@ object UiUtil {
         layoutInflater: LayoutInflater,
         updateUtil: UpdateUtil,
         lifecycleOwner: LifecycleOwner,
-        preferences: SharedPreferences
+        preferences: SharedPreferences,
+        installLauncher: ActivityResultLauncher<Intent>
     ) {
         val customView = layoutInflater.inflate(R.layout.layout_update_snackbar, null)
         val triggerAction = View.OnClickListener {
             container.removeView(customView)
-            showNewAppUpdateDialog(v, context, updateUtil, lifecycleOwner, preferences)
+            showNewAppUpdateDialog(v, context, updateUtil, lifecycleOwner, preferences, installLauncher)
         }
 
         customView.setOnClickListener(triggerAction)
@@ -2774,7 +2778,14 @@ object UiUtil {
     }
 
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
-    fun showNewAppUpdateDialog(v: GithubRelease, context: Activity, updateUtil: UpdateUtil, lifecycleOwner: LifecycleOwner, preferences: SharedPreferences) {
+    fun showNewAppUpdateDialog(
+        v: GithubRelease,
+        context: Activity,
+        updateUtil: UpdateUtil,
+        lifecycleOwner: LifecycleOwner,
+        preferences: SharedPreferences,
+        installLauncher: ActivityResultLauncher<Intent>
+    ) {
         if (context.isFinishing || context.isDestroyed) return
         var positiveButton: Button? = null
         var tmpDownloadJob: Job? = null
@@ -2842,23 +2853,12 @@ object UiUtil {
                 fileResp.onSuccess { file ->
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
-                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(context)
-                            } else {
-                                true
-                            }
-
-                            if (canRequestPackageInstalls) {
-                                val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
-                                val intent = Intent(Intent.ACTION_VIEW).apply {
-                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
-                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                            ApkInstallUtil.installApk(context, file, installLauncher) { result ->
+                                result.onSuccess {
+                                }.onFailure { f ->
+                                    Snackbar.make(context.findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).show()
                                 }
-                                context.startActivity(intent)
-                            } else {
-                                Snackbar.make(context.findViewById(R.id.frame_layout), context.getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG).show()
                             }
-
                             view.dismiss()
                         }
                     }
@@ -2876,12 +2876,13 @@ object UiUtil {
         anchorView: View?,
         layoutInflater: LayoutInflater,
         lifecycleOwner: LifecycleOwner,
-        installLauncher: ActivityResultLauncher<Intent>
+        installLauncher: ActivityResultLauncher<Intent>,
+        onResult: (result: Result<Unit>) -> Unit
     ) {
         val customView = layoutInflater.inflate(R.layout.layout_package_update_snackbar, null)
         val triggerAction = View.OnClickListener {
             container.removeView(customView)
-            showNewReleaseUpdateDialog(v, packageItem, context, lifecycleOwner, frameLayout, anchorView, installLauncher)
+            showNewReleaseUpdateDialog(v, packageItem, context, lifecycleOwner, frameLayout, anchorView, installLauncher, onResult)
         }
 
         customView.setOnClickListener(triggerAction)
@@ -2900,7 +2901,8 @@ object UiUtil {
         lifecycleOwner: LifecycleOwner,
         activityView: View,
         snackbarAnchorView: View?,
-        installLauncher: ActivityResultLauncher<Intent>
+        installLauncher: ActivityResultLauncher<Intent>,
+        onResult: (result: Result<Unit>) -> Unit
     ) {
         var tmpDownloadJob : Job? = null
 
@@ -2959,25 +2961,7 @@ object UiUtil {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             view.dismiss()
-
-                            val canRequestPackageInstalls = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                android.Manifest.permission.REQUEST_INSTALL_PACKAGES.hasPermission(context)
-                            } else {
-                                true
-                            }
-
-                            if (canRequestPackageInstalls) {
-                                val contentUri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", file)
-                                val intent = Intent(Intent.ACTION_VIEW).apply {
-                                    setDataAndType(contentUri, "application/vnd.android.package-archive")
-                                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
-                                }
-                                installLauncher.launch(intent)
-                            } else {
-                                val snackbar = Snackbar.make(activityView, context.getString(R.string.install_downloaded_file), Snackbar.LENGTH_LONG)
-                                snackbar.anchorView = snackbarAnchorView
-                                snackbar.show()
-                            }
+                            ApkInstallUtil.installApk(context, file, installLauncher, onResult)
                         }
                     }
                 }
@@ -3196,4 +3180,78 @@ object UiUtil {
         toTextInput.editText!!.setText(maxDelay)
     }
 
+    fun showChooseInstallerAppDialog(context: Activity, appIdSelected: (appId: String) -> Unit) {
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.choose_installer_app))
+        builder.setIcon(R.drawable.baseline_install_mobile_24)
+        val view = context.layoutInflater.inflate(R.layout.choose_installer_app_dialog, null)
+
+        data class ExternalInstallerApp(
+            val appName: String,
+            val packageName: String,
+            val icon: Drawable
+        )
+
+        lateinit var alertDialog: AlertDialog
+
+        val installersList = mutableListOf<ExternalInstallerApp>()
+        val packageManager = context.packageManager
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            setDataAndType(Uri.parse("content://dummy"), "application/vnd.android.package-archive")
+        }
+
+        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong())
+        } else {
+            0
+        }
+
+        val resolveInfoList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            packageManager.queryIntentActivities(intent, flags as PackageManager.ResolveInfoFlags)
+        } else {
+            @Suppress("DEPRECATION")
+            packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
+        }
+
+        for (resolveInfo in resolveInfoList) {
+            val activityInfo = resolveInfo.activityInfo ?: continue
+            val appPackageName = activityInfo.packageName
+
+            // Exclude your own app from the list of external options
+            if (appPackageName == context.packageName) continue
+
+            val appName = resolveInfo.loadLabel(packageManager).toString()
+            val appIcon = resolveInfo.loadIcon(packageManager)
+
+            installersList.add(
+                ExternalInstallerApp(
+                    appName = appName,
+                    packageName = appPackageName,
+                    icon = appIcon
+                )
+            )
+        }
+
+        val finalList = installersList.distinctBy { it.packageName }.sortedBy { it.appName }
+        if (finalList.isEmpty()) {
+            return
+        }
+
+        finalList.forEach { app ->
+            val card = context.layoutInflater.inflate(R.layout.installer_app_card, null)
+            card.findViewById<TextView>(R.id.app_name).text = app.appName
+            card.findViewById<ShapeableImageView>(R.id.app_icon).setImageDrawable(app.icon)
+
+            card.setOnClickListener {
+                appIdSelected(app.packageName)
+                alertDialog.dismiss()
+            }
+
+            (view as LinearLayout).addView(card)
+        }
+
+        builder.setView(view)
+        alertDialog = builder.create()
+        alertDialog.show()
+    }
 }

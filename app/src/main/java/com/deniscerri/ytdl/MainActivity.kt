@@ -21,6 +21,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -58,6 +59,7 @@ import com.deniscerri.ytdl.ui.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
@@ -109,6 +111,8 @@ class MainActivity : BaseActivity() {
     private lateinit var navHostFragment : NavHostFragment
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
+
+    private lateinit var installLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -551,9 +555,6 @@ class MainActivity : BaseActivity() {
         dialog.show()
     }
 
-    private var installPackageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        RuntimeManager.reInit(this)
-    }
 
     private fun callAutoUpdates(firstRun : Boolean = false) {
         if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
@@ -574,7 +575,8 @@ class MainActivity : BaseActivity() {
                             layoutInflater,
                             updateUtil,
                             this@MainActivity,
-                            preferences
+                            preferences,
+                            installLauncher
                         )
                     }
                 }
@@ -597,6 +599,7 @@ class MainActivity : BaseActivity() {
                         skipRemindingPackageUpdate.add(latestRelease.tag_name)
                         preferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
                         withContext(Dispatchers.Main) {
+                            val installIntent = ApkInstallUtil.registerInstallLauncher(this@MainActivity)
                             UiUtil.showNewPackageUpdateSnackBar(
                                 latestRelease,
                                 pkg,
@@ -606,8 +609,17 @@ class MainActivity : BaseActivity() {
                                 navigationBarView,
                                 layoutInflater,
                                 this@MainActivity,
-                                installPackageLauncher
-                            )
+                                installIntent
+                            ) { result ->
+                                result.onSuccess {
+                                    RuntimeManager.reInit(this@MainActivity)
+                                }.onFailure { f ->
+                                    Snackbar.make(findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).apply {
+                                        anchorView = navigationBarView
+                                        show()
+                                    }
+                                }
+                            }
                         }
                     }
                 }

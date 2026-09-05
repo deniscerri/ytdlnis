@@ -2,8 +2,10 @@ package com.deniscerri.ytdl.ui.more.settings.updating
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.PackageManagerCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -13,8 +15,9 @@ import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
-import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
+import com.deniscerri.ytdl.ui.more.settings.SettingModule
+import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
@@ -24,6 +27,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
+
 object UpdateSettingsModule : SettingModule {
     override fun bindLogic(pref: Preference,host: SettingHost) {
         val context = pref.context
@@ -32,7 +36,7 @@ object UpdateSettingsModule : SettingModule {
         val ytdlpViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[YTDLPViewModel::class.java]
         val settingsViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[SettingsViewModel::class.java]
 
-        val canUpdateApp = BuildConfig.FLAVOR == "github";
+        val canUpdateApp = BuildConfig.FLAVOR == "github"
 
         when(pref.key) {
             "ytdlp_source_label" -> {
@@ -90,6 +94,47 @@ object UpdateSettingsModule : SettingModule {
                     }
                 }
             }
+            "apk_install_method" -> {
+                pref.apply {
+                    setOnPreferenceChangeListener { _, newValue ->
+                        host.findPref("apk_install_external_apk_id")?.isVisible = (newValue as String) == "external"
+                        host.refreshUI()
+                        true
+                    }
+                }
+            }
+            "apk_install_external_apk_id" -> {
+                pref.apply {
+                    isVisible = preferences.getString("apk_install_method", "system")!! == "external"
+                    val packageName = preferences.getString("apk_install_external_apk_id", "")!!
+
+                    fun setDetails(packageName: String) {
+                        if (packageName == "") {
+                            summary = context.getString(R.string.notset)
+                        } else {
+                            try {
+                                val appIcon = host.getHostContext().packageManager.getApplicationIcon(packageName)
+                                val appInfo = host.getHostContext().packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+                                icon = appIcon
+                                summary = host.getHostContext().packageManager.getApplicationLabel(appInfo).toString()
+                            } catch (e: Exception) {
+                                summary = context.getString(R.string.notset)
+                            }
+                        }
+                    }
+                    setDetails(packageName)
+
+                    onPreferenceClickListener =
+                        Preference.OnPreferenceClickListener {
+                            UiUtil.showChooseInstallerAppDialog(host.getHostContext()) {
+                                preferences.edit().putString("apk_install_external_apk_id", it).apply()
+                                setDetails(it)
+                                host.refreshUI()
+                            }
+                            true
+                        }
+                }
+            }
             "version" -> {
                 pref.apply {
                     val nativeLibraryDir = context.applicationInfo?.nativeLibraryDir
@@ -113,7 +158,7 @@ object UpdateSettingsModule : SettingModule {
                                                 settingsViewModel.backup()
                                             }
                                         }
-                                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences)
+                                        UiUtil.showNewAppUpdateDialog(res.getOrNull()!!, host.getHostContext(), updateUtil, host.hostLifecycleOwner, preferences, host.getAppInstallLauncher())
                                     }
                                 }
                                 true

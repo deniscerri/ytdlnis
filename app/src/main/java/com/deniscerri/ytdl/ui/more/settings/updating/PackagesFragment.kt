@@ -17,6 +17,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
@@ -51,6 +52,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.deniscerri.ytdl.core.packages.Deno
+import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.deniscerri.ytdl.util.Extensions.hasPermission
 
 
@@ -67,6 +69,13 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
     private var tmpDownloadJob: Job? = null
     private var packages: List<PackageItem> = mutableListOf()
     private var packageReleases: List<PackageBase.PackageRelease> = mutableListOf()
+
+    private lateinit var installLauncher: ActivityResultLauncher<Intent>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        installLauncher = ApkInstallUtil.registerInstallLauncher(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -161,12 +170,6 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         }
     }
 
-    private var installLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        bottomSheet?.dismiss()
-        listAdapter.notifyDataSetChanged()
-        RuntimeManager.reInit(requireContext())
-    }
-
     override fun onDeleteDownloadedPackageClick(item: PackageBase.PackageRelease) {
         deleteDownloadedVersion(tmpItem!!, item.version)
     }
@@ -191,6 +194,23 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
 
     override fun onDownloadReleaseClick(item: PackageBase.PackageRelease) {
         bottomSheet?.dismiss()
-        UiUtil.showNewReleaseUpdateDialog(item, tmpItem!!, requireActivity(), viewLifecycleOwner, requireView(), null, installLauncher)
+
+        UiUtil.showNewReleaseUpdateDialog(
+            item,
+            tmpItem!!,
+            requireActivity(),
+            viewLifecycleOwner,
+            requireView(),
+            null,
+            installLauncher
+        ) { result ->
+            result.onSuccess {
+                bottomSheet?.dismiss()
+                listAdapter.notifyDataSetChanged()
+                RuntimeManager.reInit(requireContext())
+            }.onFailure { f ->
+                Snackbar.make(requireActivity().findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).show()
+            }
+        }
     }
 }

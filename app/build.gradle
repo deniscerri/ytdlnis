@@ -258,4 +258,6 @@ dependencies {
     //noinspection Aligned16KB
     implementation 'com.github.termux.termux-app:terminal-emulator:v0.118.3'
 
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
 }

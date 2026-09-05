@@ -75,6 +75,21 @@
             app:key="packages"
             app:title="@string/packages" />
 
+        <ListPreference
+            app:icon="@drawable/baseline_install_mobile_24"
+            android:defaultValue="system"
+            android:entries="@array/apk_install_methods"
+            android:entryValues="@array/apk_install_methods_values"
+            app:key="apk_install_method"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/installation_method" />
+
+        <Preference
+            app:icon="@drawable/baseline_pie_chart_24"
+            app:key="apk_install_external_apk_id"
+            app:isPreferenceVisible="false"
+            app:title="@string/choose_installer_app" />
+
         <Preference
             app:icon="@drawable/ic_chapters"
             app:key="changelog"

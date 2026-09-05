@@ -1612,4 +1612,17 @@
         <item>playlist</item>
         <item>media_type</item>
     </string-array>
+
+    <string-array name="apk_install_methods">
+        <item>@string/system</item>
+        <item>Shizuku</item>
+        <item>@string/external</item>
+    </string-array>
+
+    <string-array name="apk_install_methods_values">
+        <item>system</item>
+        <item>shizuku</item>
+        <item>external</item>
+    </string-array>
+
 </resources>
