@@ -598,4 +598,5 @@
     <string name="choose_installer_app">Kurulum uygulaması seç</string>
     <string name="notset">Belirtilmedi</string>
     <string name="external">Harici</string>
+    <string name="exit">Çıkış</string>
 </resources>
