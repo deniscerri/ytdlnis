@@ -558,7 +558,7 @@
     <string name="observe_runs_chip">%d çalışma</string>
     <string name="observe_processed_chip">%d işlendi</string>
     <string name="observe_skipped_chip">%d atlandı</string>
-    <string name="observe_updating">Yenileniyor…</string>
+    <string name="observe_updating">Güncelleniyor</string>
     <string name="check_available_storage">Mevcut depolama alanını kontrol et</string>
     <plurals name="every_hours">
         <item quantity="one">Her saat</item>
@@ -576,4 +576,21 @@
         <item quantity="one">Her ay</item>
         <item quantity="other">Her %d ayda bir</item>
     </plurals>
+    <string name="download_delay">İndirme gecikmesi</string>
+    <string name="download_delay_summary">Her indirme arasında belirlenen süre kadar bekler. Bu özellik, aynı anda birden fazla indirme yapılmasını engeller</string>
+    <string name="min_delay">Minimum gecikme (saniye)</string>
+    <string name="max_delay">Maksimum gecikme (saniye)</string>
+    <string name="no_delay">Gecikme ayarlanmadı</string>
+    <string name="waiting_download_delay">İndirme gecikmesi bekleniyor (%s saniye)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Her dakika</item>
+        <item quantity="other">Her %d dakikada bir</item>
+    </plurals>
+    <string name="bgutils_info">yt-dlp için kaynak doğrulama (POT) belirteci sağlayıcısı.\n\nEtkinleştirildiğinde YTDLnis, POT oluşturan HTTP sunucusunu çalıştırır ve yt-dlp’nin kullandığı ilgili eklentiyi yükler.</string>
+    <string name="bgutils_pot_generation_script">Oluşturma betiği</string>
+    <string name="bgutils_pot_generation_server">HTTP Sunucusu</string>
+    <string name="bgutils_pot_generation_script_summary">Her yt-dlp çalıştırıldığında, betiği çalıştırmak için yeni bir JavaScript işlemi başlatılır. Bu yöntem, aynı anda çok sayıda indirme yapılması için önerilmez</string>
+    <string name="bgutils_pot_server_summary">4416 portunda çalışan bir JavaScript HTTP sunucusudur. Sunucu kapalıysa, indirme kuyruğu çalışmaya başladığında veya kaynak izleme zamanlandığında otomatik olarak başlatılır.\n\nSunucuyu kapatmak için bildirimlerden manuel olarak durdurmanız gerekir.</string>
+    <string name="please_install_package">Lütfen %s paketini yükleyin</string>
+    <string name="please_install_package_or_package">Lütfen %1$s veya %2$s paketini yükleyin.</string>
 </resources>
