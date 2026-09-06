@@ -597,4 +597,10 @@
     <string name="bgutils_pot_server_summary">Il s\'agit d\'un serveur HTTP JavaScript, sur le port 4416. S\'il est hors service, il redémarre automatiquement dès que la file d\'attente de téléchargement commence à s\'exécuter ou qu\'une analyse du code source est programmée. Pour l\'arrêter, vous devez le faire manuellement depuis les notifications !</string>
     <string name="please_install_package">Veuillez installer le paquet %s</string>
     <string name="please_install_package_or_package">Veuillez installer le package %1$s ou le package %2$s</string>
+    <string name="installation_method">Méthode d\'installation</string>
+    <string name="system_install_failed">L\'installation du système a échoué. Veuillez choisir une autre méthode d\'installation dans les paramètres !</string>
+    <string name="choose_installer_app">Choisissez une application d\'installation</string>
+    <string name="notset">Non défini</string>
+    <string name="external">Externe</string>
+    <string name="exit">Quitter</string>
 </resources>
