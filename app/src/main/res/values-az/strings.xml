@@ -591,4 +591,10 @@
     <string name="bgutils_pot_server_summary">Bu, 4416 portunda işləyən JavaScript HTTP serveridir. Qapalıdırsa, yükləmə növbəsi icra olunmağa başladıqda və ya mənbələrə nəzarət et planlaşdırıldıqda server avtomatik olaraq işə düşür. Onu qapatmaq üçün bildirişlərdən əl ilə etməlisiniz!</string>
     <string name="please_install_package">Xahiş olunur, %s paketini quraşdır</string>
     <string name="please_install_package_or_package">Xahiş olunur, %1$s və ya %2$s paketini quraşdır</string>
+    <string name="installation_method">Quraşdırma üsulu</string>
+    <string name="system_install_failed">Sistem quraşdırması uğursuz oldu. Zəhmət olmasa, tənzimləmələrdə başqa quraşdırma üsulu seçin!</string>
+    <string name="choose_installer_app">Quraşdırıcı tətbiqi seç</string>
+    <string name="notset">Təyin edilməyib</string>
+    <string name="external">Xarici</string>
+    <string name="exit">Çıx</string>
 </resources>
