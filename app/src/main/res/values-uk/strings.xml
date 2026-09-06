@@ -602,4 +602,10 @@
     <string name="bgutils_pot_server_summary">Це HTTP-сервер JavaScript на порту 4416. Якщо він не працює, він автоматично запускається, коли починається виконання черги завантаження або заплановано моніторинг джерел. Щоб вимкнути його, потрібно зробити це вручну в розділі сповіщень!</string>
     <string name="please_install_package">Будь ласка, встановіть пакет %s</string>
     <string name="please_install_package_or_package">Будь ласка, встановіть %1$s пакет або %2$s пакет</string>
+    <string name="installation_method">Метод установлення</string>
+    <string name="system_install_failed">Помилка встановлення системи. Оберіть інший метод встановлення в налаштуваннях!</string>
+    <string name="choose_installer_app">Виберіть застосунок встановлення</string>
+    <string name="notset">Не вказано</string>
+    <string name="external">Зовнішній</string>
+    <string name="exit">Вийти</string>
 </resources>
