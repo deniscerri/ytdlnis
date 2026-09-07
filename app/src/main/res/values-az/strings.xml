@@ -598,4 +598,5 @@
     <string name="external">Xarici</string>
     <string name="exit">Çıx</string>
     <string name="packages_description">Paketlər YTDLnis-in yt-dlp əmrlərinə kömək etmək üçün istifadə etdiyi köməkçi tətbiqlərdir. Onların bəziləri artıq tətbiqə daxil edilib, lakin tətbiqi yeniləməyə ehtiyac olmadan dərc olunan daha yeni versiyaları quraşdıra bilərsiniz. Quraşdırılmış APK-lar tətbiqin istifadə etdiyi daxili versiyaları əvəzləyir.</string>
+    <string name="bgutils_pot_generation_script_info">BgUtils POT Provayderin istifadə etmək üçün tətbiq GitHub-dan Brainicism/bgutil-ytdlp-pot-provider deponu yükləməli və quraşdırmanı başlatmalıdır. Bunun bitməsi bir qədər vaxt apara bilər. İndi davam edilsin?</string>
 </resources>
