@@ -603,4 +603,6 @@
     <string name="notset">Non défini</string>
     <string name="external">Externe</string>
     <string name="exit">Quitter</string>
+    <string name="packages_description">Les paquets sont des applications auxiliaires utilisées par YTDLnis pour faciliter l\'exécution des commandes yt-dlp. Certaines d\'entre elles sont déjà intégrées, mais vous pouvez installer des versions plus récentes publiées sans avoir à mettre à jour l\'application. Les fichiers APK installés remplacent la version intégrée utilisée par l\'application.</string>
+    <string name="bgutils_pot_generation_script_info">Pour pouvoir utiliser le fournisseur POT BgUtils, l\'application doit télécharger le dépôt Brainicism/bgutil-ytdlp-pot-provider depuis GitHub et lancer l\'installation. Cette opération peut prendre un certain temps. Voulez-vous continuer maintenant ?</string>
 </resources>
