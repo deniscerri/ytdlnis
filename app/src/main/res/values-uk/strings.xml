@@ -608,4 +608,6 @@
     <string name="notset">Не вказано</string>
     <string name="external">Зовнішній</string>
     <string name="exit">Вихід</string>
+    <string name="packages_description">Пакети це допоміжні застосунки, які YTDLnis використовує для допомоги з командами yt-dlp. Деякі з них вже входять до комплекту, але ви можете встановити новіші версії, опубліковані без необхідності оновлення застосунка. Встановлені apk\'s замінюють версію, що постачається в комплекті, яку використовує застосунок.</string>
+    <string name="bgutils_pot_generation_script_info">Щоб використовувати постачальника POT від BgUtils, застосунку потрібно завантажити репозиторій Brainicism/bgutil-ytdlp-pot-provider з github та розпочати встановлення. Це може зайняти деякий час. Продовжити зараз?</string>
 </resources>
