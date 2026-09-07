@@ -294,7 +294,7 @@
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
-            app:icon="@drawable/baseline_delete_24"
+            app:icon="@drawable/baseline_delete"
             app:key="remove_audio"
             app:title="@string/remove_audio" />
 

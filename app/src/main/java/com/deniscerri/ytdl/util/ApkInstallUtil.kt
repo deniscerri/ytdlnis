@@ -38,12 +38,15 @@ object ApkInstallUtil {
         return caller.registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            val success = result.resultCode == Activity.RESULT_OK
-            pendingInstallCallback?.invoke(
-                if (success) Result.success(Unit)
-                else Result.failure(Exception("Install cancelled or failed"))
-            )
+
+            val callback = pendingInstallCallback
             pendingInstallCallback = null
+
+            if (result.resultCode == Activity.RESULT_OK || result.resultCode == Activity.RESULT_CANCELED) {
+                callback?.invoke(Result.success(Unit))
+            } else {
+                callback?.invoke(Result.failure(Exception("Install cancelled or failed")))
+            }
         }
     }
 

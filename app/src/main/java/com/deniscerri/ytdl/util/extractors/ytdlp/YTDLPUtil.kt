@@ -666,7 +666,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
     fun getVersion(context: Context, channel: String) : String {
         val prefVersion = if (listOf("stable", "nightly", "master").contains(channel)) {
-            return RuntimeManager.getInstance().version(context) ?: ""
+            RuntimeManager.getInstance().version(context) ?: ""
         } else ""
 
         if (prefVersion.isNotBlank()) return prefVersion
@@ -865,7 +865,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         val useBgUtils = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
+        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "server")
         if (useBgUtils && bgUtilsMethod == "generation_script") {
             val serverPath = File(BgUtilsPoTokenGeneratorUtil.getServerFolder(context), "server").absolutePath
             this.addOption("--extractor-args", "youtubepot-bgutilscript:server_home=${serverPath}")

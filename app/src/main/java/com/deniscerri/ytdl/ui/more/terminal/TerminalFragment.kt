@@ -206,6 +206,7 @@ class TerminalFragment : Fragment() {
         topAppBar.menu?.forEach { it.isVisible = false }
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
         topAppBar.menu?.findItem(R.id.add)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.exit)?.isVisible = true
         topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
 
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->

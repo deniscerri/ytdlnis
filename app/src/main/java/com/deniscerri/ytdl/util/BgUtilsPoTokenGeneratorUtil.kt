@@ -1,5 +1,6 @@
 package com.deniscerri.ytdl.util
 
+import android.R.attr.action
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -178,8 +179,7 @@ object BgUtilsPoTokenGeneratorUtil {
             shutdownJob = scope.launch {
                 delay(idleDelayMs)
                 if (activeJobCount.get() == 0) {
-                    val intent = Intent(context, BgUtilsPoTokenGeneratorService::class.java)
-                    context.stopService(intent)
+                    stopServer(context)
                 }
             }
         }

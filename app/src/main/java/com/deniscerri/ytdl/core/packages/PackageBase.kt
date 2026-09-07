@@ -194,6 +194,7 @@ abstract class PackageBase {
             try {
                 File(FileUtil.getDefaultApksPath()).mkdirs()
                 val tempApk = File(FileUtil.getDefaultApksPath(), "${packageFolderName}_${release.version.replace(".", "")}.apk")
+                tempApk.delete()
 
                 val request = Request.Builder()
                     .url(release.assets.first().browser_download_url)

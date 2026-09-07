@@ -86,7 +86,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
 
     private fun initBGUtils() {
         val useBgUtils = preferences.getBoolean("use_bgutils_potoken_generator", false)
-        val bgUtilsMethod = preferences.getString("bgutils_potoken_method", "generation_script")
+        val bgUtilsMethod = preferences.getString("bgutils_potoken_method", "server")
 
 
         requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = useBgUtils

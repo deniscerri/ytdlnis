@@ -2,7 +2,7 @@ package com.deniscerri.ytdl.work
 
 import android.app.ActivityManager
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.services.BgUtilsPoTokenGeneratorService
@@ -23,7 +23,7 @@ abstract class YTDLPCoroutineWorker(
     override suspend fun doWork(): Result {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
+        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "server")
 
         val requiresServer = useBgUtilPoTokenServer && bgUtilsMethod == "server"
 
