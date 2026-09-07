@@ -600,4 +600,5 @@
     <string name="external">Harici</string>
     <string name="exit">Çıkış</string>
     <string name="packages_description">Paketler, YTDLnis\'in yt-dlp komutlarına yardımcı olmak için kullandığı yardımcı uygulamalardır. Bunların bazıları zaten uygulamaya dahildir, ancak uygulamayı güncellemeye gerek kalmadan yayınlanan daha yeni sürümleri yükleyebilirsiniz. Yüklenen APK\'lar, uygulamanın kullandığı dahili sürümün yerini alır.</string>
+    <string name="bgutils_pot_generation_script_info">BgUtils POT Sağlayıcısını kullanmak için uygulamanın GitHub\'dan Brainicism/bgutil-ytdlp-pot-provider deposunu indirmesi ve kurulumu başlatması gerekiyor. Bu işlem biraz zaman alabilir. Şimdi devam edilsin mi?</string>
 </resources>
