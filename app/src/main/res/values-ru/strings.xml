@@ -602,4 +602,10 @@
     <string name="bgutils_pot_server_summary">Это HTTP-сервер JavaScript на порте 4416. Если он не работает, он автоматически запускается, когда начинается выполнение очереди загрузки или запланировано наблюдение за источниками. Чтобы отключить его, нужно сделать это вручную из уведомлений!</string>
     <string name="please_install_package">Пожалуйста, установите пакет %s</string>
     <string name="please_install_package_or_package">Пожалуйста, установите %1$s пакет или %2$s пакет</string>
+    <string name="installation_method">Способ установки</string>
+    <string name="system_install_failed">Не удалось установить систему. Пожалуйста, выберите другой способ установки в настройках!</string>
+    <string name="choose_installer_app">Выберите приложение установщик</string>
+    <string name="notset">Не указано</string>
+    <string name="external">Внешний</string>
+    <string name="exit">Выход</string>
 </resources>
