@@ -597,4 +597,5 @@
     <string name="notset">Təyin edilməyib</string>
     <string name="external">Xarici</string>
     <string name="exit">Çıx</string>
+    <string name="packages_description">Paketlər YTDLnis-in yt-dlp əmrlərinə kömək etmək üçün istifadə etdiyi köməkçi tətbiqlərdir. Onların bəziləri artıq tətbiqə daxil edilib, lakin tətbiqi yeniləməyə ehtiyac olmadan dərc olunan daha yeni versiyaları quraşdıra bilərsiniz. Quraşdırılmış APK-lar tətbiqin istifadə etdiyi daxili versiyaları əvəzləyir.</string>
 </resources>
