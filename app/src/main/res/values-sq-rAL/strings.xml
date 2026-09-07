@@ -597,4 +597,5 @@
         <item quantity="other">Çdo %d muaj</item>
     </plurals>
     <string name="skip_backlog">Anashkaloni prapambetjen aktuale</string>
+    <string name="bgutils_pot_generation_script_info">Për të përdorur BgUtils POT Provider, aplikacioni duhet të shkarkojë repozitorin Brainicism/bgutil-ytdlp-pot-provider nga github dhe të fillojë instalimin. Kjo mund të zgjasë pak. Do të vazhdoj tani?</string>
 </resources>
