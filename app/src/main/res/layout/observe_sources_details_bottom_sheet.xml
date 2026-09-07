@@ -175,7 +175,6 @@
             <Button
                 android:id="@+id/edit_button"
                 style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                android:backgroundTint="?colorSecondaryContainer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit"

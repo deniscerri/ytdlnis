@@ -34,14 +34,11 @@
             <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progress"
                 android:layout_width="match_parent"
+                app:trackColor="#000"
                 android:layout_height="match_parent"
                 android:layout_gravity="bottom"
                 android:alpha="0.3"
-                app:trackThickness="300dp"
-                app:trackCornerRadius="0dp"
-                app:trackColor="#000"
-                app:indicatorTrackGapSize="0dp"
-                app:trackStopIndicatorSize="0dp" />
+                android:scaleY="200"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

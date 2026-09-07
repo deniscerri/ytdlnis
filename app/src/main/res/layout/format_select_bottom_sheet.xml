@@ -74,7 +74,6 @@
                 <Button
                     android:id="@+id/format_refresh"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:backgroundTint="?colorSecondaryContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
@@ -92,7 +91,6 @@
                     android:id="@+id/format_ok"
                     android:visibility="gone"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:backgroundTint="?colorSecondaryContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

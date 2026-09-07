@@ -21,6 +21,7 @@ import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -42,6 +43,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
 
     override fun onDestroy() {
         RuntimeManager.getInstance().destroyProcessById(currentRunningProcess)
+        serviceScope.cancel()
         super.onDestroy()
     }
 
@@ -64,6 +66,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
 
         if (intent?.action == "ACTION_EXIT") {
             runtimeManager.destroyProcessById(currentRunningProcess)
+            stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
             return super.onStartCommand(intent, flags, startId)
         }
@@ -104,7 +107,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
             }
         }
 
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     private fun createNotification(description: String = ""): Notification {

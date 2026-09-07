@@ -66,7 +66,6 @@
                 <Button
                     android:id="@+id/client_create"
                     style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:backgroundTint="?colorSecondaryContainer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
