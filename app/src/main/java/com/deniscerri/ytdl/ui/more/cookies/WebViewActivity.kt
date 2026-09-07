@@ -107,43 +107,27 @@ class WebViewActivity : BaseActivity() {
             onBackPressedDispatcher.addCallback(this@WebViewActivity, backCallback)
 
             generateBtn.setOnClickListener {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
-                            runCatching {
-                                cookiesViewModel.insert(
-                                    com.deniscerri.ytdl.database.models.CookieItem(
-                                        0,
-                                        url,
-                                        it,
-                                        description,
-                                        true
-                                    )
-                                )
-                                cookiesViewModel.updateCookiesFile()
-                            }.onFailure {
-                                withContext(Dispatchers.Main) {
-                                    Toast.makeText(
-                                        this@WebViewActivity,
-                                        "Something went wrong",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
-                        }
-                        withContext(Dispatchers.Main) {
-                            this@WebViewActivity.setResult(RESULT_OK)
-                            this@WebViewActivity.finish()
+                generateBtn.isEnabled = false
+                if (url.contains("youtube.com")) {
+                    //redirect to robots.txt so cookies last longer for youtube
+                    webView?.loadUrl("https://www.youtube.com/robots.txt")
+                } else {
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                            generateCookies()
                         }
                     }
                 }
+
             }
 
             cookieManager = CookieManager.getInstance()
 
             if (savedInstanceState == null) {
-                cookieManager.removeAllCookies(null)
                 cookieManager.flush()
+            }
+            if (incognito) {
+                cookieManager.removeAllCookies(null)
             }
 
             webView = findViewById<WebView>(R.id.webview)
@@ -183,6 +167,14 @@ class WebViewActivity : BaseActivity() {
                             toolbar.title = view?.title ?: ""
                             cookies = cookieManager.getCookie(view?.url)
                         }
+
+                        if (url?.contains("robots.txt") == true) {
+                            lifecycleScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    generateCookies()
+                                }
+                            }
+                        }
                     }
 
                     override fun shouldOverrideUrlLoading(
@@ -200,6 +192,35 @@ class WebViewActivity : BaseActivity() {
         }
 
         webView?.loadUrl(url)
+    }
+
+    private suspend fun generateCookies() = withContext(Dispatchers.IO) {
+        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+            runCatching {
+                cookiesViewModel.insert(
+                    com.deniscerri.ytdl.database.models.CookieItem(
+                        0,
+                        url,
+                        it,
+                        description,
+                        true
+                    )
+                )
+                cookiesViewModel.updateCookiesFile()
+            }.onFailure {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        this@WebViewActivity,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+        withContext(Dispatchers.Main) {
+            this@WebViewActivity.setResult(RESULT_OK)
+            this@WebViewActivity.finish()
+        }
     }
 
 

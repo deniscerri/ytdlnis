@@ -21,53 +21,45 @@ abstract class YTDLPCoroutineWorker(
     abstract suspend fun runWork(): Result
 
     override suspend fun doWork(): Result {
-        return try {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-            val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
-            if (useBgUtilPoTokenServer && bgUtilsMethod == "server") {
-                // 1. Ensure service is active before starting child worker logic
-                if (!isBgUtilsServerAlive()) {
-                    val serviceRunning = isBgUtilsServiceRunning(context)
-                    if (!serviceRunning) {
-                        BgUtilsPoTokenGeneratorUtil.runServer(context)
-                    }
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
+        val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
 
-                    // Wait for local HTTP server to become responsive
-                    val ready = waitForServerReady(timeoutMs = 10000)
-                    if (!ready) {
-                        return Result.retry()
-                    }
+        val requiresServer = useBgUtilPoTokenServer && bgUtilsMethod == "server"
+
+        return try {
+            if (requiresServer) {
+                // Increment job count & start server if count was 0
+                BgUtilsPoTokenGeneratorUtil.acquireServer(context)
+
+                if (!waitForServerReady(timeoutMs = 10000)) {
+                    return Result.retry()
                 }
             }
             runWork()
         } catch (e: Exception) {
             Result.failure()
-        }
-    }
-
-    @Suppress("DEPRECATION")
-    fun isBgUtilsServiceRunning(context: Context): Boolean {
-        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager ?: return false
-        return manager.getRunningServices(Int.MAX_VALUE).any {
-            BgUtilsPoTokenGeneratorService::class.java.name == it.service.className
+        } finally {
+            if (requiresServer) {
+                // Decrement job count & auto-stop service when 0 active jobs remain
+                BgUtilsPoTokenGeneratorUtil.releaseServer(context)
+            }
         }
     }
 
     private suspend fun isBgUtilsServerAlive(): Boolean = withContext(Dispatchers.IO) {
         var connection: HttpURLConnection? = null
         try {
-            val url = URL("http://localhost:4416/ping")
+            // Using 127.0.0.1 directly bypasses IPv6/localhost resolution bottlenecks
+            val url = URL("http://127.0.0.1:4416/ping")
             connection = (url.openConnection() as HttpURLConnection).apply {
                 connectTimeout = 1000
                 readTimeout = 1000
                 useCaches = false
             }
-            val code = connection.responseCode
-            code == 200
+            connection.responseCode == 200
         } catch (e: Exception) {
-            // Temporarily log the exact error to logcat
-            android.util.Log.e("YTDLWorker", "Ping failed: ${e.message}", e)
+            android.util.Log.d("YTDLWorker", "Ping failed: ${e.message}")
             false
         } finally {
             connection?.disconnect()

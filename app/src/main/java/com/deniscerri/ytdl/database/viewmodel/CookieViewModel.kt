@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
+import android.net.Uri
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.lifecycle.AndroidViewModel
@@ -101,10 +102,9 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
 
     @SuppressLint("SdCardPath")
     fun getCookiesFromDB(url: String) : Result<String> = kotlin.runCatching {
-        CookieManager.getInstance().run {
-            if (!hasCookies()) throw Exception("There is no cookies in the database!")
-            flush()
-        }
+        CookieManager.getInstance().flush()
+
+        val targetHost = Uri.parse(url).host ?: throw Exception("Invalid URL or domain!")
         val dbPath = File("/data/data/${BuildConfig.APPLICATION_ID}/").walkTopDown().find { it.name == "Cookies" }
             ?: throw Exception("Cookies File not found!")
 
@@ -112,10 +112,16 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
             dbPath.absolutePath, null, OPEN_READONLY
         )
 
-
         val cookieList = mutableListOf<WebViewActivity.CookieItem>()
+
+        val selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
+        val selectionArgs = arrayOf(
+            "%$targetHost",          // Matches 'example.com' or '.example.com'
+            "%${targetHost.removePrefix("www.")}" // Matches root domain if 'www.example.com' passed
+        )
+
         db.query(
-            "cookies", projection, null, null, null, null, null
+            "cookies", projection, selection, selectionArgs, null, null, null
         ).run {
             while (moveToNext()) {
                 val expiry = getLong(getColumnIndexOrThrow(CookieObject.EXPIRY))

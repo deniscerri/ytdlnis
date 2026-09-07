@@ -96,17 +96,22 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             val denoIsInstalled = RuntimeManager.getInstance().denoLocation.isAvailable
             val nodeIsInstalled = RuntimeManager.getInstance().nodeLocation.isAvailable
 
-            this.setOnClickListener {
-                if (!denoIsInstalled) {
-                    this.isChecked = false
-                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
+            fun updateState() {
                 preferences.edit(commit = true) {
                     putBoolean("use_bgutils_potoken_generator", this@apply.isChecked)
                 }
                 requireView().findViewById<LinearLayout>(R.id.bgutils_potoken_provider_collapsible).isVisible = this.isChecked
+            }
+
+            this.setOnClickListener {
+                if (!denoIsInstalled) {
+                    this.isChecked = false
+                    updateState()
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                updateState()
 
                 if (!this.isChecked) {
                     BgUtilsPoTokenGeneratorUtil.stopServer(context)

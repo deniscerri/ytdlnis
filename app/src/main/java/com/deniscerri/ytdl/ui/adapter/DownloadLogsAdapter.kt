@@ -81,7 +81,10 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
         val formatNote = card.findViewById<TextView>(R.id.format_note)
         if (item.format.format_note == "?" || item.format.format_note == "") formatNote!!.visibility =
             View.GONE
-        else formatNote!!.text = item.format.format_note.uppercase()
+        else {
+            formatNote!!.text = item.format.format_note.uppercase()
+            formatNote!!.visibility = View.VISIBLE
+        }
 
         val codec = card.findViewById<TextView>(R.id.codec)
         val codecText =

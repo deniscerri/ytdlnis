@@ -85,9 +85,9 @@ object ProcessingSettingsModule : SettingModule {
             }
             "subs_lang" -> {
                 pref.apply {
-                    summary = prefs.getString("subs_lang", "en.*,.*-orig")!!
+                    summary = prefs.getString("subs_lang", ".*-orig")!!
                     setOnPreferenceClickListener {
-                        UiUtil.showSubtitleLanguagesDialog(host.getHostContext(), listOf(), prefs.getString("subs_lang", "en.*,.*-orig")!!){
+                        UiUtil.showSubtitleLanguagesDialog(host.getHostContext(), listOf(), prefs.getString("subs_lang", ".*-orig")!!){
                             prefs.edit(commit = true) {
                                 putString(pref.key, it)
                             }

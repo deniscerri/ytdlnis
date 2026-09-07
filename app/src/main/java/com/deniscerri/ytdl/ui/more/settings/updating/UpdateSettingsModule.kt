@@ -1,11 +1,14 @@
 package com.deniscerri.ytdl.ui.more.settings.updating
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PackageManagerCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
@@ -68,7 +71,9 @@ object UpdateSettingsModule : SettingModule {
                             setYTDLPVersion(context, host, ytdlpViewModel, preferences, pref)
                         }
                         setOnPreferenceClickListener {
-                            initYTDLUpdate(context, host, updateUtil, ytdlpViewModel, preferences, pref)
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                            val clip = ClipData.newPlainText("ytdlp-version", summary)
+                            clipboard.setPrimaryClip(clip)
                             true
                         }
                     }

@@ -280,8 +280,6 @@ object RuntimeManager {
             request.addOption("--no-cache-dir")
         }
 
-        request.addOption("--progress-delta", 0.1)
-
         return mutableListOf(pythonLocation.executable.absolutePath, ytdlpPath!!.absolutePath) + request.buildCommand()
     }
 

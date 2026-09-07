@@ -7,10 +7,15 @@ import androidx.core.content.ContextCompat
 import com.anggrayudi.storage.file.isEmpty
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.services.BgUtilsPoTokenGeneratorService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.net.URI
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipFile
 
 object BgUtilsPoTokenGeneratorUtil {
@@ -153,5 +158,30 @@ object BgUtilsPoTokenGeneratorUtil {
         }
 
         return Result.success(Unit)
+    }
+
+    private val activeJobCount = AtomicInteger(0)
+    private var shutdownJob: Job? = null
+    private val scope = CoroutineScope(Dispatchers.IO)
+
+    suspend fun acquireServer(context: Context) {
+        shutdownJob?.cancel() // Cancel pending auto-shutdown if a new worker arrives
+        if (activeJobCount.getAndIncrement() == 0) {
+            runServer(context)
+        }
+    }
+
+    fun releaseServer(context: Context, idleDelayMs: Long = 5000) {
+        if (activeJobCount.decrementAndGet() <= 0) {
+            activeJobCount.set(0)
+            // Wait 5 seconds before stopping in case another worker starts right away
+            shutdownJob = scope.launch {
+                delay(idleDelayMs)
+                if (activeJobCount.get() == 0) {
+                    val intent = Intent(context, BgUtilsPoTokenGeneratorService::class.java)
+                    context.stopService(intent)
+                }
+            }
+        }
     }
 }

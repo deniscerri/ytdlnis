@@ -209,6 +209,7 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
 
             val author = card.findViewById<TextView>(R.id.download_type)
             author.text = item.author
+            author.isVisible = item.author.isNotBlank()
 
             val formatNote = card.findViewById<TextView>(R.id.format_note)
             formatNote.visibility = View.GONE

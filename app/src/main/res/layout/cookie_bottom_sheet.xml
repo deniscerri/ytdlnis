@@ -122,6 +122,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/incognito_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="25dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/incognito" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

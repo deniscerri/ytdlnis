@@ -19,6 +19,8 @@ object BackupSettingsUtil {
         runCatching {
             val prefs = preferences.all
             prefs.remove("app_language")
+            prefs.remove("cache_downloads")
+            prefs.remove("use_alarm_for_scheduling")
 
             val res = prefs.map { BackupSettingsItem(
                 key = it.key,

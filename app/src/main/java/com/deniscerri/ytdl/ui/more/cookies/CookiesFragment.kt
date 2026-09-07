@@ -191,6 +191,8 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             descriptionEditText.setText(item?.description ?: "")
             layout.findViewById<TextInputLayout>(R.id.description_input_layout)?.isVisible = item != null
 
+            val incognitoSwitch = layout.findViewById<MaterialSwitch>(R.id.incognito_switch)!!
+
             val current = layout.findViewById<MaterialCardView>(R.id.current)!!
             current.isVisible = item != null
             item?.apply {
@@ -208,6 +210,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
                 val myIntent = Intent(requireContext(), WebViewActivity::class.java)
                 myIntent.putExtra("url", urlEditText.text.toString())
                 myIntent.putExtra("description", descriptionEditText.text.toString())
+                myIntent.putExtra("incognito", incognitoSwitch.isChecked)
                 layout.dismiss()
                 startActivity(myIntent)
             }

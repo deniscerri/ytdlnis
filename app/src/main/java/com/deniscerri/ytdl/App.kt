@@ -63,15 +63,6 @@ class App : Application(), DefaultLifecycleObserver {
                     .filter { it.status == ObserveSourcesRepository.SourceStatus.ACTIVE && !it.hasReachedEnd() }
                     .forEach { scheduler.schedule(it) }         // idempotent: FLAG_UPDATE_CURRENT updates in place
 
-                delay(300)
-                if (!isForegroundLaunch.isCompleted) {
-                    isForegroundLaunch.complete(false)
-                    val useBgUtilPoTokenServer = sharedPreferences.getBoolean("use_bgutils_potoken_generator", false)
-                    val bgUtilsMethod = sharedPreferences.getString("bgutils_potoken_method", "generation_script")
-                    if (useBgUtilPoTokenServer && bgUtilsMethod == "server") {
-                        BgUtilsPoTokenGeneratorUtil.runServer(this@App)
-                    }
-                }
             }catch (e: Exception){
                 Looper.prepare().runCatching {
                     Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()

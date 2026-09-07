@@ -1510,7 +1510,7 @@ object UiUtil {
                     items[0].videoPreferences.subsLanguages
                 }else {
                     ""
-                }.ifEmpty { sharedPreferences.getString("subs_lang", "en.*,.*-orig")!! }
+                }.ifEmpty { sharedPreferences.getString("subs_lang", ".*-orig")!! }
 
                 val availabeSubtitles = if (items.size == 1) items[0].availableSubtitles else listOf()
                 showSubtitleLanguagesDialog(context, availabeSubtitles, currentSubtitleLang){

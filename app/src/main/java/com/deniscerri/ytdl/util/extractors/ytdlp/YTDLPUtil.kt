@@ -665,9 +665,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
     }
     fun getVersion(context: Context, channel: String) : String {
-        if (listOf("stable", "nightly", "master").contains(channel)) {
+        val prefVersion = if (listOf("stable", "nightly", "master").contains(channel)) {
             return RuntimeManager.getInstance().version(context) ?: ""
-        }
+        } else ""
+
+        if (prefVersion.isNotBlank()) return prefVersion
 
         val req = YTDLRequest(emptyList())
         req.addOption("--version")
@@ -1582,7 +1584,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         request.addOption("--sub-format", "${subFormat}/best")
                         request.addOption("--convert-subtitles", subFormat)
                     }
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { "en.*,.*-orig" })
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { ".*-orig" })
                 }
 
                 var copyStream = ""
