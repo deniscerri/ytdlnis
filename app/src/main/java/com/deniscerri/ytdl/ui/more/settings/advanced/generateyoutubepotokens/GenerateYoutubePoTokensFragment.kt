@@ -118,33 +118,49 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                 } else {
                     val builder = MaterialAlertDialogBuilder(context)
                     builder.setTitle("BgUtils POT Provider")
-                    builder.setMessage(getString(R.string.please_wait))
-                    builder.setCancelable(false)
+                    builder.setMessage(getString(R.string.bgutils_pot_generation_script_info))
+                    builder.setPositiveButton(R.string.ok) { di: DialogInterface?, _: Int ->
+                        di?.dismiss()
 
-                    val dialog = builder.create()
-                    dialog.show()
+                        val builder = MaterialAlertDialogBuilder(context)
+                        builder.setTitle("BgUtils POT Provider")
+                        builder.setMessage(getString(R.string.please_wait))
+                        builder.setCancelable(false)
 
-                    lifecycleScope.launch {
-                        val resp = withContext(Dispatchers.IO) {
-                            BgUtilsPoTokenGeneratorUtil.runServer(context) { progress ->
-                                lifecycleScope.launch {
-                                    withContext(Dispatchers.Main) {
-                                        dialog.setMessage(progress)
+                        val dialog = builder.create()
+                        dialog.show()
+
+                        lifecycleScope.launch {
+                            val resp = withContext(Dispatchers.IO) {
+                                BgUtilsPoTokenGeneratorUtil.runServer(context) { progress ->
+                                    lifecycleScope.launch {
+                                        withContext(Dispatchers.Main) {
+                                            dialog.setMessage(progress)
+                                        }
                                     }
+                                }
+                            }
+
+                            resp.onSuccess {
+                                dialog.dismiss()
+                            }
+                            resp.onFailure { error ->
+                                dialog.dismiss()
+                                view?.apply {
+                                    Snackbar.make(this, error.message ?: "", Snackbar.LENGTH_LONG).show()
                                 }
                             }
                         }
 
-                        resp.onSuccess {
-                            dialog.dismiss()
-                        }
-                        resp.onFailure { error ->
-                            dialog.dismiss()
-                            view?.apply {
-                                Snackbar.make(this, error.message ?: "", Snackbar.LENGTH_LONG).show()
-                            }
-                        }
                     }
+                    builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
+                        this.isChecked = false
+                        updateState()
+                        dialogInterface.cancel()
+                    }
+
+                    val dialog = builder.create()
+                    dialog.show()
                 }
             }
 

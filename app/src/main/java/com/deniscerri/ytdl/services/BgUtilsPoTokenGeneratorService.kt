@@ -68,7 +68,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
             runtimeManager.destroyProcessById(currentRunningProcess)
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
-            return super.onStartCommand(intent, flags, startId)
+            return START_NOT_STICKY
         }
 
         serviceScope.launch {
