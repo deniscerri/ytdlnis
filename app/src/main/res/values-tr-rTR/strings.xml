@@ -599,4 +599,5 @@
     <string name="notset">Belirtilmedi</string>
     <string name="external">Harici</string>
     <string name="exit">Çıkış</string>
+    <string name="packages_description">Paketler, YTDLnis\'in yt-dlp komutlarına yardımcı olmak için kullandığı yardımcı uygulamalardır. Bunların bazıları zaten uygulamaya dahildir, ancak uygulamayı güncellemeye gerek kalmadan yayınlanan daha yeni sürümleri yükleyebilirsiniz. Yüklenen APK\'lar, uygulamanın kullandığı dahili sürümün yerini alır.</string>
 </resources>
