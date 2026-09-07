@@ -603,4 +603,10 @@
     <string name="bgutils_pot_server_summary">Toto je JavaScript HTTP server na portu 4416. Pokud je vypnutý, server se automaticky spustí, když se začne vykonávat fronta stahování, nebo když je naplánováno sledování zdrojů. Pro vypnutí jej musíte manuálně vypnout z notifikací!</string>
     <string name="please_install_package">Prosím, nainstalujte balíček %s</string>
     <string name="please_install_package_or_package">Prosím, nainstalujte balíček %1$s nebo balíček %2$s</string>
+    <string name="installation_method">Způsob instalace</string>
+    <string name="system_install_failed">Systémová instalace se nezdařila. Vyberte prosím v nastavení jiný způsob instalace!</string>
+    <string name="choose_installer_app">Výběr instalační aplikace</string>
+    <string name="notset">Není nastaveno</string>
+    <string name="external">Externí</string>
+    <string name="exit">Ukončit</string>
 </resources>

@@ -584,4 +584,10 @@
     <string name="bgutils_pot_server_summary">这是一个 JavaScript HTTP 服务器，端口为 4416。如未运行，应用会在开始执行下载队列或安排观察源时间时自动启动服务器。要关闭它，你必须手动从通知操作！</string>
     <string name="please_install_package">请安装 %s 包</string>
     <string name="please_install_package_or_package">请安装 %1$s 包或 %2$s 包</string>
+    <string name="installation_method">安装方法</string>
+    <string name="system_install_failed">系统安装失败。请在设置中选择另一种安装方法！</string>
+    <string name="choose_installer_app">选择安装器</string>
+    <string name="notset">未设置</string>
+    <string name="external">外部</string>
+    <string name="exit">退出</string>
 </resources>

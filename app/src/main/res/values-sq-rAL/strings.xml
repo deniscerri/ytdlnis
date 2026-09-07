@@ -538,4 +538,64 @@
     <string name="package_version_ready_to_download">Paketa %1$s me versionin %2$s është gati për shkarkim</string>
     <string name="tap_to_see_changes_and_install">Shtyp për të parë detajet dhe instalimin</string>
     <string name="view">Shiko</string>
+    <string name="next_run">Më pas:%1$s</string>
+    <string name="paused">Ndaluar</string>
+    <string name="check_complete">Kontrolli përfundoi</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Përfunduar · %d ekzekutim</item>
+        <item quantity="other">Përfunduar · %d ekzekutime</item>
+    </plurals>
+    <string name="reset_state">Rivendos gjendjen</string>
+    <string name="rescan_from_scratch">Ri-skano nga fillimi</string>
+    <string name="rescan_from_scratch_desc">Harro artikujt e proçesuar dhe ri-shkarko gjithçka që nuk është ruajtur</string>
+    <string name="skip_backlog_desc">Shëno gjithçka që është aktualisht në burim si të përfunduar — shkarko vetëm ngarkimet e ardhshme</string>
+    <string name="unskip_ignored">Hiq anashkalimin e ngarkimeve të injoruara</string>
+    <string name="unskip_ignored_desc">Shkarko ngarkimet ekzistuese që u anashkaluan ekzekutimi i parë</string>
+    <string name="observe_runs_chip">%d ekzekutime</string>
+    <string name="observe_processed_chip">%d të proçesuara</string>
+    <string name="observe_skipped_chip">%d të anashkaluara</string>
+    <string name="observe_updating">Duke përditësuar…</string>
+    <string name="check_available_storage">Kontrollo për hapësirë bosh</string>
+    <string name="download_delay">Vonesa mes shkarkimeve</string>
+    <string name="download_delay_summary">Prit sipas sekondave të konfiguruara midis shkarkimeve. Kjo veçori çaktivizon shkarkimet e njëkohshme</string>
+    <string name="min_delay">Vonesa minimale (sekonda)</string>
+    <string name="max_delay">Vonesa maksimale (sekonda)</string>
+    <string name="no_delay">Nuk është caktuar vonesë</string>
+    <string name="waiting_download_delay">Duke pritur (%s sekonda)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Cdo minutë</item>
+        <item quantity="other">Every %d minuta</item>
+    </plurals>
+    <string name="bgutils_info">Një ofrues i tokenit të provës së origjinës (POT) për yt-dlp.\nMe të aktivizuar, YTDLnis hap serverin HTTP që gjeneron POT dhe instalon plugin-in përkatës që përdor yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Skript gjenerimi</string>
+    <string name="bgutils_pot_generation_server">Server HTTP</string>
+    <string name="bgutils_pot_generation_script_summary">Çdo thirrje yt-dlp krijon një proces të ri të js runtime për të ekzekutuar skriptin. Kjo metodë nuk rekomandohet për përdorim me njëkohësi të lartë.</string>
+    <string name="bgutils_pot_server_summary">Ky është një server JavaScript HTTP, në portën 4416. Nëse nuk është ndezur, niset automatikisht serverin kur radha e shkarkimit fillon të ekzekutohet ose kur është planifikuar vëzhgimi i burimeve. Për ta fikur, duhet ta bëni manualisht nga njoftimet!</string>
+    <string name="please_install_package">Ju lutem instaloni paketën %s</string>
+    <string name="please_install_package_or_package">Ju lutem instaloni paketën %1$s ose paketën %2$s</string>
+    <string name="installation_method">Metoda e instalimit</string>
+    <string name="system_install_failed">Instalimi i sistemit dështoi. Ju lutem zgjidhni një metodë tjeter instalimi te cilësimet!</string>
+    <string name="choose_installer_app">Zgjidh një aplikacion instalues</string>
+    <string name="notset">Nuk është vendosur</string>
+    <string name="external">I jashtëm</string>
+    <string name="exit">Dil</string>
+    <string name="packages_description">Paketat janë aplikacione ndihmëse që YTDLnis përdor për të ndihmuar me komandat yt-dlp. Disa prej tyre janë tashmë të paketuara, por ju mund të instaloni versione më të reja që janë publikuar pa pasur nevojë të përditësoni aplikacionin. APK-të e instaluara zëvendësojnë versionin e paketuar që përdor aplikacioni.</string>
+    <plurals name="every_hours">
+        <item quantity="one">Çdo orë</item>
+        <item quantity="other">Çdo %d orë</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Çdo ditë</item>
+        <item quantity="other">Çdo %d ditë</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Çdo javë</item>
+        <item quantity="other">Çdo %d javë</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Çdo muaj</item>
+        <item quantity="other">Çdo %d muaj</item>
+    </plurals>
+    <string name="skip_backlog">Anashkaloni prapambetjen aktuale</string>
+    <string name="bgutils_pot_generation_script_info">Për të përdorur BgUtils POT Provider, aplikacioni duhet të shkarkojë repozitorin Brainicism/bgutil-ytdlp-pot-provider nga github dhe të fillojë instalimin. Kjo mund të zgjasë pak. Do të vazhdoj tani?</string>
 </resources>

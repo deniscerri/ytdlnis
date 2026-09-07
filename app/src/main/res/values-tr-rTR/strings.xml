@@ -172,7 +172,7 @@
     <string name="freespace">Boş alan</string>
     <string name="update_formats">Formatları güncelle</string>
     <string name="link_you_copied">Kopyaladığınız bağlantı</string>
-    <string name="worst_quality">En kötü kalite</string>
+    <string name="worst_quality">En düşük kalite</string>
     <string name="best_quality">En iyi kalite</string>
     <string name="restrict_filenames">Dosya adlarını kısıtla</string>
     <string name="restrict_filenames_summary">Dosya adlarını yalnızca ASCII karakterleriyle kısıtla ve dosya adlarında \"&amp;\" ve boşluklardan kaçın</string>
@@ -351,7 +351,7 @@
     <string name="week">Hafta</string>
     <string name="month">Ay</string>
     <string name="retry_missing_downloads">Eksik indirmeleri yeniden dene</string>
-    <string name="bitrate">Bithızı</string>
+    <string name="bitrate">Bit Hızı</string>
     <string name="save_auto_subs">Otomatik altyazıları kaydet</string>
     <string name="not_deleted">Silinmemiş</string>
     <string name="every">Her</string>
@@ -455,7 +455,7 @@
     <string name="minutes">Dakika</string>
     <string name="prefer_container_over_codec_audio">Ses indirmeleri için kodek yerine kapsayıcı tercih edin</string>
     <string name="prefer_container_over_codec_audio_summary">Bu etkinleştirildiğinde, tercih edilen ses kodeği tercihi göz ardı edilecek ve yalnızca kapsayıcı değişecektir</string>
-    <string name="use_only_po_token">Yalnızca PO jetonu kullan (oynatıcı istemcisini yoksay)</string>
+    <string name="use_only_po_token">Yalnızca PO token kullan (oynatıcı istemcisini yoksay)</string>
     <string name="cache_directory">Önbellek klasörü</string>
     <string name="cache_directory_warning">Önbellek klasörünü değiştirmek beklenmeyen sorunlara neden olabilir. Uygulama yapılandırılan yola yazamıyorsa, varsayılan dahili önbellek dizinine başvuracaktır</string>
     <string name="use_code_highlighter">Kod renk vurgulayıcısını kullan</string>
@@ -477,7 +477,7 @@
     <string name="cut_unsupported">Bu öge için kesme işlemi mevcut değil</string>
     <string name="select_between_desc">Seçilecek öge aralığını belirtin</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Web İstemcisi PO Jetonu</string>
+    <string name="manual_po_token_generator">Manuel Web Po Token Oluşturucu</string>
     <string name="reverse">Tersine çevir</string>
     <string name="no_keep_subs">Gömme işleminden sonra altyazı dosyalarını sil</string>
     <string name="no_keep_subs_summary">Altyazı Gömme ve Altyazı Yazma özelliklerini birlikte kullanırken, altyazı dosyalarını gömdükten sonra saklama</string>
@@ -558,7 +558,7 @@
     <string name="observe_runs_chip">%d çalışma</string>
     <string name="observe_processed_chip">%d işlendi</string>
     <string name="observe_skipped_chip">%d atlandı</string>
-    <string name="observe_updating">Yenileniyor…</string>
+    <string name="observe_updating">Güncelleniyor…</string>
     <string name="check_available_storage">Mevcut depolama alanını kontrol et</string>
     <plurals name="every_hours">
         <item quantity="one">Her saat</item>
@@ -576,4 +576,29 @@
         <item quantity="one">Her ay</item>
         <item quantity="other">Her %d ayda bir</item>
     </plurals>
+    <string name="download_delay">İndirme gecikmesi</string>
+    <string name="download_delay_summary">Her indirme arasında belirlenen süre kadar bekler. Bu özellik, aynı anda birden fazla indirme yapılmasını engeller</string>
+    <string name="min_delay">Minimum gecikme (saniye)</string>
+    <string name="max_delay">Maksimum gecikme (saniye)</string>
+    <string name="no_delay">Gecikme ayarlanmadı</string>
+    <string name="waiting_download_delay">İndirme gecikmesi bekleniyor (%s saniye)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Her dakika</item>
+        <item quantity="other">Her %d dakikada bir</item>
+    </plurals>
+    <string name="bgutils_info">yt-dlp için bir proof-of-origin token (POT) sağlayıcısı.\nBu özellik etkinleştirildiğinde YTDLnis, POT üreten HTTP sunucusuna ev sahipliği yapar ve yt-dlp\'nin kullandığı ilgili eklentiyi kurar.</string>
+    <string name="bgutils_pot_generation_script">Oluşturma betiği</string>
+    <string name="bgutils_pot_generation_server">HTTP Sunucusu</string>
+    <string name="bgutils_pot_generation_script_summary">Her yt-dlp çağrısı, betiği çalıştırmak için yeni bir JavaScript çalışma zamanı işlemi başlatma yükü getirir. Bu yöntem, yüksek eşzamanlı kullanım için önerilmez.</string>
+    <string name="bgutils_pot_server_summary">Bu, 4416 bağlantı portunda bir JavaScript HTTP sunucusudur. Sunucu kapalıysa, indirme kuyruğu çalışmaya başladığında veya kaynakları gözlemleme zamanlandığında otomatik olarak başlatılır. Sunucuyu kapatmak için bildirimler üzerinden manuel olarak yapmanız gerekir!</string>
+    <string name="please_install_package">Lütfen %s paketini yükleyin</string>
+    <string name="please_install_package_or_package">Lütfen %1$s veya %2$s paketini kurun</string>
+    <string name="installation_method">Kurulum yöntemi</string>
+    <string name="system_install_failed">Sistem kurulumu başarısız oldu. Lütfen, ayarlarda başka bir kurulum yöntemi seçin!</string>
+    <string name="choose_installer_app">Kurulum uygulaması seç</string>
+    <string name="notset">Belirtilmedi</string>
+    <string name="external">Harici</string>
+    <string name="exit">Çıkış</string>
+    <string name="packages_description">Paketler, YTDLnis\'in yt-dlp komutlarına yardımcı olmak için kullandığı yardımcı uygulamalardır. Bunların bazıları zaten uygulamaya dahildir, ancak uygulamayı güncellemeye gerek kalmadan yayınlanan daha yeni sürümleri yükleyebilirsiniz. Yüklenen APK\'lar, uygulamanın kullandığı dahili sürümün yerini alır.</string>
+    <string name="bgutils_pot_generation_script_info">BgUtils POT Sağlayıcısını kullanmak için uygulamanın GitHub\'dan Brainicism/bgutil-ytdlp-pot-provider deposunu indirmesi ve kurulumu başlatması gerekiyor. Bu işlem biraz zaman alabilir. Şimdi devam edilsin mi?</string>
 </resources>

@@ -90,7 +90,7 @@
     <string name="delete_file_too">حذف الملف من الجهاز</string>
     <string name="delete_files_too">حذف الملفات من الجهاز</string>
     <string name="request_permission_desc">التطبيق يحتاج صلاحيات تاع الوصول للملفات باش يحفظ التنزيلات في الجهاز</string>
-    <string name="exit_app">خروج</string>
+    <string name="exit_app">الخروج من التطبيق</string>
     <string name="warning">تحذير</string>
     <string name="sponsorblock_nonmusic">المقاطع الخارجية والجانبية</string>
     <string name="sponsorblock_sponsors">الرعاة</string>
@@ -590,4 +590,10 @@
     <string name="bgutils_pot_server_summary">هذا راه خادم HTTP ومبني بلغة JavaScript، يمشي عبر منفذ 4416. إذا كان حابس، راه يشتغل تلقائيا كي تبدأ تنفيذ قائمة تشغيل ولا كي تدير جدولة مراقبة المصادر. باش تحبسه، لازم يدويا من شريط الاشعارات!</string>
     <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
     <string name="please_install_package_or_package">من فضلك ثبت حزمة %1$s ولا حزمة %2$s</string>
+    <string name="installation_method">طريقة التثبيت</string>
+    <string name="system_install_failed">فشل تثبيت النظام. جرب دير طريقة تثبيت أخرى في الإعدادات!</string>
+    <string name="choose_installer_app">اختر تطبيق المثبّت</string>
+    <string name="notset">غير محدد</string>
+    <string name="external">خارجي</string>
+    <string name="exit">خروج</string>
 </resources>

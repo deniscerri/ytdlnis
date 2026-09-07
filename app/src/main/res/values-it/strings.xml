@@ -532,4 +532,20 @@
     <string name="y_offset">Offset Y</string>
     <string name="width">Larghezza</string>
     <string name="height">Altezza</string>
+    <string name="player_client_not_empty">Il tag del Player Client non deve essere vuoto</string>
+    <string name="player_client_already_created">Player Client è già stato creato</string>
+    <string name="write_atleast_one_potoken">Devi scrivere almeno un token PO</string>
+    <string name="version_ready_to_download">La versione %s è pronta per essere scaricata</string>
+    <string name="package_version_ready_to_download">Il pacchetto %1$s con la versione %2$s è pronto per essere scaricato</string>
+    <string name="tap_to_see_changes_and_install">Tocca per vedere le modifiche e installa</string>
+    <string name="view">Visualizza</string>
+    <string name="next_run">Prossimo: %1$s</string>
+    <string name="paused">In pausa</string>
+    <string name="check_complete">Verifica completata</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Completato · %d esecuzione</item>
+        <item quantity="many">Completato · %d esecuzioni</item>
+        <item quantity="other">Completato · %d esecuzioni</item>
+    </plurals>
+    <string name="rescan_from_scratch">Riesegui scansione dall\'inizio</string>
 </resources>
