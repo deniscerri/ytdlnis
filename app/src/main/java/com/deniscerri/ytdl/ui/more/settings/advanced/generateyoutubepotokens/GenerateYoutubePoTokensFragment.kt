@@ -153,6 +153,7 @@ class GenerateYoutubePoTokensFragment : Fragment() {
                         }
 
                     }
+                    builder.setCancelable(false)
                     builder.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int ->
                         this.isChecked = false
                         updateState()

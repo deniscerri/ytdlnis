@@ -28,18 +28,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class App : Application(), DefaultLifecycleObserver {
-
-    val isForegroundLaunch = CompletableDeferred<Boolean>()
-
-    override fun onStart(owner: LifecycleOwner) {
-        if (!isForegroundLaunch.isCompleted) {
-            isForegroundLaunch.complete(true)
-        }
-    }
+class App : Application() {
 
     override fun onCreate() {
-        super<Application>.onCreate()
+        super.onCreate()
         instance = this
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
