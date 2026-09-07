@@ -113,7 +113,7 @@ android {
             if (variant.flavorName == "github") {
                 output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}.apk"
             } else {
-                output.outputFileName = "YTDLnis-${versionName}-foss-${abi}-${variant.buildType.name}.apk"
+                output.outputFileName = "YTDLnis-${versionName}-${variant.flavorName}-${abi}-${variant.buildType.name}.apk"
             }
         }
     }
