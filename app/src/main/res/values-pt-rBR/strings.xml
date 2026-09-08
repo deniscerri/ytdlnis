@@ -597,4 +597,12 @@
     <string name="please_install_package">Por favor, instale o pacote %s</string>
     <string name="please_install_package_or_package">Por favor, instale o pacote %1$s ou o pacote %2$s</string>
     <string name="bgutils_pot_generation_script">Gerando script</string>
+    <string name="installation_method">Método de instalação</string>
+    <string name="system_install_failed">A instalação do sistema falhou. Por favor, escolha outro método de instalação nas configurações!</string>
+    <string name="choose_installer_app">Escolha um aplicativo de instalação</string>
+    <string name="notset">Não definido</string>
+    <string name="external">Externo</string>
+    <string name="exit">Sair</string>
+    <string name="packages_description">Pacotes são aplicativos auxiliares que o YTDLnis utiliza para auxiliar na execução de comandos do yt-dlp. Alguns deles já vêm integrados ao aplicativo, mas você pode instalar versões mais recentes disponibilizadas sem precisar atualizar o próprio YTDLnis. Os APKs instalados substituem a versão integrada utilizada pelo aplicativo.</string>
+    <string name="bgutils_pot_generation_script_info">Para usar o BgUtils POT Provider, o aplicativo precisa baixar o repositório Brainicism/bgutil-ytdlp-pot-provider do GitHub e iniciar a instalação. Isso pode levar algum tempo para ser concluído. Deseja prosseguir agora?</string>
 </resources>
