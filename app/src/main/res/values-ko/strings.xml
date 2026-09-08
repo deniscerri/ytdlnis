@@ -584,4 +584,12 @@
     <string name="bgutils_info">yt-dlp용 Proof-of-origin 토큰 (POT) 제공자입니다.\n켜면 YTDLnis에서 POT를 생성하고 yt-dlp 관련 플러그인을 설치하는 HTTP 서버를 호스팅합니다.</string>
     <string name="bgutils_pot_generation_script_summary">yt-dlp 호출 시마다 스크립트를 실행하기 위해 새로운 JavaScript 런타임 프로세스가 생성되는 오버헤드가 발생합니다. 이 방법은 동시 접속량이 많은 경우에는 권장되지 않습니다.</string>
     <string name="bgutils_pot_server_summary">4416번 포트에서 실행되는 자바스크립트 HTTP 서버입니다. 서버가 꺼진 경우, 다운로드 대기열의 실행이 시작되거나 소스 관찰 작업이 예약되면 자동으로 서버가 시작됩니다. 서버를 완전히 종료하려면 알림에서 수동으로 종료해야 합니다!</string>
+    <string name="installation_method">설치 방식</string>
+    <string name="system_install_failed">시스템에서 설치하는 데 실패했습니다. 설정에서 다른 설치 방식을 선택하십시오!</string>
+    <string name="choose_installer_app">설치 프로그램 선택</string>
+    <string name="notset">미설정</string>
+    <string name="external">외부</string>
+    <string name="exit">종료</string>
+    <string name="bgutils_pot_generation_script_info">BgUtils POT 제공자를 사용하려면, GitHub에서 Brainicism/bgutil-ytdlp-pot-provider 저장소를 다운로드하고 설치 과정을 실행해야 합니다. 끝내려면 다소 시간이 걸릴 수 있습니다. 지금 진행하시겠습니까?</string>
+    <string name="packages_description">패키지는 YTDLnis가 yt-dlp 명령을 실행하는 데 도움을 주는 애플리케이션입니다. 일부 패키지는 이미 내장되어 있지만, 앱을 업데이트하지 않고도 새로 출시된 버전을 설치할 수 있습니다. 설치된 APK 파일은 앱에서 쓰이는 내장 버전을 대체합니다.</string>
 </resources>
