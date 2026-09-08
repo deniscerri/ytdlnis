@@ -66,8 +66,8 @@ abstract class PackageBase {
     )
 
     // Preferences Keys
-    private val downloadedVersionKey get() = "${executableName}_downloaded_ver"
-    private val bundledVerKey get() = "${executableName}_bundled_ver"
+    private val downloadedVersionKey = "${executableName}_downloaded_ver"
+    private val bundledVerKey = "${executableName}_bundled_ver"
 
     private val packagesRoot = "packages"
     private val downloadedPackagesRoot = "downloaded_packages"
@@ -115,10 +115,10 @@ abstract class PackageBase {
         val currentSize = bundledZip.length().toString()
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val bundledVerKey = prefs.getString(bundledVerKey, "")
+        val bundleVerKey = prefs.getString(bundledVerKey, "")
         val downloadedVerKey = prefs.getString(downloadedVersionKey, "")
 
-        val sizeMismatch = if (packageApkVersion != null) downloadedVerKey != packageApkVersion else bundledVerKey != currentSize
+        val sizeMismatch = if (packageApkVersion != null) downloadedVerKey != packageApkVersion else bundleVerKey != currentSize
 
         if (!targetDir.exists() || sizeMismatch) {
             FileUtils.deleteQuietly(targetDir)
