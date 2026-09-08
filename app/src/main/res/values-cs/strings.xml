@@ -609,4 +609,6 @@
     <string name="notset">Není nastaveno</string>
     <string name="external">Externí</string>
     <string name="exit">Ukončit</string>
+    <string name="packages_description">Balíčky jsou pomocné aplikace, které YTDLnis využívá k usnadnění práce s příkazy yt-dlp. Některé z nich jsou již jeho součástí, ale můžete si nainstalovat novější verze, které jsou zveřejňovány, aniž byste museli aktualizovat samotnou aplikaci. Instalované aplikace nahradí zapracovanou verzi, kterou aplikace používá.</string>
+    <string name="bgutils_pot_generation_script_info">Aby bylo možné používat poskytovatele POT BgUtils, musí aplikace stáhnout repozitář Brainicism/bgutil-ytdlp-pot-provider z GitHubu a zahájit instalaci. Dokončení tohoto procesu může chvíli trvat. Chcete pokračovat?</string>
 </resources>
