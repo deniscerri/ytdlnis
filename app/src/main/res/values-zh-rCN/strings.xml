@@ -590,4 +590,6 @@
     <string name="notset">未设置</string>
     <string name="external">外部</string>
     <string name="exit">退出</string>
+    <string name="packages_description">包是 YTDLins 用来帮助 yt-dlp 命令的助手程序。其中一些已捆绑在本应用中，但你可以无需更新本应用就安装已发布的更新版本。已安装的 apk 替换本应用所用的捆绑版本。</string>
+    <string name="bgutils_pot_generation_script_info">为了使用 BgUtils POT 提供方，本应用需从 github 下载 Brainicism/bgutil-ytdlp-pot-provider 代码库并发起安装。可能需要一会儿才能完成。要继续吗？</string>
 </resources>
