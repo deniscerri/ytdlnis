@@ -1,0 +1,183 @@
+name: "Test Debug Release"
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-debug:
+    name: Build test debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+          verify-signature: true
+
+      - name: Read latest dated version from CHANGELOG.md
+        id: changelog
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ ! -f CHANGELOG.md ]]; then
+            echo "::error::CHANGELOG.md not found"
+            exit 1
+          fi
+
+          # Expected format (this repo's changelog uses a blockquoted heading):
+          # > # 1.8.9.1 (2026-06)
+          CHANGELOG_LINE="$(
+            grep -m1 -E '^>[[:space:]]+#[[:space:]]+[^[:space:]]+[[:space:]]+\([0-9]{4}-[0-9]{2}\)[[:space:]]*$' CHANGELOG.md
+          )" || {
+            echo "::error::No dated version heading was found in CHANGELOG.md"
+            echo "::error::Expected: > # 1.8.9.1 (YYYY-MM)"
+            exit 1
+          }
+
+          VERSION="$(sed -E 's/^>[[:space:]]+#[[:space:]]+([^[:space:]]+).*$/\1/' <<< "$CHANGELOG_LINE")"
+          RELEASE_DATE="$(sed -E 's/^>[[:space:]]+#[[:space:]]+[^[:space:]]+[[:space:]]+\(([0-9]{4}-[0-9]{2})\).*$/\1/' <<< "$CHANGELOG_LINE")"
+
+          # Extract the complete latest dated release section, excluding
+          # any older releases. Stops at the next top-level version heading.
+          RELEASE_SECTION="$(
+            awk -v heading="$CHANGELOG_LINE" '
+              $0 == heading { found=1; print; next }
+              found && /^>[[:space:]]+#[[:space:]]+/ { exit }
+              found { print }
+            ' CHANGELOG.md
+          )"
+
+          # Keep the values safe for filenames/tags.
+          SAFE_VERSION="$(tr -cd '[:alnum:]._-v' <<< "$VERSION")"
+
+          if [[ -z "$SAFE_VERSION" || -z "$RELEASE_DATE" || -z "$RELEASE_SECTION" ]]; then
+            echo "::error::Could not extract the latest dated release section from CHANGELOG.md"
+            exit 1
+          fi
+
+          {
+            echo "version=$SAFE_VERSION"
+            echo "date=$RELEASE_DATE"
+            echo "heading=$CHANGELOG_LINE"
+            echo "section<<CHANGELOG_EOF"
+            echo "$RELEASE_SECTION"
+            echo "CHANGELOG_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Latest dated changelog version: $SAFE_VERSION ($RELEASE_DATE)"
+
+      - name: Generate debug keystore
+        run: |
+          keytool -genkeypair -v \
+            -keystore debug.keystore \
+            -storepass android \
+            -keypass android \
+            -alias androiddebugkey \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -dname "CN=Android Debug,O=Android,C=US"
+
+      - name: Build debug APKs
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --stacktrace --no-daemon
+
+      - name: Locate and rename APKs
+        id: apk
+        shell: bash
+        env:
+          VERSION: ${{ steps.changelog.outputs.version }}
+          RELEASE_DATE: ${{ steps.changelog.outputs.date }}
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+          shopt -s nullglob
+
+          SHORT_SHA="${GITHUB_SHA::7}"
+          # Debug APKs are written per product flavor
+          # (app/build/outputs/apk/<flavor>/debug/*.apk), not directly
+          # under apk/debug/.
+          APK_PATHS=(app/build/outputs/apk/*/debug/*.apk)
+
+          if (( ${#APK_PATHS[@]} == 0 )); then
+            echo "::error::No debug APKs were produced"
+            exit 1
+          fi
+
+          echo "short_sha=$SHORT_SHA" >> "$GITHUB_OUTPUT"
+          echo "dir=dist" >> "$GITHUB_OUTPUT"
+
+          for APK_PATH in "${APK_PATHS[@]}"; do
+            # Flavor is the directory two levels above the APK file
+            # (.../apk/<flavor>/debug/<file>.apk).
+            FLAVOR="$(basename "$(dirname "$(dirname "$APK_PATH")")")"
+
+            # Pull the ABI out of the filename by matching a known ABI
+            # token instead of assuming the default "app-<abi>-debug"
+            # naming — this project's APKs are named "YTDLnis-...".
+            ABI="$(basename "$APK_PATH" .apk | grep -oE 'arm64-v8a|armeabi-v7a|x86_64|x86|universal' || true)"
+            if [[ -z "$ABI" ]]; then
+              ABI="$(basename "$APK_PATH" .apk)"
+            fi
+
+            cp "$APK_PATH" "dist/YTDLnis-debug-v${VERSION}-${RELEASE_DATE}-${SHORT_SHA}-${FLAVOR}-${ABI}.apk"
+          done
+
+      - name: Create internal debug release notes
+        id: notes
+        shell: bash
+        env:
+          VERSION: ${{ steps.changelog.outputs.version }}
+          RELEASE_DATE: ${{ steps.changelog.outputs.date }}
+          CHANGELOG_HEADING: ${{ steps.changelog.outputs.heading }}
+          CHANGELOG_SECTION: ${{ steps.changelog.outputs.section }}
+          SHORT_SHA: ${{ steps.apk.outputs.short_sha }}
+        run: |
+          cat > debug-release-notes.md <<EOF
+          ## YTDLnis internal debug build
+
+          **Changelog version:** ${VERSION}
+          **Changelog date:** ${RELEASE_DATE}
+          **Commit:** ${GITHUB_SHA}
+          **Short commit:** ${SHORT_SHA}
+
+          This is an **internal testing build** generated manually from the repository.
+
+          - It is a debug build.
+          - It is a prerelease.
+          - It does **not** use the production release tag.
+          - The changelog version/date are used for identification only.
+          - Install only for internal testing.
+
+          ### Latest dated CHANGELOG.md entry
+
+          ${CHANGELOG_SECTION}
+          EOF
+
+      - name: Upload as workflow artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: YTDLnis-debug-v${{ steps.changelog.outputs.version }}-${{ steps.apk.outputs.short_sha }}
+          path: |
+            ${{ steps.apk.outputs.dir }}/*.apk
+            debug-release-notes.md
+          retention-days: 14
