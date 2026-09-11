@@ -459,7 +459,7 @@
     <string name="reset_processed_links_desc">Повторно завантажити всі елементи знову</string>
     <string name="sync_with_source_desc">Видалити завантажені елементи, якщо вони відсутні у джерелі</string>
     <string name="app_icon_change">Іконка може змінитися, і застосунок закриється</string>
-    <string name="use_format_sorting">Використовуйте порядок пріоритету формату</string>
+    <string name="use_format_sorting">Використовувати порядок важливості формату</string>
     <string name="write_subs_when_embed_subs_summary">Це застосує функції Зберегти субтитри та Зберегти автосубтитри для завантаження файлів субтитрів, а потім видалить їх після вбудовування</string>
     <string name="automatic_backup_summary">Авторезервування всього, коли буде знайдено нову версію додатка</string>
     <string name="reset_preferences_in_screen">Скинути всі налаштування на цьому екрані</string>
@@ -491,7 +491,7 @@
     <string name="get_data_sync_id">Отримати синхронізацію даних ID</string>
     <string name="desktop">Робочий стіл</string>
     <string name="url_regex">URL Regex</string>
-    <string name="disable_flat_playlist">Вимкнути плоский плейлист</string>
+    <string name="disable_flat_playlist">Вимкнути плоский список відтворення</string>
     <string name="disable_flat_playlist_summary">Не використовуйте --плоский плейлист. Повільніше отримання даних, але більш насичений даними</string>
     <string name="chapters">Розділи</string>
     <string name="use_original_url_playlist">Використати оригінальний url як url плейлиста</string>
