@@ -66,7 +66,7 @@
     <string name="sponsorblock_fillers">Наполнители</string>
     <string name="sponsorblock_nonmusic">Сегменты без музыки и не по теме</string>
     <string name="settings">Настройки</string>
-    <string name="video_directory">Папка видео</string>
+    <string name="video_directory">Видео папка</string>
     <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
@@ -466,7 +466,7 @@
     <string name="write_subs_when_embed_subs_summary">Это применит функции Сохранить субтитры и Сохранить автосубтитры для загрузки файлов субтитров и удалить их после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
-    <string name="use_format_sorting">Используйте порядок приоритета формата</string>
+    <string name="use_format_sorting">Использовать порядок важности формата</string>
     <string name="sync_with_source_desc">Удалять загруженные элементы, если они отсутствуют в источнике</string>
     <string name="app_icon_change">Иконка может измениться, и приложение закроется</string>
     <string name="generate_potokens_warning">Для включения этой функции необходимо отключить файлы cookies</string>
