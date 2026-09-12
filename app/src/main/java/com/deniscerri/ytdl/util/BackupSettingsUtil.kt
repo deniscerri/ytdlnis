@@ -18,6 +18,7 @@ object BackupSettingsUtil {
     fun backupSettings(preferences: SharedPreferences) : JsonArray {
         runCatching {
             val prefs = preferences.all
+            prefs.remove("dlpVersion")
             prefs.remove("app_language")
             prefs.remove("cache_downloads")
             prefs.remove("use_alarm_for_scheduling")
