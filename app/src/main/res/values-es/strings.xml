@@ -3,9 +3,9 @@
     <string name="remove_all">Limpiar Todo</string>
     <string name="settings">Ajustes</string>
     <string name="home">Inicio</string>
-    <string name="directories">Directorios</string>
-    <string name="music_directory">Directorio de audio</string>
-    <string name="video_directory">Directorio de Video</string>
+    <string name="directories">Carpetas</string>
+    <string name="music_directory">Carpeta de audio</string>
+    <string name="video_directory">Carpeta de Video</string>
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil al descargar actualizaciones</string>
     <string name="update_ytdl">Actualiza yt‐dlp a la nueva versión</string>
@@ -170,7 +170,7 @@
     <string name="downloads_running_try_later">El trabajador de descarga se está ejecutando. Vuelva a intentarlo más tarde</string>
     <string name="link_you_copied">Enlace que copiaste</string>
     <string name="best_quality">Mejor calidad</string>
-    <string name="worst_quality">Calidad más baja</string>
+    <string name="worst_quality">Peor Calidad</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
     <string name="restrict_filenames_summary">Restringe los nombres de archivo a sólo caracteres ASCII. Evita \"&amp;\" y espacios en los nombres de archivo</string>
     <string name="kill_app">Terminar la aplicación</string>
@@ -543,7 +543,7 @@
     <string name="paused">En pausa</string>
     <string name="check_complete">Revisión completa</string>
     <plurals name="finished_runs">
-        <item quantity="one">Terminado · %d carrera</item>
+        <item quantity="one">Finalizado · %d ejecución</item>
         <item quantity="many">Finalizado · %d ejecuciones</item>
     </plurals>
     <string name="reset_state">Restablecer estado</string>
@@ -567,6 +567,7 @@
     <plurals name="every_hours">
         <item quantity="one">Cada hora</item>
         <item quantity="many">Cada %d horas</item>
+        <item quantity="other">Cada %d horas</item>
     </plurals>
     <plurals name="every_days">
         <item quantity="one">Todos los días</item>
@@ -583,5 +584,21 @@
     <plurals name="every_minutes">
         <item quantity="one">Cada minuto</item>
         <item quantity="many">Cada %d minutos</item>
+        <item quantity="other">Cada %d minutos</item>
     </plurals>
+    <string name="bgutils_pot_generation_server">Servidor HTTP</string>
+    <string name="bgutils_info">Un proveedor de tokens de prueba-de-origen (POT) para yt-dlp.\nMientras este activo, YTDLnis crea el servidor HTTP que genera el POT e instala el plugin relacionado que usa yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Script de generación</string>
+    <string name="bgutils_pot_generation_script_summary">Cada llamada a yt-dlp implica el costo adicional de iniciar un nuevo proceso de runtime de JavaScript para ejecutar el script. Este método no se recomienda para usos con un alto nivel de concurrencia.</string>
+    <string name="bgutils_pot_server_summary">Este es un servidor HTTP de JavaScript en el puerto 4416. Si está detenido, el servidor se inicia automáticamente cuando comienza a ejecutarse la cola de descargas o cuando se programa la observación de fuentes. Para apagarlo, ¡tienes que hacerlo manualmente desde las notificaciones!</string>
+    <string name="please_install_package">Porfavor instala el paquete %s</string>
+    <string name="please_install_package_or_package">Porfavor instala el paquete %1$s o el paquete %2$s</string>
+    <string name="installation_method">Método de instalación</string>
+    <string name="system_install_failed">Instalación del sistema fallida. ¡Porfavor elige otro método de instalación en los ajustes!</string>
+    <string name="choose_installer_app">Selecciona un instalador de aplicaciones</string>
+    <string name="notset">No establecido</string>
+    <string name="external">Externo</string>
+    <string name="exit">Salir</string>
+    <string name="packages_description">Los paquetes son aplicaciones de ayuda que usa YTDLnis para ayudar con los comandos de yt-dlp. Algunos de ellos vienen incluidos, pero puedes instalar nuevas versiones que se publiquen sin la necesidad de actualizar la aplicación. Los apk instalados reemplazarán las versiones incluidas que usa la aplicación.</string>
+    <string name="bgutils_pot_generation_script_info">Para poder usar el proveedor POT de BgUtils, la aplicación necesita descargar e instalar el repositorio Brainicism/bgutil-ytdlp-pot-provider desde github. Esto puede tomar un tiempo en completarse. ¿Deseas continuar ahora?</string>
 </resources>
