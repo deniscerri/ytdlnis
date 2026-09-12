@@ -59,7 +59,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
         terminal.setBackgroundColor(android.graphics.Color.TRANSPARENT)
 
         val zoom = PreferenceManager.getDefaultSharedPreferences(context)
-            .getFloat("terminal_zoom", 14f).coerceIn(10f, 30f)
+            .getFloat("terminal_text_zoom", 35f)
         terminal.setTextSize(zoom.toInt())
         terminal.setTypeface(TerminalUtils.typeface)
 
