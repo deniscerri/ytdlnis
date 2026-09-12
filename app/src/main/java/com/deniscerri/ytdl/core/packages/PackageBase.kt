@@ -125,7 +125,7 @@ abstract class PackageBase {
             targetDir.mkdirs()
             try {
                 ZipUtils.unzip(bundledZip, targetDir)
-                prefs.edit(commit = true) {
+                prefs.edit {
                     if (packageApkVersion != null) {
                         putString(downloadedVersionKey, packageApkVersion)
                     } else {
@@ -256,7 +256,7 @@ abstract class PackageBase {
 
     private fun saveState(context: Context, version: String) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        prefs.edit(commit = true) {
+        prefs.edit {
             putString(downloadedVersionKey, version)
         }
     }

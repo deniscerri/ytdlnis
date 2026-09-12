@@ -19,6 +19,10 @@ import com.deniscerri.ytdl.core.stream.StreamGobbler
 import com.deniscerri.ytdl.core.stream.StreamProcessExtractor
 import com.deniscerri.ytdl.database.models.PackageItem
 import com.deniscerri.ytdl.util.FileUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
@@ -84,84 +88,90 @@ object RuntimeManager {
         if (initialized) return
 
         synchronized(initLock) {
-            val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
+            if (initialized) return
 
-            val python = Python.getInstance()
-            val ffmpeg = FFmpeg.getInstance()
-            val aria2c = Aria2c.getInstance()
-            val nodeJS = NodeJS.getInstance()
-            val quickJS = QuickJS.getInstance()
-            val deno = Deno.getInstance()
+            runBlocking(Dispatchers.IO) {
+                try {
+                    val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
 
-            python.init(appContext)
-            ffmpeg.init(appContext)
-            aria2c.init(appContext)
-            nodeJS.init(appContext)
-            quickJS.init(appContext)
-            deno.init(appContext)
+                    val python = Python.getInstance()
+                    val ffmpeg = FFmpeg.getInstance()
+                    val aria2c = Aria2c.getInstance()
+                    val nodeJS = NodeJS.getInstance()
+                    val quickJS = QuickJS.getInstance()
+                    val deno = Deno.getInstance()
 
-            //find location of libraries either from bundled or downloaded paths
-            pythonLocation = python.location
-            ffmpegLocation = ffmpeg.location
-            aria2Location = aria2c.location
-            nodeLocation = nodeJS.location
-            denoLocation = deno.location
-            quickJsLocation = quickJS.location
+                    coroutineScope {
+                        val packages = listOf(python, ffmpeg, aria2c, nodeJS, quickJS, deno)
+                        packages.map { pkg ->
+                            async {
+                                pkg.init(appContext)
+                            }
+                        }.awaitAll()
+                    }
 
-            val ytdlpDir = File(baseDir, ytdlpDirName)
-            ytdlpPath = File(ytdlpDir, ytdlpBin)
-            initYTDLP(appContext, ytdlpDir)
+                    //find location of libraries either from bundled or downloaded paths
+                    pythonLocation = python.location
+                    ffmpegLocation = ffmpeg.location
+                    aria2Location = aria2c.location
+                    nodeLocation = nodeJS.location
+                    denoLocation = deno.location
+                    quickJsLocation = quickJS.location
 
-            val locations = listOf(
-                pythonLocation,
-                ffmpegLocation,
-                aria2Location,
-                nodeLocation,
-                quickJsLocation,
-                denoLocation,
-            )
+                    val ytdlpDir = File(baseDir, ytdlpDirName)
+                    ytdlpPath = File(ytdlpDir, ytdlpBin)
+                    initYTDLP(appContext, ytdlpDir)
 
-            val ldPaths = mutableListOf<String>()
-            locations.forEach {
-                val usrLib = File(it.ldDir, "usr/lib")
-                if (usrLib.exists()) {
-                    ldPaths.add(usrLib.absolutePath)
-                } else if (it.ldDir.exists()) {
-                    ldPaths.add(it.ldDir.absolutePath)
-                }
-            }
-            ldPaths.add(appContext.applicationInfo.nativeLibraryDir)
-            ENV_LD_LIBRARY_PATH = ldPaths.distinct().joinToString(":")
+                    val locations = listOf(
+                        pythonLocation,
+                        ffmpegLocation,
+                        aria2Location,
+                        nodeLocation,
+                        quickJsLocation,
+                        denoLocation,
+                    )
 
-            val binPaths = locations.filter { it.binDir.exists() }.map { it.binDir.absolutePath }.toMutableList()
-            binPaths.add(System.getenv("PATH") ?: "/system/bin")
-            PATH = binPaths.distinct().joinToString(":")
+                    val ldPaths = mutableListOf<String>()
+                    locations.forEach {
+                        val usrLib = File(it.ldDir, "usr/lib")
+                        if (usrLib.exists()) {
+                            ldPaths.add(usrLib.absolutePath)
+                        } else if (it.ldDir.exists()) {
+                            ldPaths.add(it.ldDir.absolutePath)
+                        }
+                    }
+                    ldPaths.add(appContext.applicationInfo.nativeLibraryDir)
+                    ENV_LD_LIBRARY_PATH = ldPaths.distinct().joinToString(":")
 
-            ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
-                File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
-            } else {
-                pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
-            }
+                    val binPaths = locations.filter { it.binDir.exists() }.map { it.binDir.absolutePath }.toMutableList()
+                    binPaths.add(System.getenv("PATH") ?: "/system/bin")
+                    PATH = binPaths.distinct().joinToString(":")
 
-            OPEN_SSL_CONF = ""
-            if (nodeLocation.ldDir.exists()) {
-                OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
-                    File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
-                } else {
-                    nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
-                }
-            }
+                    ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
+                        File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
+                    } else {
+                        pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
+                    }
 
-            ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
-                pythonLocation.ldDir.absolutePath + "/usr"
-            } else {
-                pythonLocation.ldDir.absolutePath + "/usr"
-            }
-            TMPDIR = appContext.cacheDir.absolutePath
+                    OPEN_SSL_CONF = ""
+                    if (nodeLocation.ldDir.exists()) {
+                        OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
+                            File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
+                        } else {
+                            nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
+                        }
+                    }
 
-            NPM_CONFIG_PREFIX = File(appContext.filesDir, ".npm-global").absolutePath
-            NPM_CONFIG_CACHE = File(appContext.filesDir, ".npm-cache").absolutePath
-            //TODO
+                    ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
+                        pythonLocation.ldDir.absolutePath + "/usr"
+                    } else {
+                        pythonLocation.ldDir.absolutePath + "/usr"
+                    }
+                    TMPDIR = appContext.cacheDir.absolutePath
+
+                    NPM_CONFIG_PREFIX = File(appContext.filesDir, ".npm-global").absolutePath
+                    NPM_CONFIG_CACHE = File(appContext.filesDir, ".npm-cache").absolutePath
+                    //TODO
 //            if (nodeLocation.executable.exists()) {
 //                NPM_CLI_PATH = File(nodeLocation.ldDir.absolutePath, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
 //
@@ -170,9 +180,15 @@ object RuntimeManager {
 //                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
 //            }
 
-            initialized = true
-            initLatch.countDown()
-            updateLatch.countDown()
+                    initialized = true
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    initialized = false
+                } finally {
+                    initLatch.countDown()
+                    updateLatch.countDown()
+                }
+            }
         }
     }
 
