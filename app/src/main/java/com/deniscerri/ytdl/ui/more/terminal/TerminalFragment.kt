@@ -67,6 +67,11 @@ class TerminalFragment : Fragment() {
     private lateinit var session : TerminalSession
     private var sessionId: String? = null
 
+    private fun terminalZoom(): Int {
+        val zoom = sharedPreferences.getFloat("terminal_text_zoom", 35f)
+        return if (zoom.isFinite()) zoom.coerceIn(10f, 37f).toInt() else 35
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -128,7 +133,7 @@ class TerminalFragment : Fragment() {
         slider?.apply {
             valueFrom = 10f
             valueTo = 37f
-            value = sharedPreferences.getFloat("terminal_text_zoom", 35f)
+            value = terminalZoom().toFloat()
 
             addOnChangeListener { _, value, _ ->
                 terminalView.setTextSize(value.toInt())
@@ -292,8 +297,7 @@ class TerminalFragment : Fragment() {
             val termView = view as TerminalView
 
             termView.post {
-                val textSize = sharedPreferences.getFloat("terminal_text_zoom", 35f).toInt()
-                termView.setTextSize(if (textSize < 10) 10 else textSize)
+                termView.setTextSize(terminalZoom())
 
                 termView.setTypeface(TerminalUtils.typeface)
                 termView.setTerminalViewClient(client)
