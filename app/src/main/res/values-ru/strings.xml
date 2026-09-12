@@ -66,7 +66,7 @@
     <string name="sponsorblock_fillers">Наполнители</string>
     <string name="sponsorblock_nonmusic">Сегменты без музыки и не по теме</string>
     <string name="settings">Настройки</string>
-    <string name="video_directory">Папка видео</string>
+    <string name="video_directory">Видео папка</string>
     <string name="download_all">Скачать все</string>
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
@@ -466,7 +466,7 @@
     <string name="write_subs_when_embed_subs_summary">Это применит функции Сохранить субтитры и Сохранить автосубтитры для загрузки файлов субтитров и удалить их после встраивания</string>
     <string name="generate_potokens">Сгенерировать PO Token</string>
     <string name="regenerate">Перегенерировать</string>
-    <string name="use_format_sorting">Используйте порядок приоритета формата</string>
+    <string name="use_format_sorting">Использовать порядок важности формата</string>
     <string name="sync_with_source_desc">Удалять загруженные элементы, если они отсутствуют в источнике</string>
     <string name="app_icon_change">Иконка может измениться, и приложение закроется</string>
     <string name="generate_potokens_warning">Для включения этой функции необходимо отключить файлы cookies</string>
@@ -608,4 +608,6 @@
     <string name="notset">Не указано</string>
     <string name="external">Внешний</string>
     <string name="exit">Выход</string>
+    <string name="packages_description">Пакеты это вспомогательные приложения, которые YTDLnis использует для помощи команд yt-dlp. Некоторые из них уже входят в комплект, но вы можете установить более новые версии, опубликованные без необходимости обновления программы. Установленные apk\'s заменяют поставляемую версию в комплекте, которую использует приложение.</string>
+    <string name="bgutils_pot_generation_script_info">Чтобы использовать поставщика POT от BgUtils, приложение требуется загрузить репозиторий Brainicism/bgutil-ytdlp-pot-provider из github и начать установку. то может занять некоторое время. Продолжить сейчас?</string>
 </resources>

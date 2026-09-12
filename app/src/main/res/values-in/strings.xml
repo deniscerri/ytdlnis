@@ -577,4 +577,19 @@
     <plurals name="every_months">
         <item quantity="other">Setiap bulan\nSetiap %d bulan</item>
     </plurals>
+    <string name="bgutils_info">Penyedia token bukti asal (POT) untuk yt-dlp.\nSaat fitur ini diaktifkan, YTDLnis menjalankan server HTTP yang menghasilkan POT serta menginstal plugin terkait yang digunakan oleh yt-dlp.</string>
+    <string name="bgutils_pot_generation_script">Skrip pembuatan</string>
+    <string name="bgutils_pot_generation_server">Server HTTP</string>
+    <string name="bgutils_pot_generation_script_summary">Setiap pemanggilan yt-dlp menimbulkan *overhead* berupa pembuatan proses *runtime* JS baru untuk menjalankan skrip tersebut. Metode ini tidak disarankan untuk penggunaan dengan konkurensi tinggi.</string>
+    <string name="bgutils_pot_server_summary">Ini adalah server HTTP JavaScript yang berjalan pada port 4416. Jika server mati, ia akan otomatis menyala kembali saat antrean unduhan mulai diproses atau saat pemantauan sumber dijadwalkan. Untuk mematikannya, Anda harus melakukannya secara manual melalui notifikasi!</string>
+    <string name="please_install_package">Harap instal paket %s</string>
+    <string name="please_install_package_or_package">Silakan instal paket %1$s atau paket %2$s</string>
+    <string name="installation_method">Metode pemasangan</string>
+    <string name="system_install_failed">Instalasi sistem gagal. Silakan pilih metode instalasi lain di pengaturan!</string>
+    <string name="choose_installer_app">Pilih aplikasi penginstal</string>
+    <string name="notset">Belum diatur</string>
+    <string name="external">Luar</string>
+    <string name="exit">Keluar</string>
+    <string name="packages_description">Paket adalah aplikasi pendukung yang digunakan YTDLnis untuk membantu menjalankan perintah yt-dlp. Beberapa paket sudah disertakan di dalamnya, namun Anda dapat menginstal versi terbaru yang dirilis tanpa perlu memperbarui aplikasi itu sendiri. Paket APK yang diinstal akan menggantikan versi bawaan yang digunakan oleh aplikasi tersebut.</string>
+    <string name="bgutils_pot_generation_script_info">Untuk menggunakan BgUtils POT Provider, aplikasi perlu mengunduh repositori Brainicism/bgutil-ytdlp-pot-provider dari GitHub dan memulai instalasi. Proses ini mungkin memakan waktu cukup lama. Lanjutkan sekarang?</string>
 </resources>
