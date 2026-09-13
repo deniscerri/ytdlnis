@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Ported from BAI's 12 named themes (Theme.java / styles.xml / colors.xml).
+    Two corrections vs. the BAI source:
+      - "Ukrrooter" is flagged isDark=false in BAI's Theme.java, but its actual
+        background (#9600ff) and text (#00ff00) are a saturated dark-mode-style
+        pairing, not a light one — reclassified as dark here.
+      - "Ruby" had textColorPrimary/textColorSecondary swapped in BAI's source
+        (a dark grey as the *primary* text color on a dark background) — swapped
+        back so the higher-contrast color is the main text color.
+    Each style sets the M3 tokens that give it a distinct identity
+    (colorPrimary/onPrimary from BAI's accent, colorSurface from BAI's
+    primary/background, colorOnSurface(Variant) from BAI's text colors);
+    everything else inherits from BaseTheme. colorPrimaryDark mirrors
+    colorPrimary (same as BAI's own "Simple" theme template, which maps
+    both to the same source color) so ThemeUtil.getStyledAppName(), which
+    reads colorPrimaryDark, shows the preset's own color instead of an
+    unresolved inherited default.
+    -->
+
+    <string name="theme_preset_classic">Classic</string>
+    <string name="theme_preset_ruby">Ruby</string>
+    <string name="theme_preset_rena">Rena</string>
+    <string name="theme_preset_ukrrooter">Ukrrooter</string>
+    <string name="theme_preset_amoled">Amoled</string>
+    <string name="theme_preset_pixel">Pixel</string>
+    <string name="theme_preset_fdroid_light">F-Droid Light</string>
+    <string name="theme_preset_dark">Dark</string>
+    <string name="theme_preset_gold">Gold</string>
+    <string name="theme_preset_rena_light">Rena Light</string>
+    <string name="theme_preset_mint">Mint</string>
+    <string name="theme_preset_fdroid_dark">F-Droid Dark</string>
+
+    <string name="use_theme_presets">Use theme presets</string>
+    <string name="use_theme_presets_summary">A curated set of full color themes, ported from BAI, instead of accent color + light/dark</string>
+    <string name="theme_preset_auto_mode">Automatic light/dark presets</string>
+    <string name="theme_preset_auto_mode_summary">Switch between a chosen light preset and a chosen dark preset based on system light/dark mode</string>
+    <string name="theme_preset_concrete">Theme preset</string>
+    <string name="theme_preset_light_dark">Light/dark presets</string>
+    <string name="theme_preset_choose_title">Choose a theme</string>
+    <string name="theme_preset_choose_light">Light preset</string>
+    <string name="theme_preset_choose_dark">Dark preset</string>
+
+    <style name="ThemePreset.Classic" parent="BaseTheme">
+        <item name="colorPrimary">#639eff</item>
+        <item name="colorPrimaryDark">#639eff</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#ffffff</item>
+        <item name="colorOnSurface">#444444</item>
+        <item name="colorOnSurfaceVariant">#444444</item>
+    </style>
+
+    <style name="ThemePreset.Ruby" parent="BaseTheme">
+        <item name="colorPrimary">#ffbcbc</item>
+        <item name="colorPrimaryDark">#ffbcbc</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#343944</item>
+        <item name="colorOnSurface">#e5e5e5</item>
+        <item name="colorOnSurfaceVariant">#c9cacb</item>
+    </style>
+
+    <style name="ThemePreset.Rena" parent="BaseTheme">
+        <item name="colorPrimary">#e52c5f</item>
+        <item name="colorPrimaryDark">#e52c5f</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#212735</item>
+        <item name="colorOnSurface">#f7f4f4</item>
+        <item name="colorOnSurfaceVariant">#c9cacb</item>
+    </style>
+
+    <style name="ThemePreset.Ukrrooter" parent="BaseTheme">
+        <item name="colorPrimary">#00ff00</item>
+        <item name="colorPrimaryDark">#00ff00</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#8a00ee</item>
+        <item name="colorOnSurface">#00ff00</item>
+        <item name="colorOnSurfaceVariant">#00ff00</item>
+    </style>
+
+    <style name="ThemePreset.Amoled" parent="BaseTheme">
+        <item name="colorPrimary">#ffffff</item>
+        <item name="colorPrimaryDark">#ffffff</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorOnSurface">#ffffff</item>
+        <item name="colorOnSurfaceVariant">#ffffff</item>
+    </style>
+
+    <style name="ThemePreset.Pixel" parent="BaseTheme">
+        <item name="colorPrimary">#448aff</item>
+        <item name="colorPrimaryDark">#448aff</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#ffffff</item>
+        <item name="colorOnSurface">#de000000</item>
+        <item name="colorOnSurfaceVariant">#de000000</item>
+    </style>
+
+    <style name="ThemePreset.FDroidLight" parent="BaseTheme">
+        <item name="colorPrimary">#8bc34a</item>
+        <item name="colorPrimaryDark">#8bc34a</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#ffffff</item>
+        <item name="colorOnSurface">#444444</item>
+        <item name="colorOnSurfaceVariant">#444444</item>
+    </style>
+
+    <style name="ThemePreset.Dark" parent="BaseTheme">
+        <item name="colorPrimary">#71AAEB</item>
+        <item name="colorPrimaryDark">#71AAEB</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#131313</item>
+        <item name="colorOnSurface">#ffffff</item>
+        <item name="colorOnSurfaceVariant">#e0e0e0</item>
+    </style>
+
+    <style name="ThemePreset.Gold" parent="BaseTheme">
+        <item name="colorPrimary">#e9b115</item>
+        <item name="colorPrimaryDark">#e9b115</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#000d26</item>
+        <item name="colorOnSurface">#e6e6e6</item>
+        <item name="colorOnSurfaceVariant">#d9d9d9</item>
+    </style>
+
+    <style name="ThemePreset.RenaLight" parent="BaseTheme">
+        <item name="colorPrimary">#e52c5f</item>
+        <item name="colorPrimaryDark">#e52c5f</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#ffffff</item>
+        <item name="colorOnSurface">#444444</item>
+        <item name="colorOnSurfaceVariant">#444444</item>
+    </style>
+
+    <style name="ThemePreset.Mint" parent="BaseTheme">
+        <item name="colorPrimary">#86E2B3</item>
+        <item name="colorPrimaryDark">#86E2B3</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#141F33</item>
+        <item name="colorOnSurface">#CAD7E0</item>
+        <item name="colorOnSurfaceVariant">#C3D0D9</item>
+    </style>
+
+    <style name="ThemePreset.FDroidDark" parent="BaseTheme">
+        <item name="colorPrimary">#8bc34a</item>
+        <item name="colorPrimaryDark">#8bc34a</item>
+        <item name="colorOnPrimary">#000000</item>
+        <item name="colorSurface">#1C1D21</item>
+        <item name="colorOnSurface">#EDEDED</item>
+        <item name="colorOnSurfaceVariant">#E6E6E6</item>
+    </style>
+</resources>

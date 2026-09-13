@@ -38,7 +38,7 @@
         android:layout_marginBottom="12dp"
         android:text="–"
         android:textAppearance="?attr/textAppearanceBodyLarge"
-        android:textColor="?attr/colorOnSurfaceVariant" />
+        android:textColor="?attr/colorOnSurface" />
 
     <!-- Max Delay Input -->
     <com.google.android.material.textfield.TextInputLayout

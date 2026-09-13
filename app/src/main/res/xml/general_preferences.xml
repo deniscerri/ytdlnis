@@ -28,11 +28,8 @@
             android:summary="@string/defaultValue"
             app:key="ytdlnis_icon" />
 
-        <ListPreference
-            android:entries="@array/accents"
-            android:entryValues="@array/accents_values"
+        <Preference
             android:icon="@drawable/baseline_color_lens_24"
-            app:defaultValue="blue"
             app:key="theme_accent"
             app:summary="Blue"
             app:title="@string/accents" />
@@ -44,6 +41,28 @@
             android:key="high_contrast"
             app:summary="@string/pure_theme_summary"
             app:title="@string/high_contrast" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:key="use_theme_presets"
+            app:summary="@string/use_theme_presets_summary"
+            app:title="@string/use_theme_presets" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:key="theme_preset_auto_mode"
+            app:summary="@string/theme_preset_auto_mode_summary"
+            app:title="@string/theme_preset_auto_mode" />
+
+        <Preference
+            app:key="theme_preset_concrete"
+            app:title="@string/theme_preset_concrete" />
+
+        <Preference
+            app:key="theme_preset_light_dark"
+            app:title="@string/theme_preset_light_dark" />
 
 
         <MultiSelectListPreference

@@ -8,9 +8,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.DisplayMetrics
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
@@ -31,13 +34,16 @@ import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.databinding.NavOptionsItemBinding
+import com.deniscerri.ytdl.ui.adapter.AccentAdapter
 import com.deniscerri.ytdl.ui.adapter.IconsSheetAdapter
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
+import com.deniscerri.ytdl.ui.adapter.ThemePresetAdapter
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -176,6 +182,7 @@ object GeneralSettingsModule : SettingModule {
             }
             "ytdlnis_theme" -> {
                 (pref as ListPreference).apply {
+                    isVisible = !preferences.getBoolean("use_theme_presets", false)
                     summary = entry
                     setOnPreferenceChangeListener { _, newValue ->
                         val dialog = MaterialAlertDialogBuilder(host.getHostContext())
@@ -236,17 +243,190 @@ object GeneralSettingsModule : SettingModule {
                 }
             }
             "theme_accent" -> {
-                (pref as ListPreference).apply {
-                    summary = entry
-                    setOnPreferenceChangeListener { _, _ ->
+                pref.apply {
+                    isVisible = !preferences.getBoolean("use_theme_presets", false)
+
+                    val currentValue = preferences.getString("theme_accent", "blue")
+                    ThemeUtil.availableAccents.firstOrNull { it.value == currentValue }?.let {
+                        summary = context.getString(it.nameResource)
+                    }
+
+                    setOnPreferenceClickListener {
+                        val bottomSheet = BottomSheetDialog(host.getHostContext())
+                        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        bottomSheet.setContentView(R.layout.generic_list)
+
+                        val recycler = bottomSheet.findViewById<RecyclerView>(R.id.download_recyclerview)!!
+                        recycler.layoutManager = GridLayoutManager(context, 2)
+                        recycler.adapter = AccentAdapter(host)
+
+                        bottomSheet.show()
+                        val displayMetrics = DisplayMetrics()
+                        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        wm.defaultDisplay.getMetrics(displayMetrics)
+                        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                        bottomSheet.window!!.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        false
+                    }
+                }
+            }
+            "use_theme_presets" -> {
+                (pref as SwitchPreferenceCompat).apply {
+                    setOnPreferenceChangeListener { _, newValue ->
+                        val enabled = newValue as Boolean
+                        val autoMode = preferences.getBoolean("theme_preset_auto_mode", false)
+
+                        host.findPref("theme_accent")?.isVisible = !enabled
+                        host.findPref("ytdlnis_theme")?.isVisible = !enabled
+                        host.findPref("high_contrast")?.isVisible = !enabled
+                        host.findPref("theme_preset_auto_mode")?.isVisible = enabled
+                        host.findPref("theme_preset_concrete")?.isVisible = enabled && !autoMode
+                        host.findPref("theme_preset_light_dark")?.isVisible = enabled && autoMode
+
+                        preferences.edit(commit = true) {
+                            putBoolean(pref.key, enabled)
+                        }
                         ThemeUtil.updateThemes()
                         host.refreshUI()
                         true
                     }
                 }
             }
+            "theme_preset_auto_mode" -> {
+                (pref as SwitchPreferenceCompat).apply {
+                    isVisible = preferences.getBoolean("use_theme_presets", false)
+
+                    setOnPreferenceChangeListener { _, newValue ->
+                        val autoMode = newValue as Boolean
+                        host.findPref("theme_preset_concrete")?.isVisible = !autoMode
+                        host.findPref("theme_preset_light_dark")?.isVisible = autoMode
+
+                        preferences.edit(commit = true) {
+                            putBoolean(pref.key, autoMode)
+                        }
+                        ThemeUtil.updateThemes()
+                        host.refreshUI()
+                        true
+                    }
+                }
+            }
+            "theme_preset_concrete" -> {
+                pref.apply {
+                    isVisible = preferences.getBoolean("use_theme_presets", false) &&
+                            !preferences.getBoolean("theme_preset_auto_mode", false)
+                    summary = context.getString(ThemeUtil.getConcreteThemePreset(context).nameResource)
+
+                    setOnPreferenceClickListener {
+                        val bottomSheet = BottomSheetDialog(host.getHostContext())
+                        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                        bottomSheet.setContentView(R.layout.generic_list)
+
+                        val recycler = bottomSheet.findViewById<RecyclerView>(R.id.download_recyclerview)!!
+                        recycler.layoutManager = GridLayoutManager(context, 2)
+                        recycler.adapter = ThemePresetAdapter(host, ThemePresetAdapter.Mode.APPLY)
+
+                        bottomSheet.show()
+                        val displayMetrics = DisplayMetrics()
+                        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                        wm.defaultDisplay.getMetrics(displayMetrics)
+                        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
+                        bottomSheet.window!!.setLayout(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        false
+                    }
+                }
+            }
+            "theme_preset_light_dark" -> {
+                pref.apply {
+                    isVisible = preferences.getBoolean("use_theme_presets", false) &&
+                            preferences.getBoolean("theme_preset_auto_mode", false)
+
+                    fun updateSummary() {
+                        summary = "${context.getString(ThemeUtil.getLightThemePreset(context).nameResource)} / " +
+                                context.getString(ThemeUtil.getDarkThemePreset(context).nameResource)
+                    }
+                    updateSummary()
+
+                    setOnPreferenceClickListener {
+                        var stagedLight = ThemeUtil.getLightThemePreset(context)
+                        var stagedDark = ThemeUtil.getDarkThemePreset(context)
+
+                        val binding = host.getHostContext().layoutInflater.inflate(R.layout.dialog_light_dark_preset, null)
+                        val lightCard = binding.findViewById<MaterialCardView>(R.id.lightSlotCard)
+                        val lightName = binding.findViewById<TextView>(R.id.lightSlotName)
+                        val darkCard = binding.findViewById<MaterialCardView>(R.id.darkSlotCard)
+                        val darkName = binding.findViewById<TextView>(R.id.darkSlotName)
+
+                        fun renderSlot(card: MaterialCardView, name: TextView, preset: ThemeUtil.ThemePreset) {
+                            val themedContext = ContextThemeWrapper(context, preset.styleResource)
+                            val value = TypedValue()
+                            themedContext.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, value, true)
+                            val primary = value.data
+                            themedContext.theme.resolveAttribute(com.google.android.material.R.attr.colorOnPrimary, value, true)
+                            val onPrimary = value.data
+
+                            name.text = context.getString(preset.nameResource)
+                            card.setCardBackgroundColor(primary)
+                            card.strokeColor = onPrimary
+                            name.setTextColor(onPrimary)
+                        }
+
+                        renderSlot(lightCard, lightName, stagedLight)
+                        renderSlot(darkCard, darkName, stagedDark)
+
+                        fun openPicker(
+                            presets: List<ThemeUtil.ThemePreset>,
+                            onPicked: (ThemeUtil.ThemePreset) -> Unit
+                        ) {
+                            val bottomSheet = BottomSheetDialog(host.getHostContext())
+                            bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                            bottomSheet.setContentView(R.layout.generic_list)
+                            val recycler = bottomSheet.findViewById<RecyclerView>(R.id.download_recyclerview)!!
+                            recycler.layoutManager = GridLayoutManager(context, 2)
+                            recycler.adapter = ThemePresetAdapter(null, ThemePresetAdapter.Mode.CHOOSE, presets) { chosen ->
+                                onPicked(chosen)
+                                bottomSheet.dismiss()
+                            }
+                            bottomSheet.show()
+                        }
+
+                        lightCard.setOnClickListener {
+                            openPicker(ThemeUtil.availableThemePresets.filter { !it.isDark }) { chosen ->
+                                stagedLight = chosen
+                                renderSlot(lightCard, lightName, stagedLight)
+                            }
+                        }
+                        darkCard.setOnClickListener {
+                            openPicker(ThemeUtil.availableThemePresets.filter { it.isDark }) { chosen ->
+                                stagedDark = chosen
+                                renderSlot(darkCard, darkName, stagedDark)
+                            }
+                        }
+
+                        MaterialAlertDialogBuilder(host.getHostContext())
+                            .setTitle(R.string.theme_preset_choose_title)
+                            .setView(binding)
+                            .setPositiveButton(R.string.ok) { _, _ ->
+                                ThemeUtil.setLightAndDarkThemePresets(context, stagedLight, stagedDark)
+                                updateSummary()
+                                ThemeUtil.updateThemes()
+                                host.refreshUI()
+                            }
+                            .setNegativeButton(R.string.cancel, null)
+                            .show()
+                        true
+                    }
+                }
+            }
             "high_contrast" -> {
                 (pref as SwitchPreferenceCompat).apply {
+                    isVisible = !preferences.getBoolean("use_theme_presets", false)
+
                     setOnPreferenceChangeListener { _, _ ->
                         ThemeUtil.updateThemes()
                         host.refreshUI()

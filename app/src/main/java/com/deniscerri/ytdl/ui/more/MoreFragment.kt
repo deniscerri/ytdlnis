@@ -2,7 +2,6 @@ package com.deniscerri.ytdl.ui.more
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +23,8 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.ui.more.terminal.TerminalActivity
 import com.deniscerri.ytdl.util.NavbarUtil
+import com.deniscerri.ytdl.util.ThemeUtil
+import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
@@ -68,7 +69,10 @@ class MoreFragment : Fragment() {
         settings = view.findViewById(R.id.settings)
 
         val appIcon = view.findViewById<ImageView>(R.id.app_icon)
-        if (mainSharedPreferences.getString("theme_accent", "blue") == "Default" && Build.VERSION.SDK_INT >= 32) {
+        val usingMaterialYou = mainSharedPreferences.getString("theme_accent", "blue") == "Default" &&
+                DynamicColors.isDynamicColorAvailable() &&
+                !ThemeUtil.isThemePresetsEnabled(requireContext())
+        if (usingMaterialYou) {
             appIcon.backgroundTintList = MaterialColors.getColorStateList(requireContext(), R.attr.colorPrimary, ContextCompat.getColorStateList(requireContext(), R.color.icon_fg)!!)
         } else {
             appIcon.backgroundTintList = null
