@@ -8,7 +8,7 @@
         android:id="@+id/add"/>
 
     <item android:title="@string/exit"
-        android:icon="@drawable/baseline_delete"
+        android:icon="@drawable/baseline_exit_to_app_24"
         app:showAsAction="always"
         android:id="@+id/exit"/>
 
