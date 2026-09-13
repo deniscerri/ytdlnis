@@ -929,6 +929,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         request.addOption("--newline")
+        request.addOption("--plugin-dirs", FileUtil.getBundledYTDLPPluginsPath(context))
 
         val metadataCommands = StringJoiner(" ")
 
@@ -1387,9 +1388,9 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 var vCodecPref = context.getStringArray(R.array.video_codec_values_ytdlp)[vCodecPrefIndex]
 
                 if (downloadItem.videoPreferences.compatibilityMode) {
-                    request.addOption("--recode-video", "mp4")
-                    request.addOption("--merge-output-format", "mp4/mkv")
-                    request.addOption("--ppa", "VideoConvertor+ffmpeg_o:-profile:v baseline")
+                    request.addOption("--merge-output-format", "mp4")
+                    request.addOption("--remux-video", "mp4")
+                    request.addOption("--use-postprocessor", "CompatibleRecoder:when=after_move")
                     vCodecPref = "h264"
                     aCodecPref = "aac"
                 }
@@ -1570,6 +1571,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     request.addOption("--write-auto-subs")
                 }
 
+
+
                 if (downloadItem.videoPreferences.embedSubs) {
                     if (sharedPreferences.getBoolean("no_keep_subs", false) && (downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs)) {
                         request.addOption("--compat-options", "no-keep-subs")
@@ -1585,6 +1588,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         request.addOption("--convert-subtitles", subFormat)
                     }
                     request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { ".*-orig" })
+                }
+
+                if (downloadItem.videoPreferences.burnSubs) {
+                    request.addOption("--use-postprocessor", "BurnSubs:when=after_move")
                 }
 
                 var copyStream = ""

@@ -263,6 +263,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
+        val burnSubs = sharedPreferences.getBoolean("burn_subtitles", false)
         val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
         val compatibilityMode = sharedPreferences.getBoolean("compatible_video", false)
         val removeAudio = sharedPreferences.getBoolean("remove_audio", false)
@@ -310,6 +311,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             ArrayList(sponsorblock),
             saveSubs,
             saveAutoSubs,
+            burnSubs,
             subsLanguages,
             audioFormatIDs = preferredAudioFormats,
             recodeVideo = recodeVideo,
@@ -454,6 +456,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val embedSubs = sharedPreferences.getBoolean("embed_subtitles", false)
         val saveSubs = sharedPreferences.getBoolean("write_subtitles", false)
         val saveAutoSubs = sharedPreferences.getBoolean("write_auto_subtitles", false)
+        val burnSubs = sharedPreferences.getBoolean("burn_subtitles", false)
         val recodeVideo = sharedPreferences.getBoolean("recode_video", false)
         val removeAudio = sharedPreferences.getBoolean("remove_audio", false)
         val compatibilityMode = sharedPreferences.getBoolean("compatible_video", false)
@@ -511,6 +514,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             sponsorBlockFilters = ArrayList(sponsorblock),
             writeSubs = saveSubs,
             writeAutoSubs = saveAutoSubs,
+            burnSubs = burnSubs,
             subsLanguages = subsLanguages,
             recodeVideo = recodeVideo,
             compatibilityMode = compatibilityMode,

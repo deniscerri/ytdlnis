@@ -32,6 +32,7 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
 import org.apache.commons.io.FileUtils
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.util.Collections
@@ -180,6 +181,9 @@ object RuntimeManager {
 //                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
 //            }
 
+                    val ytdlpPluginsFolder = File(FileUtil.getBundledYTDLPPluginsPath(appContext))
+                    copyAssetFolder(appContext, "yt_dlp_plugins", ytdlpPluginsFolder)
+
                     initialized = true
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -188,6 +192,38 @@ object RuntimeManager {
                     initLatch.countDown()
                     updateLatch.countDown()
                 }
+            }
+        }
+    }
+
+    fun copyAssetFolder(context: Context, assetFolderPath: String, targetFolder: File) {
+        val assetManager = context.assets
+        val files = assetManager.list(assetFolderPath) ?: return
+
+        if (!targetFolder.exists()) {
+            targetFolder.mkdirs()
+        }
+
+        for (file in files) {
+            val assetPath = if (assetFolderPath.isEmpty()) file else "$assetFolderPath/$file"
+            val subFiles = assetManager.list(assetPath)
+
+            if (subFiles != null && subFiles.isNotEmpty()) {
+                // It's a directory -> recursively copy it
+                copyAssetFolder(context, assetPath, File(targetFolder, file))
+            } else {
+                // It's a file -> write to internal storage
+                copyAssetFile(context, assetPath, File(targetFolder, file))
+            }
+        }
+    }
+
+    private fun copyAssetFile(context: Context, assetPath: String, outFile: File) {
+        if (outFile.exists()) return // Skip if already copied
+
+        context.assets.open(assetPath).use { input ->
+            FileOutputStream(outFile).use { output ->
+                input.copyTo(output)
             }
         }
     }

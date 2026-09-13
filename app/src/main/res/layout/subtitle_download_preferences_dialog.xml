@@ -27,6 +27,14 @@
         android:text="@string/save_auto_subs"
         android:layout_height="wrap_content" />
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/burn_subs"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:enabled="false"
+        android:text="@string/burn_subs"
+        android:layout_height="wrap_content" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

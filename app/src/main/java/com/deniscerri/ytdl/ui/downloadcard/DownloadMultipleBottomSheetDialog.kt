@@ -715,6 +715,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             items.forEach { it.videoPreferences.writeAutoSubs = checked }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         },
+                                        burnSubtitlesClicked = { checked ->
+                                            items.forEach { it.videoPreferences.burnSubs = checked }
+                                            CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                        },
                                         subtitleLanguagesSet = {value ->
                                             items.forEach { it.videoPreferences.subsLanguages = value }
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }

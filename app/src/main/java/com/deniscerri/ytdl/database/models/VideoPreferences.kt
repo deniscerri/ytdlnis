@@ -11,6 +11,7 @@ data class VideoPreferences (
     var sponsorBlockFilters: ArrayList<String> = arrayListOf(),
     var writeSubs: Boolean = false,
     var writeAutoSubs: Boolean = false,
+    var burnSubs: Boolean = false,
     var subsLanguages: String = ".*-orig",
     var audioFormatIDs : ArrayList<String> = arrayListOf(),
     var removeAudio: Boolean = false,

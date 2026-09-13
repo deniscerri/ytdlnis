@@ -477,6 +477,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             saveAutoSubtitlesClicked = {
                                 downloadItem.videoPreferences.writeAutoSubs = it
                             },
+                            burnSubtitlesClicked = {
+                                downloadItem.videoPreferences.burnSubs = it
+                            },
                             subtitleLanguagesSet = {
                                 downloadItem.videoPreferences.subsLanguages = it
                             },

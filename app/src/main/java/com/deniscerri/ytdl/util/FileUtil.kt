@@ -389,6 +389,10 @@ object FileUtil {
         return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/TERMINAL_CACHE"
     }
 
+    fun getBundledYTDLPPluginsPath(context: Context) : String {
+        return File(context.filesDir, "yt_dlp_plugins").absolutePath
+    }
+
     fun getCookieFile(context : Context, ignoreIfExists: Boolean = false,  path: (path: String) -> Unit){
         val cookiesFile = File(context.cacheDir, "cookies.txt")
         if (ignoreIfExists || cookiesFile.exists()){

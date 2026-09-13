@@ -1333,6 +1333,7 @@ object UiUtil {
         filenameTemplateSet: (String) -> Unit,
         saveSubtitlesClicked: (Boolean) -> Unit,
         saveAutoSubtitlesClicked: (Boolean) -> Unit,
+        burnSubtitlesClicked: (Boolean) -> Unit,
         subtitleLanguagesSet: (String) -> Unit,
         removeAudioClicked: (Boolean) -> Unit,
         recodeVideoClicked: (Boolean) -> Unit,
@@ -1456,6 +1457,7 @@ object UiUtil {
                     firstItem.videoPreferences.embedSubs,
                     firstItem.videoPreferences.writeSubs,
                     firstItem.videoPreferences.writeAutoSubs,
+                    firstItem.videoPreferences.burnSubs,
                 )
                 adjustSubtitles.createBadge(context, count.filter { it }.size)
             }
@@ -1466,6 +1468,7 @@ object UiUtil {
             val embedSubs = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.embed_subtitles)
             val saveSubtitles = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.save_subs)
             val saveAutoSubtitles = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.save_auto_subs)
+            val burnSubtitles = adjustSubtitleView.findViewById<MaterialSwitch>(R.id.burn_subs)
             val subtitleLanguages = adjustSubtitleView.findViewById<ConstraintLayout>(R.id.subtitle_languages)
             val subtitleLanguagesDescription = adjustSubtitleView.findViewById<TextView>(R.id.subtitle)
             subtitleLanguagesDescription.text = items.first().videoPreferences.subsLanguages
@@ -1474,6 +1477,7 @@ object UiUtil {
             embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
             embedSubs.setOnClickListener {
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
+                burnSubtitles.isEnabled = embedSubs.isChecked
                 embedSubsClicked(embedSubs.isChecked)
 
                 items.forEach { it.videoPreferences.embedSubs = embedSubs.isChecked }
@@ -1490,10 +1494,22 @@ object UiUtil {
                 subtitleLanguages.visibility = View.VISIBLE
             }
 
+            if (items.all { it.videoPreferences.burnSubs}) {
+                burnSubtitles.isChecked = true
+            }
+
             saveSubtitles.setOnCheckedChangeListener { _, _ ->
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
                 saveSubtitlesClicked(saveSubtitles.isChecked)
                 items.forEach { it.videoPreferences.writeSubs = saveSubtitles.isChecked }
+
+                burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                if (!burnSubtitles.isEnabled) {
+                    burnSubtitles.isChecked = false
+                    burnSubtitlesClicked(burnSubtitles.isChecked)
+                    items.forEach { it.videoPreferences.burnSubs = burnSubtitles.isChecked }
+                }
+
                 calculateAdjustSubtitlesChangeCount()
             }
 
@@ -1501,6 +1517,14 @@ object UiUtil {
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked || saveAutoSubtitles.isChecked
                 saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
                 items.forEach { it.videoPreferences.writeAutoSubs = saveAutoSubtitles.isChecked }
+
+                burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                if (!burnSubtitles.isEnabled) {
+                    burnSubtitles.isChecked = false
+                    burnSubtitlesClicked(burnSubtitles.isChecked)
+                    items.forEach { it.videoPreferences.burnSubs = burnSubtitles.isChecked }
+                }
+
                 calculateAdjustSubtitlesChangeCount()
             }
 
@@ -1517,6 +1541,13 @@ object UiUtil {
                     subtitleLanguagesSet(it)
                     subtitleLanguagesDescription.text = it
                 }
+            }
+
+            burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+            burnSubtitles.setOnCheckedChangeListener { _, _ ->
+                burnSubtitlesClicked(burnSubtitles.isChecked)
+                items.forEach { it.videoPreferences.burnSubs = burnSubtitles.isChecked }
+                calculateAdjustSubtitlesChangeCount()
             }
 
             val adjustSubtitleDialog = MaterialAlertDialogBuilder(context)
