@@ -167,6 +167,15 @@
             app:summary="@string/preferred_search_engine_summary"
             app:title="@string/preferred_search_engine" />
 
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_clipboard"
+            app:key="check_clipboard_home"
+            app:summary="@string/check_clipboard_home_summary"
+            app:title="@string/check_clipboard_home" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"

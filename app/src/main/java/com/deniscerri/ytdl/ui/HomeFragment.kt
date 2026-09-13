@@ -974,6 +974,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     private fun checkClipboard(): List<String>?{
+        val checkClipboard = sharedPreferences!!.getBoolean("check_clipboard_home", true)
+        if (!checkClipboard) return null
+
         return kotlin.runCatching {
             val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = clipboard.primaryClip!!.getItemAt(0).text
