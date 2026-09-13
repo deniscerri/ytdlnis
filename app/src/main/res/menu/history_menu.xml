@@ -23,6 +23,12 @@
         app:showAsAction="always"/>
 
     <item
+        android:id="@+id/copy_urls"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy_urls"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/remove_history"
         android:icon="@drawable/ic_delete_all"
         android:title="@string/remove_all"

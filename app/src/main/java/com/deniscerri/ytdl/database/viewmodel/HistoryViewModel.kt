@@ -178,6 +178,15 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         return repository.getDownloadPathsFromIDs(ids)
     }
 
+    fun getURLsFromIDs(ids: List<Long>) : List<String> {
+        return repository.getURLsFromIDs(ids)
+    }
+
+    fun getURLS() : List<String> {
+        val ids = getItemIDsNotPresentIn(listOf())
+        return getURLsFromIDs(ids)
+    }
+
     fun deleteAll(deleteFile: Boolean = false) = viewModelScope.launch(Dispatchers.IO) {
         repository.deleteAll(deleteFile)
     }

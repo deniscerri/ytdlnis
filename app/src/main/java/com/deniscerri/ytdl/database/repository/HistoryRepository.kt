@@ -152,6 +152,15 @@ class HistoryRepository(private val historyDao: HistoryDao) {
         return res
     }
 
+    fun getURLsFromIDs(ids: List<Long>) : List<String> {
+        val res : MutableList<String> = mutableListOf()
+        ids.chunked(500).forEach { chunks ->
+            val tmp = historyDao.getURLsFromIDs(chunks)
+            res.addAll(tmp)
+        }
+        return res
+    }
+
     suspend fun deleteDuplicates(){
         historyDao.deleteDuplicates()
     }

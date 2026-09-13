@@ -321,6 +321,15 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         deleteDialog.show()
                     }
                 }
+                R.id.copy_urls -> {
+                    lifecycleScope.launch {
+                        val urls = withContext(Dispatchers.IO){
+                            historyViewModel.getURLS()
+                        }
+
+                        UiUtil.copyToClipboard(urls.distinct().joinToString("\n"), requireActivity())
+                    }
+                }
                 R.id.filters -> {
                     val filterSheet = BottomSheetDialog(requireContext())
                     filterSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -614,6 +623,19 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                         historyAdapter.clearCheckedItems()
                         actionMode?.finish()
 
+                    }
+                    true
+                }
+                R.id.copy_urls -> {
+                    lifecycleScope.launch {
+                        val selectedObjects = getSelectedIDs()
+                        val urls = withContext(Dispatchers.IO){
+                            historyViewModel.getURLsFromIDs(selectedObjects)
+                        }
+
+                        UiUtil.copyToClipboard(urls.distinct().joinToString("\n"), requireActivity())
+                        historyAdapter.clearCheckedItems()
+                        actionMode?.finish()
                     }
                     true
                 }

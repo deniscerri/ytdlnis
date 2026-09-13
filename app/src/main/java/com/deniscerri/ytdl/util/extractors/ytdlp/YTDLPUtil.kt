@@ -1390,7 +1390,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (downloadItem.videoPreferences.compatibilityMode) {
                     request.addOption("--merge-output-format", "mp4")
                     request.addOption("--remux-video", "mp4")
-                    request.addOption("--use-postprocessor", "CompatibleRecoder:when=after_move")
+                    request.addOption("--use-postprocessor", "CompatibleRecoder")
                     vCodecPref = "h264"
                     aCodecPref = "aac"
                 }
