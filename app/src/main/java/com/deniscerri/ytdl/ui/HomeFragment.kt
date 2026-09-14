@@ -167,7 +167,6 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         // ==========================================
         searchBar?.visibility = View.GONE
         searchBar?.isEnabled = false
-        // ==========================================
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         materialToolbar = view.findViewById(R.id.home_toolbar)
         queriesChipGroup = view.findViewById(R.id.queries)
