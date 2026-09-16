@@ -1,13 +1,111 @@
+# ==============================
+# Android Studio / IntelliJ IDEA
+# ==============================
+.idea/
 *.iml
-.gradle
-/local.properties
-/keystore.properties
-/.idea
+*.ipr
+*.iws
+
+# Android Studio generated files
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/misc.xml
+.idea/deploymentTargetDropDown.xml
+.idea/deviceManager.xml
+
+# ==============================
+# Gradle
+# ==============================
+.gradle/
+**/.gradle/
+
+build/
+**/build/
+
+# Gradle generated output
+.gradle-cache/
+gradle-app.setting
+
+# Keep the Gradle wrapper
+!gradle/
+!gradle/wrapper/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# ==============================
+# Android
+# ==============================
+
+# Local Android SDK configuration
+local.properties
+
+# APK / AAB outputs
+*.apk
+*.aab
+
+# Android generated intermediates
+captures/
+.externalNativeBuild/
+.cxx/
+
+# ==============================
+# Kotlin
+# ==============================
+.kotlin/
+**/.kotlin/
+
+# Kotlin compiler output
+out/
+**/out/
+
+# ==============================
+# Java
+# ==============================
+*.class
+
+# ==============================
+# Native / CMake
+# ==============================
+.cxx/
+.externalNativeBuild/
+
+# ==============================
+# Signing / secrets
+# ==============================
+*.jks
+*.keystore
+*.p12
+*.pem
+keystore.properties
+secrets.properties
+keystore.properties
+
+# ==============================
+# Test / Coverage
+# ==============================
+coverage/
+*.exec
+*.ec
+*.hprof
+
+# ==============================
+# OS junk
+# ==============================
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-/benchmark
-*.png
-app/src/main/jniLibs
-.kotlin
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# ==============================
+# Temporary files
+# ==============================
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
