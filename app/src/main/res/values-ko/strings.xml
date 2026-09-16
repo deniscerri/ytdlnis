@@ -595,4 +595,5 @@
     <string name="check_clipboard">앱 시작 시 클립보드 확인</string>
     <string name="check_clipboard_home_summary">홈 화면에서 클립보드 내 URL 자동 감지</string>
     <string name="check_clipboard_home">홈 화면에서 클립보드 확인</string>
+    <string name="burn_subs">자막 굽기</string>
 </resources>
