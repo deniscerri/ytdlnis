@@ -548,4 +548,60 @@
         <item quantity="other">Completato · %d esecuzioni</item>
     </plurals>
     <string name="rescan_from_scratch">Riesegui scansione dall\'inizio</string>
+    <string name="reset_state">Reimposta stato</string>
+    <string name="rescan_from_scratch_desc">Dimentica oggetti non processati e ri-scarica tutto non già salvato</string>
+    <string name="skip_backlog">Salta backlog attuale</string>
+    <string name="skip_backlog_desc">Segna tutto attualmente nella fonte come fatto — scarica solo upload futuri</string>
+    <string name="unskip_ignored">Non saltare upload ignorati</string>
+    <string name="observe_processed_chip">%d processato</string>
+    <string name="observe_skipped_chip">%d saltato</string>
+    <string name="observe_updating">Aggiornando…</string>
+    <string name="check_available_storage">Controlla per spazio disponibile</string>
+    <string name="download_delay">Ritardo download</string>
+    <string name="download_delay_summary">Aspetta i secondi configurati tra ogni download. Questa funzione disabilita download correnti</string>
+    <string name="min_delay">Ritardo minimo (secondi)</string>
+    <string name="max_delay">Ritardo massimo (secondi)</string>
+    <string name="no_delay">Nessun ritardo selezionato</string>
+    <string name="waiting_download_delay">Aspettando ritardo download (%s secondi)…</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Ogni minuto</item>
+        <item quantity="many">Ogni %d minuti</item>
+    </plurals>
+    <string name="bgutils_pot_generation_script">Generazione script</string>
+    <string name="bgutils_pot_generation_server">Server HTTP</string>
+    <string name="bgutils_pot_server_summary">Questo è un server JavaScript HTTP, sulla porta 4416, se è inattivo, inizia automaticamente il server quando la coda dei download inizia ad essere eseguita, o osserva le fonti quando pianificato. Per spegnerlo, devi farlo manualmente dalla notifica!</string>
+    <string name="please_install_package">Per favore installa il pacchetto %s</string>
+    <string name="please_install_package_or_package">Per favore installa in pachetto %1$s oppure pacchetto %2$s</string>
+    <string name="installation_method">Metodo di installazione</string>
+    <string name="system_install_failed">Installazione sistema fallito. Per favore scegli un altro metodo di installazione nelle impostazioni!</string>
+    <string name="choose_installer_app">Scegli un app installer</string>
+    <string name="notset">Non impostato</string>
+    <string name="external">Esterno</string>
+    <string name="exit">Esci</string>
+    <string name="check_clipboard">Controlla appunti all\'avvio dell\'app</string>
+    <string name="check_clipboard_home_summary">Automaticamente rileva URL negli appunti nella schermata home</string>
+    <string name="check_clipboard_home">Controlla appunti nella schermata home</string>
+    <plurals name="every_hours">
+        <item quantity="one">Ogni ora</item>
+        <item quantity="many">Ogni %d ore</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Ogni giorno</item>
+        <item quantity="many">Ogni %d giorni</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Ogni settimana</item>
+        <item quantity="many">Ogni %d settimana</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Ogni mese</item>
+        <item quantity="many">Ogni %d mesi</item>
+    </plurals>
+    <string name="unskip_ignored_desc">Scarica gli upload esistenti che la prima esecuzione ha saltato</string>
+    <string name="observe_runs_chip">%d esecuzioni</string>
+    <string name="bgutils_info">Un token di prova-di-origine (proof-of origin, POT) del fornitore di yt-dlp.\nCon questo abilitato, YTDlnis ospita il server HTTP che genera il POT e jnstalla i plugin rilevanti che yt-dlp usa.</string>
+    <string name="packages_description">I pacchetti sono applicazioni d\'aiuto che YTDlnis usa per aiutare con i comandi yt-dlp. Alcuni di quelli sono per installati, ma puoi installare nuove versioni che sono pubblicate senza bisogno di aggiornare l\'app. L\'apk installato rimpiazza la versione preinstallata che l\'app usa.</string>
+    <string name="bgutils_pot_generation_script_summary">Ogni chiamata yt-dlp comporta il sovraccarico dovuto alla creazione di un nuovo processo runtime js per eseguire la script. Questo metodo non è raccomandato per usagio ad alta concorrenza.</string>
+    <string name="bgutils_pot_generation_script_info">Per usare il POT Procider BgUtils, l\'apl deve essere scaricata dal repo da github Brainicism/bgutil-ytdlp-pot-provider e iniziare l\'installazione. Questo ci potrebbe mettere un po\' per finire. Procedere ora?</string>
+    <string name="burn_subs">Masterizza sottotitoli</string>
 </resources>
