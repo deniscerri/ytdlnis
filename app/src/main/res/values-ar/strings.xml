@@ -615,4 +615,16 @@
     <string name="bgutils_pot_server_summary">هذا خادم HTTP مبني بلغة JavaScript، يعمل على المنفذ 4416. إذا كان متوقفًا، يبدأ تشغيله تلقائيًا عند بدء تنفيذ قائمة التنزيل أو عند جدولة مراقبة المصادر. لإيقافه، يجب عليك فعل ذلك يدويًا من الإشعارات!</string>
     <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
     <string name="please_install_package_or_package">رجاءا ثبت حزمة %1$s أو حزمة %2$s</string>
+    <string name="installation_method">طريقة التثبيت</string>
+    <string name="system_install_failed">فشل تثبيت النظام. الرجاء اختيار طريقة تثبيت أخرى في الإعدادات!</string>
+    <string name="choose_installer_app">إختيار مثبت التطبيقات</string>
+    <string name="external">خارجي</string>
+    <string name="exit">خروج</string>
+    <string name="burn_subs">دمج الترجمة</string>
+    <string name="check_clipboard">التحقق من الحافظة عند بدء تشغيل التطبيق</string>
+    <string name="check_clipboard_home_summary">كشف تلقائيا للرابط في الحافظة في الشاشة الرئيسية</string>
+    <string name="check_clipboard_home">تحقق من الحافظة في الشاشة الرئيسية</string>
+    <string name="notset">غير محدد</string>
+    <string name="packages_description">الحزم هي تطبيقات مساعدة يستخدمها YTDLnis لدعم أوامر yt-dlp. تأتي بعض هذه الحزم مدمجة بالفعل مع التطبيق، ولكن يمكنك تثبيت إصدارات أحدث يتم إصدارها دون الحاجة إلى تحديث التطبيق نفسه؛ حيث تحل ملفات APK المثبتة هذه محل الإصدار المدمج الذي يستخدمه التطبيق.</string>
+    <string name="bgutils_pot_generation_script_info">لاستخدام مزود BgUtils POT، يحتاج التطبيق إلى تحميل المستودع Brainicism/bgutil-ytdlp-pot-provider من GitHub وبدء عملية التثبيت. قد تستغرق هذه العملية بعض الوقت؛ هل تود المتابعة الآن؟</string>
 </resources>
