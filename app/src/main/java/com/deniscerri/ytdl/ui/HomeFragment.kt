@@ -548,6 +548,15 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         searchBar!!.setOnMenuItemClickListener { m: MenuItem ->
             when (m.itemId) {
+                R.id.copy_urls -> {
+                    lifecycleScope.launch {
+                        val urls = withContext(Dispatchers.IO){
+                            resultViewModel.getURLs()
+                        }
+
+                        UiUtil.copyToClipboard(urls.distinct().joinToString("\n"), requireActivity())
+                    }
+                }
                 R.id.delete_results -> {
                     lifecycleScope.launch {
                         withContext(Dispatchers.IO){

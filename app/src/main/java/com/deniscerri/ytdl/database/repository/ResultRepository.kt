@@ -61,6 +61,10 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return resultDao.getFilteredListIds(playlistTitle)
     }
 
+    fun getURLs() : List<String> {
+        return resultDao.getURLs()
+    }
+
     suspend fun getHomeRecommendations(){
         deleteAll()
         val category = sharedPreferences.getString("recommendations_home", "")

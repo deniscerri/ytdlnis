@@ -74,6 +74,9 @@ interface ResultDao {
     @Query("SELECT * FROM results WHERE url=:url LIMIT 1")
     fun getResultByURL(url: String) : ResultItem?
 
+    @Query("SELECT url FROM results")
+    fun getURLs() : List<String>
+
     @Query("SELECT * FROM results WHERE url=:url")
     fun getAllByURL(url: String) : List<ResultItem>
 

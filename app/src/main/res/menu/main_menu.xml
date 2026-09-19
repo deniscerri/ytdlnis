@@ -13,6 +13,12 @@
         android:title="@string/remove_search_history"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/copy_urls"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy_urls"
+        app:showAsAction="never" />
+
 
 </menu>
 

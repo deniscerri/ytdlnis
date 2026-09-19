@@ -409,6 +409,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getFilteredIDs(playlistFilter.value)
     }
 
+    fun getURLs() : List<String> {
+        return repository.getURLs()
+    }
+
     fun reverseResults(resultItems: List<Long>): List<Long> {
         val latestResult = resultItems.max()
         val newIdsMap = mutableListOf<Pair<Long, Long>>()
