@@ -405,7 +405,7 @@
     <string name="show_terminal">แสดงเทอร์มินัลในหน้าเมนูแชร์</string>
     <string name="write_description_summary">เขียนไฟล์คําอธิบาย</string>
     <string name="use_cookies">ใช้คุกกี้</string>
-    <string name="embed_metadata">ฝังข้อมูลอภิพันธุ์ (เมตาดาตา)</string>
+    <string name="embed_metadata">การฝังข้อมูลอธิบายบริบทไว้ภายในไฟล์ (ฝังข้อมูลเมตา)</string>
     <string name="embed_metadata_summary">วิเคราห์และฝังข้อมูลเมตาดาตาลงในไฟล์เสียง</string>
     <string name="scheduling">ตั้งตาราง</string>
     <string name="preferred_search_engine_summary">เครื่องมือค้นหาที่จะใช้สำหรับการค้นหาในแอป</string>
@@ -454,7 +454,7 @@
     <string name="prefer_container_over_codec_audio_summary">เมื่อเปิดใช้งานแล้ว ตัวแปลงเสียงที่ต้องการจะถูกเพิกเฉย และจะเปลี่ยนแปลงเฉพาะตัวคอนเทนเนอร์เท่านั้น</string>
     <string name="player_client">ไคลเอนต์ของตัวเล่น</string>
     <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
-    <string name="use_app_language_for_metadata">ใช้ภาษาของแอปสำหรับข้อมูลอภิพันธุ์ (เมตาดาตา)</string>
+    <string name="use_app_language_for_metadata">ใช้ภาษาของแอปสำหรับข้อมูลรายละเอียด</string>
     <string name="layout">โครงส่วน</string>
     <string name="list">ลิสต์</string>
     <string name="grid">กริด</string>
