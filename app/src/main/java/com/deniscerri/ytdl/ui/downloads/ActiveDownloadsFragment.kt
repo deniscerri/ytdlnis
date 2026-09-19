@@ -9,6 +9,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.OptIn
@@ -141,6 +142,12 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
                 noResults.isVisible = it.isEmpty()
                 activeDownloads.submitList(it)
                 activeRecyclerView.scrollTo(0,0)
+
+                if (it.isEmpty()) {
+                    requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else {
+                    requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                }
             }
         }
 
