@@ -587,6 +587,7 @@
     <string name="check_clipboard">Check clipboard on app startup</string>
     <string name="check_clipboard_home_summary">Automatically detect URLs in clipboard in the home screen</string>
     <string name="check_clipboard_home">Check clipboard in the home screen</string>
+    <string name="clear_info_json">Clear infojsons</string>
     <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
