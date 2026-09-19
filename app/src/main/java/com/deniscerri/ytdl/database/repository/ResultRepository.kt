@@ -399,6 +399,10 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return resultDao.getAllByURL(url)
     }
 
+    fun getAll() : List<ResultItem> {
+        return resultDao.getAll()
+    }
+
     fun getAllByIDs(ids: List<Long>) : List<ResultItem> {
         return resultDao.getAllByIDs(ids)
     }

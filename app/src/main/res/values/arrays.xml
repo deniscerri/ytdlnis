@@ -821,6 +821,7 @@
 
     <array name="backup_category_entries">
         <item>@string/settings</item>
+        <item>@string/search_results</item>
         <item>@string/downloads</item>
         <item>@string/in_queue</item>
         <item>@string/scheduled</item>
@@ -836,6 +837,7 @@
 
     <array name="backup_category_values">
         <item>settings</item>
+        <item>searchResults</item>
         <item>downloads</item>
         <item>queued</item>
         <item>scheduled</item>

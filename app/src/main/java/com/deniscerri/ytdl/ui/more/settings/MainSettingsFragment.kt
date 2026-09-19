@@ -35,6 +35,7 @@ import com.deniscerri.ytdl.database.models.CookieItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.RestoreAppDataItem
+import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
@@ -302,6 +303,17 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                             Gson().fromJson(it.toString().replace("^\"|\"$", ""), BackupSettingsItem::class.java)
                         }
                         parsedDataMessage.appendLine("${getString(R.string.settings)}: ${restoreData.settings!!.size}")
+                    }
+
+                    if (json.has("searchResults")) {
+                        restoreData.searchResults = json.getAsJsonArray("searchResults").map {
+                            val item =
+                                Gson().fromJson(it.toString().replace("^\"|\"$", ""), ResultItem::class.java)
+                            item.id = 0L
+                            item
+                        }
+                        parsedDataMessage.appendLine("${getString(R.string.search_results)}: ${restoreData.searchResults!!.size}")
+
                     }
 
                     if (json.has("downloads")) {

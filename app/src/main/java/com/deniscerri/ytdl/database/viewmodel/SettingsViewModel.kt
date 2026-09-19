@@ -18,6 +18,7 @@ import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.deniscerri.ytdl.ui.more.settings.SettingsRegistry
 import com.deniscerri.ytdl.util.BackupSettingsUtil
@@ -41,6 +42,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     private val preferences : SharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
 
     private val historyRepository : HistoryRepository
+    private val resultRepository : ResultRepository
     private val downloadRepository : DownloadRepository
     private val cookieRepository : CookieRepository
     private val commandTemplateRepository : CommandTemplateRepository
@@ -54,6 +56,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     init {
         val dbManager = DBManager.getInstance(application)
         historyRepository = HistoryRepository(dbManager.historyDao)
+        resultRepository = ResultRepository(dbManager.resultDao, dbManager.commandTemplateDao, application)
         downloadRepository = DownloadRepository(dbManager.downloadDao)
         cookieRepository = CookieRepository(dbManager.cookieDao)
         commandTemplateRepository = CommandTemplateRepository(dbManager.commandTemplateDao)
@@ -83,7 +86,21 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
     suspend fun backup(items: List<String> = listOf()) : Result<String> {
         var list = items
         if (list.isEmpty()) {
-            list = listOf("settings", "downloads", "queued", "scheduled", "cancelled", "errored", "saved", "cookies", "templates", "shortcuts", "searchHistory", "observeSources")
+            list = listOf(
+                "settings",
+                "searchResults",
+                "downloads",
+                "queued",
+                "scheduled",
+                "cancelled",
+                "errored",
+                "saved",
+                "cookies",
+                "templates",
+                "shortcuts",
+                "searchHistory",
+                "observeSources"
+            )
         }
 
         val json = JsonObject()
@@ -92,6 +109,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
             runCatching {
                 when(it){
                     "settings" -> json.add("settings", BackupSettingsUtil.backupSettings(preferences))
+                    "searchResults" -> json.add("searchResults", BackupSettingsUtil.backupSearchResults(resultRepository))
                     "downloads" -> json.add("downloads", BackupSettingsUtil.backupHistory(historyRepository))
                     "queued" -> json.add("queued", BackupSettingsUtil.backupQueuedDownloads(downloadRepository))
                     "scheduled" -> json.add("scheduled", BackupSettingsUtil.backupScheduledDownloads(downloadRepository))
@@ -154,6 +172,14 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
                 }
             }
 
+            data.searchResults?.apply {
+                withContext(Dispatchers.IO){
+                    if (resetData) resultRepository.deleteAll()
+                    data.searchResults!!.forEach {
+                        resultRepository.insert(it)
+                    }
+                }
+            }
 
             data.downloads?.apply {
                 withContext(Dispatchers.IO){

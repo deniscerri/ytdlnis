@@ -71,6 +71,7 @@
     <string name="api_key_summary">Video recommendations from YouTube API</string>
     <string name="update_app_summary">Announce new versions of the app when it is opened. The data is extracted from the official GitHub Repository</string>
     <string name="downloads">Downloads</string>
+    <string name="search_results">Search Results</string>
     <string name="remove_deleted">Remove deleted</string>
     <string name="remove_duplicates">Remove duplicates</string>
     <string name="sort_by">Sorting</string>

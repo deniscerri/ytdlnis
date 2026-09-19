@@ -7,6 +7,7 @@ import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
 import com.deniscerri.ytdl.database.repository.ObserveSourcesRepository
+import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.database.repository.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.JsonArray
@@ -32,6 +33,21 @@ object BackupSettingsUtil {
 
             val arr = JsonArray()
             res.forEach {
+                arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
+            }
+            return arr
+        }
+        return JsonArray()
+    }
+
+    suspend fun backupSearchResults(resultRepository: ResultRepository) : JsonArray {
+        runCatching {
+            val items = withContext(Dispatchers.IO) {
+                resultRepository.getAll()
+            }
+            val arr = JsonArray()
+            items.forEach {
+                it.creationTime = Long.MAX_VALUE
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
