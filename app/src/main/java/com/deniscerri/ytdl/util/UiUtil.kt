@@ -1476,9 +1476,10 @@ object UiUtil {
             subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
 
             embedSubs!!.isChecked = items.all { it.videoPreferences.embedSubs }
+            embedSubs.isEnabled = items.all { !it.videoPreferences.burnSubs }
             embedSubs.setOnClickListener {
                 subtitleLanguages.isClickable = embedSubs.isChecked || saveSubtitles.isChecked
-                burnSubtitles.isEnabled = embedSubs.isChecked
+                burnSubtitles.isEnabled = !embedSubs.isChecked && (saveSubtitles.isChecked || saveAutoSubtitles.isChecked)
                 embedSubsClicked(embedSubs.isChecked)
 
                 items.forEach { it.videoPreferences.embedSubs = embedSubs.isChecked }
@@ -1504,7 +1505,7 @@ object UiUtil {
                 saveSubtitlesClicked(saveSubtitles.isChecked)
                 items.forEach { it.videoPreferences.writeSubs = saveSubtitles.isChecked }
 
-                burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                burnSubtitles.isEnabled = !embedSubs.isChecked && (saveSubtitles.isChecked || saveAutoSubtitles.isChecked)
                 if (!burnSubtitles.isEnabled) {
                     burnSubtitles.isChecked = false
                     burnSubtitlesClicked(burnSubtitles.isChecked)
@@ -1519,7 +1520,7 @@ object UiUtil {
                 saveAutoSubtitlesClicked(saveAutoSubtitles.isChecked)
                 items.forEach { it.videoPreferences.writeAutoSubs = saveAutoSubtitles.isChecked }
 
-                burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
+                burnSubtitles.isEnabled = !embedSubs.isChecked && (saveSubtitles.isChecked || saveAutoSubtitles.isChecked)
                 if (!burnSubtitles.isEnabled) {
                     burnSubtitles.isChecked = false
                     burnSubtitlesClicked(burnSubtitles.isChecked)
@@ -1547,6 +1548,7 @@ object UiUtil {
             burnSubtitles.isEnabled = saveSubtitles.isChecked || saveAutoSubtitles.isChecked
             burnSubtitles.setOnCheckedChangeListener { _, _ ->
                 burnSubtitlesClicked(burnSubtitles.isChecked)
+                embedSubs.isEnabled = !burnSubtitles.isChecked
                 items.forEach { it.videoPreferences.burnSubs = burnSubtitles.isChecked }
                 calculateAdjustSubtitlesChangeCount()
             }
