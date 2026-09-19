@@ -35,6 +35,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import java.security.MessageDigest
 import java.util.Collections
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -208,19 +209,42 @@ object RuntimeManager {
             val assetPath = if (assetFolderPath.isEmpty()) file else "$assetFolderPath/$file"
             val subFiles = assetManager.list(assetPath)
 
-            if (subFiles != null && subFiles.isNotEmpty()) {
+            if (!subFiles.isNullOrEmpty()) {
                 // It's a directory -> recursively copy it
                 copyAssetFolder(context, assetPath, File(targetFolder, file))
             } else {
                 // It's a file -> write to internal storage
-                copyAssetFile(context, assetPath, File(targetFolder, file))
+                copyAssetFileIfNeeded(context, assetPath, File(targetFolder, file))
             }
         }
     }
 
-    private fun copyAssetFile(context: Context, assetPath: String, outFile: File) {
-        if (outFile.exists()) return // Skip if already copied
+    private fun copyAssetFileIfNeeded(context: Context, assetPath: String, outFile: File) {
+        if (!outFile.exists()) {
+            copyAssetFile(context, assetPath, outFile)
+            return
+        }
 
+        // Compare hashes of asset vs local file
+        val assetHash = context.assets.open(assetPath).use { calculateHash(it) }
+        val fileHash = outFile.inputStream().use { calculateHash(it) }
+
+        if (assetHash != fileHash) {
+            copyAssetFile(context, assetPath, outFile)
+        }
+    }
+
+    private fun calculateHash(inputStream: java.io.InputStream): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val buffer = ByteArray(8192)
+        var bytesRead: Int
+        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+            digest.update(buffer, 0, bytesRead)
+        }
+        return digest.digest().joinToString("") { "%02x".format(it) }
+    }
+
+    private fun copyAssetFile(context: Context, assetPath: String, outFile: File) {
         context.assets.open(assetPath).use { input ->
             FileOutputStream(outFile).use { output ->
                 input.copyTo(output)

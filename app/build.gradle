@@ -165,6 +165,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.webkit:webkit:1.17.0'
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
 
     githubImplementation "io.github.deniscerri:ytdlnis_packages.python:3.14.6"
