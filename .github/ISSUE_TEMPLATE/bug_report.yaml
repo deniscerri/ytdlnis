@@ -1,95 +1,107 @@
 name: Bug report
-description: Create a report to help us address issues you are facing
+description: Create a report to help us address app bugs in YTDLnis
 title: "[Bug] "
-labels: [bug]
+labels: ["bug"]
 body:
   - type: markdown
     attributes:
       value: |
-        You can try the nightly version first. If that doesn't help, proceed with the issue.
+        ### ⚠️ Before Submitting a Bug Report
+
+        Please read carefully to ensure your issue belongs here:
+
+        * **Download / Extraction Errors (HTTP 403, "Sign in to confirm", Unsupported URL)**: These are almost always issues with **yt-dlp**, NOT YTDLnis. Update `yt-dlp` in **Settings -> Updating** first. If the error persists after updating, try updating the yt-dlp source in Updating settings aswell and lastly if that fails, check or report it on the [yt-dlp issue tracker](https://github.com/yt-dlp/yt-dlp/issues).
+        
+        * **App Bugs (Report Here)**: App crashes, UI freezes, settings failing to save, background service issues, storage/file errors, layout bugs or app failing to properly implement yt-dlp commands.
 
   - type: checkboxes
-    id: version
+    id: prerequisites
     attributes:
-      label: ⠀
+      label: Self-Check & Prerequisites
       options:
-        - label: Tried latest version
+        - label: I have updated **yt-dlp** (and other runtimes) to the latest version in YTDLnis settings and re-tested.
           required: true
-
-  - type: checkboxes
-    id: duplication
-    attributes:
-      label: ⠀
-      options:
-        - label: This issue is not duplicated with any other open or closed issues
+        - label: I have switched yt-dlp source and re-tested.
           required: true
-
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for taking the time to make us better!
+        - label: I have verified this is an **app bug** (e.g. crash, UI issue, setting bug) and NOT an upstream `yt-dlp` download failure.
+          required: true
+        - label: I have tested on the release of YTDLnis.
+          required: true
+        - label: This issue is not duplicated in any existing open or closed issues.
+          required: true
+        - label: I have tested on the latest github actions build of YTDLnis.
+          required: false
 
   - type: textarea
     id: description
     attributes:
-      label: Describe the bug
-      description: A clear and concise description of what the bug is
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
       placeholder: |
-        App crashes on startup every time after changing settings.
+        Example: App crashes on startup every time after changing X setting.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the unexpected behavior.
+      placeholder: |
+        Example:
+        1. Go to 'Settings' -> 'Folders'
+        2. Toggle 'X setting'
+        3. Restart the app
+        4. Crash occurs
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: A clear and concise description of what you expected to happen
+      label: Expected Behavior
+      description: A clear description of what you expected to happen.
       placeholder: |
-        App started normally, everything is working fine.
+        App starts normally without crashing.
     validations:
       required: false
 
   - type: textarea
-    id: reproduce
+    id: environment
     attributes:
-      label: Steps to reproduce
-      description: Steps to reproduce the bug
+      label: Environment & Versions
+      description: Provide exact version details to help diagnose the issue.
       placeholder: |
-        1. Turn on "Don't download as Fragments" in "Folders" settings
-        2. Restart the app
-        3. Crash
+        - YTDLnis Version: (e.g., 1.7.5 / Nightly build date)
+        - yt-dlp Version: (e.g., 2026.XX.XX)
+        - Android Version: (e.g., Android 14 / MIUI 14)
+        - Device Model: (e.g., Google Pixel 8)
     validations:
       required: true
 
   - type: textarea
-    id: environment
+    id: logs
     attributes:
-      label: Device information
-      description: Provide details about your system environment
+      label: Crash Logs / Verbose Output
+      description: Paste any crash logs, stack traces, or app logs here.
       placeholder: |
-        Device:
-        System:
+        Paste log output here...
+      render: shell
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: screenshots
     attributes:
       label: Screenshots / Recordings
-      description: If applicable, add them to help explain your problem
-      placeholder: |
-        modified_setting_items.jpg
-        crashed_screen.jpg
+      description: Drag and drop screenshots or screen recordings here if applicable.
     validations:
       required: false
 
   - type: textarea
     id: additional
     attributes:
-      label: Additional context
-      description: Add any other context about the problem here
-      placeholder: |
-        Crash report:
-        Verbose logs:
+      label: Additional Context
+      description: Add any other context or notes about the problem.
     validations:
       required: false
