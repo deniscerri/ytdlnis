@@ -610,4 +610,8 @@
     <string name="exit">Вихід</string>
     <string name="packages_description">Пакети це допоміжні застосунки, які YTDLnis використовує для допомоги з командами yt-dlp. Деякі з них вже входять до комплекту, але ви можете встановити новіші версії, опубліковані без необхідності оновлення застосунка. Встановлені apk\'s замінюють версію, що постачається в комплекті, яку використовує застосунок.</string>
     <string name="bgutils_pot_generation_script_info">Щоб використовувати постачальника POT від BgUtils, застосунку потрібно завантажити репозиторій Brainicism/bgutil-ytdlp-pot-provider з github та розпочати встановлення. Це може зайняти деякий час. Продовжити зараз?</string>
+    <string name="burn_subs">Записати субтитри</string>
+    <string name="check_clipboard">Перевірка буфера обміну під час запуску додатка</string>
+    <string name="check_clipboard_home_summary">Автоматично виявляти URLs у буфері обміну на головному екрані</string>
+    <string name="check_clipboard_home">Перевірте буфер обміну на головному екрані</string>
 </resources>
