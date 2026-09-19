@@ -529,6 +529,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.more.cookies.WebViewActivityIncognito" android:process=":incognito_process" />
+
         <activity
             android:name=".ui.more.settings.advanced.generateyoutubepotokens.webview.PoTokenWebViewLoginActivity"
             android:configChanges="locale"
@@ -607,6 +609,10 @@
         <service
             android:name=".services.TerminalSessionService"
             android:foregroundServiceType="specialUse"
+            android:exported="false" />
+
+        <service
+            android:name="androidx.room.MultiInstanceInvalidationService"
             android:exported="false" />
 
     </application>

@@ -207,12 +207,14 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
             save.isVisible = item != null
 
             getCookies.setOnClickListener {
-                val myIntent = Intent(requireContext(), WebViewActivity::class.java)
-                myIntent.putExtra("url", urlEditText.text.toString())
-                myIntent.putExtra("description", descriptionEditText.text.toString())
-                myIntent.putExtra("incognito", incognitoSwitch.isChecked)
+                val intent = Intent(
+                    requireContext(),
+                    if (incognitoSwitch.isChecked) WebViewActivityIncognito::class.java else WebViewActivity::class.java
+                )
+                intent.putExtra("url", urlEditText.text.toString())
+                intent.putExtra("description", descriptionEditText.text.toString())
                 layout.dismiss()
-                startActivity(myIntent)
+                startActivity(intent)
             }
 
             item?.apply {

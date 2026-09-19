@@ -1,6 +1,8 @@
 package com.deniscerri.ytdl.ui.more.cookies
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -29,7 +31,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class WebViewActivity : BaseActivity() {
+
+open class WebViewActivity : BaseActivity() {
     private lateinit var cookiesViewModel: CookieViewModel
     private var webView: WebView? = null
     private lateinit var toolbar: MaterialToolbar
@@ -41,15 +44,18 @@ class WebViewActivity : BaseActivity() {
     private lateinit var webViewClient: WebViewClient
     private lateinit var preferences: SharedPreferences
 
-    private var incognito: Boolean = false
-
     @SuppressLint("SetJavaScriptEnabled")
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.webview_activity)
         url = intent.getStringExtra("url") ?: return finish()
         description = intent.getStringExtra("description") ?: ""
-        incognito = intent.getBooleanExtra("incognito", false)
+
+        val incognito = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            Application.getProcessName()
+        } else {
+            this@WebViewActivity.packageName
+        }.endsWith(":incognito_process")
 
         cookiesViewModel = ViewModelProvider(this)[CookieViewModel::class.java]
         lifecycleScope.launch {
@@ -61,15 +67,10 @@ class WebViewActivity : BaseActivity() {
                 toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
             }
 
-            toolbar.menu.children.firstOrNull { it.itemId == R.id.incognito }?.isChecked = incognito
             toolbar.menu.children.firstOrNull { it.itemId == R.id.get_data_sync_id }?.isVisible = false
 
             toolbar.setOnMenuItemClickListener { m : MenuItem ->
                 when(m.itemId) {
-                    R.id.incognito -> {
-                        intent.putExtra("incognito", !incognito)
-                        recreate()
-                    }
                     R.id.desktop -> {
                         m.isChecked = !m.isChecked
                         webView.apply {

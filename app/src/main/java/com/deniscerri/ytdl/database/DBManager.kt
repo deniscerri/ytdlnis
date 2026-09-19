@@ -101,6 +101,7 @@ abstract class DBManager : RoomDatabase(){
                 )
                     .addTypeConverter(Converters())
                     .addMigrations(*Migrations.migrationList)
+                    .enableMultiInstanceInvalidation()
                     .build()
                 instance = dbInstance
                 dbInstance

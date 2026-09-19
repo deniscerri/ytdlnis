@@ -7,13 +7,6 @@
         android:title="@string/get_data_sync_id" />
 
     <item
-        android:id="@+id/incognito"
-        android:title="@string/incognito"
-        android:checkable="true"
-        app:showAsAction="never" />
-
-
-    <item
         android:id="@+id/desktop"
         android:title="@string/desktop"
         android:checkable="true"
