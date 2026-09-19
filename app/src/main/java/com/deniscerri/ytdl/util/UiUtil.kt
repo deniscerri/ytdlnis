@@ -230,6 +230,7 @@ object UiUtil {
         val ok : Button = bottomSheet.findViewById(R.id.template_create)!!
         val title : TextInputLayout = bottomSheet.findViewById(R.id.title)!!
         val content : TextInputLayout = bottomSheet.findViewById(R.id.content)!!
+         content.editText!!.enableTextHighlight()
         val preferredCommandSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.preferredCommandTemplateSwitch)!!
         val extraCommandsSwitch : MaterialSwitch = bottomSheet.findViewById(R.id.extraCommandsSwitch)!!
         val extraCommandsAudio : CheckBox = bottomSheet.findViewById(R.id.checkbox_audio)!!

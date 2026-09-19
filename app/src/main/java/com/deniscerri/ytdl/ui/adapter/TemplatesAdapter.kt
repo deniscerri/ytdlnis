@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CommandTemplate
+import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.google.android.material.card.MaterialCardView
 
@@ -56,6 +57,7 @@ class TemplatesAdapter(onItemClickListener: OnItemClickListener, activity: Activ
 
         val content = card.findViewById<TextView>(R.id.content)
         content.text = item.content
+        content.enableTextHighlight()
 
         card.findViewById<TextView>(R.id.useInExtraCommands).apply {
             isVisible = item.useAsExtraCommand
