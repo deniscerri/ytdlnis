@@ -24,7 +24,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.PreferenceManager
+import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewAssetLoader
+import androidx.webkit.WebViewFeature
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.LogViewModel
@@ -85,6 +87,9 @@ class DownloadLogFragment : Fragment() {
         // WebSettings configuration
         webView.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         webView.addJavascriptInterface(WebAppInterface(), "Android")
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            WebSettingsCompat.setAlgorithmicDarkeningAllowed(webView.settings, true)
+        }
         webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
@@ -246,9 +251,18 @@ class DownloadLogFragment : Fragment() {
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <style>
+                :root {
+                    --text-color: #000000;
+                }
+    
+                @media (prefers-color-scheme: dark) {
+                    :root {
+                        --text-color: #FFFFFF;
+                    }
+                }
+            
                 html, body {
                     background-color: transparent;
-                    color: #E0E0E0;
                     margin: 0;
                     padding: 0;
                     width: 100%;
