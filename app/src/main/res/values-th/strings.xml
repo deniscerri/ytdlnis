@@ -498,4 +498,14 @@
     <string name="prefer_drc_audio">เลือกเสียงแบบ DRC</string>
     <string name="app_icon">ไอคอนแอป</string>
     <string name="install_downloaded_file">ติดตั้งไฟที่ดาวน์โหลดมา</string>
+    <string name="crop">ตัดภาพ</string>
+    <string name="required">บังคับ</string>
+    <string name="crop_validation_exceeds_w">X+W มีค่าเกิน %d</string>
+    <string name="crop_validation_exceeds_h">Y+H มีค่าเกิน %d</string>
+    <string name="use_original_url_playlist_summary">ใช้ URL ของเพลย์ลิสต์ที่ผู้ใช้ระบุมา แทนการใช้แท็ก playlist_webpage_url จากข้อมูล JSON dump</string>
+    <string name="update_ytdlp_while_downloading">อัปเดต yt-dlp ระหว่างการดาวน์โหลด</string>
+    <string name="update_ytdlp_while_downloading_summary">เพิ่ม -U เข้าไปในคำสั่ง yt-dlp เพื่ออัปเดตโปรแกรมให้เป็นเวอร์ชันล่าสุดก่อนทำการดาวน์โหลด</string>
+    <string name="preview_filename">แสดงตัวอย่างชื่อไฟล์</string>
+    <string name="potoken_guide">"แบบ Auth (การเข้าสู่ระบบยืนยันตัวตน)\n\n1.  คลิกที่ปุ่ม \'Auth\' เพื่อเปิดหน้าต่างเข้าสู่ระบบใน WebView\n    (หน้าเว็บที่ซ้อนอยู่ในแอปพลิเคชัน)\n2.  ลงชื่อเข้าใช้ (Sign in) ด้วยบัญชี Google ของคุณ\n3.  เปิดเล่นวิดีโออะไรก็ได้ที่รองรับฟีเจอร์ \"ซับไตเติล/คำบรรยายแปลภาษาอัตโนมัติ\"\n4.  เปิดใช้งานคำบรรยายแปลอัตโนมัติ แล้วเช็กดูว่ามันทำงาน (แสดงผล)\n    ได้ตามปกติหรือไม่\n      - 4.1 หากคำบรรยายแปลอัตโนมัติไม่ทำงาน\n        ให้ลองเปลี่ยนไปเปิดวิดีโออื่นที่รองรับฟีเจอร์นี้\n        แล้วลองทำตามขั้นตอนที่ 4 ใหม่อีกครั้ง\n5.  คลิก OK (ตกลง)\n\nแบบ No Auth (ไม่ต้องเข้าสู่ระบบ)\n\n1.  คลิกที่ปุ่ม \'No Auth\'\n2.  ใส่ หรือ พิมพ์ลิงก์ (URL) ของวิดีโอ YouTube อะไรก็ได้ลงไป\n3.  รอให้ระบบโหลดวิดีโอขึ้นมา จากนั้นให้เปิดเล่นวิดีโอเป็นเวลาอย่างน้อย 3 วินาที\n4.  คลิก OK (ตกลง)"</string>
+    <string name="no_auth">ไม่ต้องเข้าสู่ระบบ</string>
 </resources>
