@@ -39,12 +39,13 @@ abstract class YTDLPCoroutineWorker(
             runWork()
         } catch (e: Exception) {
             Result.failure()
-        } finally {
-            if (requiresServer) {
-                // Decrement job count & auto-stop service when 0 active jobs remain
-                BgUtilsPoTokenGeneratorUtil.releaseServer(context)
-            }
         }
+//        finally {
+//            if (requiresServer) {
+//                // Decrement job count & auto-stop service when 0 active jobs remain
+//                BgUtilsPoTokenGeneratorUtil.releaseServer(context)
+//            }
+//        }
     }
 
     private suspend fun isBgUtilsServerAlive(): Boolean = withContext(Dispatchers.IO) {
