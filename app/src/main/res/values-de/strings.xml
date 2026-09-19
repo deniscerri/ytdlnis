@@ -13,9 +13,9 @@
     <string name="source_code">Quellcode</string>
     <string name="search_hint">URL suchen oder einfügen</string>
     <string name="download_notification_channel_description">Benachrichtigung über den Fortschritt des Herunterladens von Audio- und Videodateien</string>
-    <string name="ytld_update_success">Neuste Version installiert</string>
-    <string name="ytdl_already_updating">Neue Version installieren</string>
-    <string name="ytdl_updating_started">Neue Version herunterladen</string>
+    <string name="ytld_update_success">Neue Version von yt-dlp installiert</string>
+    <string name="ytdl_already_updating">Neue Version von yt-dlp wird installiert</string>
+    <string name="ytdl_updating_started">Neue Version von yt-dlp wird heruntergeladen</string>
     <string name="Remove">Entfernen</string>
     <string name="ok">Ok</string>
     <string name="cancel">Abbrechen</string>
@@ -99,8 +99,8 @@
     <string name="logs">Protokolle</string>
     <string name="container">Container</string>
     <string name="update_ytdl_nightly">Nightly Version von yt-dlp</string>
-    <string name="adjust_audio">Ton anpassen</string>
-    <string name="file_name_template">Vorlage für Dateinamen</string>
+    <string name="adjust_audio">Audio anpassen</string>
+    <string name="file_name_template">Vorlage für Dateiname</string>
     <string name="language">Sprache</string>
     <string name="command_templates">Befehlsvorlagen</string>
     <string name="terminal">Terminal</string>
@@ -144,7 +144,7 @@
     <string name="sponsorblock_previews">Vorschau</string>
     <string name="sponsorblock_fillers">Füllwörter</string>
     <string name="sponsorblock_reminders">Abonnement-Erinnerungen</string>
-    <string name="select_sponsorblock_filtering">Auswahl der SponsorBlock-Filter</string>
+    <string name="select_sponsorblock_filtering">SponsorBlock-Filterung auswählen</string>
     <string name="save_dir">Im Verzeichnis speichern</string>
     <string name="date_added">Datum hinzugefügt</string>
     <string name="please_wait">Bitte warten</string>
@@ -504,4 +504,26 @@
     <string name="app_icon">App Icon</string>
     <string name="show_quick_download_share_menu">Download im Teilen-Menü anbieten</string>
     <string name="quick_download_title">Daten nicht abrufen</string>
+    <string name="burn_subs">Untertitel einbrennen</string>
+    <string name="check_clipboard">Zwischenablage beim Start der App überprüfen</string>
+    <plurals name="every_hours">
+        <item quantity="one">Jede Stunde</item>
+        <item quantity="other">Alle %d Stunden</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Jeden Tag</item>
+        <item quantity="other">Alle %d Tage</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Jede Woche</item>
+        <item quantity="other">Alle %d Wochen</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Jeden Monat</item>
+        <item quantity="other">Alle %d Monate</item>
+    </plurals>
+    <string name="crop">Zuschneiden</string>
+    <string name="required">Erforderlich</string>
+    <string name="crop_validation_exceeds_w">X+W überschreitet %d</string>
+    <string name="crop_validation_exceeds_h">Y+H überschreitet %d</string>
 </resources>
