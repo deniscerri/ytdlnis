@@ -577,7 +577,6 @@
     <string name="packages_description">แพ็กเกจ (Packages) คือแอปพลิเคชันเสริมที่ YTDLnis ใช้เพื่อช่วยในการทำงานของคำสั่ง yt-dlp ซึ่งบางแพ็กเกจจะถูกติดตั้งมาพร้อมกับตัวแอปอยู่แล้ว แต่คุณสามารถติดตั้งเวอร์ชันที่ใหม่กว่าที่มีการเผยแพร่ออกมาได้เอง โดยไม่จำเป็นต้องอัปเดตตัวแอปหลัก ซึ่งไฟล์ APK ที่คุณติดตั้งเข้าไปใหม่นี้ จะเข้าไปแทนที่เวอร์ชันเดิมที่มาพร้อมกับแอปพลิเคชัน</string>
     <string name="bgutils_pot_generation_script_info">ในการใช้งาน BgUtils POT Provider แอปจำเป็นต้องดาวน์โหลดคลังข้อมูล \'Brainicism/bgutil-ytdlp-pot-provider\' จาก GitHub และเริ่มขั้นตอนการติดตั้ง ซึ่งอาจใช้เวลาสักครู่ ดำเนินการต่อเลยหรือไม่?</string>
     <string name="burn_subs">ฝังคำบรรยายลงในวิดีโอ</string>
-    <string name="check_clipboard">ตรวจสอบคลิปบอร์ดเมื่อแอปเริ่มต้นทำงาน</string>
     <string name="check_clipboard_home_summary">ตรวจหาลิงก์ (URL) จากคลิปบอร์ดโดยอัตโนมัติเมื่ออยู่ที่หน้าแรก</string>
     <string name="check_clipboard_home">ตรวจสอบคลิปบอร์ดเมื่ออยู่ที่หน้าแรก</string>
     <plurals name="every_hours">

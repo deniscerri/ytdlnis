@@ -606,7 +606,6 @@
     <string name="packages_description">Pacotes são aplicativos auxiliares que o YTDLnis utiliza para auxiliar na execução de comandos do yt-dlp. Alguns deles já vêm integrados ao aplicativo, mas você pode instalar versões mais recentes disponibilizadas sem precisar atualizar o próprio YTDLnis. Os APKs instalados substituem a versão integrada utilizada pelo aplicativo.</string>
     <string name="bgutils_pot_generation_script_info">Para usar o BgUtils POT Provider, o aplicativo precisa baixar o repositório Brainicism/bgutil-ytdlp-pot-provider do GitHub e iniciar a instalação. Isso pode levar algum tempo para ser concluído. Deseja prosseguir agora?</string>
     <string name="burn_subs">Gravar legendas</string>
-    <string name="check_clipboard">Verificar a área de transferência ao iniciar o aplicativo</string>
     <string name="check_clipboard_home_summary">Detectar automaticamente URLs na área de transferência a partir da tela inicial</string>
     <string name="check_clipboard_home">Verifique a área de transferência a partir da tela inicial</string>
 </resources>

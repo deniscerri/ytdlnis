@@ -505,7 +505,6 @@
     <string name="show_quick_download_share_menu">Download im Teilen-Menü anbieten</string>
     <string name="quick_download_title">Daten nicht abrufen</string>
     <string name="burn_subs">Untertitel einbrennen</string>
-    <string name="check_clipboard">Zwischenablage beim Start der App überprüfen</string>
     <plurals name="every_hours">
         <item quantity="one">Jede Stunde</item>
         <item quantity="other">Alle %d Stunden</item>

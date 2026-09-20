@@ -584,7 +584,6 @@
     <string name="packages_description">Packages are helper applications YTDLnis uses to help with yt-dlp commands. Some of them are already bundled, but you can install newer versions that are published without the need to update the app. The installed apk\'s replace the bundled version that the app uses.</string>
     <string name="bgutils_pot_generation_script_info">In order to use the BgUtils POT Provider, the app needs to download Brainicism/bgutil-ytdlp-pot-provider repo from github and initiate the installation. This might take a while to finish. Proceed now?</string>
     <string name="burn_subs">Burn subtitles</string>
-    <string name="check_clipboard">Check clipboard on app startup</string>
     <string name="check_clipboard_home_summary">Automatically detect URLs in clipboard in the home screen</string>
     <string name="check_clipboard_home">Check clipboard in the home screen</string>
     <string name="clear_info_json">Clear infojsons</string>

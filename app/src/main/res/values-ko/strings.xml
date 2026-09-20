@@ -592,7 +592,6 @@
     <string name="exit">종료</string>
     <string name="bgutils_pot_generation_script_info">BgUtils POT 제공자를 사용하려면, GitHub에서 Brainicism/bgutil-ytdlp-pot-provider 저장소를 다운로드하고 설치 과정을 실행해야 합니다. 끝내려면 다소 시간이 걸릴 수 있습니다. 지금 진행하시겠습니까?</string>
     <string name="packages_description">패키지는 YTDLnis가 yt-dlp 명령을 실행하는 데 도움을 주는 애플리케이션입니다. 일부 패키지는 이미 내장되어 있지만, 앱을 업데이트하지 않고도 새로 출시된 버전을 설치할 수 있습니다. 설치된 APK 파일은 앱에서 쓰이는 내장 버전을 대체합니다.</string>
-    <string name="check_clipboard">앱 시작 시 클립보드 확인</string>
     <string name="check_clipboard_home_summary">홈 화면에서 클립보드 내 URL 자동 감지</string>
     <string name="check_clipboard_home">홈 화면에서 클립보드 확인</string>
     <string name="burn_subs">자막 굽기</string>

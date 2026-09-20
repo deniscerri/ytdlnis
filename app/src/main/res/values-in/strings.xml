@@ -593,7 +593,6 @@
     <string name="packages_description">Paket adalah aplikasi pendukung yang digunakan YTDLnis untuk membantu menjalankan perintah yt-dlp. Beberapa paket sudah disertakan di dalamnya, namun Anda dapat menginstal versi terbaru yang dirilis tanpa perlu memperbarui aplikasi itu sendiri. Paket APK yang diinstal akan menggantikan versi bawaan yang digunakan oleh aplikasi tersebut.</string>
     <string name="bgutils_pot_generation_script_info">Untuk menggunakan BgUtils POT Provider, aplikasi perlu mengunduh repositori Brainicism/bgutil-ytdlp-pot-provider dari GitHub dan memulai instalasi. Proses ini mungkin memakan waktu cukup lama. Lanjutkan sekarang?</string>
     <string name="burn_subs">Tanam subtitle</string>
-    <string name="check_clipboard">Periksa papan klip saat aplikasi dimulai</string>
     <string name="check_clipboard_home_summary">Deteksi URL secara otomatis di papan klip pada layar beranda</string>
     <string name="check_clipboard_home">Periksa papan klip di layar beranda</string>
 </resources>

@@ -621,7 +621,6 @@
     <string name="external">خارجي</string>
     <string name="exit">خروج</string>
     <string name="burn_subs">دمج الترجمة</string>
-    <string name="check_clipboard">التحقق من الحافظة عند بدء تشغيل التطبيق</string>
     <string name="check_clipboard_home_summary">كشف تلقائيا للرابط في الحافظة في الشاشة الرئيسية</string>
     <string name="check_clipboard_home">تحقق من الحافظة في الشاشة الرئيسية</string>
     <string name="notset">غير محدد</string>

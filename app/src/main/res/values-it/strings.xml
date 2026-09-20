@@ -578,7 +578,6 @@
     <string name="notset">Non impostato</string>
     <string name="external">Esterno</string>
     <string name="exit">Esci</string>
-    <string name="check_clipboard">Controlla appunti all\'avvio dell\'app</string>
     <string name="check_clipboard_home_summary">Automaticamente rileva URL negli appunti nella schermata home</string>
     <string name="check_clipboard_home">Controlla appunti nella schermata home</string>
     <plurals name="every_hours">
