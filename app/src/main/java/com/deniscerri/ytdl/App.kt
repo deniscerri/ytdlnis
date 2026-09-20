@@ -38,6 +38,14 @@ class App : Application() {
 
         val sharedPreferences =  PreferenceManager.getDefaultSharedPreferences(this@App)
         setDefaultValues()
+        ThemeUtil.init(this)
+
+        val processName = getProcessNameImpl()
+        if (processName.endsWith(":incognito_process") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            WebView.setDataDirectorySuffix("incognito_store")
+            return
+        }
+
         applicationScope = CoroutineScope(SupervisorJob())
         applicationScope.launch((Dispatchers.IO)) {
             try {
@@ -63,16 +71,6 @@ class App : Application() {
                 if (requiresServer) {
                     BgUtilsPoTokenGeneratorUtil.acquireServer(this@App)
                 }
-
-                val processName = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    getProcessName()
-                } else {
-                    packageName
-                }
-                if (processName.endsWith(":incognito_process") && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    WebView.setDataDirectorySuffix("incognito_store")
-                }
-
             }catch (e: Exception){
                 Looper.prepare().runCatching {
                     Toast.makeText(this@App, e.message, Toast.LENGTH_SHORT).show()
@@ -80,7 +78,6 @@ class App : Application() {
                 e.printStackTrace()
             }
         }
-        ThemeUtil.init(this)
     }
     @Throws(ExecuteException::class)
     private fun initLibraries() {
@@ -106,6 +103,14 @@ class App : Application() {
     private fun createNotificationChannels() {
         val notificationUtil = NotificationUtil(this)
         notificationUtil.createNotificationChannel()
+    }
+
+    private fun getProcessNameImpl() : String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            getProcessName()
+        } else {
+            packageName
+        }
     }
 
     companion object {

@@ -65,6 +65,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
         val runtimeManager = RuntimeManager.getInstance()
 
         if (intent?.action == "ACTION_EXIT") {
+            BgUtilsPoTokenGeneratorUtil.resetState()
             runtimeManager.destroyProcessById(currentRunningProcess)
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()

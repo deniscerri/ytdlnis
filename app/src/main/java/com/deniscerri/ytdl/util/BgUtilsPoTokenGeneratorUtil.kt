@@ -172,6 +172,11 @@ object BgUtilsPoTokenGeneratorUtil {
         }
     }
 
+    fun resetState() {
+        activeJobCount.set(0)
+        shutdownJob = null
+    }
+
     fun releaseServer(context: Context, idleDelayMs: Long = 5000) {
         if (activeJobCount.decrementAndGet() <= 0) {
             activeJobCount.set(0)
