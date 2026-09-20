@@ -602,4 +602,6 @@
     <string name="burn_subs">Digj titrat në video</string>
     <string name="check_clipboard">Kontrollo clipboard kur hapet aplikacioni</string>
     <string name="check_clipboard_home_summary">Kontrollo URL automatikisht ku je në faqen kryesore</string>
+    <string name="check_clipboard_home">Kontrollo clipboard në faqen kryesore</string>
+    <string name="clear_info_json">Pastro infojson-et</string>
 </resources>
