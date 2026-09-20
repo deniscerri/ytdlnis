@@ -595,4 +595,6 @@
     <string name="burn_subs">烧录字幕</string>
     <string name="check_clipboard_home_summary">在主屏幕自动检测剪贴板中的 URL</string>
     <string name="check_clipboard_home">在主屏幕检查剪贴板</string>
+    <string name="search_results">搜索结果</string>
+    <string name="clear_info_json">清除 infojsons</string>
 </resources>
