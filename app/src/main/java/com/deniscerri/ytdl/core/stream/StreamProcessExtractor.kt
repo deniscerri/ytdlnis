@@ -1,10 +1,10 @@
 package com.deniscerri.ytdl.core.stream
 
 import android.util.Log
+import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.io.Reader
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 
@@ -25,10 +25,11 @@ internal class StreamProcessExtractor(
 
     override fun run() {
         try {
+            val reader = BufferedReader(InputStreamReader(stream, StandardCharsets.UTF_8), 8192)
             val currentLine = StringBuilder()
             var nextChar: Int
 
-            while (stream.read().also { nextChar = it } != -1) {
+            while (reader.read().also { nextChar = it } != -1) {
                 val c = nextChar.toChar()
 
                 if (c == '\r' || c == '\n') {
