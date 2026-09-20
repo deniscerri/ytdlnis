@@ -28,7 +28,9 @@ class FormatUtil(private var context: Context) {
 
     @SuppressLint("RestrictedApi")
     fun getAudioFormatImportance(forVideoDownload: Boolean) : List<String> {
-        val preferredFormatSize = sharedPreferences.getString("preferred_format_size", "")
+        val preferredFormatSizeAudio = sharedPreferences.getString("preferred_format_size_audio", "")
+        val preferredFormatSizeGeneral = sharedPreferences.getString("preferred_format_size", "")
+        val preferredFormatSize = if (!preferredFormatSizeAudio.isNullOrEmpty()) preferredFormatSizeAudio else preferredFormatSizeGeneral
 
         if (sharedPreferences.getBoolean("use_format_sorting", false)) {
             val itemValues = context.getStringArray(R.array.format_importance_audio_values).toMutableList()

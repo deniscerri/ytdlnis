@@ -328,6 +328,16 @@
             app:useSimpleSummaryProvider="true"
             app:title="@string/preferred_format_size" />
 
+        <ListPreference
+            app:icon="@drawable/ic_format"
+            app:dialogTitle="@string/preferred_format_size_audio"
+            app:entries="@array/preferred_format_size"
+            app:entryValues="@array/preferred_format_size_values"
+            android:defaultValue=""
+            app:key="preferred_format_size_audio"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/preferred_format_size_audio" />
+
     </PreferenceCategory>
 
     <Preference
