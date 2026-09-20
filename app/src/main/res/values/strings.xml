@@ -593,4 +593,10 @@
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
     <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
+
+    <string name="history_quick_action">Quick Action Button</string>
+    <string name="history_quick_action_summary">Action to perform when clicking the quick action button on the history card</string>
+    <string name="history_quick_action_share">Share</string>
+    <string name="history_quick_action_open">Open File</string>
+
 </resources>
