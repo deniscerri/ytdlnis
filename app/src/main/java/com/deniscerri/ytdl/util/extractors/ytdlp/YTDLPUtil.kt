@@ -1270,7 +1270,25 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                         }
 
 
-                        metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
+                        val allArtistsInAlbumArtist = sharedPreferences.getBoolean("all_artists_in_album_artist", false)
+
+                        if (allArtistsInAlbumArtist) {
+                            if (emptyAuthor) {
+                                if (usePlaylistMetadata) {
+                                    metadataCommands.addOption("--parse-metadata", "%(album_artist,playlist_uploader,artist,uploader|)s:%(album_artist)s")
+                                } else {
+                                    metadataCommands.addOption("--parse-metadata", "%(album_artist,artist,uploader|)s:%(album_artist)s")
+                                }
+                            } else {
+                                if (usePlaylistMetadata) {
+                                    metadataCommands.addOption("--parse-metadata", "%(album_artist,playlist_uploader,artist|)s:%(album_artist)s")
+                                } else {
+                                    metadataCommands.addOption("--parse-metadata", "%(album_artist,artist|)s:%(album_artist)s")
+                                }
+                            }
+                        } else {
+                            metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
+                        }
                         metadataCommands.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (isPlaylistItem) {

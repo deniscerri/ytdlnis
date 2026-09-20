@@ -67,6 +67,14 @@
             app:summary="@string/embed_metadata_summary"
             app:title="@string/embed_metadata" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_video_metadata"
+            app:key="all_artists_in_album_artist"
+            app:summary="@string/all_artists_in_album_artist_summary"
+            app:title="@string/all_artists_in_album_artist" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/audio">
