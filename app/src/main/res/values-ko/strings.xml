@@ -595,4 +595,6 @@
     <string name="check_clipboard_home_summary">홈 화면에서 클립보드 내 URL 자동 감지</string>
     <string name="check_clipboard_home">홈 화면에서 클립보드 확인</string>
     <string name="burn_subs">자막 굽기</string>
+    <string name="search_results">검색 결과</string>
+    <string name="clear_info_json">Infojson 정리</string>
 </resources>
