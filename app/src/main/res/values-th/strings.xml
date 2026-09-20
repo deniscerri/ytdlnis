@@ -405,8 +405,8 @@
     <string name="show_terminal">แสดงเทอร์มินัลในหน้าเมนูแชร์</string>
     <string name="write_description_summary">เขียนไฟล์คําอธิบาย</string>
     <string name="use_cookies">ใช้คุกกี้</string>
-    <string name="embed_metadata">การฝังข้อมูลอธิบายบริบทไว้ภายในไฟล์ (ฝังข้อมูลเมตา)</string>
-    <string name="embed_metadata_summary">วิเคราห์และฝังข้อมูลเมตาดาตาลงในไฟล์เสียง</string>
+    <string name="embed_metadata">ฝังข้อมูลเมตา</string>
+    <string name="embed_metadata_summary">วิเคราะห์และฝังข้อมูลเมตาลงในไฟล์เสียง</string>
     <string name="scheduling">ตั้งตาราง</string>
     <string name="preferred_search_engine_summary">เครื่องมือค้นหาที่จะใช้สำหรับการค้นหาในแอป</string>
     <string name="format_filtering_hint">รายการทั้งหมดนี้ต้องเป็นประเภทเดียวกันเพื่อใช้ตัวเลือกนี้</string>
@@ -499,7 +499,7 @@
     <string name="app_icon">ไอคอนแอป</string>
     <string name="install_downloaded_file">ติดตั้งไฟที่ดาวน์โหลดมา</string>
     <string name="crop">ตัดภาพ</string>
-    <string name="required">บังคับ</string>
+    <string name="required">ที่จำเป็น</string>
     <string name="crop_validation_exceeds_w">X+W มีค่าเกิน %d</string>
     <string name="crop_validation_exceeds_h">Y+H มีค่าเกิน %d</string>
     <string name="use_original_url_playlist_summary">ใช้ URL ของเพลย์ลิสต์ที่ผู้ใช้ระบุมา แทนการใช้แท็ก playlist_webpage_url จากข้อมูล JSON dump</string>
@@ -595,4 +595,6 @@
     <string name="x_offset">ระยะขยับในแนวนอน</string>
     <string name="y_offset">ระยะขยับในแนวตั้ง</string>
     <string name="bgutils_pot_generation_server">เซิร์ฟเวอร์ HTTP</string>
+    <string name="search_results">ผลการค้นหา</string>
+    <string name="clear_info_json">ล้างข้อมูลไฟล์ info.json</string>
 </resources>
