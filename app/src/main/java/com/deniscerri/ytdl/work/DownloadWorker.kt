@@ -305,6 +305,7 @@ class DownloadWorker(
                                 }
                             }
                         }.onSuccess {
+                            notificationUtil.clearNotificationThrottleState(downloadItem.id.toInt())
                             resultRepo.updateDownloadItem(downloadItem)?.apply {
                                 dao.updateWithoutUpsert(this)
                             }
@@ -499,6 +500,7 @@ class DownloadWorker(
                             }
 
                         }.onFailure {
+                            notificationUtil.clearNotificationThrottleState(downloadItem.id.toInt())
                             FileUtil.deleteConfigFiles(request)
                             withContext(Dispatchers.Main) {
                                 notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())

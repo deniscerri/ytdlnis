@@ -435,6 +435,43 @@ class NotificationUtil(var context: Context) {
         notificationManager.notify(id, notification)
     }
 
+    fun shouldUpdateNotification(id: Int, progress: Int): Boolean {
+        val now = System.currentTimeMillis()
+        var allow = false
+
+        lastNotifiedProgress.compute(id) { _, lastProgress ->
+            if (progress == 0 || progress == 100) {
+                allow = true
+                lastNotifiedTime[id] = now
+
+                return@compute progress
+            }
+            if (progress == lastProgress) {
+                allow = false
+                return@compute lastProgress
+            }
+            val lastTime = lastNotifiedTime[id] ?: 0L
+            if (now - lastTime < MIN_UPDATE_INTERVAL_MS) {
+                allow = false
+                return@compute lastProgress
+            }
+            allow = true
+            lastNotifiedTime[id] = now
+            progress
+        }
+
+        return allow
+    }
+
+    fun clearNotificationThrottleState(id: Int) {
+        lastNotifiedProgress.remove(id)
+        lastNotifiedTime.remove(id)
+    }
+
+    private val pauseIconPromoted by lazy { Icon.createWithResource(context, android.R.drawable.ic_media_pause) }
+    private val cancelIconPromoted by lazy { Icon.createWithResource(context, android.R.drawable.ic_menu_close_clear_cancel) }
+    private val trackerIcon by lazy { Icon.createWithResource(context, R.drawable.exomedia_ic_play_arrow_white) }
+
     @SuppressLint("MissingPermission")
     fun updateDownloadNotification(
         id: Int,
@@ -448,10 +485,11 @@ class NotificationUtil(var context: Context) {
         if (progressRaw >= 0) {
             progress = progressRaw
         }
+        if (!shouldUpdateNotification(id, progress)) return
 
         var contentText = ""
         if (queue > 1) contentText += """${queue - 1} ${resources.getString(R.string.items_left)}""" + "\n"
-        contentText += desc.replace("\\[.*?\\] ".toRegex(), "")
+        contentText += desc.replace(bracketRegex, "")
 
         val pauseIntent = Intent(context, PauseDownloadNotificationReceiver::class.java)
         pauseIntent.putExtra("itemID", id)
@@ -479,18 +517,18 @@ class NotificationUtil(var context: Context) {
                         Notification.ProgressStyle.Point(PROGRESS_CURR),
                         Notification.ProgressStyle.Point(PROGRESS_MAX)
                     ))
-                    .setProgressTrackerIcon(Icon.createWithResource(context, R.drawable.exomedia_ic_play_arrow_white))
+                    .setProgressTrackerIcon(trackerIcon)
                     .setProgress(progress)
                     .setProgressIndeterminate(progress == 0 || progress == 100)
 
                 val pauseAction = Notification.Action.Builder(
-                    Icon.createWithResource(context, android.R.drawable.ic_media_pause),
+                    pauseIconPromoted,
                     context.getString(R.string.pause),
                     pauseNotificationPendingIntent
                 ).build()
 
                 val cancelAction = Notification.Action.Builder(
-                    Icon.createWithResource(context, android.R.drawable.ic_menu_close_clear_cancel),
+                    cancelIconPromoted,
                     context.getString(R.string.cancel),
                     cancelNotificationPendingIntent
                 ).build()
@@ -909,5 +947,12 @@ class NotificationUtil(var context: Context) {
 
         private const val PROGRESS_MAX = 100
         private const val PROGRESS_CURR = 0
+
+        private val bracketRegex = "\\[.*?\\] ".toRegex()
+        // Per-notification throttle state
+        private val lastNotifiedProgress = java.util.concurrent.ConcurrentHashMap<Int, Int>()
+        private val lastNotifiedTime = java.util.concurrent.ConcurrentHashMap<Int, Long>()
+        // Minimum time between updates for the same notification id (ms)
+        private const val MIN_UPDATE_INTERVAL_MS = 350L
     }
 }
