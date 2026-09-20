@@ -363,7 +363,6 @@ object Extensions {
 
     fun String.appendLineToLog(line: String = ""): String {
         val lines = this.lines().toMutableList()
-        val finishingProgressLinesRegex = Pattern.compile("\\[download]\\h+(100%|[a-zA-Z])")
 
         if (line.isNotBlank()) {
             var newline = ""
@@ -380,13 +379,13 @@ object Extensions {
 
 
             return lines.distinct().filterNot {
-                ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
+                ((it.contains("[download") || it.contains(") CN:")) && !FINISHING_PROGRESS_LINES_REGEX.matcher(it).find())
                 || it.contains("does not pass filter (id")
             }.joinToString("\n") + newline
         }
 
         return lines.filterNot {
-            ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
+            ((it.contains("[download") || it.contains(") CN:")) && !FINISHING_PROGRESS_LINES_REGEX.matcher(it).find())
             || it.contains("does not pass filter (id")
         }.joinToString("\n")
     }
