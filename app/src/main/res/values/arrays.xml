@@ -1627,4 +1627,22 @@
         <item>external</item>
     </string-array>
 
+    <string-array name="internal_plugin_ffmpeg_preset">
+        <item>@string/defaultValue</item>
+        <item>veryfast</item>
+        <item>faster</item>
+        <item>fast</item>
+        <item>medium</item>
+        <item>slow</item>
+    </string-array>
+
+    <string-array name="internal_plugin_ffmpeg_preset_values">
+        <item></item>
+        <item>veryfast</item>
+        <item>faster</item>
+        <item>fast</item>
+        <item>medium</item>
+        <item>slow</item>
+    </string-array>
+
 </resources>

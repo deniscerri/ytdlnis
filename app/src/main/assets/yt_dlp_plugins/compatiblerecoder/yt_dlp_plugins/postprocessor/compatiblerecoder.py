@@ -51,6 +51,10 @@ class CompatibleRecoderPP(FFmpegPostProcessor):
         'png',
     }
 
+    def __init__(self, downloader=None, preset=None):
+        super().__init__(downloader)
+        self.preset = str(preset).strip() if preset and str(preset).strip() else None
+
     def _stream_codec(self, stream):
         """Return the codec name and codec tag as lowercase strings."""
         codec_name = (stream.get('codec_name') or '').lower()
@@ -237,6 +241,13 @@ class CompatibleRecoderPP(FFmpegPostProcessor):
                     f'-c:v:{video_index}',
                     codec,
                 ]
+
+                # Apply preset to x264 re-encodes (omit if copying or no preset provided)
+                if codec == 'libx264' and self.preset:
+                    options += [
+                        f'-preset:{video_index}',
+                        self.preset,
+                    ]
 
                 # Preserve an already embedded thumbnail as cover art.
                 if item['attached_pic']:

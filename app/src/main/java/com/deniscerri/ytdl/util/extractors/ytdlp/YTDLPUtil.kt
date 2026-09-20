@@ -1138,6 +1138,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.addOption("--download-archive", FileUtil.getDownloadArchivePath(context))
         }
 
+        val internalPluginFFmpegPreset = sharedPreferences.getString("internal_plugin_ffmpeg_preset", "")
+
         val preferredAudioCodec = sharedPreferences.getString("audio_codec", "")!!
         val aCodecPrefIndex = context.getStringArray(R.array.audio_codec_values).indexOf(preferredAudioCodec)
         var aCodecPref = runCatching { context.getStringArray(R.array.audio_codec_values_ytdlp)[aCodecPrefIndex] }.getOrElse { "" }
@@ -1322,6 +1324,34 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     metadataCommands.add("--embed-metadata")
                 }
 
+                if (downloadItem.videoPreferences.writeSubs){
+                    request.addOption("--write-subs")
+                }
+
+                if(downloadItem.videoPreferences.writeAutoSubs){
+                    request.addOption("--write-auto-subs")
+                }
+
+                if (downloadItem.videoPreferences.embedSubs) {
+                    if (sharedPreferences.getBoolean("no_keep_subs", false) && (downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs)) {
+                        request.addOption("--compat-options", "no-keep-subs")
+                    }
+
+                    request.addOption("--embed-subs")
+                }
+
+                if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
+                    val subFormat = sharedPreferences.getString("sub_format", "")
+                    if(subFormat!!.isNotBlank()){
+                        request.addOption("--sub-format", "${subFormat}/best")
+                        request.addOption("--convert-subtitles", subFormat)
+                    }
+                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { ".*-orig" })
+                }
+
+                if (downloadItem.videoPreferences.burnSubs) {
+                    request.addOption("--use-postprocessor", "BurnSubs:when=after_move;preset=$internalPluginFFmpegPreset")
+                }
 
                 var cont = ""
                 val outputContainer = downloadItem.container
@@ -1390,7 +1420,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 if (downloadItem.videoPreferences.compatibilityMode) {
                     request.addOption("--merge-output-format", "mp4")
                     request.addOption("--remux-video", "mp4")
-                    request.addOption("--use-postprocessor", "CompatibleRecoder")
+                    request.addOption("--use-postprocessor", "CompatibleRecoder:preset=$internalPluginFFmpegPreset")
                     vCodecPref = "h264"
                     aCodecPref = "aac"
                 }
@@ -1562,37 +1592,6 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 request.addOption("-f", f.toString().replace("/$".toRegex(), ""))
-
-                if (downloadItem.videoPreferences.writeSubs){
-                    request.addOption("--write-subs")
-                }
-
-                if(downloadItem.videoPreferences.writeAutoSubs){
-                    request.addOption("--write-auto-subs")
-                }
-
-
-
-                if (downloadItem.videoPreferences.embedSubs) {
-                    if (sharedPreferences.getBoolean("no_keep_subs", false) && (downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs)) {
-                        request.addOption("--compat-options", "no-keep-subs")
-                    }
-
-                    request.addOption("--embed-subs")
-                }
-
-                if (downloadItem.videoPreferences.embedSubs || downloadItem.videoPreferences.writeSubs || downloadItem.videoPreferences.writeAutoSubs){
-                    val subFormat = sharedPreferences.getString("sub_format", "")
-                    if(subFormat!!.isNotBlank()){
-                        request.addOption("--sub-format", "${subFormat}/best")
-                        request.addOption("--convert-subtitles", subFormat)
-                    }
-                    request.addOption("--sub-langs", downloadItem.videoPreferences.subsLanguages.ifEmpty { ".*-orig" })
-                }
-
-                if (downloadItem.videoPreferences.burnSubs) {
-                    request.addOption("--use-postprocessor", "BurnSubs:when=after_move")
-                }
 
                 var copyStream = ""
 

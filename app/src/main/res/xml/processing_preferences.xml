@@ -291,6 +291,15 @@
             app:summary="@string/preferred_format_id_summary"
             app:title="@string/preferred_format_id" />
 
+        <ListPreference
+            android:defaultValue=""
+            android:entries="@array/internal_plugin_ffmpeg_preset"
+            android:entryValues="@array/internal_plugin_ffmpeg_preset_values"
+            android:icon="@drawable/baseline_fast_forward_24"
+            app:key="internal_plugin_ffmpeg_preset"
+            android:summary="@string/internal_plugin_ffmpeg_preset_summary"
+            app:title="@string/internal_plugin_ffmpeg_preset" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"

@@ -4,6 +4,10 @@ import tempfile
 from yt_dlp.postprocessor.ffmpeg import FFmpegPostProcessor
 
 class BurnSubsPP(FFmpegPostProcessor):
+    def __init__(self, downloader=None, preset=None):
+        super().__init__(downloader)
+        self.preset = preset
+
     def run(self, info):
         subs = info.get('requested_subtitles') or {}
 
@@ -32,17 +36,14 @@ class BurnSubsPP(FFmpegPostProcessor):
 
             # Basic filter string; drop fixed /system/fonts to avoid Android OS permission crashes
             vf_filter = f"subtitles='{esc_sub}'"
+            opts = ['-vf', vf_filter, '-c:v', 'libx264']
 
-            self.run_ffmpeg_multiple_files(
-                [path], temp_out,
-                [
-                    '-vf', vf_filter,
-                    '-c:v', 'libx264',
-                    '-preset', 'ultrafast',
-                    '-crf', '20',
-                    '-c:a', 'copy'
-                ]
-            )
+            if self.preset and str(self.preset).strip():
+                opts.extend(['-preset', str(self.preset).strip()])
+
+            opts.extend(['-crf', '20', '-c:a', 'copy'])
+
+            self.run_ffmpeg_multiple_files([path], temp_out, opts)
 
         os.replace(temp_out, path)
         info['filepath'] = path

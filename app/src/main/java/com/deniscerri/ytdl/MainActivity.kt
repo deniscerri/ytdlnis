@@ -60,6 +60,7 @@ import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
 import com.deniscerri.ytdl.util.ApkInstallUtil
+import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
@@ -238,6 +239,13 @@ class MainActivity : BaseActivity() {
             setupWithNavController(navController)
             //terminate button
             menu.getItem(8).setOnMenuItemClickListener {
+                fun terminateApp() {
+                    BgUtilsPoTokenGeneratorUtil.releaseServer(context, 0)
+                    finishAndRemoveTask()
+                    finishAffinity()
+                    exitProcess(0)
+                }
+
                 if (preferences.getBoolean("ask_terminate_app", true)){
                     var doNotShowAgain = false
                     val terminateDialog = MaterialAlertDialogBuilder(this@MainActivity)
@@ -264,16 +272,13 @@ class MainActivity : BaseActivity() {
                                 if (doNotShowAgain){
                                     preferences.edit().putBoolean("ask_terminate_app", false).apply()
                                 }
-                                finishAndRemoveTask()
-                                finishAffinity()
-                                exitProcess(0)
+                                terminateApp()
                             }
                         }
                     }
                     terminateDialog.show()
                 }else{
-                    finishAndRemoveTask()
-                    exitProcess(0)
+                    terminateApp()
                 }
                 true
             }
