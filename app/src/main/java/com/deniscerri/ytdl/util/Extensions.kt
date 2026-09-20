@@ -640,31 +640,35 @@ object Extensions {
         downloadStartTime = timeInMillis
     }
 
+    private val YOUTUBE_URL_PATTERN = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+    private val YOUTUBE_CHANNEL_URL_PATTERN = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/@[a-zA-Z]+")
+    private val YOUTUBE_WATCH_VIDEOS_URL_PATTERN = Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*")
+    private val SOUNDCLOUD_URL_PATTERN = Pattern.compile("""^(https?://)?(www\.|m\.)?soundcloud\.com/[\w\-.]+(/[\w\-.]+)*/?$""")
+    private val GENERAL_URL_PATTERN = Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")
+
     fun TextWithSubtitle(title: String, subtitle: String) : Spanned {
         return HtmlCompat.fromHtml("<b><big>" + title + "</big></b>" +  "<br />" +
                 "<small>" + subtitle + "</small>" + "<br />", HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
     fun String.isYoutubeURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)").matcher(this).find()
+        return YOUTUBE_URL_PATTERN.matcher(this).find()
     }
 
     fun String.isYoutubeChannelURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/@[a-zA-Z]+").matcher(this).find()
+        return YOUTUBE_CHANNEL_URL_PATTERN.matcher(this).find()
     }
 
     fun String.isYoutubeWatchVideosURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*").matcher(this).find()
+        return YOUTUBE_WATCH_VIDEOS_URL_PATTERN.matcher(this).find()
     }
 
     fun String.isSoundCloudURL() : Boolean {
-        return Pattern.compile("""^(https?://)?(www\.|m\.)?soundcloud\.com/[\w\-.]+(/[\w\-.]+)*/?$""").matcher(this).find()
+        return SOUNDCLOUD_URL_PATTERN.matcher(this).find()
     }
 
     fun String.extractURL() : String {
-        val res =
-            Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")
-                .matcher(this)
+        val res = GENERAL_URL_PATTERN.matcher(this)
         return if (res.find()) {
             res.group()
         } else {
@@ -673,7 +677,7 @@ object Extensions {
     }
 
     fun String.isURL(): Boolean {
-        return Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])").matcher(this).find()
+        return GENERAL_URL_PATTERN.matcher(this).find()
     }
 
     fun <T1, T2, T3, T4, T5, T6, T7, R> combine(
