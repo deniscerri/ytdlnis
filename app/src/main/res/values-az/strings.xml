@@ -602,4 +602,5 @@
     <string name="burn_subs">Titrləri aç</string>
     <string name="check_clipboard_home_summary">Əsas ekranda buferdəki URL-ləri avtomatik aşkar et</string>
     <string name="check_clipboard_home">Əsas ekranda buferi yoxla</string>
+    <string name="search_results">Axtarış Nəticələri</string>
 </resources>
