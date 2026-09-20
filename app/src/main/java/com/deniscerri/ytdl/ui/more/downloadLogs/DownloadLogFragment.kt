@@ -245,94 +245,103 @@ class DownloadLogFragment : Fragment() {
     }
 
     private fun buildHtmlWrapper(fontSizePx: Float, whiteSpaceMode: String): String {
+        val wordBreakMode = if (whiteSpaceMode == "pre-wrap") "break-all" else "normal"
+        val overflowXMode = if (whiteSpaceMode == "pre-wrap") "hidden" else "auto"
+
         return """
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            :root {
+                --text-color: #000000;
+            }
+
+            @media (prefers-color-scheme: dark) {
                 :root {
-                    --text-color: #000000;
+                    --text-color: #FFFFFF;
                 }
-    
-                @media (prefers-color-scheme: dark) {
-                    :root {
-                        --text-color: #FFFFFF;
-                    }
-                }
-            
-                html, body {
-                    background-color: transparent;
-                    margin: 0;
-                    padding: 0;
-                    width: 100%;
-                    /* Removed height: 100% so body expands to fit content */
-                }
-                #log-content {
-                    font-family: monospace;
-                    font-size: ${fontSizePx}px;
-                    white-space: $whiteSpaceMode;
-                    word-break: break-all;
-                    padding: 10px;
-                    padding-bottom: 90px; /* Leave space for BottomAppBar */
-                    user-select: text;
-                    -webkit-user-select: text;
-                }
-            </style>
-        </head>
-        <body>
-            <div id="log-content"></div>
-            <script>
-                const el = document.getElementById('log-content');
+            }
+        
+            html, body {
+                background-color: transparent;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                overflow-x: $overflowXMode;
+            }
+            #log-content {
+                font-family: monospace;
+                font-size: ${fontSizePx}px;
+                white-space: $whiteSpaceMode;
+                word-break: $wordBreakMode;
+                padding: 10px;
+                padding-bottom: 90px; /* Leave space for BottomAppBar */
+                user-select: text;
+                -webkit-user-select: text;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="log-content"></div>
+        <script>
+            const el = document.getElementById('log-content');
 
-                function updateContent(text, shouldScroll) {
-                    el.textContent = text;
-                    if (shouldScroll) {
-                        scrollToBottom();
-                    } else {
-                        checkScrollPosition();
-                    }
-                }
-
-                function scrollToBottom() {
-                    window.scrollTo(0, document.documentElement.scrollHeight);
+            function updateContent(text, shouldScroll) {
+                el.textContent = text;
+                if (shouldScroll) {
+                    scrollToBottom();
+                } else {
                     checkScrollPosition();
                 }
+            }
 
-                function setFontSize(px) {
-                    el.style.fontSize = px + 'px';
+            function scrollToBottom() {
+                window.scrollTo(0, document.documentElement.scrollHeight);
+                checkScrollPosition();
+            }
+
+            function setFontSize(px) {
+                el.style.fontSize = px + 'px';
+            }
+
+            function setWrap(wrapMode) {
+                el.style.whiteSpace = wrapMode;
+                if (wrapMode === 'pre-wrap') {
+                    el.style.wordBreak = 'break-all';
+                    document.body.style.overflowX = 'hidden';
+                } else {
+                    el.style.wordBreak = 'normal';
+                    document.body.style.overflowX = 'auto';
                 }
+            }
 
-                function setWrap(wrapMode) {
-                    el.style.whiteSpace = wrapMode;
+            function checkScrollPosition() {
+                const scrollPosition = window.scrollY || window.pageYOffset;
+                const viewportHeight = window.innerHeight;
+                const totalHeight = Math.max(
+                    document.body.scrollHeight, 
+                    document.documentElement.scrollHeight
+                );
+
+                // True if user is more than 30px away from the very bottom
+                const canScrollDown = (scrollPosition + viewportHeight) < (totalHeight - 30);
+
+                if (window.Android && window.Android.onScrollStateChanged) {
+                    window.Android.onScrollStateChanged(canScrollDown);
                 }
+            }
 
-                function checkScrollPosition() {
-                    const scrollPosition = window.scrollY || window.pageYOffset;
-                    const viewportHeight = window.innerHeight;
-                    const totalHeight = Math.max(
-                        document.body.scrollHeight, 
-                        document.documentElement.scrollHeight
-                    );
-
-                    // True if user is more than 30px away from the very bottom
-                    const canScrollDown = (scrollPosition + viewportHeight) < (totalHeight - 30);
-
-                    if (window.Android && window.Android.onScrollStateChanged) {
-                        window.Android.onScrollStateChanged(canScrollDown);
-                    }
-                }
-
-                // Debounce / throttle scroll events slightly for smooth UI response
-                let scrollTimeout;
-                window.addEventListener('scroll', function() {
-                    if (scrollTimeout) clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(checkScrollPosition, 50);
-                });
-            </script>
-        </body>
-        </html>
-    """.trimIndent()
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (scrollTimeout) clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(checkScrollPosition, 50);
+            });
+        </script>
+    </body>
+    </html>
+""".trimIndent()
     }
 
     override fun onDestroyView() {
