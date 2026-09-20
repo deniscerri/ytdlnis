@@ -598,4 +598,8 @@
     </plurals>
     <string name="skip_backlog">Anashkaloni prapambetjen aktuale</string>
     <string name="bgutils_pot_generation_script_info">Për të përdorur BgUtils POT Provider, aplikacioni duhet të shkarkojë repozitorin Brainicism/bgutil-ytdlp-pot-provider nga github dhe të fillojë instalimin. Kjo mund të zgjasë pak. Do të vazhdoj tani?</string>
+    <string name="search_results">Rezultatet e kërkimit</string>
+    <string name="burn_subs">Digj titrat në video</string>
+    <string name="check_clipboard">Kontrollo clipboard kur hapet aplikacioni</string>
+    <string name="check_clipboard_home_summary">Kontrollo URL automatikisht ku je në faqen kryesore</string>
 </resources>
