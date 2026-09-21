@@ -613,4 +613,8 @@
     <string name="burn_subs">Записати субтитри</string>
     <string name="check_clipboard_home_summary">Автоматично виявляти URLs у буфері обміну на головному екрані</string>
     <string name="check_clipboard_home">Перевірте буфер обміну на головному екрані</string>
+    <string name="search_results">Результати пошуку</string>
+    <string name="clear_info_json">Очистити файли infojson</string>
+    <string name="internal_plugin_ffmpeg_preset">Внутрішнє передустановлення для плагіна FFmpeg</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Передустановлення FFmpeg для внутрішніх плагінів. Це змінює розмір файлу!</string>
 </resources>
