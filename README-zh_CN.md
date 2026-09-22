@@ -6,7 +6,25 @@
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
 	简体中文
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
 </div>
 
 <h3 align="center">
@@ -51,7 +69,7 @@
 - 同时下载多个项目
 - 使用自定义命令和模板，或在内置终端中使用 yt-dlp
 	- 可以备份和恢复模板，方便与朋友分享
-- 支持 Cookie。使用账户登录并下载私密或其他视频，解锁高级格式等
+- 支持 Cookie。使用账户登录并下载私密或无法访问的视频，解锁高级格式等
 - 基于时间戳和视频章节分割视频（实验性 yt-dlp 功能）
 	- 可以进行无限次分割
 - 从已下载项目中移除 SponsorBlock 元素
@@ -78,6 +96,17 @@
 - 备份和恢复功能
 - 基于 MVVM 架构和 WorkManager
 
+## 🧩 插件支持
+
+YTDLnis 通过插件编排各类组件，用户可以自由升级或降级以下组件：
+- Python
+- JS 运行时（NodeJS、Deno）
+- FFmpeg
+- Aria2c
+
+你可以从 [ytdlnis-packages](https://github.com/deniscerri/ytdlnis-packages/) 仓库安装 YTDLnis 组件包，也可以通过应用内的更新页面安装。
+<br>更多信息请参阅该仓库的 README。
+
 ## 📲 预览截图
 
 <div>
@@ -102,7 +131,7 @@
 
 ## 😇 参与贡献
 
-如果您想参与贡献，请阅读 [贡献](CONTRIBUTING.MD) 
+如果您想参与贡献，请阅读 [贡献](CONTRIBUTING.MD)。
 
 ## 📝 在 Weblate 上帮助翻译
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
@@ -118,6 +147,16 @@
 
 应用的包名是 "com.deniscerri.ytdl"。
 
+## 🔍 验证应用签名
+
+应用应包含以下签名。GitHub workflow action 使用该签名，各发行版也基于它来保证可复现构建。
+如果签名不一致，说明你的第三方分发方修改过该应用。请使用带有原始签名的应用。
+```
+Signer #1 certificate DN: CN=Denis Cerri, OU=Personal, O=Personal, L=Albania, ST=Albania, C=AL
+Signer #1 certificate SHA-256 digest: 263645cb5272eb290759fe1f59149ae24df6ce171e9f6666eead981d3fc64c95
+Signer #1 certificate SHA-1 digest: 2fec9c2fcef68d29a60857e185c795fec5f56fb6
+Signer #1 certificate MD5 digest: 429d0c6315d2f99650f66cc44cf5a794
+```
 
 ## 🤖 使用 Intent 与第三方应用连接
 
@@ -153,7 +192,7 @@ height="80">](https://www.buymeacoffee.com/deniscerri)
 
 - [decipher3114](https://github.com/decipher3114) 设计的应用图标
 - [dvd](https://github.com/yausername/dvd) 提供的 youtubedl-android 实现示例
-- [seal](https://github.com/JunkFood02/Seal) 提供的某些设计元素和功能
+- [seal](https://github.com/JunkFood02/Seal) 提供的某些设计元素和功能，这些是我在最初开发时就希望本应用具备的
 - [youtubedl-android](https://github.com/yausername/youtubedl-android) 将 yt-dlp 移植到 Android
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp) 及其贡献者使得这个工具成为可能。没有它就不会有这个应用
 
