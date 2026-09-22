@@ -54,6 +54,10 @@
     <string name="add_chapters_summary">Mark YouTube / SponsorBlock segments as chapters for the video</string>
     <string name="save_thumb">Save thumbnail</string>
     <string name="save_thumb_summary">Save the thumbnail in the download folder</string>
+    <string name="audio_default">Audio Defaults</string>
+    <string name="all_artists_in_album_artist">Save all artists in Album Artist</string>
+    <string name="all_artists_in_album_artist_summary">Instead of just the first artist, save all artists to the Album Artist metadata</string>
+    <string name="video_default">Video Defaults</string>
     <string name="audio_format">Audio format</string>
     <string name="video_format">Video format</string>
     <string name="audio_quality">Audio quality</string>
