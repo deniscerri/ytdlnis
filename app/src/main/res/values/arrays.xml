@@ -1645,4 +1645,14 @@
         <item>slow</item>
     </string-array>
 
+    <string-array name="history_quick_action_entries">
+        <item>@string/history_quick_action_share</item>
+        <item>@string/history_quick_action_open</item>
+    </string-array>
+
+    <string-array name="history_quick_action_values">
+        <item>share</item>
+        <item>open</item>
+    </string-array>
+
 </resources>
