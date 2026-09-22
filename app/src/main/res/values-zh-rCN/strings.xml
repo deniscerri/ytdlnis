@@ -597,4 +597,6 @@
     <string name="check_clipboard_home">在主屏幕检查剪贴板</string>
     <string name="search_results">搜索结果</string>
     <string name="clear_info_json">清除 infojsons</string>
+    <string name="internal_plugin_ffmpeg_preset">内部 FFmpeg 预设</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">内部插件的预设 FFmpeg 用途，如烧录字幕等。调整该偏好设置影响最终文件大小！</string>
 </resources>
