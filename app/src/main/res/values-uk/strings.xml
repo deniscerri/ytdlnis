@@ -615,6 +615,6 @@
     <string name="check_clipboard_home">Перевірте буфер обміну на головному екрані</string>
     <string name="search_results">Результати пошуку</string>
     <string name="clear_info_json">Очистити infojsons</string>
-    <string name="internal_plugin_ffmpeg_preset">Внутрішній плагін FFmpeg Preset</string>
+    <string name="internal_plugin_ffmpeg_preset">Вбудований плагін FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Попередньо встановлені налаштування, які FFmpeg використовує для внутрішніх плагінів, таких як запис субтитрів тощо. Зміна цього параметра впливає на кінцевий розмір файлу!</string>
 </resources>
