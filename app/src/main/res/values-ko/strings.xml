@@ -595,4 +595,8 @@
     <string name="check_clipboard_home_summary">홈 화면에서 클립보드 내 URL 자동 감지</string>
     <string name="check_clipboard_home">홈 화면에서 클립보드 확인</string>
     <string name="burn_subs">자막 굽기</string>
+    <string name="search_results">검색 결과</string>
+    <string name="clear_info_json">Infojson 정리</string>
+    <string name="internal_plugin_ffmpeg_preset">내장 플러그인 FFmpeg 사전 설정</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg에서 자막 굽기같은 내부 플러그인에 쓰는 사전 설정입니다. 이 설정을 조정하면 최종 파일 크기에 영향을 미칩니다!</string>
 </resources>

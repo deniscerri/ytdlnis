@@ -12,9 +12,9 @@
     <string name="search_hint">ค้นหาหรือใส่ URL</string>
     <string name="failed_download">ไม่สามารถดาวน์โหลดไฟล์ได้</string>
     <string name="you_are_in_latest_version">กำลังใช้เวอร์ชันล่าสุดอยู่</string>
-    <string name="ytld_update_success">ติดตั้งเวอร์ชันใหม่แล้ว</string>
-    <string name="ytdl_already_updating">กำลังติดตั้งเวอร์ชันใหม่</string>
-    <string name="ytdl_updating_started">กำลังดาวน์โหลดเวอร์ชันใหม่</string>
+    <string name="ytld_update_success">ติดตั้ง yt-dlp เวอร์ชันใหม่แล้ว</string>
+    <string name="ytdl_already_updating">กำลังติดตั้ง yt-dlp เวอร์ชันใหม่</string>
+    <string name="ytdl_updating_started">กำลังดาวน์โหลด yt-dlp เวอร์ชันใหม่</string>
     <string name="Remove">ลบ</string>
     <string name="ok">ตกลง</string>
     <string name="cancel">ยกเลิก</string>
@@ -76,7 +76,7 @@
     <string name="download_card_summary">แก้ไขการตั้งค่าก่อนการดาวน์โหลด ปิดตัวเลือกนี้เพื่อเริ่มการดาวน์โหลดทันที</string>
     <string name="crop_thumb_summary">ตัดภาพของปกคลิปให้เป็นสี่เหลี่ยมสำหรับการดาวน์โหลดไฟล์เสียง</string>
     <string name="use_extra_commands_summary">สำหรับการดาวน์โหลดเสียง / วิดีโอ เพิ่มคำสั่งพิเศษเพิ่มเติมรวมถึงการกำหนดค่า GUI</string>
-    <string name="move_temporary_files_summary">ถ่ายโอนไฟล์แคชไปยังโฟลเดอร์ดาวน์โหลด</string>
+    <string name="move_temporary_files_summary">โอนไฟล์ดาวน์โหลดที่แคชไว้ไปยังโฟลเดอร์ดาวน์โหลด</string>
     <string name="move_temporary_files">ย้ายไฟล์ชั่วคราว</string>
     <string name="crop_thumb">ตัดภาพขนาดย่อ</string>
     <string name="audio_only_item">รายการนี้มีในฟอร์แมตของเสียงเท่านั้น</string>
@@ -241,7 +241,7 @@
     <string name="download_over_metered_networks_summary">ดาวน์โหลดโดยใช้เครือข่ายประเภทใดก็ได้ ไม่งั้นจะรอเครือข่ายที่ไม่มีการจำกัดการใช้งาน</string>
     <string name="errored">เกิดข้อผิดพลาด</string>
     <string name="download_rescheduled_to">กำหนดเวลาการดาวน์โหลดใหม่เป็น:</string>
-    <string name="clear_temporary_files_summary">ลบไฟล์แคชจากการดาวน์โหลดที่ล้มเหลว/มีข้อผิดพลาด/ถูกยกเลิก</string>
+    <string name="clear_temporary_files_summary">ลบไฟล์แคชจากการดาวน์โหลดที่ล้มเหลว/มีข้อผิดพลาด/ถูกยกเลิก ไฟล์ infojson และการกำหนดค่าชั่วคราวอื่นๆ</string>
     <string name="ytdl_version">เวอร์ชันของ yt-dlp</string>
     <string name="freespace">พื้นที่ว่าง</string>
     <string name="running">กำลังดำเนินการ</string>
@@ -379,7 +379,7 @@
     <string name="clear_errored">ล้างข้อผิดพลาด</string>
     <string name="split_by_chapters">แบ่งเป็นแต่ละบท</string>
     <string name="items_imported">รายการที่นำเข้ามา</string>
-    <string name="clear_temporary_files">ล้างไฟล์ชั่วคราว</string>
+    <string name="clear_temporary_files">ล้างโฟลเดอร์แคช</string>
     <string name="cache_cleared">ไฟล์ชั่วคราวถูกล้างแล้ว</string>
     <string name="restrict_filenames">ชื่อไฟล์ที่มีการจำกัด</string>
     <string name="update_formats_summary">ค้นหาฟอร์แมตที่ขาดหายไปอัตโนมัติเมื่อคลิกการ์ดดาวน์โหลด</string>
@@ -405,8 +405,8 @@
     <string name="show_terminal">แสดงเทอร์มินัลในหน้าเมนูแชร์</string>
     <string name="write_description_summary">เขียนไฟล์คําอธิบาย</string>
     <string name="use_cookies">ใช้คุกกี้</string>
-    <string name="embed_metadata">การฝังข้อมูลอธิบายบริบทไว้ภายในไฟล์ (ฝังข้อมูลเมตา)</string>
-    <string name="embed_metadata_summary">วิเคราห์และฝังข้อมูลเมตาดาตาลงในไฟล์เสียง</string>
+    <string name="embed_metadata">ฝังข้อมูลเมตา</string>
+    <string name="embed_metadata_summary">วิเคราะห์และฝังข้อมูลเมตาลงในไฟล์เสียง</string>
     <string name="scheduling">ตั้งตาราง</string>
     <string name="preferred_search_engine_summary">เครื่องมือค้นหาที่จะใช้สำหรับการค้นหาในแอป</string>
     <string name="format_filtering_hint">รายการทั้งหมดนี้ต้องเป็นประเภทเดียวกันเพื่อใช้ตัวเลือกนี้</string>
@@ -418,7 +418,7 @@
     <string name="pure_theme_summary">ธีมสีดำ / ขาวบริสุทธิ์</string>
     <string name="downloaded">"ที่ดาวน์โหลดแล้ว: "</string>
     <string name="quick_download">ดาวน์โหลดด่วน</string>
-    <string name="quick_download_summary">อย่าดึงข้อมูลในช่องการ์ดดาวน์โหลด</string>
+    <string name="quick_download_summary">ดำเนินการดาวน์โหลดต่อทันที โดยไม่ต้องดึงข้อมูลมาก่อน</string>
     <string name="remove_audio">ลบเสียงออก</string>
     <string name="preferred_format_id">รหัสฟอร์แมต ID ที่ต้องการ</string>
     <string name="on_time">เปิด / มีอยู่</string>
@@ -488,7 +488,7 @@
     <string name="potoken_player">โทเค็น PO (ตัวเล่น)</string>
     <string name="potoken_subs">โทเค็น PO (Subs)</string>
     <string name="visitor_data">ข้อมูลผู้เข้าชม</string>
-    <string name="get_data_sync_id">ข้อมูลผู้เข้าชม</string>
+    <string name="get_data_sync_id">ข้อมูลผู้เยี่ยมชม รับรหัสการซิงค์ข้อมูล</string>
     <string name="desktop">เดสก์ท็อป</string>
     <string name="url_regex">ยูอาร์แอล Regex</string>
     <string name="disable_flat_playlist">ปิดใช้งานเพลย์ลิสต์แบบกว้าง</string>
@@ -499,7 +499,7 @@
     <string name="app_icon">ไอคอนแอป</string>
     <string name="install_downloaded_file">ติดตั้งไฟที่ดาวน์โหลดมา</string>
     <string name="crop">ตัดภาพ</string>
-    <string name="required">บังคับ</string>
+    <string name="required">ที่จำเป็น</string>
     <string name="crop_validation_exceeds_w">X+W มีค่าเกิน %d</string>
     <string name="crop_validation_exceeds_h">Y+H มีค่าเกิน %d</string>
     <string name="use_original_url_playlist_summary">ใช้ URL ของเพลย์ลิสต์ที่ผู้ใช้ระบุมา แทนการใช้แท็ก playlist_webpage_url จากข้อมูล JSON dump</string>
@@ -591,4 +591,10 @@
     <plurals name="every_months">
         <item quantity="other">ทุกๆ %d เดือน</item>
     </plurals>
+    <string name="bundled">รวมอยู่ในระบบ</string>
+    <string name="x_offset">ระยะขยับในแนวนอน</string>
+    <string name="y_offset">ระยะขยับในแนวตั้ง</string>
+    <string name="bgutils_pot_generation_server">เซิร์ฟเวอร์ HTTP</string>
+    <string name="search_results">ผลการค้นหา</string>
+    <string name="clear_info_json">ล้างข้อมูลไฟล์ info.json</string>
 </resources>

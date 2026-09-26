@@ -603,4 +603,7 @@
     <string name="bgutils_pot_generation_script_summary">Ogni chiamata yt-dlp comporta il sovraccarico dovuto alla creazione di un nuovo processo runtime js per eseguire la script. Questo metodo non è raccomandato per usagio ad alta concorrenza.</string>
     <string name="bgutils_pot_generation_script_info">Per usare il POT Procider BgUtils, l\'apl deve essere scaricata dal repo da github Brainicism/bgutil-ytdlp-pot-provider e iniziare l\'installazione. Questo ci potrebbe mettere un po\' per finire. Procedere ora?</string>
     <string name="burn_subs">Masterizza sottotitoli</string>
+    <string name="search_results">Risultati di ricerca</string>
+    <string name="clear_info_json">Cancella infojson</string>
+    <string name="internal_plugin_ffmpeg_preset">Modello plugin FFmpeg interno</string>
 </resources>
