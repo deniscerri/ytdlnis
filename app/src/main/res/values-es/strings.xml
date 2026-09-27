@@ -9,7 +9,7 @@
     <string name="updating">Actualizando</string>
     <string name="ytdl_update_hint">Es útil al descargar actualizaciones</string>
     <string name="update_ytdl">Actualiza yt‐dlp a la nueva versión</string>
-    <string name="about">Acerca de</string>
+    <string name="about">Acerca</string>
     <string name="source_code">Código Fuente</string>
     <string name="search_hint">Buscar o insertar URL</string>
     <string name="failed_download">No se pudo descargar el archivo</string>
@@ -170,7 +170,7 @@
     <string name="downloads_running_try_later">El trabajador de descarga se está ejecutando. Vuelva a intentarlo más tarde</string>
     <string name="link_you_copied">Enlace que copiaste</string>
     <string name="best_quality">Mejor calidad</string>
-    <string name="worst_quality">Peor Calidad</string>
+    <string name="worst_quality">Mejor Calidad</string>
     <string name="restrict_filenames">Restringir nombres de archivos</string>
     <string name="restrict_filenames_summary">Restringe los nombres de archivo a sólo caracteres ASCII. Evita \"&amp;\" y espacios en los nombres de archivo</string>
     <string name="kill_app">Terminar la aplicación</string>
@@ -601,4 +601,11 @@
     <string name="exit">Salir</string>
     <string name="packages_description">Los paquetes son aplicaciones de ayuda que usa YTDLnis para ayudar con los comandos de yt-dlp. Algunos de ellos vienen incluidos, pero puedes instalar nuevas versiones que se publiquen sin la necesidad de actualizar la aplicación. Los apk instalados reemplazarán las versiones incluidas que usa la aplicación.</string>
     <string name="bgutils_pot_generation_script_info">Para poder usar el proveedor POT de BgUtils, la aplicación necesita descargar e instalar el repositorio Brainicism/bgutil-ytdlp-pot-provider desde github. Esto puede tomar un tiempo en completarse. ¿Deseas continuar ahora?</string>
+    <string name="search_results">Resultados de búsqueda</string>
+    <string name="burn_subs">Incrustar subtítulos</string>
+    <string name="check_clipboard_home_summary">Detectar automáticamente URLs en el portapapeles en la pantalla de inicio</string>
+    <string name="check_clipboard_home">Comprobar el portapapeles en la pantalla de inicio</string>
+    <string name="clear_info_json">Borrar archivos infojson</string>
+    <string name="internal_plugin_ffmpeg_preset">Predestablecido de FFmpeg para complemento interno</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Preset que usa FFmpeg para complementos internos como incrustar subtítulos, etc. ¡Ajustar esta preferencia afecta al tamaño final del archivo!</string>
 </resources>

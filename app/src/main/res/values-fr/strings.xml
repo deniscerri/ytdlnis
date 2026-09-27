@@ -608,4 +608,8 @@
     <string name="burn_subs">Graver les sous-titres</string>
     <string name="check_clipboard_home_summary">Détecter automatiquement les URL présentes dans le presse-papiers depuis l\'écran d\'accueil</string>
     <string name="check_clipboard_home">Vérifier le presse-papiers sur l\'écran d\'accueil</string>
+    <string name="search_results">Résultats de la recherche</string>
+    <string name="clear_info_json">Effacer les infojsons</string>
+    <string name="internal_plugin_ffmpeg_preset">Préréglage FFmpeg du plugin interne</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Réglage par défaut utilisé par FFmpeg pour les plugins internes, tels que l\'incrustation de sous-titres, etc. La modification de ce paramètre a une incidence sur la taille finale du fichier !</string>
 </resources>

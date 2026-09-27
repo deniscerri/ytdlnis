@@ -223,7 +223,7 @@
     <string name="preferred_download_type_summary">預設的下載卡片將開啟至</string>
     <string name="access_all_directories">允許訪問所有目錄</string>
     <string name="access_all_directories_summary">讓應用程式在預設限制的目錄上進行下載</string>
-    <string name="clear_temporary_files">清除暫存檔案</string>
+    <string name="clear_temporary_files">清除快取資料夾</string>
     <string name="split_by_chapters">依章節分割</string>
     <string name="confirm_delete_cookies_desc">永久刪除所有 Cookies</string>
     <string name="save_subs">儲存字幕</string>
@@ -231,7 +231,7 @@
     <string name="help_translate_summary">使用 Weblate 將此應用程式翻譯為您的語言</string>
     <string name="file_size">檔案大小</string>
     <string name="restart">重新啟動</string>
-    <string name="clear_temporary_files_summary">從崩潰/錯誤/取消的下載中刪除快取檔案</string>
+    <string name="clear_temporary_files_summary">刪除快取檔案、infojson 檔案和其他臨時配置</string>
     <string name="download_rescheduled_to">下載已重新安排至：</string>
     <string name="freespace">可用空間</string>
     <string name="restrict_filenames_summary">限制檔案名稱僅使用 ASCII 字元，並避免在檔名中使用「&amp;」與空格</string>
@@ -287,7 +287,7 @@
     <string name="extra_command">額外指令</string>
     <string name="use_cookies">使用 cookies</string>
     <string name="embed_metadata">嵌入中繼資料</string>
-    <string name="embed_metadata_summary">解析並嵌入中繼資料到音訊檔案中</string>
+    <string name="embed_metadata_summary">解析並將中繼資料嵌入檔案</string>
     <string name="use_sponsorblock">使用 SponsorBlock</string>
     <string name="update_formats_background">背景更新格式</string>
     <string name="auto_update_ytdlp">自動更新 yt-dlp</string>
@@ -514,4 +514,7 @@
     <string name="auto_update_ytdlp_summary">建議保持此選項開啟，因為 yt-dlp 需要經常更新才能維持正常運作！相關資料是從 yt-dlp 的 GitHub 儲存庫中擷取的</string>
     <string name="trim_filenames">修改檔名</string>
     <string name="install_downloaded_file">安裝已下載的檔案</string>
+    <string name="search_results">搜尋結果</string>
+    <string name="required">必填</string>
+    <string name="crop_validation_exceeds_w">X + W 超過 %d</string>
 </resources>

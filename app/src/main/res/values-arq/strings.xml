@@ -601,4 +601,8 @@
     <string name="check_clipboard_home">تحقق من الحافظة في الشاشة الرئيسية</string>
     <string name="packages_description">الحزم هي تطبيقات مساعدة يستخدمها YTDLnis لدعم أوامر yt-dlp. تأتي بعض هذه الحزم مدمجة بالفعل مع التطبيق، ولكن يمكنك تثبيت إصدارات أحدث يتم إصدارها دون الحاجة إلى تحديث التطبيق نفسه؛ حيث تحل ملفات APK المثبتة هذه محل الإصدار المدمج الذي يستخدمه التطبيق.</string>
     <string name="bgutils_pot_generation_script_info">لاستخدام مزود BgUtils POT، يحتاج التطبيق إلى تحميل المستودع Brainicism/bgutil-ytdlp-pot-provider من GitHub وبدء عملية التثبيت. قد تستغرق هذه العملية بعض الوقت؛ هل تود المتابعة الآن؟</string>
+    <string name="search_results">نتائج البحث</string>
+    <string name="clear_info_json">مسح الملفات تاع infojson</string>
+    <string name="internal_plugin_ffmpeg_preset">إعداد FFmpeg المسبق للإضافة الداخلية</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">الإعداد المسبق اللي تخدم بيه FFmpeg للإضافات الداخلية كيما حرق الترجمة وكذا. التعديل على هذا الخيار راه يأثر على حجم الملف النهائي!</string>
 </resources>
