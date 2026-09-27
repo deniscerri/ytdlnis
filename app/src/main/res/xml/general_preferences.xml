@@ -127,6 +127,15 @@
 
     <PreferenceCategory android:title="@string/misc">
         <ListPreference
+            android:defaultValue="share"
+            android:entries="@array/history_quick_action_entries"
+            android:entryValues="@array/history_quick_action_values"
+            app:icon="@drawable/ic_edit"
+            app:useSimpleSummaryProvider="true"
+            app:key="history_quick_action"
+            app:title="@string/history_quick_action" />
+
+        <ListPreference
             android:defaultValue=""
             android:entries="@array/countries"
             android:entryValues="@array/countries_values"

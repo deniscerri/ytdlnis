@@ -811,13 +811,18 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
 
     override fun onButtonClick(itemID: Long, isPresent: Boolean) {
         if (isPresent){
+            val quickAction = sharedPreferences.getString("history_quick_action", "share")
             lifecycleScope.launch {
                 val item = withContext(Dispatchers.IO){
                     historyViewModel.getByID(itemID)
                 }
 
                 item?.apply {
-                    FileUtil.shareFileIntent(requireContext(), item.downloadPath)
+                    if (quickAction == "open" && item.downloadPath.isNotEmpty()) {
+                        FileUtil.openFileIntent(requireContext(), item.downloadPath.first())
+                    } else {
+                        FileUtil.shareFileIntent(requireContext(), item.downloadPath)
+                    }
                 }
             }
 
