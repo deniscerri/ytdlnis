@@ -612,4 +612,8 @@
     <string name="clear_info_json">Limpar infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Predefinição do Plugin Interno FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">A predefinição do FFmpeg é utilizada por plugins internos, como os de incrustação de legendas, etc. Ajustar essa preferência afeta o tamanho final do arquivo!</string>
+    <string name="preferred_format_size_audio">Tamanho do formato de áudio preferencial</string>
+    <string name="history_quick_action">Botão de Ação Rápida</string>
+    <string name="history_quick_action_summary">Ação a ser executada ao clicar no botão de ação rápida no cartão de histórico</string>
+    <string name="open_file">Abrir arquivo</string>
 </resources>
