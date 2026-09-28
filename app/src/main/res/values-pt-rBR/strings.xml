@@ -608,4 +608,8 @@
     <string name="burn_subs">Gravar legendas</string>
     <string name="check_clipboard_home_summary">Detectar automaticamente URLs na área de transferência a partir da tela inicial</string>
     <string name="check_clipboard_home">Verifique a área de transferência a partir da tela inicial</string>
+    <string name="search_results">Resultados da busca</string>
+    <string name="clear_info_json">Limpar infojsons</string>
+    <string name="internal_plugin_ffmpeg_preset">Predefinição do Plugin Interno FFmpeg</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">A predefinição do FFmpeg é utilizada por plugins internos, como os de incrustação de legendas, etc. Ajustar essa preferência afeta o tamanho final do arquivo!</string>
 </resources>
