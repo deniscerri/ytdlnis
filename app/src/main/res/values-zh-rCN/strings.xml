@@ -599,4 +599,8 @@
     <string name="clear_info_json">清除 infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">内部 FFmpeg 预设</string>
     <string name="internal_plugin_ffmpeg_preset_summary">内部插件的预设 FFmpeg 用途，如烧录字幕等。调整该偏好设置影响最终文件大小！</string>
+    <string name="preferred_format_size_audio">首选音频格式大小</string>
+    <string name="history_quick_action">快速操作按钮</string>
+    <string name="history_quick_action_summary">单击历史记录卡片上的操作按钮时要执行的操作</string>
+    <string name="open_file">打开文件</string>
 </resources>
