@@ -81,10 +81,15 @@ object FileUtil {
         }
     }
 
+    suspend fun checkExists(path: String): Boolean = withContext(Dispatchers.IO) {
+        exists(path)
+    }
+
     fun exists(path: String) : Boolean {
-        val file = File(path)
         if (path.isEmpty()) return false
-        return file.exists()
+        if (path.startsWith("content://"))
+            return runCatching { DocumentFile.fromSingleUri(App.instance, path.toUri())?.exists() == true }.getOrDefault(false)
+        return File(path).exists()
     }
 
     fun formatPath(path: String) : String {
@@ -115,8 +120,84 @@ object FileUtil {
     }
 
 
+    private val SKIP_REGEX = "(^config.*.\\.txt$)|(rList)|(.*.part-Frag.*)|(.*.live_chat)|(.*.ytdl)".toRegex()
+    private fun isForeignProvider(destDir: String): Boolean {
+        if (!destDir.startsWith("content://")) return false
+        return destDir.toUri().authority != "com.android.externalstorage.documents"
+    }
+
+    private suspend fun moveToProvider(
+        originDir: File, context: Context, destDir: String,
+        keepCache: Boolean, progress: (p: Int) -> Unit
+    ): List<String> = withContext(Dispatchers.IO) {
+        val root = DocumentFile.fromTreeUri(context, destDir.toUri())
+            ?: throw java.io.IOException("Cannot open destination folder")
+
+        val files = originDir.walkTopDown()
+            .filter { it.isFile && it.length() > 0L && !it.name.matches(SKIP_REGEX) }
+            .toList()
+        val total = files.sumOf { it.length() }.coerceAtLeast(1L)
+        var done = 0L
+        var lastPct = -1
+        val results = mutableListOf<String>()
+
+        for (f in files) {
+            // recreate subfolders
+            var parent = root
+            f.parentFile!!.relativeTo(originDir).path
+                .split(File.separatorChar).filter { it.isNotEmpty() && it != "." }
+                .forEach { name ->
+                    parent = parent.findFile(name)?.takeIf { it.isDirectory }
+                        ?: parent.createDirectory(name)
+                                ?: throw java.io.IOException("Cannot create folder $name")
+                }
+
+            // unique name
+            var name = f.name
+            var counter = 1
+            while (parent.findFile(name) != null) {
+                name = "${f.nameWithoutExtension} ($counter)" +
+                        (if (f.extension.isNotEmpty()) ".${f.extension}" else "")
+                counter++
+            }
+
+            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(f.extension.lowercase())
+                ?: "application/octet-stream"
+            val target = parent.createFile(mime, name)
+                ?: throw java.io.IOException("Cannot create $name on destination")
+
+            try {
+                context.contentResolver.openOutputStream(target.uri, "w")!!.use { out ->
+                    f.inputStream().use { input ->
+                        val buf = ByteArray(64 * 1024)
+                        var n: Int
+                        while (input.read(buf).also { n = it } >= 0) {
+                            out.write(buf, 0, n)
+                            done += n
+                            val pct = (done * 100 / total).toInt()
+                            if (pct != lastPct) { lastPct = pct; progress(pct) }
+                        }
+                    }
+                    out.flush()
+                }
+            } catch (e: Exception) {
+                target.delete()          // don't leave a partial file
+                throw e
+            }
+
+            f.delete()
+            results.add(target.uri.toString())
+        }
+
+        if (!keepCache) originDir.deleteRecursively()
+        results
+    }
+
     @Throws(Exception::class)
      suspend fun moveFile(originDir: File, context: Context, destDir: String, keepCache: Boolean, progress: (p: Int) -> Unit) : List<String> {
+        if (isForeignProvider(destDir)) {
+            return moveToProvider(originDir, context, destDir, keepCache, progress)
+        }
         return withContext(Dispatchers.Main){
             val fileList = mutableListOf<String>()
             val dir = File(formatPath(destDir))
@@ -206,7 +287,7 @@ object FileUtil {
                                     runCatching {
                                         it.walkTopDown().forEach { f ->
                                             if (f.isDirectory) return@forEach
-                                            val destUri = moveFileInputStream(it, context, dst) ?: return@forEach
+                                            val destUri = moveFileInputStream(f, context, dst) ?: return@forEach
                                             fileList.add(DocumentFile.fromSingleUri(context, destUri)!!.getAbsolutePath(context))
                                         }
 
