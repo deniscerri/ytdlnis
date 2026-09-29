@@ -490,6 +490,7 @@
     <string name="video_compatible_summary">Recodes the video making it compatible with other apps</string>
     <string name="no_free_space_warning">There is no free space for this configuration.</string>
     <string name="preferred_format_size">Preferred Format Size</string>
+    <string name="preferred_format_size_audio">Preferred Audio Format Size</string>
     <string name="smallest">Smallest</string>
     <string name="largest">Largest</string>
     <string name="prefer_drc_audio">Prefer DRC Audio</string>
@@ -593,4 +594,10 @@
     <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
     <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
     <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
+
+    <string name="history_quick_action">Quick Action Button</string>
+    <string name="history_quick_action_summary">Action to perform when clicking the quick action button on the history card</string>
+    <string name="share">Share</string>
+    <string name="open_file">Open File</string>
+
 </resources>
