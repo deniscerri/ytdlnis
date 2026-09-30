@@ -606,4 +606,8 @@
     <string name="clear_info_json">Infojsons-ları təmizlə</string>
     <string name="internal_plugin_ffmpeg_preset">Daxili Plaginin FFmpeg İlkin Təyinetməsi</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Titrləri yazdırmaq və.s kimi daxili plaginlərin istifadə etdiyi FFmpeg ilkin təyinetməsi. Bu seçimi dəyişdirmək yekun fayl həcminə təsir edir!</string>
+    <string name="preferred_format_size_audio">Üstünlük Verilən Səs Formatı Həcmi</string>
+    <string name="history_quick_action">Sürətli Fəaliyyət Düyməsi</string>
+    <string name="history_quick_action_summary">Tarixçə kartındakı sürətli fəaliyyət düyməsinə toxunduqda yerinə yetiriləcək fəaliyyət</string>
+    <string name="open_file">Faylı Aç</string>
 </resources>
