@@ -599,4 +599,8 @@
     <string name="clear_info_json">Infojson 정리</string>
     <string name="internal_plugin_ffmpeg_preset">내장 플러그인 FFmpeg 사전 설정</string>
     <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg에서 자막 굽기같은 내부 플러그인에 쓰는 사전 설정입니다. 이 설정을 조정하면 최종 파일 크기에 영향을 미칩니다!</string>
+    <string name="preferred_format_size_audio">선호하는 오디오 형식 크기</string>
+    <string name="history_quick_action">빠른 동작 버튼</string>
+    <string name="history_quick_action_summary">기록 카드의 빠른 동작 버튼을 눌렀을 때 실행할 동작</string>
+    <string name="open_file">파일 열기</string>
 </resources>
