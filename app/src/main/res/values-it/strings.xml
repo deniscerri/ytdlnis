@@ -606,4 +606,8 @@
     <string name="search_results">Risultati di ricerca</string>
     <string name="clear_info_json">Cancella infojson</string>
     <string name="internal_plugin_ffmpeg_preset">Modello plugin FFmpeg interno</string>
+    <string name="preferred_format_size_audio">Dimensione formato audio preferita</string>
+    <string name="history_quick_action">Pulsante di azione rapida</string>
+    <string name="history_quick_action_summary">Azione da eseguire quando clicchi il pulsante di azione rapida nella scheda cronologia</string>
+    <string name="open_file">Apri file</string>
 </resources>
