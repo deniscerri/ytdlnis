@@ -172,7 +172,7 @@
     <string name="end">Konec</string>
     <string name="create_template">Vytvoření šablony</string>
     <string name="freespace">Volné místo</string>
-    <string name="Open_File">Otevření souboru</string>
+    <string name="Open_File">Otevřít soubor</string>
     <string name="start">Start</string>
     <string name="backup_restore">Zálohování a obnovení</string>
     <string name="ignore">Ignorovat</string>
@@ -613,4 +613,13 @@
     <string name="bgutils_pot_generation_script_info">Aby bylo možné používat poskytovatele POT BgUtils, musí aplikace stáhnout repozitář Brainicism/bgutil-ytdlp-pot-provider z GitHubu a zahájit instalaci. Dokončení tohoto procesu může chvíli trvat. Chcete pokračovat?</string>
     <string name="check_clipboard_home_summary">Automaticky rozpoznat URL adresy ve schránce na domovské obrazovce</string>
     <string name="check_clipboard_home">Zkontrolovat schránku na domovské obrazovce</string>
+    <string name="search_results">Výsledky vyhledávání</string>
+    <string name="preferred_format_size_audio">Preferovaná velikost audio souboru</string>
+    <string name="burn_subs">Zapsat titulky</string>
+    <string name="clear_info_json">Vymazat infojsons</string>
+    <string name="internal_plugin_ffmpeg_preset">Předvolba FFmpeg pro interní pluginy</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Předvolba, kterou FFmpeg používá pro interní pluginy, jako je zápis titulků atd. Úprava tohoto nastavení ovlivňuje konečnou velikost souboru!</string>
+    <string name="history_quick_action">Tlačítko rychlé akce</string>
+    <string name="history_quick_action_summary">Akce, která se provede po kliknutí na tlačítko rychlé akce na kartě historie</string>
+    <string name="open_file">Otevření souboru</string>
 </resources>
