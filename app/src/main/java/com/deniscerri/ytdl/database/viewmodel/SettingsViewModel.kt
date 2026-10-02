@@ -58,7 +58,7 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         historyRepository = HistoryRepository(dbManager.historyDao)
         resultRepository = ResultRepository(dbManager.resultDao, dbManager.commandTemplateDao, application)
         downloadRepository = DownloadRepository(dbManager.downloadDao)
-        cookieRepository = CookieRepository(dbManager.cookieDao)
+        cookieRepository = CookieRepository(dbManager.cookieDao, application)
         commandTemplateRepository = CommandTemplateRepository(dbManager.commandTemplateDao)
         searchHistoryRepository = SearchHistoryRepository(dbManager.searchHistoryDao)
         observeSourcesRepository = ObserveSourcesRepository(dbManager.observeSourcesDao)
@@ -233,6 +233,8 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
                     data.cookies!!.forEach {
                         cookieRepository.insert(it)
                     }
+
+                    cookieRepository.updateCookieFile()
                 }
             }
 

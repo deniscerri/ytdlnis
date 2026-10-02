@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.CookieItem
+import com.deniscerri.ytdl.database.repository.CookieRepository
 import com.deniscerri.ytdl.database.viewmodel.CookieViewModel
 import com.deniscerri.ytdl.ui.adapter.CookieAdapter
 import com.deniscerri.ytdl.util.Extensions.enableTextHighlight
@@ -219,7 +220,7 @@ class CookiesFragment : Fragment(), CookieAdapter.OnItemClickListener {
 
             item?.apply {
                 clipboard.setOnClickListener {
-                    UiUtil.copyToClipboard(cookiesViewModel.cookieHeader + "\n" + item.content, requireActivity())
+                    UiUtil.copyToClipboard(CookieRepository.cookieHeader + "\n" + item.content, requireActivity())
                     layout.dismiss()
                 }
 
