@@ -955,20 +955,22 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
         val type = downloadItem.type
 
-        val downDir : File
-        val canWrite = File(FileUtil.formatPath(downloadItem.downloadPath)).canWrite()
+        val targetDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+        val cacheDownloads = sharedPreferences.getBoolean("cache_downloads", true)
         val writtenPath = type == DownloadType.command && downloadItem.format.format_note.contains("-P ")
 
-        if (writtenPath || (!sharedPreferences.getBoolean("cache_downloads", true) && canWrite)){
-            downDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+        val writeDirectly = writtenPath || (!cacheDownloads && targetDir.canWrite())
+        val downDir: File
+        if (writeDirectly) {
+            downDir = targetDir
             request.addOption("--no-quiet")
             request.addOption("--no-simulate")
             request.addOption("--print", "after_move:'%(filepath,_filename)s'")
-        }else{
-            val cacheDir = FileUtil.getCacheDownloadsPath(context)
-            downDir = File(cacheDir, downloadItem.id.toString())
-            downDir.delete()
-            downDir.mkdirs()
+        } else {
+            downDir = File(FileUtil.getCacheDownloadsPath(context), downloadItem.id.toString()).apply {
+                deleteRecursively()
+                mkdirs()
+            }
         }
 
         val aria2 = sharedPreferences.getBoolean("aria2", false)
@@ -1350,7 +1352,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                 }
 
                 if (downloadItem.videoPreferences.burnSubs) {
-                    request.addOption("--use-postprocessor", "BurnSubs:when=after_move;preset=$internalPluginFFmpegPreset")
+                    request.addOption("--use-postprocessor", "BurnSubs:preset=$internalPluginFFmpegPreset")
                 }
 
                 var cont = ""

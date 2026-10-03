@@ -12,8 +12,6 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
-import com.deniscerri.ytdl.ui.more.settings.folder.temporary.DangerButtonPreference
-import com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
 import com.deniscerri.ytdl.util.TemporaryFilesUtil
 import com.deniscerri.ytdl.util.TemporaryFilesUtil.Category
 import com.deniscerri.ytdl.util.UiUtil

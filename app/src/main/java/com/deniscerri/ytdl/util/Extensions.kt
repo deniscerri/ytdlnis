@@ -786,4 +786,16 @@ object Extensions {
 
         return packageInfo.requestedPermissions?.contains(this) ?: false
     }
+
+    private val unicodeEscape = Regex("""\\u([0-9a-fA-F]{4})""")
+    fun String.fixYtdlpPath(): String {
+        // 1. Undo literal \uXXXX escapes
+        var s = unicodeEscape.replace(this) { it.groupValues[1].toInt(16).toChar().toString() }
+        // 2. Undo UTF-8 bytes that were decoded as Latin-1
+        if (s.any { it in '\u0080'..'\u00FF' }) {
+            val fixed = String(s.toByteArray(Charsets.ISO_8859_1), Charsets.UTF_8)
+            if (!fixed.contains('\uFFFD')) s = fixed
+        }
+        return s
+    }
 }

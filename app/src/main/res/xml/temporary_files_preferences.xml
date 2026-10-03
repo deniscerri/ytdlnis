@@ -7,31 +7,31 @@
 
     <PreferenceCategory android:title="@string/temporary_files">
 
-        <com.deniscerri.ytdl.ui.more.settings.folder.SizePreference
+        <com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
             app:icon="@drawable/baseline_downloading_24"
             app:key="temp_unfinished_downloads"
             app:summary="@string/unfinished_downloads_summary"
             app:title="@string/unfinished_downloads" />
 
-        <com.deniscerri.ytdl.ui.more.settings.folder.SizePreference
+        <com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
             app:icon="@drawable/outline_data_object_24"
             app:key="temp_info_jsons"
             app:summary="@string/info_jsons_summary"
             app:title="@string/info_jsons" />
 
-        <com.deniscerri.ytdl.ui.more.settings.folder.SizePreference
+        <com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
             app:icon="@drawable/ic_terminal"
             app:key="temp_ytdlp_cache"
             app:summary="@string/ytdlp_cache_summary"
             app:title="@string/ytdlp_cache" />
 
-        <com.deniscerri.ytdl.ui.more.settings.folder.SizePreference
+        <com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
             app:icon="@drawable/baseline_settings_suggest_24"
             app:key="temp_configs"
             app:summary="@string/temporary_configurations_summary"
             app:title="@string/temporary_configurations" />
 
-        <com.deniscerri.ytdl.ui.more.settings.folder.SizePreference
+        <com.deniscerri.ytdl.ui.more.settings.folder.temporary.SizePreference
             app:icon="@drawable/baseline_install_mobile_24"
             app:key="temp_downloaded_installers"
             app:summary="@string/downloaded_apks_summary"
@@ -45,7 +45,7 @@
         android:summary="@string/move_temporary_files_summary"
         app:title="@string/move_temporary_files" />
 
-    <com.deniscerri.ytdl.ui.more.settings.folder.DangerButtonPreference
+    <com.deniscerri.ytdl.ui.more.settings.folder.temporary.DangerButtonPreference
         app:key="clear_all_temporary_files"
         app:title="@string/clear_everything" />
 

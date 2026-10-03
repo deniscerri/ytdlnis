@@ -121,7 +121,7 @@ object FileUtil {
 
 
     private val SKIP_REGEX = "(^config.*.\\.txt$)|(rList)|(.*.part-Frag.*)|(.*.live_chat)|(.*.ytdl)".toRegex()
-    private fun isForeignProvider(destDir: String): Boolean {
+    fun isForeignProvider(destDir: String): Boolean {
         if (!destDir.startsWith("content://")) return false
         return destDir.toUri().authority != "com.android.externalstorage.documents"
     }
