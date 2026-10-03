@@ -92,7 +92,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return GoogleApiUtil.getSearchSuggestions(searchQuery)
     }
 
-    fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
+    suspend fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
 //        val newPipeTrial = if (isUsingNewPipeExtractorDataFetching()) {
 //            newPipeUtil.getStreamingUrlAndChapters(url)
 //        }else {
@@ -316,7 +316,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return itemsToReturn
     }
 
-    fun getFormats(url: String, source : String? = null) : List<Format> {
+    suspend fun getFormats(url: String, source : String? = null) : List<Format> {
         val formatSource = source ?: sharedPreferences.getString("formats_source", "yt-dlp")
         val res = if (url.isYoutubeURL()) {
             when(formatSource) {

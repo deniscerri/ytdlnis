@@ -220,6 +220,8 @@ class FormatSelectionBottomSheetDialog(
                                     listener.onFormatsUpdated(res)
                                 }
                             }.onFailure { err ->
+                                // the sheet was closed, nothing to report
+                                if (err is CancellationException) throw err
                                 withContext(Dispatchers.Main){
                                     UiUtil.handleNoResults(requireActivity(), err.message.toString(), null, false, continued = {}, closed = {}, cookieFetch = {})
                                 }
@@ -269,6 +271,7 @@ class FormatSelectionBottomSheetDialog(
                             refreshBtn.isEnabled = true
                         }
                     }catch (e: Exception){
+                        if (e is CancellationException) throw e
                         withContext(Dispatchers.Main) {
                             refreshBtn.isEnabled = true
                             filterBtn.isEnabled = true

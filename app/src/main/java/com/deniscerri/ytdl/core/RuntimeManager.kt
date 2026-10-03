@@ -37,6 +37,8 @@ import java.io.IOException
 import java.io.InputStream
 import java.security.MessageDigest
 import java.util.Collections
+import java.util.UUID
+import kotlin.coroutines.cancellation.CancellationException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import kotlin.collections.set
@@ -299,24 +301,96 @@ object RuntimeManager {
                 alive = p!!.isAlive
             }
             if (alive) {
-                destroyChildProcesses(id)
-                p?.destroy()
+                // remove first so the executing thread treats the exit as a cancellation and not as a failure
                 idProcessMap.remove(id)
+                p?.let { destroyProcessTree(it) }
                 return true
             }
         }
         return false
     }
 
-    private fun destroyChildProcesses(id: String) : Boolean {
-        try {
-            val command = "pstree -p $id | grep -oP '\\(\\K[^\\)]+' | xargs kill"
-            val processBuilder = ProcessBuilder("/system/bin/sh", "-c", command)
-            val process = processBuilder.start()
-            val res = process.waitFor()
-            return res == 0
-        }catch (e: Exception) {
-            return false
+    /**
+     * Kills the process together with everything it spawned (ffmpeg, aria2c, js runtimes used by yt-dlp etc.).
+     * Process.destroy() alone only kills python and leaves its children running
+     */
+    private fun destroyProcessTree(process: Process) {
+        val pid = process.pidOrNull()
+        if (pid != null) {
+            descendantPids(pid).forEach { child ->
+                runCatching { android.os.Process.killProcess(child) }
+            }
+        }
+        process.destroy()
+    }
+
+    private fun Process.pidOrNull() : Int? = runCatching {
+        val field = javaClass.getDeclaredField("pid")
+        field.isAccessible = true
+        field.getInt(this)
+    }.getOrNull() ?: runCatching {
+        // android's process implementation prints itself as "Process[pid=123, hasExited=false]"
+        Regex("""pid=(\d+)""").find(toString())?.groupValues?.get(1)?.toInt()
+    }.getOrNull()
+
+    private fun descendantPids(rootPid: Int) : List<Int> {
+        val childrenByParent = mutableMapOf<Int, MutableList<Int>>()
+        File("/proc").listFiles()?.forEach { dir ->
+            val pid = dir.name.toIntOrNull() ?: return@forEach
+            // format is "pid (comm) state ppid ...", comm can contain spaces so read after the last ')'
+            val stat = runCatching { File(dir, "stat").readText() }.getOrNull() ?: return@forEach
+            val ppid = stat.substringAfterLast(')').trim().split(' ').getOrNull(1)?.toIntOrNull() ?: return@forEach
+            childrenByParent.getOrPut(ppid) { mutableListOf() }.add(pid)
+        }
+
+        val result = mutableListOf<Int>()
+        val queue = ArrayDeque(listOf(rootPid))
+        while (queue.isNotEmpty()) {
+            childrenByParent[queue.removeFirst()]?.forEach {
+                result.add(it)
+                queue.add(it)
+            }
+        }
+        return result
+    }
+
+    /**
+     * Process ids that got cancelled before their process was registered
+     */
+    private val cancelledProcessIds = Collections.synchronizedSet(HashSet<String>())
+
+    private fun registerProcess(processId: String?, process: Process) {
+        if (processId == null) return
+        idProcessMap[processId] = process
+        if (cancelledProcessIds.contains(processId)) {
+            idProcessMap.remove(processId)
+            destroyProcessTree(process)
+            throw CanceledException()
+        }
+    }
+
+    /**
+     * Runs a blocking call (like [execute] or [executeStreaming]) so that cancelling the calling coroutine
+     * also kills the process it started. The block has to pass the given processId to the execute call.
+     * Without this, cancelling only stops the coroutine while yt-dlp keeps running in the background
+     */
+    suspend fun <T> runKillable(block: (processId: String) -> T): T {
+        val processId = "killable_${UUID.randomUUID()}"
+        return coroutineScope {
+            val work = async(Dispatchers.IO) {
+                try {
+                    block(processId)
+                } finally {
+                    cancelledProcessIds.remove(processId)
+                }
+            }
+            try {
+                work.await()
+            } catch (e: CancellationException) {
+                if (!work.isCompleted) cancelledProcessIds.add(processId)
+                destroyProcessById(processId)
+                throw e
+            }
         }
     }
 
@@ -447,12 +521,11 @@ object RuntimeManager {
         }
 
         val process = try {
-            processBuilder.start().also {
-                if (processId != null) idProcessMap[processId] = it
-            }
+            processBuilder.start()
         } catch (e: IOException) {
             throw ExecuteException(e)
         }
+        registerProcess(processId, process)
 
         return try {
             val stdOutProcessor = StreamProcessExtractor(outBuffer, process.inputStream, callback)
@@ -499,13 +572,13 @@ object RuntimeManager {
             processBuilder.directory(executeDirectory)
         }
 
-        return try {
-            processBuilder.start().also {
-                if (processId != null) idProcessMap[processId] = it
-            }
+        val process = try {
+            processBuilder.start()
         } catch (e: IOException) {
             throw ExecuteException(e)
         }
+        registerProcess(processId, process)
+        return process
     }
 
     fun <T> executeStreaming(

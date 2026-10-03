@@ -558,12 +558,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     }
                 }
                 R.id.delete_results -> {
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO){
-                            resultViewModel.cancelParsingQueries()
-                        }
-                    }
-                    resultViewModel.getHomeRecommendations()
+                    resultViewModel.clearResults()
                     searchBar!!.setText("")
                     showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE

@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
@@ -85,6 +86,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     private var parsingQueries: Job? = null
     private var parsingQueriesJobList : MutableList<Job> = mutableListOf()
+    private var homeRecommendationsJob: Job? = null
 
     private val sharedPreferences: SharedPreferences
 
@@ -148,17 +150,28 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
 
-    fun getHomeRecommendations() = viewModelScope.launch(Dispatchers.IO){
+    fun getHomeRecommendations() : Job {
+        // only one recommendations fetch at a time
+        homeRecommendationsJob?.cancel()
+        return viewModelScope.launch(Dispatchers.IO) {
+            getHomeRecommendationsImpl()
+        }.also { homeRecommendationsJob = it }
+    }
+
+    private suspend fun getHomeRecommendationsImpl() {
         val homeRecommendations = sharedPreferences.getString("recommendations_home", "")
         val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
         val emptyCustomRecommendations = customHomeRecommendations.isNullOrBlank() && homeRecommendations == "custom"
 
         if (!homeRecommendations.isNullOrBlank() && !emptyCustomRecommendations){
-            kotlin.runCatching {
+            try {
                 uiState.update {it.copy(processing = true)}
                 repository.getHomeRecommendations()
                 uiState.update {it.copy(processing = false)}
-            }.onFailure { t ->
+            } catch (e: CancellationException) {
+                // whoever cancelled it takes care of the ui state
+                throw e
+            } catch (t: Throwable) {
                 uiState.update {it.copy(
                     processing = false,
                     errorMessage =  t.message.toString(),
@@ -167,6 +180,18 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         }else{
             deleteAll()
         }
+    }
+
+    /**
+     * Stops everything that is fetching into the home results (query parsing, searches, recommendations),
+     * waits for it to actually stop so nothing gets inserted afterwards, and then loads the home recommendations again
+     */
+    fun clearResults() = viewModelScope.launch(Dispatchers.IO) {
+        val runningJobs = listOfNotNull(parsingQueries, homeRecommendationsJob) + parsingQueriesJobList
+        cancelParsingQueries()
+        homeRecommendationsJob?.cancel()
+        runningJobs.joinAll()
+        getHomeRecommendations()
     }
 
     fun cancelParsingQueries(){
@@ -377,7 +402,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     )
 
 
-    fun getFormats(url: String, source: String? = null) : List<Format> {
+    suspend fun getFormats(url: String, source: String? = null) : List<Format> {
         return repository.getFormats(url, source)
     }
 
@@ -396,7 +421,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getSearchSuggestions(searchQuery)
     }
 
-    fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
+    suspend fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
         return repository.getStreamingUrlAndChapters(url)
     }
 
