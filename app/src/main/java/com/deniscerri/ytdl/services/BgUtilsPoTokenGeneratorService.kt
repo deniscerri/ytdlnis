@@ -63,6 +63,7 @@ class BgUtilsPoTokenGeneratorService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val runtimeManager = RuntimeManager.getInstance()
+        runtimeManager.assertInit()
 
         if (intent?.action == "ACTION_EXIT") {
             BgUtilsPoTokenGeneratorUtil.resetState()

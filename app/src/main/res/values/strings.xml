@@ -626,4 +626,14 @@
     <string name="clear_everything">Clear everything</string>
     <string name="clear_temporary_files_confirm">Delete %1$s of files? This can\'t be undone.</string>
 
+    <string name="failed_to_fetch">Failed to fetch</string>
+    <string name="failed_to_fetch_summary">These items couldn\'t be fetched. Retry them or download them without the fetched data.</string>
+    <plurals name="items_failed_to_fetch">
+        <item quantity="one">%d item failed to fetch</item>
+        <item quantity="other">%d items failed to fetch</item>
+    </plurals>
+    <string name="retry">Retry</string>
+    <string name="retry_all">Retry all</string>
+    <string name="download_anyway">Download anyway</string>
+
 </resources>

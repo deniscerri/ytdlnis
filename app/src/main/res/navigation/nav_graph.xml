@@ -21,7 +21,7 @@
         app:destination="@id/settingsNav" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.deniscerri.ytdl.ui.HomeFragment"
+        android:name="com.deniscerri.ytdl.ui.home.HomeFragment"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_home" >
         <action

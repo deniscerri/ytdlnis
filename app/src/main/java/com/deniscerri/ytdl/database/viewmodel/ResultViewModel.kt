@@ -26,6 +26,9 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import com.deniscerri.ytdl.util.Extensions.isURL
+import kotlinx.coroutines.flow.MutableSharedFlow
+import java.util.Collections
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -85,7 +88,17 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     private var updateFormatsResultDataJob: Job? = null
 
     private var parsingQueries: Job? = null
-    private var parsingQueriesJobList : MutableList<Job> = mutableListOf()
+    private var parsingQueriesJobList : MutableList<Job> = Collections.synchronizedList(mutableListOf())
+
+    /**
+     * Queries from the home screen that couldn't be fetched, so the user can retry them or download them anyway
+     */
+    data class FailedQuery(val query: String, val error: String)
+    val failedQueries: MutableStateFlow<List<FailedQuery>> = MutableStateFlow(listOf())
+    /** Emits how many queries failed when a multi query parse finishes with failures */
+    val failedQueriesEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+    /** Whether the home results come from user queries rather than the home recommendations */
+    private var resultsAreFromQueries = false
     private var homeRecommendationsJob: Job? = null
 
     private val sharedPreferences: SharedPreferences
@@ -159,6 +172,7 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     }
 
     private suspend fun getHomeRecommendationsImpl() {
+        resultsAreFromQueries = false
         val homeRecommendations = sharedPreferences.getString("recommendations_home", "")
         val customHomeRecommendations = sharedPreferences.getString("custom_home_recommendation_url", "")
         val emptyCustomRecommendations = customHomeRecommendations.isNullOrBlank() && homeRecommendations == "custom"
@@ -187,26 +201,40 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
      * waits for it to actually stop so nothing gets inserted afterwards, and then loads the home recommendations again
      */
     fun clearResults() = viewModelScope.launch(Dispatchers.IO) {
-        val runningJobs = listOfNotNull(parsingQueries, homeRecommendationsJob) + parsingQueriesJobList
+        val runningJobs = listOfNotNull(parsingQueries, homeRecommendationsJob) + synchronized(parsingQueriesJobList) { parsingQueriesJobList.toList() }
         cancelParsingQueries()
         homeRecommendationsJob?.cancel()
         runningJobs.joinAll()
+        clearFailedQueries()
         getHomeRecommendations()
     }
 
     fun cancelParsingQueries(){
         parsingQueries?.cancel()
-        parsingQueriesJobList.forEach { it.cancel() }
-        parsingQueriesJobList.clear()
+        synchronized(parsingQueriesJobList) {
+            parsingQueriesJobList.forEach { it.cancel() }
+            parsingQueriesJobList.clear()
+        }
         uiState.update { it.copy(processing = false) }
     }
 
-    private suspend fun parseQueriesImpl(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
-        if (inputQueries.size > 1){
+    /**
+     * @param trackFailures keep failed queries in [failedQueries] (home screen parsing only)
+     * @param showErrorDialog show the error dialog when a single query fails
+     */
+    private suspend fun parseQueriesImpl(
+        inputQueries: List<String>,
+        resetResults: Boolean = inputQueries.size == 1,
+        updateItemCount: Boolean = true,
+        trackFailures: Boolean = false,
+        showErrorDialog: Boolean = true,
+        onResult: (list: List<ResultItem?>) -> Unit
+    ) {
+        if (inputQueries.size > 1 && updateItemCount){
             repository.itemCount.value = inputQueries.size
         }
-        val resetResults = inputQueries.size == 1
         uiState.update {it.copy(processing = true, errorMessage = null)}
+        var failedCount = 0
 
         val res = mutableListOf<ResultItem?>()
         val requestSemaphore = Semaphore(10)
@@ -218,10 +246,20 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
                         requestSemaphore.withPermit {
                             try {
                                 val results = repository.getResultsFromSource(inputQuery, resetResults)
+                                if (trackFailures && results.isEmpty() && inputQuery.isURL()) {
+                                    throw Exception(getApplication<App>().getString(R.string.no_results))
+                                }
                                 synchronized(res) { res.addAll(results) }
+                                if (trackFailures) removeFailedQuery(inputQuery)
                             } catch (e: Exception) {
                                 if (e is CancellationException) throw e
-                                if (isActive) {
+                                if (!isActive) return@withPermit
+                                if (trackFailures) {
+                                    addFailedQuery(inputQuery, e.message ?: e.toString())
+                                    synchronized(res) { failedCount++ }
+                                }
+                                // with multiple queries the failures are collected instead of showing a dialog for each one
+                                if (showErrorDialog && (!trackFailures || inputQueries.size == 1)) {
                                     uiState.update { it.copy(processing = false, errorMessage = e.message.toString()) }
                                 }
                             }
@@ -231,6 +269,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
             }
 
             if (currentCoroutineContext().isActive) {
+                if (trackFailures) {
+                    if (res.isNotEmpty()) resultsAreFromQueries = true
+                    if (inputQueries.size > 1 && failedCount > 0) failedQueriesEvent.tryEmit(failedCount)
+                }
                 onResult(res)
             }
 
@@ -246,14 +288,50 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     suspend fun parseQueries(inputQueries: List<String>, onResult: (list: List<ResultItem?>) -> Unit) {
         if (parsingQueries == null || parsingQueries?.isCancelled == true || parsingQueries?.isCompleted == true) {
+            // a new search starts a new list of failures
+            clearFailedQueries()
             parsingQueries = viewModelScope.launch(Dispatchers.IO) {
-                parseQueriesImpl(inputQueries) {
+                parseQueriesImpl(inputQueries, trackFailures = true) {
                     onResult(it)
                 }
             }
         }else{
             onResult(listOf())
         }
+    }
+
+    private fun addFailedQuery(query: String, error: String) {
+        failedQueries.update { list -> list.filter { it.query != query } + FailedQuery(query, error) }
+    }
+
+    fun removeFailedQuery(query: String) {
+        failedQueries.update { list -> list.filter { it.query != query } }
+    }
+
+    fun clearFailedQueries() {
+        failedQueries.value = listOf()
+    }
+
+    /**
+     * Fetches the given failed queries again. Results are added to the current ones,
+     * unless those are still the home recommendations, which get replaced
+     */
+    fun retryFailedQueries(queries: List<String>) {
+        if (queries.isEmpty()) return
+        val job = viewModelScope.launch(Dispatchers.IO) {
+            val replaceResults = !resultsAreFromQueries
+            if (replaceResults && queries.size > 1) repository.deleteAll()
+            parseQueriesImpl(
+                queries,
+                resetResults = replaceResults && queries.size == 1,
+                updateItemCount = false,
+                trackFailures = true,
+                // a failed retry just goes back to the failed list
+                showErrorDialog = false
+            ) {}
+        }
+        parsingQueriesJobList.add(job)
+        job.invokeOnCompletion { parsingQueriesJobList.remove(job) }
     }
 
     private fun isForegrounded(): Boolean {

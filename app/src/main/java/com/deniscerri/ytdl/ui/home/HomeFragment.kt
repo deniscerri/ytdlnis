@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui
+package com.deniscerri.ytdl.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -13,7 +13,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.Menu
@@ -29,6 +28,7 @@ import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -78,14 +78,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.Lifecycle
+import androidx.paging.LoadState
+import com.deniscerri.ytdl.util.Extensions.updateMenuItemBadge
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.badge.ExperimentalBadgeUtils
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.BadgeDrawable
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
-import kotlin.math.sign
 
 
-class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener {
+class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener,
+    FailedFetchesBottomSheetDialog.Listener {
     private var inputQueries: MutableList<String>? = null
     private lateinit var homeAdapter: HomeAdapter
     private var totalCount: Int = 0
@@ -204,6 +212,8 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
 
+        initFailedFetches()
+
         lifecycleScope.launch {
             resultViewModel.paginatedItems.collectLatest {
                 homeAdapter.submitData(it)
@@ -211,7 +221,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
 
         homeAdapter.addLoadStateListener { loadStates ->
-            val isNotLoading = loadStates.refresh is androidx.paging.LoadState.NotLoading
+            val isNotLoading = loadStates.refresh is LoadState.NotLoading
             if (isNotLoading) {
                 val size = resultViewModel.totalCount.value;
                 val firstResult = resultViewModel.firstResult.value;
@@ -304,28 +314,13 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     if (res.errorMessage != null){
                         val isSingleQueryAndURL = queryList.size == 1 && Patterns.WEB_URL.matcher(queryList.first()).matches()
 
-                        kotlin.runCatching {
+                        runCatching {
                             UiUtil.handleNoResults(requireActivity(), res.errorMessage!!,
                                 url = if (isSingleQueryAndURL) queryList.first() else null,
                                 continueAnyway = isSingleQueryAndURL,
                                 continued = {
-                                    lifecycleScope.launch {
-                                    if (sharedPreferences!!.getBoolean("download_card", true)) {
-                                        withContext(Dispatchers.Main){
-                                            showSingleDownloadSheet(
-                                                resultItem = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                                type = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!),
-                                                disableUpdateData = true
-                                            )
-                                        }
-                                    } else {
-                                        val downloadItem = downloadViewModel.createDownloadItemFromResult(
-                                            result = downloadViewModel.createEmptyResultItem(queryList.first()),
-                                            givenType = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
-                                        )
-                                        downloadViewModel.queueDownloads(listOf(downloadItem))
-                                    }
-                                }
+                                    resultViewModel.removeFailedQuery(queryList.first())
+                                    onDownloadAnyway(queryList.first())
                                 },
                                 cookieFetch = {
                                     val myIntent = Intent(requireContext(), WebViewActivity::class.java)
@@ -775,6 +770,81 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         showSingleDownloadSheet(item, type!!)
     }
 
+    @OptIn(ExperimentalBadgeUtils::class)
+    private fun initFailedFetches() {
+        val toolbar = materialToolbar ?: return
+        toolbar.inflateMenu(R.menu.home_toolbar_menu)
+        val failedItem = toolbar.menu.findItem(R.id.failed_fetches)
+        toolbar.setOnMenuItemClickListener { m ->
+            if (m.itemId == R.id.failed_fetches) {
+                showFailedFetches()
+                true
+            } else false
+        }
+
+        val badge = BadgeDrawable.create(requireContext())
+        var badgeAttached = false
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    resultViewModel.failedQueries.collect { list ->
+                        failedItem.isVisible = list.isNotEmpty()
+                        badge.number = list.size
+                        badge.badgeTextColor = requireContext().getColor(R.color.black)
+                        badge.backgroundColor = requireContext().getColor(R.color.white)
+
+                        if (list.isNotEmpty() && !badgeAttached) {
+                            // the action view only exists after the toolbar lays out the now visible item
+                            toolbar.post {
+                                if (failedItem.isVisible && !badgeAttached) {
+                                    BadgeUtils.attachBadgeDrawable(badge, toolbar, R.id.failed_fetches)
+                                    badgeAttached = true
+                                }
+                            }
+                        } else if (list.isEmpty() && badgeAttached) {
+                            BadgeUtils.detachBadgeDrawable(badge, toolbar, R.id.failed_fetches)
+                            badgeAttached = false
+                        }
+                    }
+                }
+                launch {
+                    resultViewModel.failedQueriesEvent.collect { count ->
+                        Snackbar.make(requireView(), resources.getQuantityString(R.plurals.items_failed_to_fetch, count, count), Snackbar.LENGTH_LONG)
+                            .setAction(R.string.view) { showFailedFetches() }
+                            .show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showFailedFetches() {
+        if (childFragmentManager.findFragmentByTag("failedFetches") != null) return
+        FailedFetchesBottomSheetDialog().show(childFragmentManager, "failedFetches")
+    }
+
+    override fun onDownloadAnyway(url: String) {
+        lifecycleScope.launch {
+            val type = DownloadType.valueOf(sharedPreferences!!.getString("preferred_download_type", "video")!!)
+            if (sharedPreferences!!.getBoolean("download_card", true)) {
+                withContext(Dispatchers.Main){
+                    showSingleDownloadSheet(
+                        resultItem = downloadViewModel.createEmptyResultItem(url),
+                        type = type,
+                        disableUpdateData = true
+                    )
+                }
+            } else {
+                val downloadItem = downloadViewModel.createDownloadItemFromResult(
+                    result = downloadViewModel.createEmptyResultItem(url),
+                    givenType = type
+                )
+                downloadViewModel.queueDownloads(listOf(downloadItem))
+            }
+        }
+    }
+
     @SuppressLint("RestrictedApi")
     private fun showSingleDownloadSheet(
         resultItem: ResultItem,
@@ -981,7 +1051,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         val checkClipboard = sharedPreferences!!.getBoolean("check_clipboard_home", true)
         if (!checkClipboard) return null
 
-        return kotlin.runCatching {
+        return runCatching {
             val clipboard = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = clipboard.primaryClip!!.getItemAt(0).text
             return clip.split("\r","\n").map { it.trim() }.filter { Patterns.WEB_URL.matcher(it).matches() }
@@ -1018,7 +1088,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                 chip.text = t
                 chip.chipBackgroundColor = ColorStateList.valueOf(MaterialColors.getColor(requireContext(), R.attr.colorSecondaryContainer, Color.BLACK))
                 chip.setOnClickListener {
-                    if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = View.GONE
+                    if (queriesChipGroup!!.childCount == 1) queriesConstraint!!.visibility = GONE
                     queriesChipGroup!!.removeView(chip)
                 }
                 queriesChipGroup!!.addView(chip)
