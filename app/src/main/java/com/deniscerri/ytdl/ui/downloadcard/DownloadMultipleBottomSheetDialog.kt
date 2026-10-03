@@ -1003,18 +1003,78 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
 
         val sortBtn = view.findViewById<MaterialButton>(R.id.sortBtn)
-        sortBtn.setOnClickListener {
-            lifecycleScope.launch {
-                val newSort = withContext(Dispatchers.IO) {
-                    downloadViewModel.toggleProcessingSort()
-                }
+        var currentSortBy = "date"
+        var currentAscending = true
 
-                when(newSort) {
-                    "ASC" -> sortBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_down)
-                    "DESC" -> sortBtn.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_up)
+        fun applyProcessingSort(sortBy: String, ascending: Boolean) {
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    downloadViewModel.sortProcessingDownloads(sortBy, ascending)
                 }
+                listAdapter.refresh()
                 recyclerView.scrollTo(0, 0)
+                sortBtn.icon = ContextCompat.getDrawable(
+                    requireContext(),
+                    if (ascending) R.drawable.ic_down else R.drawable.ic_up
+                )
             }
+        }
+
+        sortBtn.setOnClickListener {
+            val sortSheet = BottomSheetDialog(requireContext())
+            sortSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            sortSheet.setContentView(R.layout.processing_sort_sheet)
+
+            val dateOpt = sortSheet.findViewById<TextView>(R.id.date)
+            val authorOpt = sortSheet.findViewById<TextView>(R.id.author)
+            val durationOpt = sortSheet.findViewById<TextView>(R.id.duration)
+            val titleOpt = sortSheet.findViewById<TextView>(R.id.title)
+
+            val sortOptions = listOfNotNull(dateOpt, authorOpt, durationOpt, titleOpt)
+            fun updateIcons() {
+                sortOptions.forEach { it.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.empty, 0, 0, 0) }
+                val activeView = when(currentSortBy) {
+                    "author" -> authorOpt
+                    "duration" -> durationOpt
+                    "title" -> titleOpt
+                    else -> dateOpt
+                }
+                activeView?.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    if (currentAscending) R.drawable.ic_down else R.drawable.ic_up, 0, 0, 0
+                )
+            }
+
+            updateIcons()
+
+            dateOpt?.setOnClickListener {
+                if (currentSortBy == "date") currentAscending = !currentAscending else { currentSortBy = "date"; currentAscending = true }
+                updateIcons()
+                applyProcessingSort("date", currentAscending)
+                sortSheet.dismiss()
+            }
+            authorOpt?.setOnClickListener {
+                if (currentSortBy == "author") currentAscending = !currentAscending else { currentSortBy = "author"; currentAscending = true }
+                updateIcons()
+                applyProcessingSort("author", currentAscending)
+                sortSheet.dismiss()
+            }
+            durationOpt?.setOnClickListener {
+                if (currentSortBy == "duration") currentAscending = !currentAscending else { currentSortBy = "duration"; currentAscending = true }
+                updateIcons()
+                applyProcessingSort("duration", currentAscending)
+                sortSheet.dismiss()
+            }
+            titleOpt?.setOnClickListener {
+                if (currentSortBy == "title") currentAscending = !currentAscending else { currentSortBy = "title"; currentAscending = true }
+                updateIcons()
+                applyProcessingSort("title", currentAscending)
+                sortSheet.dismiss()
+            }
+
+            val displayMetrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+            sortSheet.behavior.peekHeight = displayMetrics.heightPixels
+            sortSheet.show()
         }
 
     }
