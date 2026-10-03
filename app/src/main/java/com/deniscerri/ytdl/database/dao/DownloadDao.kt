@@ -356,6 +356,35 @@ interface DownloadDao {
     }
 
     @Transaction
+    suspend fun sortProcessingDownloads(sortBy: String, ascending: Boolean) {
+        val items = getProcessingDownloadsList()
+        val sorted = when (sortBy.lowercase()) {
+            "author" -> if (ascending) items.sortedBy { it.author.lowercase() } else items.sortedByDescending { it.author.lowercase() }
+            "title" -> if (ascending) items.sortedBy { it.title.lowercase() } else items.sortedByDescending { it.title.lowercase() }
+            "duration" -> {
+                fun parseDurationSec(d: String): Long {
+                    return try {
+                        val parts = d.split(":").map { it.trim().toLongOrNull() ?: 0L }
+                        when (parts.size) {
+                            1 -> parts[0]
+                            2 -> parts[0] * 60 + parts[1]
+                            3 -> parts[0] * 3600 + parts[1] * 60 + parts[2]
+                            else -> 0L
+                        }
+                    } catch (e: Exception) { 0L }
+                }
+                if (ascending) items.sortedBy { parseDurationSec(it.duration) } else items.sortedByDescending { parseDurationSec(it.duration) }
+            }
+            else -> if (ascending) items.sortedBy { it.id } else items.sortedByDescending { it.id }
+        }
+        var idx = 0
+        sorted.forEach {
+            updateQueueOrder(idx, it.id)
+            idx++
+        }
+    }
+
+    @Transaction
     suspend fun putAtTopOfQueue(ids: List<Long>) {
         val firstQueueOrder = getFirstQueueOrder()
 

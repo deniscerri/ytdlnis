@@ -660,6 +660,12 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         return processingSort.value
     }
 
+    suspend fun sortProcessingDownloads(sortBy: String, ascending: Boolean) {
+        processingItems.emit(true)
+        repository.sortProcessingDownloads(sortBy, ascending)
+        processingItems.emit(false)
+    }
+
     fun turnDownloadItemsToProcessingDownloads(itemIDs: List<Long>, deleteExisting : Boolean = false) = viewModelScope.launch(Dispatchers.IO){
         val job = viewModelScope.launch(Dispatchers.IO) {
             repository.deleteProcessing()

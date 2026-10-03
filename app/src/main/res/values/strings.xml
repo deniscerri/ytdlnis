@@ -595,6 +595,7 @@
     <string name="history_quick_action">Quick Action Button</string>
     <string name="history_quick_action_summary">Action to perform when clicking the quick action button on the history card</string>
     <string name="open_file">Open File</string>
+    <string name="duration">Duration</string>
 
     <string name="update_available">Update available</string>
     <string name="update_check_failed">Couldn\'t check for updates</string>
