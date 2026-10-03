@@ -613,4 +613,13 @@
     <string name="bgutils_pot_generation_script_info">Aby bolo možné používať poskytovateľa POT BgUtils, aplikácia musí stiahnuť repozitár Brainicism/bgutil-ytdlp-pot-provider z GitHubu a spustiť inštaláciu. Dokončenie tohto procesu môže chvíľu trvať. Pokračovať teraz?</string>
     <string name="check_clipboard_home_summary">Automaticky rozpoznať URL adresy v schránke na domovskej obrazovke</string>
     <string name="check_clipboard_home">Skontrolovať schránku na domovskej obrazovke</string>
+    <string name="search_results">Výsledky vyhľadávania</string>
+    <string name="preferred_format_size_audio">Preferovaná veľkosť audio súboru</string>
+    <string name="burn_subs">Zapísať titulky</string>
+    <string name="clear_info_json">Vymazať infojsons</string>
+    <string name="internal_plugin_ffmpeg_preset">Predvoľby FFmpeg pre interné pluginy</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Predvoľby, ktoré FFmpeg používa pre interné pluginy, ako je zápis titulkov atď. Úprava tohto nastavenia ovplyvňuje konečnú veľkosť súboru!</string>
+    <string name="history_quick_action">Tlačidlo rýchlej akcie</string>
+    <string name="history_quick_action_summary">Akcia, ktorá sa má vykonať po kliknutí na tlačidlo rýchlej akcie na karte histórie</string>
+    <string name="open_file">Otvorenie súboru</string>
 </resources>

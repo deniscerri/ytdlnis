@@ -617,4 +617,8 @@
     <string name="clear_info_json">Очистити infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Вбудований плагін FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Попередньо встановлені налаштування, які FFmpeg використовує для внутрішніх плагінів, таких як запис субтитрів тощо. Зміна цього параметра впливає на кінцевий розмір файлу!</string>
+    <string name="preferred_format_size_audio">Бажаний розмір аудіофайлу</string>
+    <string name="history_quick_action">Кнопка швидкого доступу</string>
+    <string name="history_quick_action_summary">Дія, яка виконується при натисканні кнопки швидкої дії на картці історії</string>
+    <string name="open_file">Відкрити файл</string>
 </resources>

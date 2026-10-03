@@ -256,7 +256,7 @@
     <string name="socks5_proxy_summary">指定した HTTP/HTTPS/SOCKS プロキシを使用します</string>
     <string name="socks5_proxy">SOCKS5 プロキシ URL</string>
     <string name="move_temporary_files">一時ファイルを移動</string>
-    <string name="move_temporary_files_summary">キャッシュファイルをダウンロードフォルダに転送します</string>
+    <string name="move_temporary_files_summary">キャッシュされたダウンロードファイルをダウンロードフォルダに転送します</string>
     <string name="preferred_home_screen">優先するホーム画面</string>
     <string name="undo">元に戻す</string>
     <string name="format_id">フォーマット ID</string>
@@ -284,7 +284,7 @@
     <string name="embed_metadata">メタデータを埋め込む</string>
     <string name="show_terminal">共有メニューにターミナルを表示する</string>
     <string name="use_cookies">クッキーの使用</string>
-    <string name="embed_metadata_summary">音声ファイルを解析しメタデータを埋め込む</string>
+    <string name="embed_metadata_summary">ファイルを解析しメタデータを埋め込む</string>
     <string name="use_extra_commands">追加のコマンドを追加する</string>
     <string name="use_extra_commands_summary">音声/動画のダウンロード用。 GUI での設定に「追加のコマンド」を表示します</string>
     <string name="current">現在のコマンド</string>
@@ -526,4 +526,8 @@
     <string name="aspect_ratio">アスペクト比</string>
     <string name="height">高さ</string>
     <string name="dimensions">寸法</string>
+    <string name="search_results">検索結果</string>
+    <string name="preferred_format_size_audio">優先音声フォーマットサイズ</string>
+    <string name="x_offset">Xオフセット</string>
+    <string name="y_offset">Yオフセット</string>
 </resources>
