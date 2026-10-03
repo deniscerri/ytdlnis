@@ -196,18 +196,25 @@ open class WebViewActivity : BaseActivity() {
     }
 
     private suspend fun generateCookies() = withContext(Dispatchers.IO) {
-        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+        val result = cookiesViewModel.getCookiesFromDB(url)
+        val cookiesText = result.getOrNull()
+        if (cookiesText != null) {
             runCatching {
                 cookiesViewModel.insert(
                     com.deniscerri.ytdl.database.models.CookieItem(
                         0,
                         url,
-                        it,
+                        cookiesText,
                         description,
                         true
                     )
                 )
                 cookiesViewModel.updateCookiesFile()
+            }.onSuccess {
+                withContext(Dispatchers.Main) {
+                    this@WebViewActivity.setResult(RESULT_OK)
+                    this@WebViewActivity.finish()
+                }
             }.onFailure {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
@@ -217,10 +224,14 @@ open class WebViewActivity : BaseActivity() {
                     ).show()
                 }
             }
-        }
-        withContext(Dispatchers.Main) {
-            this@WebViewActivity.setResult(RESULT_OK)
-            this@WebViewActivity.finish()
+        } else {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(
+                    this@WebViewActivity,
+                    "No cookies found to save",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 
