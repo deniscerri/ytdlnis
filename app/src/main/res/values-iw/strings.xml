@@ -510,7 +510,7 @@
     <string name="bundled">מאוגדת</string>
     <string name="installed">מותקנת</string>
     <string name="use_app_language_for_metadata_summary">אם האפשרות פעילה, שדות נתוני העל יצמדו לשפת היישומון שלך ואפילו ישפיע על בחירת תסדיר על ידי העדפת גרסאות מדובבות על פני המקוריות</string>
-    <string name="auto_update_ytdlp_summary">מומלץ לשמור על האפשרות הזאת פעילה כדי לשמור על פעולה תקינה של היישום כיוון ש־yt-dlp מתעדכן לעתים מאוד תכופות! הנתונים מחולצים ממאגר ה־GitHub של yt-dlp.</string>
+    <string name="auto_update_ytdlp_summary">מומלץ לשמור על האפשרות הזאת פעילה כדי לשמור על פעולה תקינה של היישומון כיוון ש־yt-dlp מתעדכן לעתים מאוד תכופות! הנתונים מחולצים ממאגר ה־GitHub של yt-dlp.</string>
     <string name="max_delay">עיכוב מרבי (שניות)</string>
     <string name="no_delay">לא הוגדר עיכוב</string>
     <string name="waiting_download_delay">עיכוב המתנה להורדה (%s שניות)…</string>
@@ -573,4 +573,6 @@
     <string name="download_delay">השהיית הורדה</string>
     <string name="download_delay_summary">להמתין את כמות השניות שמוגדרת בין הורדה להורדה. היכולת הזאת משביתה את ההורדות המקביליות</string>
     <string name="min_delay">השהיה מזערית (שניות)</string>
+    <string name="bgutils_pot_generation_server">שרת HTTP</string>
+    <string name="search_results">תוצאות חיפוש</string>
 </resources>
