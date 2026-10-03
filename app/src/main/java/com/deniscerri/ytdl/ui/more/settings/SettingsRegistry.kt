@@ -9,18 +9,18 @@ import com.deniscerri.ytdl.database.models.SearchSettingsItem
 import com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsModule
+import com.deniscerri.ytdl.ui.more.settings.folder.temporary.TemporaryFilesModule
 import com.deniscerri.ytdl.ui.more.settings.general.GeneralSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.processing.ProcessingSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.app.AppUpdateSettingsModule
-import com.deniscerri.ytdl.ui.more.settings.updating.UpdateChannelPreference
 import com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsModule
-import com.deniscerri.ytdl.ui.more.settings.updating.UpdateStatusCardPreference
 import com.deniscerri.ytdl.ui.more.settings.updating.ytdlp.YtdlpUpdateSettingsModule
 
 object SettingsRegistry {
     private val xmlToModule = mapOf(
         R.xml.general_preferences to GeneralSettingsModule,
         R.xml.folders_preference to FolderSettingsModule,
+        R.xml.temporary_files_preferences to TemporaryFilesModule,
         R.xml.downloading_preferences to DownloadSettingsModule,
         R.xml.processing_preferences to ProcessingSettingsModule,
         R.xml.updating_preferences to UpdateSettingsModule,
@@ -74,7 +74,7 @@ object SettingsRegistry {
         for (i in 0 until group.preferenceCount) {
             val p = group.getPreference(i)
             // custom widgets like the update status card can't be shown as a search result
-            if (p is UpdateStatusCardPreference || p is UpdateChannelPreference) continue
+            if (p is NonSearchablePreference) continue
             if (p !is PreferenceGroup && p.title.isNullOrBlank()) continue
 
             if (p is PreferenceGroup) {

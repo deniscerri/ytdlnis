@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.ui.more.settings.NonSearchablePreference
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
@@ -17,7 +18,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 class UpdateStatusCardPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : Preference(context, attrs) {
+) : Preference(context, attrs), NonSearchablePreference {
 
     /**
      * UP_TO_DATE (green) is also the resting state when auto updates are on,

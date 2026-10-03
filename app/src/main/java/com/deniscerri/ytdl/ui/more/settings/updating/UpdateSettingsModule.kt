@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.ui.more.settings.updating
 import android.content.pm.PackageManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
@@ -10,6 +11,7 @@ import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.snackbar.Snackbar
+import java.io.File
 
 
 object UpdateSettingsModule : SettingModule {
@@ -29,7 +31,7 @@ object UpdateSettingsModule : SettingModule {
                         "master" -> context.getString(R.string.channel_master)
                         else -> preferences.getString("ytdlp_source_label", "")!!.ifBlank { source }
                     }
-                    summary = listOf(version, channel).filter { it.isNotBlank() }.joinToString(" • ")
+                    summary = "$version (${channel})"
                     setOnPreferenceClickListener {
                         host.requestNavigate(R.id.ytdlpUpdateSettingsFragment)
                         true
@@ -38,7 +40,7 @@ object UpdateSettingsModule : SettingModule {
             }
             "app_update_screen" -> {
                 pref.apply {
-                    summary = listOf(BuildConfig.VERSION_NAME, BuildConfig.FLAVOR).filter { it.isNotBlank() }.joinToString(" • ")
+                    summary = "${BuildConfig.VERSION_NAME} (${File(context.applicationInfo.nativeLibraryDir).name}) (${BuildConfig.FLAVOR})"
                     setOnPreferenceClickListener {
                         host.requestNavigate(R.id.appUpdateSettingsFragment)
                         true

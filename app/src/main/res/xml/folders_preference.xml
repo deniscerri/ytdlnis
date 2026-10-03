@@ -107,21 +107,9 @@
         app:title="@string/restrict_filenames" />
 
     <Preference
-        app:icon="@drawable/baseline_drive_file_move_24"
-        app:key="move_cache"
-        android:summary="@string/move_temporary_files_summary"
-        app:title="@string/move_temporary_files" />
-
-    <Preference
         app:icon="@drawable/ic_folder_delete"
-        app:key="clear_cache"
-        android:summary="@string/clear_temporary_files_summary"
-        app:title="@string/clear_temporary_files" />
-
-    <Preference
-        app:icon="@drawable/ic_folder_delete"
-        app:key="clear_info_jsons"
-        app:title="@string/clear_info_json" />
+        app:key="temporary_files"
+        app:title="@string/temporary_files" />
 
     <Preference
         app:icon="@drawable/baseline_reset_tv_24"

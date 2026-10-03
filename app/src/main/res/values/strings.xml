@@ -611,4 +611,19 @@
     <string name="channel_beta">Beta</string>
     <string name="ytdlp" translatable="false">yt-dlp</string>
 
+    <string name="temporary_files">Temporary files</string>
+    <string name="temporary_files_description">Working files held by the app. Temporary configurations and other yt-dlp related data.</string>
+    <string name="unfinished_downloads">Unfinished downloads</string>
+    <string name="unfinished_downloads_summary">Partial files of stopped or failed downloads, kept so they can be resumed</string>
+    <string name="info_jsons">Info-JSONs</string>
+    <string name="info_jsons_summary">Saved video metadata so yt-dlp doesn\'t have to fetch it again</string>
+    <string name="ytdlp_cache">yt-dlp cache</string>
+    <string name="ytdlp_cache_summary">Data yt-dlp reuses between runs, like YouTube player signatures</string>
+    <string name="temporary_configurations">Temporary configurations</string>
+    <string name="temporary_configurations_summary">Command configs, URL lists and other short-lived files</string>
+    <string name="downloaded_apks">Downloaded APKs</string>
+    <string name="downloaded_apks_summary">APKs downloaded for app and package updates</string>
+    <string name="clear_everything">Clear everything</string>
+    <string name="clear_temporary_files_confirm">Delete %1$s of files? This can\'t be undone.</string>
+
 </resources>

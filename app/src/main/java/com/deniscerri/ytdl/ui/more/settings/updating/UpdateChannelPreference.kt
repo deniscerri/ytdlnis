@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.ui.more.settings.NonSearchablePreference
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 
@@ -18,7 +19,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 class UpdateChannelPreference @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
-) : Preference(context, attrs) {
+) : Preference(context, attrs), NonSearchablePreference {
 
     private var channels: List<Pair<String, String>> = emptyList()
 

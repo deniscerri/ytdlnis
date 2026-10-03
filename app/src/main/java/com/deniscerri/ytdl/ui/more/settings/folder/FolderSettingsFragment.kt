@@ -76,6 +76,9 @@ class FolderSettingsFragment : BaseSettingsFragment() {
             cachePath?.isEnabled = false
         }
 
+        // sizes may have changed in the temporary files screen
+        findPreference<Preference>("temporary_files")?.let { FolderSettingsModule.bindLogic(it, this) }
+
         refreshUI()
     }
 }

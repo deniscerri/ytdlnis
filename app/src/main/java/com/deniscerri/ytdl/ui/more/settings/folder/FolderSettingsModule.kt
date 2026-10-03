@@ -6,30 +6,21 @@ import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import androidx.core.content.edit
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreferenceCompat
-import androidx.work.ExistingWorkPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
 import com.deniscerri.ytdl.R
-import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.TemporaryFilesUtil
 import com.deniscerri.ytdl.util.UiUtil
-import com.deniscerri.ytdl.work.MoveCacheFilesWorker
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import java.util.HashSet
-import kotlin.collections.first
 
 object FolderSettingsModule: SettingModule {
 
@@ -44,8 +35,6 @@ object FolderSettingsModule: SettingModule {
     ) {
         val context = pref.context
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-        var activeDownloadCount = 0
-        val downloadViewModel = ViewModelProvider(host.hostViewModelStoreOwner)[DownloadViewModel::class.java]
 
         when(pref.key) {
             "music_path" -> {
@@ -290,143 +279,19 @@ object FolderSettingsModule: SettingModule {
                     }
                 }
             }
-            "clear_cache" -> {
+            "temporary_files" -> {
                 pref.apply {
-                    val cacheSize = File(FileUtil.getCachePath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                    val filesize  = if (cacheSize < 10000) {
-                        "0B"
-                    }else {
-                        FileUtil.convertFileSize(cacheSize)
+                    host.hostLifecycleOwner.lifecycleScope.launch {
+                        val total = withContext(Dispatchers.IO) {
+                            TemporaryFilesUtil.Category.values().sumOf { TemporaryFilesUtil.getSize(context, it) }
+                        }
+                        summary = TemporaryFilesUtil.formatSize(total)
+                        host.refreshUI()
                     }
-
-                    summary = "${context.resources.getString(R.string.clear_temporary_files_summary)} (${filesize}) "
-                    onPreferenceClickListener =
-                        Preference.OnPreferenceClickListener {
-                            host.hostLifecycleOwner.lifecycleScope.launch {
-                                activeDownloadCount = withContext(Dispatchers.IO) {
-                                    downloadViewModel.getActiveDownloadsCount()
-                                }
-                                if (activeDownloadCount == 0){
-                                    fun clearCacheFolder(folder: File) {
-                                        if (folder.exists() && folder.isDirectory) {
-                                            folder.listFiles()?.forEach { file ->
-                                                if (file.isDirectory) {
-                                                    clearCacheFolder(file)
-                                                    file.delete()
-                                                } else {
-                                                    file.delete()
-                                                }
-                                            }
-                                        }
-                                    }
-                                    clearCacheFolder(File(FileUtil.getCachePath(context)))
-
-                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
-                                        Snackbar.make(host.hostView!!, context.getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
-                                    }
-                                }else{
-                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
-                                        Snackbar.make(host.hostView!!, context.getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
-                                    }
-                                }
-
-                                val cacheSize = File(FileUtil.getCachePath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                                val filesize  = if (cacheSize < 10000) {
-                                    "0B"
-                                }else {
-                                    FileUtil.convertFileSize(cacheSize)
-                                }
-
-                                summary = "${context.resources.getString(R.string.clear_temporary_files_summary)} (${filesize}) "
-
-                                host.refreshUI()
-                            }
-                            true
-                        }
-                }
-            }
-            "clear_info_jsons" -> {
-                pref.apply {
-                    val infoJsonSize = File(FileUtil.getInfoJsonPath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                    val filesize  = if (infoJsonSize < 10000) {
-                        "0B"
-                    }else {
-                        FileUtil.convertFileSize(infoJsonSize)
+                    setOnPreferenceClickListener {
+                        host.requestNavigate(R.id.temporaryFilesFragment)
+                        true
                     }
-
-                    summary = "(${filesize})"
-                    onPreferenceClickListener =
-                        Preference.OnPreferenceClickListener {
-                            host.hostLifecycleOwner.lifecycleScope.launch {
-                                activeDownloadCount = withContext(Dispatchers.IO) {
-                                    downloadViewModel.getActiveDownloadsCount()
-                                }
-                                if (activeDownloadCount == 0){
-                                    fun clearInfoJsonFolder(folder: File) {
-                                        if (folder.exists() && folder.isDirectory) {
-                                            folder.listFiles()?.forEach { file ->
-                                                if (file.isDirectory) {
-                                                    clearInfoJsonFolder(file)
-                                                    file.delete()
-                                                } else {
-                                                    file.delete()
-                                                }
-                                            }
-                                        }
-                                    }
-                                    clearInfoJsonFolder(File(FileUtil.getInfoJsonPath(context)))
-
-                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
-                                        Snackbar.make(host.hostView!!, context.getString(R.string.cache_cleared), Snackbar.LENGTH_SHORT).show()
-                                    }
-                                }else{
-                                    if (host.hostView != null && host.hostView!!.isAttachedToWindow) {
-                                        Snackbar.make(host.hostView!!, context.getString(R.string.downloads_running_try_later), Snackbar.LENGTH_SHORT).show()
-                                    }
-                                }
-
-                                val infoJsonSize = File(FileUtil.getInfoJsonPath(context)).walkBottomUp().fold(0L) { acc, file -> acc + file.length() }
-                                val filesize  = if (infoJsonSize < 10000) {
-                                    "0B"
-                                }else {
-                                    FileUtil.convertFileSize(infoJsonSize)
-                                }
-
-                                summary = "(${filesize})"
-
-                                host.refreshUI()
-                            }
-                            true
-                        }
-                }
-            }
-            "move_cache" -> {
-                pref.apply {
-                    onPreferenceClickListener =
-                        Preference.OnPreferenceClickListener {
-                            val workRequest = OneTimeWorkRequestBuilder<MoveCacheFilesWorker>()
-                                .addTag("cacheFiles")
-                                .build()
-
-                            WorkManager.Companion.getInstance(context).beginUniqueWork(
-                                System.currentTimeMillis().toString(),
-                                ExistingWorkPolicy.KEEP,
-                                workRequest
-                            ).enqueue()
-
-                            WorkManager.Companion.getInstance(context)
-                                .getWorkInfosByTagLiveData("cacheFiles")
-                                .observe(host.hostLifecycleOwner){ list ->
-                                    if (list == null) return@observe
-                                    if (list.first() == null) return@observe
-
-                                    if (list.first().state == WorkInfo.State.SUCCEEDED){
-                                        host.refreshUI()
-                                    }
-                                }
-
-                            true
-                        }
                 }
             }
 

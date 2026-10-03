@@ -13,7 +13,15 @@
     <fragment
         android:id="@+id/folderSettingsFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsFragment"
-        android:label="FolderSettingsFragment" />
+        android:label="FolderSettingsFragment" >
+        <action
+            android:id="@+id/action_folderSettingsFragment_to_temporaryFilesFragment"
+            app:destination="@id/temporaryFilesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/temporaryFilesFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.folder.temporary.TemporaryFilesFragment"
+        android:label="TemporaryFilesFragment" />
     <fragment
         android:id="@+id/updateSettingsFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsFragment"
