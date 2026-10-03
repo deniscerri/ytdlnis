@@ -375,7 +375,7 @@ interface DownloadDao {
                 }
                 if (ascending) items.sortedBy { parseDurationSec(it.duration) } else items.sortedByDescending { parseDurationSec(it.duration) }
             }
-            else -> if (ascending) items else items.reversed()
+            else -> if (ascending) items.sortedBy { it.id } else items.sortedByDescending { it.id }
         }
         var idx = 0
         sorted.forEach {
