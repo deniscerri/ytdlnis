@@ -11,7 +11,11 @@ import com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.general.GeneralSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.processing.ProcessingSettingsModule
+import com.deniscerri.ytdl.ui.more.settings.updating.app.AppUpdateSettingsModule
+import com.deniscerri.ytdl.ui.more.settings.updating.UpdateChannelPreference
 import com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsModule
+import com.deniscerri.ytdl.ui.more.settings.updating.UpdateStatusCardPreference
+import com.deniscerri.ytdl.ui.more.settings.updating.ytdlp.YtdlpUpdateSettingsModule
 
 object SettingsRegistry {
     private val xmlToModule = mapOf(
@@ -20,6 +24,8 @@ object SettingsRegistry {
         R.xml.downloading_preferences to DownloadSettingsModule,
         R.xml.processing_preferences to ProcessingSettingsModule,
         R.xml.updating_preferences to UpdateSettingsModule,
+        R.xml.ytdlp_update_preferences to YtdlpUpdateSettingsModule,
+        R.xml.app_update_preferences to AppUpdateSettingsModule,
         R.xml.advanced_preferences to AdvancedSettingsModule
     )
 
@@ -67,6 +73,10 @@ object SettingsRegistry {
 
         for (i in 0 until group.preferenceCount) {
             val p = group.getPreference(i)
+            // custom widgets like the update status card can't be shown as a search result
+            if (p is UpdateStatusCardPreference || p is UpdateChannelPreference) continue
+            if (p !is PreferenceGroup && p.title.isNullOrBlank()) continue
+
             if (p is PreferenceGroup) {
                 list.addAll(crawl(p, xmlId, module, group.title?.toString()))
             } else if (p.key != null && p.key != "reset_preferences") {

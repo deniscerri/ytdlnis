@@ -25,7 +25,7 @@
                 android:id="@+id/bottom_sheet_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/ytdl_source"
+                android:text="@string/custom_channels"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toStartOf="@+id/add"
                 app:layout_constraintHorizontal_bias="0.0"

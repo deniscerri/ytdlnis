@@ -117,7 +117,6 @@
     <string name="template">Template</string>
     <string name="logs">Logs</string>
     <string name="date_added">Date added</string>
-    <string name="update_ytdl_nightly">Nightly version of yt-dlp</string>
     <string name="adjust_audio">Adjust audio</string>
     <string name="file_name_template">Filename template</string>
     <string name="language">Language</string>
@@ -325,8 +324,6 @@
     <string name="modify_download_card">Modify download card</string>
     <string name="export_file">Export file</string>
     <string name="ytdl_source">yt-dlp source</string>
-    <string name="update_ytdl_master">Master version of yt-dlp</string>
-    <string name="update_ytdl_stable">Stable version of yt-dlp</string>
     <string name="buffer_size">Buffer size</string>
     <string name="buffer_size_summary">Size of download buffer, e.g. 1024 or 16K (default is 1024)</string>
     <string name="preferred_audio_language">Preferred audio language</string>
@@ -576,7 +573,7 @@
     <string name="bgutils_pot_server_summary">This is a JavaScript HTTP server, on port 4416. If down, it automatically starts the server when download queue starts executing, or observe sources is scheduled. To shut it down, you have to do it manually from notifications!</string>
     <string name="please_install_package">Please install package %s</string>
     <string name="please_install_package_or_package">Please install %1$s package or %2$s package</string>
-    <string name="installation_method">Installation method</string>
+    <string name="installation_method">APK Installation method</string>
     <string name="system_install_failed">System install failed. Please choose another installation method in the settings!</string>
     <string name="choose_installer_app">Choose an installer app</string>
     <string name="notset">Not set</string>
@@ -598,5 +595,19 @@
     <string name="history_quick_action">Quick Action Button</string>
     <string name="history_quick_action_summary">Action to perform when clicking the quick action button on the history card</string>
     <string name="open_file">Open File</string>
+
+    <string name="update_available">Update available</string>
+    <string name="update_check_failed">Couldn\'t check for updates</string>
+    <string name="checking_for_updates">Checking for updates…</string>
+    <string name="version_installed">%1$s installed</string>
+    <string name="check_now">Check now</string>
+    <string name="update_channel">Update channel</string>
+    <string name="custom_channels">Custom channels</string>
+    <string name="custom_channels_summary">Update from your own yt-dlp release repositories</string>
+    <string name="channel_stable">Stable</string>
+    <string name="channel_nightly">Nightly</string>
+    <string name="channel_master">Master</string>
+    <string name="channel_beta">Beta</string>
+    <string name="ytdlp" translatable="false">yt-dlp</string>
 
 </resources>

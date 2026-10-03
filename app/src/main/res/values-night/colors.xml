@@ -2,4 +2,6 @@
 <resources>
     <color name="icon_bg">#000</color>
     <color name="black">#000000</color>
+    <color name="update_status_ok_container">#1E4D2B</color>
+    <color name="update_status_on_ok_container">#B4F1C3</color>
 </resources>

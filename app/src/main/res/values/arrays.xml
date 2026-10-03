@@ -1148,9 +1148,9 @@
     </array>
 
     <array name="ytdlp_source">
-        <item>@string/update_ytdl_stable</item>
-        <item>@string/update_ytdl_nightly</item>
-        <item>@string/update_ytdl_master</item>
+        <item>@string/channel_stable</item>
+        <item>@string/channel_nightly</item>
+        <item>@string/channel_master</item>
     </array>
 
 

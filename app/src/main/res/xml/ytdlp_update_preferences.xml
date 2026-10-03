@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.deniscerri.ytdl.ui.more.settings.updating.UpdateStatusCardPreference
+        app:key="ytdlp_status_card" />
+
+    <PreferenceCategory android:title="@string/update_channel">
+
+        <com.deniscerri.ytdl.ui.more.settings.updating.UpdateChannelPreference
+            app:key="ytdlp_channel" />
+
+        <Preference
+            android:icon="@drawable/baseline_source_24"
+            app:key="ytdlp_source_label"
+            app:title="@string/custom_channels" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/settings">
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            app:icon="@drawable/ic_update"
+            android:key="auto_update_ytdlp"
+            app:summary="@string/auto_update_ytdlp_summary"
+            app:title="@string/auto_update_ytdlp" />
+
+        <SwitchPreferenceCompat
+            app:isPreferenceVisible="false"
+            android:widgetLayout="@layout/preferece_material_switch"
+            android:icon="@drawable/ic_update"
+            android:defaultValue="true"
+            android:key="update_ytdlp_while_downloading"
+            android:summary="@string/update_ytdlp_while_downloading_summary"
+            android:title="@string/update_ytdlp_while_downloading" />
+
+    </PreferenceCategory>
+
+    <Preference
+        app:icon="@drawable/baseline_reset_tv_24"
+        app:key="reset_preferences"
+        android:summary="@string/reset_preferences_in_screen"
+        app:title="@string/reset" />
+
+</PreferenceScreen>

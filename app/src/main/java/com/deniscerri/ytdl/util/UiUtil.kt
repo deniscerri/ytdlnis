@@ -2684,7 +2684,7 @@ object UiUtil {
         }, 300)
     }
 
-    fun showYTDLSourceBottomSheet(context: Activity, preferences: SharedPreferences, selectedSource: (title: String, repo: String) -> Unit) {
+    fun showYTDLCustomSourceBottomSheet(context: Activity, preferences: SharedPreferences, selectedSource: (title: String, repo: String) -> Unit) {
         val bottomSheet = BottomSheetDialog(context)
         bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
         bottomSheet.setContentView(R.layout.ytdlp_sources_list)
@@ -2705,18 +2705,16 @@ object UiUtil {
                 }
             }
         }
-
         val defaultSourceTitles = context.getStringArray(R.array.ytdlp_source)
         val defaultSourceValues = context.getStringArray(R.array.ytdlp_source_values)
+
         val tmp = list.toMutableList()
-        tmp.addAll(0, defaultSourceTitles.mapIndexed { index, s -> "${s}___${defaultSourceValues[index]}" })
         tmp.forEach { s ->
             val arr = s.split("___")
             if (arr.size < 2) return@forEach
 
             val title = arr[0]
             val source = arr[1]
-            val isEditable = !defaultSourceValues.contains(source)
             val child = LayoutInflater.from(context).inflate(R.layout.custom_ytdlp_source, null)
             child.findViewById<MaterialCardView>(R.id.sampleCustomSource).setOnClickListener {
                 bottomSheet.dismiss()
@@ -2735,7 +2733,7 @@ object UiUtil {
             }
             child.findViewById<TextView>(R.id.sampleRepo).text = source
             child.findViewById<View>(R.id.options).apply {
-                isVisible = isEditable
+                isVisible = true
                 setOnClickListener {
                     val popup = PopupMenu(context, it)
                     popup.menuInflater.inflate(R.menu.custom_ytdlp_source_menu, popup.menu)
@@ -2762,7 +2760,8 @@ object UiUtil {
                                     preferences.edit()
                                         .putStringSet("custom_ytdlp_sources", list.toSet()).apply()
                                     if (child.findViewById<RadioButton>(R.id.sampleRadioBtn).isChecked) {
-                                        parentView.children.first().performClick()
+                                        selectedSource(defaultSourceTitles.first(), defaultSourceValues.first())
+                                        bottomSheet.dismiss()
                                     }
                                     parentView.removeView(child)
                                 }

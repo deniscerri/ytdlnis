@@ -1,4 +1,4 @@
-package com.deniscerri.ytdl.ui.more.settings.updating
+package com.deniscerri.ytdl.ui.more.settings.updating.app
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
@@ -21,7 +21,6 @@ import com.deniscerri.ytdl.util.UpdateUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
 
 class ChangeLogFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView

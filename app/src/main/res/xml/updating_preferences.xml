@@ -4,71 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <PreferenceCategory android:title="@string/source">
-
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="ytdl-version"
-            app:title="@string/ytdl_version"/>
+    <PreferenceCategory android:title="@string/updating">
 
         <Preference
             app:icon="@drawable/ic_update"
-            app:key="update_ytdl"
-            app:summary="@string/ytdl_update_hint"
-            app:title="@string/update_ytdl" />
+            app:key="ytdlp_update_screen"
+            app:title="@string/ytdlp" />
 
         <Preference
-            android:icon="@drawable/baseline_source_24"
-            app:key="ytdlp_source_label"
-            app:title="@string/ytdl_source" />
-
-
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
-            app:icon="@drawable/ic_update"
-            android:key="auto_update_ytdlp"
-            app:title="@string/auto_update_ytdlp" />
-
-        <SwitchPreferenceCompat
-            app:isPreferenceVisible="false"
-            android:widgetLayout="@layout/preferece_material_switch"
-            android:icon="@drawable/ic_update"
-            android:defaultValue="true"
-            android:key="update_ytdlp_while_downloading"
-            android:summary="@string/update_ytdlp_while_downloading_summary"
-            android:title="@string/update_ytdlp_while_downloading" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/app">
-
-        <Preference
-            app:icon="@drawable/ic_info"
-            app:key="version"
-            app:title="@string/version"/>
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="true"
             android:icon="@drawable/ic_update_app"
-            android:key="update_app"
-            app:summary="@string/update_app_summary"
-            app:title="@string/update_app" />
-
-        <EditTextPreference
-            app:isPreferenceVisible="false"
-            app:key="skip_updates"
-            app:defaultValue="" />
-
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/ic_experiment"
-            android:key="update_beta"
-            app:summary="@string/update_app_beta_summary"
-            app:title="@string/update_app_beta" />
+            app:key="app_update_screen"
+            app:title="@string/app" />
 
         <Preference
             app:icon="@drawable/ic_code"
@@ -89,11 +35,6 @@
             app:key="apk_install_external_apk_id"
             app:isPreferenceVisible="false"
             app:title="@string/choose_installer_app" />
-
-        <Preference
-            app:icon="@drawable/ic_chapters"
-            app:key="changelog"
-            app:title="@string/changelog" />
 
     </PreferenceCategory>
 

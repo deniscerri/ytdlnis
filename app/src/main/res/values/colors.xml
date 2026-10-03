@@ -407,4 +407,7 @@
     <color name="monochrome_theme_dark_inverseSurface">#C3C3C3</color>
     <color name="monochrome_theme_dark_inversePrimary">#707070</color>
 
+    <color name="update_status_ok_container">#C4EED0</color>
+    <color name="update_status_on_ok_container">#0F3D1E</color>
+
 </resources>
