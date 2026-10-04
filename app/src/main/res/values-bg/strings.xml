@@ -84,7 +84,6 @@
     <string name="template">Шаблон</string>
     <string name="logs">Дневник събития</string>
     <string name="date_added">Дата добавяне</string>
-    <string name="update_ytdl_nightly">Nightly версия на yt-dlp</string>
     <string name="adjust_audio">Настройка аудио</string>
     <string name="file_name_template">Шаблон за име на файл</string>
     <string name="language">Език</string>
@@ -193,8 +192,6 @@
     <string name="user_agent_header">User-Agent заглавие</string>
     <string name="export_file">Експортиране на файл</string>
     <string name="ytdl_source">Източник yt-dlp</string>
-    <string name="update_ytdl_master">Основна версия на yt-dlp</string>
-    <string name="update_ytdl_stable">Стабилна версия на yt-dlp</string>
     <string name="preferred_audio_language">Предпочитан аудио език</string>
     <string name="changelog">Дневник на промените</string>
     <string name="source">Източник</string>

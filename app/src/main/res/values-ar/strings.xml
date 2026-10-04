@@ -68,7 +68,6 @@
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الإضافة</string>
-    <string name="update_ytdl_nightly">إصدارات yt-dlp التجريبية</string>
     <string name="adjust_audio">تخصيص الصوت</string>
     <string name="file_name_template">قالب العنوان</string>
     <string name="language">اللغة</string>
@@ -314,14 +313,12 @@
     <string name="security">سياسة الخصوصية والأمان</string>
     <string name="length">الطول</string>
     <string name="export_file">تصدير الملف</string>
-    <string name="update_ytdl_master">الإصدارات الرئيسة لـ yt-dlp</string>
     <string name="errored_downloads">التنزيلات المتعطلة</string>
     <string name="errored_download_notification_channel_description">إشعار بتعطل التنزيلات</string>
     <string name="buffer_size_summary">حجم الذاكرة المؤقتة للتنزيل، على سبيل المثال، 1024 أو 16 كيلوبايت (الافتراضي هو 1024)</string>
     <string name="ytdl_source">مصدر yt-dlp</string>
     <string name="buffer_size">حجم الذاكرة المؤقتة</string>
     <string name="preferred_audio_language">لغة الصوت المفضلة</string>
-    <string name="update_ytdl_stable">الإصدارات المستقرة لـ yt-dlp</string>
     <string name="changelog">سجل التغييرات</string>
     <string name="app">التطبيق</string>
     <string name="source">المصادر</string>

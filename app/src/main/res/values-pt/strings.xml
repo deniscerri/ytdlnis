@@ -204,7 +204,6 @@
     <string name="you_are_going_to_delete_multiple_items">Excluir vários itens</string>
     <string name="request_permission_desc">Este aplicativo requer \"Permissão de Armazenamento\" para salvar downloads no dispositivo</string>
     <string name="sponsorblock_nonmusic">Partes sem música e sem relação com o tema</string>
-    <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
     <string name="adjust_audio">Ajustar áudio</string>
     <string name="file_name_template">Modelo para o nome de arquivo</string>
     <string name="language">Idioma</string>
@@ -314,14 +313,12 @@
     <string name="length">Comprimento</string>
     <string name="export_file">Exportar arquivo</string>
     <string name="ignore">Ignorar</string>
-    <string name="update_ytdl_master">Versão principal do yt-dlp</string>
     <string name="errored_downloads">Downloads com erros</string>
     <string name="errored_download_notification_channel_description">Notificação para downloads com erro</string>
     <string name="ytdl_source">Fonte do yt-dlp</string>
     <string name="buffer_size_summary">Tamanho do buffer para downloads, ex. 1024 ou 16K (o padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
     <string name="preferred_audio_language">Idioma de áudio preferido</string>
-    <string name="update_ytdl_stable">Versão estável do yt-dlp</string>
     <string name="changelog">Histórico de atualização</string>
     <string name="app">Aplicativo</string>
     <string name="source">Origem</string>

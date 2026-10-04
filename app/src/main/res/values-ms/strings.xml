@@ -153,7 +153,6 @@
     <string name="new_template">Templat baharu</string>
     <string name="defaultValue">Asal</string>
     <string name="container">Bekas</string>
-    <string name="update_ytdl_nightly">yt-dlp versi nightly</string>
     <string name="adjust_audio">Ubah suai audio</string>
     <string name="file_name_template">Templat nama fail</string>
     <string name="command_templates">Templat perintah</string>
@@ -340,8 +339,6 @@
     <string name="ignore">Abaikan</string>
     <string name="modify_download_card">Ubah suai kad muat turun</string>
     <string name="export_file">Eksport file</string>
-    <string name="update_ytdl_master">Versi induk yt-dlp</string>
-    <string name="update_ytdl_stable">Versi stabil yt-dlp</string>
     <string name="buffer_size">Saiz penimbal</string>
     <string name="buffer_size_summary">Saiz penimbal muat turun, contohnya 1024 atau 16K (lalai ialah 1024)</string>
     <string name="preferred_audio_language">Bahasa audio pilihan</string>

@@ -211,7 +211,6 @@
     <string name="title">Názov</string>
     <string name="warning">Upozornenie</string>
     <string name="new_template">Nová šablóna</string>
-    <string name="update_ytdl_nightly">Nočná verzia yt-dlp</string>
     <string name="concurrent_downloads_summary">Počet sťahovaní vykonávaných v rovnakom čase</string>
     <string name="embed_subtitles">Vložiť titulky</string>
     <string name="adjust_video">Upraviť video</string>
@@ -277,7 +276,6 @@
     <string name="scheduling">Rozvrh</string>
     <string name="clear_saved">Vymazať uložené</string>
     <string name="schedule">Harmonogram</string>
-    <string name="update_ytdl_master">Hlavná verzia yt-dlp</string>
     <string name="user_agent_header">Záhlavie User-Agent</string>
     <string name="saved">Uložené</string>
     <string name="update_formats_background">Aktualizovať formáty na pozadí</string>
@@ -316,7 +314,6 @@
     <string name="buffer_size">Veľkosť vyrovnávacej pamäte</string>
     <string name="remember_download_type_summary">Vyberie naposledy otvorený typ sťahovania pre aktuálnu položku</string>
     <string name="length">Dĺžka</string>
-    <string name="update_ytdl_stable">Stabilná verzia yt-dlp</string>
     <string name="force_keyframes_summary">Pomalší proces, ale presnejšie strihy</string>
     <string name="changelog">Zoznam zmien</string>
     <string name="cut_unavailable_please_update_item">Aby ste mohli použiť funkciu strihu, musíte aktualizovať údaje o položke</string>

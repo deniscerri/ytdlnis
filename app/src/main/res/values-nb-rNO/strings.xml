@@ -120,7 +120,6 @@
     <string name="save_dir">Lagringsmappe</string>
     <string name="adjust_templates">Juster maler</string>
     <string name="concurrent_downloads_summary">Antall nedlastinger som kan foregå samtidig</string>
-    <string name="update_ytdl_nightly">Nattbygd versjon av yt-dlp</string>
     <string name="enable_mtime">Skru på mtime</string>
     <string name="enable_mtime_summary">Sett «HTTP Last-Modified»-hode som siste endringstid</string>
     <string name="running">Kjører</string>

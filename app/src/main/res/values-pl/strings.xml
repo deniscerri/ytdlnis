@@ -113,7 +113,6 @@
     <string name="log_downloads">Dziennik pobrań</string>
     <string name="log_downloads_summary">Utwórz plik z logiem dla każdego pobrania</string>
     <string name="download_queue">Kolejka pobierania</string>
-    <string name="update_ytdl_nightly">Codzienna wersja yt-dlp</string>
     <string name="adjust_audio">Dostosuj dźwięk</string>
     <string name="file_name_template">Szablon nazwy pliku</string>
     <string name="enable_mtime_summary">Ustaw nagłówek HTTP Last-Modified jako czas ostatniej modyfikacji</string>
@@ -314,14 +313,12 @@
     <string name="remember_download_type">Zapamiętaj typ pobierania</string>
     <string name="remember_download_type_summary">Wybierz ostatnio otwarty typ pobierania dla bieżącego elementu</string>
     <string name="length">Długość</string>
-    <string name="update_ytdl_master">Główna wersja yt-dlp</string>
     <string name="errored_downloads">Pobrania z błędem</string>
     <string name="errored_download_notification_channel_description">Powiadomienie o błędnych pobraniach</string>
     <string name="buffer_size_summary">Rozmiar bufora pobierania, np. 1024 lub 16K (domyślnie jest to 1024)</string>
     <string name="ytdl_source">Źródło yt-dlp</string>
     <string name="buffer_size">Rozmiar bufora</string>
     <string name="preferred_audio_language">Preferowany język dźwięku</string>
-    <string name="update_ytdl_stable">Wersja stabilna yt-dlp</string>
     <string name="changelog">Dziennik zmian</string>
     <string name="source">Źródło</string>
     <string name="app">Aplikacja</string>

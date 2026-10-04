@@ -290,8 +290,6 @@
     <string name="download_already_exists_summary">คุณยังต้องการดาวน์โหลดหรือไม่?</string>
     <string name="modify_download_card">แก้ไขการ์ดในการดาวน์โหลด</string>
     <string name="ytdl_source">แหล่งข้อมูลของ yt-dlp</string>
-    <string name="update_ytdl_master">เวอร์ชันมาสเตอร์ของ yt-dlp</string>
-    <string name="update_ytdl_stable">เวอร์ชั่นเสถียรของ yt-dlp</string>
     <string name="buffer_size">ขนาดบัฟเฟอร์</string>
     <string name="multiple_download_card">การ์ดสำหรับ \"ดาวน์โหลดหลายอัน\"</string>
     <string name="format_filter">ตัวกรองของฟอร์แมตไฟล์</string>
@@ -368,7 +366,6 @@
     <string name="edit_selected">เลือกการแก้ไขนี้แล้ว</string>
     <string name="concurrent_downloads">การดาวน์โหลดพร้อมกัน</string>
     <string name="template">เทมเพลต</string>
-    <string name="update_ytdl_nightly">เวอร์ชันกลางคืนของ yt-dlp</string>
     <string name="command_templates">เทมเพลตคำสั่ง</string>
     <string name="select_format">เลือกฟอร์แมต</string>
     <string name="enable_mtime_summary">ตั้งค่าส่วนหัว HTTP ที่ตั้งค่าล่าสุดเป็นเวลาที่แก้ไขล่าสุด</string>

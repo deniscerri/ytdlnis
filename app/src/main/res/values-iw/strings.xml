@@ -117,7 +117,6 @@
     <string name="logs">יומנים</string>
     <string name="adjust_audio">התאמת שמע</string>
     <string name="new_template">תבנית חדשה</string>
-    <string name="update_ytdl_nightly">גרסה לילית של yt-dlp</string>
     <string name="command_download_notification_channel_description">התראה מראה את התקדמות ההורדה בשימוש ע\"י פקודת yt-dlp</string>
     <string name="aria2_summary">השתמש בשרת aria2c להורדה במקום שרת ברירת המחדל</string>
     <string name="enable_mtime">הפעל mtime</string>
@@ -339,7 +338,6 @@
     <string name="prefer_smaller_formats">העדפת תסדירים קטנים יותר</string>
     <string name="display_over_apps">הצגה מעל יישומונים</string>
     <string name="hour">שעה</string>
-    <string name="update_ytdl_stable">גרסה יציבה של yt-dlp</string>
     <string name="preferred_audio_language">שפת שמע מועדפת</string>
     <string name="minute">דקה</string>
     <string name="second">שנייה</string>
@@ -389,7 +387,6 @@
     <string name="clear_scheduled">ניקוי מתוזמנים</string>
     <string name="errored_downloads">הורדות שנכשלו</string>
     <string name="ytdl_source">מקור yt-dlp</string>
-    <string name="update_ytdl_master">גרסה ראשית של yt-dlp</string>
     <string name="format_importance">סדר חשיבות תסדיר</string>
     <string name="format_importance_note">התאם את חשיבות רכיב הפורמט. הזמנה זו תשמש רק כאשר האפליקציה תביא את הפורמטים בכרטיס ההורדה ותבחר אוטומטית את הפורמט!</string>
     <string name="download_archive_folder">הורדת תיקיית ארכיון</string>

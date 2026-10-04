@@ -164,7 +164,6 @@
     <string name="template">Modèle</string>
     <string name="logs">Journaux</string>
     <string name="date_added">Date ajoutée</string>
-    <string name="update_ytdl_nightly">Version nightly de yt-dlp</string>
     <string name="adjust_audio">Ajuster l\'audio</string>
     <string name="file_name_template">Modèle de nom de fichier</string>
     <string name="language">Langue</string>
@@ -292,7 +291,6 @@
     <string name="use_extra_commands">Ajouter des commandes supplémentaires</string>
     <string name="clear_saved">Effacer enregistrés</string>
     <string name="schedule">Calendrier</string>
-    <string name="update_ytdl_master">Version master de yt-dlp</string>
     <string name="user_agent_header">En-tête de l\'agent utilisateur</string>
     <string name="changelog">Journal des modifications</string>
     <string name="format_order">Ordre des formats</string>
@@ -321,7 +319,6 @@
     <string name="source">Source</string>
     <string name="remember_download_type_summary">Sélectionner le dernier type de téléchargement ouvert pour l\'élément actuel</string>
     <string name="length">Longueur</string>
-    <string name="update_ytdl_stable">Version stable de yt-dlp</string>
     <string name="crop_thumb">Recadrer la miniature</string>
     <string name="force_keyframes">Forcer les images clés lors des coupes</string>
     <string name="force_keyframes_summary">Processus plus lent, mais coupes plus précises</string>

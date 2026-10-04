@@ -65,7 +65,6 @@
     <string name="defaultValue">Mod implicit</string>
     <string name="template">Șablon</string>
     <string name="date_added">Data adaugata</string>
-    <string name="update_ytdl_nightly">Versiunea de nightly a yt-dlp</string>
     <string name="adjust_audio">Reglați sunetul</string>
     <string name="command_templates">Șabloane de comandă</string>
     <string name="terminal">Terminal</string>
@@ -294,7 +293,6 @@
     <string name="update_app_beta">Versiuni Beta</string>
     <string name="scheduling">Programare</string>
     <string name="schedule">Programați</string>
-    <string name="update_ytdl_master">Versiunea principală pentru yt-dlp</string>
     <string name="update_formats_background">Actualizează formatele în fundal</string>
     <string name="changelog">Jurnal de modificări</string>
     <string name="search_command_hint">Caută din comenzi</string>
@@ -319,7 +317,6 @@
     <string name="source">Sursă</string>
     <string name="remember_download_type_summary">Selectați ultimul tip de descărcare deschis pentru articolul curent</string>
     <string name="length">Lungime</string>
-    <string name="update_ytdl_stable">Versiunea stabilă pentru yt-dlp</string>
     <string name="observe_sources">Observați sursele</string>
     <string name="new_source">Sursă nouă</string>
     <string name="delete_all_sources">Ștergeți toate sursele</string>

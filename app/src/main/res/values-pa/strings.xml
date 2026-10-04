@@ -105,7 +105,6 @@
     <string name="edit_selected">ਚੁਣੇ ਨੂੰ ਸੰਪਾਦਿਤ ਕਰੋ</string>
     <string name="concurrent_downloads_summary">ਇੱਕੋ ਸਮੇਂ \'ਤੇ ਚੱਲਣ ਵਾਲੇ ਡਾਊਨਲੋਡਾਂ ਦੀ ਗਿਣਤੀ</string>
     <string name="defaultValue">ਡਿਫ਼ਾਲਟ</string>
-    <string name="update_ytdl_nightly">yt-dlp ਦਾ ਨਾਈਟਲੀ ਸੰਸਕਰਣ</string>
     <string name="adjust_audio">ਆਡੀਓ ਐਡਜਸਟ ਕਰੋ</string>
     <string name="date_added">ਜੋੜੇ ਗਏ ਦੀ ਮਿਤੀ</string>
     <string name="logs">ਲੌਗ</string>
@@ -314,14 +313,12 @@
     <string name="security">ਸੁਰੱਖਿਆ</string>
     <string name="length">ਲੰਬਾਈ</string>
     <string name="export_file">ਫ਼ਾਈਲ ਐਕਸਪੋਰਟ ਕਰੋ</string>
-    <string name="update_ytdl_master">yt-dlp ਦਾ ਮਾਸਟਰ ਸੰਸਕਰਣ</string>
     <string name="errored_downloads">ਨੁਕਸ ਵਾਲੇ ਡਾਊਨਲੋਡ</string>
     <string name="preferred_audio_language">ਤਰਜੀਹੀ ਆਡੀਓ ਭਾਸ਼ਾ</string>
     <string name="errored_download_notification_channel_description">ਨੁਕਸਦਾਰ ਡਾਊਨਲੋਡਾਂ ਲਈ ਸੂਚਨਾ</string>
     <string name="buffer_size_summary">ਡਾਊਨਲੋਡ ਬਫ਼ਰ ਦਾ ਆਕਾਰ, ਉਦਾਹਰਨ ਲਈ 1024 ਜਾਂ 16K (ਡਿਫ਼ਾਲਟ 1024 ਹੈ)</string>
     <string name="ytdl_source">yt-dlp ਸਰੋਤ</string>
     <string name="buffer_size">ਬਫ਼ਰ ਦਾ ਆਕਾਰ</string>
-    <string name="update_ytdl_stable">yt-dlp ਦਾ ਸਥਿਰ ਸੰਸਕਰਣ</string>
     <string name="changelog">ਚੇਂਜਲੌਗ</string>
     <string name="app">ਐਪ</string>
     <string name="source">ਸ੍ਰੋਤ</string>

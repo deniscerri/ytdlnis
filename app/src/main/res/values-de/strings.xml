@@ -98,7 +98,6 @@
     <string name="template">Vorlage</string>
     <string name="logs">Protokolle</string>
     <string name="container">Container</string>
-    <string name="update_ytdl_nightly">Nightly Version von yt-dlp</string>
     <string name="adjust_audio">Audio anpassen</string>
     <string name="file_name_template">Vorlage für Dateiname</string>
     <string name="language">Sprache</string>
@@ -288,7 +287,6 @@
     <string name="update_app_beta">Betaversionen</string>
     <string name="scheduling">Planung</string>
     <string name="schedule">Planung</string>
-    <string name="update_ytdl_master">yt-dlp Masterversion</string>
     <string name="user_agent_header">User-Agent Kopfzeile</string>
     <string name="update_formats_background">Formate im Hintergrund aktualisieren</string>
     <string name="search_command_hint">Befehle suchen</string>
@@ -321,7 +319,6 @@
     <string name="buffer_size">Puffergröße</string>
     <string name="remember_download_type_summary">Nutze den zuletzt ausgewählten Download-Typ für das aktuelle Element</string>
     <string name="length">Länge</string>
-    <string name="update_ytdl_stable">Stabile yt-dlp Version</string>
     <string name="source">Quelle</string>
     <string name="observe_sources">Quellen betrachten</string>
     <string name="new_source">Neue Quelle</string>

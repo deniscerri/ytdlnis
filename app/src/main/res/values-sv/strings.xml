@@ -173,7 +173,6 @@
     <string name="adjust_video">Justera video</string>
     <string name="concurrent_downloads">Samtidiga nerladdningar</string>
     <string name="template">Mall</string>
-    <string name="update_ytdl_nightly">Nightly-version av yt-dlp</string>
     <string name="adjust_audio">Justera ljud</string>
     <string name="file_name_template">Filnamnsmall</string>
     <string name="language">Språk</string>
@@ -276,7 +275,6 @@
     <string name="security">Säkerhet</string>
     <string name="license">Licens</string>
     <string name="download_already_exists_summary">Vill du fortfarande ladda ner?</string>
-    <string name="update_ytdl_stable">Stabil-version av yt-dlp</string>
     <string name="buffer_size">Buffertstorlek</string>
     <string name="preferred_audio_language">Föredraget ljudspråk</string>
     <string name="changelog">Ändringslogg</string>
@@ -346,7 +344,6 @@
     <string name="remove_duplicates">Ta bort dubbletter</string>
     <string name="command_download_notification_channel_description">Avisering som visar förloppet för nerladdningen med ett yt-dlp-kommando</string>
     <string name="sort_by">Sorterar</string>
-    <string name="update_ytdl_master">Master-version av yt-dlp</string>
     <string name="all">Alla</string>
     <string name="multiple_download_card">Flera nerladdningskort</string>
     <string name="on_time">På</string>

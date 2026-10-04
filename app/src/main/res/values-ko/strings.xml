@@ -183,7 +183,6 @@
     <string name="edit_selected">선택 편집</string>
     <string name="concurrent_downloads_summary">동시에 실행되는 다운로드 수</string>
     <string name="defaultValue">기본</string>
-    <string name="update_ytdl_nightly">yt-dlp Nightly 버전</string>
     <string name="terminal">명령 터미널</string>
     <string name="remove_search_history">검색 기록 지우기</string>
     <string name="select_format">형식 선택</string>
@@ -339,7 +338,6 @@
     <string name="preferred_audio_language">선호하는 오디오 언어</string>
     <string name="changed_path_for_everyone_to">모든 항목의 다운로드 경로를 바꾸기:</string>
     <string name="dismiss">무시</string>
-    <string name="update_ytdl_stable">yt-dlp 안정화 버전</string>
     <string name="on_time">다음 날짜에</string>
     <string name="also_download_audio">오디오로도 다운로드하기</string>
     <string name="swipe_gestures_download_card">다운로드 설정창에서 스와이프 제스처 사용</string>
@@ -360,7 +358,6 @@
     <string name="errored_downloads">오류가 발생한 다운로드</string>
     <string name="errored_download_notification_channel_description">실패한 다운로드에 대한 알림</string>
     <string name="ytdl_source">yt-dlp 소스</string>
-    <string name="update_ytdl_master">yt-dlp Master 버전</string>
     <string name="buffer_size">버퍼 크기</string>
     <string name="buffer_size_summary">다운로드 버퍼 크기 (예: 1024 또는 16K, 기본값 1024)</string>
     <string name="all">모두</string>

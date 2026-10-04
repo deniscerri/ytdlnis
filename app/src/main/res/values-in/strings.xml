@@ -124,7 +124,6 @@
     <string name="update_template">Perbarui templat</string>
     <string name="date_added">Tanggal ditambahkan</string>
     <string name="language">Bahasa</string>
-    <string name="update_ytdl_nightly">yt-dlp versi nightly</string>
     <string name="terminal">Terminal</string>
     <string name="format">Format</string>
     <string name="select_format">Pilih format</string>
@@ -301,7 +300,6 @@
     <string name="export_file">Ekspor berkas</string>
     <string name="preferred_audio_codec">Codec audio yang disukai</string>
     <string name="schedule">Jadwal</string>
-    <string name="update_ytdl_master">yt-dlp versi master</string>
     <string name="user_agent_header">Header Agen Pengguna</string>
     <string name="search_command_hint">Telusuri dari perintah</string>
     <string name="ignore">Abaikan</string>
@@ -321,7 +319,6 @@
     <string name="buffer_size_summary">Ukuran buffer unduhan, mis. 1024 atau 16K (1024 secara asali)</string>
     <string name="buffer_size">Ukuran buffer</string>
     <string name="preferred_audio_language">Bahasa audio yang disukai</string>
-    <string name="update_ytdl_stable">yt-dlp versi stabil</string>
     <string name="new_source">Sumber baru</string>
     <string name="delete_all_sources">Hapus semua sumber</string>
     <string name="force_ipv4_desc">Buat semua sambungan dengan IPv4</string>

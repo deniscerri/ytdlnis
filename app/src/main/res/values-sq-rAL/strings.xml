@@ -124,7 +124,6 @@
     <string name="template">Modeli</string>
     <string name="logs">Shënimet</string>
     <string name="date_added">Data e shtuar</string>
-    <string name="update_ytdl_nightly">Versioni Nightly i yt-dlp</string>
     <string name="adjust_audio">Modifiko Audion</string>
     <string name="file_name_template">Formati i Emrit të Skedarit</string>
     <string name="language">Gjuha</string>
@@ -314,14 +313,12 @@
     <string name="modify_download_card">Modifiko Kartën e Shkarkimit</string>
     <string name="security">Siguria</string>
     <string name="export_file">Eksporto Skedarin</string>
-    <string name="update_ytdl_master">Versioni Master i yt-dlp</string>
     <string name="errored_downloads">Shkarkimet me Probleme</string>
     <string name="errored_download_notification_channel_description">Njoftim për shkarkimet me probleme</string>
     <string name="ytdl_source">Burimi i yt-dlp</string>
     <string name="buffer_size_summary">Madhësia e bufferit të shkarkimit, p.sh 1024 ose 16k (fillimisht është 1024)</string>
     <string name="buffer_size">Madhësia e Bufferit</string>
     <string name="preferred_audio_language">Gjuha e Preferuar e Audios</string>
-    <string name="update_ytdl_stable">Versioni Stabël i yt-dlp</string>
     <string name="changelog">Ndryshimet</string>
     <string name="app">Aplikacioni</string>
     <string name="source">Burimi</string>

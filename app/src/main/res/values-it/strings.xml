@@ -141,7 +141,6 @@
     <string name="use_extra_commands_summary">Per download audio/video. Aggiungi comandi extra insieme alla configurazione della GUI</string>
     <string name="sponsorblock">SponsorBlock</string>
     <string name="format">Formato</string>
-    <string name="update_ytdl_nightly">Versione nightly di yt-dlp</string>
     <string name="file_name_template">Modello nome file</string>
     <string name="dont_ask_again">Non chiedere di nuovo</string>
     <string name="end">Fine</string>
@@ -281,7 +280,6 @@
     <string name="force_keyframes">Forza i tagli dei fotogrammi chiave</string>
     <string name="current">Comando attuale</string>
     <string name="downloaded">"Scaricato: "</string>
-    <string name="update_ytdl_stable">Versione stabile di yt-dlp</string>
     <string name="preferred_audio_language">Lingua audio preferita</string>
     <string name="embed_metadata">Incorpora metadati</string>
     <string name="write_description_summary">Scrivi file di descrizione</string>
@@ -320,7 +318,6 @@
     <string name="download_already_exists_summary">Vuoi ancora scaricare?</string>
     <string name="schedule">Pianifica</string>
     <string name="modify_download_card">Modifica scheda download</string>
-    <string name="update_ytdl_master">Versione master di yt-dlp</string>
     <string name="ytdl_source">Fonte yt-dlp</string>
     <string name="loading">Caricamento</string>
     <string name="preferred_video_codec">Codec video preferito</string>

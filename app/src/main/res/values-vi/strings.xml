@@ -122,7 +122,6 @@
     <string name="template">Bản mẫu</string>
     <string name="logs">Nhật kí</string>
     <string name="date_added">Ngày thêm</string>
-    <string name="update_ytdl_nightly">Phiên bản Nightly của yt-dlp</string>
     <string name="adjust_audio">Cấu hình âm thanh</string>
     <string name="file_name_template">Mẫu tên</string>
     <string name="language">Ngôn ngữ</string>
@@ -314,7 +313,6 @@
     <string name="remember_download_type_summary">Chọn loại tải xuống được mở lần trước cho mục hiện tại</string>
     <string name="length">Độ dài</string>
     <string name="export_file">Xuất tệp</string>
-    <string name="update_ytdl_master">Phiên bản Master của yt-dlp</string>
     <string name="ytdl_source">Nguồn yt-dlp</string>
     <string name="changelog">Nhật ký thay đổi</string>
     <string name="cut_unavailable_please_update_item">Bạn cần cập nhật dữ liệu để có thể sử dụng tính năng cắt</string>
@@ -325,7 +323,6 @@
     <string name="buffer_size_summary">Kích thước của bộ đệm, ví dụ 1024 hoặc 16K (mặc định 1024)</string>
     <string name="buffer_size">Kích thước bộ đệm</string>
     <string name="source">Nguồn</string>
-    <string name="update_ytdl_stable">Phiên bản ổn định của yt-dlp</string>
     <string name="observe_sources">Quan sát nguồn</string>
     <string name="new_source">Mới</string>
     <string name="delete_all_sources">Xóa tất cả</string>

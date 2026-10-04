@@ -120,7 +120,6 @@
     <string name="format">Pormat</string>
     <string name="select_format">Pumili ng pormat</string>
     <string name="please_wait">Mangyaring maghintay</string>
-    <string name="update_ytdl_nightly">Nightly na bersyon ng yt-dlp</string>
     <string name="remove_search_history">Alisin ang kasaysayan ng paghahanap</string>
     <string name="file_name_template">Modelo ng pangalan ng file</string>
     <string name="enable_mtime">I-on ang mtime</string>

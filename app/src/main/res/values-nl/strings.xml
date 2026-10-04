@@ -305,7 +305,6 @@
     <string name="retry_missing_downloads">Ontbrekende downloads opnieuw proberen</string>
     <string name="save_auto_subs">Automatische ondertitels opslaan</string>
     <string name="sponsorblock_nonmusic">Niet-muziek- en offtopic-gedeelten</string>
-    <string name="update_ytdl_nightly">Nachtelĳke versie van yt-dlp</string>
     <string name="finished_download_notification_channel_description">Meldingen voor voltooide downloads</string>
     <string name="download_over_metered_networks">Downloaden via gemeten netwerken</string>
     <string name="my_filename_templates">Mĳn bestandsnaam­sjablonen</string>
@@ -327,7 +326,6 @@
     <string name="confirm_delete_cookies_desc">Alle cookies permanent verwĳderen</string>
     <string name="preferred_search_engine_summary">De te gebruiken zoek­machine voor zoek­opdrachen in de app</string>
     <string name="pure_theme_summary">Puur zwart/wit thema</string>
-    <string name="update_ytdl_stable">Stabiele versie van yt-dlp</string>
     <string name="minute">Minuut</string>
     <string name="second">Seconde</string>
     <string name="format_importance">Prioriteit formaten</string>
@@ -365,7 +363,6 @@
     <string name="save_for_later">Download opslaan voor later?</string>
     <string name="update_formats_background">Formaten op de achter­grond bĳ­werken</string>
     <string name="embed_metadata_summary">Parseert en sluit meta­gegevens in het audio­bestand in</string>
-    <string name="update_ytdl_master">Ontwikkelings­versie van yt-dlp</string>
     <string name="format_smallest">Kleinste formaat (per resolutie)</string>
     <string name="update_formats_summary">Haalt de formaten direct op wanneer de download­kaart verschĳnt</string>
     <string name="add_template_first">U moet tenminste één opdrachtsjabloon aangemaakt hebben!</string>

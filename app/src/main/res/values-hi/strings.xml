@@ -88,7 +88,6 @@
     <string name="template">खाका</string>
     <string name="logs">लॉग्स</string>
     <string name="date_added">तिथि के अनुसार</string>
-    <string name="update_ytdl_nightly">yt-dlp का रात्रिकालीन संस्करण</string>
     <string name="adjust_audio">ऑडियो समायोजित करें</string>
     <string name="file_name_template">फ़ाइलनाम खाका</string>
     <string name="language">भाषा</string>
@@ -314,14 +313,12 @@
     <string name="security">सुरक्षा</string>
     <string name="length">लंबाई</string>
     <string name="export_file">फ़ाइल निर्यात करें</string>
-    <string name="update_ytdl_master">Yt-dlp का मास्टर संस्करण</string>
     <string name="errored_downloads">त्रुटियुक्त डाउनलोड</string>
     <string name="preferred_audio_language">तरजीही ऑडियो भाषा</string>
     <string name="errored_download_notification_channel_description">दोषपूर्ण डाउनलोड के लिए अधिसूचना</string>
     <string name="buffer_size_summary">डाउनलोड बफ़र का आकार, उदा. 1024 या 16K (डिफ़ॉल्ट 1024 है)</string>
     <string name="ytdl_source">yt-dlp स्रोत</string>
     <string name="buffer_size">बफ़र का आकार</string>
-    <string name="update_ytdl_stable">Yt-dlp का स्थिर संस्करण</string>
     <string name="changelog">चैंजलॉग</string>
     <string name="app">ऐप</string>
     <string name="source">स्रोत</string>

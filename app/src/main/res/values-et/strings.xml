@@ -108,7 +108,6 @@
     <string name="template">Mall</string>
     <string name="logs">Logid</string>
     <string name="date_added">Kuupäev lisatud</string>
-    <string name="update_ytdl_nightly">Yt-dlp öine versioon</string>
     <string name="adjust_audio">Kohanda heli/audiot</string>
     <string name="file_name_template">Failinime mall</string>
     <string name="language">Keel</string>

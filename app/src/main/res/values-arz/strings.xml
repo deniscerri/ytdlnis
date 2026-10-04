@@ -188,7 +188,6 @@
     <string name="template">القالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">التاريخ المضاف</string>
-    <string name="update_ytdl_nightly">الإصدار الخفيف من yt-dlp</string>
     <string name="file_name_template">قالب اسم الملف</string>
     <string name="language">اللغة</string>
     <string name="command_templates">قالب الاوامر</string>

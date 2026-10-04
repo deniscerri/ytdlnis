@@ -104,7 +104,6 @@
     <string name="adjust_templates">Ajustar modelos</string>
     <string name="concurrent_downloads">Downloads simultâneos</string>
     <string name="logs">Logs</string>
-    <string name="update_ytdl_nightly">Versão beta do yt-dlp</string>
     <string name="file_name_template">Modelo para o nome de arquivo</string>
     <string name="language">Idioma</string>
     <string name="command_templates">Modelos de comando</string>
@@ -314,14 +313,12 @@
     <string name="security">Segurança</string>
     <string name="length">Comprimento</string>
     <string name="export_file">Exportar arquivo</string>
-    <string name="update_ytdl_master">Versão principal do yt-dlp</string>
     <string name="errored_downloads">Downloads com erros</string>
     <string name="errored_download_notification_channel_description">Notificação para downloads com erro</string>
     <string name="ytdl_source">Fonte do yt-dlp</string>
     <string name="buffer_size_summary">Tamanho do buffer para downloads, ex. 1024 ou 16K (o padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
     <string name="preferred_audio_language">Idioma de áudio preferido</string>
-    <string name="update_ytdl_stable">Versão estável do yt-dlp</string>
     <string name="changelog">Histórico de atualização</string>
     <string name="app">Aplicativo</string>
     <string name="source">Origem</string>

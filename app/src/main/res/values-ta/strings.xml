@@ -71,7 +71,6 @@
     <string name="defaultValue">இயல்புநிலை</string>
     <string name="template">வார்ப்புரு</string>
     <string name="date_added">தேதி சேர்க்கப்பட்டது</string>
-    <string name="update_ytdl_nightly">yt-dlp இன் இரவு பதிப்பு</string>
     <string name="adjust_audio">இசையை சரிசெய்</string>
     <string name="file_name_template">கோப்பு பெயர் வார்ப்புரு</string>
     <string name="language">மொழி</string>
@@ -199,7 +198,6 @@
     <string name="download_already_exists_summary">நீங்கள் இன்னும் பதிவிறக்கம் செய்ய விரும்புகிறீர்களா?</string>
     <string name="schedule">அட்டவணை</string>
     <string name="modify_download_card">பதிவிறக்க அட்டையை மாற்றவும்</string>
-    <string name="update_ytdl_master">YT-DLP இன் முதன்மை பதிப்பு</string>
     <string name="changelog">மாற்றபதிவு</string>
     <string name="app">பயன்பாடு</string>
     <string name="cut_unavailable_please_update_item">வெட்டு அம்சத்தைப் பயன்படுத்த நீங்கள் உருப்படி தரவைப் புதுப்பிக்க வேண்டும்</string>
@@ -299,7 +297,6 @@
     <string name="scroll_down">கீழே உருட்டவும்</string>
     <string name="my_filename_templates">எனது கோப்பு பெயர் வார்ப்புருக்கள்</string>
     <string name="prefer_smaller_formats">சிறிய அளவிலான வடிவங்களை விரும்புங்கள்</string>
-    <string name="update_ytdl_stable">YT-DLP இன் நிலையான பதிப்பு</string>
     <string name="buffer_size">இடையக அளவு</string>
     <string name="buffer_size_summary">பதிவிறக்க இடையகத்தின் அளவு, எ.கா. 1024 அல்லது 16 கே (இயல்புநிலை 1024)</string>
     <string name="preferred_audio_language">விருப்பமான இசை மொழி</string>

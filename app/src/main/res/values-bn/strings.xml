@@ -129,7 +129,6 @@
     <string name="defaultValue">পূর্বনির্ধারিত</string>
     <string name="template">টেমপ্লেট</string>
     <string name="logs">লগ</string>
-    <string name="update_ytdl_nightly">yt-dlp-এর অন্ধকার সংস্করণ</string>
     <string name="adjust_audio">অডিও সামঞ্জস্য করুন</string>
     <string name="language">ভাষা</string>
     <string name="command_templates">কমান্ড টেমপ্লেট</string>
@@ -358,8 +357,6 @@
     <string name="ignore">উপেক্ষা করুন</string>
     <string name="modify_download_card">ডাউনলোড কার্ড পরিবর্তন করুন</string>
     <string name="export_file">ফাইল এক্সপোর্ট করুন</string>
-    <string name="update_ytdl_master">yt-dlp এর মাস্টার ভার্সন</string>
-    <string name="update_ytdl_stable">yt-dlp এর স্থিতিশীল সংস্করণ</string>
     <string name="buffer_size">বাফারের সাইজ</string>
     <string name="buffer_size_summary">ডাউনলোড বাফারের সাইজ, যেমন ১০২৪ অথবা ১৬কে (সয়ংক্রিয় ১০২৪)</string>
     <string name="preferred_audio_language">পছন্দের অডিও ভাষা</string>

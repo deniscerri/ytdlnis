@@ -200,7 +200,6 @@
     <string name="defaultValue">預設</string>
     <string name="container">容器</string>
     <string name="logs">日誌</string>
-    <string name="update_ytdl_nightly">yt-dlp 的隔夜版本</string>
     <string name="template">範本</string>
     <string name="date_added">新增日期</string>
     <string name="select_format">選擇格式</string>
@@ -314,14 +313,12 @@
     <string name="security">安全設定</string>
     <string name="length">影片／音訊長度</string>
     <string name="export_file">匯出檔案</string>
-    <string name="update_ytdl_master">yt-dlp 的 master 分支版本</string>
     <string name="errored_downloads">下載失敗</string>
     <string name="preferred_audio_language">偏好的音訊語言</string>
     <string name="errored_download_notification_channel_description">下載失敗的通知</string>
     <string name="buffer_size_summary">下載緩衝區的大小，例如 1024 或 16K（預設為 1024）</string>
     <string name="ytdl_source">yt-dlp 來源</string>
     <string name="buffer_size">緩衝區大小</string>
-    <string name="update_ytdl_stable">yt-dlp 的穩定版本</string>
     <string name="changelog">更新日誌</string>
     <string name="cut_unavailable_please_update_item">為了使用剪切功能，您需要更新項目資料</string>
     <string name="app">應用程式</string>

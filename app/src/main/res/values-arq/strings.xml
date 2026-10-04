@@ -113,7 +113,6 @@
     <string name="template">قالب</string>
     <string name="logs">السجلات</string>
     <string name="date_added">تاريخ الاضافة</string>
-    <string name="update_ytdl_nightly">إصدار المطورين من yt-dlp</string>
     <string name="adjust_audio">تعديل الصوت</string>
     <string name="file_name_template">قالب اسم الملف</string>
     <string name="language">اللغة</string>
@@ -321,8 +320,6 @@
     <string name="modify_download_card">تعديل بطاقة تاع التنزيل</string>
     <string name="export_file">تصدير الملف</string>
     <string name="ytdl_source">مصدر yt-dlp</string>
-    <string name="update_ytdl_master">الإصدار الـMaster من yt-dlp</string>
-    <string name="update_ytdl_stable">الاصدار المستقر من yt-dlp</string>
     <string name="buffer_size">حجم المخزن المؤقت</string>
     <string name="buffer_size_summary">حجم تاع مخزن التنزيل المؤقت، كيما 1024 ولا 16K (الافتراضي هو 1024)</string>
     <string name="preferred_audio_language">لغة الصوت المفضلة</string>

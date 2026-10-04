@@ -82,7 +82,6 @@
     <string name="file_name_template">Filmal</string>
     <string name="language">Tungemål</string>
     <string name="concurrent_downloads_summary">Mengd hentingar på ein gong</string>
-    <string name="update_ytdl_nightly">Nattleg utgåve av yt-dlp</string>
     <string name="adjust_audio">Still inn lyd</string>
     <string name="terminal">Køyr påbod</string>
     <string name="format">Format</string>

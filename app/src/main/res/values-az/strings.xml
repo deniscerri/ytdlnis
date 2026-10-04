@@ -116,7 +116,6 @@
     <string name="container">Konteyner</string>
     <string name="logs">Jurnallar</string>
     <string name="date_added">Əlavə edilən tarix</string>
-    <string name="update_ytdl_nightly">Yt-dlp gecə versiyası</string>
     <string name="file_name_template">Şablon fayl adı</string>
     <string name="language">Dil</string>
     <string name="command_templates">Əmr şablonları</string>
@@ -314,14 +313,12 @@
     <string name="remember_download_type">Yükləmə növün xatırla</string>
     <string name="remember_download_type_summary">Cari element üçün son açılan yükləmə növün seç</string>
     <string name="length">Uzunluq</string>
-    <string name="update_ytdl_master">yt-dlp-nin tikinti versiyası</string>
     <string name="errored_downloads">Problemli yükləmələr</string>
     <string name="preferred_audio_language">Üstünlük verilən səs dili</string>
     <string name="errored_download_notification_channel_description">Nasaz yükləmələr üçün bildiriş</string>
     <string name="buffer_size_summary">Yükləmə buferi həcmi, məsələn, 1024 və ya 16K (standart olaraq 1024-dür)</string>
     <string name="ytdl_source">yt-dlp mənbə</string>
     <string name="buffer_size">Bufer həcmi</string>
-    <string name="update_ytdl_stable">yt-dlp-nin sabit versiyası</string>
     <string name="changelog">Dəyişiklik jurnalı</string>
     <string name="app">Tətbiq</string>
     <string name="source">Mənbə</string>

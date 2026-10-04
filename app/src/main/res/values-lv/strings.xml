@@ -81,7 +81,6 @@
     <string name="container">Konteiners</string>
     <string name="template">Veidne</string>
     <string name="logs">Žurnāli</string>
-    <string name="update_ytdl_nightly">yt-dlp Nakts Versija</string>
     <string name="adjust_audio">Audio Pielāgošana</string>
     <string name="adjust_templates">Veidņu pielāgošana</string>
     <string name="adjust_video">Video pielāgošana</string>

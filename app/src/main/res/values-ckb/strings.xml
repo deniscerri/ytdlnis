@@ -46,7 +46,6 @@
     <string name="warning">ئاگاداری</string>
     <string name="couldnt_find_apk">نەتوانرا APK ێکی گونجاو بدۆزێتەوە</string>
     <string name="new_template">داڕێژەی نوێ</string>
-    <string name="update_ytdl_nightly">وەشانی شەوانەی yt-dlp</string>
     <string name="command_download_notification_channel_description">ئاگاداریەک کە بەرەوپێشچوونی دابەزاندن نیشان دەدات بە بەکارهێنانی فەرمانی yt-dlp</string>
     <string name="add_chapters">بەشەکانی ڤیدیۆ</string>
     <string name="concurrent_downloads_summary">ژمارەی داگرتنەکان جێبەجێ دەکرێت لە هەمان کاتدا</string>
@@ -150,7 +149,6 @@
     <string name="clear_saved">پاککردنەوە هەڵگیراوە</string>
     <string name="schedule">خشتەسازی</string>
     <string name="download_over_metered_networks">داگرتن لە ڕێگەی تۆڕەکانی پێوەرەوە</string>
-    <string name="update_ytdl_master">وەشانی سەرەکی yt-dlp</string>
     <string name="clear_temporary_files_summary">پەڕگە پاشەکەوتکراوەکانی دابەزاندنە تێکشکاوەکان/هەڵەکان/هەڵوەشاوەکان لاببە</string>
     <string name="user_agent_header">سەردێڕی بەکارهێنەر-بریکار</string>
     <string name="saved">پاشەکەوتکراوەکان</string>
@@ -318,7 +316,6 @@
     <string name="invert_selected">پێچەوانەی دیاریکراو</string>
     <string name="download_over_metered_networks_summary">داگرتنەکان بە بەکارهێنانی هەر جۆرە تۆڕێک. بە پێچەوانەوە چاوەڕێی تۆڕێکی بێپێوراو دەکات</string>
     <string name="blue">شین</string>
-    <string name="update_ytdl_stable">وەشانی جێگیر Yt-dlp</string>
     <string name="confirm_delete_logs_desc">سڕینەوەی تەواوی لیستی تۆمار بە هەمیشەیی.</string>
     <string name="crop_thumb">بڕینی وێنەی بچووک</string>
     <string name="force_keyframes">بەهێزی Keyframes لە بڕین</string>

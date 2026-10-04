@@ -118,7 +118,6 @@
     <string name="date_added">Дату додано</string>
     <string name="language">Мова</string>
     <string name="remove_search_history">Очистити історію пошуку</string>
-    <string name="update_ytdl_nightly">Нічна версія yt-dlp</string>
     <string name="adjust_audio">Налаштування аудіо</string>
     <string name="command_templates">Шаблони команд</string>
     <string name="select_format">Вибрати формат</string>
@@ -314,14 +313,12 @@
     <string name="remember_download_type_summary">Виберіть останній відкритий тип завантаження для поточного елемента</string>
     <string name="length">Довжина</string>
     <string name="export_file">Експорт файлу</string>
-    <string name="update_ytdl_master">Майстер-версія yt-dlp</string>
     <string name="errored_downloads">Помилкові завантаження</string>
     <string name="errored_download_notification_channel_description">Сповіщення про помилкові завантаження</string>
     <string name="ytdl_source">Джерело yt-dlp</string>
     <string name="buffer_size_summary">Розмір буфера завантаження, приклад, 1024 або 16K (за замовчуванням 1024)</string>
     <string name="buffer_size">Розмір буфера</string>
     <string name="preferred_audio_language">Бажана мова аудіо</string>
-    <string name="update_ytdl_stable">Стабільна версія yt-dlp</string>
     <string name="changelog">Журнал змін</string>
     <string name="app">Застосунок</string>
     <string name="source">Джерело</string>

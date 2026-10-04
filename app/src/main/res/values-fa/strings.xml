@@ -107,7 +107,6 @@
     <string name="you_are_going_to_delete_multiple_items">حذف چندین مورد</string>
     <string name="exit_app">خروج از برنامه</string>
     <string name="error_updating_formats">خطا در بروزرسانی فرمت ها!</string>
-    <string name="update_ytdl_nightly">نسخه نایتلی yt-dlp</string>
     <string name="command">کامند</string>
     <string name="edit">ادیت</string>
     <string name="error_restarting_download">خطا در دانلود مجدد</string>
@@ -317,7 +316,6 @@
     <string name="retry_missing_downloads">تلاش مجدد برای دریافت‌های ناموفق</string>
     <string name="on_time">در</string>
     <string name="scroll_down">برو پایین</string>
-    <string name="update_ytdl_stable">نسخهٔ پایدار yt-dlp</string>
     <string name="ignore">نادیده بگیر</string>
     <string name="remember_download_type_summary">آخرین نوع دریافت را برای گزینهٔ فعلی باز کن</string>
     <string name="show_download_count">نمایش تعداد در صفحهٔ صف دریافت</string>
@@ -340,7 +338,6 @@
     <string name="user_agent_header">سربرگ User-Agent</string>
     <string name="not_deleted">حذف نشد</string>
     <string name="embed_metadata_summary">متادیتا را تجزیه و در فایل صوتی تعبیه کن</string>
-    <string name="update_ytdl_master">نسخهٔ اصلی yt-dlp</string>
     <string name="ends">پایان</string>
     <string name="length">طول</string>
     <string name="embed_metadata">تعبیهٔ متادیتا</string>

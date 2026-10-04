@@ -14,7 +14,6 @@
     <string name="couldnt_find_apk">Nincs megfelelő APK-t</string>
     <string name="ytdl_updating_started">Új verziónak letöltése folyamatban</string>
     <string name="new_template">Új sablon</string>
-    <string name="update_ytdl_nightly">Az yt-dlp nightly(szuper béta) verziója</string>
     <string name="command_download_notification_channel_description">Értesítés, amely megmutatja a letöltés előrehaladását egy yt-dlp parancs használatával</string>
     <string name="add_chapters">videók fejezetei</string>
     <string name="concurrent_downloads_summary">A letöltések száma egyszerre végrehajtva</string>
@@ -102,7 +101,6 @@
     <string name="no_results">Nincsen találat</string>
     <string name="best_quality">Legjobb minőség</string>
     <string name="embed_subs_summary">Adjon feliratokat a videóban</string>
-    <string name="update_ytdl_stable">yt-dlp stabil verziója</string>
     <string name="preferred_audio_language">Előnyben részesített audió nyelv(szinkron)</string>
     <string name="configure_download">Letöltés szerkesztése</string>
     <string name="title">Cím</string>
@@ -322,7 +320,6 @@
     <string name="ignore">Ignorálás</string>
     <string name="modify_download_card">Letöltőkártya módosítása</string>
     <string name="ytdl_source">yt-dlp Forrás</string>
-    <string name="update_ytdl_master">yt-dlp főverziója</string>
     <string name="buffer_size">Puffer mérete</string>
     <string name="buffer_size_summary">A letöltési puffer mérete, pl. 1024 vagy 16K (alapértelmezett 1024)</string>
     <string name="dismiss">Elutasítás</string>

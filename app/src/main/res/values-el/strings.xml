@@ -149,7 +149,6 @@
     <string name="container">Κοντέινερ</string>
     <string name="concurrent_downloads_summary">Αριθμός λήψεων που εκτελούνται ταυτόχρονα</string>
     <string name="template">Πρότυπο</string>
-    <string name="update_ytdl_nightly">Δοκιμαστική έκδοση του yt-dlp</string>
     <string name="log_downloads_summary">Δημιουργία ενός αρχείου καταγραφής για κάθε λήψη</string>
     <string name="error_updating_formats">Σφάλμα κατά την ενημέρωση μορφών!</string>
     <string name="error_restarting_download">Σφάλμα κατά την προσπάθεια επανεκκίνησης της λήψης</string>
@@ -301,7 +300,6 @@
     <string name="deleted">Διαγράφηκε</string>
     <string name="preferred_command_template">Προτιμώμενο πρότυπο εντολών</string>
     <string name="status">Κατάσταση</string>
-    <string name="update_ytdl_stable">Σταθερή έκδοση του yt-dlp</string>
     <string name="buffer_size">Μέγεθος buffer</string>
     <string name="buffer_size_summary">Μέγεθος του buffer λήψης, π.χ. 1024 ή 16K (η προεπιλογή είναι 1024)</string>
     <string name="preferred_audio_language">Προτιμώμενη γλώσσα ήχου</string>
@@ -341,7 +339,6 @@
     <string name="schedule">Πρόγραμμα</string>
     <string name="modify_download_card">Τροποποίηση κάρτας λήψης</string>
     <string name="ytdl_source">Πηγή yt-dlp</string>
-    <string name="update_ytdl_master">Κύρια έκδοση του yt-dlp</string>
     <string name="preferred_video_codec">Προτιμώμενος κωδικοποιητής βίντεο</string>
     <string name="preferred_audio_codec">Προτιμώμενος κωδικοποιητής ήχου</string>
     <string name="loading">Φόρτωση</string>

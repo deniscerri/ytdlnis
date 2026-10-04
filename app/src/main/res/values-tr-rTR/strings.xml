@@ -123,7 +123,6 @@
     <string name="log_downloads">İndirilenler günlüğü</string>
     <string name="log_downloads_summary">Her indirme için bir günlük dosyası oluştur</string>
     <string name="concurrent_downloads">Eşzamanlı indirmeler</string>
-    <string name="update_ytdl_nightly">yt-dlp\'nin ön izleme sürümü</string>
     <string name="download_queue">İndirme kuyruğu</string>
     <string name="split_by_chapters">Bölümlere göre ayır</string>
     <string name="template">Şablon</string>
@@ -307,7 +306,6 @@
     <string name="loading">Yükleniyor</string>
     <string name="export_file">Dosyayı dışa aktar</string>
     <string name="schedule">Zamanla</string>
-    <string name="update_ytdl_master">yt-dlp\'nin ana sürümü</string>
     <string name="user_agent_header">Kullanıcı-Aracı başlığı</string>
     <string name="search_command_hint">Komutlarda ara</string>
     <string name="ignore">Yoksay</string>
@@ -324,7 +322,6 @@
     <string name="remember_download_type_summary">Geçerli öge için son açılan indirme türünü seçin</string>
     <string name="length">Süre</string>
     <string name="preferred_audio_language">Tercih edilen ses dili</string>
-    <string name="update_ytdl_stable">yt-dlp\'nin kararlı sürümü</string>
     <string name="changelog">Değişiklik günlüğü</string>
     <string name="app">Uygulama</string>
     <string name="source">Kaynak</string>

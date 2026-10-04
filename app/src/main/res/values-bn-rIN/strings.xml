@@ -23,7 +23,6 @@
     <string name="ytdl_updating_started">নতুন সংস্করণ ডাউনলোড করা হচ্ছে</string>
     <string name="downloads_running_try_later">ডাউনলোড ওয়ার্কার চলছে। পরে আবার চেষ্টা করুন</string>
     <string name="new_template">নতুন টেমপ্লেট</string>
-    <string name="update_ytdl_nightly">yt-dlp-এর নাইটলি সংস্করণ</string>
     <string name="command_download_notification_channel_description">yt-dlp কমান্ড ব্যবহার করে ডাউনলোডের অগ্রগতি দেখানো বিজ্ঞপ্তি</string>
     <string name="add_chapters">ভিডিওতে অধ্যায়</string>
     <string name="concurrent_downloads_summary">একই সময়ে চলা ডাউনলোডের সংখ্যা</string>
@@ -321,8 +320,6 @@
     <string name="modify_download_card">ডাউনলোড কার্ড পরিবর্তন করুন</string>
     <string name="export_file">ফাইল রপ্তানি করুন</string>
     <string name="ytdl_source">yt-dlp উৎস</string>
-    <string name="update_ytdl_master">yt-dlp-এর মাস্টার সংস্করণ</string>
-    <string name="update_ytdl_stable">yt-dlp-এর স্থিতিশীল সংস্করণ</string>
     <string name="buffer_size">বাফারের আকার</string>
     <string name="buffer_size_summary">ডাউনলোড বাফারের আকার, যেমন 1024 বা 16K (ডিফল্ট 1024)</string>
     <string name="preferred_audio_language">পছন্দের অডিও ভাষা</string>

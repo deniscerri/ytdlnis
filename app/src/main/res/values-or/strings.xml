@@ -115,7 +115,6 @@
     <string name="sponsorblock_promos">ସେଲ୍ଫ୍ ପ୍ରମୋସ୍</string>
     <string name="sponsorblock_previews">ପୂର୍ବାବଲୋକନ</string>
     <string name="sponsorblock_reminders">ସଦସ୍ୟତା ସ୍ମାରକପତ୍ର</string>
-    <string name="update_ytdl_nightly">Yt-dlp ର ରାତ୍ରି ସଂସ୍କରଣ</string>
     <string name="adjust_audio">ଅଡିଓ ଆଡଜଷ୍ଟ କରନ୍ତୁ</string>
     <string name="file_name_template">ଫାଇଲନାମ ଟେମ୍ପଲେଟ୍</string>
 </resources>

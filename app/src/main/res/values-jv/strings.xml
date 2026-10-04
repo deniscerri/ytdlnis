@@ -17,7 +17,6 @@
     <string name="ytdl_updating_started">Download versi anyar</string>
     <string name="downloads_running_try_later">Ngundhuh buruh lagi mlaku. Coba maneh mengko</string>
     <string name="new_template">Cithakan anyar</string>
-    <string name="update_ytdl_nightly">yt-dlp Versi Wengi</string>
     <string name="concurrent_downloads_summary">Jumlah download sing mlaku bebarengan</string>
     <string name="enable_mtime">Aktifake wektu</string>
     <string name="adjust_video">Ngatur video</string>

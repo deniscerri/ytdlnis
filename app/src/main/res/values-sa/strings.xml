@@ -33,7 +33,6 @@
     <string name="sponsorblock_reminders">सदस्यता स्मरणानि</string>
     <string name="select_sponsorblock_filtering">प्रायोजकब्लाक् छाननं चयनयतु</string>
     <string name="concurrent_downloads">सामान्यं डाउनलोड्स</string>
-    <string name="update_ytdl_nightly">रात्रिकालीन आवृत्तिः yt-dlp</string>
     <string name="adjust_audio">श्रवणं समायोजयेत</string>
     <string name="file_name_template">फाइलनाम साँचिका</string>
     <string name="command_templates">आज्ञा साँचिका</string>
@@ -164,7 +163,6 @@
     <string name="deleted">विलोपितम्</string>
     <string name="websites">वेबसाइट्</string>
     <string name="couldnt_find_apk">युक्तं एपीकें न लब्धम्</string>
-    <string name="update_ytdl_stable">यु-टी-डी-एल-पी इत्यस्मिन स्थिरसंस्करणम्</string>
     <string name="buffer_size_summary">डाउनलोड बफरस्य मापः, उदाहरणार्थ 1024 अथवा 16K (पूर्वनिर्धारित 1024 अस्ति)</string>
     <string name="use_code_highlighter">कोडस्य वर्णं प्रकाशय</string>
     <string name="reset_preferences_in_screen">अस्मिन् स्क्रीनस्मिन् सर्वाणि प्रेफरेन्स् पुनर्नवयतु</string>
@@ -396,7 +394,6 @@
     <string name="file_size">कागदस्य आकारः</string>
     <string name="automatic_backup_summary">यदा नवीनं संस्करणं अनुप्रयोगस्य दृश्यते तदा सर्वं स्वयमेव पुनःनिर्माणं कुरुत</string>
     <string name="audio_quality">श्रवणगुण</string>
-    <string name="update_ytdl_master">यु-टि-डीएलपी के मास्टर संस्करण</string>
     <string name="command_download_notification_channel_description">यु-टी-डी-एल-पी वा आदेशेन डाउनलोडिंगस्य प्रगत्याः सूचना</string>
     <string name="link_copied_to_clipboard">लिङ्कः कटिपृष्ठे आविष्कृतम्</string>
     <string name="delete_files_too">यन्त्रात् फ़ाइलः मआरयताम्</string>

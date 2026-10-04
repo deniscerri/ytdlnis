@@ -157,7 +157,6 @@
     <string name="template">Predloga</string>
     <string name="logs">Dnevniki</string>
     <string name="date_added">Datum dodajanja</string>
-    <string name="update_ytdl_nightly">Nočna različica yt-dlp</string>
     <string name="adjust_audio">Prilagodi zvok</string>
     <string name="file_name_template">Predlogi imen datotek</string>
     <string name="language">Jezik</string>
@@ -297,8 +296,6 @@
     <string name="modify_download_card">Uredi kartico za prenos</string>
     <string name="export_file">Izvozi datoteko</string>
     <string name="ytdl_source">vir yt-dlp</string>
-    <string name="update_ytdl_master">Glavna različica yt-dlp</string>
-    <string name="update_ytdl_stable">Stabilna različica yt-dlp</string>
     <string name="buffer_size">Velikost medpomnilnika</string>
     <string name="buffer_size_summary">Velikost medpomnilnika za prenos, npr. 1024 ali 16K (privzeto je 1024)</string>
     <string name="preferred_audio_language">Prednostni jezik zvoka</string>

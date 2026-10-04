@@ -195,7 +195,6 @@
     <string name="logs">日志</string>
     <string name="select">选择</string>
     <string name="selected">已选</string>
-    <string name="update_ytdl_nightly">yt-dlp 每夜版本</string>
     <string name="all_items_selected">已选择所有项</string>
     <string name="enable_mtime">启用最近修改时间戳</string>
     <string name="access_all_directories">允许访问所有目录</string>
@@ -314,14 +313,12 @@
     <string name="security">安全性</string>
     <string name="length">长度</string>
     <string name="export_file">导出文件</string>
-    <string name="update_ytdl_master">yt-dlp 的 Master 版本</string>
     <string name="errored_downloads">下载出错</string>
     <string name="errored_download_notification_channel_description">下载出错的通知</string>
     <string name="ytdl_source">yt-dlp 源</string>
     <string name="buffer_size_summary">下载缓冲的大小，如 1024 或 16K (默认为 1024）</string>
     <string name="buffer_size">缓冲大小</string>
     <string name="preferred_audio_language">首选音频语言</string>
-    <string name="update_ytdl_stable">yt-dlp 稳定版</string>
     <string name="changelog">更新日志</string>
     <string name="app">应用</string>
     <string name="source">源</string>

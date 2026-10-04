@@ -103,7 +103,6 @@
     <string name="container">コンテナ</string>
     <string name="template">テンプレート</string>
     <string name="date_added">追加日</string>
-    <string name="update_ytdl_nightly">yt-dlp ナイトリー (ベータ) 版</string>
     <string name="adjust_audio">音声の調整</string>
     <string name="file_name_template">ファイル名のテンプレート</string>
     <string name="language">言語</string>
@@ -314,14 +313,12 @@
     <string name="remember_download_type_summary">最後に開いたダウンロードの種類を選択する</string>
     <string name="length">長さ</string>
     <string name="ignore">無視</string>
-    <string name="update_ytdl_master">yt-dlp 完全 (正式) 版</string>
     <string name="errored_downloads">ダウンロードのエラー</string>
     <string name="errored_download_notification_channel_description">失敗したダウンロードの通知</string>
     <string name="ytdl_source">yt-dlp の取得元</string>
     <string name="buffer_size_summary">ダウンロードで一時保存する量。例 1024 や 16K (初期値 1024)</string>
     <string name="buffer_size">バッファの大きさ</string>
     <string name="preferred_audio_language">優先する音声用の言語</string>
-    <string name="update_ytdl_stable">yt-dlp 安定版</string>
     <string name="changelog">更新履歴</string>
     <string name="app">アプリ</string>
     <string name="source">取得元</string>

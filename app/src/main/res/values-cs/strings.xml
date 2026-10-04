@@ -103,7 +103,6 @@
     <string name="downloads_running_try_later">Dělník pro stahování je spuštěn. Zkuste to později</string>
     <string name="quick_download">Rychlé stahování</string>
     <string name="new_template">Nová šablona</string>
-    <string name="update_ytdl_nightly">Noční verze yt-dlp</string>
     <string name="concurrent_downloads_summary">Počet stahování prováděných ve stejnou dobu</string>
     <string name="embed_subtitles">Vložení titulků</string>
     <string name="clear_saved">Vymazání uložených</string>
@@ -111,7 +110,6 @@
     <string name="enable_mtime">Povolit mtime</string>
     <string name="download_over_metered_networks">Stahování v měřených sítích</string>
     <string name="adjust_video">Upravit video</string>
-    <string name="update_ytdl_master">Hlavní verze yt-dlp</string>
     <string name="clear_temporary_files_summary">Odstranění souborů v mezipaměti, json a ostatních dočasných konfigurací</string>
     <string name="user_agent_header">Hlavička User-Agent</string>
     <string name="saved">Uložené</string>
@@ -318,7 +316,6 @@
     <string name="invert_selected">Invertování vybraných</string>
     <string name="download_over_metered_networks_summary">Stahování pomocí libovolného typu sítě. V opačném případě čeká na neměřenou síť</string>
     <string name="blue">Modrý</string>
-    <string name="update_ytdl_stable">Stabilní verze yt-dlp</string>
     <string name="confirm_delete_logs_desc">Trvale odstraní celý seznam protokolů.</string>
     <string name="crop_thumb">Ořezání náhledu</string>
     <string name="force_keyframes">Vynucení klíčových snímků při střihu</string>
