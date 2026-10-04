@@ -111,9 +111,9 @@ android {
 
             def abi = output.getFilter(com.android.build.OutputFile.ABI) ?: "universal"
             if (variant.flavorName == "github") {
-                output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}.apk"
+                output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}-github.apk"
             } else {
-                output.outputFileName = "YTDLnis-${versionName}-${variant.flavorName}-${abi}-${variant.buildType.name}.apk"
+                output.outputFileName = "YTDLnis-${variant.flavorName}-${versionName}-${abi}-${variant.buildType.name}.apk"
             }
         }
     }
