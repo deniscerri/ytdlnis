@@ -49,7 +49,7 @@ jobs:
           touch local.properties
           echo "${{ secrets.LOCAL_PROPERTIES }}" > keystore.properties
           chmod +x gradlew
-          ls app/release_keystore.jks
+          ls release_keystore.jks
       # Build ONLY the specific flavor assigned to this matrix runner
       - name: Build ${{ matrix.flavor }} APK release
         run: ./gradlew ${{ matrix.task }} --warning-mode all
