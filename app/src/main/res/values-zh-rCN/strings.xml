@@ -617,10 +617,10 @@
     <string name="temporary_files_description">应用扣住的工作文件。临时配置和其他 yt-dlp 相关数据。</string>
     <string name="unfinished_downloads">未完成的下载</string>
     <string name="unfinished_downloads_summary">保留的已停止或失败下载内容的部分文件，以便继续下载</string>
-    <string name="info_jsons">信息-JSONs</string>
+    <string name="info_jsons">Info-JSONs</string>
     <string name="info_jsons_summary">保存的视频元数据，以便 yt-dlp 无需再次获取</string>
     <string name="ytdlp_cache">yt-dlp 缓存</string>
-    <string name="ytdlp_cache_summary">yt-dlp 跨会话重用的数据，如 YouTube 播放器签名</string>
+    <string name="ytdlp_cache_summary">yt-dlp 跨会话重用的数据，如 YouTube 播放器特征</string>
     <string name="temporary_configurations">临时配置</string>
     <string name="temporary_configurations_summary">命令配置、URL 列表和其他非持久性文件</string>
     <string name="downloaded_apks">已下载的 APK</string>
