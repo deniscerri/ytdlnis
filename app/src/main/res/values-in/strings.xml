@@ -461,7 +461,7 @@
     <string name="use_code_highlighter">Gunakan kode pemilih warna</string>
     <string name="write_subs_when_embed_subs_summary">Ini akan menerapkan Simpan Subtitle dan Simpan Subtitle Otomatis untuk mengunduh berkas sub lalu menghapusnya setelah penyematan</string>
     <string name="automatic_backup">Pencadangan otomatis</string>
-    <string name="backup_path">Jaalur pencadangan</string>
+    <string name="backup_path">Jalur pencadangan</string>
     <string name="write_subs_when_embed_subs">Tulis subtitle saat menyematkan</string>
     <string name="generate_potokens">Hasilkan PO token</string>
     <string name="regenerate">Hasilkan ulang</string>
