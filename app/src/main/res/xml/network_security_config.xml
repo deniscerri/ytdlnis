@@ -6,9 +6,9 @@
     
     <!-- Grant cleartext HTTP permission ONLY for local server loopbacks -->
     <domain-config cleartextTrafficPermitted="true">
-        <domain>127.0.0.1</domain>
-        <domain>::1</domain>
-        <domain>localhost</domain>
-        <domain>ip6-localhost</domain>
+        <domain includeSubdomains="false">127.0.0.1</domain>
+        <domain includeSubdomains="false">::1</domain>
+        <domain includeSubdomains="false">localhost</domain>
+        <domain includeSubdomains="false">ip6-localhost</domain>
     </domain-config>
 </network-security-config>
