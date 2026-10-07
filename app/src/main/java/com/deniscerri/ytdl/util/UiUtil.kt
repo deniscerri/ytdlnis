@@ -838,7 +838,7 @@ object UiUtil {
                 }
 
                 setOnClickListener {
-                    FileUtil.shareFileIntent(context, item.downloadPath)
+                    openOrShareFiles(context, item.downloadPath, false)
                 }
             }
         }
@@ -933,11 +933,7 @@ object UiUtil {
         val openFile = bottomSheet.findViewById<Button>(R.id.bottomsheet_open_file_button)
         openFile!!.tag = item.id
         openFile.setOnClickListener{
-            if (item.downloadPath.size == 1) {
-                FileUtil.openFileIntent(context, item.downloadPath.first())
-            }else{
-                openMultipleFilesIntent(context, item.downloadPath)
-            }
+            openOrShareFiles(context, item.downloadPath, true)
         }
 
         val redownload = bottomSheet.findViewById<Button>(R.id.bottomsheet_redownload_button)
@@ -2596,52 +2592,69 @@ object UiUtil {
         }
     }
 
-    fun openMultipleFilesIntent(context: Activity, path: List<String>){
-        val bottomSheet = BottomSheetDialog(context)
-        bottomSheet.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        bottomSheet.setContentView(R.layout.filepathlist)
+    fun openOrShareFiles(context: Activity, paths: List<String>, isOpen: Boolean) {
+        if (paths.size <= 1) {
+            if (isOpen && paths.isNotEmpty()) {
+                FileUtil.openFileIntent(context, paths.first())
+            } else {
+                FileUtil.shareFileIntent(context, paths)
+            }
+        } else {
+            showPathChooserDialog(context, paths, isOpen)
+        }
+    }
 
-        val list = bottomSheet.findViewById<LinearLayout>(R.id.filepath_list)
+    private fun showPathChooserDialog(context: Activity, paths: List<String>, isOpen: Boolean) {
+        val names = paths.map { File(it).name }.toTypedArray()
+        val checked = BooleanArray(paths.size) { !isOpen }
+        var selectedIndex = -1
 
-        list?.apply {
-            path.forEach {path ->
-                val file = File(path)
-                val item = context.layoutInflater.inflate(R.layout.filepath_card, list, false)
-                item.apply {
-                    findViewById<TextView>(R.id.file_name).text = file.nameWithoutExtension
+        val builder = MaterialAlertDialogBuilder(context)
+            .setTitle(if (isOpen) context.getString(R.string.open_file) else context.getString(R.string.share))
+            .setNegativeButton(context.getString(R.string.cancel), null)
+            .setPositiveButton(context.getString(R.string.ok), null)
 
-                    findViewById<TextView>(R.id.duration).apply {
-                        val duration = file.getMediaDuration(context)
-                        isVisible = duration > 0
-                        text = duration.toStringDuration(Locale.US)
-                    }
+        var okButton: Button? = null
 
+        if (isOpen) {
+            builder.setSingleChoiceItems(names, -1) { _, which ->
+                selectedIndex = which
+                okButton?.isEnabled = true
+            }
+        } else {
+            builder.setMultiChoiceItems(names, checked) { _, which, isChecked ->
+                checked[which] = isChecked
+                okButton?.isEnabled = checked.any { it }
+            }
+            builder.setNeutralButton(context.getString(R.string.toggle_all), null)
+        }
 
-                    findViewById<TextView>(R.id.filesize).text = FileUtil.convertFileSize(file.length())
-                    findViewById<TextView>(R.id.extension).text = file.extension.uppercase()
-                    if (!file.exists()){
-                        isEnabled = false
-                        alpha = 0.7f
-                    }
-                    isEnabled = file.exists()
-                    setOnClickListener {
-                        FileUtil.openFileIntent(context, path)
-                        bottomSheet.dismiss()
-                    }
+        val dialog = builder.create()
+        dialog.show()
+
+        val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
+        okButton = ok
+        ok.isEnabled = !isOpen
+        if (!isOpen) {
+            dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
+                val newState = checked.any { !it }
+                for (i in checked.indices) {
+                    checked[i] = newState
+                    dialog.listView.setItemChecked(i, newState)
                 }
-                list.addView(item)
-
+                ok.isEnabled = newState
             }
         }
 
-        bottomSheet.show()
-        val displayMetrics = DisplayMetrics()
-        context.windowManager.defaultDisplay.getMetrics(displayMetrics)
-        bottomSheet.behavior.peekHeight = displayMetrics.heightPixels
-        bottomSheet.window!!.setLayout(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
+        ok.setOnClickListener {
+            if (isOpen) {
+                if (selectedIndex >= 0) FileUtil.openFileIntent(context, paths[selectedIndex])
+            } else {
+                val selected = paths.filterIndexed { i, _ -> checked[i] }
+                if (selected.isNotEmpty()) FileUtil.shareFileIntent(context, selected)
+            }
+            dialog.dismiss()
+        }
     }
 
     private fun showAddEditCustomYTDLPSource(context: Activity, title: String = "", repo: String = "", created: (title: String, repo: String) -> Unit) {

@@ -23,6 +23,7 @@ import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
@@ -245,6 +246,11 @@ class DownloadWorker(
                             false
                         ) && !downloadItem.incognito
 
+                        val targetDir = File(FileUtil.formatPath(downloadItem.downloadPath))
+                        val cacheDownloads = sharedPreferences.getBoolean("cache_downloads", true)
+                        val writtenPath = downloadItem.type == DownloadType.command && downloadItem.format.format_note.contains("-P ")
+                        val writeDirectly = writtenPath || (!cacheDownloads && targetDir.canWrite())
+
 
                         val commandString = ytdlpUtil.parseYTDLRequestString(request)
                         val initialLogDetails = "Downloading:\n" +
@@ -318,22 +324,24 @@ class DownloadWorker(
                                 )
                                 val outputSequence = it.out.split("\n")
 
-                                val fromAfterMove = outputSequence.asSequence()
-                                    .filter { o -> o.startsWith("'/storage") }
-                                val fromSplitChapters = outputSequence.asSequence()
-                                    .filter { o -> o.startsWith("[SplitChapters]") && o.contains("Destination: ") }
-                                    .map { o -> o.substringAfter("Destination: ") }
+                                if (writeDirectly) {
+                                    val fromAfterMove = outputSequence.asSequence()
+                                        .filter { o -> o.startsWith("'/storage") }
+                                    val fromSplitChapters = outputSequence.asSequence()
+                                        .filter { o -> o.startsWith("[SplitChapters]") && o.contains("Destination: ") }
+                                        .map { o -> o.substringAfter("Destination: ") }
 
-                                val moveFilesRegex = Regex("""^\[MoveFiles]\s+Moving file ".*" to "(.*)"\s*$""")
-                                val fromMoveFiles = outputSequence.asSequence()
-                                    .mapNotNull { moveFilesRegex.find(it)?.groupValues?.get(1) }
+                                    val moveFilesRegex = Regex("""^\[MoveFiles]\s+Moving file ".*" to "(.*)"\s*$""")
+                                    val fromMoveFiles = outputSequence.asSequence()
+                                        .mapNotNull { moveFilesRegex.find(it)?.groupValues?.get(1) }
 
-                                finalPaths = (fromAfterMove + fromSplitChapters + fromMoveFiles)
-                                    .map { o -> o.trim().removeSurrounding("'").removeSurrounding("\"") }
-                                    .map { o -> o.fixYtdlpPath() }
-                                    .filter { o -> o.isNotBlank() }
-                                    .distinct()
-                                    .toMutableList()
+                                    finalPaths = (fromAfterMove + fromSplitChapters + fromMoveFiles)
+                                        .map { o -> o.trim().removeSurrounding("'").removeSurrounding("\"") }
+                                        .map { o -> o.fixYtdlpPath() }
+                                        .filter { o -> o.isNotBlank() }
+                                        .distinct()
+                                        .toMutableList()
+                                }
 
                                 //move files manually if external provider
                                 try {

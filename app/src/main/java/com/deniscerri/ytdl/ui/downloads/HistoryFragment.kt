@@ -818,72 +818,10 @@ class HistoryFragment : Fragment(), HistoryPaginatedAdapter.OnItemClickListener{
                 }
 
                 item?.apply {
-                    val isOpen = quickAction == "open"
-                    if (downloadPath.size <= 1) {
-                        if (isOpen && downloadPath.isNotEmpty()) {
-                            FileUtil.openFileIntent(requireContext(), downloadPath.first())
-                        } else {
-                            FileUtil.shareFileIntent(requireContext(), downloadPath)
-                        }
-                    } else {
-                        showPathChooserDialog(downloadPath, isOpen)
-                    }
+                    UiUtil.openOrShareFiles(requireActivity(), downloadPath, quickAction == "open")
                 }
             }
 
-        }
-    }
-
-    private fun showPathChooserDialog(paths: List<String>, isOpen: Boolean) {
-        val names = paths.map { java.io.File(it).name }.toTypedArray()
-        val checked = BooleanArray(paths.size) { !isOpen }
-        var selectedIndex = -1
-
-        val builder = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(if (isOpen) getString(R.string.open_file) else getString(R.string.share))
-            .setNegativeButton(getString(R.string.cancel), null)
-            .setPositiveButton(getString(R.string.ok), null)
-
-        var okButton: android.widget.Button? = null
-
-        if (isOpen) {
-            builder.setSingleChoiceItems(names, -1) { _, which ->
-                selectedIndex = which
-                okButton?.isEnabled = true
-            }
-        } else {
-            builder.setMultiChoiceItems(names, checked) { _, which, isChecked ->
-                checked[which] = isChecked
-                okButton?.isEnabled = checked.any { it }
-            }
-            builder.setNeutralButton(getString(R.string.toggle_all), null)
-        }
-
-        val dialog = builder.create()
-        dialog.show()
-
-        val ok = dialog.getButton(DialogInterface.BUTTON_POSITIVE)
-        okButton = ok
-        ok.isEnabled = !isOpen
-        if (!isOpen) {
-            dialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener {
-                val newState = checked.any { !it }
-                for (i in checked.indices) {
-                    checked[i] = newState
-                    dialog.listView.setItemChecked(i, newState)
-                }
-                ok.isEnabled = newState
-            }
-        }
-
-        ok.setOnClickListener {
-            if (isOpen) {
-                if (selectedIndex >= 0) FileUtil.openFileIntent(requireContext(), paths[selectedIndex])
-            } else {
-                val selected = paths.filterIndexed { i, _ -> checked[i] }
-                if (selected.isNotEmpty()) FileUtil.shareFileIntent(requireContext(), selected)
-            }
-            dialog.dismiss()
         }
     }
     companion object {
