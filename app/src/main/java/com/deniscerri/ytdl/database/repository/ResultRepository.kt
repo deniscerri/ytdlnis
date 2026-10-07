@@ -411,8 +411,8 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return resultDao.getAllByIDs(ids)
     }
 
-    fun updateID(id: Long, newID: Long) {
-        resultDao.updateID(id, newID)
+    fun reorder(ids: List<Long>) {
+        resultDao.reorder(ids)
     }
 
     suspend fun getResultsFromSource(inputQuery: String, resetResults: Boolean, addToResults: Boolean = true, singleItem: Boolean = false) : List<ResultItem> {

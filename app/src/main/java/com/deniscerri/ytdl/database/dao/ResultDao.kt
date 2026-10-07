@@ -12,19 +12,19 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ResultDao {
-    @Query("SELECT * FROM results order by id")
+    @Query("SELECT * FROM results order by creationTime, id")
     fun getResults() : Flow<List<ResultItem>>
 
     @Query("SELECT * FROM results")
     fun getResultsFlow() : Flow<List<ResultItem>>
 
-    @Query("SELECT * FROM results WHERE playlistTitle LIKE '%' || :playlistT || '%' ORDER BY id")
+    @Query("SELECT * FROM results WHERE playlistTitle LIKE '%' || :playlistT || '%' ORDER BY creationTime, id")
     fun getPaginatedFilteredFlow(playlistT: String): PagingSource<Int, ResultItem>
 
-    @Query("SELECT id FROM results WHERE playlistTitle LIKE '%' || :playlistT || '%' ORDER BY id")
+    @Query("SELECT id FROM results WHERE playlistTitle LIKE '%' || :playlistT || '%' ORDER BY creationTime, id")
     fun getFilteredListIds(playlistT: String): List<Long>
 
-    @Query("SELECT * FROM results WHERE playlistTitle LIKE '%' || :playlistName || '%' order by id LIMIT 1")
+    @Query("SELECT * FROM results WHERE playlistTitle LIKE '%' || :playlistName || '%' order by creationTime, id LIMIT 1")
     fun getFirstMatchingResult(playlistName: String) : ResultItem?
 
     @Query("SELECT DISTINCT playlistTitle FROM results WHERE playlistTitle IS NOT NULL AND playlistTitle != ''")
@@ -83,9 +83,21 @@ interface ResultDao {
     @Query("SELECT * FROM results where id=:id LIMIT 1")
     fun getResultByID(id: Long): ResultItem?
 
-    @Query("SELECT * from results WHERE id > :item1 AND id < :item2 ORDER BY id")
+    @Query("""SELECT * from results WHERE
+        (creationTime > (SELECT creationTime FROM results WHERE id = :item1) OR (creationTime = (SELECT creationTime FROM results WHERE id = :item1) AND id > :item1))
+        AND (creationTime < (SELECT creationTime FROM results WHERE id = :item2) OR (creationTime = (SELECT creationTime FROM results WHERE id = :item2) AND id < :item2))
+        ORDER BY creationTime, id""")
     fun getResultsBetweenTwoItems(item1: Long, item2: Long) : List<ResultItem>
 
-    @Query("UPDATE results SET id = :newID where id = :id")
-    fun updateID(id: Long, newID: Long)
+    @Query("UPDATE results SET creationTime = :creationTime where id = :id")
+    fun updateCreationTime(id: Long, creationTime: Long)
+
+    @Query("SELECT MIN(creationTime) FROM results WHERE id IN (:ids)")
+    fun getMinCreationTime(ids: List<Long>): Long?
+
+    @Transaction
+    fun reorder(ids: List<Long>) {
+        val base = getMinCreationTime(ids) ?: return
+        ids.forEachIndexed { index, id -> updateCreationTime(id, base + index) }
+    }
 }

@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.map
 import androidx.navigation.fragment.findNavController
 import androidx.paging.filter
+import android.view.MotionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
@@ -61,6 +62,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
     private lateinit var selectBetween: MenuItem
     private lateinit var bottomAppBar: BottomAppBar
     private var totalCount: Int = 0
+    private var isListLoading: Boolean = false
     private var isProgrammaticChange : Boolean = false
 
     private lateinit var resultItemIDs: List<Long>
@@ -110,6 +112,9 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = listAdapter
         recyclerView.enableFastScroll()
+        recyclerView.addOnItemTouchListener(object : RecyclerView.SimpleOnItemTouchListener() {
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean = isListLoading
+        })
 
         count = view.findViewById(R.id.count)
         count.text = "0 ${resources.getString(R.string.selected)}"
@@ -299,7 +304,7 @@ class SelectPlaylistItemsDialog : BottomSheetDialogFragment(), PlaylistAdapter.O
 
                 val isLoading = it != resultItemIDs.size
                 progress.isVisible = isLoading
-                recyclerView.suppressLayout(isLoading)
+                isListLoading = isLoading
                 bottomAppBar.menu.children.forEach { c -> c.isEnabled = !isLoading }
                 ok.isEnabled = !isLoading
                 checkAll.isEnabled = !isLoading

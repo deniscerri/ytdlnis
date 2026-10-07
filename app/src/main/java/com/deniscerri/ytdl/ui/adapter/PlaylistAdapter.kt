@@ -103,30 +103,28 @@ class PlaylistAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         fun onCardSelect(itemID: Long, isChecked: Boolean)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun clearCheckeditems() {
         inverted = false
         checkedItems.clear()
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun checkMultipleItems(list: List<Long>){
         checkedItems.clear()
         inverted = false
         checkedItems.addAll(list)
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 
     fun checkAll(){
         checkedItems.clear()
         inverted = true
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 
     fun invertSelected(){
         inverted = !inverted
-        notifyDataSetChanged()
+        notifyItemRangeChanged(0, itemCount)
     }
 
     companion object {
