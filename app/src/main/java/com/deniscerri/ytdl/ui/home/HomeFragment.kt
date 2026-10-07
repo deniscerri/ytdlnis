@@ -250,6 +250,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         lifecycleScope.launch {
             resultViewModel.totalCount.collectLatest {
                 totalCount = it
+                searchBar?.menu?.findItem(R.id.select_range)?.isVisible = it >= 3
             }
         }
 
@@ -558,6 +559,22 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                     showDownloadAllFab = false
                     downloadAllFab!!.visibility = GONE
                     downloadSelectedFab!!.visibility = GONE
+                }
+                R.id.select_range -> {
+                    UiUtil.showSelectRangeDialog(requireActivity(), totalCount) { range ->
+                        lifecycleScope.launch {
+                            val ids = withContext(Dispatchers.IO) {
+                                resultViewModel.getAllIds()
+                            }
+                            val itemsBetween = ids.filterIndexed { index, _ -> index >= range.first && index <= range.second }
+                            if (itemsBetween.isEmpty()) return@launch
+
+                            homeAdapter.checkMultipleItems(itemsBetween)
+                            if (actionMode == null) actionMode = (getActivity() as AppCompatActivity?)!!.startSupportActionMode(contextualActionBar)
+                            actionMode?.title = "${itemsBetween.size} ${getString(R.string.selected)}"
+                            actionMode?.menu?.findItem(R.id.select_between)?.isVisible = false
+                        }
+                    }
                 }
                 R.id.delete_search -> {
                     resultViewModel.deleteAllSearchQueryHistory()

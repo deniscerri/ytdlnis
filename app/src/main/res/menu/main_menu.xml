@@ -14,6 +14,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/select_range"
+        android:title="@string/select_between"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/copy_urls"
         android:icon="@drawable/ic_copy"
         android:title="@string/copy_urls"
