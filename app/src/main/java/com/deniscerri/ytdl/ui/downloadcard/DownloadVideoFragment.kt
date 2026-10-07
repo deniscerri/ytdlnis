@@ -74,6 +74,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     lateinit var downloadItem: DownloadItem
 
     private var disabledCutClicked: Boolean = false
+    private var disabledCropClicked: Boolean = false
 
 
     @SuppressLint("RestrictedApi")
@@ -453,7 +454,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                             resultItem?.apply {
                                                 val rsVM = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
                                                 rsVM.updateItemData(this)
-                                                disabledCutClicked = true
+                                                disabledCropClicked = true
                                             }
                                         }
                                     }
@@ -537,6 +538,12 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     this.performClick()
                 }
             }
+
+            view.findViewById<Chip>(R.id.crop).apply {
+                if (this.isEnabled && savedInstanceState?.containsKey("crop_cut") == true) {
+                    this.performClick()
+                }
+            }
         }
 
         lifecycleScope.launch {
@@ -563,10 +570,16 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         resultItem = res
         val state = Bundle()
         state.putBoolean("updated", true)
+
         if (disabledCutClicked) {
             state.putBoolean("click_cut", true)
             disabledCutClicked = false
         }
+        if(disabledCropClicked) {
+            state.putBoolean("crop_cut", true)
+            disabledCropClicked = false
+        }
+
         onViewCreated(requireView(),savedInstanceState = state)
     }
 
