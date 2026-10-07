@@ -38,9 +38,9 @@
     <string name="download_notification_channel_description">Powiadomienie pokazujące postęp pobierania plików audio i wideo</string>
     <string name="you_are_in_latest_version">Korzystasz z najnowszej wersji</string>
     <string name="download_notification_channel_name">Pobieranie plików</string>
-    <string name="ytld_update_success">Zainstalowano nową wersję</string>
-    <string name="ytdl_updating_started">Pobieranie nowej wersji</string>
-    <string name="ytdl_already_updating">Instalacja nowej wersji</string>
+    <string name="ytld_update_success">Zainstalowano nową wersję yt-dlp</string>
+    <string name="ytdl_updating_started">Pobieranie nowej wersji yt-dlp</string>
+    <string name="ytdl_already_updating">Instalacja nowej wersji yt-dlp</string>
     <string name="cancel">Anuluj</string>
     <string name="downloading_update">Pobieranie nowej wersji</string>
     <string name="ok">OK</string>
@@ -529,4 +529,12 @@
     <string name="dimensions">Wymiary</string>
     <string name="x_offset">Przesunięcie w osi X</string>
     <string name="y_offset">Przesunięcie w osi Y</string>
+    <string name="search_results">Wyniki wyszukiwania</string>
+    <string name="preferred_format_size_audio">Preferowany rozmiar formatu audio</string>
+    <string name="version_ready_to_download">Wersja %s jest gotowa do pobrania</string>
+    <string name="package_version_ready_to_download">Pakiet %1$s (wersja: %2$s) jest gotowy do pobrania</string>
+    <string name="tap_to_see_changes_and_install">Dotknij, aby sprawdzić zmiany i zainstalować</string>
+    <string name="view">Wyświetl</string>
+    <string name="paused">Wstrzymano</string>
+    <string name="check_complete">Sprawdzanie ukończone</string>
 </resources>
