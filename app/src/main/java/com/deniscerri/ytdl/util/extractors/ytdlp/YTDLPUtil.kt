@@ -971,7 +971,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (downloadItem.playlistTitle.isNotBlank() && useItemURL) {
             metadataCommands.addOption("--parse-metadata", " :%(playlist_title)s")
             metadataCommands.addOption("--parse-metadata", "%(playlist_title)s:%(playlist)s")
-            metadataCommands.addOption("--replace-in-metadata", "playlist,playlist_title", "^.*$", downloadItem.playlistTitle)
+            metadataCommands.addOption("--replace-in-metadata", "playlist,playlist_title", "^.*$", downloadItem.playlistTitle.replace("""\""", """\\\\"""))
         }
 
         if (downloadItem.playlistIndex != null) {
@@ -1106,7 +1106,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             if(downloadItem.title.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title.replace("""\""", """\\"""))
+                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title.replace("""\""", """\\\\"""))
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
@@ -1114,7 +1114,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
 
             if (downloadItem.author.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author.replace("""\""", """\\"""))
+                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author.replace("""\""", """\\\\"""))
                 metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
