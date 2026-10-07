@@ -148,14 +148,10 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         rangeSlider = view.findViewById(R.id.rangeSlider)
 
         startTextInput = view.findViewById(R.id.from_textinput_edittext)
-        startTextInput.keyListener = DigitsKeyListener.getInstance("0123456789:.")
         startTextInput.imeOptions = EditorInfo.IME_ACTION_DONE
-        startTextInput.inputType = EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         startTextInput.maxLines = 1
         endTextInput = view.findViewById(R.id.to_textinput_edittext)
-        endTextInput.keyListener = DigitsKeyListener.getInstance("0123456789:.")
         endTextInput.imeOptions = EditorInfo.IME_ACTION_DONE
-        endTextInput.inputType = EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS
         endTextInput.maxLines = 1
 
         cancelBtn = view.findViewById(R.id.cancelButton)
