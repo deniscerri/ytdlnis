@@ -451,7 +451,8 @@ class NotificationUtil(var context: Context) {
                 return@compute lastProgress
             }
             val lastTime = lastNotifiedTime[id] ?: 0L
-            if (now - lastTime < MIN_UPDATE_INTERVAL_MS) {
+            val minInterval = if (canPostPromotedNotifications) MIN_PROMOTED_UPDATE_INTERVAL_MS else MIN_UPDATE_INTERVAL_MS
+            if (now - lastTime < minInterval) {
                 allow = false
                 return@compute lastProgress
             }
@@ -954,5 +955,6 @@ class NotificationUtil(var context: Context) {
         private val lastNotifiedTime = java.util.concurrent.ConcurrentHashMap<Int, Long>()
         // Minimum time between updates for the same notification id (ms)
         private const val MIN_UPDATE_INTERVAL_MS = 350L
+        private const val MIN_PROMOTED_UPDATE_INTERVAL_MS = 1000L
     }
 }
