@@ -207,7 +207,6 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         cancelParsingQueries()
         homeRecommendationsJob?.cancel()
         runningJobs.joinAll()
-        clearFailedQueries()
         getHomeRecommendations()
     }
 
