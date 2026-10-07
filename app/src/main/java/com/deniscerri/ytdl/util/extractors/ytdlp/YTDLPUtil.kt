@@ -509,7 +509,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         return Result.success(formatCollection)
     }
 
-    suspend fun getFormats(url: String) : List<Format> {
+    suspend fun getFormats(url: String, ignoreInfoJSON: Boolean) : List<Format> {
         val request = YTDLRequest(url)
         request.addOption("--print", "%(formats)j")
         request.addOption("--print", "%(duration)s")
@@ -520,8 +520,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if (!request.hasOption("--no-check-certificates")) request.addOption("--no-check-certificates")
 
         val canUseWriteInfoJson =
+            !ignoreInfoJSON &&
             !sharedPreferences.getBoolean("disable_write_info_json", false) &&
-                    !request.toString().contains("--download-sections")
+            !request.toString().contains("--download-sections")
+
         if (canUseWriteInfoJson) {
             val infoJsonFile = getInfoJsonFile(url)
             //ignore info file if its older than 5 hours. puny measure to prevent expired formats in some cases

@@ -1,13 +1,18 @@
 package com.deniscerri.ytdl.util.extractors.newpipe
 
-import com.google.common.net.HttpHeaders.USER_AGENT
+import com.deniscerri.ytdl.App
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import org.schabi.newpipe.extractor.downloader.Downloader
 import org.schabi.newpipe.extractor.downloader.Request
 import org.schabi.newpipe.extractor.downloader.Response
 import org.schabi.newpipe.extractor.exceptions.ReCaptchaException
+import java.io.File
+import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+
+private const val USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:140.0) Gecko/20100101 Firefox/140.0"
 
 
 class NewPipeDownloaderImpl(builder: OkHttpClient.Builder) : Downloader() {
@@ -39,6 +44,34 @@ class NewPipeDownloaderImpl(builder: OkHttpClient.Builder) : Downloader() {
             }
         }
 
+        // Applied after the extractor headers so they can't overwrite the cookies
+        val host = request.url().toHttpUrlOrNull()?.host.orEmpty()
+        if (host == "youtube.com" || host.endsWith(".youtube.com")) {
+            val cookies = getCookies()
+            if (cookies.isNotEmpty()) {
+                val existing = headers.entries
+                    .firstOrNull { it.key.equals("Cookie", true) }?.value.orEmpty()
+                    .flatMap { it.split(";") }
+                    .map { it.trim() }
+                    .filter { it.isNotEmpty() && !cookies.containsKey(it.substringBefore("=")) }
+                val merged = existing + cookies.map { "${it.key}=${it.value}" }
+                requestBuilder.header("Cookie", merged.joinToString("; "))
+
+                val sapisid = cookies["SAPISID"] ?: cookies["__Secure-3PAPISID"]
+                if (sapisid != null && request.url().contains("/youtubei/")) {
+                    val origin = "https://www.youtube.com"
+                    val ts = System.currentTimeMillis() / 1000
+                    val hash = MessageDigest.getInstance("SHA-1")
+                        .digest("$ts $sapisid $origin".toByteArray())
+                        .joinToString("") { "%02x".format(it) }
+                    requestBuilder.header("Authorization", "SAPISIDHASH ${ts}_$hash")
+                    requestBuilder.header("X-Goog-AuthUser", "0")
+                    requestBuilder.header("X-Origin", origin)
+                    requestBuilder.header("Origin", origin)
+                }
+            }
+        }
+
         val response: okhttp3.Response = client.newCall(requestBuilder.build()).execute()
 
         if (response.code == 429) {
@@ -53,5 +86,42 @@ class NewPipeDownloaderImpl(builder: OkHttpClient.Builder) : Downloader() {
             response.code, response.message, response.headers.toMultimap(),
             responseBodyToReturn, latestUrl
         )
+    }
+
+    private var cachedCookies: Map<String, String> = emptyMap()
+    private var cachedStamp = -1L
+
+    private fun getCookies(): Map<String, String> {
+        val file = File(App.instance.cacheDir, "cookies.txt")
+        if (!file.exists()) {
+            cachedStamp = -1L
+            cachedCookies = emptyMap()
+            return cachedCookies
+        }
+        val stamp = file.lastModified() xor file.length()
+        if (stamp != cachedStamp) {
+            cachedCookies = extractCookies(file)
+            cachedStamp = stamp
+        }
+        return cachedCookies
+    }
+
+    fun extractCookies(file: File, targetDomains: List<String> = listOf("youtube.com", "google.com")) : Map<String, String> {
+        if (!file.exists()) return emptyMap()
+
+        return file.useLines { lines ->
+            lines
+                .map { it.trim() }
+                // HttpOnly cookies are exported as "#HttpOnly_<domain>", keep them
+                .map { it.removePrefix("#HttpOnly_") }
+                .filter { it.isNotEmpty() && !it.startsWith("#") }
+                .map { it.split("\t") }
+                .filter { it.size >= 7 }
+                .filter { columns ->
+                    val domain = columns[0].lowercase().trimStart('.')
+                    targetDomains.any { domain == it || domain.endsWith(".$it") }
+                }
+                .associate { it[5] to it[6] }
+        }
     }
 }

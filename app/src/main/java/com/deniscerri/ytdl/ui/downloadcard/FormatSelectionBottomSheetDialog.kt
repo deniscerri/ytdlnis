@@ -170,7 +170,7 @@ class FormatSelectionBottomSheetDialog(
             multipleFormatsListener = this
         }
 
-        refreshBtn.setOnClickListener {
+        fun refreshBtnClicked(longPressed : Boolean) {
             lifecycleScope.launch {
                 val items = formatViewModel.selectedItems.value.toMutableList()
                 val distinctItems = items.distinctBy { it.url }
@@ -202,7 +202,7 @@ class FormatSelectionBottomSheetDialog(
                         //simple download
                         if (items.size == 1) {
                             kotlin.runCatching {
-                                val res = resultViewModel.getFormats(items.first().url, currentFormatSource)
+                                val res = resultViewModel.getFormats(items.first().url, currentFormatSource, longPressed)
                                 if (!isActive) return@launch
                                 res.filter { it.format_note != "storyboard" }
                                 val chosenFormats = if (items.first().type == DownloadType.audio) {
@@ -227,7 +227,7 @@ class FormatSelectionBottomSheetDialog(
                                 }
                             }
 
-                        //list format filtering
+                            //list format filtering
                         }else{
                             var progressInt = 0
                             val formatCollection = itemsThatHaveFormats.map { it.allFormats }.toMutableList()
@@ -287,6 +287,14 @@ class FormatSelectionBottomSheetDialog(
                 }
                 updateFormatsJob?.start()
             }
+        }
+
+        refreshBtn.setOnClickListener {
+            refreshBtnClicked(false)
+        }
+        refreshBtn.setOnLongClickListener {
+            refreshBtnClicked(true)
+            true
         }
 
         okBtn.setOnClickListener {
@@ -379,7 +387,7 @@ class FormatSelectionBottomSheetDialog(
                     txt.setOnClickListener {
                         currentFormatSource = it.tag.toString()
                         formatViewModel.filterBy.value = FormatCategory.ALL
-                        refreshBtn.performClick()
+                        refreshBtn.performLongClick()
                         filterSheet.dismiss()
                     }
                     formatSourceOptions.add(txt)

@@ -481,8 +481,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     )
 
 
-    suspend fun getFormats(url: String, source: String? = null) : List<Format> {
-        return repository.getFormats(url, source)
+    suspend fun getFormats(url: String, source: String? = null, ignoreInfoJSON: Boolean = false) : List<Format> {
+        return repository.getFormats(url, source, ignoreInfoJSON)
     }
 
     suspend fun getFormatsMultiple(urls: List<String>, source: String? = null, progress: (progress: MultipleFormatProgress) -> Unit) : MutableList<MutableList<Format>> {

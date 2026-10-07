@@ -316,7 +316,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return itemsToReturn
     }
 
-    suspend fun getFormats(url: String, source : String? = null) : List<Format> {
+    suspend fun getFormats(url: String, source : String? = null, ignoreInfoJson: Boolean = false) : List<Format> {
         val formatSource = source ?: sharedPreferences.getString("formats_source", "yt-dlp")
         val res = if (url.isYoutubeURL()) {
             when(formatSource) {
@@ -337,7 +337,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         return if (res.isSuccess){
             res.getOrNull()!!
         }else{
-            ytdlpUtil.getFormats(url)
+            ytdlpUtil.getFormats(url, ignoreInfoJson)
         }
     }
 
