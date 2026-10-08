@@ -635,4 +635,5 @@
     <string name="unfinished_downloads">완료하지 않은 다운로드</string>
     <string name="custom_channels">사용자 채널</string>
     <string name="duration">기간</string>
+    <string name="toggle_all">모두 반전</string>
 </resources>
