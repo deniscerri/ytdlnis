@@ -635,4 +635,5 @@
     <string name="retry">重试</string>
     <string name="retry_all">全部重试</string>
     <string name="download_anyway">仍要下载</string>
+    <string name="toggle_all">全部切换</string>
 </resources>
