@@ -643,4 +643,5 @@
     <string name="retry">Təkrar cəhd et</string>
     <string name="retry_all">Hamısını təkrar cəhd et</string>
     <string name="download_anyway">Yenə də yüklə</string>
+    <string name="toggle_all">Hamısını aç/bağla</string>
 </resources>
