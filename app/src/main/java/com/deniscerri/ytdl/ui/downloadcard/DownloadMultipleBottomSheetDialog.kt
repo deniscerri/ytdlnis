@@ -623,6 +623,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         cutClicked = {},
                                         cutDisabledClicked = {},
                                         cutValueChanged = {},
+                                        mergeCutsChanged = { mergeCuts ->
+                                            items.forEach { it.mergeCuts = mergeCuts }
+                                            requireActivity().lifecycleScope.launch {
+                                                items.forEach { downloadViewModel.updateDownload(it) }
+                                            }
+                                        },
                                         extraCommandsClicked = { returnValue ->
                                             val callback = object : ExtraCommandsListener {
                                                 override fun onChangeExtraCommand(c: String) {
@@ -700,6 +706,12 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                         cutClicked = {},
                                         cutDisabledClicked = {},
                                         cutValueChanged = {},
+                                        mergeCutsChanged = { mergeCuts ->
+                                            items.forEach { it.mergeCuts = mergeCuts }
+                                            requireActivity().lifecycleScope.launch {
+                                                items.forEach { downloadViewModel.updateDownload(it) }
+                                            }
+                                        },
                                         cropClicked = {},
                                         cropDisabledClicked = {},
                                         cropValueChanged = {},

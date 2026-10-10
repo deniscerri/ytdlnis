@@ -1324,6 +1324,7 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         cutValueChanged: (String) -> Unit,
         cutDisabledClicked: () -> Unit,
+        mergeCutsChanged: (Boolean) -> Unit,
         cropClicked: (VideoCropListener) -> Unit,
         cropValueChanged: (String) -> Unit,
         cropDisabledClicked: () -> Unit,
@@ -1404,6 +1405,14 @@ object UiUtil {
             val adjustChapterView = context.layoutInflater.inflate(R.layout.video_chapter_download_preferences_dialog, null)
             val addChapters = adjustChapterView.findViewById<MaterialSwitch>(R.id.add_chapters)
             addChapters!!.isChecked = items.all { it.videoPreferences.addChapters }
+            if (items.size == 1 && items[0].downloadSections.isNotBlank()) {
+                //chapters would not match the cut video
+                addChapters.isEnabled = false
+                addChapters.isChecked = false
+                items.forEach { it.videoPreferences.addChapters = false }
+                addChaptersClicked(false)
+                calculateAdjustChaptersChangeCount()
+            }
             addChapters.setOnClickListener{
                 addChaptersClicked(addChapters.isChecked)
                 items.forEach { it.videoPreferences.addChapters = addChapters.isChecked }
@@ -1777,6 +1786,15 @@ object UiUtil {
                 if (downloadItem.downloadSections.isNotBlank()) cut.createBadge(context, downloadItem.downloadSections.count())
                 val cutVideoListener = object : VideoCutListener {
 
+                    override fun onMergeCuts(merge: Boolean) {
+                        mergeCutsChanged(merge)
+                        if (merge) {
+                            items.forEach {
+                                it.videoPreferences.addChapters = false
+                            }
+                        }
+                    }
+
                     override fun onChangeCut(list: List<String>) {
                         cut.createBadge(context, list.size)
                         if (list.isEmpty()){
@@ -1788,7 +1806,10 @@ object UiUtil {
                             }
                             cutValueChanged(value)
 
-                            items.forEach { it.videoPreferences.splitByChapters = false }
+                            items.forEach {
+                                it.videoPreferences.splitByChapters = false
+                                it.videoPreferences.addChapters = false
+                            }
                             calculateAdjustChaptersChangeCount()
                         }
 
@@ -1883,6 +1904,7 @@ object UiUtil {
         cutClicked: (VideoCutListener) -> Unit,
         cutDisabledClicked: () -> Unit,
         cutValueChanged: (String) -> Unit,
+        mergeCutsChanged: (Boolean) -> Unit,
         extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -2039,11 +2061,15 @@ object UiUtil {
                     cut.createBadge(context, downloadItem.downloadSections.count())
                 }
                 val cutVideoListener = object : VideoCutListener {
+
+                    override fun onMergeCuts(merge: Boolean) {
+                        mergeCutsChanged(merge)
+                    }
+
                     override fun onChangeCut(list: List<String>) {
                         cut.createBadge(context, list.size)
                         if (list.isEmpty()){
                             cutValueChanged("")
-
 
                             splitByChapters.isEnabled = true
                             splitByChapters.isChecked = downloadItem.audioPreferences.splitByChapters

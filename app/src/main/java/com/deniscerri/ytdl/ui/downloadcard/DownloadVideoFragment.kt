@@ -429,6 +429,9 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     downloadItem.customFileNameTemplate = downloadViewModel.applySubdirectoryPreferences(sharedPreferences.getString("file_name_template", "%(uploader).30B - %(title).170B")!!)
                                 }
                             },
+                            mergeCutsChanged = { mergeCuts ->
+                                downloadItem.mergeCuts = mergeCuts
+                            },
                             cropClicked = { cropVideoListener ->
                                 if (parentFragmentManager.findFragmentByTag("cropVideoSheet") == null){
                                     val bottomSheet = CropVideoBottomSheetDialog(

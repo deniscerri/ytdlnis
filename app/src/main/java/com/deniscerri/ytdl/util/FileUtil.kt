@@ -395,15 +395,15 @@ object FileUtil {
 
     fun getCachePath(context: Context) : String {
         val preference = PreferenceManager.getDefaultSharedPreferences(context).getString("cache_path", "")
-        if (preference.isNullOrBlank()) {
-            val externalPath = context.getExternalFilesDir(null)
-            return if (externalPath == null){
-                context.cacheDir.absolutePath + "/ytdlnis_cache/"
-            }else{
-                externalPath.absolutePath + "/ytdlnis_cache/"
-            }
-        }else {
+        if (!preference.isNullOrBlank()) {
             return formatPath(preference)
+        }
+
+        val externalPath = context.getExternalFilesDir(null)
+        return if (externalPath == null){
+            context.cacheDir.absolutePath + "/ytdlnis_cache/"
+        }else{
+            externalPath.absolutePath + "/ytdlnis_cache/"
         }
     }
 
@@ -434,19 +434,23 @@ object FileUtil {
     }
 
     fun getDefaultAudioPath() : String{
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Audio"
+        return "${getDefaultApplicationPath()}/Audio"
     }
 
     fun getDefaultVideoPath() : String{
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Video"
+        return "${getDefaultApplicationPath()}/Video"
     }
 
     fun getDefaultCommandPath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Command"
+        return "${getDefaultApplicationPath()}/Command"
     }
 
     fun getDefaultApksPath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Apks"
+        return "${getDefaultApplicationPath()}/Apks"
+    }
+
+    fun getDefaultTerminalPath() : String {
+        return "${getDefaultApplicationPath()}/Terminal"
     }
 
     fun getDefaultApplicationPath() : String {
@@ -464,10 +468,6 @@ object FileUtil {
             }
         }
         return "${formatPath(folder)}download_archive.txt"
-    }
-
-    fun getDefaultTerminalPath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Terminal"
     }
 
     fun getBundledYTDLPPluginsPath(context: Context) : String {

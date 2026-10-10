@@ -391,6 +391,16 @@
                 android:textSize="15sp"
                 android:text="@string/force_keyframes"/>
 
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/merge_cuts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:checked="false"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:text="@string/merge_cuts"/>
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

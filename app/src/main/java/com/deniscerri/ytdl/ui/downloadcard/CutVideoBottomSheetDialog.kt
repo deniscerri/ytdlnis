@@ -81,6 +81,8 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private lateinit var cancelBtn : Button
     private lateinit var okBtn : Button
     private lateinit var forceKeyframes: MaterialSwitch
+    private lateinit var mergeCuts: MaterialSwitch
+    private var initializingCuts = true
     private lateinit var suggestedChips: ChipGroup
     private lateinit var suggestedChapters : LinearLayout
     
@@ -167,6 +169,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         resetBtn = view.findViewById(R.id.reset_all)
         chipGroup = view.findViewById(R.id.cut_list_chip_group)
         forceKeyframes = view.findViewById(R.id.force_keyframes)
+        mergeCuts = view.findViewById(R.id.merge_cuts)
 
 
         selectedCuts = if (chipGroup.childCount == 0){
@@ -180,6 +183,13 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
         initCutSection()
         initCutListSection()
+        initializingCuts = false
+
+        mergeCuts.isChecked = item.mergeCuts
+        mergeCuts.setOnCheckedChangeListener { _, checked ->
+            listener?.onMergeCuts(checked)
+        }
+        updateMergeCutsSwitch()
 
         if (item.downloadSections.isBlank()) cutSection.visibility = View.VISIBLE
         else cutListSection.visibility = View.VISIBLE
@@ -576,6 +586,19 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         }
     }
 
+    /**
+     * Merge toggle only makes sense with 2 or more cuts. Falls back to false otherwise.
+     */
+    private fun updateMergeCutsSwitch() {
+        if (initializingCuts) return
+        val enough = selectedCuts.size >= 2
+        mergeCuts.isVisible = enough
+        if (!enough) {
+            mergeCuts.isChecked = false
+            item.mergeCuts = false
+        }
+    }
+
     private fun createChip(timestamp: String) : Chip {
         val startTimestamp = timestamp.split("-")[0].replace(";", "").convertToTimestamp()
         val endTimestamp = timestamp.split("-")[1].replace(";", "").convertToTimestamp()
@@ -587,6 +610,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         chipGroup.addView(chip)
         selectedCuts.add(chip.text.toString())
         listener?.onChangeCut(selectedCuts)
+        updateMergeCutsSwitch()
 
         chip.setOnClickListener {
             if (chip.isChecked) {
@@ -608,6 +632,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 chipGroup.removeView(chip)
                 selectedCuts.remove(chip.text.toString())
                 listener?.onChangeCut(selectedCuts)
+                updateMergeCutsSwitch()
                 if (selectedCuts.isEmpty()){
                     player.stop()
                     dismiss()
@@ -634,6 +659,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             selectedCuts.add(timestamp)
 
         listener?.onChangeCut(selectedCuts)
+        updateMergeCutsSwitch()
         if (chapter.start_time == 0L && chapter.end_time == 0L) {
             chip.isEnabled = false
         }else{
@@ -662,6 +688,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                     chipGroup.removeView(chip)
                     selectedCuts.remove(chip.text.toString())
                     listener?.onChangeCut(selectedCuts)
+                    updateMergeCutsSwitch()
                     if (selectedCuts.isEmpty()){
                         player.stop()
                         dismiss()
@@ -796,4 +823,5 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
 interface VideoCutListener{
     fun onChangeCut(list: List<String>)
+    fun onMergeCuts(merge: Boolean)
 }

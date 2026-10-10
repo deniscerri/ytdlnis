@@ -380,6 +380,9 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
                                 }
 
                             },
+                            mergeCutsChanged = { mergeCuts ->
+                                downloadItem.mergeCuts = mergeCuts
+                            },
                             extraCommandsClicked = { returnValue ->
                                 val callback = object : ExtraCommandsListener {
                                     override fun onChangeExtraCommand(c: String) {

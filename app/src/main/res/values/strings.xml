@@ -285,6 +285,7 @@
     <string name="retries">Retries</string>
     <string name="fragment_retries">Fragment retries</string>
     <string name="format_order">Format order</string>
+    <string name="merge_cuts">Merge cuts into one file</string>
     <string name="force_keyframes">Force keyframes at cuts</string>
     <string name="force_keyframes_summary">Slower process, but more accurate cuts</string>
     <string name="use_extra_commands">Add extra commands</string>

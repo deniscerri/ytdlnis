@@ -1119,17 +1119,22 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             if (downloadItem.downloadSections.isNotBlank()){
-                downloadItem.downloadSections.split(";").forEach {
-                    if (it.isBlank()) return@forEach
+                val sections = downloadItem.downloadSections.split(";").filter { it.isNotBlank() }
+                sections.forEach {
                     request.addOption("--download-sections", "*${it.split(" ")[0]}")
+                }
 
+                if (sections.isNotEmpty()) {
                     if (sharedPreferences.getBoolean("force_keyframes", false) && !request.toString().contains("--force-keyframes-at-cuts")){
                         request.addOption("--force-keyframes-at-cuts")
                     }
                 }
 
-                if (downloadItem.downloadSections.split(";").size > 1){
+                if (sections.size > 1){
                     filenameTemplate = "%(autonumber)d. $filenameTemplate [%(section_start>%H∶%M∶%S)s]"
+                    if (downloadItem.mergeCuts) {
+                        request.addOption("--use-postprocessor", "SectionMerge:when=post_process;count=${sections.size}")
+                    }
                 }
             }
 
@@ -1346,7 +1351,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             DownloadType.video -> {
                 val supportedContainers = context.resources.getStringArray(R.array.video_containers)
 
-                if (downloadItem.videoPreferences.addChapters) {
+                if (downloadItem.videoPreferences.addChapters && downloadItem.downloadSections.isBlank()) {
                     if (sharedPreferences.getBoolean("use_sponsorblock", true)){
                         request.addOption("--sponsorblock-mark", "all")
                     }
