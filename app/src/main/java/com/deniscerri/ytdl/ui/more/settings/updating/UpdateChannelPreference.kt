@@ -53,37 +53,53 @@ class UpdateChannelPreference @JvmOverloads constructor(
         holder.isDividerAllowedBelow = false
 
         val group = holder.findViewById(R.id.channel_group) as MaterialButtonToggleGroup
-        group.clearOnButtonCheckedListeners()
-        group.removeAllViews()
-
-        channels.forEach { (value, label) ->
-            val button = MaterialButton(context, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
-                id = View.generateViewId()
-                tag = value
-                text = label
-                maxLines = 1
-                isAllCaps = false
-                minWidth = 0
-                minimumWidth = 0
-                val horizontalPadding = (8 * resources.displayMetrics.density).toInt()
-                setPaddingRelative(horizontalPadding, paddingTop, horizontalPadding, paddingBottom)
-            }
-            group.addView(button, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
-            if (value == selectedChannel) group.check(button.id)
-        }
-
-        group.addOnButtonCheckedListener { g, checkedId, isChecked ->
-            val value = g.findViewById<View>(checkedId)?.tag as? String ?: return@addOnButtonCheckedListener
-            if (!isChecked) {
-                // the group allows an empty selection (e.g. a value outside of these options is active)
-                // but tapping the active option should not deselect it
-                if (value == selectedChannel && g.checkedButtonId == View.NO_ID) g.check(checkedId)
-                return@addOnButtonCheckedListener
-            }
-            if (value == selectedChannel) return@addOnButtonCheckedListener
+        group.setUpChannels(channels, { selectedChannel }) { value ->
             // the group already shows the new selection, no need to rebind
             selected = value
             onChannelSelected?.invoke(value)
         }
+    }
+}
+
+/**
+ * Fills a [MaterialButtonToggleGroup] with one outlined button per channel. Shared by the update settings
+ * and the welcome screen so both look the same.
+ * @param channels pairs of (value, label)
+ * @param selected the value currently active, which may not be one of the options (a custom source)
+ */
+fun MaterialButtonToggleGroup.setUpChannels(
+    channels: List<Pair<String, String>>,
+    selected: () -> String?,
+    onSelected: (String) -> Unit
+) {
+    clearOnButtonCheckedListeners()
+    removeAllViews()
+
+    channels.forEach { (value, label) ->
+        val button = MaterialButton(context, null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+            id = View.generateViewId()
+            tag = value
+            text = label
+            maxLines = 1
+            isAllCaps = false
+            minWidth = 0
+            minimumWidth = 0
+            val horizontalPadding = (8 * resources.displayMetrics.density).toInt()
+            setPaddingRelative(horizontalPadding, paddingTop, horizontalPadding, paddingBottom)
+        }
+        addView(button, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        if (value == selected()) check(button.id)
+    }
+
+    addOnButtonCheckedListener { g, checkedId, isChecked ->
+        val value = g.findViewById<View>(checkedId)?.tag as? String ?: return@addOnButtonCheckedListener
+        if (!isChecked) {
+            // the group allows an empty selection (e.g. a value outside of these options is active)
+            // but tapping the active option should not deselect it
+            if (value == selected() && g.checkedButtonId == View.NO_ID) g.check(checkedId)
+            return@addOnButtonCheckedListener
+        }
+        if (value == selected()) return@addOnButtonCheckedListener
+        onSelected(value)
     }
 }

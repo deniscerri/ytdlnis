@@ -348,6 +348,10 @@
         </activity>
 
         <activity
+            android:name=".ui.welcome.WelcomeActivity"
+            android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
+            android:exported="false" />
+        <activity
             android:name=".ui.more.settings.SettingsActivity"
             android:configChanges="smallestScreenSize|layoutDirection|orientation|screenSize"
             android:exported="true"

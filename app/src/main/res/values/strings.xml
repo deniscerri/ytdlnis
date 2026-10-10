@@ -604,7 +604,7 @@
     <string name="version_installed">%1$s installed</string>
     <string name="check_now">Check now</string>
     <string name="update_channel">Update channel</string>
-    <string name="custom_channels">Custom channels</string>
+    <string name="custom_channels">Custom fork</string>
     <string name="custom_channels_summary">Update from your own yt-dlp release repositories</string>
     <string name="channel_stable">Stable</string>
     <string name="channel_nightly">Nightly</string>
@@ -639,4 +639,30 @@
     <string name="write_ytdlp_terminal">Auto write yt-dlp in terminal</string>
     <string name="clear">Clear</string>
 
+    <string name="welcome_title">Welcome to YTDLnis</string>
+    <string name="welcome_subtitle">Download video and audio using yt-dlp. Let\'s get a few things set up first.</string>
+    <string name="welcome_get_started">Get started</string>
+    <string name="welcome_restore_backup">Restore from backup</string>
+    <string name="welcome_restore_failed">Could not restore this backup</string>
+    <string name="welcome_restoring">Restoring backup…</string>
+    <string name="welcome_guide_title">Read the guide</string>
+    <string name="welcome_guide_summary">The guide covers everything about the app, downloading, command templates and fixing common problems. You can open it any time from the website.</string>
+    <string name="welcome_open_guide">Open guide</string>
+    <string name="welcome_permissions_title">Permissions</string>
+    <string name="welcome_permissions_summary">YTDLnis works best with these. You can change them later in the settings.</string>
+    <string name="welcome_perm_storage">Storage access</string>
+    <string name="welcome_perm_storage_summary">Needed to save your downloads to the device.</string>
+    <string name="welcome_perm_notifications">Notifications</string>
+    <string name="welcome_perm_notifications_summary">Show download progress and finished downloads.</string>
+    <string name="welcome_perm_battery">Unrestricted battery use</string>
+    <string name="welcome_perm_battery_summary">Keeps long downloads from being stopped in the background.</string>
+    <string name="welcome_perm_alarms">Alarms and reminders</string>
+    <string name="welcome_perm_alarms_summary">Lets scheduled downloads start at the exact time.</string>
+    <string name="welcome_allow">Allow</string>
+    <string name="welcome_allowed">Allowed</string>
+    <string name="welcome_required">Required</string>
+    <string name="welcome_updates_title">Updates</string>
+    <string name="welcome_updates_summary">Choose how YTDLnis stays up to date.</string>
+    <string name="welcome_next">Next</string>
+    <string name="welcome_finish">Finish</string>
 </resources>

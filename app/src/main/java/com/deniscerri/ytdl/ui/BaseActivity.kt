@@ -24,7 +24,7 @@ open class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
-    fun askPermissions() {
+    fun askPermissions(includeOptional: Boolean = true) {
         val permissions = arrayListOf<String>()
         val hasFilePerm = if (Build.VERSION.SDK_INT >= 30) {
             true
@@ -41,7 +41,7 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (!checkNotificationPermission()){
+            if (includeOptional && !checkNotificationPermission()){
                 permissions.add(Manifest.permission.POST_NOTIFICATIONS)
             }
         }

@@ -50,6 +50,7 @@ import com.deniscerri.ytdl.ui.home.HomeFragment
 import com.deniscerri.ytdl.ui.downloads.DownloadQueueMainFragment
 import com.deniscerri.ytdl.ui.downloads.HistoryFragment
 import com.deniscerri.ytdl.ui.more.settings.SettingsActivity
+import com.deniscerri.ytdl.ui.welcome.WelcomeActivity
 import com.deniscerri.ytdl.util.ApkInstallUtil
 import com.deniscerri.ytdl.util.BgUtilsPoTokenGeneratorUtil
 import com.deniscerri.ytdl.util.CrashListener
@@ -103,6 +104,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // first run: the welcome flow asks for permissions and update preferences, then reopens this
+        if (WelcomeActivity.isNeeded(PreferenceManager.getDefaultSharedPreferences(this))) {
+            startActivity(Intent(this, WelcomeActivity::class.java).putExtra(WelcomeActivity.EXTRA_NEXT_INTENT, intent))
+            finish()
+            return
+        }
         CrashListener(this).registerExceptionHandler()
         ThemeUtil.updateTheme(this)
         window.navigationBarColor = SurfaceColors.SURFACE_2.getColor(this)
@@ -122,7 +129,8 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        askPermissions()
+        // new users already went through the permissions page, so only the required ones are re-checked
+        askPermissions(includeOptional = !preferences.getBoolean(WelcomeActivity.PREF_COMPLETED, false))
 
         navHostFragment = supportFragmentManager.findFragmentById(R.id.frame_layout) as NavHostFragment
         navController = navHostFragment.findNavController()
@@ -285,7 +293,7 @@ class MainActivity : BaseActivity() {
         val intent = intent
         handleIntents(intent)
 
-        askAutoUpdatePreferences()
+        callAutoUpdates(firstRun = intent.getBooleanExtra(WelcomeActivity.EXTRA_FROM_WELCOME, false))
     }
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         super.onSaveInstanceState(savedInstanceState)
@@ -480,73 +488,6 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-
-    private fun askAutoUpdatePreferences() {
-        if (preferences.getBoolean("asked_auto_update_preferences", false)) {
-            callAutoUpdates()
-            return
-        }
-
-        val builder = MaterialAlertDialogBuilder(this)
-        builder.setTitle(context.getString(R.string.update))
-        builder.setIcon(R.drawable.ic_info)
-        val view = layoutInflater.inflate(R.layout.dialog_ask_update_preferences, null)
-
-        val updateAppLayout = view.findViewById<View>(R.id.update_app)
-        val updateAppSwitch = updateAppLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
-        updateAppLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
-            icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update_app)
-            isVisible = true
-        }
-        updateAppLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.update_app)
-        updateAppLayout.findViewById<TextView>(R.id.preference_summary).apply {
-            text = getString(R.string.update_app_summary)
-            isVisible = true
-        }
-        updateAppSwitch.isChecked = true
-        updateAppLayout.setOnClickListener {
-            updateAppSwitch.isChecked = !updateAppSwitch.isChecked
-        }
-        updateAppLayout.isVisible = BuildConfig.FLAVOR == "github"
-
-        val updateYTDLLayout = view.findViewById<View>(R.id.update_ytdl)
-        val updateYTDLSwitch = updateYTDLLayout.findViewById<MaterialSwitch>(R.id.preference_switch)
-        updateYTDLLayout.findViewById<MaterialButton>(R.id.preference_icon).apply {
-            icon = ContextCompat.getDrawable(this@MainActivity, R.drawable.ic_update)
-            isVisible = true
-        }
-        updateYTDLLayout.findViewById<TextView>(R.id.preference_title).text = getString(R.string.auto_update_ytdlp)
-        updateYTDLLayout.findViewById<TextView>(R.id.preference_summary).apply {
-            text = getString(R.string.auto_update_ytdlp_summary)
-            isVisible = true
-        }
-        updateYTDLSwitch.isChecked = true
-        updateYTDLLayout.setOnClickListener {
-            updateYTDLSwitch.isChecked = !updateYTDLSwitch.isChecked
-        }
-
-        builder.setView(view)
-        builder.setCancelable(false)
-        builder.setPositiveButton(
-            context.getString(R.string.ok)
-        ) { _: DialogInterface?, _: Int ->
-            preferences.edit(commit = true) {
-                putBoolean("update_app", updateAppSwitch.isChecked)
-                putBoolean("auto_update_ytdlp", updateYTDLSwitch.isChecked)
-                putBoolean("asked_auto_update_preferences", true)
-            }
-
-            if (updateAppSwitch.isChecked) {
-                UpdateCheckWorker.schedule(context)
-            }
-
-            callAutoUpdates(firstRun = true)
-        }
-
-        val dialog = builder.create()
-        dialog.show()
-    }
-
 
     private fun callAutoUpdates(firstRun : Boolean = false) {
         if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
