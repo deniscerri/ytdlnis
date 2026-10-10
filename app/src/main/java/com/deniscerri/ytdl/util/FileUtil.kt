@@ -467,7 +467,7 @@ object FileUtil {
     }
 
     fun getDefaultTerminalPath() : String {
-        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/TERMINAL_CACHE"
+        return Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)?.absolutePath + File.separator + "YTDLnis/Terminal"
     }
 
     fun getBundledYTDLPPluginsPath(context: Context) : String {

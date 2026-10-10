@@ -649,7 +649,9 @@ object RuntimeManager {
 
     fun getEnvironmentForTerminal(): MutableMap<String, String?> {
         val env = getEnvironment().toMutableMap()
-        env["HOME"] = Environment.getExternalStorageDirectory().path
+        val homePath = FileUtil.getDefaultTerminalPath()
+        File(homePath).mkdirs()
+        env["HOME"] = homePath
         return env
     }
 

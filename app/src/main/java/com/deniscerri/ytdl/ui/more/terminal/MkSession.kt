@@ -10,6 +10,7 @@ import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
 import java.io.File
+import java.util.zip.ZipFile
 
 object MkSession {
     fun createSession(
@@ -110,7 +111,7 @@ object MkSession {
             rcBuilder.append(
                 shellFunction(
                     "pip",
-                    "python -m pip"
+                    "\"${pythonBin.absolutePath}\" -m pip"
                 )
             )
 
@@ -119,7 +120,7 @@ object MkSession {
                 rcBuilder.append(
                     shellFunction(
                         "npm",
-                        "node ${$$"$NPM_CLI_PATH"}"
+                        "\"${nodeBin.absolutePath}\" ${$$"$NPM_CLI_PATH"}"
                     )
                 )
             }
@@ -150,7 +151,7 @@ object MkSession {
                 rcBuilder.append(
                     shellFunction(
                         "yt-dlp",
-                        "python \"${ytdlpBin.absolutePath}\"$ytdlpExtraArgs"
+                        "\"${pythonBin.absolutePath}\" \"${ytdlpBin.absolutePath}\"$ytdlpExtraArgs"
                     )
                 )
             }
@@ -164,8 +165,24 @@ object MkSession {
 
             val localDir = localDir()
 
+            val bashDir = prepareBash()
+            val useBash = bashDir != null && pendingCommand?.shell == null
+
+            val availableTools = buildList {
+                executables.forEach { (name, file) -> if (file.exists()) add(name) }
+                add("pip")
+                if (nodeBin.exists()) add("npm")
+                if (pythonBin.exists() && ytdlpBin != null && ytdlpBin.exists()) add("yt-dlp")
+            }
+
+            val writeYTDLPTerminal = preferences.getBoolean("write_ytdlp_terminal", true)
+            val currentDir = runtimeVariables["HOME"] ?: ""
+
             val rcFile = localDir.child("shellrc")
             rcFile.writeText(
+                // bash is launched with LD_LIBRARY_PATH pointing at its own libs. Drop it
+                // right away so child processes (system binaries) don't inherit it.
+                (if (useBash) "unset LD_LIBRARY_PATH\n" else "") +
                 rcBuilder.toString() +
                         // Probe support in a subshell first: if `set -o multiline` is
                         // unsupported by this shell build, POSIX allows the shell to exit
@@ -174,7 +191,17 @@ object MkSession {
                         // rc file in the parent (interactive) shell — everything above this
                         // line (functions, aliases, exports, PS1) is already safely loaded
                         // by the time we get here regardless of the outcome.
-                        "(set -o multiline) >/dev/null 2>&1 && set -o multiline\n"
+                        "(set -o multiline) >/dev/null 2>&1 && set -o multiline\n" +
+                        // bash uses native \[ \] markers (and \w) for zero-width sequences.
+                        (if (useBash) "PS1='\\[\\e[01;32m\\]\\w\\[\\e[00m\\] \\$ '\n" else "") +
+                        welcomeBanner(availableTools, currentDir) +
+                        // Pre-fill the first prompt with "yt-dlp ". Readline can't be fed text directly,
+                        // so bind a macro to the terminal's "status OK" reply (ESC [ 0 n) and request
+                        // that reply once, right before the first prompt is drawn.
+                        (if (writeYTDLPTerminal && useBash && "yt-dlp" in availableTools) {
+                            "bind '\"\\e[0n\": \"yt-dlp \"'\n" +
+                                "PROMPT_COMMAND='printf \"\\033[5n\"; unset PROMPT_COMMAND'\n"
+                        } else "")
             )
 
 
@@ -210,16 +237,73 @@ object MkSession {
                 env.addAll(it)
             }
 
-            val shell = pendingCommand?.shell ?: "/system/bin/sh"
+            val shell: String
+            val args: Array<String>
+            if (useBash) {
+                // Run through the linker: app-private files can't be execve'd directly on Android 10+.
+                env.add("LD_LIBRARY_PATH=${bashDir!!.absolutePath}")
+                // readline needs terminfo to know the terminal auto-wraps; ncurses only knows the Termux path.
+                env.add("TERMINFO=${bashDir.child("terminfo").absolutePath}")
+                shell = linker
+                // args[0] is consumed as argv[0] by TerminalSession, so pass a placeholder first.
+                args = arrayOf("linker", bashDir.child("bash").absolutePath, "--rcfile", rcFile.absolutePath, "-i")
+            } else {
+                shell = pendingCommand?.shell ?: "/system/bin/sh"
+                args = arrayOf()
+            }
 
             return TerminalSession(
                 shell,
                 envVariables["HOME"],
-                arrayOf(),
+                args,
                 env.toTypedArray(),
                 TerminalEmulator.DEFAULT_TERMINAL_TRANSCRIPT_ROWS,
                 sessionClient,
             )
+        }
+    }
+
+    /** Shell snippet that prints a short intro, like a Linux login message. */
+    private fun welcomeBanner(tools: List<String>, currentDir: String): String {
+        val lines = mutableListOf("\\033[1mWelcome to the YTDLnis terminal\\033[0m")
+        lines.add("Use \\033[1;32myt-dlp\\033[0m to run yt-dlp commands,")
+        lines.add("e.g. yt-dlp --version")
+        lines.add("Available commands: ${tools.joinToString(", ")}")
+        lines.add("\nCurrent directory: $currentDir")
+        return lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
+    }
+
+    /**
+     * Extracts the bundled bash (+ readline/ncurses/iconv) from libbash.zip.so into app storage.
+     * Returns the directory holding them, or null so the caller falls back to /system/bin/sh.
+     */
+    private fun Context.prepareBash(): File? {
+        return try {
+            val zip = File(applicationInfo.nativeLibraryDir, "libbash.zip.so")
+            if (!zip.exists()) return null
+
+            val dir = File(localDir(), "bash")
+            val marker = File(dir, ".version")
+            // bump the leading number whenever the extraction layout changes
+            val version = "3-${zip.length()}-${zip.lastModified()}"
+            if (!File(dir, "bash").exists() || !marker.exists() || marker.readText() != version) {
+                dir.deleteRecursively()
+                dir.mkdirs()
+                ZipFile(zip).use { z ->
+                    z.entries().asSequence().filter { !it.isDirectory }.forEach { entry ->
+                        val out = File(dir, entry.name)
+                        if (!out.canonicalPath.startsWith(dir.canonicalPath)) return@forEach
+                        out.parentFile?.mkdirs()
+                        z.getInputStream(entry).use { input -> out.outputStream().use { input.copyTo(it) } }
+                        out.setReadable(true, false)
+                        out.setExecutable(true, false)
+                    }
+                }
+                marker.writeText(version)
+            }
+            dir
+        } catch (e: Exception) {
+            null
         }
     }
 

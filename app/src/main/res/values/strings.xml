@@ -636,5 +636,6 @@
     <string name="retry">Retry</string>
     <string name="retry_all">Retry all</string>
     <string name="download_anyway">Download anyway</string>
+    <string name="write_ytdlp_terminal">Auto write yt-dlp in terminal</string>
 
 </resources>
