@@ -569,7 +569,7 @@
     <string name="bgutils_pot_server_summary">Questo è un server JavaScript HTTP, sulla porta 4416, se è inattivo, inizia automaticamente il server quando la coda dei download inizia ad essere eseguita, o osserva le fonti quando pianificato. Per spegnerlo, devi farlo manualmente dalla notifica!</string>
     <string name="please_install_package">Per favore installa il pacchetto %s</string>
     <string name="please_install_package_or_package">Per favore installa in pachetto %1$s oppure pacchetto %2$s</string>
-    <string name="installation_method">Metodo di installazione</string>
+    <string name="installation_method">Metodo di installazione dell\'APK</string>
     <string name="system_install_failed">Installazione sistema fallito. Per favore scegli un altro metodo di installazione nelle impostazioni!</string>
     <string name="choose_installer_app">Scegli un app installer</string>
     <string name="notset">Non impostato</string>
