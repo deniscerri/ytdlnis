@@ -210,6 +210,7 @@ class TerminalFragment : Fragment() {
     private fun initMenu() {
         topAppBar.menu?.forEach { it.isVisible = false }
         topAppBar.menu?.findItem(R.id.export_clipboard)?.isVisible = true
+        topAppBar.menu?.findItem(R.id.clear)?.isVisible = true
         topAppBar.menu?.findItem(R.id.add)?.isVisible = true
         topAppBar.menu?.findItem(R.id.exit)?.isVisible = true
         topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
@@ -247,6 +248,18 @@ class TerminalFragment : Fragment() {
 //                        parent.addView(scrollView, 0)
 //                        sharedPreferences.edit().putBoolean("wrap_text_terminal", false).apply()
 //                    }
+                }
+                R.id.clear -> {
+                    // Drop the scrollback (ESC[3J) directly in the emulator, then ask the shell to
+                    // wipe the typed line (Ctrl-A, Ctrl-K) and clear the screen (Ctrl-L), which
+                    // redraws the prompt. Avoids running `clear`, so nothing is added to the typed
+                    // command or to the history.
+                    session.emulator?.let {
+                        val seq = "\u001b[3J".toByteArray()
+                        it.append(seq, seq.size)
+                        terminalView.onScreenUpdated()
+                    }
+                    session.write("\u0001\u000b\u000c")
                 }
                 R.id.export_clipboard -> {
                     lifecycleScope.launch(Dispatchers.IO){
@@ -327,7 +340,8 @@ class TerminalFragment : Fragment() {
                     CoroutineScope(Dispatchers.IO).launch {
                         delay(500)
                         withContext(Dispatchers.Main) {
-                            session.write("yt-dlp \"$sessionShareURL\"")
+                            val writeYTDLPTerminal = sharedPreferences.getBoolean("write_ytdlp_terminal", true)
+                            session.write("${if (writeYTDLPTerminal) "" else "yt-dlp"} \"$sessionShareURL\"")
                         }
                     }
                 }
