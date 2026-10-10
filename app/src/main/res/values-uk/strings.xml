@@ -656,4 +656,5 @@
     <string name="retry">Повторити спробу</string>
     <string name="retry_all">Повторити всі спроби</string>
     <string name="download_anyway">Завантажити все одно</string>
+    <string name="toggle_all">Перемкнути все</string>
 </resources>

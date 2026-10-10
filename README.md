@@ -25,6 +25,8 @@
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
+	&nbsp;&nbsp;| &nbsp;&nbsp;
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ru.md">Русский</a>
 </div>
 
 <h3 align="center">
