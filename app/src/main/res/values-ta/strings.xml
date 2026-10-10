@@ -2,7 +2,7 @@
 <resources>
     <string name="search">தேடு</string>
     <string name="home">வீடு</string>
-    <string name="update_ytdl">yt-dl ஐ புதிய பதிப்பிற்கு புதுப்பி</string>
+    <string name="update_ytdl">yt-dlp-ஐ புதிய பதிப்பிற்குப் புதுப்பி</string>
     <string name="failed_download">கோப்பைப் பதிவிறக்க முடியவில்லை</string>
     <string name="worst_quality">மோசமான தரம்</string>
     <string name="best_quality">சிறந்த தரம்</string>
@@ -257,7 +257,7 @@
     <string name="scheduled">திட்டமிடப்பட்ட</string>
     <string name="clear_scheduled">தெளிவான திட்டமிடப்பட்டுள்ளது</string>
     <string name="you_are_in_latest_version">அண்மைக் கால பதிப்பைப் பயன்படுத்துதல்</string>
-    <string name="ytdl_already_updating">புதிய பதிப்பை நிறுவுதல்</string>
+    <string name="ytdl_already_updating">புதிய yt-dlp பதிப்பு நிறுவப்படுகிறது...</string>
     <string name="ytdl_updating_started">புதிய பதிப்பைப் பதிவிறக்குகிறது</string>
     <string name="confirm_delete_history">உறுதிப்படுத்து</string>
     <string name="search_history_hint">வரலாற்றிலிருந்து தேடு</string>
@@ -356,7 +356,7 @@
     <string name="add">கூட்டு</string>
     <string name="end">முடிவு</string>
     <string name="crop_thumb_summary">இசை பதிவிறக்கங்களுக்கு சிறுபடவுருவத்தை ஒரு சதுரமாக வெட்டு</string>
-    <string name="ytld_update_success">புதிய பதிப்பு நிறுவப்பட்டது</string>
+    <string name="ytld_update_success">புதிய yt-dlp பதிப்பு நிறுவப்பட்டது</string>
     <string name="cache_first_summary">கேச் கோப்புகள் உள் சேமிப்பகத்திற்கு பதிவிறக்குகின்றன, பின்னர் நீங்கள் தேர்ந்தெடுத்த கோப்பகத்திற்கு நகர்த்தவும். சேமிப்பகத்திற்கு நேரடியாக எழுத முடியாதபோது இதைப் பயன்படுத்தவும்</string>
     <string name="update_formats_background">பின்னணியில் வடிவங்களைப் புதுப்பிக்கவும்</string>
     <string name="no_results">முடிவுகள் இல்லை</string>
