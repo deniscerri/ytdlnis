@@ -94,6 +94,12 @@
         </Preference>
 
         <Preference
+            app:icon="@drawable/ic_translate"
+            app:key="translators"
+            app:summary="@string/translators_summary"
+            app:title="@string/translators" />
+
+        <Preference
             app:icon="@drawable/baseline_security_24"
             app:key="security"
             app:summary="🔐 YTDLnis - Privacy Policy"

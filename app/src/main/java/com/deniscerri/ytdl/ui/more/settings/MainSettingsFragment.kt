@@ -160,6 +160,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
+        findPreference<Preference>("translators")?.setOnPreferenceClickListener {
+            TranslatorsDialog.show(requireContext())
+            true
+        }
+
         backup!!.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
                 val builder = MaterialAlertDialogBuilder(requireContext())

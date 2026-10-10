@@ -11,7 +11,31 @@ on:
       - "**"
 
 jobs:
+  # Fetch translator credits once and share them with every flavor build.
+  # Never fails the workflow: the app handles a missing/empty translators.json.
+  translators:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Fetch translators from Weblate
+        continue-on-error: true
+        run: python3 scripts/fetch_translators.py translators.json
+
+      - name: Upload translators.json
+        if: hashFiles('translators.json') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: translators-json
+          path: translators.json
+
   build:
+    needs: translators
+    if: always()
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -41,6 +65,13 @@ jobs:
           java-version: 17
           distribution: 'corretto'
           cache: 'gradle'
+
+      - name: Download translators.json
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: translators-json
+          path: app/src/main/assets
 
       - name: Configure Keystore & Properties
         run: |
