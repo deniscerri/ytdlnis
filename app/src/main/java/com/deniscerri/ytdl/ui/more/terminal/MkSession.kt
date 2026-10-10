@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.more.terminal
 
 import android.content.Context
+import android.os.Build
 import androidx.preference.PreferenceManager
 import com.anggrayudi.storage.file.child
 import com.deniscerri.ytdl.BuildConfig
@@ -244,9 +245,17 @@ object MkSession {
                 env.add("LD_LIBRARY_PATH=${bashDir!!.absolutePath}")
                 // readline needs terminfo to know the terminal auto-wraps; ncurses only knows the Termux path.
                 env.add("TERMINFO=${bashDir.child("terminfo").absolutePath}")
-                shell = linker
-                // args[0] is consumed as argv[0] by TerminalSession, so pass a placeholder first.
-                args = arrayOf("linker", bashDir.child("bash").absolutePath, "--rcfile", rcFile.absolutePath, "-i")
+                val bash = bashDir.child("bash").absolutePath
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    shell = linker
+                    // args[0] becomes argv[0] in TerminalSession, so pass a placeholder first.
+                    args = arrayOf("linker", bash, "--rcfile", rcFile.absolutePath, "-i")
+                } else {
+                    // Before Android 10 the linker can't be used as a launcher (it just prints its
+                    // usage text), and execve from app storage is still allowed.
+                    shell = bash
+                    args = arrayOf("bash", "--rcfile", rcFile.absolutePath, "-i")
+                }
             } else {
                 shell = pendingCommand?.shell ?: "/system/bin/sh"
                 args = arrayOf()
@@ -303,6 +312,7 @@ object MkSession {
             }
             dir
         } catch (e: Exception) {
+            android.util.Log.w("MkSession", "bash unavailable, falling back to sh", e)
             null
         }
     }

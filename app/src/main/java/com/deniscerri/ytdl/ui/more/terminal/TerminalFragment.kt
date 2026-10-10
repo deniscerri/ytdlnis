@@ -284,6 +284,10 @@ class TerminalFragment : Fragment() {
                 requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
+        // The view is focusable, and on Android 7/8 the keyboard asks it for an input connection
+        // as soon as it gets focus, which is before the layout callback below runs. A null client
+        // at that point crashes in TerminalView.onCreateInputConnection.
+        terminalView.setTerminalViewClient(client)
 
         if (!sessionId.isNullOrBlank()) {
             terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
