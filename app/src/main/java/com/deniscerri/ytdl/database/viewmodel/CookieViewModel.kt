@@ -99,49 +99,81 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
     fun getCookiesFromDB(url: String) : Result<String> = kotlin.runCatching {
         CookieManager.getInstance().flush()
 
-        val targetHost = Uri.parse(url).host ?: throw Exception("Invalid URL or domain!")
-        val dbPath = File("/data/data/${BuildConfig.APPLICATION_ID}/").walkTopDown().find { it.name == "Cookies" }
-            ?: throw Exception("Cookies File not found!")
-
-        val db = SQLiteDatabase.openDatabase(
-            dbPath.absolutePath, null, OPEN_READONLY
-        )
+        val normalizedUrl = if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
+            url
+        } else {
+            "https://$url"
+        }
+        val targetHost = Uri.parse(normalizedUrl).host?.removePrefix("www.") ?: url.removePrefix("www.")
+        if (targetHost.isBlank()) throw Exception("Invalid URL or domain!")
 
         val cookieList = mutableListOf<WebViewActivity.CookieItem>()
 
-        val selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
-        val selectionArgs = arrayOf(
-            "%$targetHost",          // Matches 'example.com' or '.example.com'
-            "%${targetHost.removePrefix("www.")}" // Matches root domain if 'www.example.com' passed
-        )
+        val appDataDir = application.filesDir.parentFile ?: File(application.applicationInfo.dataDir)
+        val dbPath = appDataDir.walkTopDown().find { it.name == "Cookies" }
+            ?: File("/data/data/${BuildConfig.APPLICATION_ID}/").walkTopDown().find { it.name == "Cookies" }
 
-        db.query(
-            "cookies", projection, selection, selectionArgs, null, null, null
-        ).run {
-            while (moveToNext()) {
-                val expiry = getLong(getColumnIndexOrThrow(CookieObject.EXPIRY))
-                val name = getString(getColumnIndexOrThrow(CookieObject.NAME))
-                val value = getString(getColumnIndexOrThrow(CookieObject.VALUE))
-                val path = getString(getColumnIndexOrThrow(CookieObject.PATH))
-                val secure = getLong(getColumnIndexOrThrow(CookieObject.SECURE)) == 1L
-                val hostKey = getString(getColumnIndexOrThrow(CookieObject.HOST))
-
-
-                val host = if (hostKey[0] != '.') ".$hostKey" else hostKey
-                cookieList.add(
-                    WebViewActivity.CookieItem(
-                        domain = host,
-                        name = name,
-                        value = value,
-                        path = path,
-                        secure = secure,
-                        expiry = expiry
-                    )
+        if (dbPath != null && dbPath.exists()) {
+            runCatching {
+                val db = SQLiteDatabase.openDatabase(dbPath.absolutePath, null, OPEN_READONLY)
+                val selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
+                val selectionArgs = arrayOf(
+                    "%$targetHost",
+                    "%${targetHost.removePrefix("www.")}"
                 )
+                db.query(
+                    "cookies", projection, selection, selectionArgs, null, null, null
+                ).use { cursor ->
+                    while (cursor.moveToNext()) {
+                        val expiry = cursor.getLong(cursor.getColumnIndexOrThrow(CookieObject.EXPIRY))
+                        val name = cursor.getString(cursor.getColumnIndexOrThrow(CookieObject.NAME))
+                        val value = cursor.getString(cursor.getColumnIndexOrThrow(CookieObject.VALUE))
+                        val path = cursor.getString(cursor.getColumnIndexOrThrow(CookieObject.PATH))
+                        val secure = cursor.getLong(cursor.getColumnIndexOrThrow(CookieObject.SECURE)) == 1L
+                        val hostKey = cursor.getString(cursor.getColumnIndexOrThrow(CookieObject.HOST))
+                        val host = if (hostKey.isNotEmpty() && hostKey[0] != '.') ".$hostKey" else hostKey
+                        cookieList.add(
+                            WebViewActivity.CookieItem(
+                                domain = host,
+                                name = name,
+                                value = value,
+                                path = path,
+                                secure = secure,
+                                expiry = expiry
+                            )
+                        )
+                    }
+                }
+                db.close()
             }
-            close()
         }
-        db.close()
+
+        if (cookieList.isEmpty()) {
+            val managerCookies = CookieManager.getInstance().getCookie(normalizedUrl)
+            if (!managerCookies.isNullOrBlank()) {
+                val host = if (targetHost.startsWith(".")) targetHost else ".$targetHost"
+                val defaultExpiry = (System.currentTimeMillis() / 1000) + (365 * 24 * 3600)
+                managerCookies.split(";").forEach { pair ->
+                    val parts = pair.trim().split("=", limit = 2)
+                    if (parts.size == 2 && parts[0].isNotBlank()) {
+                        cookieList.add(
+                            WebViewActivity.CookieItem(
+                                domain = host,
+                                name = parts[0].trim(),
+                                value = parts[1].trim(),
+                                path = "/",
+                                secure = true,
+                                expiry = defaultExpiry
+                            )
+                        )
+                    }
+                }
+            }
+        }
+
+        if (cookieList.isEmpty()) {
+            throw Exception("No cookies found for $targetHost")
+        }
 
         "# $url\n" +
         "# Generated by YTDLnis\n" +
