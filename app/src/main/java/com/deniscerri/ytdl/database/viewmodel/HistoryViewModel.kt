@@ -88,6 +88,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         }
 
         paginatedItems = filtersFlow.flatMapLatest { f ->
+            withContext(Dispatchers.IO) {
+                totalCount.value = repository.getFilteredIDs(f.query, f.type, f.website, f.sortType, f.sortOrder, f.status).size
+            }
+
             Pager(
                 config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
                 pagingSourceFactory = {
