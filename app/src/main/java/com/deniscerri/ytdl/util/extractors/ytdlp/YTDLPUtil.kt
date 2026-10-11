@@ -1341,6 +1341,20 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     if (filenameTemplate.isNotBlank()){
                         request.addOption("-o", "${filenameTemplate.removeSuffix(".%(ext)s")}.%(ext)s")
                     }
+
+                    //lyrics timing and duration only make sense for the full track
+                    val audioPrefs = downloadItem.audioPreferences
+                    if ((audioPrefs.embedLyrics || audioPrefs.saveLrc) && downloadItem.downloadSections.isBlank()) {
+                        val args = mutableListOf(
+                            //after_move so it runs once audio extraction, metadata and thumbnail are done
+                            "when=after_move",
+                            "embed=${if (audioPrefs.embedLyrics) 1 else 0}",
+                            "lrc=${if (audioPrefs.saveLrc) 1 else 0}",
+                            "offset=${audioPrefs.lyricsOffset}"
+                        )
+                        if (audioPrefs.lyricsId > 0) args.add("id=${audioPrefs.lyricsId}")
+                        request.addOption("--use-postprocessor", "Lyrics:${args.joinToString(";")}")
+                    }
                 }
 
                 if (downloadItem.audioPreferences.bitrate.isNotBlank()) {

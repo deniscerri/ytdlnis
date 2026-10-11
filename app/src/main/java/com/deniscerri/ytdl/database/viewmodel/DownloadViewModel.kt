@@ -299,7 +299,11 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         val sponsorblock = sharedPreferences.getStringSet("sponsorblock_filters", emptySet())
         val bitrate = sharedPreferences.getString("audio_bitrate", "")
 
-        val audioPreferences = AudioPreferences(embedThumb, cropThumb,false, ArrayList(sponsorblock!!), bitrate!!)
+        val audioPreferences = AudioPreferences(
+            embedThumb, cropThumb,false, ArrayList(sponsorblock!!), bitrate!!,
+            embedLyrics = sharedPreferences.getBoolean("embed_lyrics", false),
+            saveLrc = sharedPreferences.getBoolean("save_lrc", false)
+        )
 
 
         val preferredAudioFormats = getPreferredAudioFormats(resultItem.formats)
@@ -505,7 +509,9 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             cropThumb = cropThumb,
             splitByChapters = false,
             sponsorBlockFilters = ArrayList(sponsorblock!!),
-            bitrate = audioBitrate!!
+            bitrate = audioBitrate!!,
+            embedLyrics = sharedPreferences.getBoolean("embed_lyrics", false),
+            saveLrc = sharedPreferences.getBoolean("save_lrc", false)
         )
         val videoPreferences = VideoPreferences(
             embedSubs = embedSubs,

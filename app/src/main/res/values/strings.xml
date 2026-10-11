@@ -669,4 +669,16 @@
     <string name="welcome_updates_summary">Choose how YTDLnis stays up to date.</string>
     <string name="welcome_next">Next</string>
     <string name="welcome_finish">Finish</string>
+    <string name="lyrics">Lyrics</string>
+    <string name="embed_lyrics">Embed lyrics</string>
+    <string name="save_lrc_file">Save .lrc file</string>
+    <string name="lyrics_offset">Offset</string>
+    <string name="lyrics_not_found">No lyrics found</string>
+    <string name="lyrics_unsynced">Lyrics are not synced, no timing to adjust</string>
+    <string name="lyrics_source">Lyrics from lrclib.net</string>
+    <string name="lyrics_no_preview">Preview unavailable, lyrics will still be added on download</string>
+    <string name="lyrics_synced">Synced</string>
+    <string name="lyrics_plain">Plain text</string>
+    <string name="embed_lyrics_summary">Fetch lyrics from lrclib.net and embed them in audio downloads</string>
+    <string name="save_lrc_file_summary">Save synced lyrics as a .lrc file next to audio downloads</string>
 </resources>

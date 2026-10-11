@@ -643,6 +643,9 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                                             val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
                                             bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                                        },
+                                        lyricsChanged = {
+                                            CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         }
                                     )
                                     bottomSheet.show()

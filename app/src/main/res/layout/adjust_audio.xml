@@ -35,6 +35,19 @@
                 android:text="@string/thumbnail" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/lyrics"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:outlineProvider="none"
+                android:text="@string/lyrics"
+                android:minWidth="30dp"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_lyrics"
+                app:cornerRadius="10dp" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/split_by_chapters"
                 style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
@@ -42,22 +55,6 @@
                 android:checked="false"
                 android:outlineProvider="none"
                 android:text="@string/split_by_chapters"/>
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/audio_bitrate"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:minWidth="30dp"
-                android:outlineProvider="none"
-                android:text="@string/bitrate"
-                app:chipIcon="@drawable/baseline_high_quality_24"
-                app:chipIconVisible="true"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -132,6 +129,22 @@
                 app:chipIconVisible="true"
                 app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/audio_bitrate"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minWidth="30dp"
+                android:outlineProvider="none"
+                android:text="@string/bitrate"
+                app:chipIcon="@drawable/baseline_high_quality_24"
+                app:chipIconVisible="true"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

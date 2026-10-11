@@ -95,6 +95,22 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_lyrics"
+            app:key="embed_lyrics"
+            app:summary="@string/embed_lyrics_summary"
+            app:title="@string/embed_lyrics" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_lyrics"
+            app:key="save_lrc"
+            app:summary="@string/save_lrc_file_summary"
+            app:title="@string/save_lrc_file" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
             app:icon="@drawable/baseline_album_24"
             app:key="playlist_as_album"

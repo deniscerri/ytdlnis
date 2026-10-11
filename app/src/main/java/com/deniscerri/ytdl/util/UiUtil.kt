@@ -1905,9 +1905,50 @@ object UiUtil {
         cutDisabledClicked: () -> Unit,
         cutValueChanged: (String) -> Unit,
         mergeCutsChanged: (Boolean) -> Unit,
-        extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit
+        extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit,
+        lyricsClicked: ((changed: () -> Unit) -> Unit)? = null,
+        lyricsChanged: (() -> Unit)? = null
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        val lyrics = view.findViewById<Chip>(R.id.lyrics)
+        fun updateLyricsBadge() {
+            if (items.size == 1) {
+                val prefs = items.first().audioPreferences
+                lyrics.createBadge(context, if (prefs.embedLyrics || prefs.saveLrc) 1 else 0)
+            }
+        }
+        updateLyricsBadge()
+        lyrics.setOnClickListener {
+            //the preview sheet needs a single item, otherwise just offer the toggles
+            if (items.size == 1 && lyricsClicked != null) {
+                lyricsClicked { updateLyricsBadge() }
+                return@setOnClickListener
+            }
+
+            val lyricsView = context.layoutInflater.inflate(R.layout.audio_lyrics_download_preferences_dialog, null)
+            val embedLyrics = lyricsView.findViewById<MaterialSwitch>(R.id.embed_lyrics)
+            val saveLrc = lyricsView.findViewById<MaterialSwitch>(R.id.save_lrc)
+            embedLyrics.isChecked = items.all { it.audioPreferences.embedLyrics }
+            saveLrc.isChecked = items.all { it.audioPreferences.saveLrc }
+            embedLyrics.setOnClickListener {
+                items.forEach { it.audioPreferences.embedLyrics = embedLyrics.isChecked }
+                updateLyricsBadge()
+                lyricsChanged?.invoke()
+            }
+            saveLrc.setOnClickListener {
+                items.forEach { it.audioPreferences.saveLrc = saveLrc.isChecked }
+                updateLyricsBadge()
+                lyricsChanged?.invoke()
+            }
+
+            MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.lyrics))
+                .setView(lyricsView)
+                .setIcon(R.drawable.ic_lyrics)
+                .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }
+                .show()
+        }
 
         val adjustThumbnail = view.findViewById<Chip>(R.id.thumbnail)
         fun calculateAdjustThumbnailChangeCount() {

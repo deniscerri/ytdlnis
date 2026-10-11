@@ -393,6 +393,12 @@ class DownloadAudioFragment(private var resultItem: ResultItem? = null, private 
 
                                 val bottomSheetDialog = AddExtraCommandsDialog(downloadItem, callback)
                                 bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                            },
+                            lyricsClicked = { changed ->
+                                if (parentFragmentManager.findFragmentByTag("lyricsSheet") == null) {
+                                    val bottomSheet = LyricsBottomSheetDialog(downloadItem, resultItem?.urls ?: "", changed)
+                                    bottomSheet.show(parentFragmentManager, "lyricsSheet")
+                                }
                             }
                         )
                     }
