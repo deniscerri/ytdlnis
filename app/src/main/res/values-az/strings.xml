@@ -614,7 +614,7 @@
     <string name="version_installed">%1$s quraşdırıldı</string>
     <string name="check_now">İndi yoxla</string>
     <string name="update_channel">Yenilənmə kanalı</string>
-    <string name="custom_channels">Fərdi kanallar</string>
+    <string name="custom_channels">Fərdi fork</string>
     <string name="custom_channels_summary">Öz yt-dlp buraxılış depolarınızdan yeniləyin</string>
     <string name="channel_stable">Stabil</string>
     <string name="channel_nightly">Hər Gecə</string>
@@ -644,4 +644,20 @@
     <string name="retry_all">Hamısını təkrar cəhd et</string>
     <string name="download_anyway">Yenə də yüklə</string>
     <string name="toggle_all">Hamısını aç/bağla</string>
+    <string name="translators">Tərcüməçilər</string>
+    <string name="translators_summary">Bu tətbiqi Weblate-də tərcümə etməyə kömək edən insanlar</string>
+    <string name="translators_unavailable">Tərcüməçilərin siyahısı bu qurulmada mövcud deyil. Siz töhfə verən hər kəsi Weblate-də görə bilərsiniz.</string>
+    <string name="merge_cuts">Kəsikləri bir fayla birləşdir</string>
+    <string name="write_ytdlp_terminal">Konsolda yt-dlp-ni avtomatik yaz</string>
+    <string name="clear">Təmizlə</string>
+    <string name="welcome_title">YTDLnis-ə Xoş Gəlmisiniz</string>
+    <string name="welcome_subtitle">yt-dlp vasitəsilə video və səs yükləyin. Gəlin əvvəlcə bir neçə prosesi həyata keçirək.</string>
+    <string name="welcome_get_started">Başla</string>
+    <string name="welcome_restore_backup">Nüsxədən bərpa et</string>
+    <string name="welcome_restore_failed">Bu nüsxəni bərpa etmək olmadı</string>
+    <string name="welcome_restoring">Nüsxəni bərpa edir…</string>
+    <string name="welcome_guide_title">Təlimatı oxu</string>
+    <string name="welcome_guide_summary">Təlimat tətbiq, yükləmə, əmr şablonları və ümumi problemlərin düzəldilməsi haqqında hər şeyi əhatə edir. Siz onu istənilən vaxt veb-saytdan aça bilərsiniz.</string>
+    <string name="welcome_open_guide">Təlimatı aç</string>
+    <string name="welcome_permissions_title">İcazələr</string>
 </resources>
