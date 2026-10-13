@@ -677,7 +677,7 @@
     <string name="welcome_perm_storage">Доступ до сховища</string>
     <string name="welcome_perm_storage_summary">Потрібно, аби зберегти завантажені файли на пристрій.</string>
     <string name="welcome_perm_notifications">Сповіщення</string>
-    <string name="welcome_perm_notifications_summary">Показувати перебіг завантаження та завершені завантаження.</string>
+    <string name="welcome_perm_notifications_summary">Показати процес завантаження та завершені завантаження.</string>
     <string name="welcome_perm_battery">Необмежене використання акумулятора</string>
     <string name="welcome_perm_battery_summary">Запобігає перериванню тривалого завантаження у фоновому режимі.</string>
     <string name="welcome_perm_alarms">Будильники та нагадування</string>
@@ -690,7 +690,7 @@
     <string name="welcome_next">Далі</string>
     <string name="welcome_finish">Завершити</string>
     <string name="lyrics">Тексти пісень</string>
-    <string name="embed_lyrics">Вбудований текст пісні</string>
+    <string name="embed_lyrics">Вбудувати текст пісні</string>
     <string name="save_lrc_file">Зберегти файл .lrc</string>
     <string name="lyrics_offset">Зсув</string>
     <string name="lyrics_not_found">Текст пісні не знайдено</string>
