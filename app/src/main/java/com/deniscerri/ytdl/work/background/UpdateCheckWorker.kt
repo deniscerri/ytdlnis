@@ -12,8 +12,12 @@ import androidx.work.WorkerParameters
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UpdateUtil
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class UpdateCheckWorker(
@@ -25,27 +29,45 @@ class UpdateCheckWorker(
         val notificationUtil = NotificationUtil(App.instance)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val newRelease = updateUtil.tryGetNewVersion()
-        if (newRelease.isSuccess && BuildConfig.FLAVOR == "github") {
-            notificationUtil.showNewAppUpdate(newRelease.getOrNull()!!.tag_name)
+        val checkUpdatesApp = sharedPreferences.getBoolean("update_app", true)
+        val checkUpdatesYTDL = sharedPreferences.getBoolean("auto_update_ytdlp", true)
+
+        if (checkUpdatesApp) {
+            val newRelease = updateUtil.tryGetNewVersion()
+            if (newRelease.isSuccess && BuildConfig.FLAVOR == "github") {
+                notificationUtil.showNewAppUpdate(newRelease.getOrNull()!!.tag_name)
+            }
+
+            val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
+            RuntimeManager.packages.forEach { pkg ->
+                val instance = pkg.plugin.getInstance()
+                if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
+                instance.getReleases().apply {
+                    val releases = this.getOrElse { listOf() }
+                    if (releases.isEmpty()) return@apply
+
+                    val latestRelease = releases.first()
+                    if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
+                    if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
+
+                    notificationUtil.showNewPackageUpdate(pkg.title, latestRelease.tag_name)
+
+                    skipRemindingPackageUpdate.add(latestRelease.tag_name)
+                    sharedPreferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
+                }
+            }
         }
 
-        val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
-        RuntimeManager.packages.forEach { pkg ->
-            val instance = pkg.plugin.getInstance()
-            if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
-            instance.getReleases().apply {
-                val releases = this.getOrElse { listOf() }
-                if (releases.isEmpty()) return@apply
+        if (checkUpdatesYTDL) {
+            val res = updateUtil.updateYTDL()
+            when (res.status) {
+                UpdateUtil.YTDLPUpdateStatus.DONE -> {
+                    withContext(Dispatchers.IO) {
+                        File(FileUtil.getInfoJsonPath(context)).deleteRecursively()
+                    }
+                }
 
-                val latestRelease = releases.first()
-                if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
-                if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
-
-                notificationUtil.showNewPackageUpdate(pkg.title, latestRelease.tag_name)
-
-                skipRemindingPackageUpdate.add(latestRelease.tag_name)
-                sharedPreferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
+                else -> {}
             }
         }
 
