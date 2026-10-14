@@ -7,13 +7,15 @@ import com.anggrayudi.storage.file.child
 import com.deniscerri.ytdl.BuildConfig
 import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.util.FileUtil
-import com.termux.terminal.TerminalEmulator
 import com.termux.terminal.TerminalSession
 import com.termux.terminal.TerminalSessionClient
 import java.io.File
 import java.util.zip.ZipFile
 
 object MkSession {
+    /** Termux's emulator caps scrollback at 50000 rows; the default is only 2000. */
+    private const val MAX_TRANSCRIPT_ROWS = 50000
+
     fun createSession(
         context: Context,
         sessionClient: TerminalSessionClient,
@@ -195,13 +197,24 @@ object MkSession {
                         "(set -o multiline) >/dev/null 2>&1 && set -o multiline\n" +
                         // bash uses native \[ \] markers (and \w) for zero-width sequences.
                         (if (useBash) "PS1='\\[\\e[01;32m\\]\\w\\[\\e[00m\\] \\$ '\n" else "") +
+                        // Persist command history across sessions: every session shares one
+                        // history file and appends to it after each command instead of only
+                        // writing on exit (terminal sessions are usually killed, not exited).
+                        // Kept in app-private storage: HOME lives on shared storage under
+                        // Downloads, where native processes often can't create dotfiles.
+                        (if (useBash) {
+                            "HISTFILE=\"${localDir.absolutePath}/bash_history\"\n" +
+                                "HISTSIZE=10000\nHISTFILESIZE=10000\n" +
+                                "shopt -s histappend\n" +
+                                "PROMPT_COMMAND='history -a'\n"
+                        } else "") +
                         welcomeBanner(availableTools, currentDir) +
                         // Pre-fill the first prompt with "yt-dlp ". Readline can't be fed text directly,
                         // so bind a macro to the terminal's "status OK" reply (ESC [ 0 n) and request
                         // that reply once, right before the first prompt is drawn.
                         (if (writeYTDLPTerminal && useBash && "yt-dlp" in availableTools) {
                             "bind '\"\\e[0n\": \"yt-dlp \"'\n" +
-                                "PROMPT_COMMAND='printf \"\\033[5n\"; unset PROMPT_COMMAND'\n"
+                                "PROMPT_COMMAND='printf \"\\033[5n\"; PROMPT_COMMAND=\"history -a\"'\n"
                         } else "")
             )
 
@@ -266,7 +279,7 @@ object MkSession {
                 envVariables["HOME"],
                 args,
                 env.toTypedArray(),
-                TerminalEmulator.DEFAULT_TERMINAL_TRANSCRIPT_ROWS,
+                MAX_TRANSCRIPT_ROWS,
                 sessionClient,
             )
         }
@@ -279,7 +292,9 @@ object MkSession {
         lines.add("e.g. yt-dlp --version")
         lines.add("Available commands: ${tools.joinToString(", ")}")
         lines.add("\nCurrent directory: $currentDir")
-        return lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
+        lines.add("\nTo hide this message, run: touch ~/.hushwelcome")
+        val body = lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
+        return "if [ ! -e \"\$HOME/.hushwelcome\" ]; then\n$body" + "fi\n"
     }
 
     /**
