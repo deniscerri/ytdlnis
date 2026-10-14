@@ -178,11 +178,18 @@ object UiUtil {
 
         var filesize = chosenFormat.filesize
         if (!audioFormats.isNullOrEmpty() && filesize > 10L) filesize += audioFormats.sumOf { it.filesize }
+        val isApprox = chosenFormat.isFilesizeApprox || audioFormats?.any { it.isFilesizeApprox } == true
         formatCard.findViewById<TextView>(R.id.file_size).apply {
             if (showSize) {
-                text = FileUtil.convertFileSize(filesize)
+                val readable = FileUtil.convertFileSize(filesize)
+                text = if (isApprox && readable != "?") "~ $readable" else readable
             }else{
                 text = "?"
+            }
+            if (showSize && isApprox) {
+                backgroundTintList = android.content.res.ColorStateList.valueOf(
+                    com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnTertiary)
+                )
             }
             setOnClickListener {
                 formatCard.callOnClick()

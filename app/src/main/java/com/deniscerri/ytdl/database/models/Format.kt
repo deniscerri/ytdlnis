@@ -33,7 +33,9 @@ data class Format(
     @SerializedName(value = "width")
     private val _width: String? = null,
     @SerializedName(value = "height")
-    private val _height: String? = null
+    private val _height: String? = null,
+    @SerializedName(value = "is_filesize_approx")
+    var isFilesizeApprox: Boolean = false
 ) : Parcelable {
     val width: Int? get() = _width?.toIntOrNull()
     val height: Int? get() = _height?.toIntOrNull()
