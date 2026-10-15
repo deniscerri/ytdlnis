@@ -209,6 +209,10 @@
     <string name="codec">الترميز</string>
     <string name="audio_samplerate">معدل عيّنة الصوت</string>
     <string name="copied_to_clipboard">نُسِخ إلى الحافظة</string>
+    <string name="liquid_glass_mode">نمط الواجهة الزجاجية (Liquid Glass)</string>
+    <string name="liquid_glass_full">الوضع الكامل (Full Glass)</string>
+    <string name="liquid_glass_lite">الوضع المخفف (للأجهزة الضعيفة - Lite Glass)</string>
+    <string name="liquid_glass_summary">تجربة واجهة احترافية بتأثيرات الزجاج السائل مع وضع كامل ووضع مخفف للأداء</string>
     <string name="Theme">السمة</string>
     <string name="dark">داكنة</string>
     <string name="light">فاتحة</string>

@@ -142,6 +142,10 @@ class MainActivity : BaseActivity() {
         }
 
         navigationBarView?.apply {
+            if (ThemeUtil.isLiquidGlassEnabled(this@MainActivity)) {
+                ThemeUtil.applyLiquidGlassToNavBar(this)
+                elevation = if (ThemeUtil.isLiquidGlassFull(this@MainActivity)) 12f else 6f
+            }
             window.decorView.setOnApplyWindowInsetsListener { view: View, windowInsets: WindowInsets? ->
                 val windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(
                     windowInsets!!, view

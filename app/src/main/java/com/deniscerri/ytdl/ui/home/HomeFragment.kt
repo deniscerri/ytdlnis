@@ -170,6 +170,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         //initViews
         searchBar = view.findViewById(R.id.search_bar)
+        if (searchBar != null && ThemeUtil.isLiquidGlassEnabled(requireContext())) {
+            ThemeUtil.applyLiquidGlassToSearchBar(searchBar!!)
+        }
         searchView = view.findViewById(R.id.search_view)
         appBarLayout = view.findViewById(R.id.home_appbarlayout)
         materialToolbar = view.findViewById(R.id.home_toolbar)

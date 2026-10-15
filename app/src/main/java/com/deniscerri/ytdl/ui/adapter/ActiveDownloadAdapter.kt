@@ -56,6 +56,7 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
         val card = holder.cardView
+        com.deniscerri.ytdl.util.ThemeUtil.styleCard(card)
         card.tag = "${item!!.id}##card"
         val uiHandler = Handler(Looper.getMainLooper())
         val thumbnail = card.findViewById<ImageView>(R.id.image_view)

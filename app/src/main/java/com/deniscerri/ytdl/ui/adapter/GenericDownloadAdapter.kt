@@ -158,11 +158,10 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         }
         if ((checkedItems.contains(item.id) && !inverted) || (!checkedItems.contains(item.id) && inverted)) {
             card.isChecked = true
-            card.strokeWidth = 5
         } else {
             card.isChecked = false
-            card.strokeWidth = 0
         }
+        com.deniscerri.ytdl.util.ThemeUtil.styleCard(card, card.isChecked)
         card.setOnClickListener {
             if (checkedItems.size > 0 || inverted) {
                 checkCard(card, item.id, position)
@@ -218,16 +217,15 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
 
     private fun checkCard(card: MaterialCardView, itemID: Long, position: Int) {
         if (card.isChecked) {
-            card.strokeWidth = 0
             if (inverted) checkedItems.add(itemID)
             else checkedItems.remove(itemID)
         } else {
-            card.strokeWidth = 5
             if (inverted) checkedItems.remove(itemID)
             else checkedItems.add(itemID)
         }
 
         card.isChecked = !card.isChecked
+        com.deniscerri.ytdl.util.ThemeUtil.styleCard(card, card.isChecked)
         onItemClickListener.onCardSelect(card.isChecked, position)
     }
 
