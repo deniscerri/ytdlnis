@@ -6,7 +6,7 @@
     <string name="music_directory">Аудио папка</string>
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
-    <string name="search_hint">Найти или вставить URL</string>
+    <string name="search_hint">Поиск или вставка URL</string>
     <string name="update_ytdl">Обновить yt-dlp</string>
     <string name="failed_download">Не удалось скачать файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
