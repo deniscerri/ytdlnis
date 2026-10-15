@@ -21,6 +21,15 @@
             app:summary="@string/defaultValue"
             app:title="@string/Theme" />
 
+        <ListPreference
+            android:entries="@array/liquid_glass_entries"
+            android:entryValues="@array/liquid_glass_values"
+            android:icon="@drawable/baseline_layers_24"
+            app:defaultValue="full"
+            app:key="liquid_glass_mode"
+            app:summary="@string/liquid_glass_summary"
+            app:title="@string/liquid_glass_mode" />
+
         <Preference
             android:defaultValue="default"
             android:icon="@drawable/ic_frame"

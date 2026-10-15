@@ -312,6 +312,18 @@
         <item>Light</item>
     </array>
 
+    <array name="liquid_glass_entries">
+        <item>@string/liquid_glass_full</item>
+        <item>@string/liquid_glass_lite</item>
+        <item>@string/disabled</item>
+    </array>
+
+    <array name="liquid_glass_values">
+        <item>full</item>
+        <item>lite</item>
+        <item>off</item>
+    </array>
+
     <array name="accents">
         <item>@string/material_you</item>
         <item>@string/blue</item>

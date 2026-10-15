@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.Spanned
 import android.util.TypedValue
+import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDelegate
@@ -158,6 +159,73 @@ object ThemeUtil {
             .parseAsHtml(HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 
+
+    fun getLiquidGlassMode(context: Context): String {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        return sharedPreferences.getString("liquid_glass_mode", "full") ?: "full"
+    }
+
+    fun isLiquidGlassEnabled(context: Context): Boolean {
+        return getLiquidGlassMode(context) != "off"
+    }
+
+    fun isLiquidGlassFull(context: Context): Boolean {
+        return getLiquidGlassMode(context) == "full"
+    }
+
+    fun applyLiquidGlassToCard(view: View) {
+        val mode = getLiquidGlassMode(view.context)
+        when (mode) {
+            "full" -> view.setBackgroundResource(R.drawable.bg_glass_card_full)
+            "lite" -> view.setBackgroundResource(R.drawable.bg_glass_card_lite)
+            else -> {}
+        }
+    }
+
+    fun styleCard(cardView: com.google.android.material.card.MaterialCardView, isChecked: Boolean = false) {
+        val context = cardView.context
+        val mode = getLiquidGlassMode(context)
+
+        if (mode != "off") {
+            val checkedStrokePx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, context.resources.displayMetrics).toInt()
+
+            cardView.radius = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, if (mode == "full") 20f else 18f, context.resources.displayMetrics)
+
+            if (isChecked) {
+                cardView.strokeWidth = checkedStrokePx
+                cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(getThemeColor(context, androidx.appcompat.R.attr.colorPrimary)))
+            } else {
+                cardView.strokeWidth = 0
+            }
+            applyLiquidGlassToCard(cardView)
+        } else {
+            if (isChecked) {
+                val checkedStrokePx = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3f, context.resources.displayMetrics).toInt()
+                cardView.strokeWidth = checkedStrokePx
+                cardView.setStrokeColor(android.content.res.ColorStateList.valueOf(getThemeColor(context, androidx.appcompat.R.attr.colorPrimary)))
+            } else {
+                cardView.strokeWidth = 0
+            }
+        }
+    }
+
+    fun applyLiquidGlassToNavBar(view: View) {
+        val mode = getLiquidGlassMode(view.context)
+        when (mode) {
+            "full" -> view.setBackgroundResource(R.drawable.bg_glass_navbar_full)
+            "lite" -> view.setBackgroundResource(R.drawable.bg_glass_navbar_lite)
+            else -> {}
+        }
+    }
+
+    fun applyLiquidGlassToSearchBar(view: View) {
+        val mode = getLiquidGlassMode(view.context)
+        when (mode) {
+            "full" -> view.setBackgroundResource(R.drawable.bg_glass_searchbar_full)
+            "lite" -> view.setBackgroundResource(R.drawable.bg_glass_searchbar_lite)
+            else -> {}
+        }
+    }
 
     fun updateAppIcon(activity: Activity, theme: String, appIconMode: String) {
         //disable old icons
