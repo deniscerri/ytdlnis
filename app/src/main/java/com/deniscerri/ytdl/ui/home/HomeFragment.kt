@@ -62,6 +62,7 @@ import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.isURL
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.ThemeUtil
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.util.UiUtil
 import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.android.material.appbar.AppBarLayout
@@ -81,7 +82,6 @@ import kotlinx.coroutines.flow.collectLatest
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.Lifecycle
 import androidx.paging.LoadState
-import com.deniscerri.ytdl.util.Extensions.updateMenuItemBadge
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.badge.BadgeUtils
@@ -93,7 +93,7 @@ import java.net.URL
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener,
-    FailedFetchesBottomSheetDialog.Listener {
+    FailedFetchesBottomSheetDialog.Listener, UpdatesBottomSheetDialog.Listener {
     private var inputQueries: MutableList<String>? = null
     private lateinit var homeAdapter: HomeAdapter
     private var totalCount: Int = 0
@@ -212,7 +212,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
 
-        initFailedFetches()
+        initToolbarMenu()
 
         lifecycleScope.launch {
             resultViewModel.paginatedItems.collectLatest {
@@ -788,15 +788,25 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
     }
 
     @OptIn(ExperimentalBadgeUtils::class)
-    private fun initFailedFetches() {
+    private fun initToolbarMenu() {
         val toolbar = materialToolbar ?: return
         toolbar.inflateMenu(R.menu.home_toolbar_menu)
         val failedItem = toolbar.menu.findItem(R.id.failed_fetches)
+        val updatesItem = toolbar.menu.findItem(R.id.app_updates)
+        // the button is a custom action view, so it doesn't reach the menu item listener
+        updatesItem.actionView?.findViewById<View>(R.id.update_button)?.setOnClickListener { showAvailableUpdates() }
         toolbar.setOnMenuItemClickListener { m ->
-            if (m.itemId == R.id.failed_fetches) {
-                showFailedFetches()
-                true
-            } else false
+            when (m.itemId) {
+                R.id.failed_fetches -> {
+                    showFailedFetches()
+                    true
+                }
+                R.id.app_updates -> {
+                    showAvailableUpdates()
+                    true
+                }
+                else -> false
+            }
         }
 
         val badge = BadgeDrawable.create(requireContext())
@@ -804,6 +814,9 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    resultViewModel.availableUpdates.collect { updatesItem.isVisible = it.isNotEmpty() }
+                }
                 launch {
                     resultViewModel.failedQueries.collect { list ->
                         failedItem.isVisible = list.isNotEmpty()
@@ -830,6 +843,37 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
                         Snackbar.make(requireView(), resources.getQuantityString(R.plurals.items_failed_to_fetch, count, count), Snackbar.LENGTH_LONG)
                             .setAction(R.string.view) { showFailedFetches() }
                             .show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showAvailableUpdates() {
+        if (childFragmentManager.findFragmentByTag("updates") != null) return
+        UpdatesBottomSheetDialog().show(childFragmentManager, "updates")
+    }
+
+    override fun onUpdateSelected(update: ResultViewModel.AvailableUpdate) {
+        val activity = requireActivity() as MainActivity
+        when (update) {
+            is ResultViewModel.AvailableUpdate.App -> UiUtil.showNewAppUpdateDialog(
+                update.release, activity, update.updateUtil, activity,
+                PreferenceManager.getDefaultSharedPreferences(activity), activity.installLauncher
+            )
+            is ResultViewModel.AvailableUpdate.Package -> UiUtil.showNewReleaseUpdateDialog(
+                update.release, update.item, activity, activity,
+                activity.findViewById(R.id.frame_layout),
+                activity.findViewById(R.id.bottomNavigationView),
+                activity.installLauncher
+            ) { result ->
+                result.onSuccess {
+                    resultViewModel.dismissUpdate(update)
+                    RuntimeManager.reInit(activity)
+                }.onFailure { f ->
+                    Snackbar.make(activity.findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).apply {
+                        anchorView = activity.findViewById(R.id.bottomNavigationView)
+                        show()
                     }
                 }
             }

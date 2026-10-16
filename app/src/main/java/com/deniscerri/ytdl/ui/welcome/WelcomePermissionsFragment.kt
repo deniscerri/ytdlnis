@@ -11,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.provider.Settings
+import java.io.File
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -20,9 +21,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.viewmodel.WelcomeViewModel
+import com.deniscerri.ytdl.util.FileUtil
 import com.google.android.material.button.MaterialButton
 
 /**
@@ -38,10 +45,70 @@ class WelcomePermissionsFragment : Fragment(R.layout.fragment_welcome_permission
         @StringRes val summary: Int,
         val required: Boolean,
         val isGranted: () -> Boolean,
-        val request: () -> Unit
+        val request: () -> Unit,
+        val summaryText: (() -> String)? = null
     ) {
         lateinit var action: MaterialButton
         lateinit var requiredBadge: TextView
+        lateinit var summaryView: TextView
+    }
+
+    /** Same as the plain tree picker, but the grant can be kept across restarts. */
+    private class PersistableTree : ActivityResultContracts.OpenDocumentTree() {
+        override fun createIntent(context: Context, input: Uri?): Intent =
+            super.createIntent(context, input).addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION or
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION or
+                        Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION
+            )
+    }
+
+    // folder preferences a restored backup may point to, with the title shown for each
+    private val folderPrefs = listOf(
+        Triple("music_path", R.drawable.ic_music_downloaded, R.string.music_directory),
+        Triple("video_path", R.drawable.ic_video_downloaded, R.string.video_directory),
+        Triple("command_path", R.drawable.ic_terminal, R.string.command_directory),
+        Triple("cache_path", R.drawable.baseline_folder_24, R.string.cache_directory),
+        Triple("download_archive_path", R.drawable.baseline_archive_24, R.string.download_archive_folder),
+        Triple("backup_path", R.drawable.baseline_folder_24, R.string.backup_path)
+    )
+
+    private var pendingFolderKey: String? = null
+
+    private val folderLauncher = registerForActivityResult(PersistableTree()) { uri ->
+        val key = pendingFolderKey
+        pendingFolderKey = null
+        if (uri != null && key != null) {
+            runCatching {
+                requireContext().contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                )
+            }
+            // a different folder than the restored one replaces it
+            preferences().edit(commit = true) { putString(key, uri.toString()) }
+        }
+        render()
+    }
+
+    private fun preferences() = PreferenceManager.getDefaultSharedPreferences(requireContext())
+
+    private fun hasFolderAccess(path: String): Boolean {
+        if (path.startsWith("content://")) {
+            val uri = path.toUri()
+            val granted = requireContext().contentResolver.persistedUriPermissions.any {
+                it.uri == uri && it.isReadPermission && it.isWritePermission
+            }
+            if (granted) return true
+        }
+        val dir = File(FileUtil.formatPath(path))
+        if (!dir.exists()) {
+            // on Android 11+ the app's own Android/data folder is only created by the system when
+            // asked for it, a plain mkdirs() below it fails on a fresh install
+            runCatching { requireContext().getExternalFilesDirs(null) }
+            runCatching { dir.mkdirs() }
+        }
+        return dir.canWrite()
     }
 
     private val rows = mutableListOf<Row>()
@@ -116,17 +183,58 @@ class WelcomePermissionsFragment : Fragment(R.layout.fragment_welcome_permission
             )
         }
 
+        // only a restored backup can bring folders the app has no access to
+        val viewModel = ViewModelProvider(requireActivity())[WelcomeViewModel::class.java]
+        val folderRows = mutableListOf<Row>()
+        if (viewModel.restoredSettings) {
+            folderPrefs.forEach { (key, icon, title) ->
+                val path = preferences().getString(key, "").orEmpty()
+                val formattedPath = FileUtil.formatPath(path)
+                runCatching { File(formattedPath).mkdirs() }
+                val row = Row(
+                    "folder_$key", icon, title, 0,
+                    required = true,
+                    isGranted = { hasFolderAccess(preferences().getString(key, "").orEmpty()) },
+                    request = {
+                        pendingFolderKey = key
+                        folderLauncher.launch(preferences().getString(key, "").orEmpty().toUri())
+                    },
+                    summaryText = { FileUtil.formatPath(preferences().getString(key, "").orEmpty()) }
+                )
+                if (row.isGranted()) return@forEach
+
+                folderRows += row
+            }
+        }
+
         val inflater = LayoutInflater.from(context)
-        rows.forEach { row ->
+        fun addRow(row: Row) {
             val item = inflater.inflate(R.layout.item_welcome_permission, list, false)
             item.findViewById<ImageView>(R.id.permission_icon).setImageResource(row.icon)
             item.findViewById<TextView>(R.id.permission_title).setText(row.title)
-            item.findViewById<TextView>(R.id.permission_summary).setText(row.summary)
+            row.summaryView = item.findViewById(R.id.permission_summary)
+            if (row.summary != 0) row.summaryView.setText(row.summary)
             row.requiredBadge = item.findViewById(R.id.permission_required)
             row.action = item.findViewById<MaterialButton>(R.id.permission_action).apply {
                 setOnClickListener { row.request() }
             }
             list.addView(item)
+        }
+        rows.forEach(::addRow)
+
+        if (folderRows.isNotEmpty()) {
+            list.addView(TextView(context).apply {
+                setText(R.string.welcome_perm_folders_header)
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_TitleSmall)
+                setPadding(0, (24 * resources.displayMetrics.density).toInt(), 0, 0)
+            })
+            list.addView(TextView(context).apply {
+                setText(R.string.welcome_perm_folders_summary)
+                setTextAppearance(com.google.android.material.R.style.TextAppearance_Material3_BodyMedium)
+                setPadding(0, (4 * resources.displayMetrics.density).toInt(), 0, 0)
+            })
+            folderRows.forEach(::addRow)
+            rows += folderRows
         }
     }
 
@@ -139,6 +247,7 @@ class WelcomePermissionsFragment : Fragment(R.layout.fragment_welcome_permission
     private fun render() {
         rows.forEach { row ->
             val granted = row.isGranted()
+            row.summaryText?.let { row.summaryView.text = it() }
             row.action.isEnabled = !granted
             row.action.setText(if (granted) R.string.welcome_allowed else R.string.welcome_allow)
             row.requiredBadge.isVisible = row.required && !granted

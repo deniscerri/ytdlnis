@@ -15,13 +15,10 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.widget.CheckBox
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.forEach
 import androidx.core.view.isVisible
@@ -57,14 +54,10 @@ import com.deniscerri.ytdl.util.CrashListener
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.NavbarUtil.applyNavBarStyle
 import com.deniscerri.ytdl.util.ThemeUtil
-import com.deniscerri.ytdl.util.UiUtil
 import com.deniscerri.ytdl.util.UpdateUtil
-import com.deniscerri.ytdl.work.background.UpdateCheckWorker
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.elevation.SurfaceColors
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.navigationrail.NavigationRailView
@@ -100,7 +93,8 @@ class MainActivity : BaseActivity() {
     private lateinit var navController : NavController
     private var loadingRuntimeDialog: androidx.appcompat.app.AlertDialog? = null
 
-    private lateinit var installLauncher: ActivityResultLauncher<Intent>
+    lateinit var installLauncher: ActivityResultLauncher<Intent>
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -490,71 +484,9 @@ class MainActivity : BaseActivity() {
     }
 
     private fun callAutoUpdates(firstRun : Boolean = false) {
-        if (BuildConfig.FLAVOR == "github" && preferences.getBoolean("update_app", false)) {
-            val updateUtil = UpdateUtil(this)
-            CoroutineScope(Dispatchers.IO).launch {
-                val res = updateUtil.tryGetNewVersion()
-                if (res.isSuccess) {
-                    if (preferences.getBoolean("automatic_backup", false)) {
-                        settingsViewModel.backup()
-                    }
-                    withContext(Dispatchers.Main) {
-                        UiUtil.showNewAppUpdateSnackBar(
-                            res.getOrNull()!!,
-                            this@MainActivity,
-                            findViewById<LinearLayout>(R.id.notification_container),
-                            findViewById(R.id.frame_layout),
-                            navigationBarView,
-                            layoutInflater,
-                            updateUtil,
-                            this@MainActivity,
-                            preferences,
-                            installLauncher
-                        )
-                    }
-                }
-
-                val skipRemindingPackageUpdate = preferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
-                RuntimeManager.getInstance().assertInit()
-                RuntimeManager.packages.forEach { pkg ->
-                    val instance = pkg.plugin.getInstance()
-                    if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
-
-                    instance.getReleases().apply {
-                        val releases = this.getOrElse { listOf() }
-                        if (releases.isEmpty()) return@apply
-
-                        val latestRelease = releases.first()
-                        if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
-                        if (latestRelease.oldVersion) return@apply
-                        if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
-
-                        skipRemindingPackageUpdate.add(latestRelease.tag_name)
-                        preferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
-                        withContext(Dispatchers.Main) {
-                            UiUtil.showNewPackageUpdateSnackBar(
-                                latestRelease,
-                                pkg,
-                                this@MainActivity,
-                                findViewById<LinearLayout>(R.id.notification_container),
-                                findViewById(R.id.frame_layout),
-                                navigationBarView,
-                                layoutInflater,
-                                this@MainActivity,
-                                installLauncher
-                            ) { result ->
-                                result.onSuccess {
-                                    RuntimeManager.reInit(this@MainActivity)
-                                }.onFailure { f ->
-                                    Snackbar.make(findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).apply {
-                                        anchorView = navigationBarView
-                                        show()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        resultViewModel.checkForUpdates { //on app update found
+            if (preferences.getBoolean("automatic_backup", false)) {
+                settingsViewModel.backup()
             }
         }
         if (preferences.getBoolean("auto_update_ytdlp", false)){

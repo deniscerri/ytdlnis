@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 class WelcomeViewModel : ViewModel() {
     var page = 0
 
+    // set when a restored backup brought its own settings, so its folders may need access again
+    var restoredSettings = false
     var updateApp = true
     var autoUpdateYtdlp = true
 

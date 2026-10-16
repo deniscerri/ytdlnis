@@ -665,6 +665,8 @@
     <string name="welcome_allow">Allow</string>
     <string name="welcome_allowed">Allowed</string>
     <string name="welcome_required">Required</string>
+    <string name="welcome_perm_folders_header">Restored folders</string>
+    <string name="welcome_perm_folders_summary">Your backup uses these folders, but the app lost access to them. Allow each one again, or pick a different folder to use instead.</string>
     <string name="welcome_updates_title">Updates</string>
     <string name="welcome_updates_summary">Choose how YTDLnis stays up to date.</string>
     <string name="welcome_next">Next</string>

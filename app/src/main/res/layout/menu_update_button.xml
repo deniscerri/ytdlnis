@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- the toolbar ignores margins on an action view's root, so the spacing lives on this wrapper -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:paddingEnd="12dp"
+    android:paddingStart="4dp">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/update_button"
+        style="@style/Widget.Material3.Button.TonalButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        android:text="@string/update"
+        android:textColor="?attr/colorOnPrimaryContainer"
+        app:icon="@drawable/ic_down"
+        app:iconTint="?attr/colorOnPrimaryContainer" />
+</FrameLayout>

@@ -16,6 +16,12 @@ import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.dao.ResultDao
+import com.deniscerri.ytdl.BuildConfig
+import com.deniscerri.ytdl.core.RuntimeManager
+import com.deniscerri.ytdl.core.packages.PackageBase
+import com.deniscerri.ytdl.database.models.GithubRelease
+import com.deniscerri.ytdl.database.models.PackageItem
+import com.deniscerri.ytdl.util.UpdateUtil
 import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
@@ -97,8 +103,54 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
      */
     data class FailedQuery(val query: String, val error: String)
     val failedQueries: MutableStateFlow<List<FailedQuery>> = MutableStateFlow(listOf())
-    /** Emits how many queries failed when a multi query parse finishes with failures */
     val failedQueriesEvent = MutableSharedFlow<Int>(extraBufferCapacity = 1)
+
+    sealed class AvailableUpdate {
+        data class App(val release: GithubRelease, val updateUtil: UpdateUtil) : AvailableUpdate()
+        data class Package(val release: PackageBase.PackageRelease, val item: PackageItem) : AvailableUpdate()
+    }
+    val availableUpdates: MutableStateFlow<List<AvailableUpdate>> = MutableStateFlow(listOf())
+
+    fun checkForUpdates(onAppUpdateFound: suspend () -> Unit = {}) {
+        if (BuildConfig.FLAVOR != "github" || !sharedPreferences.getBoolean("update_app", false)) return
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val updateUtil = UpdateUtil(application)
+            val res = updateUtil.tryGetNewVersion()
+            if (res.isSuccess) {
+                onAppUpdateFound()
+                availableUpdates.update { list ->
+                    list.filterNot { it is AvailableUpdate.App } + AvailableUpdate.App(res.getOrNull()!!, updateUtil)
+                }
+            }
+
+            val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
+
+            RuntimeManager.getInstance().assertInit()
+            RuntimeManager.packages.forEach { pkg ->
+                val instance = pkg.plugin.getInstance()
+                if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
+
+                val releases = instance.getReleases().getOrElse { listOf() }
+                if (releases.isEmpty()) return@forEach
+
+                val latestRelease = releases.first()
+                if (latestRelease.isBundled || latestRelease.isInstalled) return@forEach
+                if (latestRelease.oldVersion) return@forEach
+                if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@forEach
+
+                availableUpdates.update { list ->
+                    list.filterNot { it is AvailableUpdate.Package && it.item.title == pkg.title } + AvailableUpdate.Package(latestRelease, pkg)
+                }
+
+                skipRemindingPackageUpdate.add(latestRelease.tag_name)
+                sharedPreferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
+            }
+        }
+    }
+
+    fun dismissUpdate(update: AvailableUpdate) = availableUpdates.update { it - update }
+
     /** Whether the home results come from user queries rather than the home recommendations */
     private var resultsAreFromQueries = false
     private var homeRecommendationsJob: Job? = null

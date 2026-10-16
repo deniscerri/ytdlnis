@@ -91,6 +91,7 @@ class WelcomeActivity : AppCompatActivity() {
         // the first page has its own buttons, so only the progress bar stays visible there
         backButton.visibility = if (page > 0) View.VISIBLE else View.INVISIBLE
         nextButton.visibility = if (page > 0) View.VISIBLE else View.INVISIBLE
+        progress.max = LAST_PAGE + 1
         progress.setProgressCompat(page + 1, true)
         nextButton.setText(if (page == LAST_PAGE) R.string.welcome_finish else R.string.welcome_next)
         // pages that need something first (permissions) turn this off again in onResume
@@ -121,21 +122,22 @@ class WelcomeActivity : AppCompatActivity() {
         launchMain()
     }
 
-    /** Called after a backup was restored from the first page. The backup replaces all settings. */
+
     fun onBackupRestored(settingsRestored: Boolean) {
-        preferences.edit(commit = true) {
-            putBoolean("asked_auto_update_preferences", true)
-            putBoolean(PREF_COMPLETED, true)
-        }
+        viewModel.restoredSettings = settingsRestored
         if (settingsRestored) {
+            viewModel.updateApp = preferences.getBoolean("update_app", viewModel.updateApp)
+            viewModel.autoUpdateYtdlp = preferences.getBoolean("auto_update_ytdlp", viewModel.autoUpdateYtdlp)
+            viewModel.ytdlpSource = preferences.getString("ytdlp_source", viewModel.ytdlpSource) ?: viewModel.ytdlpSource
+            viewModel.ytdlpSourceLabel = preferences.getString("ytdlp_source_label", viewModel.ytdlpSourceLabel) ?: viewModel.ytdlpSourceLabel
+
             val language = preferences.getString("app_language", "en")
             AppCompatDelegate.setApplicationLocales(
                 if (language == "system") LocaleListCompat.forLanguageTags(null)
                 else LocaleListCompat.forLanguageTags(language.toString())
             )
         }
-        scheduleUpdateCheckWorker()
-        launchMain()
+        goTo(1)
     }
 
     fun scheduleUpdateCheckWorker() {
