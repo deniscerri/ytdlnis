@@ -28,7 +28,7 @@
                 app:cardMaxElevation="12dp"
                 app:cardPreventCornerOverlap="true"
                 app:checkedIcon="@null"
-                android:backgroundTint="?attr/colorSurfaceContainer"
+                android:backgroundTint="?attr/colorSurfaceContainerHighest"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

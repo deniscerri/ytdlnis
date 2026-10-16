@@ -58,7 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:adjustViewBounds="true"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="7dp"
             android:layout_marginStart="10dp"
             android:background="?attr/colorSurfaceVariant"
             android:scaleType="centerCrop"

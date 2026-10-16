@@ -222,6 +222,7 @@ object MkSession {
             val env = mutableListOf(
                 "ENV=${rcFile.absolutePath}",
                 "PUBLIC_HOME=${getExternalFilesDir(null)?.absolutePath}",
+                "HUSHWELCOME=${localDir.absolutePath}/.hushwelcome",
                 "COLORTERM=truecolor",
                 "TERM=xterm-256color",
                 "LANG=C.UTF-8",
@@ -292,9 +293,9 @@ object MkSession {
         lines.add("e.g. yt-dlp --version")
         lines.add("Available commands: ${tools.joinToString(", ")}")
         lines.add("\nCurrent directory: $currentDir")
-        lines.add("\nTo hide this message, run: touch ~/.hushwelcome")
+        lines.add("\nTo hide this message, run: touch \$HUSHWELCOME")
         val body = lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
-        return "if [ ! -e \"\$HOME/.hushwelcome\" ]; then\n$body" + "fi\n"
+        return "if [ ! -e \"\$HUSHWELCOME\" ]; then\n$body" + "fi\n"
     }
 
     /**

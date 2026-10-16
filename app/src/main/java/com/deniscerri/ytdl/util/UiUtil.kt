@@ -180,11 +180,28 @@ object UiUtil {
         if (!audioFormats.isNullOrEmpty() && filesize > 10L) filesize += audioFormats.sumOf { it.filesize }
         val isApprox = chosenFormat.isFilesizeApprox || audioFormats?.any { it.isFilesizeApprox } == true
         formatCard.findViewById<TextView>(R.id.file_size).apply {
+            @Suppress("UNCHECKED_CAST")
+            val defaults = (getTag(R.id.file_size) as? Pair<android.content.res.ColorStateList?, android.content.res.ColorStateList>)
+                ?: (androidx.core.view.ViewCompat.getBackgroundTintList(this) to textColors).also { setTag(R.id.file_size, it) }
+            var approxShown = false
             if (showSize) {
                 val readable = FileUtil.convertFileSize(filesize)
-                text = if (isApprox && readable != "?") "~ $readable" else readable
+                approxShown = isApprox && readable != "?"
+                text = if (approxShown) "~ $readable" else readable
             }else{
                 text = "?"
+            }
+            if (approxShown) {
+                androidx.core.view.ViewCompat.setBackgroundTintList(
+                    this,
+                    android.content.res.ColorStateList.valueOf(
+                        com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorTertiary)
+                    )
+                )
+                setTextColor(com.google.android.material.color.MaterialColors.getColor(this, com.google.android.material.R.attr.colorOnTertiary))
+            } else {
+                androidx.core.view.ViewCompat.setBackgroundTintList(this, defaults.first)
+                setTextColor(defaults.second)
             }
             setOnClickListener {
                 formatCard.callOnClick()
