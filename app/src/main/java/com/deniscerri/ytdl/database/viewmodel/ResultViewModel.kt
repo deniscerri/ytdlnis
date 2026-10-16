@@ -151,6 +151,8 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
 
     fun dismissUpdate(update: AvailableUpdate) = availableUpdates.update { it - update }
 
+    fun dismissAllUpdates() { availableUpdates.value = emptyList() }
+
     /** Whether the home results come from user queries rather than the home recommendations */
     private var resultsAreFromQueries = false
     private var homeRecommendationsJob: Job? = null

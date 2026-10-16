@@ -1,12 +1,14 @@
 package com.deniscerri.ytdl.ui.home
 
 import android.content.res.ColorStateList
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,30 +20,43 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel.AvailableUpdate
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 /**
- * Lists the app and package updates found at startup. Picking one hands it to the parent fragment.
+ * Dialog listing the app and package updates found at startup. Picking one hands it to the parent fragment.
  */
-class UpdatesBottomSheetDialog : BottomSheetDialogFragment() {
+class UpdatesDialog : DialogFragment() {
 
     interface Listener {
         fun onUpdateSelected(update: AvailableUpdate)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.updates_bottom_sheet, container, false)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val titleView = LayoutInflater.from(requireContext()).inflate(R.layout.updates_dialog_title, null)
+        summary = titleView.findViewById(R.id.updates_summary)
+        updateSummary(ViewModelProvider(requireActivity())[ResultViewModel::class.java].availableUpdates.value.size)
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.updates_dialog, null)
+        setupList(view)
+        return MaterialAlertDialogBuilder(requireContext())
+            .setCustomTitle(titleView)
+            .setView(view)
+            .setPositiveButton(R.string.dismiss) { _, _ ->
+                ViewModelProvider(requireActivity())[ResultViewModel::class.java].dismissAllUpdates()
+            }
+            .create()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private var summary: TextView? = null
+
+    private fun updateSummary(count: Int) {
+        summary?.text = resources.getQuantityString(R.plurals.updates_available_summary, count, count)
+    }
+
+    private fun setupList(view: View) {
         val resultViewModel = ViewModelProvider(requireActivity())[ResultViewModel::class.java]
-        (dialog as? BottomSheetDialog)?.behavior?.state = BottomSheetBehavior.STATE_EXPANDED
 
         val adapter = UpdatesAdapter(
             onClick = { update ->
@@ -56,14 +71,15 @@ class UpdatesBottomSheetDialog : BottomSheetDialogFragment() {
             this.adapter = adapter
         }
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 resultViewModel.availableUpdates.collect { list ->
                     if (list.isEmpty()) {
                         dismiss()
                         return@collect
                     }
                     adapter.submitList(list)
+                    updateSummary(list.size)
                 }
             }
         }
@@ -77,7 +93,6 @@ class UpdatesBottomSheetDialog : BottomSheetDialogFragment() {
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val card: MaterialCardView = view.findViewById(R.id.update_card)
             val indicator: MaterialCardView = view.findViewById(R.id.update_indicator)
-            val indicatorIcon: ImageView = view.findViewById(R.id.update_indicator_icon)
             val title: TextView = view.findViewById(R.id.update_title)
             val close: View = view.findViewById(R.id.btn_close_update)
         }
@@ -90,23 +105,19 @@ class UpdatesBottomSheetDialog : BottomSheetDialogFragment() {
             val item = getItem(position)
             val context = holder.itemView.context
 
-            // same palette as the old pop-ups: primary for the app, tertiary for packages
+            // tonal indicator per type: primary for the app, tertiary for packages
             val (container, accent) = when (item) {
                 is AvailableUpdate.App -> com.google.android.material.R.attr.colorPrimaryContainer to
-                        com.google.android.material.R.attr.colorSecondary
+                        com.google.android.material.R.attr.colorOnPrimaryContainer
                 is AvailableUpdate.Package -> com.google.android.material.R.attr.colorTertiaryContainer to
-                        com.google.android.material.R.attr.colorTertiary
+                        com.google.android.material.R.attr.colorOnTertiaryContainer
             }
-            val containerColor = MaterialColors.getColor(context, container, 0)
-            holder.card.setCardBackgroundColor(containerColor)
-            holder.card.strokeColor = containerColor
-            holder.indicator.setCardBackgroundColor(MaterialColors.getColor(context, accent, 0))
-            holder.indicatorIcon.imageTintList = ColorStateList.valueOf(containerColor)
+            holder.indicator.setCardBackgroundColor(MaterialColors.getColor(context, container, 0))
 
             holder.title.text = when (item) {
                 is AvailableUpdate.App -> context.getString(R.string.version_ready_to_download, item.release.tag_name)
                 is AvailableUpdate.Package ->
-                    context.getString(R.string.package_version_ready_to_download, item.item.title, item.release.tag_name)
+                    "${item.item.title} (${item.release.version})"
             }
             holder.card.setOnClickListener { onClick(item) }
             holder.close.setOnClickListener { onClose(item) }

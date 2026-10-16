@@ -292,7 +292,7 @@ object MkSession {
         lines.add("Use \\033[1;32myt-dlp\\033[0m to run yt-dlp commands,")
         lines.add("e.g. yt-dlp --version")
         lines.add("Available commands: ${tools.joinToString(", ")}")
-        lines.add("\nCurrent directory: $currentDir")
+        lines.add("\nDefault directory: $currentDir")
         lines.add("\nTo hide this message, run: touch \$HUSHWELCOME")
         val body = lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
         return "if [ ! -e \"\$HUSHWELCOME\" ]; then\n$body" + "fi\n"

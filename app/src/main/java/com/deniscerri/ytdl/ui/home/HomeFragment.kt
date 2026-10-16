@@ -93,7 +93,7 @@ import java.net.URL
 
 
 class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggestionsAdapter.OnItemClickListener, OnClickListener,
-    FailedFetchesBottomSheetDialog.Listener, UpdatesBottomSheetDialog.Listener {
+    FailedFetchesBottomSheetDialog.Listener, UpdatesDialog.Listener {
     private var inputQueries: MutableList<String>? = null
     private lateinit var homeAdapter: HomeAdapter
     private var totalCount: Int = 0
@@ -851,7 +851,7 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
 
     private fun showAvailableUpdates() {
         if (childFragmentManager.findFragmentByTag("updates") != null) return
-        UpdatesBottomSheetDialog().show(childFragmentManager, "updates")
+        UpdatesDialog().show(childFragmentManager, "updates")
     }
 
     override fun onUpdateSelected(update: ResultViewModel.AvailableUpdate) {

@@ -189,6 +189,8 @@ class WelcomePermissionsFragment : Fragment(R.layout.fragment_welcome_permission
         if (viewModel.restoredSettings) {
             folderPrefs.forEach { (key, icon, title) ->
                 val path = preferences().getString(key, "").orEmpty()
+                if (path.isEmpty()) return@forEach
+
                 val formattedPath = FileUtil.formatPath(path)
                 runCatching { File(formattedPath).mkdirs() }
                 val row = Row(
