@@ -1,10 +1,10 @@
 package com.deniscerri.ytdl.core.stream
 
 import android.util.Log
+import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.io.Reader
 import java.nio.charset.StandardCharsets
 import java.util.regex.Pattern
 
@@ -13,9 +13,13 @@ internal class StreamProcessExtractor(
     private val stream: InputStream,
     private val callback: ((Float, Long, String) -> Unit)?
 ) : Thread() {
-    private val p = Pattern.compile("\\[download\\]\\s+(\\d+\\.\\d)% .* ETA (\\d+):(\\d+)")
-    private val pAria2c = Pattern.compile("\\[#\\w{6}.*\\((\\d*\\.*\\d+)%\\).*?((\\d+)m)*((\\d+)s)*]")
-    private val pFFmpeg = Pattern.compile("size=.*")
+
+    companion object {
+        private val PATTERN_DEFAULT = Pattern.compile("\\[download\\]\\s+(\\d+\\.\\d)% .* ETA (\\d+):(\\d+)")
+        private val PATTERN_ARIA2C = Pattern.compile("\\[#\\w{6}.*\\((\\d*\\.*\\d+)%\\).*?((\\d+)m)*((\\d+)s)*]")
+        private val PATTERN_FFMPEG = Pattern.compile("size=.*")
+    }
+
     private var progress = PERCENT
     private var eta = ETA
 
@@ -25,10 +29,11 @@ internal class StreamProcessExtractor(
 
     override fun run() {
         try {
+            val reader = BufferedReader(InputStreamReader(stream, StandardCharsets.UTF_8), 8192)
             val currentLine = StringBuilder()
             var nextChar: Int
 
-            while (stream.read().also { nextChar = it } != -1) {
+            while (reader.read().also { nextChar = it } != -1) {
                 val c = nextChar.toChar()
 
                 if (c == '\r' || c == '\n') {
@@ -60,17 +65,17 @@ internal class StreamProcessExtractor(
     }
 
     private fun getProgress(line: String): Float {
-        val matcher = p.matcher(line)
+        val matcher = PATTERN_DEFAULT.matcher(line)
         if (matcher.find()) {
             return matcher.group(GROUP_PERCENT)!!.toFloat().also { progress = it }
         }
 
-        val mAria2c = pAria2c.matcher(line)
+        val mAria2c = PATTERN_ARIA2C.matcher(line)
         if (mAria2c.find()) {
             return mAria2c.group(1)!!.toFloat().also { progress = it }
         }
 
-        val mFFmpeg = pFFmpeg.matcher(line)
+        val mFFmpeg = PATTERN_FFMPEG.matcher(line)
         if (mFFmpeg.find()) {
             return 99f.also { progress = it }
         }
@@ -79,12 +84,12 @@ internal class StreamProcessExtractor(
     }
 
     private fun getEta(line: String): Long {
-        val matcher = p.matcher(line)
+        val matcher = PATTERN_DEFAULT.matcher(line)
         if (matcher.find()) return convertToSeconds(
             matcher.group(GROUP_MINUTES),
             matcher.group(GROUP_SECONDS)
         ).also { eta = it.toLong() }.toLong() else {
-            val mAria2c = pAria2c.matcher(line)
+            val mAria2c = PATTERN_ARIA2C.matcher(line)
             if (mAria2c.find()) return convertToSeconds(
                 mAria2c.group(3),
                 mAria2c.group(5)
