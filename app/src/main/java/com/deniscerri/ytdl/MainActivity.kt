@@ -284,6 +284,18 @@ class MainActivity : BaseActivity() {
 
         cookieViewModel.updateCookiesFile()
         installLauncher = ApkInstallUtil.registerInstallLauncher(this)
+
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                val useBgUtilPoTokenServer = preferences.getBoolean("use_bgutils_potoken_generator", false)
+                val bgUtilsMethod = preferences.getString("bgutils_potoken_method", "server")
+                val requiresServer = useBgUtilPoTokenServer && bgUtilsMethod == "server"
+                if (requiresServer) {
+                    BgUtilsPoTokenGeneratorUtil.acquireServer(this@MainActivity)
+                }
+            }
+        }
+
         val intent = intent
         handleIntents(intent)
 
