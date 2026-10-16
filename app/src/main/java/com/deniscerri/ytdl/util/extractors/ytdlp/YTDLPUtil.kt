@@ -70,7 +70,13 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         addOption("--ignore-errors")
         addOption("--no-warnings")
         addOption("-R", "1")
-        addOption("--compat-options", "manifest-filesize-approx")
+
+        val compatOptions = mutableListOf("manifest-filesize-approx")
+        if (url?.isYoutubeURL() == true) {
+            compatOptions.add("no-youtube-unavailable-videos")
+        }
+        addOption("--compat-options", compatOptions.joinToString(","))
+
         val socketTimeout = sharedPreferences.getString("socket_timeout", "5")!!.ifEmpty { "5" }
         addOption("--socket-timeout", socketTimeout)
 
@@ -497,9 +503,12 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
             }
 
-            handler.post {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            e.message?.apply {
+                handler.post {
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                }
             }
+
             e.printStackTrace()
             return Result.failure(e)
         } finally {

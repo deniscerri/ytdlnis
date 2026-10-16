@@ -34,6 +34,7 @@ import androidx.core.view.setPadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.exoplayer.offline.Download
@@ -356,14 +357,15 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             }
 
             override fun onContinueOnBackground() {
-                requireActivity().lifecycleScope.launch {
+                val hostActivity = activity ?: return
+                hostActivity.lifecycleScope.launch {
                     withContext(Dispatchers.IO){
                         downloadViewModel.continueUpdatingFormatsOnBackground(listAdapter.getCheckedItemsOrNull())
                     }
                     downloadViewModel.processingItemsJob?.cancel(CancellationException())
                     downloadViewModel.processingItemsJob = null
 
-                    dismiss()
+                    if (isAdded) dismiss()
                 }
             }
         }
@@ -1285,6 +1287,10 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
     }
 
     override fun onDismiss(dialog: DialogInterface) {
+        // the format sheet lives in the same fragment manager, so it would outlive this card and keep updating
+        runCatching {
+            (parentFragmentManager.findFragmentByTag("formatSheet") as? DialogFragment)?.dismissAllowingStateLoss()
+        }
         lifecycleScope.launch {
             withContext(Dispatchers.IO){
                 downloadViewModel.processingItemsJob?.cancel(CancellationException())

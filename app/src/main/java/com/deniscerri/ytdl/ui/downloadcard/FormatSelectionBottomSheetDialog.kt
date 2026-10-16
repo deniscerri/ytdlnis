@@ -223,6 +223,7 @@ class FormatSelectionBottomSheetDialog(
                                 // the sheet was closed, nothing to report
                                 if (err is CancellationException) throw err
                                 withContext(Dispatchers.Main){
+                                    if (!isAdded) return@withContext
                                     UiUtil.handleNoResults(requireActivity(), err.message.toString(), null, false, continued = {}, closed = {}, cookieFetch = {})
                                 }
                             }
@@ -243,8 +244,9 @@ class FormatSelectionBottomSheetDialog(
                                 if (it.unavailable) {
                                     lifecycleScope.launch {
                                         multipleFormatsListener.onItemUnavailable(it.url)
-                                        items.removeAt(items.indexOfFirst { item -> item.url == it.url })
+                                        items.indexOfFirst { item -> item.url == it.url }.takeIf { i -> i >= 0 }?.let { i -> items.removeAt(i) }
                                         withContext(Dispatchers.Main) {
+                                            if (!isAdded) return@withContext
                                             Snackbar.make(view, it.unavailableMessage, Snackbar.LENGTH_SHORT).show()
                                         }
                                     }
@@ -273,6 +275,8 @@ class FormatSelectionBottomSheetDialog(
                     }catch (e: Exception){
                         if (e is CancellationException) throw e
                         withContext(Dispatchers.Main) {
+                            // the sheet may be gone already, e.g. the parent card was dismissed mid update
+                            if (!isAdded) return@withContext
                             refreshBtn.isEnabled = true
                             filterBtn.isEnabled = true
                             okBtn.isEnabled = true
