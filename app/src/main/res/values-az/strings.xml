@@ -688,4 +688,12 @@
     <string name="lyrics_plain">Aydın mətn</string>
     <string name="embed_lyrics_summary">Mahnı sözlərini lrclib.net-dən əldə et və səs yükləmələrində yerləşdir</string>
     <string name="save_lrc_file_summary">Sinxronlaşdırılmış sözləri səs yükləmələrin yanında .lrc faylı kimi saxla</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d yeniləmə var</item>
+        <item quantity="other">%d yeniləmə var</item>
+    </plurals>
+    <string name="update_install">Quraşdır</string>
+    <string name="welcome_perm_folders_header">Bərpa edilmiş qovluqlar</string>
+    <string name="welcome_perm_folders_summary">Nüsxəniz bu qovluqları istifadə edir, lakin tətbiq onlara girişi itirib. Hər birinə təkrar icazə verin və ya əvəzində istifadə etmək üçün başqa qovluq seçin.</string>
+    <string name="crop_unsupported">Qırpma bu element üçün əlçatan deyil</string>
 </resources>
