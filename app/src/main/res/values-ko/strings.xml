@@ -680,4 +680,9 @@
     <string name="welcome_guide_summary">이 도움말은 앱의 전반적인 사용법, 다운로드, 명령 템플릿, 일반적인 문제 해결 방법을 다룹니다. 웹사이트에서 언제든지 열 수 있습니다.</string>
     <string name="lyrics_source">lrclib.net에서 가사 제공</string>
     <string name="merge_cuts">자른 조각을 한 파일로 병합</string>
+    <plurals name="updates_available_summary">
+        <item quantity="other">%d개 업데이트 가능</item>
+    </plurals>
+    <string name="update_install">설치</string>
+    <string name="crop_unsupported">이 항목은 자르기 작업을 지원하지 않습니다</string>
 </resources>

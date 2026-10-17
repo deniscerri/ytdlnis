@@ -6,7 +6,7 @@
     <string name="music_directory">Аудио папка</string>
     <string name="home">Главная</string>
     <string name="source_code">Исходный код</string>
-    <string name="search_hint">Поиск или вставка URL</string>
+    <string name="search_hint">Поиск или вставьте URL</string>
     <string name="update_ytdl">Обновить yt-dlp</string>
     <string name="failed_download">Не удалось скачать файл</string>
     <string name="download_notification_channel_name">Загрузка файлов</string>
@@ -701,4 +701,14 @@
     <string name="lyrics_plain">Обычный текст</string>
     <string name="embed_lyrics_summary">Загрузить тексты песен с lrclib.net и встроить их в аудиофайлы для скачивания</string>
     <string name="save_lrc_file_summary">Сохранить синхронизированные тексты песен в формате .lrc рядом с загруженными аудиофайлами</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d доступно обновление</item>
+        <item quantity="few">%d доступны обновления</item>
+        <item quantity="many">%d доступны обновления</item>
+        <item quantity="other">%d доступны обновления</item>
+    </plurals>
+    <string name="update_install">Установить</string>
+    <string name="welcome_perm_folders_header">Восстановленные папки</string>
+    <string name="welcome_perm_folders_summary">Ваша резервная копия использует эти папки, но приложение утратило к ним доступ. Разрешите доступ к каждой из них заново или выберите другую папку для использования.</string>
+    <string name="crop_unsupported">Обрезка для этого элемента недоступна</string>
 </resources>

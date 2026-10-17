@@ -687,4 +687,12 @@
     <string name="lyrics_plain">Tekst i thjeshtë</string>
     <string name="embed_lyrics_summary">Merr tekste nga lrclib.net dhe ngjiti ato në shkarkimet audio</string>
     <string name="save_lrc_file_summary">Ruaj tekstet e sinkronizuara si skedar .lrc pranë skedarit audio</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d përditësim i ri</item>
+        <item quantity="other">%d përditësime të reja</item>
+    </plurals>
+    <string name="update_install">Instalo</string>
+    <string name="welcome_perm_folders_header">Direktoritë e rikthyera</string>
+    <string name="welcome_perm_folders_summary">Ruajtja juaj përdor këto direktori, por aplikacioni ka humbur leje të shkruajë mbi to. Lejo secilën prej tyre përsëri, ose zgjidh një direktori tjetër.</string>
+    <string name="crop_unsupported">Prerja nuk është e mundur për këtë artikull</string>
 </resources>
