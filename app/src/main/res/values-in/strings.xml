@@ -450,13 +450,13 @@
     <string name="use_app_language_for_metadata">Gunakan bahasa aplikasi untuk metadata</string>
     <string name="player_client_summary"><![CDATA[Klien Pemutar YouTube & PO Token]]></string>
     <string name="cache_directory_warning">Mengubah folder cache dapat menyebabkan masalah yang tidak terduga. Jika aplikasi tidak dapat menulis ke jalur yang telah ditentukan, aplikasi akan beralih ke direktori bawaan cache internal</string>
-    <string name="use_format_sorting">Gunakan urutan prioritas format</string>
+    <string name="use_format_sorting">Gunakan pengurutan prioritas format</string>
     <string name="retry_missing_downloads_desc">Unduh kembali butir-butir yang tidak ada dalam riwayat unduhan</string>
-    <string name="reset_processed_links_desc">Unduh ulang lagi semua item</string>
-    <string name="sync_with_source_desc">Hapus item yang diunduh jika tidak ada di sumbernya</string>
+    <string name="reset_processed_links_desc">Unduh lagi semua butir</string>
+    <string name="sync_with_source_desc">Hapus butir yang diunduh jika butir tersebut hilang di sumbernya</string>
     <string name="use_only_po_token">Gunakan hanya PO token (abaikan klien pemutar)</string>
     <string name="cache_directory">Folder cache</string>
-    <string name="app_icon_change">Ikon dapat berubah dan aplikasi akan tertutup</string>
+    <string name="app_icon_change">Ikon dapat berubah dan aplikasi akan ditutup</string>
     <string name="reset_preferences_in_screen">Setel ulang semua preferensi di layar ini</string>
     <string name="use_code_highlighter">Gunakan kode pemilih warna</string>
     <string name="write_subs_when_embed_subs_summary">Ini akan menerapkan Simpan Subtitle dan Simpan Subtitle Otomatis untuk mengunduh berkas sub lalu menghapusnya setelah penyematan</string>
@@ -465,7 +465,7 @@
     <string name="write_subs_when_embed_subs">Tulis takarir (subtitle) saat menanamkan</string>
     <string name="generate_potokens">Hasilkan PO token</string>
     <string name="regenerate">Hasilkan ulang</string>
-    <string name="automatic_backup_summary">Membuat cadangan yang berisi semua data secara otomatis saat versi aplikasi baru ditemukan</string>
+    <string name="automatic_backup_summary">Membuat cadangan yang berisi semua data secara otomatis saat menemukan versi aplikasi yang baru</string>
     <string name="generate_potokens_warning">Dengan mengaktifkan ini Anda perlu menonaktifkan kuki</string>
     <string name="custom">Kustom</string>
     <string name="cut_unsupported">Fitur pemotongan tidak tersedia untuk butir ini</string>
