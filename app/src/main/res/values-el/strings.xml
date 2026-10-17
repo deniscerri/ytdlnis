@@ -49,7 +49,7 @@
     <string name="api_key">Χρήση κλειδιού API</string>
     <string name="api_key_summary">Προτάσεις βίντεο από το Youtube API</string>
     <string name="sort_by">Ταξινόμηση</string>
-    <string name="update_app_summary">Aνακοίνωση νέων εκδόσεων της εφαρμογής όταν ανοίγει. Τα δεδομένα εξάγονται από το επίσημο αποθετήριο Github</string>
+    <string name="update_app_summary">Aνακοίνωση νέων εκδόσεων της εφαρμογής όταν ανοίγει. Τα δεδομένα εξάγονται από το επίσημο αποθετήριο GitHub</string>
     <string name="downloads">Λήψεις</string>
     <string name="remove_deleted">Κατάργηση διαγραμμένου</string>
     <string name="remove_duplicates">Κατάργηση διπλότυπων</string>
@@ -447,7 +447,7 @@
     <string name="regenerate">Επαναδημιουργία</string>
     <string name="automatic_backup_summary">Δημιουργήστε αυτόματα ένα αντίγραφο ασφαλείας των πάντων όταν βρεθεί μια νέα έκδοση της εφαρμογής</string>
     <string name="use_format_sorting">Χρήση Μορφή Σημασία Παραγγελία</string>
-    <string name="ytdlp_watch_later">YT-DLP Youtube Watch Later (χρειάζεται cookies)</string>
+    <string name="ytdlp_watch_later">YT-DLP YouTube Watch Later (χρειάζεται cookies)</string>
     <string name="ytdlp_recommnedations">YT-DLP Συστάσεις Youtube (χρειάζεται cookies)</string>
     <string name="ytdlp_liked">YT-DLP Youtube Liked Videos (χρειάζεται cookies)</string>
     <string name="use_only_po_token">Χρησιμοποιήστε μόνο PO Token (Αγνοήστε το Player Client)</string>
