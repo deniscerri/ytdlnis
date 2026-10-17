@@ -162,6 +162,7 @@
                     android:background="@drawable/rounded_corner"
                     android:backgroundTint="?attr/colorSecondary"
                     android:clickable="false"
+                    android:drawablePadding="5dp"
                     android:gravity="center"
                     android:minWidth="30dp"
                     android:paddingHorizontal="5dp"

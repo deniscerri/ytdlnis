@@ -565,7 +565,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
 
 
     //pass for video download for audio format sorter, so that it wont apply certain preferences that should be only for audio downloads
-    fun getFormat(formats: List<Format>, type: DownloadType, url: String? = null, forVideoDownload: Boolean = false) : Format {
+    fun getFormat(formats: List<Format>, type: DownloadType, url: String? = null, forVideoDownload: Boolean = false, downloadItemContext: DownloadItem? = null) : Format {
         when(type) {
             DownloadType.audio -> {
                 return cloneFormat (
@@ -587,7 +587,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
                             formatUtil.getGenericVideoFormats(resources).sortedByDescending { it.filesize }
                         }
 
-                        FormatUtil(application).sortVideoFormats(theFormats).first()
+                        FormatUtil(application).sortVideoFormats(theFormats, downloadItemContext).first()
                     }catch (e: Exception){
                         formatUtil.getGenericVideoFormats(resources).first()
                     }

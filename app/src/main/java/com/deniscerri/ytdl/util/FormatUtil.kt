@@ -7,6 +7,7 @@ import android.content.res.Resources
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.utils.MDUtil.getStringArray
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
 import kotlin.math.min
 
@@ -17,7 +18,7 @@ class FormatUtil(private var context: Context) {
     private val videoQualityPreference : String = sharedPreferences.getString("video_quality", "best").toString()
     private val audioLanguagePreference : String = sharedPreferences.getString("audio_language", "").toString()
     private val audioCodecPreference : String =  sharedPreferences.getString("audio_codec", "").toString()
-    private val videoCodecPreference : String =  sharedPreferences.getString("video_codec", "").toString()
+    private var videoCodecPreference : String =  sharedPreferences.getString("video_codec", "").toString()
     private val audioContainerPreference : String = sharedPreferences.getString("audio_format", "").toString()
     private val videoContainerPreference : String = sharedPreferences.getString("video_format", "").toString()
     private val videoResolutionOrder = context.getStringArray(R.array.video_formats_values)
@@ -74,7 +75,7 @@ class FormatUtil(private var context: Context) {
     }
 
     @SuppressLint("RestrictedApi")
-    fun getVideoFormatImportance() : List<String> {
+    fun getVideoFormatImportance(downloadItemContext: DownloadItem? = null) : List<String> {
         val preferredFormatSize = sharedPreferences.getString("preferred_format_size", "")
 
         if (sharedPreferences.getBoolean("use_format_sorting", false)) {
@@ -93,6 +94,10 @@ class FormatUtil(private var context: Context) {
                 formatImportance.add("smallsize")
             }else if (preferredFormatSize == "largest") {
                 formatImportance.add("file_size")
+            }
+
+            if (downloadItemContext?.videoPreferences?.compatibilityMode == true) {
+                videoCodecPreference = "avc|h264"
             }
 
             return formatImportance
@@ -178,8 +183,8 @@ class FormatUtil(private var context: Context) {
     }
 
     @SuppressLint("RestrictedApi")
-    fun sortVideoFormats(formats: List<Format>): List<Format> {
-        val orderPreferences = getVideoFormatImportance()
+    fun sortVideoFormats(formats: List<Format>, downloadItemContext: DownloadItem? = null): List<Format> {
+        val orderPreferences = getVideoFormatImportance(downloadItemContext)
 
         val fieldSorter = object : Comparator<Format> {
             override fun compare(a: Format, b: Format): Int {

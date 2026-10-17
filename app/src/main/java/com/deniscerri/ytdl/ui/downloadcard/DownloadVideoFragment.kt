@@ -507,6 +507,15 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                 if (it) {
                                     containerAutoCompleteTextView.setText("mp4",false)
                                     downloadItem.container = "mp4"
+                                    downloadItem.format = downloadViewModel.getFormat(downloadItem.allFormats, DownloadType.video, downloadItemContext = downloadItem)
+
+                                    UiUtil.populateFormatCard(
+                                        requireContext(),
+                                        formatCard,
+                                        downloadItem.format,
+                                        chosenAudioFormats,
+                                        showSize = downloadItem.downloadSections.isEmpty()
+                                    )
                                 }
                             },
                             alsoDownloadAsAudioClicked = {

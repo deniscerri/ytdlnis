@@ -85,15 +85,24 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
         //DOWNLOAD TYPE -----------------------------
         val type = card.findViewById<TextView>(R.id.download_type)
         when(item.type){
-            DownloadType.audio -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_music_formatcard, 0,0,0
-            )
-            DownloadType.video -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_video_formatcard, 0,0,0
-            )
-            else -> type.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                R.drawable.ic_terminal_formatcard, 0,0,0
-            )
+            DownloadType.audio -> {
+                type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.ic_music_formatcard, 0,0,0
+                )
+                type.text = activity.getString(R.string.audio)
+            }
+            DownloadType.video -> {
+                type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.ic_video_formatcard, 0,0,0
+                )
+                type.text = activity.getString(R.string.video)
+            }
+            else -> {
+                type.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    R.drawable.ic_terminal_formatcard, 0,0,0
+                )
+                type.text = activity.getString(R.string.command)
+            }
         }
 
         val incognitoLabel = card.findViewById<MaterialButton>(R.id.incognitoLabel)
