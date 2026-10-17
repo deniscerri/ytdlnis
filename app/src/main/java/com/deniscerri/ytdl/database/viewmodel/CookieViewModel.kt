@@ -113,6 +113,7 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         if (targetHost.isBlank()) throw Exception("Invalid URL or domain!")
 
         val cookieList = mutableListOf<WebViewActivity.CookieItem>()
+        val isYoutube = targetHost.contains("youtube")
 
         val appDataDir = application.filesDir.parentFile ?: File(application.applicationInfo.dataDir)
         val dbPath = appDataDir.walkTopDown().find { it.name == "Cookies" }
@@ -121,11 +122,18 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         if (dbPath != null && dbPath.exists()) {
             runCatching {
                 val db = SQLiteDatabase.openDatabase(dbPath.absolutePath, null, OPEN_READONLY)
-                val selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
-                val selectionArgs = arrayOf(
-                    "%$targetHost",
-                    "%${targetHost.removePrefix("www.")}"
-                )
+                val selection: String
+                val selectionArgs: Array<String>?
+                if (isYoutube) {
+                    selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
+                    selectionArgs = arrayOf("%youtube.com", "%.google.com", "%google.com")
+                } else {
+                    selection = "${CookieObject.HOST} LIKE ? OR ${CookieObject.HOST} LIKE ?"
+                    selectionArgs = arrayOf(
+                        "%$targetHost",
+                        "%${targetHost.removePrefix("www.")}"
+                    )
+                }
                 db.query(
                     "cookies", projection, selection, selectionArgs, null, null, null
                 ).use { cursor ->
@@ -154,23 +162,31 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         }
 
         if (cookieList.isEmpty()) {
-            val managerCookies = CookieManager.getInstance().getCookie(normalizedUrl)
-            if (!managerCookies.isNullOrBlank()) {
-                val host = if (targetHost.startsWith(".")) targetHost else ".$targetHost"
-                val defaultExpiry = (System.currentTimeMillis() / 1000) + (365 * 24 * 3600)
-                managerCookies.split(";").forEach { pair ->
-                    val parts = pair.trim().split("=", limit = 2)
-                    if (parts.size == 2 && parts[0].isNotBlank()) {
-                        cookieList.add(
-                            WebViewActivity.CookieItem(
-                                domain = host,
-                                name = parts[0].trim(),
-                                value = parts[1].trim(),
-                                path = "/",
-                                secure = true,
-                                expiry = defaultExpiry
-                            )
-                        )
+            val queryUrls = if (isYoutube) {
+                listOf(normalizedUrl to ".$targetHost", "https://accounts.google.com" to ".google.com")
+            } else {
+                listOf(normalizedUrl to (if (targetHost.startsWith(".")) targetHost else ".$targetHost"))
+            }
+            val defaultExpiry = (System.currentTimeMillis() / 1000) + (365 * 24 * 3600)
+            queryUrls.forEach { (queryUrl, host) ->
+                val managerCookies = CookieManager.getInstance().getCookie(queryUrl)
+                if (!managerCookies.isNullOrBlank()) {
+                    managerCookies.split(";").forEach { pair ->
+                        val parts = pair.trim().split("=", limit = 2)
+                        if (parts.size == 2 && parts[0].isNotBlank()) {
+                            if (cookieList.none { it.domain == host && it.name == parts[0].trim() }) {
+                                cookieList.add(
+                                    WebViewActivity.CookieItem(
+                                        domain = host,
+                                        name = parts[0].trim(),
+                                        value = parts[1].trim(),
+                                        path = "/",
+                                        secure = true,
+                                        expiry = defaultExpiry
+                                    )
+                                )
+                            }
+                        }
                     }
                 }
             }

@@ -282,16 +282,7 @@ open class WebViewActivity : BaseActivity() {
                 name,
                 value)
 
-            val builder = StringBuilder(stringList.first())
-
-            for (s in stringList.subList(1, stringList.size)) {
-                if (s.isNotEmpty()) {
-                    if (builder.isNotEmpty())
-                        builder.append("\u0009")
-                    builder.append(s)
-                }
-            }
-            return builder.toString()
+            return stringList.joinToString("\t")
         }
     }
 
