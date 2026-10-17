@@ -25,15 +25,16 @@ internal class StreamProcessExtractor(
 
     override fun run() {
         try {
-            val currentLine = StringBuilder()
-            var nextChar: Int
+            //collect raw bytes and decode per line, so multibyte utf-8 chars are not split into latin-1 chars
+            val currentLine = java.io.ByteArrayOutputStream()
+            var nextByte: Int
 
-            while (stream.read().also { nextChar = it } != -1) {
-                val c = nextChar.toChar()
+            while (stream.read().also { nextByte = it } != -1) {
+                val c = nextByte.toChar()
 
                 if (c == '\r' || c == '\n') {
-                    if (currentLine.isNotEmpty()) {
-                        val line = currentLine.toString()
+                    if (currentLine.size() > 0) {
+                        val line = currentLine.toString(StandardCharsets.UTF_8.name())
 
                         // 1. Process progress updates for UI callback
                         processOutputLine(line)
@@ -44,10 +45,10 @@ internal class StreamProcessExtractor(
                             buffer.append(line).append("\n")
                         }
 
-                        currentLine.setLength(0)
+                        currentLine.reset()
                     }
                 } else {
-                    currentLine.append(c)
+                    currentLine.write(nextByte)
                 }
             }
         } catch (e: IOException) {

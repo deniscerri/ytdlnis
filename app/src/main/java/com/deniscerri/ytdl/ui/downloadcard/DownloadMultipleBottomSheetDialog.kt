@@ -943,7 +943,7 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
             val selectedItems = listAdapter.getCheckedItemsOrNull() ?: listOf()
             popup.menu.findItem(R.id.delete).isVisible = selectedItems.isNotEmpty()
             popup.menu.findItem(R.id.select_between).apply {
-                if (selectedItems.size == 2 && processingDownloadIDs.size >= 4) {
+                if (selectedItems.size == 2) {
                     val firstIndex = processingDownloadIDs.indexOf(selectedItems.first())
                     val secondIndex = processingDownloadIDs.indexOf(selectedItems.last())
 
