@@ -444,7 +444,7 @@
     <string name="prefer_container_over_codec_audio">Предпочитать контейнер кодеку для загрузок аудио</string>
     <string name="prefer_container_over_codec_audio_summary">Если этот параметр включён, предпочитаемый аудиокодек будет игнорироваться, и изменится только контейнер</string>
     <string name="player_client">Клиент плеера</string>
-    <string name="player_client_summary"><![CDATA[YouTube Клиент плеера и PO Token]]></string>
+    <string name="player_client_summary">YouTube Клиент плеера и PO Token</string>
     <string name="use_app_language_for_metadata">Используйте язык приложения для метаданных</string>
     <string name="layout">Макет</string>
     <string name="list">Список</string>

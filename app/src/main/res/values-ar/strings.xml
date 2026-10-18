@@ -449,7 +449,7 @@
     <string name="grid">شبكة</string>
     <string name="player_client">عميل المشغل</string>
     <string name="list">قائمة</string>
-    <string name="player_client_summary"><![CDATA[عملاء مشغّل اليوتيوب و رمز PO]]></string>
+    <string name="player_client_summary">عملاء مشغّل اليوتيوب و رمز PO</string>
     <string name="cache_directory">مجلد الذاكرة المؤقتة</string>
     <string name="cache_directory_warning">قد يؤدي تغيير مجلد الذاكرة المؤقتة إلى حدوث مشكلات غير متوقعة. إذا لم يتمكن التطبيق من الكتابة إلى المسار المحدد، فسوف يلجأ إلى الدليل الافتراضي للذاكرة المؤقتة الداخلية</string>
     <string name="use_only_po_token">استخدم رمز PO فقط (تجاهل المشغل العميل)</string>

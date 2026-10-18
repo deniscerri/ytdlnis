@@ -1,5 +1,150 @@
 # YTDLnis Changelog
 
+> # 1.9.1 (2026-11)
+
+# What's Changed
+
+## Embed Lyrics
+
+For audio downloads, new section where u can search lyrics synced or not synced from lrclib.net. Automatic playback of the audio and the lyrics. You can also adjust the timing if its off. You can also save the lyrics .lrc file as separate.
+
+## Burn Subtitles
+
+Built internal yt-dlp plugin that burns subtitles for video downloads. Needs save subtitles and/or save automatic subtitles to be checked.
+
+## Failed data fetches in home screen
+
+App will store all queries or urls it failed to query so u can retry them again, or just jump straight to the download card without fetching data.
+
+## Temporary files settings screen
+
+Temporary files are now clearly laid out and you can delete them separately or delete all. Now separated as
+- unfinished downloads
+- info jsons
+- yt-dlp cache
+- temporary configurations
+- downloaded apks
+
+## Add welcome screen
+
+Asks necessary permissions, also u can restore backups straight from it. If backup had custom download paths it also asks to regrant permission for them so downloads won't fail.
+
+## Bash Shell in Terminal
+
+With bash text wraps nicely also added welcome header, also a toggle in the settings if u want yt-dlp to be auto written when u open terminal
+
+## New Download Queue Design
+
+I always wanted active and queued screens combined but was too busy with other features. Now its here.
+
+## Other stuff
+
+- Make app upload files to the cloud if download path is an external provider (like nextcloud)
+- Add translator credits in the settings
+- Add incognito icon when generating cookies bottom sheet
+- reworked setting screen for updating yt-dlp and app
+- Increase notification update interval for live notifications
+- Inject cookies to newpipe extractor so it data fetches private videos
+- Long pressing update formats ignores info json, also when toggling format source
+- Add select range dialog in the home screen
+- Add dialog choosing which items to share / open in the history fragment
+- fix The textfields for cuts uses the regular keyboard instead of numeral one
+- fix Pressing crop when the item data is not fetched and you press update, it opens the cut sheet instead of crop
+- Make app properly cancel yt-dlp jobs like update formats, data fetching
+- add sort by Author, Duration, Title, and Date in download multiple bottom sheet
+- add independent preferred format size for audio, thanks @phoenix14
+- configurable history card quick action thanks @pheonix14
+- add ffmpeg preset preference for app's internal plugins like burnsubs, compatble recorder
+- add copy urls in home screen top menu
+- add search results as backup category
+- make auto start of bgutils server in main activity instead of app so other apps wont autostart it
+- add webview to logs so it handles bigger logs
+- add separate process for incognito mode in webview, also now login persists and still generates proper cookies so regenerating is quick and easy
+- add color highlighter to command templates screens
+- keep screen awake when download queue has items shown
+- Copy Links of Multiple item in Download History screen
+- Add setting toggle to disable automatic clipboard check on app launch
+- Made compatible mode toggle as an internal plugin for better conversion
+- Auto update yt-dlp in the update checker background work if user checked it
+- Add terminal command history tracking
+- Add filesize approx identifier in formats with ~ in front of filesize
+- Rework app locales so now it shows all locales
+- Fix Configuration backup ignores selected SD card directory and crashes
+- Fix Previously paused downloads automatically start downloading after a new download finishes. Now paused items stay there until u press resume all
+- and other small stuff idk
+
+> # 1.9.0 (2026-09)
+
+# What's Changed
+
+## Python 3.14 with CURL-CFFI built-in
+
+Now on github and f-droid flavours of the app, python 3.14 is preinstalled within the app, which also includes curl-cffi and other new recommended yt-dlp libraries:
+- brotli
+- requests
+- websockets
+- urllib
+
+For people who are not aware, YTDLnis has a plugin system where you can upgrade packages like python,ffmpeg, nodejs,deno etc without needing to update the app itself. You can update on your own too in the updating section, packages.
+Note. Curl cffi is only released on arm64, but the rest can just take advantage of the new python and the new libraries. When curl-cffi is built for other arch, expect a new release of python in packages section in the settings.
+
+## BGUtils POT Provider
+
+Now in Advanced settings, Generate PO Tokens you can internally host the BGUtils POT server so that yt-dlp can use to generate PO Tokens for its youtube downloads. You are required to install the Deno package to install the node modules and host the server. If you want to use the provider as a script instead of server, install the NodeJS package. At the moment you can't use NodeJS install node_modules and host the server, just use NodeJS after you set it up with Deno as a generation script provider.
+
+When used as a server, the server will automatically start when a download starts and close itself when the download queue finishes. If you feel the need to keep the server running, you can toggle BGUtils on in the settings and it will start the server.
+
+## Reworked Terminal
+
+This has been long overdue.
+Now Terminal is a full fledged terminal, taking use of termux's terminal-view. App uses android's default shell and all libraries like python ffmpeg etc, that the app uses can be easily executed there.
+Since the new python 3.14 also has pip installed, you can easily execute pip to install and update yt-dlp plugins within the app.
+
+## Update Notifications
+
+If you enabled in the fresh install to check for app updates, the app will also notify you if a new app update is available, or if a new package is released.
+
+
+## Other stuff
+
+- remove yahoo screen search as its closed
+- rework observe sources section, with new design and cards
+- add every minute in observe sources
+- add YouTube-style layout option for download history cards
+- fix issue crashing app when you try to backup
+- fix backups folder reseting to Download folder despite changing
+- add mara language
+- add assamese language
+- fix app not properly getting github version when checking for updates
+- Add queueOrder to download items database table to avoid updating download id when sorting items, which caused crashes
+- fix download multiple card glitch when updating item type they dont update and if u select all in home screen the card doesnt show
+- fix in home screen if unselected a card and try to tap it again, it doesnt unselect but instead acts as if its a details tap
+- fix audio split by chapters filename template not downloading all parts
+- make newpipe not use locale if use app language for metadata is off
+- Make app wait for ytdlp update before running command
+- Update youtube player client list web, web_safari, web_embedded, web_music, web_creator, mweb, ios, visionos, android, android_vr, tv, tv_downgraded, tv_simply
+- Update how formats are fetched so SABR formats doesnt crash the app
+- add izzy flavour for izzyondroid
+- fix backups folder keeps being deleted
+- remove code highlighter toggle it's useless now since terminal has its own colors
+- fix Pressing back button in download error log screen resets navigation back to the queue homescreen
+- fix Search bar disappearing temporarily when scrolling inside search history
+- add return in updateYTDL when checking if update is already being ran
+- fix Crash: 'Fragment not attached to a context' when bulk-selecting downloads in DownloadMultipleBottomSheetDialog
+- Make cookie generation preserve login state while generating proper separate cookie records
+- add incognito toggle when generating cookies, to clear internal webview cookies
+- add redirect to robots.txt for cookie generation in youtube to make them last longer
+- hid author chip in download history thin card if author is blank
+- omit cache downloads from settings backup, since u might not have access all files permission when u restore
+- omit use alarm maanger from settings backup, since u might not have alarm permission when u restore
+- got rid of data sync id setting, causes more confusion to users, advanced users just use extractor args in advanced settings
+- made concurrent fragments 1 to avoid youtube throttling you
+- in packages list add a card note above explaining what they are
+- add a randomized timeout inverval setting between downloads. Check it out in downloads settings
+- add toggle to disable checking for available storage
+- fix multiple download card text overlapping with top actions
+- fix the warning there is not enough space spams for all items in the multiple download card
+
 > # 1.8.9.1 (2026-06)
 
 # What's Changed

@@ -446,7 +446,7 @@
     <string name="wait_for_video">چاوەڕێی ڤیدیۆکە بکە</string>
     <string name="retry_every">دووبارەی بکەرەوە هەموو</string>
     <string name="player_client">ڕاژەخوازی لێدەر</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="use_app_language_for_metadata">زمانی بەرنامە بەکاربهێنە بۆ مێتاداتا</string>
     <string name="app_icon_change">ئایکۆنەکە لەوانەیە بگۆڕێت و بەرنامەکە دادەخرێت</string>
     <string name="custom">ڕاسپێردراو</string>

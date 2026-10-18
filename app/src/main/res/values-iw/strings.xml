@@ -411,7 +411,7 @@
     <string name="weekly">שבועי</string>
     <string name="monthly">חודשי</string>
     <string name="cleanup_leftover_downloads">ניקוי שאריות הורדות (בוטלו, שגיאה)</string>
-    <string name="player_client_summary"><![CDATA[לקוחות נגן יוטיוב ואסימון PO]]></string>
+    <string name="player_client_summary">לקוחות נגן יוטיוב ואסימון PO</string>
     <string name="use_app_language_for_metadata">להשתמש בשפת היישומון לנתוני על</string>
     <string name="layout">פריסה</string>
     <string name="list">רשימה</string>

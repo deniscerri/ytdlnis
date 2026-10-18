@@ -424,7 +424,7 @@
     <string name="prefer_container_over_codec_audio">Za prenos zvoka raje izberi vsebnik kot kodek</string>
     <string name="prefer_container_over_codec_audio_summary">Če je to omogočeno, bo želeni zvočni kodek prezrt in spremenil se bo le vsebnik</string>
     <string name="player_client">Odjemalec predvajalnika</string>
-    <string name="player_client_summary"><![CDATA[YouTube odjemalci predvajalnika & PO žeton]]></string>
+    <string name="player_client_summary">YouTube odjemalci predvajalnika &amp; PO žeton</string>
     <string name="use_app_language_for_metadata">Za metapodatke uporabi jezik aplikacije</string>
     <string name="layout">Postavitev</string>
     <string name="list">Seznam</string>

@@ -448,7 +448,7 @@
     <string name="list">Daftar</string>
     <string name="grid">Kisi</string>
     <string name="use_app_language_for_metadata">Gunakan bahasa aplikasi untuk metadata</string>
-    <string name="player_client_summary"><![CDATA[Klien Pemutar YouTube & PO Token]]></string>
+    <string name="player_client_summary">Klien Pemutar YouTube &amp; PO Token</string>
     <string name="cache_directory_warning">Mengubah folder singgahan (cache) bisa menyebabkan masalah yang tidak terduga. Jika aplikasi tidak bisa menulis data ke jalur yang dikonfigurasi, aplikasi akan menggunakan direktori singgahan (cache) internal asali</string>
     <string name="use_format_sorting">Gunakan pengurutan prioritas format</string>
     <string name="retry_missing_downloads_desc">Unduh kembali butir-butir yang tidak ada dalam riwayat unduhan</string>

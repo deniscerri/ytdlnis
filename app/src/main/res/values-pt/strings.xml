@@ -447,7 +447,7 @@
     <string name="prefer_container_over_codec_audio">Preferir o contêiner em vez do codec para downloads de áudio</string>
     <string name="prefer_container_over_codec_audio_summary">Com essa opção habilitada, a preferência do codec de áudio será ignorada e somente o contêiner será alterado</string>
     <string name="player_client">Cliente de reprodução</string>
-    <string name="player_client_summary"><![CDATA[Cliente de reprodução do YouTube & Chave de acesso PO]]></string>
+    <string name="player_client_summary">Cliente de reprodução do YouTube &amp; Chave de acesso PO</string>
     <string name="use_app_language_for_metadata">Usar idioma do aplicativo para metadados</string>
     <string name="layout">Layout</string>
     <string name="list">Lista</string>

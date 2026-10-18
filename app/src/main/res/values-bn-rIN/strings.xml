@@ -451,7 +451,7 @@
     <string name="prefer_container_over_codec_audio">অডিও ডাউনলোডে কোডেকের পরিবর্তে কনটেইনারকে অগ্রাধিকার দিন</string>
     <string name="prefer_container_over_codec_audio_summary">এটি সক্রিয় থাকলে পছন্দের অডিও কোডেক সেটিং উপেক্ষা করা হবে এবং শুধু কনটেইনার পরিবর্তিত হবে</string>
     <string name="player_client">প্লেয়ার ক্লায়েন্ট</string>
-    <string name="player_client_summary"><![CDATA[YouTube প্লেয়ার ক্লায়েন্ট ও PO Token]]></string>
+    <string name="player_client_summary">YouTube প্লেয়ার ক্লায়েন্ট ও PO Token</string>
     <string name="use_app_language_for_metadata">মেটাডেটার জন্য অ্যাপের ভাষা ব্যবহার করুন</string>
     <string name="layout">লেআউট</string>
     <string name="list">তালিকা</string>

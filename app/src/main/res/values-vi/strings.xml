@@ -468,7 +468,7 @@
     <string name="sync_with_source_desc">Xóa các mục đã tải xuống nếu chúng không còn trong nguồn</string>
     <string name="no_check_certificates">Bỏ qua kiểm tra chứng chỉ HTTPS</string>
     <string name="minutes">Phút</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="generate_potokens_warning">Bạn cần phải tắt cookie để sử dụng tùy chọn này</string>
     <string name="custom">Tuỳ chỉnh</string>
     <string name="potoken">Mã PO</string>

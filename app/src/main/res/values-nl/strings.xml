@@ -450,7 +450,7 @@
     <string name="prefer_container_over_codec_audio">geef voorkeur aan de container dan codec voor audio downloads</string>
     <string name="prefer_container_over_codec_audio_summary">Met deze optie ingeschakeld, zal de bij voorkeur gekozen audio codec worden genegeerd en aleen de container veranderen</string>
     <string name="player_client">Speler cliënt</string>
-    <string name="player_client_summary"><![CDATA[Youtube Speler Cliënten &amp; PO Tokens]]></string>
+    <string name="player_client_summary">Youtube Speler Cliënten &amp; PO Tokens</string>
     <string name="use_app_language_for_metadata">Gebruik app taal voor metadata</string>
     <string name="layout">Formaat</string>
     <string name="use_only_po_token">Gebruik aleen PO Tokens (negeer speler cliënt)</string>

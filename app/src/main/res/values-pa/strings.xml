@@ -461,7 +461,7 @@
     <string name="wait_for_video">ਵੀਡੀਓ ਦੀ ਉਡੀਕ ਕਰੋ</string>
     <string name="retry_every">ਹਰ ਵਾਰ ਮੁੜ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
     <string name="prefer_container_over_codec_audio">ਆਡੀਓ ਡਾਊਨਲੋਡਸ ਲਈ ਕੋਡੇਕ ਨਾਲੋਂ ਕੰਟੇਨਰ ਨੂੰ ਤਰਜੀਹ ਦਿਓ</string>
-    <string name="player_client_summary"><![CDATA[YouTube ਪਲੇਅਰ ਕਲਾਇੰਟ ਅਤੇ PO ਟੋਕਨ]]></string>
+    <string name="player_client_summary">YouTube ਪਲੇਅਰ ਕਲਾਇੰਟ ਅਤੇ PO ਟੋਕਨ</string>
     <string name="use_only_po_token">ਸਿਰਫ਼ PO ਟੋਕਨ ਦੀ ਵਰਤੋਂ ਕਰੋ (ਪਲੇਅਰ ਕਲਾਈਂਟ ਨੂੰ ਅਣਡਿੱਠ ਕਰੋ)</string>
     <string name="app_icon_change">ਆਈਕਨ ਬਦਲ ਸਕਦਾ ਹੈ ਅਤੇ ਐਪਲੀਕੇਸ਼ਨ ਬੰਦ ਹੋ ਜਾਵੇਗੀ</string>
     <string name="generate_potokens">PO ਟੋਕਨ ਤਿਆਰ ਕਰੋ</string>

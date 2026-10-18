@@ -423,7 +423,7 @@
     <string name="thumbnail">Vorschaubild</string>
     <string name="disable_write_info_json">Deaktiviere schreiben von Info Json</string>
     <string name="player_client">Abspiel Client</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="layout">Layout</string>
     <string name="use_app_language_for_metadata">Nutze App Spracheinstellung für Metadaten</string>
     <string name="list">Liste</string>

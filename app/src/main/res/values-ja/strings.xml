@@ -439,7 +439,7 @@
     <string name="data_fetching_extra_command_summary">コマンドテンプレートを追加コマンドとしてデータ取得に用いる</string>
     <string name="prefer_container_over_codec_audio">音声をダウンロードする際にコーデックよりコンテナを優先</string>
     <string name="prefer_container_over_codec_audio_summary">有効にすると、優先する音声コーデックの設定を無視し、コンテナのみを変更します</string>
-    <string name="player_client_summary"><![CDATA[YouTubeプレイヤークライアントとPOトークン]]></string>
+    <string name="player_client_summary">YouTubeプレイヤークライアントとPOトークン</string>
     <string name="use_app_language_for_metadata">メタデータにこのアプリの言語を使用</string>
     <string name="layout">表示</string>
     <string name="list">一覧</string>

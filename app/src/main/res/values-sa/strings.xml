@@ -137,7 +137,7 @@
     <string name="bitrate">बीटरेट</string>
     <string name="not_deleted">न नष्टम्</string>
     <string name="player_client">खिलाडी ग्राहक</string>
-    <string name="player_client_summary"><![CDATA[YouTube प्लेयर क्लायन्ट् & PO टोकन]]></string>
+    <string name="player_client_summary">YouTube प्लेयर क्लायन्ट् &amp; PO टोकन</string>
     <string name="use_app_language_for_metadata">मेटाडाटा कृते एप् भाषायाः उपयोगं कुर्वन्तु</string>
     <string name="layout">प्रारूपं</string>
     <string name="grid">गृध्र</string>

@@ -445,7 +445,7 @@
     <string name="use_alarm_manager_summary">기기 제조사가 WorkManager를 제한했거나 예약 작업이 너무 부정확한 경우 켭니다</string>
     <string name="layout">레이아웃</string>
     <string name="player_client">플레이어 클라이언트</string>
-    <string name="player_client_summary"><![CDATA[YouTube 플레이어 클라이언트 및 PO 토큰]]></string>
+    <string name="player_client_summary">YouTube 플레이어 클라이언트 및 PO 토큰</string>
     <string name="use_app_language_for_metadata">메타데이터에 앱 언어 사용</string>
     <string name="list">목록</string>
     <string name="grid">격자</string>
