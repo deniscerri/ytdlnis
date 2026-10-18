@@ -439,7 +439,7 @@
     <string name="live_stream">Siaran langsung</string>
     <string name="retry_every">Coba lagi setiap</string>
     <string name="minutes">Menit</string>
-    <string name="prefer_container_over_codec_audio">Utamakan kontainer daripada codec untuk unduhan audio</string>
+    <string name="prefer_container_over_codec_audio">Utamakan kontainer daripada kodek bagi unduhan audio</string>
     <string name="prefer_container_over_codec_audio_summary">Jika ini diaktifkan, preferensi kodek audio yang diutamakan akan diabaikan dan hanya kontainer yang akan berubah</string>
     <string name="wait_for_video">Tunggu video</string>
     <string name="live_from_start">Siaran langsung dari awal</string>
@@ -448,7 +448,7 @@
     <string name="list">Daftar</string>
     <string name="grid">Kisi</string>
     <string name="use_app_language_for_metadata">Gunakan bahasa aplikasi untuk metadata</string>
-    <string name="player_client_summary"><![CDATA[Klien Pemutar YouTube & PO Token]]></string>
+    <string name="player_client_summary"><![CDATA[Klien Pemutar &amp; PO Token YouTube]]></string>
     <string name="cache_directory_warning">Mengubah folder singgahan (cache) bisa menyebabkan masalah yang tidak terduga. Jika aplikasi tidak bisa menulis data ke jalur yang dikonfigurasi, aplikasi akan menggunakan direktori singgahan (cache) internal asali</string>
     <string name="use_format_sorting">Gunakan pengurutan prioritas format</string>
     <string name="retry_missing_downloads_desc">Unduh kembali butir-butir yang tidak ada dalam riwayat unduhan</string>
