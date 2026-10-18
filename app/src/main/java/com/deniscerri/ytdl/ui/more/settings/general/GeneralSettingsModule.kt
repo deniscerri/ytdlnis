@@ -11,9 +11,7 @@ import android.util.DisplayMetrics
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -35,6 +33,7 @@ import com.deniscerri.ytdl.ui.adapter.IconsSheetAdapter
 import com.deniscerri.ytdl.ui.adapter.NavBarOptionsAdapter
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
 import com.deniscerri.ytdl.ui.more.settings.SettingModule
+import com.deniscerri.ytdl.util.LocaleUtil
 import com.deniscerri.ytdl.util.NavbarUtil
 import com.deniscerri.ytdl.util.ThemeUtil
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -42,7 +41,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import kotlin.collections.forEach
 
 object GeneralSettingsModule : SettingModule {
@@ -64,18 +62,34 @@ object GeneralSettingsModule : SettingModule {
 
         when(pref.key) {
             "app_language" -> {
-                (pref as ListPreference).apply {
-                    value = Locale.getDefault().language
-                    summary = Locale.getDefault().displayLanguage
+                pref.apply {
+                    val supported = LocaleUtil.supportedLocales(context)
+                    summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
 
-                    setOnPreferenceChangeListener { _, newValue ->
-                        if (newValue == "system") {
-                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(null))
-                        }else{
-                            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(newValue.toString()))
+                    setOnPreferenceClickListener {
+                        if (LocaleUtil.systemPickerAvailable()) {
+                            runCatching { context.startActivity(LocaleUtil.systemPickerIntent(context)) }
+                            return@setOnPreferenceClickListener true
                         }
-                        summary = Locale.getDefault().displayLanguage
-                        host.refreshUI()
+
+                        val locales = supported
+                            .map { it to LocaleUtil.displayName(it, supported) }
+                            .sortedBy { it.second.lowercase() }
+                        val names = (listOf(context.getString(R.string.system)) + locales.map { it.second }).toTypedArray()
+                        val current = LocaleUtil.currentLocale().toLanguageTag()
+                        val checked = if (!LocaleUtil.isOverridden()) 0
+                            else locales.indexOfFirst { it.first.toLanguageTag() == current } + 1
+
+                        MaterialAlertDialogBuilder(context)
+                            .setTitle(context.getString(R.string.language))
+                            .setSingleChoiceItems(names, checked) { dialog, which ->
+                                LocaleUtil.setAppLocale(if (which == 0) null else locales[which - 1].first)
+                                summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
+                                dialog.dismiss()
+                                host.refreshUI()
+                            }
+                            .setNegativeButton(context.getString(R.string.cancel), null)
+                            .show()
                         true
                     }
                 }

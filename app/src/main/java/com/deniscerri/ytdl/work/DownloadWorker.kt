@@ -29,6 +29,7 @@ import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.LogRepository
 import com.deniscerri.ytdl.database.repository.ResultRepository
+import com.deniscerri.ytdl.util.LocaleUtil
 import com.deniscerri.ytdl.util.AlarmScheduler
 import com.deniscerri.ytdl.util.Extensions.fixYtdlpPath
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
@@ -114,16 +115,7 @@ class DownloadWorker(
         //val createResultItem = inputData.getBoolean("createResultItem", true)
 
         val confTmp = Configuration(context.resources.configuration)
-        val locale = if (Build.VERSION.SDK_INT < 33) {
-            sharedPreferences.getString("app_language", "")!!.ifEmpty { Locale.getDefault().language }
-        }else{
-            Locale.getDefault().language
-        }.run {
-            split("-")
-        }.run {
-            if (this.size == 1) Locale(this[0]) else Locale(this[0], this[1])
-        }
-        confTmp.setLocale(locale)
+        confTmp.setLocale(LocaleUtil.currentLocale())
         val metrics = DisplayMetrics()
         val resources = Resources(context.assets, metrics, confTmp)
 

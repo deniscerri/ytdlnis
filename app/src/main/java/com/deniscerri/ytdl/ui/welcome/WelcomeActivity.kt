@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.IntentCompat
 import androidx.core.content.edit
-import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
@@ -130,12 +128,6 @@ class WelcomeActivity : AppCompatActivity() {
             viewModel.autoUpdateYtdlp = preferences.getBoolean("auto_update_ytdlp", viewModel.autoUpdateYtdlp)
             viewModel.ytdlpSource = preferences.getString("ytdlp_source", viewModel.ytdlpSource) ?: viewModel.ytdlpSource
             viewModel.ytdlpSourceLabel = preferences.getString("ytdlp_source_label", viewModel.ytdlpSourceLabel) ?: viewModel.ytdlpSourceLabel
-
-            val language = preferences.getString("app_language", "en")
-            AppCompatDelegate.setApplicationLocales(
-                if (language == "system") LocaleListCompat.forLanguageTags(null)
-                else LocaleListCompat.forLanguageTags(language.toString())
-            )
         }
         goTo(1)
     }

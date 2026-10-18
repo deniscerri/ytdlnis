@@ -14,8 +14,6 @@ import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.os.LocaleListCompat
 import androidx.core.text.layoutDirection
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -40,6 +38,7 @@ import com.deniscerri.ytdl.database.models.SearchHistoryItem
 import com.deniscerri.ytdl.database.models.TemplateShortcut
 import com.deniscerri.ytdl.database.models.observeSources.ObserveSourcesItem
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
+import com.deniscerri.ytdl.util.LocaleUtil
 import com.deniscerri.ytdl.util.BackupSettingsUtil
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.ThemeUtil
@@ -54,7 +53,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.util.Locale
 
 
 class MainSettingsFragment : PreferenceFragmentCompat() {
@@ -95,7 +93,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         editor = preferences.edit()
 
         val appearance = findPreference<Preference>("appearance")
-        val separator = if (Locale(preferences.getString("app_language", "en")!!).layoutDirection == LayoutDirection.RTL) "،" else ","
+        val separator = if (LocaleUtil.currentLocale().layoutDirection == LayoutDirection.RTL) "،" else ","
         appearance?.summary = "${if (Build.VERSION.SDK_INT < 33) getString(R.string.language) + "$separator " else ""}${getString(R.string.Theme)}$separator ${getString(R.string.accents)}$separator ${getString(R.string.preferred_search_engine)}"
         appearance?.setOnPreferenceClickListener {
             navController.navigate(R.id.action_mainSettingsFragment_to_appearanceSettingsFragment)
@@ -368,14 +366,6 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
         builder.setPositiveButton(
             getString(R.string.ok)
         ) { _: DialogInterface?, _: Int ->
-            if(data.settings != null){
-                val languageValue = preferences.getString("app_language", "en")
-                if (languageValue == "system") {
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(null))
-                }else{
-                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(languageValue.toString()))
-                }
-            }
             ThemeUtil.recreateAllActivities()
         }
 

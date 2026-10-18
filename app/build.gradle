@@ -160,6 +160,10 @@ android {
     lint {
         disable 'MissingTranslation', 'RestrictedApi'
     }
+
+    androidResources {
+        generateLocaleConfig true
+    }
 }
 
 

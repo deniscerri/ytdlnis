@@ -8,6 +8,7 @@ import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.models.ResultItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
+import com.deniscerri.ytdl.util.LocaleUtil
 import com.deniscerri.ytdl.util.Extensions.getIDFromYoutubeURL
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.extractors.newpipe.potoken.NewPipePoTokenGenerator
@@ -35,7 +36,7 @@ import kotlin.coroutines.cancellation.CancellationException
 class NewPipeUtil(context: Context) {
     private var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val countryCode = sharedPreferences.getString("locale", "")!!.ifEmpty { "US" }
-    private val language = sharedPreferences.getString("app_language", "")!!.ifEmpty { "en" }
+    private val language = LocaleUtil.currentLocale().language
     private val useAppLanguageForMetadata = sharedPreferences.getBoolean("use_app_language_for_metadata", false)
 
     init {
