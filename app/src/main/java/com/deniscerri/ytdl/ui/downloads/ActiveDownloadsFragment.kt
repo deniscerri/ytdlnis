@@ -3,9 +3,7 @@ package com.deniscerri.ytdl.ui.downloads
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.OptIn
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -33,7 +30,6 @@ import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.google.android.material.badge.ExperimentalBadgeUtils
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -51,8 +47,6 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
     private lateinit var activeDownloads : ActiveDownloadAdapter
 
     private lateinit var notificationUtil: NotificationUtil
-    private lateinit var pauseBtn: ExtendedFloatingActionButton
-    private lateinit var resumeBtn: ExtendedFloatingActionButton
     private lateinit var noResults: RelativeLayout
     private lateinit var workManager: WorkManager
     private lateinit var preferences: SharedPreferences
@@ -84,56 +78,11 @@ class ActiveDownloadsFragment : Fragment(), ActiveDownloadAdapter.OnItemClickLis
         activeRecyclerView.adapter = activeDownloads
         activeRecyclerView.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.grid_size))
 
-        pauseBtn = view.findViewById(R.id.pause)
-        pauseBtn.isVisible = false
-        resumeBtn = view.findViewById(R.id.resume)
         noResults = view.findViewById(R.id.no_results)
 
         downloadViewModel.pausedAllDownloads.observe(viewLifecycleOwner) { value ->
-            lifecycleScope.launch {
-                when(value) {
-                    DownloadViewModel.PausedAllDownloadsState.PAUSE -> {
-                        resumeBtn.isVisible = false
-                        pauseBtn.isClickable = true
-                        val typedValue = TypedValue()
-                        requireContext().theme.resolveAttribute(R.attr.colorPrimaryContainer, typedValue, true)
-                        pauseBtn.backgroundTintList = ColorStateList.valueOf(typedValue.data)
-                        pauseBtn.isVisible = true
-                        activeDownloads.notifyDataSetChanged()
-                    }
-                    DownloadViewModel.PausedAllDownloadsState.RESUME -> {
-                        pauseBtn.isVisible = false
-                        resumeBtn.isClickable = true
-                        val typedValue = TypedValue()
-                        requireContext().theme.resolveAttribute(R.attr.colorPrimaryContainer, typedValue, true)
-                        resumeBtn.backgroundTintList = ColorStateList.valueOf(typedValue.data)
-                        resumeBtn.isVisible = true
-                        activeDownloads.notifyDataSetChanged()
-                    }
-                    DownloadViewModel.PausedAllDownloadsState.PROCESSING -> {
-                        pauseBtn.isClickable = false
-                        pauseBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey))
-
-                        resumeBtn.isClickable = false
-                        resumeBtn.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey))
-                    }
-                    else -> {
-                        pauseBtn.isVisible = false
-                        resumeBtn.isVisible = false
-                    }
-                }
-            }
-        }
-
-        pauseBtn.setOnClickListener {
-            lifecycleScope.launch {
-                downloadViewModel.pauseAllDownloads()
-            }
-        }
-
-        resumeBtn.setOnClickListener {
-            lifecycleScope.launch {
-                downloadViewModel.resumeAllDownloads()
+            if (value == DownloadViewModel.PausedAllDownloadsState.PAUSE || value == DownloadViewModel.PausedAllDownloadsState.RESUME) {
+                activeDownloads.notifyDataSetChanged()
             }
         }
 

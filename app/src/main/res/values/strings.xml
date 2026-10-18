@@ -159,6 +159,8 @@
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
     <string name="redownload">Redownload</string>
     <string name="in_queue">In queue</string>
+    <plurals name="queue_items"><item quantity="one">%d item</item><item quantity="other">%d items</item></plurals>
+    <string name="reorder_queue">Reorder queue</string>
     <string name="clear_cancelled">Clear cancelled</string>
     <string name="clear_errored">Clear errored</string>
     <string name="split_by_chapters">Split by chapters</string>
