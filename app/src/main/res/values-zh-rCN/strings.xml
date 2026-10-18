@@ -685,6 +685,15 @@
     </plurals>
     <string name="update_install">安装</string>
     <string name="welcome_perm_folders_header">恢复的文件夹</string>
-    <string name="welcome_perm_folders_summary">你的备份使用这些文件夹，但本应用失去了对它们的访问。再次允许访问每个文件夹，或者选择使用不同的文件夹。</string>
+    <string name="welcome_perm_folders_summary">你的备份使用这些文件夹，但本应用失去了对它们的访问。再次允许访问每个文件夹，或者选择用别的文件夹。</string>
     <string name="crop_unsupported">裁剪对这个项目不可用</string>
+    <plurals name="queue_items">
+        <item quantity="other">%d 个项目</item>
+    </plurals>
+    <string name="reorder_queue">调整队列顺序</string>
+    <string name="crop_unavailable_please_update_item">为了能使用裁剪功能需要更新项目数据</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">%1$s 前检查</string>
+    <string name="update_checked_just_now">刚检查过</string>
+    <string name="update_not_checked_yet">还没检查过</string>
 </resources>

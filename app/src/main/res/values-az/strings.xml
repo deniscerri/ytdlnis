@@ -696,4 +696,14 @@
     <string name="welcome_perm_folders_header">Bərpa edilmiş qovluqlar</string>
     <string name="welcome_perm_folders_summary">Nüsxəniz bu qovluqları istifadə edir, lakin tətbiq onlara girişi itirib. Hər birinə təkrar icazə verin və ya əvəzində istifadə etmək üçün başqa qovluq seçin.</string>
     <string name="crop_unsupported">Qırpma bu element üçün əlçatan deyil</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d element</item>
+        <item quantity="other">%d element</item>
+    </plurals>
+    <string name="reorder_queue">Növbəni yenidən sırala</string>
+    <string name="crop_unavailable_please_update_item">Qırpma xüsusiyyətini istifadə edə bilmək üçün sırada element məlumatlarını yeniləməlisiniz</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">%1$s yoxlanıldı</string>
+    <string name="update_checked_just_now">İndicə yoxlanılıb</string>
+    <string name="update_not_checked_yet">Hələ yoxlanılmayıb</string>
 </resources>
