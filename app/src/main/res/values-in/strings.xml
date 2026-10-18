@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="remove_results">Kosongkan hasil</string>
-    <string name="updating">Pemutakhiran</string>
+    <string name="updating">Pembaruan</string>
     <string name="you_are_in_latest_version">Versi yang terkini sedang digunakan</string>
     <string name="confirm_delete_history_desc">Hapus seluruh riwayat, secara permanen</string>
     <string name="confirm_delete_history">Konfirmasikan</string>
     <string name="search_history_hint">Telusuri dari riwayat</string>
     <string name="no_results">Tidak ada hasil</string>
-    <string name="remove_all">Hapus semua</string>
+    <string name="remove_all">Buang semua</string>
     <string name="download_all">Unduh semua</string>
     <string name="settings">Setelan</string>
     <string name="search">Telusuri</string>
@@ -25,14 +25,14 @@
     <string name="ytld_update_success">Versi baru yt-dlp telah dipasang</string>
     <string name="ytdl_already_updating">Memasang versi baru yt-dlp</string>
     <string name="ytdl_updating_started">Mengunduh versi baru yt-dlp</string>
-    <string name="Remove">Tiadakan</string>
+    <string name="Remove">Buang</string>
     <string name="ok">Oke</string>
     <string name="cancel">Batalkan</string>
     <string name="more">Selengkapnya</string>
-    <string name="update_app">Periksa pemutakhiran</string>
+    <string name="update_app">Periksa pembaruan</string>
     <string name="version">Versi</string>
     <string name="downloading_update">Mengunduh versi yang baru</string>
-    <string name="command_directory">Folder perintah khusus</string>
+    <string name="command_directory">Folder perintah kustom</string>
     <string name="downloading">Mengunduh</string>
     <string name="video">Video</string>
     <string name="couldnt_find_apk">Tidak dapat menemukan APK yang cocok</string>
@@ -40,10 +40,10 @@
     <string name="concurrent_fragments_summary">Jumlah fragmen sebuah video DASH/HLS asal untuk diunduh secara bersamaan</string>
     <string name="limit_rate_summary">Laju unduhan maksimal (dalam satuan bita per detik), misalnya 50K atau 4.2M</string>
     <string name="limit_rate">Batas laju</string>
-    <string name="aria2_summary">Gunakan aria2c sebagai pengunduh daripada pengunduh asal</string>
+    <string name="aria2_summary">Gunakan aria2c sebagai pengunduh alih-alih pengunduh asal</string>
     <string name="about">Tentang</string>
-    <string name="concurrent_fragments">Fragmen bersamaaan</string>
-    <string name="command_download_notification_channel_name">Perintah unduhan</string>
+    <string name="concurrent_fragments">Fragmen bersamaan</string>
+    <string name="command_download_notification_channel_name">Unduhan dengan perintah</string>
     <string name="request_permission_desc">Aplikasi ini membutuhkan perizinan berkas untuk menyimpan unduhan pada perangkat</string>
     <string name="adjust_audio">Sesuaikan audio</string>
     <string name="shortcuts_desc">Gunakan perintah yang umum digunakan untuk membuat templat</string>
@@ -67,7 +67,7 @@
     <string name="exit_app">Keluar dari aplikasi</string>
     <string name="sponsorblock_reminders">Pengingat berlangganan</string>
     <string name="select_sponsorblock_filtering">Pilih penyaringan SponsorBlock</string>
-    <string name="add_chapter">Tambahkan bab</string>
+    <string name="add_chapter">Tambahkan babak</string>
     <string name="processing">Pemrosesan</string>
     <string name="embed_subs_summary">Menambahkan takarir (subtitle) dalam video</string>
     <string name="embed_thumb">Sampul gambar mini</string>
@@ -87,7 +87,7 @@
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>
     <string name="run_command">Jalankan perintah</string>
-    <string name="remove_deleted">Bersihkan yang dihapus</string>
+    <string name="remove_deleted">Buang yang dihapus</string>
     <string name="sponsorblock_nonmusic">Bagian non-musik dan di luar topik</string>
     <string name="sponsorblock_sponsors">Sponsor</string>
     <string name="sponsorblock_intro">Intro</string>
@@ -95,15 +95,15 @@
     <string name="sponsorblock_promos">Promosi diri sendiri</string>
     <string name="api_key_summary">Video rekomendasi dari API YouTube</string>
     <string name="update_app_summary">Beri tahu versi aplikasi yang baru saat aplikasi dibuka. Data tersebut diambil dari Repositori Github resmi</string>
-    <string name="remove_duplicates">Hapus duplikat</string>
+    <string name="remove_duplicates">Buang duplikat</string>
     <string name="sort_by">Penyortiran</string>
     <string name="incognito_summary">Unduh tanpa menambahkannya ke riwayat</string>
     <string name="configure_download">Sesuaikan unduhan</string>
     <string name="author">Pembuat</string>
-    <string name="embed_subtitles">Sematkan subtitle</string>
-    <string name="show_download_card">Tampilkan kartu unduhan</string>
+    <string name="embed_subtitles">Tanamkan takarir (subtitle)</string>
+    <string name="show_download_card">Perlihatkan kartu unduhan</string>
     <string name="sponsorblock_previews">Pratinjau</string>
-    <string name="sponsorblock_fillers">Pengisi</string>
+    <string name="sponsorblock_fillers">Kata-kata pengisi</string>
     <string name="save_dir">Direktori penyimpanan</string>
     <string name="new_template">Templat baru</string>
     <string name="adjust_templates">Sesuaikan templat</string>
@@ -112,7 +112,7 @@
     <string name="edit_selected">Sunting yang dipilih</string>
     <string name="download_card_summary">Memodifikasi setelan untuk butir tersebut sebelum mengunduh. Menonaktifkan pilihan ini akan segera memulai pengunduhan</string>
     <string name="concurrent_downloads">Unduhan bersamaan</string>
-    <string name="defaultValue">Bawaan</string>
+    <string name="defaultValue">Asali</string>
     <string name="container">Kontainer</string>
     <string name="logs">Log</string>
     <string name="download">Unduh</string>
@@ -352,7 +352,7 @@
     <string name="multiple_download_card">Beberapa kartu unduhan</string>
     <string name="format_filter">Penyaring format</string>
     <string name="format_smallest">Format terkecil (per resolusi)</string>
-    <string name="cut_unavailable_please_update_item">Kamu perlu memutakhirkan data butir agar bisa menggunakan fitur pemotongan</string>
+    <string name="cut_unavailable_please_update_item">Kamu perlu memperbarui data butir agar bisa menggunakan fitur pemotongan</string>
     <string name="no_download_fragments">Jangan unduh sebagai fragmen</string>
     <string name="wrap_text">Bungkus teks</string>
     <string name="swipe_gestures_download_card">Gerakan usap dalam kartu unduhan</string>
@@ -687,4 +687,13 @@
     <string name="crop_unsupported">Fitur pemangkasan tidak tersedia untuk butir ini</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Prasetel yang digunakan FFmpeg untuk pengaya internal seperti pembubuhan takarir (subtitle), dll. Menyesuaikan preferensi ini akan memengaruhi ukuran berkas di akhir!</string>
     <string name="welcome_permissions_summary">YTDLnis bekerja paling baik dengan ini. Kamu bisa mengubahnya nanti di setelan.</string>
+    <plurals name="queue_items">
+        <item quantity="other">%d butir</item>
+    </plurals>
+    <string name="reorder_queue">Susun ulang antrean</string>
+    <string name="crop_unavailable_please_update_item">Kamu perlu memperbarui data butir agar bisa menggunakan fitur pemangkasan</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Diperiksa %1$s</string>
+    <string name="update_checked_just_now">Baru saja diperiksa</string>
+    <string name="update_not_checked_yet">Masih belum diperiksa</string>
 </resources>
