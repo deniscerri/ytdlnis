@@ -80,6 +80,7 @@ class LyricsBottomSheetDialog(
     private val adapter = LyricsAdapter { line -> seekToLine(line) }
     private var lyrics: LrcLibUtil.Lyrics? = null
     private var offset = 0L
+    private var lastQuery: String? = null
     private var seeking = false
     private var lastUserScroll = 0L
 
@@ -334,6 +335,7 @@ class LyricsBottomSheetDialog(
             return
         }
 
+        lyricsMessage.isVisible = false
         prefs.lyricsId = found.id
         //opening the sheet and finding lyrics means the user wants them
         if (!prefs.embedLyrics && !prefs.saveLrc) {
@@ -397,7 +399,7 @@ class LyricsBottomSheetDialog(
 
     private fun showSearchDialog() {
         val input = EditText(requireContext()).apply {
-            setText("${item.author} ${item.title}".trim())
+            setText(lastQuery ?: "${item.author} ${item.title}".trim())
             setSelectAllOnFocus(true)
             maxLines = 1
         }
@@ -414,6 +416,7 @@ class LyricsBottomSheetDialog(
             .setPositiveButton(R.string.search) { _, _ ->
                 val query = input.text.toString().trim()
                 if (query.isBlank()) return@setPositiveButton
+                lastQuery = query
                 lyricsProgress.isVisible = true
                 lifecycleScope.launch {
                     val results = try {

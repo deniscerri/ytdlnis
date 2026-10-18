@@ -93,15 +93,10 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
     }
 
     suspend fun getStreamingUrlAndChapters(url: String) : Pair<List<String>, List<ChapterItem>?> {
-//        val newPipeTrial = if (isUsingNewPipeExtractorDataFetching()) {
-//            newPipeUtil.getStreamingUrlAndChapters(url)
-//        }else {
-//            Result.failure(Throwable())
-//        }
-//        if (newPipeTrial.isFailure){
-//            val res = ytdlpUtil.getStreamingUrlAndChapters(url)
-//            return res.getOrDefault(Pair(listOf(""), null))
-//        }
+        if (url.isYoutubeURL()) {
+            val newPipeTrial = runCatching { newPipeUtil.getStreamingUrlAndChapters(url) }.getOrNull()
+            newPipeTrial?.getOrNull()?.let { return it }
+        }
 
         return ytdlpUtil.getStreamingUrlAndChapters(url)
             .getOrDefault(Pair(listOf(""), null))

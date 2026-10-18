@@ -6,6 +6,7 @@ import urllib.parse
 import urllib.request
 
 from yt_dlp.postprocessor.common import PostProcessor
+from yt_dlp.utils import PostProcessingError
 
 API = 'https://lrclib.net/api'
 USER_AGENT = 'YTDLnis (https://github.com/deniscerri/ytdlnis)'
@@ -133,6 +134,9 @@ def embed(path, text, synced):
 class LyricsPP(PostProcessor):
     """Fetches lyrics from lrclib.net and embeds them into the audio file.
 
+    Raises PostProcessingError when the lyrics can't be fetched or aren't found,
+    which fails the download.
+
     Must run with when=after_move: post_process plugins run before audio
     extraction, so the file would still be the original webm/m4a stream.
 
@@ -169,8 +173,7 @@ class LyricsPP(PostProcessor):
             result = find_lyrics(track, self._artist(info), info.get('album') or '',
                                  int(info.get('duration') or 0), self._id)
         except Exception as e:
-            self.report_warning(f'Could not fetch lyrics: {e}')
-            return [], info
+            raise PostProcessingError(f'Could not fetch lyrics: {e}')
 
         if not result or result.get('instrumental'):
             self.to_screen('No lyrics found')

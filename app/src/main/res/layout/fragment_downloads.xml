@@ -22,12 +22,16 @@
         app:behavior_peekHeight="0dp"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
+        <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+            android:id="@+id/sheet_drag_handle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/sheet_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
-            android:paddingTop="20dp"
             android:paddingBottom="8dp">
 
             <TextView
