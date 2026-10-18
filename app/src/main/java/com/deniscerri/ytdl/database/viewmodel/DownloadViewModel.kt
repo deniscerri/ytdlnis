@@ -87,6 +87,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     val activeDownloadsCount : Flow<Int>
     val activePausedDownloadsCount : Flow<Int>
     val queuedDownloadsCount : Flow<Int>
+    val queuedPausedDownloadsCount : Flow<Int>
     val pausedDownloadsCount : Flow<Int>
     val cancelledDownloadsCount : Flow<Int>
     val erroredDownloadsCount : Flow<Int>
@@ -139,6 +140,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         activeDownloadsCount = repository.activeDownloadsCount
         activePausedDownloadsCount = repository.activePausedDownloadsCount
         queuedDownloadsCount = repository.queuedDownloadsCount
+        queuedPausedDownloadsCount = repository.queuedPausedDownloadsCount
         pausedDownloadsCount = repository.pausedDownloadsCount
         cancelledDownloadsCount = repository.cancelledDownloadsCount
         erroredDownloadsCount = repository.erroredDownloadsCount
@@ -160,14 +162,15 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
             }
         }
 
-        pausedAllDownloadsFlow = combine(activeDownloadsCount, queuedDownloadsCount, pausedDownloadsCount) { active, queued, paused ->
+        pausedAllDownloadsFlow = combine(activeDownloadsCount, queuedDownloadsCount, pausedDownloadsCount, queuedPausedDownloadsCount) { active, queuedTotal, paused, queuedPaused ->
             if (isPausingResuming) {
                 return@combine PausedAllDownloadsState.PROCESSING
             }
 
-            if (active == 0 && queued == 0 && paused == 0) {
+            val queued = queuedTotal - queuedPaused
+            if (active == 0 && queued == 0 && paused == 0 && queuedPaused == 0) {
                 return@combine PausedAllDownloadsState.HIDDEN
-            }else if (paused > 1 || (active == 0 && queued > 0) || (paused > 0 && active > 0)) {
+            }else if (paused > 1 || queuedPaused > 0 || (active == 0 && queued > 0) || (paused > 0 && active > 0)) {
                 return@combine PausedAllDownloadsState.RESUME
             }else if (active > 1 || (active > 0 && queued > 0)) {
                 return@combine PausedAllDownloadsState.PAUSE
@@ -1237,6 +1240,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         isPausingResuming = false
         withContext(Dispatchers.IO){
             repository.setDownloadStatusMultiple(activeDownloadsList.map { it.id }, DownloadRepository.Status.Paused)
+            repository.setDownloadStatusMultiple(dao.getQueuedDownloadIDs(), DownloadRepository.Status.QueuedPaused)
         }
         pausedAllDownloads.value = PausedAllDownloadsState.RESUME
     }

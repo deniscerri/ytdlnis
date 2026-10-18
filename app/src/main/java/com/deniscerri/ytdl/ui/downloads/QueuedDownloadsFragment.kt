@@ -134,7 +134,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
             }
         }
 
-        downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Queued)).observe(viewLifecycleOwner){
+        downloadViewModel.getTotalSize(listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused)).observe(viewLifecycleOwner){
             totalSize = it
             noResults.isVisible = it == 0
             dragHandleToggle.isVisible = it > 1
@@ -195,7 +195,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                         val selectedIDs = getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
                             downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(
-                                DownloadRepository.Status.Queued).toListString())
+                                DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
                         }.toMutableList()
                         idsInMiddle.addAll(selectedIDs)
                         if (idsInMiddle.isNotEmpty()){
@@ -283,7 +283,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
             return if (adapter.inverted || adapter.checkedItems.isEmpty()){
                 withContext(Dispatchers.IO){
                     downloadViewModel.getItemIDsNotPresentIn(adapter.checkedItems.toList(), listOf(
-                        DownloadRepository.Status.Queued))
+                        DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused))
                 }
             }else{
                 adapter.checkedItems.toList()
@@ -511,7 +511,7 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
                     if(selectedObjects == 2){
                         val selectedIDs = contextualActionBar.getSelectedIDs().sortedBy { it }
                         val idsInMiddle = withContext(Dispatchers.IO){
-                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Queued).toListString())
+                            downloadViewModel.getIDsBetweenTwoItems(selectedIDs.first(), selectedIDs.last(), listOf(DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused).toListString())
                         }
                         this.menu.findItem(R.id.select_between).isVisible = idsInMiddle.isNotEmpty()
                     }

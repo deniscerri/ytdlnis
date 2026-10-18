@@ -147,7 +147,7 @@ class GenericDownloadAdapter(onItemClickListener: OnItemClickListener, activity:
                 actionButton.setIconResource(R.drawable.ic_downloads)
                 actionButton.contentDescription = activity.getString(R.string.download)
             }
-            DownloadRepository.Status.Queued.toString() -> {
+            DownloadRepository.Status.Queued.toString(), DownloadRepository.Status.QueuedPaused.toString() -> {
                 actionButton.setIconResource(R.drawable.ic_baseline_delete_outline_24)
                 actionButton.contentDescription = activity.getString(R.string.Remove)
             }

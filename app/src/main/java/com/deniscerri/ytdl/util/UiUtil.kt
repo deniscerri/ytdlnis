@@ -736,7 +736,7 @@ object UiUtil {
                     true
                 }
             }
-            DownloadRepository.Status.Queued -> {
+            DownloadRepository.Status.Queued, DownloadRepository.Status.QueuedPaused -> {
                 download!!.text = context.getString(R.string.configure_download)
                 download.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_retries, 0, 0, 0);
                 download.setOnClickListener {
@@ -773,7 +773,7 @@ object UiUtil {
             }
         }
 
-        if (status != DownloadRepository.Status.Queued && status != DownloadRepository.Status.Error){
+        if (status != DownloadRepository.Status.Queued && status != DownloadRepository.Status.QueuedPaused && status != DownloadRepository.Status.Error){
             download?.setOnClickListener {
                 bottomSheet.dismiss()
                 downloadItem(item)
