@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.App
@@ -34,6 +36,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.io.IOException
 import java.util.Calendar
 
 
@@ -128,21 +131,33 @@ class SettingsViewModel(private val application: Application) : AndroidViewModel
         }
 
         val currentTime = Calendar.getInstance()
-        val dir = File(FileUtil.getBackupPath(application))
-        dir.mkdirs()
-
-        val saveFile = File("${dir.absolutePath}/YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
+        val fileName = "YTDLnis_Backup_${BuildConfig.VERSION_NAME}_${currentTime.get(
             Calendar.YEAR)}-${currentTime.get(Calendar.MONTH) + 1}-${currentTime.get(
-            Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json")
+            Calendar.DAY_OF_MONTH)}_${currentTime.get(Calendar.HOUR)}-${currentTime.get(Calendar.MINUTE)}-${currentTime.get(Calendar.SECOND)}.json"
 
-        withContext(Dispatchers.IO) {
-            if (saveFile.exists()) saveFile.delete()
-            saveFile.createNewFile()
-            saveFile.writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
-            FileUtil.scanMedia(listOf(saveFile.absolutePath), application)
+        // write to cache first, then let FileUtil move it. It knows how to reach SD cards, USB drives and other providers
+        val tempDir = File(application.cacheDir, "backups/${System.currentTimeMillis()}")
+        return withContext(Dispatchers.IO) {
+            try {
+                tempDir.mkdirs()
+                File(tempDir, fileName).writeText(GsonBuilder().setPrettyPrinting().create().toJson(json))
+
+                val destination = preferences.getString("backup_path", "")!!.ifBlank { FileUtil.getBackupPath(application) }
+                val movedFiles = FileUtil.moveFile(tempDir, application, destination, false) { }
+                val path = movedFiles.firstOrNull()
+                    ?: throw IOException("Couldn't save the backup to ${FileUtil.formatPath(destination)}")
+
+                // for folders granted through the system picker, return a uri the file can actually be opened with
+                val savedUri = if (destination.startsWith("content://")) {
+                    runCatching { DocumentFile.fromTreeUri(application, destination.toUri())?.findFile(fileName)?.uri?.toString() }.getOrNull()
+                } else null
+                Result.success(savedUri ?: path)
+            } catch (e: Exception) {
+                Result.failure(e)
+            } finally {
+                tempDir.deleteRecursively()
+            }
         }
-
-        return Result.success(saveFile.absolutePath)
     }
 
     suspend fun restoreData(data: RestoreAppDataItem, context: Context, resetData: Boolean = false) : Boolean {

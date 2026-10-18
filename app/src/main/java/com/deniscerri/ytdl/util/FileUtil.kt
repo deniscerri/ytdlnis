@@ -491,21 +491,25 @@ object FileUtil {
 
 
     fun openFileIntent(context: Context, downloadPath: String) {
-        val uri = FileProvider.getUriForFile(context, context.packageName + ".fileprovider", File(downloadPath))
-        println(uri)
+        val uri = if (downloadPath.startsWith("content://")) downloadPath.toUri()
+            else runCatching { FileProvider.getUriForFile(context, context.packageName + ".fileprovider", File(downloadPath)) }.getOrNull()
 
         if (uri == null){
             Toast.makeText(context, "Error opening file!", Toast.LENGTH_SHORT).show()
         }else{
             val ext = downloadPath.substring(downloadPath.lastIndexOf(".") + 1).lowercase()
-            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext)
+            val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(ext) ?: "*/*"
 
             val intent = Intent(Intent.ACTION_VIEW)
                 .setDataAndType(uri, mime)
                 .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 .addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
 
-            context.startActivity(intent)
+            runCatching {
+                context.startActivity(intent)
+            }.onFailure {
+                Toast.makeText(context, it.message ?: "Error opening file!", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
