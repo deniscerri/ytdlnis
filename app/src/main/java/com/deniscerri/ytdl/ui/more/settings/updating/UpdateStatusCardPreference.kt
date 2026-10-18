@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.ui.more.settings.updating
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,6 +33,18 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
     var version: String? = null
         set(value) { field = value; notifyChanged() }
 
+    /** The version an update would move to. Only shown while [status] is UPDATE_AVAILABLE */
+    var latestVersion: String? = null
+        set(value) { field = value; notifyChanged() }
+
+    /** Line under the version, e.g. the architecture and channel */
+    var subtitle: String? = null
+        set(value) { field = value; notifyChanged() }
+
+    /** Last line, normally when it was last checked. CHECKING, ERROR and UPDATE_AVAILABLE show their status instead */
+    var detail: String? = null
+        set(value) { field = value; notifyChanged() }
+
     var buttonText: String? = null
         set(value) { field = value; notifyChanged() }
 
@@ -39,6 +52,21 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
         set(value) { field = value; notifyChanged() }
 
     var onButtonClick: (() -> Unit)? = null
+
+    companion object {
+        /** "Checked 5 minutes ago". [lastCheck] is epoch millis, 0 when never checked */
+        fun buildDetail(context: Context, lastCheck: Long): String {
+            val now = System.currentTimeMillis()
+            return when {
+                lastCheck <= 0L -> context.getString(R.string.update_not_checked_yet)
+                now - lastCheck < DateUtils.MINUTE_IN_MILLIS -> context.getString(R.string.update_checked_just_now)
+                else -> context.getString(
+                    R.string.update_checked_ago,
+                    DateUtils.getRelativeTimeSpanString(lastCheck, now, DateUtils.MINUTE_IN_MILLIS)
+                )
+            }
+        }
+    }
 
     init {
         layoutResource = R.layout.preference_update_status_card
@@ -54,8 +82,9 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
         val card = holder.findViewById(R.id.status_card) as MaterialCardView
         val icon = holder.findViewById(R.id.status_icon) as ImageView
         val progress = holder.findViewById(R.id.status_progress) as CircularProgressIndicator
-        val title = holder.findViewById(R.id.status_title) as TextView
         val versionText = holder.findViewById(R.id.status_version) as TextView
+        val subtitleText = holder.findViewById(R.id.status_subtitle) as TextView
+        val detailText = holder.findViewById(R.id.status_detail) as TextView
         val button = holder.findViewById(R.id.status_button) as MaterialButton
 
         val (containerColor, onContainerColor) = when (status) {
@@ -78,8 +107,9 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
         }
 
         card.setCardBackgroundColor(containerColor)
-        title.setTextColor(onContainerColor)
+        subtitleText.setTextColor(onContainerColor)
         versionText.setTextColor(onContainerColor)
+        detailText.setTextColor(onContainerColor)
         icon.imageTintList = ColorStateList.valueOf(onContainerColor)
         progress.setIndicatorColor(onContainerColor)
 
@@ -94,17 +124,25 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
             }
         )
 
-        title.text = context.getString(
-            when (status) {
-                Status.UPDATE_AVAILABLE -> R.string.update_available
-                Status.ERROR -> R.string.update_check_failed
-                Status.CHECKING -> R.string.checking_for_updates
-                else -> R.string.version
-            }
-        )
-
         val v = version
-        versionText.text = if (v.isNullOrBlank()) context.getString(R.string.loading) else context.getString(R.string.version_installed, v)
+        val latest = latestVersion
+        versionText.text = when {
+            v.isNullOrBlank() -> context.getString(R.string.loading)
+            status == Status.UPDATE_AVAILABLE && !latest.isNullOrBlank() -> context.getString(R.string.version_update_available, v, latest)
+            else -> v
+        }
+
+        subtitleText.text = subtitle
+        subtitleText.isVisible = !subtitle.isNullOrBlank()
+
+        val statusLine = when (status) {
+            Status.CHECKING -> context.getString(R.string.checking_for_updates)
+            Status.ERROR -> context.getString(R.string.update_check_failed)
+            Status.UPDATE_AVAILABLE -> context.getString(R.string.update_available)
+            else -> detail
+        }
+        detailText.text = statusLine
+        detailText.isVisible = !statusLine.isNullOrBlank()
 
         button.isVisible = showButton
         button.isEnabled = !isChecking

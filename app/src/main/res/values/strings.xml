@@ -336,6 +336,7 @@
     <string name="source">Source</string>
     <string name="app">App</string>
     <string name="cut_unavailable_please_update_item">You need to update the item data in order to be able to use cut feature</string>
+    <string name="crop_unavailable_please_update_item">You need to update the item data in order to be able to use crop feature</string>
     <string name="changed_path_for_everyone_to">Changed every item\'s download path to:</string>
     <string name="dismiss">Dismiss</string>
     <string name="all">All</string>
@@ -609,6 +610,10 @@
     <string name="checking_for_updates">Checking for updates…</string>
     <string name="version_installed">%1$s installed</string>
     <string name="check_now">Check now</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Checked %1$s</string>
+    <string name="update_checked_just_now">Checked just now</string>
+    <string name="update_not_checked_yet">Not checked yet</string>
     <string name="update_channel">Update channel</string>
     <string name="custom_channels">Custom fork</string>
     <string name="custom_channels_summary">Update from your own yt-dlp release repositories</string>

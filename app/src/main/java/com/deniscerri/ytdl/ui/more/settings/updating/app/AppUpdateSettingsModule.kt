@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 
 object AppUpdateSettingsModule : SettingModule {
@@ -38,6 +39,7 @@ object AppUpdateSettingsModule : SettingModule {
                     buttonText = null
                     status = restingStatus(preferences.getBoolean("update_app", true))
                     onButtonClick = { checkForUpdates(context, host, preferences) }
+                    refreshDetails(context, this, preferences)
                 }
             }
             "app_channel" -> {
@@ -51,6 +53,7 @@ object AppUpdateSettingsModule : SettingModule {
                     selectedChannel = if (preferences.getBoolean("update_beta", false)) "beta" else "stable"
                     onChannelSelected = { value ->
                         preferences.edit { putBoolean("update_beta", value == "beta") }
+                        (host.findPref("app_status_card") as? UpdateStatusCardPreference)?.let { refreshDetails(context, it, preferences) }
                         checkForUpdates(context, host, preferences)
                     }
                 }
@@ -75,6 +78,22 @@ object AppUpdateSettingsModule : SettingModule {
         }
     }
 
+    private fun channelDescription(context: Context, preferences: SharedPreferences) =
+        context.getString(if (preferences.getBoolean("update_beta", false)) R.string.channel_stable else R.string.channel_beta)
+
+    private fun refreshDetails(context: Context, card: UpdateStatusCardPreference, preferences: SharedPreferences) {
+        val architecture = File(context.applicationInfo.nativeLibraryDir).name
+        // store builds update through their store, so there is no channel or check time to show
+        if (!canUpdateApp) {
+            card.subtitle = architecture
+            card.detail = null
+            return
+        }
+        val channel = context.getString(if (preferences.getBoolean("update_beta", false)) R.string.channel_beta else R.string.channel_stable)
+        card.subtitle = "$architecture · $channel"
+        card.detail = UpdateStatusCardPreference.buildDetail(context, preferences.getLong(UpdateUtil.APP_LAST_CHECK_KEY, 0L))
+    }
+
     private fun restingStatus(autoCheck: Boolean) =
         if (canUpdateApp && autoCheck) UpdateStatusCardPreference.Status.UP_TO_DATE else UpdateStatusCardPreference.Status.UNKNOWN
 
@@ -84,15 +103,19 @@ object AppUpdateSettingsModule : SettingModule {
 
         host.hostLifecycleOwner.lifecycleScope.launch {
             card?.buttonText = null
+            card?.latestVersion = null
             card?.status = UpdateStatusCardPreference.Status.CHECKING
 
             val res = withContext(Dispatchers.IO){
                 updateUtil.tryGetNewVersion()
             }
 
+            card?.let { refreshDetails(context, it, preferences) }
+
             if (res.isSuccess) {
                 val release = res.getOrNull()!!
                 card?.apply {
+                    latestVersion = release.tag_name.removePrefix("v")
                     status = UpdateStatusCardPreference.Status.UPDATE_AVAILABLE
                     buttonText = "${context.getString(R.string.update)} (${release.tag_name})"
                     onButtonClick = { showUpdateDialog(release, updateUtil, host, preferences) }

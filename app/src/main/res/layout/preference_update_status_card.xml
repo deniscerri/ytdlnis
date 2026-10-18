@@ -56,18 +56,29 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/status_title"
+                    android:id="@+id/status_version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceTitleMedium" />
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textIsSelectable="true"
+                    android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/status_version"
+                    android:id="@+id/status_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:textIsSelectable="true" />
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/status_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:alpha="0.8"
+                    android:textAppearance="?attr/textAppearanceBodySmall"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

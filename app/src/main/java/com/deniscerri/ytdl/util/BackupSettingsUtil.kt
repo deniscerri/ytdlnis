@@ -71,6 +71,8 @@ object BackupSettingsUtil {
             val prefs = preferences.all
             prefs.remove("dlpVersion")
             prefs.remove("app_language")
+            prefs.remove("app_last_update_check")
+            prefs.remove("ytdlp_last_update_check")
             prefs.remove("cache_downloads")
             prefs.remove("use_alarm_for_scheduling")
             prefs.remove("use_bgutils_potoken_generator")

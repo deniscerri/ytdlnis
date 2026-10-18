@@ -40,6 +40,8 @@ object YtdlpUpdateSettingsModule : SettingModule {
                 (pref as UpdateStatusCardPreference).apply {
                     status = restingStatus(preferences.getBoolean("auto_update_ytdlp", true))
                     onButtonClick = { checkForUpdates(context, host, preferences) }
+                    subtitle = channelName(context, preferences)
+                    detail = UpdateStatusCardPreference.buildDetail(context, preferences.getLong(UpdateUtil.YTDLP_LAST_CHECK_KEY, 0L))
                 }
                 loadVersion(context, host, preferences)
             }
@@ -82,6 +84,22 @@ object YtdlpUpdateSettingsModule : SettingModule {
 
     private fun currentSource(preferences: SharedPreferences) = preferences.getString("ytdlp_source", "stable")!!
 
+    private fun channelName(context: Context, preferences: SharedPreferences): String {
+        val source = currentSource(preferences)
+        val values = context.getStringArray(R.array.ytdlp_source_values)
+        val titles = context.getStringArray(R.array.ytdlp_source)
+        val index = values.indexOf(source)
+        return if (index >= 0) titles[index] else preferences.getString("ytdlp_source_label", "")!!.ifBlank { source }
+    }
+
+    /** Refreshes everything that depends on the active channel or the last check time */
+    private fun refreshDetails(context: Context, host: SettingHost, preferences: SharedPreferences) {
+        (host.findPref("ytdlp_status_card") as? UpdateStatusCardPreference)?.apply {
+            subtitle = channelName(context, preferences)
+            detail = UpdateStatusCardPreference.buildDetail(context, preferences.getLong(UpdateUtil.YTDLP_LAST_CHECK_KEY, 0L))
+        }
+    }
+
     private fun sourceSummary(context: Context, preferences: SharedPreferences) : String {
         val source = currentSource(preferences)
         val defaultChannelsValues = context.getStringArray(R.array.ytdlp_source_values)
@@ -98,6 +116,7 @@ object YtdlpUpdateSettingsModule : SettingModule {
 
         (host.findPref("ytdlp_channel") as? UpdateChannelPreference)?.selectedChannel = source
         host.findPref("ytdlp_source_label")?.summary = sourceSummary(context, preferences)
+        refreshDetails(context, host, preferences)
 
         checkForUpdates(context, host, preferences)
     }
@@ -152,6 +171,7 @@ object YtdlpUpdateSettingsModule : SettingModule {
                 showErrorSnackbar(view, host, it.message ?: context.getString(R.string.errored))
             }
 
+            refreshDetails(context, host, preferences)
             loadVersion(context, host, preferences)
         }
     }

@@ -85,16 +85,6 @@
 
         <Preference
             app:icon="@drawable/ic_translate"
-            app:key="translate"
-            app:summary="@string/help_translate_summary"
-            app:title="@string/help_translate">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="https://hosted.weblate.org/projects/ytdlnis/" />
-        </Preference>
-
-        <Preference
-            app:icon="@drawable/ic_translate"
             app:key="translators"
             app:summary="@string/translators_summary"
             app:title="@string/translators" />
