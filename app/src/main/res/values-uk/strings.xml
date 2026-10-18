@@ -711,4 +711,16 @@
     <string name="welcome_perm_folders_header">Відновлені папки</string>
     <string name="welcome_perm_folders_summary">Ваша резервна копія використовує ці папки, але програма втратила доступ до них. Надайте доступ до кожної з них заново або виберіть іншу папку для використання.</string>
     <string name="crop_unsupported">Обрізка для цього елемента недоступна</string>
+    <string name="reorder_queue">Черга перевпорядкування</string>
+    <string name="crop_unavailable_please_update_item">Вам потрібно оновити дані елемента, щоб мати змогу використовувати функцію обрізання</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Перевірено %1$s</string>
+    <string name="update_checked_just_now">Перевірено щойно</string>
+    <string name="update_not_checked_yet">Ще не перевірено</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d елемент</item>
+        <item quantity="few">%d елементи</item>
+        <item quantity="many">%d елементи</item>
+        <item quantity="other">%d елементи</item>
+    </plurals>
 </resources>
