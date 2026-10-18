@@ -680,4 +680,11 @@
     <string name="lyrics_plain">纯文本</string>
     <string name="embed_lyrics_summary">从 lrclib.net 获取歌词并将它们嵌入音频下载中</string>
     <string name="save_lrc_file_summary">将同步的歌词保存为音频下载文件旁边的 .lrc 文件</string>
+    <plurals name="updates_available_summary">
+        <item quantity="other">有 %d 个更新</item>
+    </plurals>
+    <string name="update_install">安装</string>
+    <string name="welcome_perm_folders_header">恢复的文件夹</string>
+    <string name="welcome_perm_folders_summary">你的备份使用这些文件夹，但本应用失去了对它们的访问。再次允许访问每个文件夹，或者选择使用不同的文件夹。</string>
+    <string name="crop_unsupported">裁剪对这个项目不可用</string>
 </resources>
