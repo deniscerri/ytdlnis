@@ -711,4 +711,16 @@
     <string name="welcome_perm_folders_header">Восстановленные папки</string>
     <string name="welcome_perm_folders_summary">Ваша резервная копия использует эти папки, но приложение утратило к ним доступ. Разрешите доступ к каждой из них заново или выберите другую папку для использования.</string>
     <string name="crop_unsupported">Обрезка для этого элемента недоступна</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d елемент</item>
+        <item quantity="few">%d елементы</item>
+        <item quantity="many">%d елементы</item>
+        <item quantity="other">%d елементы</item>
+    </plurals>
+    <string name="reorder_queue">Очередь переупорядочивания</string>
+    <string name="crop_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию обрезки</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Проверено %1$s</string>
+    <string name="update_checked_just_now">Проверено только что</string>
+    <string name="update_not_checked_yet">Ещё не проверено</string>
 </resources>

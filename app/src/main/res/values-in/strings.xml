@@ -439,7 +439,7 @@
     <string name="live_stream">Siaran langsung</string>
     <string name="retry_every">Coba lagi setiap</string>
     <string name="minutes">Menit</string>
-    <string name="prefer_container_over_codec_audio">Utamakan kontainer daripada codec untuk unduhan audio</string>
+    <string name="prefer_container_over_codec_audio">Utamakan kontainer daripada kodek bagi unduhan audio</string>
     <string name="prefer_container_over_codec_audio_summary">Jika ini diaktifkan, preferensi kodek audio yang diutamakan akan diabaikan dan hanya kontainer yang akan berubah</string>
     <string name="wait_for_video">Tunggu video</string>
     <string name="live_from_start">Siaran langsung dari awal</string>
