@@ -450,7 +450,7 @@
     <string name="reset_processed_links_desc">Ladda ner alla objekt igen</string>
     <string name="sync_with_source_desc">Ta bort nerladdade objekt om de saknas i källan</string>
     <string name="player_client">Spelareklient</string>
-    <string name="player_client_summary"><![CDATA[YouTube spelarklient & PO-token]]></string>
+    <string name="player_client_summary">YouTube spelarklient &amp; PO-token</string>
     <string name="use_app_language_for_metadata">Använd appspråk för metadata</string>
     <string name="list">Lista</string>
     <string name="grid">Rutnät</string>

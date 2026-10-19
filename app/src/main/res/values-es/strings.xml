@@ -445,7 +445,7 @@
     <string name="live_stream">Transmisión en vivo</string>
     <string name="minutes">Minutos</string>
     <string name="prefer_container_over_codec_audio">Preferir el contenedor sobre códice para descargas de sonido</string>
-    <string name="player_client_summary"><![CDATA[Clientes del reproductor de YouTube y token PO]]></string>
+    <string name="player_client_summary">Clientes del reproductor de YouTube y token PO</string>
     <string name="use_app_language_for_metadata">Utilizar el lenguaje de app para metadatos</string>
     <string name="use_only_po_token">Utilizar únicamente el vale del PO (ignora cliente de reproducción)</string>
     <string name="app_icon_change">El icono pudo cambiar y la aplicación se cerrará</string>

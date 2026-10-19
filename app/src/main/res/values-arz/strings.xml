@@ -54,7 +54,7 @@
     <string name="remove_downloading">الغاء التحميلات</string>
     <string name="cancelled">تم الالغاء</string>
     <string name="cancel_task">الغاء المهمة</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="changed_path_for_everyone_to">تم تغيير مسار التحميل لكل العناصر إلى:</string>
     <string name="changelog">سجل التغييرات</string>
     <string name="cache_directory_warning">تغيير مجلد التخزين المؤقت ممكن يسبب مشاكل مش متوقعة. لو البرنامج ما قدرش يكتب في المسار المتحدد، هيستخدم مجلد التخزين المؤقت الداخلي الافتراضي</string>

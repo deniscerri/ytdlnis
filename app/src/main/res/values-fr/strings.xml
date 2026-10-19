@@ -453,7 +453,7 @@
     <string name="wait_for_video">Attendre la vidéo</string>
     <string name="retry_every">Réessayer chaque</string>
     <string name="minutes">Minutes</string>
-    <string name="player_client_summary"><![CDATA[Clients du Lecteur YouTube &amp; Jeton PO]]></string>
+    <string name="player_client_summary">Clients du Lecteur YouTube &amp; Jeton PO</string>
     <string name="list">Liste</string>
     <string name="prefer_container_over_codec_audio">Préférer le conteneur au codec pour les téléchargements audio</string>
     <string name="app_icon_change">L\'icône pourrait changer et l\'application se fermera</string>

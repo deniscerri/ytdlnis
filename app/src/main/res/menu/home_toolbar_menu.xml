@@ -4,9 +4,9 @@
 
     <item
         android:id="@+id/app_updates"
+        android:icon="@drawable/ic_notifications"
         android:title="@string/update"
         android:visible="false"
-        app:actionLayout="@layout/menu_update_button"
         app:showAsAction="always" />
 
     <item

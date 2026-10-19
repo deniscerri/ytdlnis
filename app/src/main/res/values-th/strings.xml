@@ -450,7 +450,7 @@
     <string name="prefer_container_over_codec_audio">เลือกคอนเทนเนอร์แทนตัวแปลงสัญญาณสำหรับการดาวน์โหลดไฟล์เสียง</string>
     <string name="prefer_container_over_codec_audio_summary">เมื่อเปิดใช้งานแล้ว ตัวแปลงเสียงที่ต้องการจะถูกเพิกเฉย และจะเปลี่ยนแปลงเฉพาะตัวคอนเทนเนอร์เท่านั้น</string>
     <string name="player_client">ไคลเอนต์ของตัวเล่น</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="use_app_language_for_metadata">ใช้ภาษาของแอปสำหรับข้อมูลรายละเอียด</string>
     <string name="layout">โครงส่วน</string>
     <string name="list">ลิสต์</string>

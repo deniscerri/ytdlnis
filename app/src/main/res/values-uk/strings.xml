@@ -448,7 +448,7 @@
     <string name="layout">Макет</string>
     <string name="list">Список</string>
     <string name="grid">Сітка</string>
-    <string name="player_client_summary"><![CDATA[YouTube Клієнт програвача та PO Token]]></string>
+    <string name="player_client_summary">YouTube Клієнт програвача та PO Token</string>
     <string name="cache_directory">Тека кешу</string>
     <string name="cache_directory_warning">Зміна теки кешу може спричинити неочікувані проблеми. Якщо застосунок не може записувати дані за налаштованим шляхом, вона звернеться до внутрішнього каталогу кешу за замовчуванням</string>
     <string name="use_only_po_token">Використовувати лише PO token (ігнорувати клієнт програвача)</string>

@@ -1,0 +1,30 @@
+name: Update translators
+
+# Refreshes app/src/main/assets/translators.json from Weblate and commits it
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch translators from Weblate
+        run: python3 scripts/fetch_translators.py app/src/main/assets/translators.json
+
+      - name: Commit translators.json
+        run: |
+          if git diff --quiet -- app/src/main/assets/translators.json; then
+            echo "translators.json is already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/translators.json
+          git commit -m "Update translators.json"
+          git push

@@ -379,7 +379,7 @@
     <string name="prefer_container_over_codec_audio">تفضيل الحاوية على الترميز للتنزيلات تاع الصوت</string>
     <string name="prefer_container_over_codec_audio_summary">كي تفعله، راح يتم تجاهل الترميز الصوتي المفضل ومش راح يبتدل إلا نوع الحاوية برك</string>
     <string name="player_client">عميل المشغل</string>
-    <string name="player_client_summary"><![CDATA[عملاء مشغّل يوتيوب وتوكن PO]]></string>
+    <string name="player_client_summary">عملاء مشغّل يوتيوب وتوكن PO</string>
     <string name="use_app_language_for_metadata">أخدم بلغة التطبيق للبيانات الوصفية</string>
     <string name="layout">التخطيط</string>
     <string name="list">قائمة</string>

@@ -1,0 +1,10 @@
+# What's Changed
+
+- Embed Lyrics feature
+- Burn Subs feature
+- Failed data fetches in home screen
+- Temporary files settings screen
+- New Download Queue Screen
+- Welcome Screen
+- Bash in Terminal
+- other fixes

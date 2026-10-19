@@ -453,7 +453,7 @@
     <string name="app_icon_change">L\'icona potrebbe cambiare e l\'applicazione si chiuderà</string>
     <string name="player_client">Client del lettore</string>
     <string name="use_app_language_for_metadata">Usa lingua app per i metadata</string>
-    <string name="player_client_summary"><![CDATA[Cliente del Lettore YouTube & Token PO]]></string>
+    <string name="player_client_summary">Cliente del Lettore YouTube &amp; Token PO</string>
     <string name="use_format_sorting">Usa l’ordinamento per importanza dei formati</string>
     <string name="retry_every">Riprova ogni</string>
     <string name="prefer_container_over_codec_audio">Preferisci il container al codec per i download audio</string>

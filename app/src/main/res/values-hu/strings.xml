@@ -475,7 +475,7 @@
     <string name="reverse">Fordított</string>
     <string name="no_keep_subs">Feliratfájlok törlése beágyazás után</string>
     <string name="no_keep_subs_summary">„Ha egyszerre használja a „Feliratok beágyazása” és „Feliratok mentése” opciókat, a feliratfájlokat ne tartsa meg beágyazás után</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="video_compatible">Kompatibilis videó</string>
     <string name="video_compatible_summary">Átkódolja a videót, hogy kompatibilis legyen más alkalmazásokkal</string>
     <string name="no_free_space_warning">Nincs szabad hely ehhez a konfigurációhoz.</string>

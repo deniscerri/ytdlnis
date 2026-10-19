@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -10,7 +11,11 @@ from yt_dlp.utils import PostProcessingError
 
 API = 'https://lrclib.net/api'
 USER_AGENT = 'YTDLnis (https://github.com/deniscerri/ytdlnis)'
+APPLICATION_ID = 'DzQSE74gVl7mtIo7csJ2ZkJhZXvr-8v3ilv7k9SB6SM'
 DURATION_TOLERANCE = 5
+MAX_ATTEMPTS = 4
+MAX_RETRY_DELAY = 10
+RETRY_CODES = (429, 500, 502, 503, 504)
 
 _LRC_STAMP = re.compile(r'\[(\d+):(\d+(?:\.\d+)?)\]')
 _JUNK_BRACKETS = re.compile(
@@ -22,14 +27,31 @@ def _get_json(path, params=None):
     url = f'{API}/{path}'
     if params:
         url += '?' + urllib.parse.urlencode({k: v for k, v in params.items() if v not in (None, '')})
-    req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT})
+    req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Lrclib-App-Id': APPLICATION_ID})
+    for attempt in range(MAX_ATTEMPTS):
+        last = attempt == MAX_ATTEMPTS - 1
+        try:
+            with urllib.request.urlopen(req, timeout=10) as res:
+                return json.loads(res.read().decode('utf-8'))
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return None
+            if e.code not in RETRY_CODES or last:
+                raise
+            delay = _retry_delay(e.headers.get('Retry-After'), attempt)
+        except (urllib.error.URLError, TimeoutError):
+            if last:
+                raise
+            delay = _retry_delay(None, attempt)
+        time.sleep(delay)
+
+
+def _retry_delay(retry_after, attempt):
+    """Seconds to wait, honoring Retry-After (seconds) when lrclib sends it."""
     try:
-        with urllib.request.urlopen(req, timeout=10) as res:
-            return json.loads(res.read().decode('utf-8'))
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return None
-        raise
+        return min(max(float(retry_after), 0), MAX_RETRY_DELAY)
+    except (TypeError, ValueError):
+        return min(2 ** attempt, MAX_RETRY_DELAY)
 
 
 def parse_lrc(text):

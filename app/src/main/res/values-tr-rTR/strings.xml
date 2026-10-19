@@ -443,7 +443,7 @@
     <string name="layout">Düzen</string>
     <string name="list">Liste</string>
     <string name="grid">Izgara</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="no_check_certificates">HTTPS sertifika doğrulamasını bastır</string>
     <string name="live_stream">Canlı yayın</string>
     <string name="live_from_start">Baştan canlı yayın</string>

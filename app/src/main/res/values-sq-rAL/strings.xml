@@ -432,7 +432,7 @@
     <string name="disable_write_info_json">Çaktivizo Write Info Json</string>
     <string name="disable_write_info_json_summary">Çdo herë që bën restart / rifillim të shkarkimit, yt-dlp do të rishkarkojë json data nga serverat. (Nuk është e rekomanduar)</string>
     <string name="player_client">Klienti i Luajtjes</string>
-    <string name="player_client_summary"><![CDATA[Klientët e Luajtjes në YouTube &amp; PO Token]]></string>
+    <string name="player_client_summary">Klientët e Luajtjes në YouTube &amp; PO Token</string>
     <string name="use_app_language_for_metadata">Për gjuhën e aplikacionit për metadata</string>
     <string name="layout">Paraqitja</string>
     <string name="list">Lista</string>

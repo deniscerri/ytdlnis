@@ -448,7 +448,7 @@
     <string name="prefer_container_over_codec_audio">ऑडियो डाउनलोड के लिए कोडेक की बजाय कंटेनर को प्राथमिकता दें</string>
     <string name="prefer_container_over_codec_audio_summary">इसे सक्षम करने पर, पसंदीदा ऑडियो कोडेक प्राथमिकता को अनदेखा कर दिया जाएगा और केवल कंटेनर ही बदलेगा</string>
     <string name="player_client">प्लेयर क्लाइंट</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="use_app_language_for_metadata">मेटाडेटा के लिए ऐप की भाषा का उपयोग करें</string>
     <string name="layout">लेआउट</string>
     <string name="list">सूची</string>

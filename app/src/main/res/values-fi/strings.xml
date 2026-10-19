@@ -451,7 +451,7 @@
     <string name="prefer_container_over_codec_audio">Suosi konttia koodekin yli äänilatauksissa</string>
     <string name="prefer_container_over_codec_audio_summary">Tämän ollessa käytössä ensisijaisen äänikoodekin asetus ohitetaan ja vain kontti muuttuu</string>
     <string name="player_client">Soitinasiakas</string>
-    <string name="player_client_summary"><![CDATA[YouTuben soitinasiakkaat ja PO-token]]></string>
+    <string name="player_client_summary">YouTuben soitinasiakkaat ja PO-token</string>
     <string name="use_app_language_for_metadata">Käytä sovelluksen kieltä metatiedoille</string>
     <string name="layout">Asettelu</string>
     <string name="list">Lista</string>

@@ -461,7 +461,7 @@
     <string name="retry_every">Επανάληψη κάθε</string>
     <string name="minutes">Λεπτά</string>
     <string name="prefer_container_over_codec_audio">Προτιμήστε Container αντί για Codec για λήψεις ήχου</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients &amp; PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="cache_directory">Φάκελος cache</string>
     <string name="app_icon_change">Το εικονίδιο μπορεί να αλλάξει και η εφαρμογή θα κλείσει</string>
     <string name="generate_potokens_warning">* Ενεργοποιώντας αυτό, πρέπει να απενεργοποιήσετε τα cookies</string>

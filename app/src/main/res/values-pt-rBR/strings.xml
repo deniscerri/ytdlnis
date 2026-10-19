@@ -439,7 +439,7 @@
     <string name="use_app_language_for_metadata">Usar idioma do aplicativo para metadados</string>
     <string name="layout">Layout</string>
     <string name="player_client">Cliente de reprodução</string>
-    <string name="player_client_summary"><![CDATA[Clientes de reprodução do YouTube &amp; Chave de acesso PO]]></string>
+    <string name="player_client_summary">Clientes de reprodução do YouTube &amp; Chave de acesso PO</string>
     <string name="list">Lista</string>
     <string name="grid">Grade</string>
     <string name="prefer_container_over_codec_audio">Preferir o contêiner em vez do codec para downloads de áudio</string>

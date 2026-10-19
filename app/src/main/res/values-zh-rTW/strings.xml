@@ -437,7 +437,7 @@
     <string name="ytdlp_watch_history">yt-dlp YouTube 觀看記錄（需要 cookie）</string>
     <string name="data_fetching_extra_command_summary">啟用指令範本作為額外指令用於資料抓取</string>
     <string name="player_client">播放用戶端</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player Clients & PO Token]]></string>
+    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
     <string name="use_app_language_for_metadata">使用應用程式語言取得中繼資料</string>
     <string name="no_check_certificates">禁止 HTTPS 憑證驗證</string>
     <string name="live_stream">直播</string>

@@ -429,7 +429,7 @@
     <string name="data_fetching_extractor_youtube">தரவு பெறுதல் பிரித்தெடுத்தல் (யூடியூப்)</string>
     <string name="data_fetching_extra_command">தரவு பெறுதல் கூடுதல் கட்டளை</string>
     <string name="disable_write_info_json">எழுதும் செய்தி சாதொபொகு ஐ முடக்கு</string>
-    <string name="player_client_summary"><![CDATA[YouTube Player வாடிக்கையாளர்கள் & PO டோக்கன்]]></string>
+    <string name="player_client_summary">YouTube Player வாடிக்கையாளர்கள் &amp; PO டோக்கன்</string>
     <string name="use_code_highlighter">குறியீடு வண்ண ஐலைட்டரைப் பயன்படுத்தவும்</string>
     <string name="automatic_backup">தானியங்கி காப்புப்பிரதி</string>
     <string name="regenerate">மீண்டும் உருவாக்கவும்</string>

@@ -449,7 +449,7 @@
     <string name="cache_directory_warning">Zmiana folderu pamięci podręcznej może spowodować nieoczekiwane problemy. Jeśli aplikacja nie będzie mogła zapisać do skonfigurowanej ścieżki, powróci do domyślnego wewnętrznego katalogu pamięci podręcznej</string>
     <string name="cache_directory">Folder pamięci podręcznej</string>
     <string name="no_check_certificates">Wyłączenie sprawdzania poprawności certyfikatu HTTPS</string>
-    <string name="player_client_summary"><![CDATA[Klienci Odtwarzacza YouTube i Token PO]]></string>
+    <string name="player_client_summary">Klienci Odtwarzacza YouTube i Token PO</string>
     <string name="retry_missing_downloads_desc">Ponownie pobrane elementy nie są widoczne w historii pobierania</string>
     <string name="sync_with_source_desc">Usuń pobrane elementy, jeśli brakuje ich w źródle</string>
     <string name="minutes">Minut</string>
