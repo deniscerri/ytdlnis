@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.util.extractors
 
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
@@ -9,7 +10,11 @@ import kotlin.math.abs
 
 object LrcLibUtil {
     private const val API = "https://lrclib.net/api"
+    private const val APPLICATION_ID = "DzQSE74gVl7mtIo7csJ2ZkJhZXvr-8v3ilv7k9SB6SM"
     private const val DURATION_TOLERANCE = 5
+    private const val MAX_ATTEMPTS = 4
+    private const val MAX_RETRY_DELAY_MS = 10_000L
+    private val RETRY_CODES = setOf(429, 500, 502, 503, 504)
     private val lrcStamp = Regex("""\[(\d+):(\d+(?:\.\d+)?)]""")
     private val junkBrackets = Regex(
         """\s*[(\[][^)\]]*(?:official|video|audio|lyric|visuali[sz]er|\bhd\b|\b4k\b|\bmv\b|remaster)[^)\]]*[)\]]""",
@@ -34,17 +39,38 @@ object LrcLibUtil {
         val query = params.filterValues { !it.isNullOrBlank() }
             .map { "${it.key}=${URLEncoder.encode(it.value, "UTF-8")}" }
             .joinToString("&")
-        val conn = URL("$API/$path" + if (query.isNotEmpty()) "?$query" else "").openConnection() as HttpURLConnection
-        return try {
-            conn.setRequestProperty("User-Agent", "YTDLnis (https://github.com/deniscerri/ytdlnis)")
-            conn.connectTimeout = 8000
-            conn.readTimeout = 10000
-            if (conn.responseCode == 404) null
-            else conn.inputStream.bufferedReader().use { it.readText() }
-        } finally {
-            conn.disconnect()
+        val url = URL("$API/$path" + if (query.isNotEmpty()) "?$query" else "")
+        var lastError: IOException? = null
+        repeat(MAX_ATTEMPTS) { attempt ->
+            val conn = url.openConnection() as HttpURLConnection
+            var delayMs = backoffMs(attempt)
+            try {
+                conn.setRequestProperty("User-Agent", "YTDLnis (https://github.com/deniscerri/ytdlnis)")
+                conn.setRequestProperty("Lrclib-App-Id", APPLICATION_ID)
+                conn.connectTimeout = 8000
+                conn.readTimeout = 10000
+                val code = conn.responseCode
+                when {
+                    code == 404 -> return null
+                    code in RETRY_CODES -> {
+                        conn.getHeaderField("Retry-After")?.toDoubleOrNull()?.let {
+                            delayMs = (it * 1000).toLong().coerceIn(0, MAX_RETRY_DELAY_MS)
+                        }
+                        lastError = IOException("HTTP $code")
+                    }
+                    else -> return conn.inputStream.bufferedReader().use { it.readText() }
+                }
+            } catch (e: IOException) {
+                lastError = e
+            } finally {
+                conn.disconnect()
+            }
+            if (attempt < MAX_ATTEMPTS - 1) Thread.sleep(delayMs)
         }
+        throw lastError ?: IOException("lrclib request failed")
     }
+
+    private fun backoffMs(attempt: Int) = minOf(1000L shl attempt, MAX_RETRY_DELAY_MS)
 
     fun parseLrc(text: String?): List<LrcLine> {
         if (text.isNullOrBlank()) return emptyList()

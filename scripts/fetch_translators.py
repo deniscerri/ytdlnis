@@ -2,7 +2,8 @@
 """Builds the translators list shown in the app from the public Weblate API.
 
 Writes {"<lang>": [{"username": "...", "avatar": "<url>"}, ...], ...} to the given path.
-Never fails the build: on any error (rate limit, network) it writes whatever it has so far.
+Run by the "Update translators" workflow, which commits the result. On any error
+(rate limit, network) it exits non-zero without touching the output file.
 Usage: fetch_translators.py <output.json>
 """
 import json
@@ -59,8 +60,9 @@ def main(out):
     counts = defaultdict(lambda: defaultdict(int))
     try:
         collect(counts)
-    except Exception as e:  # rate limit / network: keep partial data
-        print(f"warning: stopped early: {e}", file=sys.stderr)
+    except Exception as e:  # rate limit / network: don't overwrite the committed file with partial data
+        print(f"error: could not fetch translators: {e}", file=sys.stderr)
+        sys.exit(1)
 
     result = {}
     for lang in sorted(counts):
