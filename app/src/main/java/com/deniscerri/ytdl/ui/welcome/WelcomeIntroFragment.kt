@@ -33,7 +33,7 @@ class WelcomeIntroFragment : Fragment(R.layout.fragment_welcome_intro) {
         restoreProgress = view.findViewById(R.id.restore_progress)
 
         getStarted.setOnClickListener { (requireActivity() as WelcomeActivity).goTo(1) }
-        restoreButton.setOnClickListener { restoreLauncher.launch(arrayOf("*/*")) }
+        restoreButton.setOnClickListener { restoreLauncher.launch(BackupSettingsUtil.RESTORE_MIME_TYPES) }
     }
 
     private fun setBusy(busy: Boolean) {

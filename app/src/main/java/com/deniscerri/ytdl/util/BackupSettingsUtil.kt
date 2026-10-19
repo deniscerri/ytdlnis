@@ -3,6 +3,7 @@ package com.deniscerri.ytdl.util
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.provider.OpenableColumns
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.BackupSettingsItem
 import com.deniscerri.ytdl.database.models.CommandTemplate
@@ -31,7 +32,21 @@ import kotlinx.coroutines.withContext
 object BackupSettingsUtil {
     data class Result(val data: RestoreAppDataItem, val summary: String)
 
+    /**
+     * Mime types the restore pickers accept. Some devices don't report .json files
+     * as application/json, so the extension is checked in [parse] instead.
+     */
+    val RESTORE_MIME_TYPES = arrayOf("application/json", "text/plain", "application/octet-stream")
+
+    private fun displayName(context: Context, uri: Uri): String? =
+        context.contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use {
+            if (it.moveToFirst()) it.getString(0) else null
+        }
+
     suspend fun parse(context: Context, uri: Uri): Result = withContext(Dispatchers.IO) {
+        val name = runCatching { displayName(context, uri) }.getOrNull() ?: uri.lastPathSegment
+        require(name == null || name.endsWith(".json", ignoreCase = true)) { "Select a .json backup file" }
+
         val text = context.contentResolver.openInputStream(uri)!!.bufferedReader().use { it.readText() }
         val json = Gson().fromJson(text, JsonObject::class.java)
         val gson = Gson()

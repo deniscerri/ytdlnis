@@ -1,5 +1,15 @@
 # YTDLnis Changelog
 
+> # 1.9.1.1 (2026-11)
+
+# Hotfix
+
+If recently updated to 1.9.1 i urge to upgrade to this version now 
+
+- Fix bottom navigation bar hiding the More button, sorry
+- Register application in lrclib api so its not throttled, also added retry policy
+- Made restore settings only accept json files
+
 > # 1.9.1 (2026-11)
 
 # What's Changed
