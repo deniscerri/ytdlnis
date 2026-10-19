@@ -386,15 +386,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        //incognito header
-        val incognitoHeader = findViewById<TextView>(R.id.incognito_header)
-        if (preferences.getBoolean("incognito", false)){
-            incognitoHeader.visibility = View.VISIBLE
-            window.statusBarColor = (incognitoHeader.background as ColorDrawable).color
-        }else{
-            window.statusBarColor = getColor(android.R.color.transparent)
-            incognitoHeader.visibility = View.GONE
-        }
+        window.statusBarColor = getColor(android.R.color.transparent)
     }
 
     override fun onNewIntent(intent: Intent) {

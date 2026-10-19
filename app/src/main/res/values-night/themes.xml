@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BaseTheme" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="viewInflaterClass">com.deniscerri.ytdl.util.IncognitoViewInflater</item>
         <item name="android:windowLightStatusBar">@android:color/transparent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:color">@android:color/transparent</item>

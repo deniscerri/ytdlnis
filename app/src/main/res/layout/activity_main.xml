@@ -7,20 +7,6 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/incognito_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/incognito"
-        android:textStyle="bold"
-        android:visibility="gone"
-        android:padding="5dp"
-        android:background="?colorPrimaryContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/frame_layout"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -31,7 +17,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/incognito_header"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
     <LinearLayout

@@ -13,6 +13,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ImageSpan
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.Menu
@@ -30,6 +33,7 @@ import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.view.ActionMode
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
@@ -380,8 +384,25 @@ class HomeFragment : Fragment(), HomeAdapter.OnItemClickListener, SearchSuggesti
         }
     }
 
+    private fun updateToolbarTitle() {
+        val toolbar = materialToolbar ?: return
+        val context = context ?: return
+        val title = SpannableStringBuilder(ThemeUtil.getStyledAppName(context))
+        if (sharedPreferences?.getBoolean("incognito", false) == true) {
+            AppCompatResources.getDrawable(context, R.drawable.ic_incognito)?.let {
+                val size = (28 * resources.displayMetrics.density).toInt()
+                it.setBounds(0, 0, size, size)
+                title.append("  ")
+                title.setSpan(ImageSpan(it, ImageSpan.ALIGN_BOTTOM), title.length - 1, title.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+            }
+        }
+        toolbar.title = title
+    }
+
     override fun onResume() {
         super.onResume()
+        updateToolbarTitle()
+
         if(arguments?.getString("url") == null){
             if (!resultViewModel.uiState.value.processing){
                 resultViewModel.checkTrending()

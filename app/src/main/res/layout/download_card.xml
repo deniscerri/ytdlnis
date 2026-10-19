@@ -74,7 +74,7 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/incognitoLabel"
             style="?attr/materialIconButtonStyle"
-            android:layout_width="20dp"
+            android:layout_width="25dp"
             android:height="20dp"
             android:clickable="false"
             android:focusable="false"
@@ -84,8 +84,8 @@
             android:minHeight="0dp"
             android:padding="0dp"
             app:cornerRadius="10dp"
-            app:icon="@drawable/ic_nightly"
-            app:iconTint="?attr/colorAccent"
+            app:icon="@drawable/ic_incognito_backgroundless"
+            app:iconTint="@android:color/white"
             app:layout_constraintEnd_toEndOf="@+id/downloads_image_view"
             app:layout_constraintTop_toTopOf="@+id/downloads_image_view" />
 

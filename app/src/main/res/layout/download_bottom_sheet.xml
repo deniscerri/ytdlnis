@@ -193,7 +193,7 @@
                 android:alpha="0.3"
                 android:contentDescription="@string/incognito"
                 android:outlineProvider="none"
-                app:icon="@drawable/ic_nightly"
+                app:icon="@drawable/ic_incognito_backgroundless"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
