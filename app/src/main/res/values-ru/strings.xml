@@ -361,7 +361,7 @@
     <string name="text_size">Размер текста</string>
     <string name="back">Назад</string>
     <string name="all_queries_finished">Все запросы обработаны</string>
-    <string name="select_between">Выберите элементы между</string>
+    <string name="select_between">Выбрать промежуточные</string>
     <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
     <string name="get_new_uploads">Получать только будущие загрузки (игнорировать существующие элементы)</string>
     <string name="add">Добавить</string>
