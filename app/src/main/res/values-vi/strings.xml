@@ -586,8 +586,6 @@
     <string name="clear_info_json">Xóa các infojson</string>
     <string name="internal_plugin_ffmpeg_preset">Cài đặt sẵn Plugin nội bộ FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Cài đặt mặc định mà FFmpeg sử dụng cho các plugin nội bộ như ghi phụ đề, v.v. Việc điều chỉnh tùy chọn này sẽ ảnh hưởng đến kích thước tệp cuối cùng!</string>
-    <plurals name="updates_available_summary">
-    </plurals>
     <string name="skip_backlog">Bỏ qua danh sách tồn đọng hiện tại</string>
     <plurals name="every_minutes">
         <item quantity="other">1 phút</item>
