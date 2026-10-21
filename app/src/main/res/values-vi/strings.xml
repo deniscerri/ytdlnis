@@ -549,8 +549,6 @@
     <string name="next_run">Tiếp theo: %1$s</string>
     <string name="paused">Tạm dừng</string>
     <string name="check_complete">Đánh dấu hoàn tất</string>
-    <plurals name="finished_runs">
-    </plurals>
     <string name="reset_state">Đặt lại trạng thái</string>
     <string name="rescan_from_scratch">Quét lại từ đầu</string>
     <string name="rescan_from_scratch_desc">Hãy xóa các mục đã xử lý và tải lại tất cả những mục chưa được lưu</string>
