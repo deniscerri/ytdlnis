@@ -587,7 +587,7 @@
     <string name="internal_plugin_ffmpeg_preset">Cài đặt sẵn Plugin nội bộ FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Cài đặt mặc định mà FFmpeg sử dụng cho các plugin nội bộ như ghi phụ đề, v.v. Việc điều chỉnh tùy chọn này sẽ ảnh hưởng đến kích thước tệp cuối cùng!</string>
     <plurals name="updates_available_summary">
-        <item quantity="other">Bản cập nhật %d có sẵn\tCác bản cập nhật %d có sẵn</item>
+        <item quantity="other">Bản cập nhật %d có sẵn</item>
     </plurals>
     <string name="skip_backlog">Bỏ qua danh sách tồn đọng hiện tại</string>
     <plurals name="every_minutes">
