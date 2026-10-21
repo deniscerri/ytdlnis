@@ -48,7 +48,7 @@
     <string name="adjust_audio">Sesuaikan audio</string>
     <string name="shortcuts_desc">Gunakan perintah yang umum digunakan untuk membuat templat</string>
     <string name="concurrent_downloads_summary">Jumlah unduhan yang dijalankan secara bersamaan</string>
-    <string name="please_wait">Mohon tunggu</string>
+    <string name="please_wait">Silahkan tunggu</string>
     <string name="enable_mtime_summary">Setel header HTTP Last-Modified sebagai waktu modifikasi terakhir</string>
     <string name="create_shortcut">Buat pintasan</string>
     <string name="preferred_download_type_summary">Tab yang kartu unduhan akan buka secara asali</string>
@@ -138,7 +138,7 @@
     <string name="import_from_clipboard">Impor dari papan klip</string>
     <string name="export_from_clipboard">Ekspor ke papan klip</string>
     <string name="shortcuts">Pintasan</string>
-    <string name="edit">Sunting</string>
+    <string name="edit">Edit</string>
     <string name="cancelled">Dibatalkan</string>
     <string name="errored">Galat</string>
     <string name="copy_log">Salin log</string>
@@ -332,7 +332,7 @@
     <string name="on_time">Pada</string>
     <string name="after">Setelah</string>
     <string name="occurrences">kejadian</string>
-    <string name="week">Pekan</string>
+    <string name="week">Minggu</string>
     <string name="month">Bulan</string>
     <string name="retry_missing_downloads">Coba lagi unduhan yang hilang</string>
     <string name="bitrate">Laju Bit</string>
@@ -384,7 +384,7 @@
     <string name="location">Lokasi</string>
     <string name="enable_alarm_permission">Kamu perlu mengaktifkan perizinan SCHEDULE_EXACT_ALARM di dalam setelan aplikasi.</string>
     <string name="process_downloads_background">"Unduhan sedang dimuat. Lanjutkan pemrosesan di latar belakang dan mulai mengunduh? "</string>
-    <string name="disabled">Dinonaktifkan</string>
+    <string name="disabled">Dimatikan</string>
     <string name="subtitles">Takarir (Subtitle)</string>
     <string name="prevent_duplicate_downloads">Cegah unduhan ganda</string>
     <string name="prevent_duplicate_url_type">URL &amp; jenis unduhan</string>
@@ -411,7 +411,7 @@
     <string name="recode_video_summary">Mengubah berkas video ke format video yang ditentukan</string>
     <string name="recode_video">Ubah format video</string>
     <string name="other_youtube_extractor_args">Argumen ekstraktor lainnya untuk YouTube</string>
-    <string name="items">butir</string>
+    <string name="items">item</string>
     <string name="socket_timeout">Batas waktu soket</string>
     <string name="socket_timeout_description">Waktu untuk menunggu sebelum menyerah, dalam satuan detik</string>
     <string name="advanced">Tingkat lanjut</string>
