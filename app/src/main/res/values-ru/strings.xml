@@ -399,7 +399,7 @@
     <string name="sync_with_source">Синхронизировать с источником</string>
     <string name="queue">Очередь</string>
     <string name="reset">Cбросить</string>
-    <string name="restore_info">Нажмите «Восстановить», чтобы объединить сохранённые данные с текущими.\nНажмите кнопку «Сбросить», чтобы удалить данные и использовать только сохранённые данные из файла.</string>
+    <string name="restore_info">Нажмите «Восстановить», чтобы объединить сохранённые данные с текущими.\nНажмите «Сбросить», чтобы удалить данные и использовать только сохранённые данные из файла.</string>
     <string name="use_alarm_manager">Использовать AlarmManager вместо WorkManager для запланированных загрузок</string>
     <string name="use_alarm_manager_summary">Включите, если WorkManager ограничивается поставщиком вашего устройства или запланированные задания недостаточно точны</string>
     <string name="use_item_url_not_playlist">URL элемента вместо URL плейлиста</string>
