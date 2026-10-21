@@ -685,4 +685,15 @@
     </plurals>
     <string name="update_install">설치</string>
     <string name="crop_unsupported">이 항목은 자르기 작업을 지원하지 않습니다</string>
+    <plurals name="queue_items">
+        <item quantity="other">항목 %d개</item>
+    </plurals>
+    <string name="reorder_queue">대기열 순서 변경</string>
+    <string name="crop_unavailable_please_update_item">자르기 기능을 이용하려면 먼저 데이터를 업데이트해야 합니다</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">%1$s 전 확인함</string>
+    <string name="update_checked_just_now">방금 전 확인함</string>
+    <string name="update_not_checked_yet">확인하지 않음</string>
+    <string name="welcome_perm_folders_header">복원된 폴더</string>
+    <string name="welcome_perm_folders_summary">백업에서 이 폴더를 사용하지만, 앱이 폴더에 접근할 권한을 잃었습니다. 각각 다시 허용하거나, 대신 사용할 다른 폴더를 고르세요.</string>
 </resources>
