@@ -517,7 +517,7 @@
     <string name="website">Веб-сайт</string>
     <string name="playlist">Плейлист</string>
     <string name="media_type">Тип медиа</string>
-    <string name="crop">Обрезать</string>
+    <string name="crop">Кадрировать</string>
     <string name="required">Необходимый</string>
     <string name="crop_validation_exceeds_w">X+W превышает %d</string>
     <string name="crop_validation_exceeds_h">Y+H превышает %d</string>
