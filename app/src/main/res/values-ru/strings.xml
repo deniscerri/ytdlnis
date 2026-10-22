@@ -338,7 +338,7 @@
     <string name="set_time">Установить время</string>
     <string name="never">Никогда</string>
     <string name="starts">Начинается</string>
-    <string name="on_time">В день</string>
+    <string name="on_time">Включено</string>
     <string name="day">День</string>
     <string name="occurrences">раз</string>
     <string name="observe_sources">Источники загрузки</string>
