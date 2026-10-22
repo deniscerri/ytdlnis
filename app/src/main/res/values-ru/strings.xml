@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
+    <string name="confirm_delete_logs_desc">Удалить весь список журналов навсегда.</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -160,7 +160,7 @@
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
-    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, JSON-метаданные и другие временные конфигурации</string>
+    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, infojson и другие временные конфигурации</string>
     <string name="cache_cleared">Временные файлы очищены</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
@@ -294,7 +294,7 @@
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэшировать загрузки в папку программы, а затем перемещать их в выбранный каталог. Используйте при невозможности напрямую записывать файлы во внутреннюю память</string>
-    <string name="update_app_beta_summary">Принять участие в тестировании Beta-версий. Могут содержаться ошибки</string>
+    <string name="update_app_beta_summary">Принять участие в бета-программе. Возможны ошибки.</string>
     <string name="update_app_beta">Beta-релизы</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
