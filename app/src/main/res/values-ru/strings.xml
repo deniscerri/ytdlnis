@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Навсе</string>
+    <string name="confirm_delete_logs_desc">Навсегда</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
