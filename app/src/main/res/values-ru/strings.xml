@@ -322,7 +322,7 @@
     <string name="changelog">Список изменений</string>
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
-    <string name="cut_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы использовать функцию обрезки</string>
+    <string name="cut_unavailable_please_update_item">Обновите данные элемента, чтобы использовать функцию обрезки</string>
     <string name="changed_path_for_everyone_to">Изменён путь загрузки каждого элемента на:</string>
     <string name="all">Все</string>
     <string name="generic">Общий</string>
@@ -718,7 +718,7 @@
         <item quantity="other">%d элементов</item>
     </plurals>
     <string name="reorder_queue">Очередь переупорядочивания</string>
-    <string name="crop_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы использовать функцию обрезки</string>
+    <string name="crop_unavailable_please_update_item">Обновите данные элемента, чтобы использовать функцию кадрирования</string>
     <string name="version_update_available">%1$s → %2$s</string>
     <string name="update_checked_ago">Проверено %1$s</string>
     <string name="update_checked_just_now">Проверено только что</string>
