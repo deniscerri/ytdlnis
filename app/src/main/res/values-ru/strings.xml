@@ -655,7 +655,7 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Всё равно скачатьнегенгенген</string>
+    <string name="download_anyway">Всё равно скачать</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
     <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
