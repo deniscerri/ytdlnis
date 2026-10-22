@@ -658,7 +658,7 @@
     <string name="download_anyway">Download anyway</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
-    <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
+    <string name="translators_summary">Люди, которые внесли свой вклад в перевод этого приложения на Weblate</string>
     <string name="translators_unavailable">Список переводчиков в этом сборнике недоступен. Вы по-прежнему можете посмотреть список всех, кто участвовал в переводе, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
     <string name="write_ytdlp_terminal">Auto write yt-dlp in terminal</string>
@@ -670,7 +670,7 @@
     <string name="welcome_restore_failed">Не удалось восстановить эту резервную копию</string>
     <string name="welcome_restoring">Восстановление резервной копии…</string>
     <string name="welcome_guide_title">Ознакомьтесь с руководством</string>
-    <string name="welcome_guide_summary">Руководство охватывает все о программе, загрузке, шаблонах команд и решении типовых проблем. Вы можете в любое время открыть его на сайте.</string>
+    <string name="welcome_guide_summary">Руководство охватывает всё о программе, загрузке, шаблонах команд и решении типовых проблем. Вы можете в любое время открыть его на сайте.</string>
     <string name="welcome_open_guide">Открыть руководство</string>
     <string name="welcome_permissions_title">Разрешения</string>
     <string name="welcome_permissions_summary">YTDLnis лучше всего работает с этими настройками. Их можно изменить позже в настройках.</string>
