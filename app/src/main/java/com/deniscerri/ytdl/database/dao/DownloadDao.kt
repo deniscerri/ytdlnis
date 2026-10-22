@@ -108,8 +108,8 @@ interface DownloadDao {
     @Query("DELETE from downloads where status = 'Processing' AND url=:url")
     suspend fun deleteProcessingByUrl(url: String)
 
-    @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'QueuedPaused', 'Scheduled')")
-    fun getActiveAndQueuedDownloadsList() : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'QueuedPaused', 'Scheduled') ORDER BY id LIMIT :limit OFFSET :offset")
+    fun getActiveAndQueuedDownloadsListPaged(limit: Int, offset: Int) : List<DownloadItem>
 
     @Query("UPDATE downloads SET status='Queued', downloadStartTime = -1 where status in ('Paused', 'QueuedPaused')")
     suspend fun resetPausedToQueued()

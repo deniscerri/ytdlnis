@@ -51,7 +51,7 @@ class DownloadQueueUtil(private val context: Context) {
 
         val checkDuplicate = sharedPreferences.getString("prevent_duplicate_downloads", "")!!
         val activeAndQueuedDownloads = withContext(Dispatchers.IO){
-            repository.getActiveAndQueuedDownloads()
+            repository.getActiveAndQueuedDownloadsList()
         }
 
         var lastQueueOrder = withContext(Dispatchers.IO) {

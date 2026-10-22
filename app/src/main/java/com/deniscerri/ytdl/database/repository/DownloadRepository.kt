@@ -152,8 +152,17 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         downloadDao.sortProcessingDownloads(sortBy, ascending)
     }
 
-    fun getActiveAndQueuedDownloads() : List<DownloadItem> {
-        return downloadDao.getActiveAndQueuedDownloadsList()
+    fun getActiveAndQueuedDownloadsList() : List<DownloadItem> {
+        val pageSize = 100
+        var offset = 0
+        val list = mutableListOf<DownloadItem>()
+        while (true) {
+            val page = downloadDao.getActiveAndQueuedDownloadsListPaged(pageSize, offset)
+            list += page
+            if (page.size < pageSize) break
+            offset += pageSize
+        }
+        return list
     }
 
     fun getActiveAndQueuedDownloadIDs() : List<Long> {
