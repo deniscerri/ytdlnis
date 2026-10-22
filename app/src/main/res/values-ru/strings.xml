@@ -655,13 +655,13 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Скачать всё равно</string>
+    <string name="download_anyway">Всё равно загрузить</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
     <string name="translators_summary">Люди, которые внесли свой вклад в перевод этого приложения на Weblate</string>
     <string name="translators_unavailable">Список переводчиков в этом сборнике недоступен. Вы по-прежнему можете посмотреть список всех, кто участвовал в переводе, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Авто запись yt-dlp в терминале</string>
+    <string name="write_ytdlp_terminal">Автозапись «yt-dlp» в окно терминала</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Скачивайте видео и аудио с помощью yt-dlp. Сначала подготовим несколько вещей.</string>
