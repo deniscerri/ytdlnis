@@ -641,8 +641,8 @@
     <string name="ytdlp_cache_summary">Данные, которые yt-dlp повторно использует между запусками, например, подписи YouTube-авторов</string>
     <string name="temporary_configurations">Временные конфигурации</string>
     <string name="temporary_configurations_summary">Конфигурации команд, списки URL-адресов и другие временные файлы</string>
-    <string name="downloaded_apks">Загружено APKs</string>
-    <string name="downloaded_apks_summary">APKs загружено для обновления приложений и пакетов</string>
+    <string name="downloaded_apks">Загруженные APK</string>
+    <string name="downloaded_apks_summary">APK загружено для обновления приложения и пакетов</string>
     <string name="clear_everything">Очистить всё</string>
     <string name="clear_temporary_files_confirm">Удалить %1$s файлов? Это невозможно отменить.</string>
     <string name="failed_to_fetch">Не удалось получить</string>
