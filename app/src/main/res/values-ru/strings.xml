@@ -306,7 +306,7 @@
     <string name="search_command_hint">Поиск по командам</string>
     <string name="ignore">Пропустить</string>
     <string name="license">Лицензия</string>
-    <string name="download_already_exists_summary">Вы всё ещё хотите скачать?</string>
+    <string name="download_already_exists_summary">Всё равно загрузить?</string>
     <string name="modify_download_card">Настроить карточку загрузки</string>
     <string name="security">Безопасность</string>
     <string name="remember_download_type">Запоминать тип загрузки</string>
