@@ -161,7 +161,7 @@
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
     <string name="clear_temporary_files_summary">Удалить кэши</string>
-    <string name="cache_cleared">Временные файлы очищены</string>
+    <string name="cache_cleared">Временные</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
     <string name="link_you_copied">Скопированная ссылка</string>
