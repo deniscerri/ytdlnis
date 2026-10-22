@@ -434,7 +434,7 @@
     <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_history">yt-dlp — История просмотров на YouTube (требуются файлы cookie)</string>
-    <string name="ytdlp_watch_later">yt-dlp — «Посмотреть позже» на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_later">"yt-dlp  YouTube: посмотреть позже (требуются файлы cookie)"</string>
     <string name="no_check_certificates">Не проверять HTTPS-сертификат</string>
     <string name="live_stream">Прямая трансляция</string>
     <string name="wait_for_video">Ожидать записи</string>
