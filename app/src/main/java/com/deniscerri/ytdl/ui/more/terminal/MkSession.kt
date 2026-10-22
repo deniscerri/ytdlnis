@@ -54,7 +54,8 @@ object MkSession {
             // ("Permission denied"), even with correct chmod bits. A file that is only
             // *read* (sourced by the shell) never hits that restriction, so we emit shell
             // functions into a single rc file and have `sh` source it via $ENV.
-            fun shellFunction(name: String, commandToExec: String): String {
+            fun shellFunction(name: String, commandToExec: String, extraEnv: Map<String, String> = emptyMap()): String {
+                val extraExports = extraEnv.entries.joinToString("\n") { (k, v) -> "|        export $k=\"$v\"" }
                 return """
                     |$name() {
                     |    (
@@ -62,6 +63,7 @@ object MkSession {
                     |        export PYTHONHOME="$pythonHome"
                     |        export SSL_CERT_FILE="$sslCert"
                     |        export OPENSSL_CONF="$openSslConf"
+                    $extraExports
                     |        exec $commandToExec "${'$'}@"
                     |    )
                     |}
@@ -105,7 +107,8 @@ object MkSession {
             executables.forEach { (name, file) ->
                 if (file.exists()) {
                     val execCommand = "\"${file.absolutePath}\""
-                    rcBuilder.append(shellFunction(name, execCommand))
+                    val extraEnv = if (name == "node") runtimeManager.getNodeEnvironment() else emptyMap()
+                    rcBuilder.append(shellFunction(name, execCommand, extraEnv))
                 }
             }
 
@@ -123,7 +126,8 @@ object MkSession {
                 rcBuilder.append(
                     shellFunction(
                         "npm",
-                        "\"${nodeBin.absolutePath}\" ${$$"$NPM_CLI_PATH"}"
+                        "\"${nodeBin.absolutePath}\" ${$$"$NPM_CLI_PATH"}",
+                        runtimeManager.getNodeEnvironment()
                     )
                 )
             }

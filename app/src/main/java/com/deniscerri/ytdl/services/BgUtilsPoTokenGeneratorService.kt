@@ -78,19 +78,18 @@ class BgUtilsPoTokenGeneratorService : Service() {
                 val serverFolder = BgUtilsPoTokenGeneratorUtil.getServerFolder(App.instance)
                 runtimeManager.destroyProcessById(currentRunningProcess)
 
-//                if (runtimeManager.nodeLocation.isAvailable) {
-//                    runtimeManager.executeNode(
-//                        command = "--allow-fs-read=* build/main.js",
-//                        processId = currentRunningProcess,
-//                        executeDirectory = File(serverFolder, "server")
-//                    ) { _, _, line ->
-//                        Log.e("BGUTILS_POT", line)
-//                        val notification = createNotification(line)
-//                        notificationManager.notify(notificationCode, notification)
-//                    }
-//
-//                } else
-                if (runtimeManager.denoLocation.isAvailable) {
+                val serverDir = File(serverFolder, "server")
+                if (runtimeManager.nodeLocation.isAvailable && File(serverDir, "build/main.js").exists()) {
+                    runtimeManager.executeNode(
+                        command = "build/main.js",
+                        processId = currentRunningProcess,
+                        executeDirectory = serverDir
+                    ) { _, _, line ->
+                        Log.e("BGUTILS_POT", line)
+                        val notification = createNotification(line)
+                        notificationManager.notify(notificationCode, notification)
+                    }
+                } else if (runtimeManager.denoLocation.isAvailable) {
                     runtimeManager.executeDeno(
                         command = "run -A src/main.ts",
                         processId = currentRunningProcess,

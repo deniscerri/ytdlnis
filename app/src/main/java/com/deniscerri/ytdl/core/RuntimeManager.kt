@@ -79,6 +79,7 @@ object RuntimeManager {
     private var NPM_CONFIG_CACHE: String = ""
     private var NPM_CLI_PATH: String = ""
     private var NODE_OPTIONS: String = ""
+    private var NODE_HOME: String = ""
 
     val packages: List<PackageItem> = listOf(
         PackageItem("Python", Python),
@@ -126,11 +127,13 @@ object RuntimeManager {
                     ytdlpPath = File(ytdlpDir, ytdlpBin)
                     initYTDLP(appContext, ytdlpDir)
 
+                    // node goes first: its libffi is newer than python's and both share the same file name,
+                    // so with python first node fails to link and yt-dlp silently drops it as a js runtime
                     val locations = listOf(
+                        nodeLocation,
                         pythonLocation,
                         ffmpegLocation,
                         aria2Location,
-                        nodeLocation,
                         quickJsLocation,
                         denoLocation,
                     )
@@ -159,11 +162,7 @@ object RuntimeManager {
 
                     OPEN_SSL_CONF = ""
                     if (nodeLocation.ldDir.exists()) {
-                        OPEN_SSL_CONF = if (nodeLocation.isDownloaded) {
-                            File(nodeLocation.ldDir.parentFile, "usr/etc/tls/openssl.cnf").absolutePath
-                        } else {
-                            nodeLocation.ldDir.absolutePath + "/usr/etc/tls/openssl.cnf"
-                        }
+                        OPEN_SSL_CONF = File(nodeLocation.ldDir, "usr/etc/tls/openssl.cnf").absolutePath
                     }
 
                     ENV_PYTHONHOME = if (pythonLocation.isDownloaded) {
@@ -175,14 +174,19 @@ object RuntimeManager {
 
                     NPM_CONFIG_PREFIX = File(appContext.filesDir, ".npm-global").absolutePath
                     NPM_CONFIG_CACHE = File(appContext.filesDir, ".npm-cache").absolutePath
-                    //TODO
-//            if (nodeLocation.executable.exists()) {
-//                NPM_CLI_PATH = File(nodeLocation.ldDir.absolutePath, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
-//
-//                val optionsFile = File(appContext.filesDir, "node_dns_setup.js")
-//                optionsFile.writeText(NodeJS.getDNSSetup())
-//                NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
-//            }
+                    // node and npm write config/cache into HOME, give them a dedicated writable dir
+                    // the python HOME points into the package folder which gets wiped on package updates
+                    NODE_HOME = File(appContext.filesDir, "node_home").absolutePath
+                    listOf(NODE_HOME, NPM_CONFIG_PREFIX, NPM_CONFIG_CACHE).forEach { File(it).mkdirs() }
+
+                    if (nodeLocation.executable.exists()) {
+                        NPM_CLI_PATH = File(nodeLocation.ldDir, "usr/lib/node_modules/npm/bin/npm-cli.js").absolutePath
+
+                        // android has no resolv.conf so node's default dns resolution fails
+                        val optionsFile = File(appContext.filesDir, "node_dns_setup.js")
+                        optionsFile.writeText(NodeJS.getDNSSetup())
+                        NODE_OPTIONS = "--require ${optionsFile.absolutePath}"
+                    }
 
                     val ytdlpPluginsFolder = File(FileUtil.getBundledYTDLPPluginsPath(appContext))
                     copyAssetFolder(appContext, "yt_dlp_plugins", ytdlpPluginsFolder)
@@ -466,7 +470,16 @@ object RuntimeManager {
 
         val fullCommand = mutableListOf<String>(nodeLocation.executable.absolutePath)
         fullCommand.addAll(command.split(" "))
-        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
+        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, extraEnv = getNodeEnvironment(), callback = callback)
+    }
+
+    /**
+     * Env only applied to node/npm processes. Not global, so the node yt-dlp spawns for js challenges stays untouched
+     */
+    fun getNodeEnvironment() : Map<String, String> {
+        val env = mutableMapOf("HOME" to NODE_HOME)
+        if (NODE_OPTIONS.isNotEmpty()) env["NODE_OPTIONS"] = NODE_OPTIONS
+        return env
     }
 
     fun executeNpm(
@@ -479,7 +492,7 @@ object RuntimeManager {
 
         val fullCommand = mutableListOf<String>(nodeLocation.executable.absolutePath, NPM_CLI_PATH)
         fullCommand.addAll(command.split(" "))
-        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, callback = callback)
+        return executeImpl(fullCommand, processId, true, executeDirectory = executeDirectory, extraEnv = getNodeEnvironment(), callback = callback)
     }
 
 
@@ -501,6 +514,7 @@ object RuntimeManager {
         processId: String? = null,
         redirectErrorStream: Boolean = false,
         executeDirectory: File? = null,
+        extraEnv: Map<String, String> = emptyMap(),
         callback: ((Float, Long, String) -> Unit)? = null
     ) : ExecuteResponse {
 
@@ -512,6 +526,7 @@ object RuntimeManager {
         val processBuilder = ProcessBuilder(fullCommand).redirectErrorStream(redirectErrorStream)
 
         processBuilder.environment().putAll(getEnvironment())
+        processBuilder.environment().putAll(extraEnv)
 
         val outBuffer = StringBuffer()
         val errBuffer = StringBuffer()
