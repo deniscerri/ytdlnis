@@ -492,7 +492,7 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Используйте url плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json-дампа</string>
+    <string name="use_original_url_playlist_summary">Использовать пользовательскую ссылку на плейлист вместо тега playlist_webpage_url из JSON-дампа</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
