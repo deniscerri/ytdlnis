@@ -159,7 +159,10 @@
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
     <string name="redownload">Redownload</string>
     <string name="in_queue">In queue</string>
-    <plurals name="queue_items"><item quantity="one">%d item</item><item quantity="other">%d items</item></plurals>
+    <plurals name="queue_items">
+        <item quantity="one">%d item</item>
+        <item quantity="other">%d items</item>
+    </plurals>
     <string name="reorder_queue">Reorder queue</string>
     <string name="clear_cancelled">Clear cancelled</string>
     <string name="clear_errored">Clear errored</string>
@@ -546,7 +549,10 @@
     <string name="write_atleast_one_potoken">You need to write at least one PO Token</string>
     <string name="version_ready_to_download">Version %s is ready to download</string>
     <string name="package_version_ready_to_download">Package %1$s with version %2$s is ready to download</string>
-    <plurals name="updates_available_summary"><item quantity="one">%d update available</item><item quantity="other">%d updates available</item></plurals>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d update available</item>
+        <item quantity="other">%d updates available</item>
+    </plurals>
     <string name="update_install">Install</string>
     <string name="tap_to_see_changes_and_install">Tap to see changes and install</string>
     <string name="view">View</string>
@@ -575,7 +581,10 @@
     <string name="max_delay">Max delay (seconds)</string>
     <string name="no_delay">No delay set</string>
     <string name="waiting_download_delay">Waiting download delay (%s seconds)…</string>
-    <plurals name="every_minutes"><item quantity="one">Every minute</item><item quantity="other">Every %d minutes</item></plurals>
+    <plurals name="every_minutes">
+        <item quantity="one">Every minute</item>
+        <item quantity="other">Every %d minutes</item>
+    </plurals>
     <string name="bgutils_info">A proof-of-origin token (POT) provider for yt-dlp.\nWith it enabled, YTDLnis hosts the HTTP server that generates the POT and installs the related plugin that yt-dlp uses.</string>
     <string name="bgutils_pot_generation_script">Generation script</string>
     <string name="bgutils_pot_generation_server">HTTP Server</string>
@@ -597,16 +606,26 @@
     <string name="clear_info_json">Clear infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Internal Plugin FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Preset FFmpeg uses for internal plugins like burn subs etc. Adjusting this preference affects the final file size!</string>
-    <plurals name="every_hours"><item quantity="one">Every hour</item><item quantity="other">Every %d hours</item></plurals>
-    <plurals name="every_days"><item quantity="one">Every day</item><item quantity="other">Every %d days</item></plurals>
-    <plurals name="every_weeks"><item quantity="one">Every week</item><item quantity="other">Every %d weeks</item></plurals>
-    <plurals name="every_months"><item quantity="one">Every month</item><item quantity="other">Every %d months</item></plurals>
-
+    <plurals name="every_hours">
+        <item quantity="one">Every hour</item>
+        <item quantity="other">Every %d hours</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Every day</item>
+        <item quantity="other">Every %d days</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Every week</item>
+        <item quantity="other">Every %d weeks</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Every month</item>
+        <item quantity="other">Every %d months</item>
+    </plurals>
     <string name="history_quick_action">Quick Action Button</string>
     <string name="history_quick_action_summary">Action to perform when clicking the quick action button on the history card</string>
     <string name="open_file">Open File</string>
     <string name="duration">Duration</string>
-
     <string name="update_available">Update available</string>
     <string name="update_check_failed">Couldn\'t check for updates</string>
     <string name="checking_for_updates">Checking for updates…</string>
@@ -624,7 +643,6 @@
     <string name="channel_master">Master</string>
     <string name="channel_beta">Beta</string>
     <string name="ytdlp" translatable="false">yt-dlp</string>
-
     <string name="temporary_files">Temporary files</string>
     <string name="temporary_files_description">Working files held by the app. Temporary configurations and other yt-dlp related data.</string>
     <string name="unfinished_downloads">Unfinished downloads</string>
@@ -639,7 +657,6 @@
     <string name="downloaded_apks_summary">APKs downloaded for app and package updates</string>
     <string name="clear_everything">Clear everything</string>
     <string name="clear_temporary_files_confirm">Delete %1$s of files? This can\'t be undone.</string>
-
     <string name="failed_to_fetch">Failed to fetch</string>
     <string name="failed_to_fetch_summary">These items couldn\'t be fetched. Retry them or download them without the fetched data.</string>
     <plurals name="items_failed_to_fetch">
@@ -648,10 +665,11 @@
     </plurals>
     <string name="retry">Retry</string>
     <string name="retry_all">Retry all</string>
-    <string name="download_anyway">Download anyway</string>
+    <plurals name="download_anyway">
+        <item quantity="one">Download anyway</item>
+    </plurals>
     <string name="write_ytdlp_terminal">Auto write yt-dlp in terminal</string>
     <string name="clear">Clear</string>
-
     <string name="welcome_title">Welcome to YTDLnis</string>
     <string name="welcome_subtitle">Download video and audio using yt-dlp. Let\'s get a few things set up first.</string>
     <string name="welcome_get_started">Get started</string>
