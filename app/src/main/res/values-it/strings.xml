@@ -686,4 +686,23 @@
     <string name="lyrics_synced">Sincronizzati</string>
     <string name="lyrics_plain">Testo non formattato</string>
     <string name="embed_lyrics_summary">Recupera i testi da lrclib.net e incorporarli nei download audio</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d elemento</item>
+        <item quantity="many">%d elementi</item>
+        <item quantity="other">%d elementi</item>
+    </plurals>
+    <string name="reorder_queue">Riordina coda</string>
+    <string name="crop_unavailable_please_update_item">Devi aggiornare i dati dell\'elemento per poter utilizzare la funzione di taglio</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d aggiornamento disponibile</item>
+        <item quantity="many">%d aggiornamenti disponibili</item>
+        <item quantity="other">%d aggiornamenti disponibili</item>
+    </plurals>
+    <string name="update_install">Installa</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Controllato %1$s</string>
+    <string name="update_checked_just_now">Controllato proprio ora</string>
+    <string name="update_not_checked_yet">Non ancora controllato</string>
+    <string name="welcome_permissions_summary">YTDLnis funziona meglio con queste autorizzazioni. Puoi modificarli successivamente nelle impostazioni.</string>
+    <string name="welcome_perm_folders_header">Cartelle ripristinate</string>
 </resources>
