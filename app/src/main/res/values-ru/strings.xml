@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
+    <string name="confirm_delete_logs_desc">На</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -496,7 +496,7 @@
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
-    <string name="potoken_guide">Авторизация ------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа;\n2. Войдите в свою учётную запись Google;\n3. Воспроизведите любое видео, поддерживающее субтитры с автоматическим переводом;\n4. \n4. Нажмите ОК.</string>
+    <string name="potoken_guide">Авторизация ------------------</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитать аудио с поддержкой DRC</string>
