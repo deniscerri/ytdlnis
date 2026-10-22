@@ -322,7 +322,7 @@
     <string name="changelog">Список изменений</string>
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
-    <string name="cut_unavailable_please_update_item">You need to update the item data in order to be able to use cut feature</string>
+    <string name="cut_unavailable_please_update_item">Чтобы воспользоваться функцией вырезания, необходимо обновить данные об изделии</string>
     <string name="changed_path_for_everyone_to">Изменен путь загрузки каждого элемента на:</string>
     <string name="all">Все</string>
     <string name="generic">Общий</string>
@@ -655,13 +655,13 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Download anyway</string>
+    <string name="download_anyway">Скачать всё равно</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
-    <string name="translators_summary">Люди, которые внесли свой вклад в перевод этого приложения на Weblate</string>
+    <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
     <string name="translators_unavailable">Список переводчиков в этом сборнике недоступен. Вы по-прежнему можете посмотреть список всех, кто участвовал в переводе, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Auto write yt-dlp in terminal</string>
+    <string name="write_ytdlp_terminal">Авто запись yt-dlp в терминале</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Скачивайте видео и аудио с помощью yt-dlp. Сначала подготовим несколько вещей.</string>
@@ -718,7 +718,7 @@
         <item quantity="other">%d элементов</item>
     </plurals>
     <string name="reorder_queue">Очередь переупорядочивания</string>
-    <string name="crop_unavailable_please_update_item">You need to update the item data in order to be able to use crop feature</string>
+    <string name="crop_unavailable_please_update_item">Чтобы воспользоваться функцией кадрирования, необходимо обновить данные об объекте</string>
     <string name="version_update_available">%1$s → %2$s</string>
     <string name="update_checked_ago">Проверено %1$s</string>
     <string name="update_checked_just_now">Проверено только что</string>
