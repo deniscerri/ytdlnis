@@ -581,7 +581,7 @@
         <item quantity="other">Каждый %d месяцев</item>
     </plurals>
     <string name="download_delay">Задержка загрузки</string>
-    <string name="download_delay_summary">Подождите установленное количество секунд между каждой загрузкой. Эта функция отключает одновременные загрузки</string>
+    <string name="download_delay_summary">Ожидать заданное количество секунд между каждой загрузкой. Эта функция отключает одновременные загрузки</string>
     <string name="min_delay">Мин. задержка (секунд)</string>
     <string name="max_delay">Макс. задержка (секунд)</string>
     <string name="no_delay">Задержка не установлена</string>
