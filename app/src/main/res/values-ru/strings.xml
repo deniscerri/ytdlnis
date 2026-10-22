@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
+    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
+    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов.</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -160,7 +160,7 @@
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
-    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, JSON-метаданные и другие временные конфигурации</string>
+    <string name="clear_temporary_files_summary">Удалить файлы из кэша, файлы infojsons и другие временные настройки</string>
     <string name="cache_cleared">Временные файлы очищены</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
@@ -294,7 +294,7 @@
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэшировать загрузки в папку программы, а затем перемещать их в выбранный каталог. Используйте при невозможности напрямую записывать файлы во внутреннюю память</string>
-    <string name="update_app_beta_summary">Принять участие в тестировании Beta-версий. Могут содержаться ошибки</string>
+    <string name="update_app_beta_summary">Присоединяйтесь к бета-программе. В ней могут присутствовать ошибки.</string>
     <string name="update_app_beta">Beta-релизы</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
@@ -428,8 +428,8 @@
     <string name="websites">Веб-сайты</string>
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
-    <string name="disable_write_info_json">Не сохранять JSON с метаданными</string>
-    <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
+    <string name="disable_write_info_json">Отключить запись информации json</string>
+    <string name="disable_write_info_json_summary">Каждый раз, когда вы перезапускаете/восстанавливаете загрузку, yt-dlp повторно загружает данные json с серверов (не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Разрешить использование шаблонов команд в качестве дополнительных команд для получения данных о видео (заголовков, списка форматов и т. д.)</string>
     <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
@@ -471,7 +471,7 @@
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Ручной веб-генератор PO Token</string>
+    <string name="manual_po_token_generator">Мануал Веб По Токен Генератор</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
     <string name="no_keep_subs_summary">Не сохранять файлы субтитров после их встраивания в видеоконтейнер при использовании функций «Встроить субтитры» и «Записать субтитры»</string>
@@ -492,7 +492,7 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Использовать пользовательскую ссылку на плейлист вместо тега playlist_webpage_url из JSON-дампа</string>
+    <string name="use_original_url_playlist_summary">Используйте url списка воспроизведения, предоставленную пользователем, вместо тега playlist_webpage_url из дампа json</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
