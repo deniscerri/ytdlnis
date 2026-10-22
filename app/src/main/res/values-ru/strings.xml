@@ -429,7 +429,7 @@
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
     <string name="disable_write_info_json">Отключить запись информации в формате json</string>
-    <string name="disable_write_info_json_summary">При каждом перезапуске/возо</string>
+    <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Разрешить использование шаблонов команд в качестве дополнительных команд для получения данных о видео (заголовков, списка форматов и т. д.)</string>
     <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
