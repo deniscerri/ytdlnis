@@ -306,7 +306,7 @@
     <string name="search_command_hint">Поиск по командам</string>
     <string name="ignore">Пропустить</string>
     <string name="license">Лицензия</string>
-    <string name="download_already_exists_summary">Вы все еще хотите скачать?</string>
+    <string name="download_already_exists_summary">Всё равно загрузить?</string>
     <string name="modify_download_card">Настроить карточку загрузки</string>
     <string name="security">Безопасность</string>
     <string name="remember_download_type">Запоминать тип загрузки</string>
@@ -655,11 +655,11 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Скачать всё равно</string>
+    <string name="download_anyway">Всё равно скачать</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
     <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
-    <string name="translators_unavailable">Список переводчиков недоступен в этом сборнике. Вы все еще можете видеть всех, кто внес вклад на Weblate.</string>
+    <string name="translators_unavailable">В этой версии список переводчиков недоступен. Однако вы по-прежнему можете увидеть всех, кто внёс свой вклад, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
     <string name="write_ytdlp_terminal">Писать «yt-dlp» при открытии терминала</string>
     <string name="clear">Очистить</string>
@@ -712,10 +712,10 @@
     <string name="welcome_perm_folders_summary">Ваша резервная копия использует эти папки, но приложение утратило к ним доступ. Разрешите доступ к каждой из них заново или выберите другую папку для использования.</string>
     <string name="crop_unsupported">Обрезка для этого элемента недоступна</string>
     <plurals name="queue_items">
-        <item quantity="one">%d елемент</item>
-        <item quantity="few">%d елементы</item>
-        <item quantity="many">%d елементы</item>
-        <item quantity="other">%d елементы</item>
+        <item quantity="one">%d элемент</item>
+        <item quantity="few">%d элемента</item>
+        <item quantity="many">%d элементов</item>
+        <item quantity="other">%d элементов</item>
     </plurals>
     <string name="reorder_queue">Очередь переупорядочивания</string>
     <string name="crop_unavailable_please_update_item">Вам необходимо обновить данные элемента, чтобы иметь возможность использовать функцию обрезки</string>
