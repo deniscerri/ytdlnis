@@ -661,7 +661,7 @@
     <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
     <string name="translators_unavailable">Список переводчиков в этом сборнике недоступен. Вы по-прежнему можете посмотреть список всех, кто участвовал в переводе, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Писать «yt-dlp» при открытии терминала</string>
+    <string name="write_ytdlp_terminal">Авто запись yt-dlp в терминале</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Загрузите видео и аудио с помощью yt-dlp. Давайте сначала настроим несколько вещей.</string>
