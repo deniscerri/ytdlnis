@@ -485,7 +485,7 @@
     <string name="potoken_player">PO Token (Player)</string>
     <string name="potoken_subs">PO Token (Subs)</string>
     <string name="visitor_data">Данные посетителей</string>
-    <string name="get_data_sync_id">Получить синхронизацию данных ID</string>
+    <string name="get_data_sync_id">Получить ID синхронизации данных</string>
     <string name="desktop">Рабочий стол</string>
     <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Отключить Flat Playlist</string>
@@ -694,7 +694,7 @@
     <string name="save_lrc_file">Сохранить файл .lrc</string>
     <string name="lyrics_offset">Смещение</string>
     <string name="lyrics_not_found">Текст песни не найден</string>
-    <string name="lyrics_unsynced">Тексты не синхронизированы, отсутствуют тайминги</string>
+    <string name="lyrics_unsynced">Тексты не синхронизированы, тайминги отсутствуют</string>
     <string name="lyrics_source">Текст песни с lrclib.net</string>
     <string name="lyrics_no_preview">Предварительный просмотр недоступен, но текст песни будет добавлен при скачивании</string>
     <string name="lyrics_synced">Синхронизированы</string>
