@@ -1014,8 +1014,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             request.addOption("--no-simulate")
             request.addOption("--print", "after_move:'%(filepath,_filename)s'")
         } else {
+            // keep existing partial files so paused/failed downloads can resume with the same id
             downDir = File(FileUtil.getCacheDownloadsPath(context), downloadItem.id.toString()).apply {
-                deleteRecursively()
                 mkdirs()
             }
         }
