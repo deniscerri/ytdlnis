@@ -215,7 +215,7 @@
     <string name="dark">Тёмная</string>
     <string name="light">Светлая</string>
     <string name="quality">Качество</string>
-    <string name="system">Система</string>
+    <string name="system">Как в системе</string>
     <string name="updating_download_data">Обновление данных загружаемого контента</string>
     <string name="backup">Резервировать</string>
     <string name="pure_theme_summary">Чисто чёрная / белая тема</string>
