@@ -673,7 +673,7 @@
     <string name="welcome_guide_summary">Руководство охватывает всё о программе, загрузке, шаблонах команд и решении типовых проблем. Вы можете в любое время открыть его на сайте.</string>
     <string name="welcome_open_guide">Открыть руководство</string>
     <string name="welcome_permissions_title">Разрешения</string>
-    <string name="welcome_permissions_summary">YTDLnis лучше всего работает с этими настройками. Их можно изменить позже в настройках.</string>
+    <string name="welcome_permissions_summary">YTDLnis лучше всего работает с этими параметрами. Их можно изменить позже в настройках.</string>
     <string name="welcome_perm_storage">Доступ к хранилищу</string>
     <string name="welcome_perm_storage_summary">Необходимо сохранить загруженные файлы на устройстве.</string>
     <string name="welcome_perm_notifications">Уведомления</string>
