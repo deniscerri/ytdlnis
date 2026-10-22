@@ -221,7 +221,7 @@
     <string name="pure_theme_summary">Чисто чёрная / белая тема</string>
     <string name="accents">Акцент</string>
     <string name="network_error">Ошибка сети</string>
-    <string name="select_backup_categories">Выберите категории для резервного копирования</string>
+    <string name="select_backup_categories">Выберите категории резервных копий</string>
     <string name="search_history">История поиска</string>
     <string name="appearance">Внешний вид</string>
     <string name="backup_restore">Резервное копирование и восстановление</string>
