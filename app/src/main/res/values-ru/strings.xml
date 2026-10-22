@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удали</string>
+    <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">На</string>
+    <string name="confirm_delete_logs_desc">Удалить весь список журналов навсегда.</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -160,8 +160,8 @@
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
-    <string name="clear_temporary_files_summary">Удалить кэши</string>
-    <string name="cache_cleared">Време</string>
+    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, infojson и другие временные конфигурации</string>
+    <string name="cache_cleared">Временные файлы удалены</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
     <string name="link_you_copied">Скопированная ссылка</string>
@@ -306,7 +306,7 @@
     <string name="search_command_hint">Поиск по командам</string>
     <string name="ignore">Пропустить</string>
     <string name="license">Лицензия</string>
-    <string name="download_already_exists_summary">Всё равно загрузить?</string>
+    <string name="download_already_exists_summary">Вы всё ещё хотите скачать?</string>
     <string name="modify_download_card">Настроить карточку загрузки</string>
     <string name="security">Безопасность</string>
     <string name="remember_download_type">Запоминать тип загрузки</string>
@@ -361,7 +361,7 @@
     <string name="text_size">Размер текста</string>
     <string name="back">Назад</string>
     <string name="all_queries_finished">Все запросы обработаны</string>
-    <string name="select_between">Выбрать промежуточные</string>
+    <string name="select_between">Выберите элементы в диапазоне</string>
     <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
     <string name="get_new_uploads">Получать только будущие загрузки (игнорировать существующие элементы)</string>
     <string name="add">Добавить</string>
@@ -428,13 +428,13 @@
     <string name="websites">Веб-сайты</string>
     <string name="preferred_command_template">Предпочтительный шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
-    <string name="disable_write_info_json">Отключить запись информации в формате json</string>
-    <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
+    <string name="disable_write_info_json">Отключить запись информации json</string>
+    <string name="disable_write_info_json_summary">Каждый раз, когда вы перезапускаете / возобновляете загрузку, yt-dlp заново загружает данные json с серверов (не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Разрешить использование шаблонов команд в качестве дополнительных команд для получения данных о видео (заголовков, списка форматов и т. д.)</string>
-    <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_recommnedations">yt-dlp Рекомендации YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_history">yt-dlp — История просмотров на YouTube (требуются файлы cookie)</string>
-    <string name="ytdlp_watch_later">yt-dlp — «Посмотреть позже» на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_later">yt-dlp YouTube: посмотреть позже (требуются файлы cookie)</string>
     <string name="no_check_certificates">Не проверять HTTPS-сертификат</string>
     <string name="live_stream">Прямая трансляция</string>
     <string name="wait_for_video">Ожидать записи</string>
@@ -471,7 +471,7 @@
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов, чтобы выбрать</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Ручно</string>
+    <string name="manual_po_token_generator">Ручной Web Po Token генератоh</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
     <string name="no_keep_subs_summary">Не сохранять файлы субтитров после их встраивания в видеоконтейнер при использовании функций «Встроить субтитры» и «Записать субтитры»</string>
@@ -492,11 +492,11 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Использовать</string>
+    <string name="use_original_url_playlist_summary">Используйте url плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json-дампа</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
-    <string name="potoken_guide">Авторизация\n------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа;\n2. Войдите в свою учётную запись Google;\nки, воспроизведите его не менее 3 секунд;\n4. Нажмите ОК.</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа в WebView.\n2. Войдите в свою учетную запись Google.\n3. Воспроизводите любое видео, поддерживающее субтитры с автоматическим переводом.\n4. Включите автоматический перевод субтитров и проверьте, работает ли он.\n\t4.1 Если субтитры с автоматическим переводом не работают, перейдите к другому видео, поддерживающему субтитры с автоматическим переводом, и повторите шаг 4.\n5. Нажмите «ОК».\n\nБез авторизации\n-----------------------\n1. Нажмите «Без авторизации».\n2. Введите URL-адрес любого видео на YouTube.\n3. Подождите, пока видео загрузится, и просмотрите его как минимум 3 секунды.\n4. Нажмите «ОК».</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитать аудио с поддержкой DRC</string>
@@ -595,7 +595,7 @@
     <string name="bgutils_info">Поставщик токенов подтверждения происхождения (POT) для yt-dlp.\nЕсли эта опция включена, YTDLnis запускает HTTP-сервер, который генерирует POT и устанавливает соответствующий плагин, использующий yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Скрипт генерации</string>
     <string name="bgutils_pot_generation_server">HTTP-сервер</string>
-    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp приводит к дополнительным затрата</string>
+    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp приводит к дополнительным затратам на создание нового процесса выполнения js для запуска скрипта. Этот метод не рекомендуется использовать при высоком уровне параллелизма.</string>
     <string name="bgutils_pot_server_summary">Это HTTP-сервер на JavaScript, работающий на порту 4416. Если он не работает, сервер запускается автоматически при начале выполнения очереди загрузки или при запланированном наблюдении за источниками. Чтобы остановить его, необходимо сделать это вручную через уведомление!</string>
     <string name="please_install_package">Пожалуйста, установите пакет %s</string>
     <string name="please_install_package_or_package">Пожалуйста, установите %1$s пакет или %2$s пакет</string>
@@ -655,7 +655,7 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Всё равно скачать</string>
+    <string name="download_anyway">Скачать всё равно</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
     <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
