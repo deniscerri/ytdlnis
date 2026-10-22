@@ -306,7 +306,7 @@
     <string name="search_command_hint">Поиск по командам</string>
     <string name="ignore">Пропустить</string>
     <string name="license">Лицензия</string>
-    <string name="download_already_exists_summary">Всё равно загрузить?</string>
+    <string name="download_already_exists_summary">Вы всё ещё хотите скачать?</string>
     <string name="modify_download_card">Настроить карточку загрузки</string>
     <string name="security">Безопасность</string>
     <string name="remember_download_type">Запоминать тип загрузки</string>
@@ -492,11 +492,11 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Использовать пользовательскую ссылку на плейлист вместо тега playlist_webpage_url из JSON-дампа</string>
+    <string name="use_original_url_playlist_summary">Используйте url плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json дампа</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
-    <string name="potoken_guide">Авторизация ------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа;\n2. Войдите в свою учётную запись Google;\n3. Воспроизведите любое видео, поддерживающее субтитры с автоматическим переводом;\n4. Включите субтитры с автопереводом и посмотрите, работают ли они;\n4.1 Если не работают, переключитесь на другое видео, повторите шаг 3 и 4;\n5. Нажмите ОК.\n\nБез авторизации\n------------------------\n1. Нажмите «Без авторизации»;\n2. Введите URL любого видео с YouTube;\n3. Дождитесь его загрузки, воспроизведите его не менее 3 секунд;\n4. Нажмите ОК.</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа в WebView.\n2. Войдите в свою учетную запись Google.\n3. Воспроизводите любое видео, поддерживающее субтитры с автоматическим переводом.\n4. Включите автоматический перевод субтитров и проверьте, работает ли он.\n\t4.1 Если субтитры с автоматическим переводом не работают, перейдите к другому видео, поддерживающему субтитры с автоматическим переводом, и повторите этот шаг 4.\n5. Нажмите «ОК».\n\nБез авторизации\n-----------------------\n1. Нажмите \'Без авторизации\'.\n2. Введите url любого видео на YouTube.\n3. Подождите, пока видео загрузится, и просмотрите его как минимум 3 секунды.\n4. Нажмите «ОК».</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитать аудио с поддержкой DRC</string>
@@ -592,10 +592,10 @@
         <item quantity="many">Каждые %d минуты</item>
         <item quantity="other">Каждые %d минуты</item>
     </plurals>
-    <string name="bgutils_info">Поставщик токенов подтверждения происхождения (POT) для yt-dlp. Если эта опция включена, YTDLnis запускает HTTP-сервер, который генерирует POT и устанавливает соответствующий плагин, используемый yt-dlp.</string>
+    <string name="bgutils_info">Поставщик токенов подтверждения происхождения (POT) для yt-dlp.\nЕсли эта опция включена, YTDLnis запускает HTTP-сервер, который генерирует POT и устанавливает соответствующий плагин, использующий yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Скрипт генерации</string>
     <string name="bgutils_pot_generation_server">HTTP-сервер</string>
-    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp влечёт за собой дополнительную нагрузку при создании нового процесса среды выполнения JS для запуска скрипта. Этот метод не рекомендуется использовать при высоком уровне параллельности.</string>
+    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp приводит к дополнительным затратам на создание нового процесса выполнения js для запуска скрипта. Этот метод не рекомендуется использовать при высоком уровне параллелизма.</string>
     <string name="bgutils_pot_server_summary">Это HTTP-сервер на JavaScript, работающий на порту 4416. Если он не работает, сервер запускается автоматически при начале выполнения очереди загрузки или при запланированном наблюдении за источниками. Чтобы остановить его, необходимо сделать это вручную через уведомление!</string>
     <string name="please_install_package">Пожалуйста, установите пакет %s</string>
     <string name="please_install_package_or_package">Пожалуйста, установите %1$s пакет или %2$s пакет</string>
