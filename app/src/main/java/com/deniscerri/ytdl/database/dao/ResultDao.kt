@@ -56,8 +56,9 @@ interface ResultDao {
     @Query("SELECT * FROM results WHERE id IN (:ids)")
     fun getAllByIDs(ids: List<Long>) : List<ResultItem>
 
-    @Query("SELECT * FROM results")
-    fun getAll() : List<ResultItem>
+    @Query("SELECT * FROM results WHERE id > :afterId ORDER BY id LIMIT :limit")
+    fun getAllPaged(afterId: Long, limit: Int) : List<ResultItem>
+
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: ResultItem)

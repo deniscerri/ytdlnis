@@ -651,13 +651,6 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         )
     }
 
-    suspend fun toggleProcessingSort() : String {
-        processingItems.emit(true)
-        processingSort.value = if (processingSort.value == "ASC") "DESC" else "ASC"
-        repository.reverseProcessingDownloads()
-        processingItems.emit(false)
-        return processingSort.value
-    }
 
     suspend fun sortProcessingDownloads(sortBy: String, ascending: Boolean) {
         processingItems.emit(true)
@@ -895,16 +888,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     }
 
     fun getQueuedCollectedFileSize() : Long {
-        val pageSize = 100
-        var offset = 0
-        var total = 0L
-        while (true) {
-            val page = dbManager.downloadDao.getSelectedFormatFromQueuedPaged(pageSize, offset)
-            total += page.filter { it.filesize > 10 }.sumOf { it.filesize }
-            if (page.size < pageSize) break
-            offset += pageSize
-        }
-        return total
+        return repository.getQueuedCollectedFileSize()
     }
 
     fun getTotalSize(status: List<DownloadRepository.Status>) : LiveData<Int> {

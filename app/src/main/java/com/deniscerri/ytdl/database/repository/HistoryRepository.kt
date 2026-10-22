@@ -2,6 +2,7 @@ package com.deniscerri.ytdl.database.repository
 
 import androidx.paging.PagingSource
 import com.deniscerri.ytdl.database.DBManager.SORTING
+import com.deniscerri.ytdl.database.Pagination
 import com.deniscerri.ytdl.database.dao.HistoryDao
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
@@ -25,7 +26,9 @@ class HistoryRepository(private val historyDao: HistoryDao) {
     }
 
     fun getAll() : List<HistoryItem> {
-        return historyDao.getAllHistoryList()
+        return Pagination.keysetAsc({ it.id }) { afterId, limit ->
+            historyDao.getAllHistoryListPaged(afterId, limit)
+        }
     }
 
     fun getAllByURL(url: String) : List<HistoryItem> {
@@ -34,10 +37,6 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     fun getAllByURLAndType(url: String, type: DownloadType) : List<HistoryItem> {
         return historyDao.getAllHistoryByURLAndType(url, type)
-    }
-
-    fun getAllByIDs(ids: List<Long>) : List<HistoryItem> {
-        return historyDao.getAllHistoryByIDs(ids)
     }
 
     data class HistoryIDsAndPaths(
@@ -94,7 +93,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     suspend fun deleteAll(deleteFile: Boolean = false){
         if (deleteFile){
-            historyDao.getAllHistoryList().forEach { item ->
+            getAll().forEach { item ->
                 item.downloadPath.forEach {
                     FileUtil.deleteFile(it)
                 }

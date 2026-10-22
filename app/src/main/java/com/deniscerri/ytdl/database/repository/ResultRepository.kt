@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Patterns
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.database.DBManager.SORTING
+import com.deniscerri.ytdl.database.Pagination
 import com.deniscerri.ytdl.database.dao.CommandTemplateDao
 import com.deniscerri.ytdl.database.dao.ResultDao
 import com.deniscerri.ytdl.database.models.ChapterItem
@@ -399,11 +400,9 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
     }
 
     fun getAll() : List<ResultItem> {
-        return resultDao.getAll()
-    }
-
-    fun getAllByIDs(ids: List<Long>) : List<ResultItem> {
-        return resultDao.getAllByIDs(ids)
+        return Pagination.keysetAsc({ it.id }) { afterId, limit ->
+            resultDao.getAllPaged(afterId, limit)
+        }
     }
 
     fun reorder(ids: List<Long>) {

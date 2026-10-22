@@ -12,9 +12,11 @@ import androidx.room.Upsert
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemConfigureMultiple
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
+import com.deniscerri.ytdl.database.models.DownloadIdFormat
 import com.deniscerri.ytdl.database.models.DownloadSizeMetadata
 import com.deniscerri.ytdl.database.models.Format
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.Pagination
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -83,9 +85,8 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY id LIMIT 1")
     fun getFirstProcessingDownloadFlow() : Flow<DownloadItem?>
 
-
-    @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY queueOrder, id")
-    fun getProcessingDownloadsList() : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status = 'Processing' ORDER BY queueOrder, id LIMIT :limit OFFSET :offset")
+    fun getProcessingDownloadsListPaged(limit: Int, offset: Int) : List<DownloadItem>
 
     @Query("UPDATE downloads set downloadPath=:path WHERE status ='Processing'")
     suspend fun updateProcessingDownloadPath(path: String)
@@ -105,11 +106,15 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE url=:url AND status='Processing'")
     fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem>
 
+    @Query("SELECT * FROM downloads WHERE url=:url AND status='Processing' AND id > :afterId ORDER BY id LIMIT :limit")
+    fun getProcessingDownloadsByUrlPaged(url: String, afterId: Long, limit: Int) : List<DownloadItem>
+
+
     @Query("DELETE from downloads where status = 'Processing' AND url=:url")
     suspend fun deleteProcessingByUrl(url: String)
 
-    @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'QueuedPaused', 'Scheduled') ORDER BY id LIMIT :limit OFFSET :offset")
-    fun getActiveAndQueuedDownloadsListPaged(limit: Int, offset: Int) : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status in('Active','Queued', 'QueuedPaused', 'Scheduled') AND id > :afterId ORDER BY id LIMIT :limit")
+    fun getActiveAndQueuedDownloadsListPaged(afterId: Long, limit: Int) : List<DownloadItem>
 
     @Query("UPDATE downloads SET status='Queued', downloadStartTime = -1 where status in ('Paused', 'QueuedPaused')")
     suspend fun resetPausedToQueued()
@@ -124,8 +129,8 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY queueOrder, id")
     fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
 
-    @Query("SELECT format FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY id LIMIT :limit OFFSET :offset")
-    fun getSelectedFormatFromQueuedPaged(limit: Int, offset: Int) : List<Format>
+    @Query("SELECT id, format FROM downloads WHERE status in ('Queued', 'QueuedPaused') AND id > :afterId ORDER BY id LIMIT :limit")
+    fun getSelectedFormatFromQueuedPaged(afterId: Long, limit: Int) : List<DownloadIdFormat>
 
     @Query("""
         SELECT * FROM downloads 
@@ -148,11 +153,13 @@ interface DownloadDao {
     """)
     fun getQueuedScheduledDownloadsUntilWithPriority(currentTime: Long, priorityItems: List<Long>) : Flow<List<DownloadItem>>
 
-    @Query("SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY downloadStartTime, id")
-    fun getQueuedDownloadsList() : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY downloadStartTime, id LIMIT :limit OFFSET :offset")
+    fun getQueuedDownloadsListPaged(limit: Int, offset: Int) : List<DownloadItem>
 
-    @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id")
-    fun getScheduledDownloadsList() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id LIMIT :limit OFFSET :offset")
+    fun getScheduledDownloadsListPaged(limit: Int, offset: Int) : List<DownloadItem>
+
 
     @Query("SELECT id FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY downloadStartTime, queueOrder, id")
     fun getQueuedDownloadsListIDs() : List<Long>
@@ -161,15 +168,17 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
     fun getCancelledDownloads() : PagingSource<Int, DownloadItemSimple>
 
-    @Query("SELECT * FROM downloads WHERE status='Cancelled' ORDER BY id DESC")
-    fun getCancelledDownloadsList() : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status='Cancelled' AND id < :beforeId ORDER BY id DESC LIMIT :limit")
+    fun getCancelledDownloadsListPaged(beforeId: Long, limit: Int) : List<DownloadItem>
+
 
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
     fun getErroredDownloads() : PagingSource<Int, DownloadItemSimple>
 
-    @Query("SELECT * FROM downloads WHERE status='Error' ORDER BY id DESC")
-    fun getErroredDownloadsList() : List<DownloadItem>
+    @Query("SELECT * FROM downloads WHERE status='Error' AND id < :beforeId ORDER BY id DESC LIMIT :limit")
+    fun getErroredDownloadsListPaged(beforeId: Long, limit: Int) : List<DownloadItem>
+
 
 
     @Query("SELECT id from downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id DESC")
@@ -179,8 +188,10 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
     fun getSavedDownloads() : PagingSource<Int, DownloadItemSimple>
 
-    @Query("SELECT * FROM downloads WHERE status='Saved' ORDER BY id DESC")
-    fun getSavedDownloadsList() : List<DownloadItem>
+
+    @Query("SELECT * FROM downloads WHERE status='Saved' AND id < :beforeId ORDER BY id DESC LIMIT :limit")
+    fun getSavedDownloadsListPaged(beforeId: Long, limit: Int) : List<DownloadItem>
+
 
     @RewriteQueriesToDropUnusedColumns
     @Query("SELECT * FROM downloads WHERE status='Scheduled' ORDER BY downloadStartTime, id DESC")
@@ -349,18 +360,10 @@ interface DownloadDao {
     suspend fun updateQueueOrder(queueOrder: Int, id: Long)
 
     @Transaction
-    suspend fun reverseProcessingDownloads() {
-        val items = getProcessingDownloadsList()
-        var idx = 0
-        items.reversed().forEach {
-           updateQueueOrder(idx, it.id)
-           idx++
-        }
-    }
-
-    @Transaction
     suspend fun sortProcessingDownloads(sortBy: String, ascending: Boolean) {
-        val items = getProcessingDownloadsList()
+        val items = Pagination.offset { limit, offset ->
+            getProcessingDownloadsListPaged(limit, offset)
+        }
         val sorted = when (sortBy.lowercase()) {
             "author" -> if (ascending) items.sortedBy { it.author.lowercase() } else items.sortedByDescending { it.author.lowercase() }
             "title" -> if (ascending) items.sortedBy { it.title.lowercase() } else items.sortedByDescending { it.title.lowercase() }

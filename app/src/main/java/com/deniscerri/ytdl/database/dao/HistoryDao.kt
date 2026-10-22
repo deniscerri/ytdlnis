@@ -74,8 +74,9 @@ interface HistoryDao {
     @Query("SELECT * FROM history")
     fun getAllHistoryPaginated() : PagingSource<Int, HistoryItem>
 
-    @Query("SELECT * FROM history")
-    fun getAllHistoryList() : List<HistoryItem>
+    @Query("SELECT * FROM history WHERE id > :afterId ORDER BY id LIMIT :limit")
+    fun getAllHistoryListPaged(afterId: Long, limit: Int) : List<HistoryItem>
+
 
     @Query("SELECT * FROM history WHERE id=:id LIMIT 1")
     fun getHistoryItem(id: Long) : HistoryItem?

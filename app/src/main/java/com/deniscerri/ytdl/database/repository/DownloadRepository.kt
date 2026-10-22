@@ -15,6 +15,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.database.Pagination
 import com.deniscerri.ytdl.database.dao.DownloadDao
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.DownloadItemSimple
@@ -125,7 +126,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     fun getAllItemsByIDs(ids : List<Long>) : List<DownloadItem>{
-        return downloadDao.getDownloadsByIds(ids)
+        return ids.chunked(Pagination.PAGE_SIZE).flatMap {
+            downloadDao.getDownloadsByIds(it)
+        }
     }
 
     fun getActiveDownloads() : List<DownloadItem> {
@@ -133,7 +136,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     fun getProcessingDownloadsByUrl(url: String) : List<DownloadItem> {
-        return downloadDao.getProcessingDownloadsByUrl(url)
+        return Pagination.keysetAsc({ it.id }) { afterId, limit ->
+            downloadDao.getProcessingDownloadsByUrlPaged(url, afterId, limit)
+        }
     }
 
     suspend fun deleteProcessingByUrl(url: String) {
@@ -141,11 +146,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     fun getAllProcessingDownloads() : List<DownloadItem> {
-        return downloadDao.getProcessingDownloadsList()
-    }
-
-    suspend fun reverseProcessingDownloads() {
-        downloadDao.reverseProcessingDownloads()
+        return Pagination.offset { limit, offset ->
+            downloadDao.getProcessingDownloadsListPaged(limit, offset)
+        }
     }
 
     suspend fun sortProcessingDownloads(sortBy: String, ascending: Boolean) {
@@ -153,45 +156,49 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     }
 
     fun getActiveAndQueuedDownloadsList() : List<DownloadItem> {
-        val pageSize = 100
-        var offset = 0
-        val list = mutableListOf<DownloadItem>()
-        while (true) {
-            val page = downloadDao.getActiveAndQueuedDownloadsListPaged(pageSize, offset)
-            list += page
-            if (page.size < pageSize) break
-            offset += pageSize
+        return Pagination.keysetAsc({ it.id }) { afterId, limit ->
+            downloadDao.getActiveAndQueuedDownloadsListPaged(afterId, limit)
         }
-        return list
-    }
-
-    fun getActiveAndQueuedDownloadIDs() : List<Long> {
-        return downloadDao.getActiveAndQueuedDownloadIDs()
     }
 
     fun getQueuedDownloads() : List<DownloadItem> {
-        return downloadDao.getQueuedDownloadsList()
+        return Pagination.offset { limit, offset ->
+            downloadDao.getQueuedDownloadsListPaged(limit, offset)
+        }
     }
 
     fun getScheduledDownloads() : List<DownloadItem> {
-        return downloadDao.getScheduledDownloadsList()
+        return Pagination.offset { limit, offset ->
+            downloadDao.getScheduledDownloadsListPaged(limit, offset)
+        }
     }
 
     fun getCancelledDownloads() : List<DownloadItem> {
-        return downloadDao.getCancelledDownloadsList()
+        return Pagination.keysetDesc({ it.id }) { beforeId, limit ->
+            downloadDao.getCancelledDownloadsListPaged(beforeId, limit)
+        }
     }
 
     fun getErroredDownloads() : List<DownloadItem> {
-        return downloadDao.getErroredDownloadsList()
+        return Pagination.keysetDesc({ it.id }) { beforeId, limit ->
+            downloadDao.getErroredDownloadsListPaged(beforeId, limit)
+        }
     }
 
     fun getSavedDownloads() : List<DownloadItem> {
-        return downloadDao.getSavedDownloadsList()
+        return Pagination.keysetDesc({ it.id }) { beforeId, limit ->
+            downloadDao.getSavedDownloadsListPaged(beforeId, limit)
+        }
     }
 
-    fun getScheduledDownloadIDs() : List<Long> {
-        return downloadDao.getScheduledDownloadIDs()
+    fun getQueuedCollectedFileSize() : Long {
+        return Pagination.keysetAsc({ it.id }) { afterId, limit ->
+            downloadDao.getSelectedFormatFromQueuedPaged(afterId, limit)
+        }
+            .filter { it.format.filesize > 10 }
+            .sumOf { it.format.filesize }
     }
+
 
     suspend fun deleteCancelled(){
         val cancelled = getCancelledDownloads()
