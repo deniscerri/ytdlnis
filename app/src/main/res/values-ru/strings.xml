@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удаление нескольких элементов</string>
+    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Удалить весь список журналов навсегда.</string>
+    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
