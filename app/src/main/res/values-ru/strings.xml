@@ -13,7 +13,7 @@
     <string name="you_are_in_latest_version">Используется последняя версия</string>
     <string name="ytld_update_success">Установлена новая версия</string>
     <string name="ytdl_updating_started">Загрузка новой версии</string>
-    <string name="Remove">hh</string>
+    <string name="Remove">Удалить</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
     <string name="confirm_delete_history">Подтвердить</string>
@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">g</string>
+    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -496,7 +496,7 @@
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
-    <string name="potoken_guide">Авторизация ------------------</string>
+    <string name="potoken_guide">Авторизация ------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа;\n2. Войдите в свою учётную запись Google;\n3. Воспроизведите любое видео, поддерживающее субтитры с автоматическим переводом;\n4. Включите субтитры с автопереводом и посмотрите, работают ли они;\n4.1 Если не работают, переключитесь на другое видео, повторите шаг 3 и 4;\n5. Нажмите ОК.\n\nБез авторизации\n------------------------\n1. Нажмите «Без авторизации»;\n2. Введите URL любого видео с YouTube;\n3. Дождитесь его загрузки, воспроизведите его не менее 3 секунд;\n4. Нажмите ОК.</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитать аудио с поддержкой DRC</string>
