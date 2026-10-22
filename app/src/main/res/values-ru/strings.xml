@@ -694,13 +694,13 @@
     <string name="save_lrc_file">Сохранить файл .lrc</string>
     <string name="lyrics_offset">Смещение</string>
     <string name="lyrics_not_found">Текст песни не найден</string>
-    <string name="lyrics_unsynced">Тексты не синхронизируются, нет времени на корректировку</string>
+    <string name="lyrics_unsynced">Тексты не синхронизированы, отсутствуют тайминги</string>
     <string name="lyrics_source">Текст песни с lrclib.net</string>
     <string name="lyrics_no_preview">Предварительный просмотр недоступен, но текст песни будет добавлен при скачивании</string>
-    <string name="lyrics_synced">Синхронизировано</string>
+    <string name="lyrics_synced">Синхронизированы</string>
     <string name="lyrics_plain">Обычный текст</string>
     <string name="embed_lyrics_summary">Загружать тексты песен с lrclib.net и встраивать их в скачиваемые аудиофайлы</string>
-    <string name="save_lrc_file_summary">Сохранить синхронизированные тексты песен в формате .lrc рядом с загруженными аудиофайлами</string>
+    <string name="save_lrc_file_summary">Сохранять синхронизированные тексты песен в формате .lrc рядом с загруженными аудиофайлами</string>
     <plurals name="updates_available_summary">
         <item quantity="one">Доступно %d обновление</item>
         <item quantity="few">Доступно %d обновления</item>
