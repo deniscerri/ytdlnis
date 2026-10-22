@@ -269,7 +269,7 @@
     <string name="fragment_retries">Число повторов для каждого фрагмента</string>
     <string name="retries">Число повторов для каждой загрузки</string>
     <string name="format_order">Порядок форматов</string>
-    <string name="force_keyframes">Ключевые кадры при монтаже</string>
+    <string name="force_keyframes">Ключевые кадры при обрезке</string>
     <string name="force_keyframes_summary">Принудительно использовать ключевые кадры при обрезке видео. Более медленный процесс, но более точный монтаж</string>
     <string name="use_extra_commands_summary">Автоматически добавлять дополнительные команды перед загрузкой аудио/видео</string>
     <string name="use_extra_commands">Добавлять доп. команды</string>
@@ -598,14 +598,14 @@
     <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp влечёт за собой дополнительную нагрузку при создании нового процесса среды выполнения JS для запуска скрипта. Этот метод не рекомендуется использовать при высоком уровне параллельности.</string>
     <string name="bgutils_pot_server_summary">Это HTTP-сервер на JavaScript, работающий на порту 4416. Если он не работает, сервер запускается автоматически при начале выполнения очереди загрузки или при запланированном наблюдении за источниками. Чтобы остановить его, необходимо сделать это вручную через уведомление!</string>
     <string name="please_install_package">Пожалуйста, установите пакет %s</string>
-    <string name="please_install_package_or_package">Пожалуйста, установите %1$s пакет или %2$s пакет</string>
+    <string name="please_install_package_or_package">Пожалуйста, установите пакет %1$s или пакет %2$s</string>
     <string name="installation_method">Способ установки APK</string>
     <string name="system_install_failed">Не удалось установить систему. Пожалуйста, выберите другой способ установки в настройках!</string>
     <string name="choose_installer_app">Выберите приложение установщик</string>
     <string name="notset">Не указано</string>
     <string name="external">Внешний</string>
     <string name="exit">Выход</string>
-    <string name="packages_description">Пакеты — это вспомогательные приложения, которые YTDLnis использует для выполнения команд yt-dlp. Некоторые из них уже встроены в это приложение, но вы можете установить более новые версии без необходимости обновлять программу. Установленные APK заменяют встроенные версии, которые использует приложение.</string>
+    <string name="packages_description">Пакеты — это вспомогательные приложения, которые YTDLnis использует для выполнения команд yt-dlp. Некоторые из них уже встроены в это приложение, но вы можете установить более новые версии без необходимости обновлять программу. Установленные APK заменяют встроенные версии, которые использует приложение</string>
     <string name="bgutils_pot_generation_script_info">Чтобы использовать POT-провайдер от BgUtils, приложению необходимо загрузить репозиторий Brainicism/bgutil-ytdlp-pot-provider с GitHub и начать установку. Это может занять некоторое время. Продолжить?</string>
     <string name="burn_subs">Записать субтитры</string>
     <string name="check_clipboard_home_summary">Автоматически обнаруживать URL в буфере обмена на главном экране</string>
@@ -690,7 +690,7 @@
     <string name="welcome_next">Далее</string>
     <string name="welcome_finish">Завершить</string>
     <string name="lyrics">Текст песни</string>
-    <string name="embed_lyrics">Встроить текст песни</string>
+    <string name="embed_lyrics">Встраивать текст песни</string>
     <string name="save_lrc_file">Сохранить файл .lrc</string>
     <string name="lyrics_offset">Смещение</string>
     <string name="lyrics_not_found">Текст песни не найден</string>
@@ -699,7 +699,7 @@
     <string name="lyrics_no_preview">Предварительный просмотр недоступен, но текст песни будет добавлен при скачивании</string>
     <string name="lyrics_synced">Синхронизировано</string>
     <string name="lyrics_plain">Обычный текст</string>
-    <string name="embed_lyrics_summary">Загрузить тексты песен с lrclib.net и встроить их в аудиофайлы для скачивания</string>
+    <string name="embed_lyrics_summary">Загружать тексты песен с lrclib.net и встраивать их в скачиваемые аудиофайлы</string>
     <string name="save_lrc_file_summary">Сохранить синхронизированные тексты песен в формате .lrc рядом с загруженными аудиофайлами</string>
     <plurals name="updates_available_summary">
         <item quantity="one">Доступно %d обновление</item>
