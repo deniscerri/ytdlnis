@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов</string>
+    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -126,7 +126,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочтительный тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Удалить весь список журналов навсегда.</string>
+    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -160,7 +160,7 @@
     <string name="error_restarting_download">Ошибка при возобновлении загрузки</string>
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
-    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, infojson и другие временные конфигурации</string>
+    <string name="clear_temporary_files_summary">Удалить кэшированные файлы, JSON-метаданные и другие временные конфигурации</string>
     <string name="cache_cleared">Временные файлы очищены</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
@@ -354,7 +354,7 @@
     <string name="not_deleted">Не удалено</string>
     <string name="archive">Архив загруженного от yt-dlp — файл со списком уже загруженных элементов для предотвращения их повторной загрузки (вместо встроенной для этого функции)</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузки</string>
-    <string name="show_download_count">Показать подсчеты на экране очереди загрузки</string>
+    <string name="show_download_count">Подсчитывать контент на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>
     <string name="also_download_audio">Скачивать аудио отдельным файлом</string>
     <string name="scroll_down">Прокрутить вниз</string>
@@ -661,7 +661,7 @@
     <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
     <string name="translators_unavailable">В этой версии список переводчиков недоступен. Однако вы по-прежнему можете увидеть всех, кто внёс свой вклад, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Авто запись yt-dlp в терминале</string>
+    <string name="write_ytdlp_terminal">Писать «yt-dlp» при открытии терминала</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Загрузите видео и аудио с помощью yt-dlp. Давайте сначала настроим несколько вещей.</string>
