@@ -354,14 +354,14 @@
     <string name="not_deleted">Не удалено</string>
     <string name="archive">Архив загруженного от yt-dlp — файл со списком уже загруженных элементов для предотвращения их повторной загрузки (вместо встроенной для этого функции)</string>
     <string name="swipe_gestures_download_card">Жесты смахивания в карточке загрузки</string>
-    <string name="show_download_count">Подсчитывать контент на экране очереди загрузки</string>
+    <string name="show_download_count">Показать подсчёты на экране очереди загрузки</string>
     <string name="thumbnail_format">Формат миниатюр</string>
     <string name="also_download_audio">Скачивать аудио отдельным файлом</string>
     <string name="scroll_down">Прокрутить вниз</string>
     <string name="text_size">Размер текста</string>
     <string name="back">Назад</string>
     <string name="all_queries_finished">Все запросы обработаны</string>
-    <string name="select_between">Выбрать промежуточные</string>
+    <string name="select_between">Выберите элементы в диапазоне</string>
     <string name="reset_processed_links">Сбросить уже обработанные ссылки</string>
     <string name="get_new_uploads">Получать только будущие загрузки (игнорировать существующие элементы)</string>
     <string name="add">Добавить</string>
