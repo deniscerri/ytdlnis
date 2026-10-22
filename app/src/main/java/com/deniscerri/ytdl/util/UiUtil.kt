@@ -1466,7 +1466,7 @@ object UiUtil {
             }
 
             val adjustChapterDialog = MaterialAlertDialogBuilder(context)
-                .setTitle(context.getString(R.string.thumbnail))
+                .setTitle(context.getString(R.string.chapters))
                 .setView(adjustChapterView)
                 .setIcon(R.drawable.ic_chapters)
                 .setNegativeButton(context.resources.getString(R.string.dismiss)) { _: DialogInterface?, _: Int -> }

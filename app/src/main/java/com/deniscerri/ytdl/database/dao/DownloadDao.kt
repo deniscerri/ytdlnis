@@ -124,8 +124,8 @@ interface DownloadDao {
     @Query("SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY queueOrder, id")
     fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
 
-    @Query("SELECT format FROM downloads WHERE status in ('Queued', 'QueuedPaused')")
-    fun getSelectedFormatFromQueued() : List<Format>
+    @Query("SELECT format FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY id LIMIT :limit OFFSET :offset")
+    fun getSelectedFormatFromQueuedPaged(limit: Int, offset: Int) : List<Format>
 
     @Query("""
         SELECT * FROM downloads 
