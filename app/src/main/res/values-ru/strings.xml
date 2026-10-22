@@ -13,7 +13,7 @@
     <string name="you_are_in_latest_version">Используется последняя версия</string>
     <string name="ytld_update_success">Установлена новая версия</string>
     <string name="ytdl_updating_started">Загрузка новой версии</string>
-    <string name="Remove">Уд</string>
+    <string name="Remove">Удалить</string>
     <string name="ok">OK</string>
     <string name="cancel">Отмена</string>
     <string name="confirm_delete_history">Подтвердить</string>
@@ -92,7 +92,7 @@
     <string name="download_card_summary">Отображать параметры загрузки элемента (карточку загрузки). При отключённой опции загрузка начинается сразу</string>
     <string name="delete_files_too">Удалить файлы с устройства</string>
     <string name="Open_File">Открыть</string>
-    <string name="you_are_going_to_delete_multiple_items">Удалить</string>
+    <string name="you_are_going_to_delete_multiple_items">Удалить несколько элементов?</string>
     <string name="delete_file_too">Удалить файл с устройства</string>
     <string name="request_permission_desc">Приложению необходим доступ к хранилищу для сохранения загрузок на устройстве</string>
     <string name="download_notification_channel_description">Уведомление о ходе загрузки аудио и видеофайлов</string>
@@ -161,7 +161,7 @@
     <string name="preferred_download_type_summary">Вкладка, открывающаяся в карточке загрузки по умолчанию</string>
     <string name="all_items_selected">Все выбранные элементы</string>
     <string name="clear_temporary_files_summary">Удалить кэши</string>
-    <string name="cache_cleared">Временные</string>
+    <string name="cache_cleared">Временные файлы очищены</string>
     <string name="downloads_running_try_later">Загрузчик уже запущен. Попробуйте позже</string>
     <string name="freespace">Свободное место</string>
     <string name="link_you_copied">Скопированная ссылка</string>
