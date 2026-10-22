@@ -343,7 +343,7 @@
     <string name="occurrences">раз</string>
     <string name="observe_sources">Источники загрузки</string>
     <string name="new_source">Новый источник</string>
-    <string name="confirm_delete_sources_desc">Удалить все источники навсегда</string>
+    <string name="confirm_delete_sources_desc">Навсегда удалить все источники</string>
     <string name="ends">Заканчивается</string>
     <string name="after">После</string>
     <string name="week">Неделя</string>
@@ -453,7 +453,7 @@
     <string name="use_only_po_token">Использовать только PO token (игнорировать клиент плеера)</string>
     <string name="cache_directory_warning">Изменение папки кэша может вызвать непредвиденные проблемы. Если приложение не может выполнить запись по настроенному пути, оно будет использовать каталог внутреннего кэша по умолчанию</string>
     <string name="retry_missing_downloads_desc">Повторно загружать элементы, отсутствующие в истории загрузок</string>
-    <string name="reset_processed_links_desc">Повторно загрузить все элементы снова</string>
+    <string name="reset_processed_links_desc">Повторно загружать все элементы</string>
     <string name="use_code_highlighter">Подсвечивать синтаксис в коде</string>
     <string name="reset_preferences_in_screen">Сбросить все настройки на этом экране</string>
     <string name="automatic_backup">Автобекап</string>
@@ -546,7 +546,7 @@
     </plurals>
     <string name="reset_state">Сбросить состояние</string>
     <string name="rescan_from_scratch">Повторное сканирование с нуля</string>
-    <string name="rescan_from_scratch_desc">Забыть обработанные елеметы и заново скачайть все, что не сохранено</string>
+    <string name="rescan_from_scratch_desc">Забыть обработанные элеметы и заново скачать всё, что не сохранено</string>
     <string name="skip_backlog">Пропустить текущий список журналов</string>
     <string name="skip_backlog_desc">Пометить всё, текущее в источнике как выполнено — загружать только будущие загрузки</string>
     <string name="unskip_ignored">Отменить пропуск игнорируемых загрузок</string>
