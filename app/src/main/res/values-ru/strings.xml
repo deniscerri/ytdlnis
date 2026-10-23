@@ -125,7 +125,7 @@
     <string name="update_template">Обновить шаблон</string>
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
-    <string name="preferred_download_type">Предпочтительный тип загрузки</string>
+    <string name="preferred_download_type">Предпочитаемый тип загрузки</string>
     <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
@@ -238,7 +238,7 @@
     <string name="restore_complete">Восстановление приложения завершено. Были восстановлены следующие объекты:</string>
     <string name="download_already_exists">Загрузка уже существует</string>
     <string name="pause">Пауза</string>
-    <string name="preferred_locale">Предпочтительный регион</string>
+    <string name="preferred_locale">Предпочитаемый регион</string>
     <string name="video_recommendations">Рекомендации видео</string>
     <string name="couldnt_parse_file">Не удалось разобрать файл</string>
     <string name="keep_cache_summary">Не удалять кэш после завершения загрузки</string>
@@ -246,7 +246,7 @@
     <string name="material_you">Material You</string>
     <string name="finished_download_notification_channel_description">Уведомление о завершении загрузки</string>
     <string name="incognito">Инкогнито</string>
-    <string name="preferred_home_screen">Предпочтительный главный экран</string>
+    <string name="preferred_home_screen">Предпочитаемый главный экран</string>
     <string name="undo">Отменить</string>
     <string name="format_id">ID формата</string>
     <string name="codec">Кодек</string>
@@ -426,7 +426,7 @@
     <string name="status">Статус</string>
     <string name="deleted">Удалено</string>
     <string name="websites">Веб-сайты</string>
-    <string name="preferred_command_template">Предпочтительный шаблон команды</string>
+    <string name="preferred_command_template">Предпочитаемый шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
     <string name="disable_write_info_json">Не сохранять JSON с метаданными</string>
     <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
@@ -442,7 +442,7 @@
     <string name="minutes">Минуты</string>
     <string name="retry_every">Повторять каждые</string>
     <string name="prefer_container_over_codec_audio">Предпочитать контейнер кодеку для загрузок аудио</string>
-    <string name="prefer_container_over_codec_audio_summary">Если этот параметр включён, предпочитаемый аудиокодек будет игнорироваться, и изменится только контейнер</string>
+    <string name="prefer_container_over_codec_audio_summary">Если этот параметр включён, предпочитаемый аудиокодек будет игнорироваться и изменится только контейнер</string>
     <string name="player_client">Клиент плеера</string>
     <string name="player_client_summary">YouTube Player Clients и PO Token</string>
     <string name="use_app_language_for_metadata">Запрашивать метаданные на языке приложения</string>
@@ -478,7 +478,7 @@
     <string name="video_compatible">Совместимое видео</string>
     <string name="video_compatible_summary">Перекодировать видео в формат, совместимый с другими приложениями</string>
     <string name="no_free_space_warning">Для этой конфигурации нет свободного места.</string>
-    <string name="preferred_format_size">Предпочтительный размер формата</string>
+    <string name="preferred_format_size">Предпочитаемый размер формата</string>
     <string name="smallest">Наименьший</string>
     <string name="largest">Наибольший</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -614,7 +614,7 @@
     <string name="clear_info_json">Очистить infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Внутренний плагин FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Пресеты, которые FFmpeg использует для внутренних плагинов, таких как запись субтитров и т. п.. Изменение этого параметра влияет на конечный размер файла!</string>
-    <string name="preferred_format_size_audio">Предпочтительный размер аудиофайла</string>
+    <string name="preferred_format_size_audio">Предпочитаемый размер формата аудио</string>
     <string name="history_quick_action">Кнопка быстрого доступа</string>
     <string name="history_quick_action_summary">Действие, выполняемое при нажатии кнопки быстрого действия на карточке истории</string>
     <string name="open_file">Открыть файл</string>
