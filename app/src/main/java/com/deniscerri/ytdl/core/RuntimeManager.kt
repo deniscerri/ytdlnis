@@ -478,6 +478,14 @@ object RuntimeManager {
      */
     fun getNodeEnvironment() : Map<String, String> {
         val env = mutableMapOf("HOME" to NODE_HOME)
+        val certFile = listOf(nodeLocation, pythonLocation)
+            .map { File(it.ldDir, "usr/etc/tls/cert.pem") }
+            .firstOrNull { it.exists() }
+            ?: ENV_SSL_CERT_FILE?.let { File(it) }?.takeIf { it.exists() }
+        if (certFile != null) {
+            env["SSL_CERT_FILE"] = certFile.absolutePath
+            env["NODE_EXTRA_CA_CERTS"] = certFile.absolutePath
+        }
         if (NODE_OPTIONS.isNotEmpty()) env["NODE_OPTIONS"] = NODE_OPTIONS
         return env
     }

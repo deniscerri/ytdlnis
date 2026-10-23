@@ -18,6 +18,7 @@ import java.io.File
 import java.net.URI
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipFile
+import kotlin.coroutines.cancellation.CancellationException
 
 object BgUtilsPoTokenGeneratorUtil {
 
@@ -52,6 +53,17 @@ object BgUtilsPoTokenGeneratorUtil {
     }
 
     suspend fun downloadFiles(context: Context, runServerAfterwards: Boolean, progress: ((String) -> Unit)? = null) : Result<Unit> {
+        return try {
+            downloadFilesImpl(context, runServerAfterwards, progress)
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            progress?.invoke(e.message ?: "")
+            Result.failure(e)
+        }
+    }
+
+    private suspend fun downloadFilesImpl(context: Context, runServerAfterwards: Boolean, progress: ((String) -> Unit)? = null) : Result<Unit> {
         stopServer(context)
 
         val serverFolder = getServerFolder(context)
