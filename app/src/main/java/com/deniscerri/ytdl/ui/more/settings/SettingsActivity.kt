@@ -81,6 +81,7 @@ class SettingsActivity : BaseActivity(), SettingHost {
         R.xml.ytdlp_update_preferences to R.id.ytdlpUpdateSettingsFragment,
         R.xml.app_update_preferences to R.id.appUpdateSettingsFragment,
         R.xml.advanced_preferences to R.id.advancedSettingsFragment,
+        R.xml.ai_assistant_preferences to R.id.aiAssistantSettingsFragment,
     )
     fun getDestinationIdForXml(xmlRes: Int): Int = xmlToNavId[xmlRes] ?: R.id.mainSettingsFragment
 
@@ -139,7 +140,12 @@ class SettingsActivity : BaseActivity(), SettingHost {
             }
         }
 
-        if (savedInstanceState == null) navController.navigate(R.id.mainSettingsFragment)
+        if (savedInstanceState == null) {
+            navController.navigate(R.id.mainSettingsFragment)
+            if (intent.getStringExtra(EXTRA_OPEN_PAGE) == PAGE_AI_ASSISTANT) {
+                navController.navigate(R.id.aiAssistantSettingsFragment)
+            }
+        }
 
         //setup search
         val searchBar = binding.searchBar
@@ -203,5 +209,11 @@ class SettingsActivity : BaseActivity(), SettingHost {
     fun changeTopAppbarTitle(text: String, hideSearch: Boolean = true) {
         if (this::binding.isInitialized) binding.collapsingToolbar.title = text
         binding.searchBar.isVisible = !hideSearch
+    }
+
+    companion object {
+        /** Intent extra naming a settings page to open directly, e.g. [PAGE_AI_ASSISTANT]. */
+        const val EXTRA_OPEN_PAGE = "open_settings_page"
+        const val PAGE_AI_ASSISTANT = "ai_assistant"
     }
 }

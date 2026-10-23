@@ -31,6 +31,12 @@
         app:icon="@drawable/baseline_settings_suggest_24"
         android:title="@string/advanced"/>
 
+    <Preference
+        android:key="ai_assistant"
+        app:icon="@drawable/ic_ai_assistant"
+        android:summary="@string/ai_assistant_summary"
+        android:title="@string/ai_assistant"/>
+
     <PreferenceCategory android:title="@string/backup_restore">
         <Preference
             app:icon="@drawable/baseline_save_alt_24"

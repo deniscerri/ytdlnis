@@ -30,8 +30,12 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.llm.CommandSafety
+import com.deniscerri.ytdl.core.llm.LlmSettings
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
+import com.deniscerri.ytdl.ui.more.settings.ai.LlmProviderDialog
+import com.deniscerri.ytdl.ui.more.terminal.assistant.TerminalAssistantSheet
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysConstants
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysInfo
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysListener
@@ -41,6 +45,7 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.slider.Slider
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
@@ -141,8 +146,17 @@ class TerminalFragment : Fragment() {
             }
         }
 
+        bottomAppBar.menu.findItem(R.id.ai_assistant)?.isVisible =
+            sharedPreferences.getBoolean(LlmSettings.PREF_TERMINAL_ASSISTANT, true)
+        childFragmentManager.setFragmentResultListener(TerminalAssistantSheet.REQUEST_KEY, viewLifecycleOwner) { _, result ->
+            val command = result.getString(TerminalAssistantSheet.RESULT_COMMAND) ?: return@setFragmentResultListener
+            val run = result.getString(TerminalAssistantSheet.RESULT_ACTION) == TerminalAssistantSheet.ACTION_RUN
+            writeAssistantCommand(command, run)
+        }
+
         bottomAppBar.setOnMenuItemClickListener {
             when(it.itemId){
+                R.id.ai_assistant -> openAssistant()
                 R.id.command_templates -> {
                     if (templateCount == 0){
                         Toast.makeText(requireContext(), requireActivity().getString(R.string.add_template_first), Toast.LENGTH_SHORT).show()
@@ -354,6 +368,47 @@ class TerminalFragment : Fragment() {
         }
     }
 
+    private fun openAssistant() {
+        val settings = LlmSettings(requireContext())
+        if (settings.activeProvider() == null) {
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.ai_setup_title)
+                .setMessage(R.string.ai_setup_message)
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ai_add_provider) { _, _ ->
+                    LlmProviderDialog.showAdd(requireContext(), viewLifecycleOwner.lifecycleScope, settings) { openAssistant() }
+                }
+                .show()
+            return
+        }
+        if (childFragmentManager.findFragmentByTag(TerminalAssistantSheet.TAG) != null) return
+
+        // Best effort: the prompt is "<dir> $ <typed text>" on the cursor row
+        val promptRow = runCatching {
+            val emulator = session.emulator
+            emulator.screen.getSelectedText(0, emulator.cursorRow, emulator.mColumns - 1, emulator.cursorRow)
+        }.getOrNull().orEmpty()
+        val typedLine = promptRow.substringAfter("$ ", "").trim().ifEmpty { null }
+        val promptDirectory = promptRow.substringBefore("$ ", "").trim().ifEmpty { null }
+        val recentOutput = runCatching {
+            val emulator = session.emulator
+            val screen = emulator.screen
+            val firstRow = maxOf(-screen.activeTranscriptRows, emulator.cursorRow - ASSISTANT_OUTPUT_ROWS)
+            screen.getSelectedText(0, firstRow, emulator.mColumns - 1, emulator.cursorRow)
+        }.getOrNull()
+
+        TerminalAssistantSheet.newInstance(typedLine, recentOutput, promptDirectory)
+            .show(childFragmentManager, TerminalAssistantSheet.TAG)
+    }
+
+    /** Writes an approved assistant command at the prompt, replacing what was typed there. */
+    private fun writeAssistantCommand(command: String, run: Boolean) {
+        if (!::session.isInitialized || !CommandSafety.analyze(command).canWrite) return
+        // Ctrl-A, Ctrl-K: clear the current line (e.g. the pre-filled "yt-dlp ") first
+        session.write("\u0001\u000b" + command + if (run) "\r" else "")
+        terminalView.requestFocus()
+    }
+
     private fun writeSpaced(text: String) {
         val needsSpace = runCatching {
             val emulator = session.emulator
@@ -365,6 +420,11 @@ class TerminalFragment : Fragment() {
             }
         }.getOrDefault(true)
         session.write(if (needsSpace) " $text" else text)
+    }
+
+    companion object {
+        /** Terminal rows offered to the assistant for troubleshooting (trimmed again before sending). */
+        private const val ASSISTANT_OUTPUT_ROWS = 150
     }
 
     val virtualKeys = "[" +

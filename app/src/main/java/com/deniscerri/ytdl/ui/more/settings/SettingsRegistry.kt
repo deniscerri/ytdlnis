@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.SearchSettingsItem
 import com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsModule
+import com.deniscerri.ytdl.ui.more.settings.ai.AiAssistantSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.temporary.TemporaryFilesModule
@@ -26,7 +27,8 @@ object SettingsRegistry {
         R.xml.updating_preferences to UpdateSettingsModule,
         R.xml.ytdlp_update_preferences to YtdlpUpdateSettingsModule,
         R.xml.app_update_preferences to AppUpdateSettingsModule,
-        R.xml.advanced_preferences to AdvancedSettingsModule
+        R.xml.advanced_preferences to AdvancedSettingsModule,
+        R.xml.ai_assistant_preferences to AiAssistantSettingsModule,
     )
 
     fun getModuleForXml(xmlRes: Int) = xmlToModule[xmlRes]

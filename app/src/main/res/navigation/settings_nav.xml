@@ -73,7 +73,14 @@
         <action
             android:id="@+id/action_mainSettingsFragment_to_advancedSettingsFragment"
             app:destination="@id/advancedSettingsFragment" />
+        <action
+            android:id="@+id/action_mainSettingsFragment_to_aiAssistantSettingsFragment"
+            app:destination="@id/aiAssistantSettingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/aiAssistantSettingsFragment"
+        android:name="com.deniscerri.ytdl.ui.more.settings.ai.AiAssistantSettingsFragment"
+        android:label="AiAssistantSettingsFragment" />
     <fragment
         android:id="@+id/advancedSettingsFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsFragment"

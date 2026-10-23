@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:widgetLayout="@layout/preferece_material_switch"
+        app:defaultValue="true"
+        app:icon="@drawable/ic_terminal"
+        app:key="terminal_ai_assistant"
+        app:summary="@string/ai_show_in_terminal_summary"
+        app:title="@string/ai_show_in_terminal" />
+
+    <PreferenceCategory
+        app:key="llm_providers"
+        app:title="@string/ai_providers" />
+
+    <Preference
+        app:icon="@drawable/ic_plus"
+        app:key="llm_add_provider"
+        app:title="@string/ai_add_provider" />
+
+    <PreferenceCategory app:title="@string/ai_privacy_title">
+        <Preference
+            app:icon="@drawable/baseline_security_24"
+            app:key="llm_privacy"
+            app:selectable="false"
+            app:summary="@string/ai_privacy_summary" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -26,7 +26,12 @@
         <include domain="root" path="file_to_include"/>
         <exclude domain="root" path="file_to_exclude"/>
         -->
+        <!-- LLM API keys are bound to this device's Keystore and never leave it -->
+        <exclude domain="sharedpref" path="llm_secrets.xml"/>
     </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="llm_secrets.xml"/>
+    </device-transfer>
     <!--
     <device-transfer>
         <include .../>

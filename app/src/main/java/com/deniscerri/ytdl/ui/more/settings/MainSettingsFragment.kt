@@ -135,6 +135,11 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        findPreference<Preference>("ai_assistant")?.setOnPreferenceClickListener {
+            navController.navigate(R.id.action_mainSettingsFragment_to_aiAssistantSettingsFragment)
+            true
+        }
+
         //about section -------------------------
         updateUtil = UpdateUtil(requireContext())
 
