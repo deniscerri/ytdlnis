@@ -104,10 +104,10 @@ class GenerateYoutubePoTokensFragment : Fragment() {
             }
 
             this.setOnClickListener {
-                if (!denoIsInstalled) {
+                if (!denoIsInstalled && !nodeIsInstalled) {
                     this.isChecked = false
                     updateState()
-                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package, "Deno"), Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), context.getString(R.string.please_install_package_or_package, "Deno", "NodeJS"), Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
