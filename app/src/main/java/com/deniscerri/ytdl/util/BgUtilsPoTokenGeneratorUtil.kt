@@ -15,6 +15,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.net.HttpURLConnection
 import java.net.URI
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.zip.ZipFile
@@ -176,9 +177,35 @@ object BgUtilsPoTokenGeneratorUtil {
     private var shutdownJob: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO)
 
+    @Volatile
+    private var lastStartTime = 0L
+
+    suspend fun isServerAlive(): Boolean = withContext(Dispatchers.IO) {
+        var connection: HttpURLConnection? = null
+        try {
+            // Using 127.0.0.1 directly bypasses IPv6/localhost resolution bottlenecks
+            connection = (URI.create("http://127.0.0.1:4416/ping").toURL().openConnection() as HttpURLConnection).apply {
+                connectTimeout = 1000
+                readTimeout = 1000
+                useCaches = false
+            }
+            connection.responseCode == 200
+        } catch (e: Exception) {
+            false
+        } finally {
+            connection?.disconnect()
+        }
+    }
+
     suspend fun acquireServer(context: Context) {
         shutdownJob?.cancel() // Cancel pending auto-shutdown if a new worker arrives
-        if (activeJobCount.getAndIncrement() == 0) {
+        val wasIdle = activeJobCount.getAndIncrement() == 0
+
+        // The job count alone can't be trusted, the server can die while jobs are still counted
+        // (killed by the system under memory pressure, crash). Restart it, unless it was started just now and is still booting.
+        val startedRecently = System.currentTimeMillis() - lastStartTime < 5_000
+        if (wasIdle || (!startedRecently && !isServerAlive())) {
+            lastStartTime = System.currentTimeMillis()
             runServer(context)
         }
     }

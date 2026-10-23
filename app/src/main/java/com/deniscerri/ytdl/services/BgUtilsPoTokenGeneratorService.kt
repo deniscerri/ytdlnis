@@ -102,8 +102,16 @@ class BgUtilsPoTokenGeneratorService : Service() {
                 }
 
 
-            }.onFailure { err ->
-                Log.e("BGUTILS_POT", err.message ?: "")
+            }.also { result ->
+                val err = result.exceptionOrNull()
+                // killed on purpose (restart or exit), whoever killed it handles the service state
+                if (err is RuntimeManager.CanceledException) return@also
+                if (err != null) Log.e("BGUTILS_POT", err.message ?: "")
+
+                // the server process died on its own (crash, killed by the system) or finished.
+                // forget the active job count so the next acquireServer starts it again instead of assuming it is running
+                BgUtilsPoTokenGeneratorUtil.resetState()
+                stopForeground(STOP_FOREGROUND_REMOVE)
                 stopSelf()
             }
         }

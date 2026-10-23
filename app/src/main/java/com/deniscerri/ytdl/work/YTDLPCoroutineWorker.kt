@@ -48,29 +48,10 @@ abstract class YTDLPCoroutineWorker(
 //        }
     }
 
-    private suspend fun isBgUtilsServerAlive(): Boolean = withContext(Dispatchers.IO) {
-        var connection: HttpURLConnection? = null
-        try {
-            // Using 127.0.0.1 directly bypasses IPv6/localhost resolution bottlenecks
-            val url = URL("http://127.0.0.1:4416/ping")
-            connection = (url.openConnection() as HttpURLConnection).apply {
-                connectTimeout = 1000
-                readTimeout = 1000
-                useCaches = false
-            }
-            connection.responseCode == 200
-        } catch (e: Exception) {
-            android.util.Log.d("YTDLWorker", "Ping failed: ${e.message}")
-            false
-        } finally {
-            connection?.disconnect()
-        }
-    }
-
     private suspend fun waitForServerReady(timeoutMs: Long): Boolean {
         val start = System.currentTimeMillis()
         while (System.currentTimeMillis() - start < timeoutMs) {
-            if (isBgUtilsServerAlive()) return true
+            if (BgUtilsPoTokenGeneratorUtil.isServerAlive()) return true
             delay(500)
         }
         return false
