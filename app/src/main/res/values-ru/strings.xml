@@ -717,7 +717,7 @@
         <item quantity="many">%d элементов</item>
         <item quantity="other">%d элементов</item>
     </plurals>
-    <string name="reorder_queue">Очередь переупорядочивания</string>
+    <string name="reorder_queue">Переупорядочить очередь</string>
     <string name="crop_unavailable_please_update_item">Обновите данные элемента, чтобы использовать функцию кадрирования</string>
     <string name="version_update_available">%1$s → %2$s</string>
     <string name="update_checked_ago">Проверено %1$s</string>
