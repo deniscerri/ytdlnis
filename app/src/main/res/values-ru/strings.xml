@@ -677,7 +677,7 @@
     <string name="welcome_perm_storage">Доступ к хранилищу</string>
     <string name="welcome_perm_storage_summary">Необходимо сохранить загруженные файлы на устройстве.</string>
     <string name="welcome_perm_notifications">Уведомления</string>
-    <string name="welcome_perm_notifications_summary">Показать процесс загрузки и завершённые загрузки.</string>
+    <string name="welcome_perm_notifications_summary">Показает прогресс загрузки и завершённые загрузки.</string>
     <string name="welcome_perm_battery">Неограниченное использование аккумулятора</string>
     <string name="welcome_perm_battery_summary">Предотвращает прерывание длительных загрузок, выполняющихся в фоновом режиме.</string>
     <string name="welcome_perm_alarms">Будильники и напоминания</string>
