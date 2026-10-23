@@ -682,7 +682,7 @@
     <string name="welcome_perm_battery_summary">Предотвращает прерывание длительных загрузок, выполняющихся в фоновом режиме.</string>
     <string name="welcome_perm_alarms">Будильники и напоминания</string>
     <string name="welcome_perm_alarms_summary">Позволяет запускать запланированные загрузки в точно указанное время.</string>
-    <string name="welcome_allow">Позволять</string>
+    <string name="welcome_allow">Разрешить</string>
     <string name="welcome_allowed">Разрешено</string>
     <string name="welcome_required">Обязательно</string>
     <string name="welcome_updates_title">Обновления</string>
