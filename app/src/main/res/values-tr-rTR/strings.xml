@@ -603,4 +603,10 @@
     <string name="check_clipboard_home">Ana ekranda panoyu kontrol edin</string>
     <string name="clear_info_json">Infojsons\'ları temizle</string>
     <string name="burn_subs">Altyazıları açın</string>
+    <string name="reorder_queue">Sırayı yeniden düzenle</string>
+    <string name="translators">Çevirmenler</string>
+    <string name="translators_summary">Weblate üzerinden bu uygulamayı çevirmeye yardım eden insanlar</string>
+    <string name="translators_unavailable">Çevirmen listesi bu sürümde mevcut değil. Ancak yinede Weblate üzerinden kimin u uygulamaya katkı sağladığını görebilirsin.</string>
+    <string name="toggle_all">Hepsini aç/kapat</string>
+    <string name="merge_cuts">Kesilmeleri bir dosyada birleştir</string>
 </resources>
