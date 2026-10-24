@@ -40,6 +40,7 @@ import com.deniscerri.ytdl.util.FormatUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
@@ -48,6 +49,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -59,7 +61,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
     private var activity: Activity? = null
     private lateinit var downloadViewModel : DownloadViewModel
     private lateinit var formatViewModel : FormatViewModel
-    private lateinit var resultViewModel: ResultViewModel
     private lateinit var ytdlpViewModel: YTDLPViewModel
     private lateinit var preferences: SharedPreferences
     private lateinit var shownFields: List<String>
@@ -75,6 +76,8 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
 
     private var disabledCutClicked: Boolean = false
     private var disabledCropClicked: Boolean = false
+    // onViewCreated runs again on every updateUI, only start observing once
+    private var observingFormatUpdates = false
 
 
     @SuppressLint("RestrictedApi")
@@ -86,7 +89,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         fragmentView = inflater.inflate(R.layout.fragment_download_video, container, false)
         activity = getActivity()
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
         formatViewModel = ViewModelProvider(requireActivity())[FormatViewModel::class.java]
         ytdlpViewModel = ViewModelProvider(requireActivity())[YTDLPViewModel::class.java]
         val formatUtil = FormatUtil(requireContext())
@@ -128,6 +130,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 }
             }
 
+            observeFormatUpdates()
             val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
             try {
                 title = view.findViewById(R.id.title_textinput)
@@ -275,32 +278,6 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                         )
                         formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
                     }
-
-                    override fun onFormatsUpdated(allFormats: List<Format>) {
-                        lifecycleScope.launch {
-                            withContext(Dispatchers.IO){
-                                resultItem?.apply {
-                                    this.formats = allFormats.filter { !genericVideoFormats.contains(it) }
-                                    resultViewModel.update(this)
-                                }
-
-                                currentDownloadItem?.apply {
-                                    downloadViewModel.updateDownloadItemFormats(this.id, allFormats.filter { !genericVideoFormats.contains(it) })
-                                }
-                            }
-                        }
-                        formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
-                        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.video)
-                        val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
-                        downloadItem.format = preferredFormat
-                        downloadItem.allFormats = formats
-                        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
-                            if(downloadItem.videoPreferences.removeAudio) listOf() else formats.filter { preferredAudioFormats.contains(it.format_id) },
-                            showSize = downloadItem.downloadSections.isEmpty()
-                        )
-                        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
-                    }
-
                 }
                 formatCard.setOnClickListener{
                     if (parentFragmentManager.findFragmentByTag("formatSheet") == null){
@@ -576,6 +553,56 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
         title.endIconMode = END_ICON_NONE
         author.editText?.setText(a)
         title.endIconMode = END_ICON_NONE
+    }
+
+    private fun observeFormatUpdates() {
+        if (observingFormatUpdates) return
+        observingFormatUpdates = true
+
+        lifecycleScope.launch {
+            formatViewModel.updatingFormatsUrls.collectLatest { urls ->
+                val updating = urls.contains(downloadItem.url)
+                // short updates finish before the bar would only flash
+                if (updating) delay(500)
+                view?.findViewById<LinearProgressIndicator>(R.id.format_loading_progress)?.apply {
+                    isVisible = updating
+                    isClickable = updating
+                    setOnClickListener { formatViewModel.cancelUpdateFormats() }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
+            formatViewModel.formatUpdates.collect { event ->
+                if (event is FormatViewModel.FormatUpdateEvent.Updated && event.url == downloadItem.url) {
+                    kotlin.runCatching { onFormatsUpdated(event.formats) }
+                }
+            }
+        }
+    }
+
+    private fun onFormatsUpdated(allFormats: List<Format>) {
+        val formats = allFormats.filter { !genericVideoFormats.contains(it) }.toMutableList()
+        if (formats.isEmpty()) return
+        // the result item itself is saved by FormatViewModel
+        resultItem?.formats = formats
+        // both tabs get this, only one of them saves the queued item
+        currentDownloadItem?.takeIf { it.type != DownloadType.audio }?.apply {
+            downloadViewModel.updateDownloadItemFormats(this.id, formats)
+        }
+
+        val preferredFormat = downloadViewModel.getFormat(formats, DownloadType.video)
+        val preferredAudioFormats = downloadViewModel.getPreferredAudioFormats(formats)
+        downloadItem.format = preferredFormat
+        downloadItem.allFormats = formats
+        downloadItem.videoPreferences.audioFormatIDs = preferredAudioFormats
+
+        val formatCard = view?.findViewById<MaterialCardView>(R.id.format_card_constraintLayout) ?: return
+        val filesize = UiUtil.populateFormatCard(requireContext(), formatCard, preferredFormat,
+            if(downloadItem.videoPreferences.removeAudio) listOf() else formats.filter { preferredAudioFormats.contains(it.format_id) },
+            showSize = downloadItem.downloadSections.isEmpty()
+        )
+        formatViewModel.checkFreeSpace(filesize, downloadItem.downloadPath)
     }
 
     override fun updateUI(res: ResultItem?) {

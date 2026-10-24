@@ -40,6 +40,7 @@
     <string name="downloading_update">Downloading new version</string>
     <string name="audio">Audio</string>
     <string name="video">Video</string>
+    <string name="optional">Optional</string>
     <string name="concurrent_fragments_summary">Number of fragments of a DASH/HLS native video to download concurrently</string>
     <string name="concurrent_fragments">Concurrent fragments</string>
     <string name="downloading">Downloading</string>

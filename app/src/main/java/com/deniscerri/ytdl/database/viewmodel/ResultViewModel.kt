@@ -91,10 +91,6 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
     var updateResultData: MutableStateFlow<List<ResultItem?>?> = MutableStateFlow(null)
     private var updateResultDataJob : Job? = null
 
-    val updatingFormats: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    var updateFormatsResultData: MutableStateFlow<MutableList<Format>?> = MutableStateFlow(null)
-    private var updateFormatsResultDataJob: Job? = null
-
     private var parsingQueries: Job? = null
     private var parsingQueriesJobList : MutableList<Job> = Collections.synchronizedList(mutableListOf())
 
@@ -486,45 +482,6 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         updatingData.value = false
         updateResultData.emit(null)
         updateResultData.value = null
-    }
-
-    suspend fun cancelUpdateFormatsItemData() = viewModelScope.launch(Dispatchers.IO) {
-        updatingFormats.emit(false)
-        updatingFormats.value = false
-        updateFormatsResultData.emit(null)
-        updateFormatsResultData.value = null
-        updateFormatsResultDataJob?.cancel(CancellationException())
-    }
-
-    suspend fun updateFormatItemData(result: ResultItem){
-        if (updateFormatsResultDataJob?.isActive == true) return
-        updateFormatsResultData.emit(null)
-        updateFormatsResultData.value = null
-
-        updateFormatsResultDataJob = viewModelScope.launch(Dispatchers.IO) {
-            try {
-                updatingFormats.value = true
-                val formats = getFormats(result.url)
-                ensureActive()
-                if (formats.isNotEmpty()) {
-                    getItemByURL(result.url)?.apply {
-                        this.formats = formats.toMutableList()
-                        update(this)
-                    }
-                    updateFormatsResultData.emit(formats.toMutableList())
-                }
-            } catch (e: CancellationException) {
-
-            } catch (e: Exception) {
-                uiState.update {
-                    it.copy(processing = false, errorMessage = e.message.toString())
-                }
-                Log.e(tag, "Error updating formats: $e")
-            } finally {
-                updatingFormats.emit(false)
-                updatingFormats.value = false
-            }
-        }
     }
 
     data class MultipleFormatProgress(

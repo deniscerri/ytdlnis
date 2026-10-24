@@ -12,7 +12,6 @@ import android.view.Window
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,10 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.FormatViewModel
-import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.ui.adapter.FormatAdapter
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FormatUtil
@@ -35,13 +32,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class FormatSelectionBottomSheetDialog(
@@ -54,7 +49,7 @@ class FormatSelectionBottomSheetDialog(
     private lateinit var adapter: FormatAdapter
     private lateinit var genericAudioFormats : List<Format>
     private lateinit var genericVideoFormats : List<Format>
-    private var formats: List<FormatRecyclerView> = listOf()
+    private var formats: List<Format> = listOf()
 
     private var canMultiSelectAudio: Boolean = false
 
@@ -63,13 +58,15 @@ class FormatSelectionBottomSheetDialog(
     private lateinit var view: View
     private lateinit var continueInBackgroundSnackBar : Snackbar
     private lateinit var downloadViewModel: DownloadViewModel
-    private lateinit var resultViewModel: ResultViewModel
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var okBtn : Button
     private lateinit var refreshBtn: Button
     private lateinit var filterBtn : Button
+    private lateinit var tabLayout: TabLayout
 
-    private var updateFormatsJob: Job? = null
+    private var videoTabFormats: List<Format> = listOf()
+    private var audioTabFormats: List<Format> = listOf()
+    private var preselected = false
 
     private lateinit var listener: OnFormatClickListener
     private lateinit var multipleFormatsListener: OnMultipleFormatClickListener
@@ -90,7 +87,6 @@ class FormatSelectionBottomSheetDialog(
         formatUtil = FormatUtil(requireContext())
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
-        resultViewModel = ViewModelProvider(this)[ResultViewModel::class.java]
     }
 
 
@@ -127,15 +123,41 @@ class FormatSelectionBottomSheetDialog(
         okBtn = view.findViewById(R.id.format_ok)
         filterBtn = view.findViewById(R.id.format_filter)
         val shimmers = view.findViewById<ShimmerFrameLayout>(R.id.format_list_shimmer)
+        tabLayout = view.findViewById(R.id.format_tablayout)
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.video))
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.audio))
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                showSelectedTab()
+                recyclerView.scrollToPosition(0)
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                recyclerView.scrollToPosition(0)
+            }
+        })
 
         lifecycleScope.launch {
             formatViewModel.formats.collectLatest {
                 if (it.isEmpty()) {
                     this@FormatSelectionBottomSheetDialog.dismiss()
                 }
-                adapter.setCanMultiSelectAudio(formatViewModel.canMultiSelectAudio.value)
+                val splitByType = formatViewModel.canMultiSelectAudio.value
+                adapter.setCanMultiSelectAudio(splitByType)
                 formats = it
-                adapter.submitList(it.toMutableList())
+                tabLayout.isVisible = splitByType
+                if (splitByType) {
+                    videoTabFormats = it.filter { f -> f.isVideo() }
+                    audioTabFormats = it.filter { f -> !f.isVideo() }
+                    if (!preselected) {
+                        preselectCurrentFormats()
+                        preselected = true
+                    }
+                    showSelectedTab()
+                    updateAudioTabLabel()
+                }else {
+                    adapter.submitList(it)
+                }
                 shimmers.visibility = View.GONE
                 shimmers.stopShimmer()
                 recyclerView.isVisible = true
@@ -171,125 +193,70 @@ class FormatSelectionBottomSheetDialog(
         }
 
         fun refreshBtnClicked(longPressed : Boolean) {
-            lifecycleScope.launch {
-                val items = formatViewModel.selectedItems.value.toMutableList()
-                val distinctItems = items.distinctBy { it.url }
+            val distinctItems = formatViewModel.selectedItems.value.distinctBy { it.url }
+            // with several items, fetch only the ones still missing formats
+            val itemsToUpdate = if (distinctItems.size > 1) {
+                distinctItems.filter { it.allFormats.isEmpty() }.ifEmpty { distinctItems }
+            }else distinctItems
 
-                val itemsThatHaveFormats = distinctItems.filter { it.allFormats.isNotEmpty() }
-                val itemsWithMissingFormats = distinctItems.filter { it.allFormats.isEmpty() }.ifEmpty { distinctItems }
-
-                if (itemsWithMissingFormats.size > 10){
-                    continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_LONG)
-                    continueInBackgroundSnackBar.setAction(R.string.ok) {
-                        _multipleFormatsListener!!.onContinueOnBackground()
-                        this@FormatSelectionBottomSheetDialog.dismiss()
-                    }
-                    continueInBackgroundSnackBar.show()
+            if (itemsToUpdate.size > 10 && _multipleFormatsListener != null){
+                continueInBackgroundSnackBar = Snackbar.make(view, R.string.update_formats_background, Snackbar.LENGTH_LONG)
+                continueInBackgroundSnackBar.setAction(R.string.ok) {
+                    // the background worker takes over
+                    formatViewModel.cancelUpdateFormats()
+                    _multipleFormatsListener.onContinueOnBackground()
+                    this@FormatSelectionBottomSheetDialog.dismiss()
                 }
+                continueInBackgroundSnackBar.show()
+            }
 
+            formatViewModel.updateFormats(itemsToUpdate.map { it.url }, currentFormatSource, longPressed)
+        }
 
-                refreshBtn.isEnabled = false
-                refreshBtn.isVisible = true
-                okBtn.isVisible = false
-                okBtn.isEnabled = false
-                filterBtn.isEnabled = false
-                recyclerView.isVisible = false
-                shimmers.isVisible = true
-                shimmers.startShimmer()
-
-                updateFormatsJob = launch(Dispatchers.IO) {
-                    try{
-                        //simple download
-                        if (items.size == 1) {
-                            kotlin.runCatching {
-                                val res = resultViewModel.getFormats(items.first().url, currentFormatSource, longPressed)
-                                if (!isActive) return@launch
-                                res.filter { it.format_note != "storyboard" }
-                                val chosenFormats = if (items.first().type == DownloadType.audio) {
-                                    res.filter { it.format_note.contains("audio", ignoreCase = true) }
-                                } else {
-                                    res
-                                }
-                                if (chosenFormats.isEmpty()) throw Exception()
-
-                                items.first().allFormats.clear()
-                                items.first().allFormats.addAll(chosenFormats)
-
-                                withContext(Dispatchers.Main){
-                                    formatViewModel.setItem(items.first(), false)
-                                    listener.onFormatsUpdated(res)
-                                }
-                            }.onFailure { err ->
-                                // the sheet was closed, nothing to report
-                                if (err is CancellationException) throw err
-                                withContext(Dispatchers.Main){
-                                    if (!isAdded) return@withContext
-                                    UiUtil.handleNoResults(requireActivity(), err.message.toString(), null, false, continued = {}, closed = {}, cookieFetch = {})
-                                }
-                            }
-
-                            //list format filtering
-                        }else{
-                            var progressInt = 0
-                            val formatCollection = itemsThatHaveFormats.map { it.allFormats }.toMutableList()
-
-                            var progress = "0/${itemsWithMissingFormats.size}"
-                            withContext(Dispatchers.Main) {
-                                refreshBtn.text = progress
-                            }
-
-                            val res = resultViewModel.getFormatsMultiple(itemsWithMissingFormats.map { it.url }, currentFormatSource) {
-                                if (!isActive) return@getFormatsMultiple
-
-                                if (it.unavailable) {
-                                    lifecycleScope.launch {
-                                        multipleFormatsListener.onItemUnavailable(it.url)
-                                        items.indexOfFirst { item -> item.url == it.url }.takeIf { i -> i >= 0 }?.let { i -> items.removeAt(i) }
-                                        withContext(Dispatchers.Main) {
-                                            if (!isAdded) return@withContext
-                                            Snackbar.make(view, it.unavailableMessage, Snackbar.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                }else{
-                                    multipleFormatsListener.onFormatUpdated(it.url, it.formats)
-                                    items.filter { item -> item.url == it.url }.forEach { d ->
-                                        d.allFormats.clear()
-                                        d.allFormats.addAll(it.formats)
-                                    }
-                                    progressInt++
-                                    lifecycleScope.launch(Dispatchers.Main) {
-                                        progress = "${progressInt}/${itemsWithMissingFormats.size}"
-                                        refreshBtn.text = progress
-                                    }
-                                }
-                            }
-
-                            formatViewModel.setItems(items, false)
-                        }
-
-                        withContext(Dispatchers.Main){
-                            filterBtn.isEnabled = true
-                            okBtn.isEnabled = true
-                            refreshBtn.isEnabled = true
-                        }
-                    }catch (e: Exception){
-                        if (e is CancellationException) throw e
-                        withContext(Dispatchers.Main) {
-                            // the sheet may be gone already, e.g. the parent card was dismissed mid update
-                            if (!isAdded) return@withContext
-                            refreshBtn.isEnabled = true
-                            filterBtn.isEnabled = true
-                            okBtn.isEnabled = true
-                            refreshBtn.text = getString(R.string.update)
-                            recyclerView.isVisible = true
-                            shimmers.visibility = View.GONE
-                            shimmers.stopShimmer()
-                            e.printStackTrace()
-                            Toast.makeText(context, getString(R.string.error_updating_formats), Toast.LENGTH_SHORT).show()
-                        }
-                    }
+        lifecycleScope.launch {
+            combine(formatViewModel.updatingFormatsUrls, formatViewModel.selectedItems) { urls, items ->
+                items.any { urls.contains(it.url) }
+            }.distinctUntilChanged().collectLatest { updating ->
+                refreshBtn.isEnabled = !updating
+                filterBtn.isEnabled = !updating
+                okBtn.isEnabled = !updating
+                if (updating) {
+                    // the current selection points at formats about to be replaced, redo it from the refreshed item
+                    preselected = false
+                    adapter.selectedVideoFormat = null
+                    adapter.selectedAudioFormats.clear()
+                    refreshBtn.isVisible = true
+                    okBtn.isVisible = false
+                    recyclerView.isVisible = false
+                    shimmers.isVisible = true
+                    shimmers.startShimmer()
+                }else {
+                    okBtn.isVisible = canMultiSelectAudio
+                    refreshBtn.text = getString(R.string.update)
+                    recyclerView.isVisible = true
+                    shimmers.visibility = View.GONE
+                    shimmers.stopShimmer()
                 }
-                updateFormatsJob?.start()
+            }
+        }
+
+        lifecycleScope.launch {
+            formatViewModel.updateFormatsProgress.collectLatest { progress ->
+                if (progress != null) refreshBtn.text = "${progress.first}/${progress.second}"
+            }
+        }
+
+        lifecycleScope.launch {
+            formatViewModel.formatUpdates.collect { event ->
+                when (event) {
+                    is FormatViewModel.FormatUpdateEvent.Unavailable -> {
+                        Snackbar.make(view, event.message, Snackbar.LENGTH_SHORT).show()
+                    }
+                    is FormatViewModel.FormatUpdateEvent.Error -> {
+                        UiUtil.handleNoResults(requireActivity(), event.message, null, false, continued = {}, closed = {}, cookieFetch = {})
+                    }
+                    else -> {}
+                }
             }
         }
 
@@ -414,7 +381,7 @@ class FormatSelectionBottomSheetDialog(
         if (_listener != null){
             //simple video format selection
             listener.onFormatClick(FormatTuple(adapter.selectedVideoFormat, adapter.selectedAudioFormats.ifEmpty {
-                listOf(downloadViewModel.getFormat(formats.filter { it.label == null }.map { it.format!! }, DownloadType.audio))
+                listOf(downloadViewModel.getFormat(formats, DownloadType.audio))
             }))
         }else{
             val res = formatViewModel.getFormatsForItemsBasedOnFormat(adapter.selectedVideoFormat, adapter.selectedAudioFormats)
@@ -437,7 +404,7 @@ class FormatSelectionBottomSheetDialog(
     private fun cleanUp(){
         kotlin.runCatching {
             formatViewModel.filterBy.value = FormatCategory.ALL
-            updateFormatsJob?.cancel(CancellationException())
+            // a running format update keeps going, the download card behind still wants the result
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("formatSheet")!!).commit()
         }
     }
@@ -451,18 +418,65 @@ class FormatSelectionBottomSheetDialog(
         }
         dismiss()
     }
+
+    override fun onSelectionChanged(item: Format) {
+        updateAudioTabLabel()
+        // a video without its own audio needs one, so lead the user there unless they already picked some
+        if (item.isVideo() && !item.hasAudio() && adapter.selectedAudioFormats.isEmpty()) {
+            tabLayout.getTabAt(1)?.select()
+        }
+    }
+
+    private fun showSelectedTab() {
+        val list = if (tabLayout.selectedTabPosition == 1) audioTabFormats else videoTabFormats
+        adapter.submitList(list)
+    }
+
+    // check the formats the item already has, so the sheet starts from what the download card shows
+    private fun preselectCurrentFormats() {
+        val items = formatViewModel.selectedItems.value
+        if (items.isEmpty()) return
+        // with several items only preselect when they all agree
+        if (items.map { it.format.format_id }.distinct().size != 1) return
+        if (items.map { it.videoPreferences.audioFormatIDs.toSet() }.distinct().size != 1) return
+
+        val first = items.first()
+        adapter.selectedVideoFormat = videoTabFormats.firstOrNull { it.format_id == first.format.format_id }
+        adapter.selectedAudioFormats.clear()
+        adapter.selectedAudioFormats.addAll(first.videoPreferences.audioFormatIDs.mapNotNull { id ->
+            audioTabFormats.firstOrNull { it.format_id == id }
+        })
+    }
+
+    private fun updateAudioTabLabel() {
+        if (!tabLayout.isVisible) return
+        val video = adapter.selectedVideoFormat
+        val audio = adapter.selectedAudioFormats
+        tabLayout.getTabAt(1)?.text = when {
+            audio.isNotEmpty() -> "${getString(R.string.audio)} (${audio.size})"
+            video?.hasAudio() == true -> "${getString(R.string.audio)} (${getString(R.string.optional)})"
+            else -> getString(R.string.audio)
+        }
+    }
+
+
+    private fun Format.isVideo() : Boolean {
+        return this.vcodec.isNotBlank() && this.vcodec != "none"
+    }
+
+    private fun Format.hasAudio() : Boolean {
+        return this.acodec.isNotBlank() && this.acodec != "none"
+    }
 }
 
 interface OnFormatClickListener{
     fun onFormatClick(formatTuple: FormatTuple)
-    fun onFormatsUpdated(allFormats: List<Format>)
 }
 
+// format updates are not reported here, observe FormatViewModel.formatUpdates instead
 interface OnMultipleFormatClickListener{
     fun onFormatClick(formatTuple: List<MultipleItemFormatTuple>)
     fun onContinueOnBackground() {}
-    fun onFormatUpdated(url: String, formats: List<Format>)
-    fun onItemUnavailable(url: String)
 }
 
 class MultipleItemFormatTuple internal constructor(

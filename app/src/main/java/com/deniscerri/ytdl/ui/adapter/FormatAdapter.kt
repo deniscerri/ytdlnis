@@ -4,18 +4,16 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.card.MaterialCardView
 
-class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<FormatRecyclerView?, FormatAdapter.ViewHolder>(AsyncDifferConfig.Builder(
+class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<Format, FormatAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
 ).build()) {
     private val onItemClickListener: OnItemClickListener
@@ -23,7 +21,6 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
     var selectedVideoFormat: Format? = null
     val selectedAudioFormats: MutableList<Format> = mutableListOf()
     private var canMultiSelectAudio: Boolean = false
-    private var formats: MutableList<FormatRecyclerView?> = mutableListOf()
 
 
     init {
@@ -31,59 +28,24 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
         this.activity = activity
     }
 
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener?) : RecyclerView.ViewHolder(itemView) {
-        val item: MaterialCardView? = itemView.findViewById(R.id.format_card_constraintLayout)
-        val label: Button? = itemView.findViewById(R.id.title)
-    }
-
-    override fun submitList(list: MutableList<FormatRecyclerView?>?) {
-        if (list != null) {
-            formats = list
-        }
-        super.submitList(list ?: listOf<FormatRecyclerView>())
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val item: MaterialCardView = itemView.findViewById(R.id.format_card_constraintLayout)
     }
 
     fun setCanMultiSelectAudio(it: Boolean) {
         canMultiSelectAudio = it
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val item = formats.getOrNull(position)
-        return if (item?.label != null) 0 else 1
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return if (viewType == 0){
-            val button = LayoutInflater.from(parent.context)
-                .inflate(R.layout.format_type_label, parent, false)
-
-            ViewHolder(
-                button,
-                onItemClickListener
-            )
-        }else{
-            val cardView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.format_item, parent, false)
-
-            ViewHolder(
-                cardView,
-                onItemClickListener
-            )
-        }
+        val cardView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.format_item, parent, false)
+        return ViewHolder(cardView)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itm = getItem(position) ?: return
-        val viewType = getItemViewType(position)
-        if (viewType == 0) {
-            val button = holder.label
-            button?.text = itm.label
-            return
-        }
-
-        val item = itm.format ?: return
-        val card = holder.item ?: return
+        val item = getItem(position) ?: return
+        val card = holder.item
         //card.popup()
         UiUtil.populateFormatCard(activity, card, item)
         card.isChecked = selectedVideoFormat == item || selectedAudioFormats.any { it == item }
@@ -98,6 +60,7 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
                     }else {
                         selectedVideoFormat = item
                         notifyDataSetChanged()
+                        onItemClickListener.onSelectionChanged(item)
                     }
                 }else {
                     if (card.isChecked) {
@@ -106,6 +69,7 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
                         selectedAudioFormats.add(item)
                     }
                     notifyDataSetChanged()
+                    onItemClickListener.onSelectionChanged(item)
                 }
             }
         }
@@ -123,16 +87,17 @@ class FormatAdapter(onItemClickListener: OnItemClickListener, activity: Activity
 
     interface OnItemClickListener {
         fun onItemSelect(item: Format, audioFormats: List<Format>?)
+        fun onSelectionChanged(item: Format) {}
     }
 
     companion object {
-        private val DIFF_CALLBACK: DiffUtil.ItemCallback<FormatRecyclerView> = object : DiffUtil.ItemCallback<FormatRecyclerView>() {
-            override fun areItemsTheSame(oldItem: FormatRecyclerView, newItem: FormatRecyclerView): Boolean {
-                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id && oldItem.format?.format_note == newItem.format?.format_note
+        private val DIFF_CALLBACK: DiffUtil.ItemCallback<Format> = object : DiffUtil.ItemCallback<Format>() {
+            override fun areItemsTheSame(oldItem: Format, newItem: Format): Boolean {
+                return oldItem.format_id == newItem.format_id && oldItem.format_note == newItem.format_note
             }
 
-            override fun areContentsTheSame(oldItem: FormatRecyclerView, newItem: FormatRecyclerView): Boolean {
-                return oldItem.label == newItem.label && oldItem.format?.format_id == newItem.format?.format_id && oldItem.format?.format_note == newItem.format?.format_note
+            override fun areContentsTheSame(oldItem: Format, newItem: Format): Boolean {
+                return oldItem.format_id == newItem.format_id && oldItem.format_note == newItem.format_note
             }
         }
     }

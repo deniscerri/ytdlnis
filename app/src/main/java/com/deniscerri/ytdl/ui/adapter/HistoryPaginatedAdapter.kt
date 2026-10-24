@@ -230,25 +230,20 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
             val btn = card.findViewById<MaterialButton>(R.id.action_button)
             var filesPresent = true
 
-            fun applyPresence(present: Boolean) {
-                filesPresent = present
-                if (present) {
-                    thumbnail.alpha = 1f
-                    thumbnail.colorFilter = null
-                    btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorPrimaryContainer, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
-                } else {
-                    thumbnail.colorFilter = ColorMatrixColorFilter(ColorMatrix().apply { setSaturation(0f) })
-                    thumbnail.alpha = 0.7f
-                    btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorSurface, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
-                }
-            }
-
             //IS IN THE FILE SYSTEM?
-            val paths = item.downloadPath
-            applyPresence(true) // optimistic until checked
-            (activity as? LifecycleOwner)?.lifecycleScope?.launch {
-                val missing = paths.all { it.isNotBlank() && !FileUtil.checkExists(it) }
-                if (card.tag == item.id) applyPresence(!missing) // guard against recycled views
+            if (item.downloadPath.all { !File(it).exists() && it.isNotBlank()}) {
+                filesPresent = false
+                thumbnail.colorFilter = ColorMatrixColorFilter(object : ColorMatrix() {
+                    init {
+                        setSaturation(0f)
+                    }
+                })
+                thumbnail.alpha = 0.7f
+                btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorSurface, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
+            }else{
+                thumbnail.alpha = 1f
+                thumbnail.colorFilter = null
+                btn.backgroundTintList = MaterialColors.getColorStateList(activity, R.attr.colorSurface, ContextCompat.getColorStateList(activity, android.R.color.transparent)!!)
             }
 
             if (item.type == DownloadType.audio) {

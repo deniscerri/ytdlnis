@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.preference.PreferenceManager
@@ -9,8 +10,8 @@ import com.deniscerri.ytdl.database.DBManager
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
-import com.deniscerri.ytdl.database.models.FormatRecyclerView
 import com.deniscerri.ytdl.database.repository.DownloadRepository
+import com.deniscerri.ytdl.database.repository.ResultRepository
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatCategory
 import com.deniscerri.ytdl.ui.downloadcard.FormatSelectionBottomSheetDialog.FormatSorting
 import com.deniscerri.ytdl.ui.downloadcard.FormatTuple
@@ -18,11 +19,16 @@ import com.deniscerri.ytdl.ui.downloadcard.MultipleItemFormatTuple
 import com.deniscerri.ytdl.util.Extensions.isYoutubeURL
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -30,7 +36,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     private val downloadRepository: DownloadRepository
     val selectedItems = MutableStateFlow(listOf<DownloadItem>())
     val selectedItemsSharedFlow = MutableSharedFlow<List<DownloadItem>>(replay = 1)
-    var formats : Flow<List<FormatRecyclerView>>
+    var formats : Flow<List<Format>>
     var showFilterBtn = MutableSharedFlow<Boolean>(1)
     var showRefreshBtn = MutableSharedFlow<Boolean>(1)
     private var canUpdate = true
@@ -46,7 +52,24 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
     private val _noFreeSpace = MutableSharedFlow<String?>()
     val noFreeSpace = _noFreeSpace.asSharedFlow()
 
+    private val resultRepository: ResultRepository
+    private var updateFormatsJob: Job? = null
+    // urls being updated right now, empty when idle
+    val updatingFormatsUrls = MutableStateFlow<Set<String>>(emptySet())
+    // done / total, only while updating several items
+    val updateFormatsProgress = MutableStateFlow<Pair<Int, Int>?>(null)
+    private val _formatUpdates = MutableSharedFlow<FormatUpdateEvent>(extraBufferCapacity = 64)
+    val formatUpdates = _formatUpdates.asSharedFlow()
+
+    sealed class FormatUpdateEvent {
+        data class Updated(val url: String, val formats: List<Format>) : FormatUpdateEvent()
+        data class Unavailable(val url: String, val message: String) : FormatUpdateEvent()
+        data class Error(val message: String) : FormatUpdateEvent()
+    }
+
     init {
+        val dbManager = DBManager.getInstance(application)
+        resultRepository = ResultRepository(dbManager.resultDao, dbManager.commandTemplateDao, application)
         downloadRepository = DownloadRepository(DBManager.getInstance(application).downloadDao)
         formats = combine(listOf(selectedItemsSharedFlow, filterBy)) { f ->
             val items = selectedItems.value
@@ -179,17 +202,7 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
                 }
 
 
-                val results = mutableListOf<FormatRecyclerView>()
-                if (canMultiSelectAudio.value) {
-                    results.add(FormatRecyclerView(label = application.getString(R.string.video)))
-                    results.addAll(finalFormats.filter { it.vcodec.isNotBlank() && it.vcodec != "none" }.map { FormatRecyclerView(null, it) })
-                    results.add(FormatRecyclerView(label = application.getString(R.string.audio)))
-                    results.addAll(finalFormats.filter { it.vcodec.isBlank() || it.vcodec == "none" }.map { FormatRecyclerView(null, it) })
-                }else{
-                    results.addAll(finalFormats.map { FormatRecyclerView(null, it) })
-                }
-
-                results
+                finalFormats
             }
         }
     }
@@ -212,6 +225,87 @@ class FormatViewModel(private val application: Application) : AndroidViewModel(a
         selectedItemsSharedFlow.emit(listOf(item))
     }
 
+
+    /**
+     * Fetches fresh formats for [urls]. If an update is already running this does nothing,
+     * whoever asked just observes the running one.
+     * Results are saved to the result items, applied to the items shown in the format sheet
+     * and announced through [formatUpdates] so download cards can refresh themselves.
+     */
+    fun updateFormats(urls: List<String>, source: String? = null, ignoreInfoJson: Boolean = false) {
+        if (updateFormatsJob?.isActive == true) return
+        val distinctUrls = urls.distinct().filter { it.isNotBlank() }
+        if (distinctUrls.isEmpty()) return
+
+        updatingFormatsUrls.value = distinctUrls.toSet()
+        updateFormatsJob = viewModelScope.launch(Dispatchers.IO) {
+            try {
+                if (distinctUrls.size == 1) {
+                    val url = distinctUrls.first()
+                    val res = resultRepository.getFormats(url, source, ignoreInfoJson).filter { it.format_note != "storyboard" }
+                    ensureActive()
+                    if (res.isEmpty()) throw Exception(application.getString(R.string.error_updating_formats))
+                    applyUpdatedFormats(url, res)
+                }else {
+                    var done = 0
+                    updateFormatsProgress.value = 0 to distinctUrls.size
+                    resultRepository.getFormatsMultiple(distinctUrls, source) {
+                        if (!isActive) return@getFormatsMultiple
+                        if (it.unavailable) {
+                            selectedItems.value = selectedItems.value.filter { item -> item.url != it.url }
+                            _formatUpdates.tryEmit(FormatUpdateEvent.Unavailable(it.url, it.unavailableMessage))
+                        }else {
+                            applyUpdatedFormats(it.url, it.formats.filter { f -> f.format_note != "storyboard" })
+                            done++
+                            updateFormatsProgress.value = done to distinctUrls.size
+                        }
+                    }
+                }
+                ensureActive()
+
+                // refresh an open format sheet showing any of these items
+                val shown = selectedItems.value
+                if (shown.any { distinctUrls.contains(it.url) }) {
+                    setItems(shown, false)
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e("FormatViewModel", "Error updating formats", e)
+                _formatUpdates.emit(FormatUpdateEvent.Error(e.message ?: application.getString(R.string.error_updating_formats)))
+            } finally {
+                // a cancel followed by a new update already replaced this job, leave its state alone
+                if (updateFormatsJob == null || updateFormatsJob === coroutineContext[Job]) {
+                    updatingFormatsUrls.value = emptySet()
+                    updateFormatsProgress.value = null
+                }
+            }
+        }
+    }
+
+    fun cancelUpdateFormats() {
+        updateFormatsJob?.cancel(CancellationException())
+        updateFormatsJob = null
+        updatingFormatsUrls.value = emptySet()
+        updateFormatsProgress.value = null
+    }
+
+    private fun applyUpdatedFormats(url: String, formats: List<Format>) {
+        // these are the same objects the download cards hold, the formats flow filters them by type
+        selectedItems.value.filter { it.url == url }.forEach {
+            it.allFormats.clear()
+            it.allFormats.addAll(formats)
+        }
+        _formatUpdates.tryEmit(FormatUpdateEvent.Updated(url, formats))
+
+        // not tied to the update job, a cancel afterwards should not lose what was already fetched
+        viewModelScope.launch(Dispatchers.IO) {
+            resultRepository.getItemByURL(url)?.apply {
+                this.formats = formats.toMutableList()
+                resultRepository.update(this)
+            }
+        }
+    }
 
     fun getFormatsForItemsBasedOnFormat(item: Format?, audioFormats: List<Format>? = null) : MutableList<MultipleItemFormatTuple> {
         val formatsToReturn = mutableListOf<MultipleItemFormatTuple>()
