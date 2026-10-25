@@ -705,4 +705,5 @@
     <string name="update_checked_ago">%1$s u kontrollua</string>
     <string name="update_checked_just_now">Sapo u kontrollua</string>
     <string name="update_not_checked_yet">Nuk u ka kontrolluar akoma</string>
+    <string name="optional">Opsionale</string>
 </resources>
