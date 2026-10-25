@@ -723,4 +723,5 @@
     <string name="update_checked_ago">Проверено %1$s</string>
     <string name="update_checked_just_now">Проверено только что</string>
     <string name="update_not_checked_yet">Ещё не проверено</string>
+    <string name="optional">Необязательно</string>
 </resources>
