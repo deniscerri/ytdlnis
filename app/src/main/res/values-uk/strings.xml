@@ -294,7 +294,7 @@
     <string name="cache_first_summary">Файли кешу завантажуються у внутрішню пам\'ять, а потім переміщуються у вибрану директорію. Використовуйте цей спосіб, якщо немає можливості прямого запису на згадку</string>
     <string name="cache_first">Спочатку завантаження кешу</string>
     <string name="use_scheduler">Завантажувати за розкладом</string>
-    <string name="update_app_beta_summary">Взяти участь у бета-програмі. Можуть бути помилки.</string>
+    <string name="update_app_beta_summary">Зареєструйтесь у бета-програмі. Вона може містити помилки.</string>
     <string name="update_app_beta">Бета релізи</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Бажаний аудіокодек</string>
@@ -496,7 +496,7 @@
     <string name="update_ytdlp_while_downloading">Оновити yt-dlp під час завантаження</string>
     <string name="update_ytdlp_while_downloading_summary">Додайте -U до yt-dlp щоб оновити його до останньої версії перед завантаженням</string>
     <string name="preview_filename">Перед огляд імені файлу</string>
-    <string name="potoken_guide">Авторизація\n-----------------------\n1. Натисніть \'Авторизація\' щоб відкрити сторінку входу WebView.\n2. Увійдіть у свій обліковий запис Google.\n3. Відтворюйте будь-яке відео, яке підтримує субтитри з автоматичним перекладом.\n4. Увімкніть автоматичний переклад субтитрів і перевірте, чи це працює.\n\t4.1 Якщо субтитри з автоматичним перекладом не працюють, перейдіть на інше відео, яке підтримує субтитри з автоматичним перекладом, і повторіть крок 4.\n5. Натисніть OK.\n\nБез авторизації\n-----------------------\n1. Натисніть \'Без авторизації\'.\n2. Введіть URL-адресу будь-якого відео YouTube.\n3. Зачекайте, поки відео завантажиться, і відтворіть його принаймні 3 секунди.\n4. Натисніть OK.</string>
+    <string name="potoken_guide">Авторизація\n-----------------------\n1. Натисніть \'Авторизація\' щоб відкрити сторінку входу WebView.\n2. Увійдіть у свій обліковий запис Google.\n3. Відтворюйте будь-яке відео, яке підтримує субтитри з автоматичним перекладом.\n4. Увімкніть автоматичний переклад субтитрів і перевірте, чи це працює.\n\t4.1 Якщо субтитри з автоматичним перекладом не працюють, перейдіть на інше відео, яке підтримує субтитри з автоматичним перекладом, і повторіть крок 4.\n5. Натисніть OK.\n\nБез авторизації\n-----------------------\n1. Натисніть \'Без авторизації\'.\n2. Введіть url будь-якого відео YouTube.\n3. Зачекайте, поки відео завантажиться, і відтворіть його принаймні 3 секунди.\n4. Натисніть OK.</string>
     <string name="no_auth">Без авторизації</string>
     <string name="auth">Авторизація</string>
     <string name="prefer_drc_audio">Віддавати перевагу DRC Аудіо</string>
@@ -595,7 +595,7 @@
     <string name="bgutils_info">Постачальник токенів підтвердження походження (POT) для yt-dlp.\nЯкщо ця опція увімкнена, YTDLnis запускає HTTP-сервер, який генерує POT і встановлює відповідний плагін, що використовує yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Скрипт генерації</string>
     <string name="bgutils_pot_generation_server">HTTP Сервер</string>
-    <string name="bgutils_pot_generation_script_summary">Кожен виклик yt-dlp спричиняє додаткові витрати на створення нового процесу виконання js для запуску скрипта. Цей метод не рекомендується використовувати при високому рівні паралелізму.</string>
+    <string name="bgutils_pot_generation_script_summary">Кожен виклик yt-dlp тягне накладні витрати, пов\'язані із запуском нового процесу середовища виконання js для виконання скрипта. Цей метод не рекомендується для використання в умовах високої паралельної обробки.</string>
     <string name="bgutils_pot_server_summary">Це HTTP-сервер JavaScript на порту 4416. Якщо він не працює, він автоматично запускається, коли починається виконання черги завантаження або заплановано моніторинг джерел. Щоб вимкнути його, потрібно зробити це вручну в розділі сповіщень!</string>
     <string name="please_install_package">Будь ласка, встановіть пакет %s</string>
     <string name="please_install_package_or_package">Будь ласка, встановіть %1$s пакет або %2$s пакет</string>
@@ -614,7 +614,7 @@
     <string name="clear_info_json">Очистити infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Вбудований плагін FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Попередньо встановлені налаштування, які FFmpeg використовує для внутрішніх плагінів, таких як запис субтитрів тощо. Зміна цього параметра впливає на кінцевий розмір файлу!</string>
-    <string name="preferred_format_size_audio">Бажаний розмір аудіофайлу</string>
+    <string name="preferred_format_size_audio">Бажаний розмір аудіоформату</string>
     <string name="history_quick_action">Кнопка швидкого доступу</string>
     <string name="history_quick_action_summary">Дія, яка виконується при натисканні кнопки швидкої дії на картці історії</string>
     <string name="open_file">Відкрити файл</string>
@@ -723,4 +723,5 @@
         <item quantity="many">%d елементи</item>
         <item quantity="other">%d елементи</item>
     </plurals>
+    <string name="optional">Не обов\'язково</string>
 </resources>
