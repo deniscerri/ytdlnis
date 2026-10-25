@@ -236,7 +236,7 @@
     <string name="metered_network_download_start_info">O download começará assim que você estiver conectado a uma rede Wi-Fi</string>
     <string name="keep_cache_summary">Não excluir arquivos temporários após concluir o download</string>
     <string name="link_you_copied">Link que você copiou</string>
-    <string name="clear_temporary_files_summary">Excluir arquivos em cache, Info-JSONs e outras configurações temporárias</string>
+    <string name="clear_temporary_files_summary">Exclua arquivos em cache, arquivos infojson e outras configurações temporárias</string>
     <string name="preferred_format_id">ID do formato preferido</string>
     <string name="redownload">Baixar novamente</string>
     <string name="cookies">Cookies</string>
@@ -429,8 +429,8 @@
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados como comandos extras para busca de dados</string>
-    <string name="disable_write_info_json">Desabilitar gravação do Info-JSON</string>
-    <string name="disable_write_info_json_summary">Cada vez que você reiniciar ou continuar o download, o yt-dlp baixará novamente os dados JSON dos servidores (não recomendado)</string>
+    <string name="disable_write_info_json">Desabilitar registros de informações em JSON</string>
+    <string name="disable_write_info_json_summary">Sempre que você reiniciar/retomar o download, o yt-dlp baixará novamente os dados JSON dos servidores (não recomendado)</string>
     <string name="ytdlp_recommnedations">yt-dlp: Recomendações do YouTube (precisa de cookies)</string>
     <string name="ytdlp_liked">yt-dlp: Vídeos curtidos do YouTube (precisa de cookies)</string>
     <string name="ytdlp_watch_later">yt-dlp: Assistir mais tarde no YouTube (precisa de cookies)</string>
@@ -492,7 +492,7 @@
     <string name="disable_flat_playlist_summary">Não use --flat-playlist. A busca por dados será mais lenta, mas trará mais dados</string>
     <string name="chapters">Capítulos</string>
     <string name="use_original_url_playlist">Usar URL original para a URL da playlist</string>
-    <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do arquivo json</string>
+    <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag \"playlist_webpage_url\" do arquivo json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
     <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
     <string name="prefer_drc_audio">Preferir áudio DRC</string>
@@ -572,23 +572,23 @@
         <item quantity="other">A cada %d horas</item>
     </plurals>
     <plurals name="every_days">
-        <item quantity="one">Todo dia</item>
+        <item quantity="one">A cada dia</item>
         <item quantity="many">A cada %d dias</item>
         <item quantity="other">A cada %d dias</item>
     </plurals>
     <plurals name="every_weeks">
-        <item quantity="one">Toda semana</item>
+        <item quantity="one">A cada semana</item>
         <item quantity="many">A cada %d semanas</item>
         <item quantity="other">A cada %d semanas</item>
     </plurals>
     <plurals name="every_months">
-        <item quantity="one">Todo mês</item>
+        <item quantity="one">A cada mês</item>
         <item quantity="many">A cada %d meses</item>
         <item quantity="other">A cada %d meses</item>
     </plurals>
     <string name="bgutils_info">Um provedor de token de prova de origem (POT) para yt-dlp.\nCom ele ativado, o YTDLnis hospeda o servidor HTTP que gera o POT e instala o plugin relacionado que o yt-dlp utiliza.</string>
     <string name="bgutils_pot_generation_server">Servidor HTTP</string>
-    <string name="bgutils_pot_generation_script_summary">Cada chamada do yt-dlp acarreta a sobrecarga de iniciar um novo processo de tempo de execução (runtime) de JS para executar o script. Este método não é recomendado para cenários de alta concorrência.</string>
+    <string name="bgutils_pot_generation_script_summary">Cada chamada ao yt-dlp acarreta a sobrecarga de criar um novo processo de ambiente de execução JavaScript para rodar o script. Esse método não é recomendado para cenários de alta concorrência.</string>
     <string name="bgutils_pot_server_summary">Este é um servidor HTTP em JavaScript, na porta 4416. Se estiver inativo, ele inicia automaticamente quando a fila de downloads começa a ser executada ou quando a verificação de fontes é agendada. Para encerrá-lo, é preciso fazê-lo manualmente através das notificações!</string>
     <string name="please_install_package">Por favor, instale o pacote %s</string>
     <string name="please_install_package_or_package">Por favor, instale o pacote %1$s ou o pacote %2$s</string>
@@ -605,7 +605,7 @@
     <string name="check_clipboard_home_summary">Detectar automaticamente URLs na área de transferência na tela inicial</string>
     <string name="check_clipboard_home">Verifique a área de transferência na tela inicial</string>
     <string name="search_results">Resultados da busca</string>
-    <string name="clear_info_json">Limpar Info-JSONs</string>
+    <string name="clear_info_json">Excluir arquivos infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Predefinição do plugin interno do FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">A predefinição do FFmpeg é utilizada por plugins internos, como os de incrustação de legendas, etc. Ajustar essa preferência afeta o tamanho final do arquivo!</string>
     <string name="preferred_format_size_audio">Tamanho do formato de áudio preferido</string>
@@ -714,4 +714,5 @@
     <string name="update_checked_ago">Verificado %1$s</string>
     <string name="update_checked_just_now">Verificado agora mesmo</string>
     <string name="update_not_checked_yet">Ainda não verificado</string>
+    <string name="optional">Opcional</string>
 </resources>

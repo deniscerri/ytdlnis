@@ -696,4 +696,5 @@
     <string name="update_not_checked_yet">확인하지 않음</string>
     <string name="welcome_perm_folders_header">복원된 폴더</string>
     <string name="welcome_perm_folders_summary">백업에서 이 폴더를 사용하지만, 앱이 폴더에 접근할 권한을 잃었습니다. 각각 다시 허용하거나, 대신 사용할 다른 폴더를 고르세요.</string>
+    <string name="optional">선택</string>
 </resources>

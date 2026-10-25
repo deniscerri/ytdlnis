@@ -696,4 +696,5 @@
     <string name="update_checked_ago">%1$s 前检查</string>
     <string name="update_checked_just_now">刚检查过</string>
     <string name="update_not_checked_yet">还没检查过</string>
+    <string name="optional">可选</string>
 </resources>
