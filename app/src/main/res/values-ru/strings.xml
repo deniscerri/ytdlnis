@@ -71,7 +71,7 @@
     <string name="directories">Папки</string>
     <string name="updating">Обновление</string>
     <string name="ytdl_update_hint">Полезно при проблемах с загрузкой</string>
-    <string name="confirm_delete_history_desc">Навсегда удалить всю историю</string>
+    <string name="confirm_delete_history_desc">Удалит всю историю навсегда</string>
     <string name="ytdl_already_updating">Установка новой версии</string>
     <string name="command_directory">Папка загруженных через терминал</string>
     <string name="save_thumb_summary">Сохранять миниатюру в папку загрузки</string>
@@ -206,7 +206,7 @@
     <string name="green">Зелёный</string>
     <string name="finished_download_notification_channel_name">Завершенные загрузки</string>
     <string name="quick_download">Быстрая загрузка</string>
-    <string name="preferred_format_id">Предпочитаемый ID формата</string>
+    <string name="preferred_format_id">Предпочтительный формат ID</string>
     <string name="download_now">Загрузить сейчас</string>
     <string name="resume">Продолжить</string>
     <string name="video_recommendations_summary">Источник рекомендованных видео на главном экране</string>
@@ -294,7 +294,7 @@
     <string name="use_scheduler">Загружать по расписанию</string>
     <string name="cache_first">Сначала кэшировать загрузки</string>
     <string name="cache_first_summary">Кэшировать загрузки в папку программы, а затем перемещать их в выбранный каталог. Используйте при невозможности напрямую записывать файлы во внутреннюю память</string>
-    <string name="update_app_beta_summary">Принять участие в тестировании Beta-версий. Могут содержаться ошибки</string>
+    <string name="update_app_beta_summary">Зарегистрируйтесь в бета-программе. Она может содержать ошибки.</string>
     <string name="update_app_beta">Beta-релизы</string>
     <string name="auto">Авто</string>
     <string name="preferred_audio_codec">Предпочитаемый аудиокодек</string>
@@ -428,12 +428,12 @@
     <string name="websites">Веб-сайты</string>
     <string name="preferred_command_template">Предпочитаемый шаблон команды</string>
     <string name="data_fetching_extra_command">Дополнительная команда для получения данных</string>
-    <string name="disable_write_info_json">Не сохранять JSON с метаданными</string>
-    <string name="disable_write_info_json_summary">При каждом перезапуске/возобновлении загрузки yt-dlp будет повторно загружать JSON-данные с сервера (не рекомендуется)</string>
+    <string name="disable_write_info_json">Отключить запись информации в json</string>
+    <string name="disable_write_info_json_summary">Каждый раз, когда вы перезапускаете/восстанавливаете загрузку, yt-dlp будет повторно загружать данные json с серверов (не рекомендуется)</string>
     <string name="data_fetching_extra_command_summary">Разрешить использование шаблонов команд в качестве дополнительных команд для получения данных о видео (заголовков, списка форматов и т. д.)</string>
-    <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
-    <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
-    <string name="ytdlp_watch_history">yt-dlp — История просмотров на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_recommnedations">yt-dlp Рекомендации YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_liked">yt-dlp Понравившиеся видео на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_history">yt-dlp История просмотров на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_later">yt-dlp — «Посмотреть позже» на YouTube (требуются файлы cookie)</string>
     <string name="no_check_certificates">Не проверять HTTPS-сертификат</string>
     <string name="live_stream">Прямая трансляция</string>
@@ -471,7 +471,7 @@
     <string name="cut_unsupported">Этот предмет не может быть вырезан</string>
     <string name="select_between_desc">Укажите диапазон элементов для выбора</string>
     <string name="potoken">PO Token</string>
-    <string name="manual_po_token_generator">Ручной веб-генератор PO Token</string>
+    <string name="manual_po_token_generator">Ручной Web Po Token генератор</string>
     <string name="reverse">Обратный</string>
     <string name="no_keep_subs">Удалить файлы субтитров после встраивания</string>
     <string name="no_keep_subs_summary">Не сохранять файлы субтитров после их встраивания в видеоконтейнер при использовании функций «Встроить субтитры» и «Записать субтитры»</string>
@@ -492,11 +492,11 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Использовать пользовательскую ссылку на плейлист вместо тега playlist_webpage_url из JSON-дампа</string>
+    <string name="use_original_url_playlist_summary">Используйте url плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json дампа</string>
     <string name="update_ytdlp_while_downloading">Обновите yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавьте -U в yt-dlp, чтобы обновить его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
-    <string name="potoken_guide">Авторизация ------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа;\n2. Войдите в свою учётную запись Google;\n3. Воспроизведите любое видео, поддерживающее субтитры с автоматическим переводом;\n4. Включите субтитры с автопереводом и посмотрите, работают ли они;\n4.1 Если не работают, переключитесь на другое видео, повторите шаг 3 и 4;\n5. Нажмите ОК.\n\nБез авторизации\n------------------------\n1. Нажмите «Без авторизации»;\n2. Введите URL любого видео с YouTube;\n3. Дождитесь его загрузки, воспроизведите его не менее 3 секунд;\n4. Нажмите ОК.</string>
+    <string name="potoken_guide">Авторизация\n-----------------------\n1. Нажмите «Авторизация», чтобы открыть страницу входа в WebView.\n2. Войдите в свою учетную запись Google.\n3. Воспроизводите любое видео, поддерживающее субтитры с автоматическим переводом.\n4. Включите автоматический перевод субтитров и проверьте, работает ли он.\n\t4.1 Если субтитры с автоматическим переводом не работают, перейдите к другому видео, поддерживающему субтитры с автоматическим переводом, и повторите этот шаг 4.\n5. Нажмите ОК.\n\nБез авторизации\n-----------------------\n1. Нажмите \'Без авторизацииэ\'.\n2. Введите url любого видео на YouTube.\n3. Подождите, пока видео загрузится, и просмотрите его как минимум 3 секунды.\n4. Нажмите \'ОК\'.</string>
     <string name="no_auth">Без авторизации</string>
     <string name="auth">Авторизация</string>
     <string name="prefer_drc_audio">Предпочитать аудио с поддержкой DRC</string>
@@ -595,7 +595,7 @@
     <string name="bgutils_info">Поставщик токенов подтверждения происхождения (POT) для yt-dlp.\nЕсли эта опция включена, YTDLnis запускает HTTP-сервер, который генерирует POT и устанавливает соответствующий плагин, использующий yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Скрипт генерации</string>
     <string name="bgutils_pot_generation_server">HTTP-сервер</string>
-    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp влечёт за собой дополнительную нагрузку при создании нового процесса среды выполнения JS для запуска скрипта. Этот метод не рекомендуется использовать при высоком уровне параллельности.</string>
+    <string name="bgutils_pot_generation_script_summary">Каждый вызов yt-dlp влечет за собой дополнительные расходы, связанные с запуском нового процесса среды выполнения js для выполнения скрипта. Этот метод не рекомендуется для использования в условиях высокой параллельной обработки.</string>
     <string name="bgutils_pot_server_summary">Это HTTP-сервер на JavaScript, работающий на порту 4416. Если он не работает, сервер запускается автоматически при начале выполнения очереди загрузки или при запланированном наблюдении за источниками. Чтобы остановить его, необходимо сделать это вручную через уведомление!</string>
     <string name="please_install_package">Пожалуйста, установите пакет %s</string>
     <string name="please_install_package_or_package">Пожалуйста, установите пакет %1$s или пакет %2$s</string>
@@ -605,7 +605,7 @@
     <string name="notset">Не указано</string>
     <string name="external">Внешний</string>
     <string name="exit">Выход</string>
-    <string name="packages_description">Пакеты — это вспомогательные приложения, которые YTDLnis использует для выполнения команд yt-dlp. Некоторые из них уже встроены в это приложение, но вы можете установить более новые версии без необходимости обновлять программу. Установленные APK заменяют встроенные версии, которые использует приложение</string>
+    <string name="packages_description">Пакеты это вспомогательные приложения, которые YTDLnis использует для помощи команд yt-dlp. Некоторые из них уже входят в комплект, но вы можете установить более новые версии, опубликованные без необходимости обновления программы. Установленные apk\'s заменяют версию, входящую в комплект, используемую программой.</string>
     <string name="bgutils_pot_generation_script_info">Чтобы использовать POT-провайдер от BgUtils, приложению необходимо загрузить репозиторий Brainicism/bgutil-ytdlp-pot-provider с GitHub и начать установку. Это может занять некоторое время. Продолжить?</string>
     <string name="burn_subs">Записать субтитры</string>
     <string name="check_clipboard_home_summary">Автоматически обнаруживать URL в буфере обмена на главном экране</string>
@@ -614,7 +614,7 @@
     <string name="clear_info_json">Очистить infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Внутренний плагин FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Пресеты, которые FFmpeg использует для внутренних плагинов, таких как запись субтитров и т. п.. Изменение этого параметра влияет на конечный размер файла!</string>
-    <string name="preferred_format_size_audio">Предпочитаемый размер формата аудио</string>
+    <string name="preferred_format_size_audio">Предпочитаемый размер аудиоформата</string>
     <string name="history_quick_action">Кнопка быстрого доступа</string>
     <string name="history_quick_action_summary">Действие, выполняемое при нажатии кнопки быстрого действия на карточке истории</string>
     <string name="open_file">Открыть файл</string>
@@ -655,13 +655,13 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Всё равно загрузить</string>
+    <string name="download_anyway">Скачать все равно</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
-    <string name="translators_summary">Люди, которые внесли свой вклад в перевод этого приложения на Weblate</string>
+    <string name="translators_summary">Люди, которые помогли перевести это приложение на Weblate</string>
     <string name="translators_unavailable">В этой версии список переводчиков недоступен. Однако вы по-прежнему можете увидеть всех, кто внёс свой вклад, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Добавлять «yt-dlp» при открытии терминала</string>
+    <string name="write_ytdlp_terminal">Автозапись yt-dlp в терминале</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Скачивайте видео и аудио с помощью yt-dlp. Давайте сначала настроим несколько вещей.</string>
@@ -702,10 +702,10 @@
     <string name="embed_lyrics_summary">Загружать тексты песен с lrclib.net и встраивать их в скачиваемые аудиофайлы</string>
     <string name="save_lrc_file_summary">Сохранять синхронизированные тексты песен в формате .lrc рядом с загруженными аудиофайлами</string>
     <plurals name="updates_available_summary">
-        <item quantity="one">Доступно %d обновление</item>
-        <item quantity="few">Доступно %d обновления</item>
-        <item quantity="many">Доступно %d обновлений</item>
-        <item quantity="other">Доступно %d обновлений</item>
+        <item quantity="one">%d доступно обновление</item>
+        <item quantity="few">%d доступны обновления</item>
+        <item quantity="many">%d доступны обновлений</item>
+        <item quantity="other">%d доступны обновлений</item>
     </plurals>
     <string name="update_install">Установить</string>
     <string name="welcome_perm_folders_header">Восстановленные папки</string>
@@ -717,8 +717,8 @@
         <item quantity="many">%d элементов</item>
         <item quantity="other">%d элементов</item>
     </plurals>
-    <string name="reorder_queue">Переупорядочить очередь</string>
-    <string name="crop_unavailable_please_update_item">Обновите данные элемента, чтобы использовать функцию кадрирования</string>
+    <string name="reorder_queue">Очередь переупорядочивания</string>
+    <string name="crop_unavailable_please_update_item">Вам нужно обновить данные элемента, чтобы использовать функцию обрезки</string>
     <string name="version_update_available">%1$s → %2$s</string>
     <string name="update_checked_ago">Проверено %1$s</string>
     <string name="update_checked_just_now">Проверено только что</string>
