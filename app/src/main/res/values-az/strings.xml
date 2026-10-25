@@ -706,4 +706,5 @@
     <string name="update_checked_ago">%1$s yoxlanıldı</string>
     <string name="update_checked_just_now">İndicə yoxlanılıb</string>
     <string name="update_not_checked_yet">Hələ yoxlanılmayıb</string>
+    <string name="optional">Könüllü</string>
 </resources>
