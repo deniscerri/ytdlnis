@@ -48,7 +48,7 @@
     <string name="api_key">Использовать ключ API</string>
     <string name="api_key_summary">Рекомендации видео из YouTube API</string>
     <string name="downloads">Загрузки</string>
-    <string name="command_download_notification_channel_name">Загрузка команд</string>
+    <string name="command_download_notification_channel_name">Загрузка через терминал</string>
     <string name="remove_deleted">Удалить удалённые</string>
     <string name="remove_duplicates">Удалить дубликаты</string>
     <string name="sort_by">Сортировка</string>
