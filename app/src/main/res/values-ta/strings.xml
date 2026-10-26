@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="worst_quality">மிகக் குறைந்த தரம்</string>
+    <string name="worst_quality">மோசமான தரம்</string>
     <string name="best_quality">சிறந்த தரம்</string>
     <string name="search">தேடுக</string>
     <string name="remove_all">அனைத்தையும் நீக்குக</string>
@@ -14,9 +14,9 @@
     <string name="updating">புதுப்பிக்கப்படுகிறது</string>
     <string name="ytdl_update_hint">புதுப்பிப்புகளைப் பதிவிறக்கும் போது பயனுள்ள குறிப்பு</string>
     <string name="update_ytdl">yt-dlp ஐப் புதிய பதிப்பிற்குப் புதுப்பிக்கவும்</string>
-    <string name="about">செயலி விவரம்</string>
+    <string name="about">அறிமுகம்</string>
     <string name="source_code">மூலக் குறியீடு</string>
-    <string name="search_hint">தேடுக அல்லது பிணைப்பை நிரப்பவும்</string>
+    <string name="search_hint">தேடுக அல்லது பிணைப்பை நிரப்புக</string>
     <string name="failed_download">கோப்பைப் பதிவிறக்க முடியவில்லை</string>
     <string name="download_notification_channel_name">கோப்புப் பதிவிறக்கங்கள்</string>
     <string name="download_notification_channel_description">ஒலி, காணொளிக் கோப்புகளின் பதிவிறக்க முன்னேற்றத்தைக் காட்டும் அறிவிப்பு</string>
@@ -40,7 +40,7 @@
     <string name="downloading_update">புதிய பதிப்பு பதிவிறங்குகிறது</string>
     <string name="audio">ஒலி</string>
     <string name="video">காணொளி</string>
-    <string name="optional">விருப்பத் தேர்வு</string>
+    <string name="optional">விரும்பினால்</string>
     <string name="concurrent_fragments_summary">ஒரே நேரத்தில் பதிவிறக்க வேண்டிய DASH/HLS காணொளித் துண்டுகளின் எண்ணிக்கை</string>
     <string name="concurrent_fragments">ஒரே நேரத்தில் பதிவிறங்கும் துண்டுகள்</string>
     <string name="downloading">பதிவிறங்குகிறது</string>
@@ -48,9 +48,9 @@
     <string name="limit_rate_summary">அதிகபட்சப் பதிவிறக்க வேகம் (விநாடிக்கு பைட்டுகள்), எ.கா. 50K அல்லது 4.2M</string>
     <string name="aria2_summary">இயல்புநிலைக்குப் பதிலாக aria2c ஐப் பதிவிறக்கியாகப் பயன்படுத்துக</string>
     <string name="processing">செயலாக்கப்படுகிறது</string>
-    <string name="embed_subs_summary">காணொளியில் வசனங்களைச் சேர்க்கவும்</string>
-    <string name="embed_thumb">நக அளவு முகப்புப் படங்கள்</string>
-    <string name="embed_thumb_summary">நக அளவுப் படத்தை முகப்புப் படமாகப் பயன்படுத்துக</string>
+    <string name="embed_subs_summary">காணொளியில் வசனங்களைச் சேர்த்திடுக</string>
+    <string name="embed_thumb">நக அளவு அட்டைப் படங்கள்</string>
+    <string name="embed_thumb_summary">நக அளவுப் படத்தை அட்டைப் படமாகப் பயன்படுத்துக</string>
     <string name="add_chapters">காணொளிகளில் அத்தியாயங்கள்</string>
     <string name="add_chapters_summary">யூடியூப் / SponsorBlock பகுதிகளைக் காணொளியின் அத்தியாயங்களாகக் குறிக்கவும்</string>
     <string name="save_thumb">நக அளவுப் படத்தை சேமித்திடுக</string>
@@ -58,7 +58,7 @@
     <string name="audio_format">ஒலி வடிவம்</string>
     <string name="video_format">காணொளி வடிவம்</string>
     <string name="audio_quality">ஒலித் தரம்</string>
-    <string name="audio_quality_summary">0 (சிறந்தது) 10 (குறைந்தது)</string>
+    <string name="audio_quality_summary">0 (சிறப்பு) 10 (மோசம்)</string>
     <string name="cancel_task">பணியை ரத்துசெய்க</string>
     <string name="run_command">கட்டளையை இயக்குக</string>
     <string name="command_download_notification_channel_name">கட்டளைப் பதிவிறக்கங்கள்</string>
