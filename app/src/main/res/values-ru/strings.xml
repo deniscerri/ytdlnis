@@ -323,7 +323,7 @@
     <string name="app">Приложение</string>
     <string name="source">Источник</string>
     <string name="cut_unavailable_please_update_item">Обновите данные элемента, чтобы использовать функцию обрезки</string>
-    <string name="changed_path_for_everyone_to">Путь загрузки каждого элемента изменён на:</string>
+    <string name="changed_path_for_everyone_to">Изменен путь загрузки всех элементов на:</string>
     <string name="all">Все</string>
     <string name="generic">Общий</string>
     <string name="multiple_download_card">Карточка множественной загрузки</string>
@@ -433,7 +433,7 @@
     <string name="data_fetching_extra_command_summary">Разрешить использование шаблонов команд в качестве дополнительных команд для получения данных о видео (заголовков, списка форматов и т. д.)</string>
     <string name="ytdlp_recommnedations">yt-dlp — Рекомендации YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_liked">yt-dlp — Понравившиеся видео на YouTube (требуются файлы cookie)</string>
-    <string name="ytdlp_watch_history">yt-dlp — История просмотров на YouTube (требуются файлы cookie)</string>
+    <string name="ytdlp_watch_history">yt-dlp История просмотров на YouTube (требуются файлы cookie)</string>
     <string name="ytdlp_watch_later">yt-dlp — «Посмотреть позже» на YouTube (требуются файлы cookie)</string>
     <string name="no_check_certificates">Не проверять HTTPS-сертификат</string>
     <string name="live_stream">Прямая трансляция</string>
@@ -492,7 +492,7 @@
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
     <string name="chapters">Главы</string>
     <string name="use_original_url_playlist">Оригинальный URL для URL плейлиста</string>
-    <string name="use_original_url_playlist_summary">Используйте гкд плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json дампа</string>
+    <string name="use_original_url_playlist_summary">Используйте url плейлиста, предоставленный пользователем, вместо тега playlist_webpage_url из json дампа</string>
     <string name="update_ytdlp_while_downloading">Обновлять yt-dlp во время загрузки</string>
     <string name="update_ytdlp_while_downloading_summary">Добавлять -U в yt-dlp, чтобы обновлять его до последней версии перед загрузкой</string>
     <string name="preview_filename">Предпросмотр имени файла</string>
@@ -548,7 +548,7 @@
     <string name="rescan_from_scratch">Повторное сканирование с нуля</string>
     <string name="rescan_from_scratch_desc">Забыть обработанные элеметы и заново скачать всё, что не сохранено</string>
     <string name="skip_backlog">Пропустить текущий список журналов</string>
-    <string name="skip_backlog_desc">Пометить всё, что сейчас находится в источнике, как выполненное — скачивать только новые файлы</string>
+    <string name="skip_backlog_desc">Пометить всё, что сейчас находится в источнике, как выполненное — скачивать только будущие загрузки</string>
     <string name="unskip_ignored">Отменить пропуск игнорируемых загрузок</string>
     <string name="unskip_ignored_desc">Скачать существующие загрузки, пропущенные при первом запуске</string>
     <string name="observe_runs_chip">%d запусков</string>
@@ -612,9 +612,9 @@
     <string name="check_clipboard_home">Проверять буфер обмена на главной</string>
     <string name="search_results">Результаты поиска</string>
     <string name="clear_info_json">Очистить infojsons</string>
-    <string name="internal_plugin_ffmpeg_preset">Пресет внутреннего плагина FFmpeg</string>
-    <string name="internal_plugin_ffmpeg_preset_summary">Пресеты, которые FFmpeg использует для внутренних плагинов, таких как запись субтитров и т. п. Изменение этого параметра влияет на конечный размер файла!</string>
-    <string name="preferred_format_size_audio">Предпочитаемый размер формата аудио</string>
+    <string name="internal_plugin_ffmpeg_preset">Внутренний пресет плагина FFmpeg</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Предустановленные настройки FFmpeg используются для внутренних плагинов, таких как запись субтитров и т. д. Изменение этой настройки влияет на конечный размер файла!</string>
+    <string name="preferred_format_size_audio">Предпочитаемый размер аудио формата</string>
     <string name="history_quick_action">Кнопка быстрого доступа</string>
     <string name="history_quick_action_summary">Действие, выполняемое при нажатии кнопки быстрого действия на карточке истории</string>
     <string name="open_file">Открыть файл</string>
@@ -655,13 +655,13 @@
     </plurals>
     <string name="retry">Попробовать ещё раз</string>
     <string name="retry_all">Повторить все попытки</string>
-    <string name="download_anyway">Всё равно загрузить</string>
+    <string name="download_anyway">Скачать все равно</string>
     <string name="toggle_all">Переключить все</string>
     <string name="translators">Переводчики</string>
     <string name="translators_summary">Люди, которые внесли свой вклад в перевод этого приложения на Weblate</string>
     <string name="translators_unavailable">В этой версии список переводчиков недоступен. Однако вы по-прежнему можете увидеть всех, кто внёс свой вклад, на Weblate.</string>
     <string name="merge_cuts">Объединить вырезанные фрагменты в один файл</string>
-    <string name="write_ytdlp_terminal">Добавлять «yt-dlp» при открытии терминала</string>
+    <string name="write_ytdlp_terminal">Автозапись yt-dlp в терминале</string>
     <string name="clear">Очистить</string>
     <string name="welcome_title">Добро пожаловать в YTDLnis</string>
     <string name="welcome_subtitle">Скачивайте видео и аудио с помощью yt-dlp. Давайте сначала настроим несколько вещей.</string>
