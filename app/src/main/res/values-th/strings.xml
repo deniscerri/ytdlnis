@@ -594,4 +594,5 @@
     <string name="bgutils_pot_generation_server">เซิร์ฟเวอร์ HTTP</string>
     <string name="search_results">ผลการค้นหา</string>
     <string name="clear_info_json">ล้างข้อมูลไฟล์ info.json</string>
+    <string name="reorder_queue">https://hosted.weblate.org/translate/ytdlnis/strings/th/?checksum=7be331a1c11d7e67</string>
 </resources>
