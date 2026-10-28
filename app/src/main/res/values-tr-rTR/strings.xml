@@ -590,7 +590,7 @@
     <string name="bgutils_pot_server_summary">Bu, 4416 bağlantı portunda bir JavaScript HTTP sunucusudur. Sunucu kapalıysa, indirme kuyruğu çalışmaya başladığında veya kaynakları gözlemleme zamanlandığında otomatik olarak başlatılır. Sunucuyu kapatmak için bildirimler üzerinden manuel olarak yapmanız gerekir!</string>
     <string name="please_install_package">Lütfen %s paketini yükleyin</string>
     <string name="please_install_package_or_package">Lütfen %1$s veya %2$s paketini kurun</string>
-    <string name="installation_method">Kurulum yöntemi</string>
+    <string name="installation_method">APK Kurulum yöntemi</string>
     <string name="system_install_failed">Sistem kurulumu başarısız oldu. Lütfen, ayarlarda başka bir kurulum yöntemi seçin!</string>
     <string name="choose_installer_app">Kurulum uygulaması seç</string>
     <string name="notset">Belirtilmedi</string>
@@ -602,11 +602,26 @@
     <string name="check_clipboard_home_summary">Ana ekranda panodaki URL\'leri otomatik algıla</string>
     <string name="check_clipboard_home">Ana ekranda panoyu kontrol edin</string>
     <string name="clear_info_json">Infojsons\'ları temizle</string>
-    <string name="burn_subs">Altyazıları açın</string>
+    <string name="burn_subs">Altyazıları kaydet</string>
     <string name="reorder_queue">Sırayı yeniden düzenle</string>
     <string name="translators">Çevirmenler</string>
     <string name="translators_summary">Weblate üzerinden bu uygulamayı çevirmeye yardım eden insanlar</string>
     <string name="translators_unavailable">Çevirmen listesi bu sürümde mevcut değil. Ancak yinede Weblate üzerinden kimin u uygulamaya katkı sağladığını görebilirsin.</string>
     <string name="toggle_all">Hepsini aç/kapat</string>
     <string name="merge_cuts">Kesilmeleri bir dosyada birleştir</string>
+    <string name="optional">Opsiyonel</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d öge</item>
+        <item quantity="other">%d öge</item>
+    </plurals>
+    <string name="crop_unavailable_please_update_item">Kırpma özelliğini kullanabilmek için öge verisini güncellemelisin</string>
+    <string name="preferred_format_size_audio">Tercihi Ses Formatı Boyutu</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d tane güncelleme mevcut</item>
+        <item quantity="other">%d güncelleme mevcut</item>
+    </plurals>
+    <string name="update_install">Yükle</string>
+    <string name="internal_plugin_ffmpeg_preset">Dahili Eklenti FFmpeg Önayarı</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg\'in altyazı yazma vb. gibi dahili eklentiler için kullandığı önayar. Bu tercihin değiştirilmesi, bitimdeki dosya boyutunu etkiler!</string>
+    <string name="history_quick_action">Hızlı Ayar Butonu</string>
 </resources>
