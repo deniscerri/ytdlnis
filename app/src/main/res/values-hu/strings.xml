@@ -532,4 +532,6 @@
     <string name="package_version_ready_to_download">Csomag %1$s készen áll a letöltésre a(z) %2$s verzióval</string>
     <string name="tap_to_see_changes_and_install">Koppitson változtatások megjelenéséhez és kezdje a telepítést</string>
     <string name="view">Megtekintés</string>
+    <string name="download_anyway">Letöltés mindenképp</string>
+    <string name="welcome_title">Üdvözlünk a YTDLnisben</string>
 </resources>

@@ -4,18 +4,18 @@
     <string name="music_directory">Lydmappe</string>
     <string name="video_directory">Videomappe</string>
     <string name="ytdl_update_hint">Nyttig mens du laster ned oppdateringer</string>
-    <string name="update_ytdl">Installer ny versjon av yt-dlp</string>
+    <string name="update_ytdl">Oppdater til ny versjon av yt-dlp</string>
     <string name="failed_download">Kunne ikke laste ned filen</string>
     <string name="download_notification_channel_name">Filnedlastinger</string>
-    <string name="ytld_update_success">Ny versjon installert</string>
+    <string name="ytld_update_success">Ny versjon av yt-dlp installert</string>
     <string name="cancel">Avbryt</string>
     <string name="no_results">Ingen resultater</string>
     <string name="more">Mer</string>
-    <string name="confirm_delete_history_desc">Slett hele historikken for godt.</string>
+    <string name="confirm_delete_history_desc">Slett hele historikken for godt</string>
     <string name="update_app">Se etter nye versjoner av programmet</string>
     <string name="command_directory">Mappe for egendefinerte kommandoer</string>
     <string name="couldnt_find_apk">Fant ingen passende APK</string>
-    <string name="downloading_update">Laster ned ny versjon …</string>
+    <string name="downloading_update">Laster ned ny versjon</string>
     <string name="aria2_summary">Bruk aria2c som nedlaster (istedenfor forvalget)</string>
     <string name="concurrent_fragments">Parallell nedlasting</string>
     <string name="processing">Behandler</string>
@@ -69,9 +69,9 @@
     <string name="remove_deleted">Fjern slettede</string>
     <string name="author">Skaper</string>
     <string name="you_are_going_to_delete_multiple_items">Sletter flere elementer …</string>
-    <string name="ytdl_already_updating">Installerer ny versjon …</string>
+    <string name="ytdl_already_updating">Installerer ny versjon av yt-dlp…</string>
     <string name="you_are_in_latest_version">Bruker siste versjon</string>
-    <string name="ytdl_updating_started">Laster ned ny versjon …</string>
+    <string name="ytdl_updating_started">Laster ned ny versjon av yt-dlp …</string>
     <string name="limit_rate">Begrens nedlastingshastighet</string>
     <string name="items_left">element(er) igjen</string>
     <string name="limit_rate_summary">Maks. nedlastingshastighet (i byte per sekund), f.eks. 50K, eller 4.2M</string>
@@ -234,4 +234,5 @@
     <string name="errored_download_notification_channel_description">Varsel om feilaktige nedlastinger</string>
     <string name="quick_download">Rask nedlasting</string>
     <string name="sync_with_source_desc">Slett nedlastede filer om de mangler i kilden</string>
+    <string name="optional">Valgfri</string>
 </resources>

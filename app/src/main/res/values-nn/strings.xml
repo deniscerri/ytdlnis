@@ -160,7 +160,7 @@
     <string name="audio">Lyd</string>
     <string name="video">Video</string>
     <string name="couldnt_find_apk">Fann ingen høvande APK</string>
-    <string name="concurrent_fragments_summary">Mengd bitar av DASH/HLS-videoar å hente samstundes</string>
+    <string name="concurrent_fragments_summary">Mengd bitar av ein DASH/HLS-video å hente samstundes</string>
     <string name="downloading">Hentar</string>
     <string name="limit_rate_summary">Toppsnøggleiken til hentingar (i bytar i sekundet), t.d. 50K, eller 4.2M</string>
     <string name="embed_thumb">Småbiletomslag</string>
@@ -267,4 +267,5 @@
     <string name="updating_download_data">Oppdaterer nedlastningselementdata</string>
     <string name="retries">Gjentakingar</string>
     <string name="orange">Oransje</string>
+    <string name="optional">Valfri</string>
 </resources>
