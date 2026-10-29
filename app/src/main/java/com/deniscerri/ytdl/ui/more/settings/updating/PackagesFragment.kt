@@ -99,8 +99,15 @@ class PackagesFragment : Fragment(), PackagesAdapter.OnItemClickListener, Packag
         recyclerView.enableFastScroll()
 
         packages = RuntimeManager.packages
-        RuntimeManager.getInstance().assertInit()
         listAdapter.submitList(packages)
+
+        RuntimeManager.initError?.let { e ->
+            Snackbar.make(view, "${e.javaClass.simpleName}: ${e.message}", Snackbar.LENGTH_INDEFINITE)
+                .setAction(android.R.string.copy) {
+                    UiUtil.copyToClipboard(e.stackTraceToString(), requireActivity())
+                }
+                .show()
+        }
     }
 
     override fun onCardClick(item: PackageItem, location: PackageBase.PackageLocation) {

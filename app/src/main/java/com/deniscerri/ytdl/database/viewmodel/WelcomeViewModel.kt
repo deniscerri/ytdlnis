@@ -12,6 +12,6 @@ class WelcomeViewModel : ViewModel() {
     var autoUpdateYtdlp = true
 
     // matches what the yt-dlp update settings store: the value is a channel name or a repo, the label its title
-    var ytdlpSource = "stable"
+    var ytdlpSource = "nightly"
     var ytdlpSourceLabel = ""
 }

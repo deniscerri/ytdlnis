@@ -23,7 +23,7 @@ object UpdateSettingsModule : SettingModule {
             "ytdlp_update_screen" -> {
                 pref.apply {
                     val version = preferences.getString("ytdl-version", "")!!
-                    val source = preferences.getString("ytdlp_source", "stable")!!
+                    val source = preferences.getString("ytdlp_source", "nightly")!!
 
                     val channel = when(source) {
                         "stable" -> context.getString(R.string.channel_stable)

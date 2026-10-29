@@ -58,6 +58,14 @@ object RuntimeManager {
     var initialized = false
         private set
 
+    @Volatile
+    var initError: Throwable? = null
+        private set
+
+    // first launch extracts every package, which can take well over 30 seconds on slow devices
+    @Volatile
+    private var initInProgress = false
+
     private var initLatch = CountDownLatch(1)
     private val initLock = Any()
 
@@ -95,6 +103,7 @@ object RuntimeManager {
         synchronized(initLock) {
             if (initialized) return
 
+            initInProgress = true
             runBlocking(Dispatchers.IO) {
                 try {
                     val baseDir = File(appContext.noBackupFilesDir, BASENAME).apply { if (!exists()) mkdir() }
@@ -127,15 +136,13 @@ object RuntimeManager {
                     ytdlpPath = File(ytdlpDir, ytdlpBin)
                     initYTDLP(appContext, ytdlpDir)
 
-                    // node goes first: its libffi is newer than python's and both share the same file name,
-                    // so with python first node fails to link and yt-dlp silently drops it as a js runtime
                     val locations = listOf(
-                        nodeLocation,
                         pythonLocation,
                         ffmpegLocation,
                         aria2Location,
                         quickJsLocation,
                         denoLocation,
+                        nodeLocation,
                     )
 
                     val ldPaths = mutableListOf<String>()
@@ -191,11 +198,14 @@ object RuntimeManager {
                     val ytdlpPluginsFolder = File(FileUtil.getBundledYTDLPPluginsPath(appContext))
                     copyAssetFolder(appContext, "yt_dlp_plugins", ytdlpPluginsFolder)
 
+                    initError = null
                     initialized = true
-                } catch (e: Exception) {
+                } catch (e: Throwable) {
                     e.printStackTrace()
+                    initError = e
                     initialized = false
                 } finally {
+                    initInProgress = false
                     initLatch.countDown()
                     updateLatch.countDown()
                 }
@@ -268,9 +278,19 @@ object RuntimeManager {
     }
 
     fun assertInit() {
-        val success = initLatch.await(30, TimeUnit.SECONDS)
-        if (!success || !initialized) {
-            throw IllegalStateException("Instance not initialized")
+        var success = initLatch.await(30, TimeUnit.SECONDS)
+        // still extracting, keep waiting instead of failing in the middle of it
+        if (!success && initInProgress) {
+            success = initLatch.await(5, TimeUnit.MINUTES)
+        }
+        if (!success) {
+            val state = if (initInProgress) "still running after 5 minutes" else "it was never started"
+            throw IllegalStateException("Instance not initialized: timed out waiting for initialization, $state")
+        }
+        if (!initialized) {
+            val error = initError
+            val reason = error?.let { "${it.javaClass.simpleName}: ${it.message}" } ?: "unknown error"
+            throw IllegalStateException("Instance not initialized: $reason", error)
         }
     }
 

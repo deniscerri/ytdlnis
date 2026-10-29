@@ -143,6 +143,16 @@ abstract class PackageBase {
         return File(baseDir, "$downloadedPackagesRoot/$packageFolderName")
     }
 
+    /**
+     * Returns the location set by init, or resolves it directly if init failed or hasn't reached this package yet
+     */
+    fun getOrResolveLocation(context: Context): PackageLocation {
+        if (!::location.isInitialized) {
+            location = getLocation(context, File(context.noBackupFilesDir, RuntimeManager.BASENAME))
+        }
+        return location
+    }
+
     fun getLocation(context: Context, baseDir: File): PackageLocation {
         //downloaded apk location
         var packageBinDir: String? = null

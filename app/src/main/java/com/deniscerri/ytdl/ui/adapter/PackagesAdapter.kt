@@ -50,7 +50,7 @@ class PackagesAdapter(onItemClickListener: OnItemClickListener, activity: Activi
         card.findViewById<TextView>(R.id.title).text = it.title
 
         val instance = it.getInstance()
-        val location = instance.location
+        val location = instance.getOrResolveLocation(activity)
 
         val isDownloaded = location.isDownloaded
         val isBundled = location.isBundled

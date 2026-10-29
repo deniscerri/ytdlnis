@@ -2824,7 +2824,7 @@ object UiUtil {
                 text = title
             }
             child.findViewById<RadioButton>(R.id.sampleRadioBtn).apply {
-                isChecked = preferences.getString("ytdlp_source", "stable") == source
+                isChecked = preferences.getString("ytdlp_source", "nightly") == source
                 setOnClickListener {
                     bottomSheet.dismiss()
                     selectedSource(title, source)
