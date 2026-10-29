@@ -702,4 +702,27 @@
     <string name="lyrics_plain">Obyčajný text</string>
     <string name="embed_lyrics_summary">Načítať texty piesní z lrclib.net a vložiť ich do stiahnutých zvukových súborov</string>
     <string name="save_lrc_file_summary">Uložiť synchronizované texty piesní ako súbor .lrc pri stiahnutých zvukových súboroch</string>
+    <string name="optional">Voliteľné</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d položka</item>
+        <item quantity="few">%d položky</item>
+        <item quantity="many">%d položiek</item>
+        <item quantity="other">%d položiek</item>
+    </plurals>
+    <string name="reorder_queue">Zmeniť poradie</string>
+    <string name="crop_unavailable_please_update_item">Pre použitie funkcie orezania je potrebné aktualizovať údaje položky</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d dostupná aktualizácia</item>
+        <item quantity="few">%d dostupné aktualizácie</item>
+        <item quantity="many">%d dostupných aktualizácií</item>
+        <item quantity="other">%d dostupných aktualizácií</item>
+    </plurals>
+    <string name="update_install">Inštalovať</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Skontrolované %1$s</string>
+    <string name="update_checked_just_now">Skontrolované práve teraz</string>
+    <string name="update_not_checked_yet">Zatiaľ nekontrolované</string>
+    <string name="welcome_perm_folders_header">Obnovené priečinky</string>
+    <string name="welcome_perm_folders_summary">Vaša záloha používa tieto priečinky, ale aplikácia k nim stratila prístup. Povoľte každý z nich znova, alebo vyberte iný priečinok.</string>
+    <string name="crop_unsupported">Orezávanie nie je pre túto položku dostupné</string>
 </resources>
