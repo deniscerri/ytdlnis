@@ -89,7 +89,9 @@
     <string name="add_chapter">Add chapters</string>
     <string name="show_download_card">Show download card</string>
     <string name="download_card_summary">Modify settings for that item before downloading. Disabling this option starts the download immediately</string>
-    <string name="Open_File">Open file</string>
+    <plurals name="Open_File">
+        <item quantity="one">Open File</item>
+    </plurals>
     <string name="you_are_going_to_delete_multiple_items">Deleting multiple items</string>
     <string name="delete_file_too">Delete the file from the device</string>
     <string name="delete_files_too">Delete the files from the device</string>
