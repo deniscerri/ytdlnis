@@ -26,7 +26,7 @@
     <string name="search_history_hint">Buscar no histórico</string>
     <string name="no_results">Nenhum resultado</string>
     <string name="command_directory">Pasta de comandos personalizados</string>
-    <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado</string>
+    <string name="couldnt_find_apk">Não foi possível encontrar um APK adequado</string>
     <string name="downloading_update">Fazendo o download da nova versão</string>
     <string name="audio">Áudio</string>
     <string name="video">Vídeo</string>
@@ -41,7 +41,7 @@
     <string name="save_thumb">Salvar miniatura</string>
     <string name="video_format">Formato de vídeo</string>
     <string name="audio_quality">Qualidade do áudio</string>
-    <string name="command_download_notification_channel_description">Mostrar notificação sobre o progresso do download usando um comando do yt-dlp</string>
+    <string name="command_download_notification_channel_description">Notificação que mostra o progresso do download usando um comando do yt-dlp</string>
     <string name="history_is_empty">O histórico está vazio</string>
     <string name="api_key">Usar chave da API</string>
     <string name="api_key_summary">Recomendações de vídeos a partir da API do YouTube</string>
@@ -61,12 +61,12 @@
     <string name="exit_app">Sair do aplicativo</string>
     <string name="warning">Atenção</string>
     <string name="sponsorblock_promos">Autopromoções</string>
-    <string name="sponsorblock_previews">Prévias/Resumos</string>
+    <string name="sponsorblock_previews">Prévias</string>
     <string name="sponsorblock_fillers">Assuntos paralelos</string>
     <string name="sponsorblock_reminders">Lembretes de inscrição</string>
     <string name="worst_quality">Pior qualidade</string>
     <string name="music_directory">Pasta de áudio</string>
-    <string name="download_notification_channel_description">Mostrar notificações sobre o progresso do download dos arquivos</string>
+    <string name="download_notification_channel_description">Notificação que mostra o progresso do download de arquivos de áudio e vídeo</string>
     <string name="update_ytdl">Atualizar yt-dlp para a nova versão</string>
     <string name="update_app">Buscar atualizações</string>
     <string name="version">Versão</string>
@@ -129,7 +129,7 @@
     <string name="edit">Editar</string>
     <string name="shortcuts_desc">Usar comandos frequentes para criar modelos</string>
     <string name="cancelled">Cancelado</string>
-    <string name="errored">Falhou</string>
+    <string name="errored">Com erro</string>
     <string name="copy_log">Copiar log</string>
     <string name="create_shortcut">Criar atalho</string>
     <string name="error_restarting_download">Erro ao tentar reiniciar o download</string>
@@ -193,8 +193,8 @@
     <string name="download_over_metered_networks">Download via dados móveis</string>
     <string name="confirm_delete_cookies_desc">Todos os cookies serão excluídos permanentemente</string>
     <string name="delete_all_cookies">Excluir todos os cookies</string>
-    <string name="get_cookies">Obter Cookies</string>
-    <string name="new_cookie">Novo Cookie</string>
+    <string name="get_cookies">Obter cookies</string>
+    <string name="new_cookie">Novo cookie</string>
     <string name="share">Compartilhar</string>
     <string name="select_all">Selecionar todos</string>
     <string name="red">Vermelho</string>
@@ -216,7 +216,7 @@
     <string name="pause">Pausar</string>
     <string name="preferred_locale">Região/idioma preferido</string>
     <string name="resume">Continuar</string>
-    <string name="network_error">Erro de Rede</string>
+    <string name="network_error">Erro de rede</string>
     <string name="restore">Restaurar</string>
     <string name="incognito">Anônimo</string>
     <string name="appearance">Aparência</string>
@@ -244,7 +244,7 @@
     <string name="start">Início</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
-    <string name="kill_app">Encerrar Aplicativo</string>
+    <string name="kill_app">Encerrar aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restringir nomes de arquivos apenas a caracteres ASCII e evitar \"&amp;\" e espaços em nomes de arquivos</string>
@@ -283,7 +283,7 @@
     <string name="show_terminal">Mostrar terminal no menu de compartilhamento</string>
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
-    <string name="use_cookies">Usar Cookies</string>
+    <string name="use_cookies">Usar cookies</string>
     <string name="write_description_summary">Salvar arquivo de descrição na pasta de downloads</string>
     <string name="embed_metadata">Embutir metadados</string>
     <string name="embed_metadata_summary">Analisar e embutir metadados no arquivo</string>
@@ -301,7 +301,7 @@
     <string name="preferred_video_codec">Codec de vídeo preferido</string>
     <string name="sponsorblock_api_url">URL da API do SponsorBlock</string>
     <string name="loading">Carregando</string>
-    <string name="user_agent_header">Habilitar cabeçalho \'User-Agent\'</string>
+    <string name="user_agent_header">Cabeçalho User-Agent</string>
     <string name="remember_download_type">Lembrar tipo de download</string>
     <string name="remember_download_type_summary">Selecione o último tipo de download aberto para o item atual</string>
     <string name="schedule">Agendar</string>
@@ -311,7 +311,7 @@
     <string name="download_already_exists_summary">Você ainda deseja fazer o download?</string>
     <string name="modify_download_card">Modificar cartão de download</string>
     <string name="security">Segurança</string>
-    <string name="length">Comprimento</string>
+    <string name="length">Duração</string>
     <string name="export_file">Exportar arquivo</string>
     <string name="errored_downloads">Downloads com erros</string>
     <string name="errored_download_notification_channel_description">Notificação para downloads com erro</string>
@@ -319,7 +319,7 @@
     <string name="buffer_size_summary">Tamanho do buffer para downloads, ex.: 1024 ou 16K (o padrão é 1024)</string>
     <string name="buffer_size">Tamanho do buffer</string>
     <string name="preferred_audio_language">Idioma de áudio preferido</string>
-    <string name="changelog">Histórico de atualização</string>
+    <string name="changelog">Notas da versão</string>
     <string name="app">Aplicativo</string>
     <string name="source">Origem</string>
     <string name="cut_unavailable_please_update_item">É necessário atualizar os dados do item para poder utilizar a função de corte</string>
@@ -429,7 +429,7 @@
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados como comandos extras para busca de dados</string>
-    <string name="disable_write_info_json">Desabilitar registros de informações em JSON</string>
+    <string name="disable_write_info_json">Desabilitar gravação de info json</string>
     <string name="disable_write_info_json_summary">Sempre que você reiniciar/retomar o download, o yt-dlp baixará novamente os dados JSON dos servidores (não recomendado)</string>
     <string name="ytdlp_recommnedations">yt-dlp: Recomendações do YouTube (precisa de cookies)</string>
     <string name="ytdlp_liked">yt-dlp: Vídeos curtidos do YouTube (precisa de cookies)</string>
@@ -438,7 +438,7 @@
     <string name="use_app_language_for_metadata">Usar idioma do aplicativo para metadados</string>
     <string name="layout">Layout</string>
     <string name="player_client">Cliente de reprodução</string>
-    <string name="player_client_summary">Clientes de reprodução do YouTube &amp; Chave de acesso PO</string>
+    <string name="player_client_summary">Clientes de reprodução do YouTube e PO Token</string>
     <string name="list">Lista</string>
     <string name="grid">Grade</string>
     <string name="prefer_container_over_codec_audio">Preferir o contêiner em vez do codec para downloads de áudio</string>
@@ -451,7 +451,7 @@
     <string name="no_check_certificates">Ignorar validação de certificado HTTPS</string>
     <string name="cache_directory">Pasta de cache</string>
     <string name="cache_directory_warning">Alterar a pasta de cache pode causar problemas inesperados. Se o aplicativo não puder salvar no caminho configurado, ele recorrerá ao diretório de cache interno padrão</string>
-    <string name="use_only_po_token">Usar somente chave de acesso PO (ignorar cliente de reprodução)</string>
+    <string name="use_only_po_token">Usar somente PO Token (ignorar cliente de reprodução)</string>
     <string name="reset_processed_links_desc">Baixar todos os itens novamente</string>
     <string name="sync_with_source_desc">Excluir itens baixados se eles estiverem faltando na fonte</string>
     <string name="retry_missing_downloads_desc">Baixar novamente itens que não estão presentes no histórico de downloads</string>
@@ -464,14 +464,14 @@
     <string name="use_code_highlighter">Usar marcador de cores de código</string>
     <string name="write_subs_when_embed_subs">Salvar legendas ao incorporar</string>
     <string name="write_subs_when_embed_subs_summary">Isso aplicará \"Salvar legendas\" e \"Salvar legendas automáticas\" para baixar os arquivos de legenda e excluí-los após a incorporação</string>
-    <string name="generate_potokens">Gerar chave de acesso PO</string>
+    <string name="generate_potokens">Gerar PO Tokens</string>
     <string name="regenerate">Gerar novamente</string>
-    <string name="generate_potokens_warning">Habilitando essa opção, será necessário desabilitar os Cookies</string>
+    <string name="generate_potokens_warning">Habilitando essa opção, será necessário desabilitar os cookies</string>
     <string name="custom">Personalizado</string>
     <string name="cut_unsupported">O corte não está disponível para este item</string>
     <string name="select_between_desc">Especifique o intervalo de itens para selecionar</string>
-    <string name="potoken">Chave de acesso PO</string>
-    <string name="manual_po_token_generator">Gerador manual de chave de acesso PO para web</string>
+    <string name="potoken">PO Token</string>
+    <string name="manual_po_token_generator">Gerador manual de PO Token para web</string>
     <string name="reverse">Reverter</string>
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
     <string name="no_keep_subs_summary">Ao usar \"Embutir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
@@ -481,9 +481,9 @@
     <string name="preferred_format_size">Tamanho do formato preferido</string>
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
-    <string name="potoken_gvs">Chave de acesso PO (GVS)</string>
-    <string name="potoken_player">Chave de acesso PO (Reprodutor)</string>
-    <string name="potoken_subs">Chave de acesso PO (Legendas)</string>
+    <string name="potoken_gvs">PO Token (GVS)</string>
+    <string name="potoken_player">PO Token (Player)</string>
+    <string name="potoken_subs">PO Token (Subs)</string>
     <string name="visitor_data">Dados do visitante</string>
     <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
     <string name="desktop">Computador</string>
@@ -500,7 +500,7 @@
     <string name="potoken_guide">Autenticação\n-----------------------\n1. Clique em “Autenticar” para abrir a página de login no WebView.\n2. Faça login na sua conta do Google.\n3. Reproduza qualquer vídeo que suporte legendas traduzidas automaticamente.\n4. Ative as legendas traduzidas automaticamente e veja se funcionam.\n\t4.1 Se as legendas traduzidas automaticamente não funcionarem, mude para outro vídeo que suporte legendas traduzidas automaticamente e tente o passo 4 novamente.\n5. Clique em OK.\n\nSem autenticação\n-----------------------\n1. Clique em “Sem autenticação”.\n2. Digite qualquer URL de vídeo do YouTube.\n3. Aguarde o carregamento do vídeo e reproduza-o por pelo menos 3 segundos.\n4. Clique em OK.</string>
     <string name="no_auth">Sem autenticação</string>
     <string name="auth">Autenticar</string>
-    <string name="app_icon">Estilo de ícone (app)</string>
+    <string name="app_icon">Ícone do app</string>
     <string name="show_quick_download_share_menu">Mostrar opção para fazer download imediatamente no menu de compartilhamento</string>
     <string name="quick_download_title">Não buscar dados</string>
     <string name="sponsorblock_hook">Gancho/Saudações</string>
@@ -521,8 +521,8 @@
     <string name="required">Obrigatório</string>
     <string name="crop_validation_exceeds_w">X+W excede %d</string>
     <string name="crop_validation_exceeds_h">Y+H excede %d</string>
-    <string name="free_ratio">Proporção Livre</string>
-    <string name="aspect_ratio">Proporção</string>
+    <string name="free_ratio">Proporção livre</string>
+    <string name="aspect_ratio">Proporção de tela</string>
     <string name="dimensions">Dimensões</string>
     <string name="width">Largura</string>
     <string name="height">Altura</string>
@@ -530,7 +530,7 @@
     <string name="y_offset">Deslocamento Y</string>
     <string name="player_client_not_empty">A tag do cliente de reprodução não pode ficar vazia</string>
     <string name="player_client_already_created">O cliente de reprodução já foi criado</string>
-    <string name="write_atleast_one_potoken">Você deve inserir ao menos uma chave de acesso PO</string>
+    <string name="write_atleast_one_potoken">Você deve inserir ao menos um PO Token</string>
     <string name="version_ready_to_download">A versão %s está pronta para download</string>
     <string name="package_version_ready_to_download">O pacote %1$s (versão %2$s) está pronto para download</string>
     <string name="tap_to_see_changes_and_install">Toque para ver as mudanças e instalar</string>
@@ -609,7 +609,7 @@
     <string name="internal_plugin_ffmpeg_preset">Predefinição do plugin interno do FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">A predefinição do FFmpeg é utilizada por plugins internos, como os de incrustação de legendas, etc. Ajustar essa preferência afeta o tamanho final do arquivo!</string>
     <string name="preferred_format_size_audio">Tamanho do formato de áudio preferido</string>
-    <string name="history_quick_action">Botão de Ação Rápida</string>
+    <string name="history_quick_action">Botão de ação rápida</string>
     <string name="history_quick_action_summary">Ação a ser executada ao clicar no botão de ação rápida no cartão de histórico</string>
     <string name="open_file">Abrir arquivo</string>
     <string name="toggle_all">Alternar tudo</string>
@@ -624,7 +624,7 @@
     <string name="custom_channels_summary">Atualize a partir de seus próprios repositórios de lançamento do yt-dlp</string>
     <string name="channel_stable">Estável</string>
     <string name="channel_nightly">Nightly</string>
-    <string name="channel_master">Principal</string>
+    <string name="channel_master">Master</string>
     <string name="channel_beta">Beta</string>
     <string name="temporary_files">Arquivos temporários</string>
     <string name="temporary_files_description">Arquivos de trabalho mantidos pelo aplicativo. Configurações temporárias e outros dados relacionados ao yt-dlp.</string>
