@@ -92,7 +92,7 @@
     <string name="shortcuts">Συντομεύσεις</string>
     <string name="create_template">Δημιουργία προτύπου</string>
     <string name="shortcuts_desc">Χρήση εντολών που χρησιμοποιούνται συχνά για τη δημιουργία προτύπων</string>
-    <string name="cancelled">Ακυρωμένος</string>
+    <string name="cancelled">Ακυρωμένο</string>
     <string name="errored">Εσφαλμένα</string>
     <string name="copy_log">Αντιγραφή αρχείου καταγραφής</string>
     <string name="create_shortcut">Δημιουργία συντόμευσης</string>
@@ -687,4 +687,23 @@
     <string name="lyrics_plain">Απλό κείμενο</string>
     <string name="embed_lyrics_summary">Ανάκτηση στίχων από το lrclib.net και ενσωμάτωσή τους σε αρχεία ήχου που λαμβάνονται</string>
     <string name="save_lrc_file_summary">Αποθήκευση συγχρονισμένων στίχων ως αρχείο .lrc δίπλα στις λήψεις ήχου</string>
+    <string name="optional">Προαιρετικό</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d στοιχείο</item>
+        <item quantity="other">%d στοιχεία</item>
+    </plurals>
+    <string name="reorder_queue">Αναδιάταξη ουράς</string>
+    <string name="crop_unavailable_please_update_item">Πρέπει να ενημερώσετε τα δεδομένα του αντικειμένου για να μπορέσετε να χρησιμοποιήσετε τη λειτουργία περικοπής</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d διαθέσιμη ενημέρωση</item>
+        <item quantity="other">%d διαθέσιμες ενημερώσεις</item>
+    </plurals>
+    <string name="update_install">Εγκατάσταση</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Επιλέχθηκε %1$s</string>
+    <string name="update_checked_just_now">Ελέγχθηκε μόλις τώρα</string>
+    <string name="update_not_checked_yet">Δεν έχει ελεγχθεί ακόμη</string>
+    <string name="welcome_perm_folders_header">Επαναφερθέντες φάκελοι</string>
+    <string name="welcome_perm_folders_summary">Το αντίγραφο ασφαλείας σας χρησιμοποιεί αυτούς τους φακέλους, αλλά η εφαρμογή έχασε την πρόσβαση σε αυτούς. Επιτρέψτε ξανά τον καθένα ή επιλέξτε έναν διαφορετικό φάκελο για χρήση.</string>
+    <string name="crop_unsupported">Η περικοπή δεν είναι διαθέσιμη για αυτό το στοιχείο</string>
 </resources>
