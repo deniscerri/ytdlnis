@@ -37,25 +37,6 @@ class UpdateCheckWorker(
             if (newRelease.isSuccess && BuildConfig.FLAVOR == "github") {
                 notificationUtil.showNewAppUpdate(newRelease.getOrNull()!!.tag_name)
             }
-
-            val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
-            RuntimeManager.packages.forEach { pkg ->
-                val instance = pkg.plugin.getInstance()
-                if (instance.bundledVersion.isNullOrBlank() && instance.downloadedVersion.isNullOrBlank()) return@forEach
-                instance.getReleases().apply {
-                    val releases = this.getOrElse { listOf() }
-                    if (releases.isEmpty()) return@apply
-
-                    val latestRelease = releases.first()
-                    if (latestRelease.isBundled || latestRelease.isInstalled) return@apply
-                    if (skipRemindingPackageUpdate.contains(latestRelease.tag_name)) return@apply
-
-                    notificationUtil.showNewPackageUpdate(pkg.title, latestRelease.tag_name)
-
-                    skipRemindingPackageUpdate.add(latestRelease.tag_name)
-                    sharedPreferences.edit().putStringSet("skip_reminding_package_update", skipRemindingPackageUpdate).apply()
-                }
-            }
         }
 
         if (checkUpdatesYTDL) {
