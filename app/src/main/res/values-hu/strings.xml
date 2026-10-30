@@ -78,7 +78,7 @@
     <string name="adjust_templates">Adjust sablonok</string>
     <string name="failed_download">Nem lehet letölteni a fájlt</string>
     <string name="edit_selected">Edit kiválasztott</string>
-    <string name="sponsorblock_api_url">Sponsorblock API URL</string>
+    <string name="sponsorblock_api_url">SponsorBlock API URL</string>
     <string name="update_app">Frissítések keresése</string>
     <string name="search">Keresés</string>
     <string name="video">Videó</string>
@@ -282,8 +282,8 @@
     <string name="move_temporary_files">Ideiglenes fájlok áthelyezése</string>
     <string name="move_temporary_files_summary">A gyorsítótárazott fájlok átvitele a letöltések mappába…</string>
     <string name="custom_audio_quality">Egyéni/saját hangminőség használata</string>
-    <string name="retries">Újrapróbálkozás</string>
-    <string name="fragment_retries">Töredék újrapróbálása/újraprobálkozások</string>
+    <string name="retries">Újrapróbálkozások</string>
+    <string name="fragment_retries">Töredék újrapróbálkozások</string>
     <string name="format_order">Formátumok sorrendje</string>
     <string name="force_keyframes">Kulcskockák kényszerítése vágásoknál</string>
     <string name="force_keyframes_summary">Lassabb folyamat, de pontosabb vágások</string>
@@ -292,10 +292,10 @@
     <string name="current">Jelenlegi parancs</string>
     <string name="subtitle_format">Felirat formátum</string>
     <string name="hide_thumbnails">Bélyegkép(thumbnail) elrejtése</string>
-    <string name="show_terminal">Terminál megjelenítése a Megosztás menüben</string>
+    <string name="show_terminal">Terminál megjelenítése a megosztás menüben</string>
     <string name="use_cookies">Sütik használata</string>
-    <string name="embed_metadata">Metadata beágyazása</string>
-    <string name="embed_metadata_summary">Metadata(mera-adatok) elemzése és beágyazása a hangfájlba</string>
+    <string name="embed_metadata">Metaadat beágyazása</string>
+    <string name="embed_metadata_summary">Metaadatok kinyerése és beágyazása a fájlba</string>
     <string name="update_formats_background">Formátumok frissítése a háttérben</string>
     <string name="auto_update_ytdlp">Automatikus frissítés yt-dlp</string>
     <string name="use_sponsorblock">SponsorBlock használata</string>
@@ -303,7 +303,7 @@
     <string name="cache_first_summary">A gyorsítótárfájlok letöltődnek a belső tárhelyre, majd a kiválasztott könyvtárba kerülnek. Ezt akkor használja, ha nem tud közvetlenül a tárolóra írni</string>
     <string name="scheduling">Időzítés</string>
     <string name="use_scheduler">Letöltés ütemezés szerint</string>
-    <string name="update_app_beta">beta releases</string>
+    <string name="update_app_beta">Béta kiadások</string>
     <string name="update_app_beta_summary">Regisztrálj a béta programba. Lehet, hogy hibákat tartalmaz.</string>
     <string name="auto">Automatikus</string>
     <string name="preferred_video_codec">Előnyben részesített videó-kodek</string>
@@ -601,4 +601,64 @@
     <string name="burn_subs">Feliratok írása</string>
     <string name="check_clipboard_home_summary">URL-ek automatikus észlelése a vágólapon a kezdőképernyőn</string>
     <string name="check_clipboard_home">Ellenőrizze a vágólapot a kezdőképernyőn</string>
+    <string name="clear_info_json">Információs adattárolók (info_json fájlok) törlése</string>
+    <string name="internal_plugin_ffmpeg_preset">Belső bővítmény FFmpeg-előbeállítás</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">Az FFmpeg-beállításokat a rendszer belső bővítményekhez – például feliratok írásához – használja. Ennek a beállításnak a módosítása hatással van a végső fájlméretre!</string>
+    <plurals name="every_hours">
+        <item quantity="one">Óránként</item>
+        <item quantity="other">Minden %d órában</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="one">Naponta</item>
+        <item quantity="other">Minden %d napon</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="one">Hetente</item>
+        <item quantity="other">Minden %d héten</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="one">Havonta</item>
+        <item quantity="other">Minden %d hónapban</item>
+    </plurals>
+    <string name="history_quick_action">Gyorsművelet-gomb</string>
+    <string name="history_quick_action_summary">Az előzmények-kártyán található gyorsművelet-gombra kattintáskor végrehajtandó művelet</string>
+    <string name="open_file">Fájl megnyitása</string>
+    <string name="duration">Időtartam</string>
+    <string name="update_available">Frissítés elérhető</string>
+    <string name="update_check_failed">Nem sikerült frissítéseket keresni</string>
+    <string name="checking_for_updates">Frissítések keresése…</string>
+    <string name="version_installed">%1$s telepítve</string>
+    <string name="check_now">Ellenőrzés most</string>
+    <string name="version_update_available">%1$s → %2$s</string>
+    <string name="update_checked_ago">Ellenőrizve %1$s</string>
+    <string name="update_checked_just_now">Ellenőrizve éppen most</string>
+    <string name="update_not_checked_yet">Még nincs ellenőrizve</string>
+    <string name="update_channel">Frissítési csatorna</string>
+    <string name="custom_channels">Egyedi kódág (fork)</string>
+    <string name="custom_channels_summary">Frissítés a saját yt-dlp kiadási tárolóidból</string>
+    <string name="channel_stable">Stabil</string>
+    <string name="channel_nightly">Nightly (Éjszakai)</string>
+    <string name="channel_master">Master (Központi)</string>
+    <string name="channel_beta">Béta</string>
+    <string name="temporary_files">Ideiglenes fájlok</string>
+    <string name="temporary_files_description">Az alkalmazás által kezelt munkaállományok. Átmeneti konfigurációk és egyéb, a yt-dlp-hez kapcsolódó adatok.</string>
+    <string name="unfinished_downloads">Befejezetlen letöltések</string>
+    <string name="unfinished_downloads_summary">Megállított vagy megszakadt letöltések részleges fájljai, amelyek megmaradnak, hogy a letöltés folytatható legyen</string>
+    <string name="info_jsons">Információs adattárolók (info_json fájlok)</string>
+    <string name="info_jsons_summary">Mentett metaadat, így a yt-dlp-nek nem kell újra lehívnia</string>
+    <string name="ytdlp_cache">yt-dlp gyorsítótár</string>
+    <string name="ytdlp_cache_summary">Olyan adatok, amelyeket a yt-dlp a futtatások között újra felhasznál – például a YouTube-lejátszó aláírásai</string>
+    <string name="temporary_configurations">Ideiglenes konfigurációk</string>
+    <string name="temporary_configurations_summary">Parancs konfigurációk, URL-listák és egyéb rövid életű fájlok</string>
+    <string name="downloaded_apks">Letöltött APK-fájlok</string>
+    <string name="downloaded_apks_summary">Alkalmazás- és csomagfrissítésekhez letöltött APK-fájlok</string>
+    <string name="clear_everything">Mindent töröljön</string>
+    <string name="clear_temporary_files_confirm">Törli a(z) %1$s fájlt? Ez a művelet nem vonható vissza.</string>
+    <string name="failed_to_fetch">Nem sikerült lekérni</string>
+    <string name="failed_to_fetch_summary">Ezeket az elemeket nem sikerült lekérni. Próbálkozzon újra, vagy töltse le őket a lekérni kívánt adatok nélkül.</string>
+    <plurals name="items_failed_to_fetch">
+        <item quantity="one">%d elemet nem sikerült lekérni</item>
+        <item quantity="other">%d elemeket nem sikerült lekérni</item>
+    </plurals>
+    <string name="retry">Újrapróbálkozás</string>
 </resources>
