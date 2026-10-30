@@ -661,4 +661,27 @@
         <item quantity="other">%d elemeket nem sikerült lekérni</item>
     </plurals>
     <string name="retry">Újrapróbálkozás</string>
+    <string name="retry_all">Összes újrapróbálása</string>
+    <string name="write_ytdlp_terminal">Automatikusan írja a yt-dlp-t a terminálban</string>
+    <string name="clear">Törlés / tisztítás</string>
+    <string name="welcome_subtitle">Videó és audió letöltése a yt-dlp használatával. Kezdésnek néhány beállítást adjon meg.</string>
+    <string name="welcome_get_started">Kezdjük</string>
+    <string name="welcome_restore_backup">Visszaállítás biztonsági mentésből</string>
+    <string name="welcome_restore_failed">Nem sikerült ezt a mentést visszaállítani</string>
+    <string name="welcome_restoring">Biztonsági mentés visszaállítása…</string>
+    <string name="welcome_guide_title">Az útmutató elolvasása</string>
+    <string name="welcome_guide_summary">Az útmutató mindent tartalmaz az alkalmazással kapcsolatban: a letöltést, a parancssablonokat és a gyakori problémák megoldását. Bármikor megnyithatod a weboldalon keresztül.</string>
+    <string name="welcome_open_guide">Az útmutató megnyitása</string>
+    <string name="welcome_permissions_title">Engedélyek</string>
+    <string name="welcome_permissions_summary">A YTDLnis ezekkel működik a legjobban. Később változtathatsz rajtuk a beállításokban.</string>
+    <string name="welcome_perm_storage">Tárhely hozzáférés</string>
+    <string name="welcome_perm_storage_summary">Szükséges a letöltések eszközre történő mentéséhez.</string>
+    <string name="welcome_perm_notifications">Értesítések</string>
+    <string name="welcome_perm_notifications_summary">A letöltési folyamat és a befejezett letöltések megjelenítése.</string>
+    <string name="welcome_perm_battery">Korlátozás nélküli akkumulátorhasználat</string>
+    <string name="welcome_perm_battery_summary">Megakadályozza, hogy a hosszú letöltések leálljanak a háttérben.</string>
+    <string name="welcome_perm_alarms">Riasztások és emlékeztetők</string>
+    <string name="welcome_perm_alarms_summary">Lehetővé teszi az ütemezett letöltések pontos időben történő elindítását.</string>
+    <string name="welcome_allow">Engedélyezés</string>
+    <string name="welcome_allowed">Engedélyezett</string>
 </resources>
