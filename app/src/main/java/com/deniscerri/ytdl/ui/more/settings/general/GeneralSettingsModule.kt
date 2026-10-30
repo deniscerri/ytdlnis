@@ -67,10 +67,6 @@ object GeneralSettingsModule : SettingModule {
                     summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
 
                     setOnPreferenceClickListener {
-                        if (LocaleUtil.systemPickerAvailable()) {
-                            runCatching { context.startActivity(LocaleUtil.systemPickerIntent(context)) }
-                            return@setOnPreferenceClickListener true
-                        }
 
                         val locales = supported
                             .map { it to LocaleUtil.displayName(it, supported) }
