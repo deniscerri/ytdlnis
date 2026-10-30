@@ -534,4 +534,36 @@
     <string name="view">Megtekintés</string>
     <string name="download_anyway">Letöltés mindenképp</string>
     <string name="welcome_title">Üdvözlünk a YTDLnisben</string>
+    <string name="optional">Opcionális</string>
+    <string name="search_results">Keresési eredmények</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d tétel</item>
+        <item quantity="other">%d tételek</item>
+    </plurals>
+    <string name="reorder_queue">Várólista átrendezése</string>
+    <string name="translators">Fordítók</string>
+    <string name="translators_summary">Akik segítettek az alkalmazás fordításában a Weblate használatával</string>
+    <string name="translators_unavailable">A fordítók listája nem elérhető ebben a kiadásban. A Weblate-en továbbra is láthatod az összes közreműködőt.</string>
+    <string name="toggle_all">Mind kiválasztása</string>
+    <string name="merge_cuts">Darabok egyesítése egy fájlba</string>
+    <string name="crop_unavailable_please_update_item">A tételadatokat frissíteni kell ahhoz, hogy a vágás funkciót használni lehessen</string>
+    <string name="preferred_format_size_audio">Preferált audió formátumméret</string>
+    <string name="bundled">Beépített</string>
+    <string name="aspect_ratio">Képarány</string>
+    <string name="x_offset">X eltolás</string>
+    <string name="y_offset">Y eltolás</string>
+    <plurals name="updates_available_summary">
+        <item quantity="one">%d frissítés elérhető</item>
+        <item quantity="other">%d frissítés(ek) elérhető(k)</item>
+    </plurals>
+    <string name="update_install">Telepítés</string>
+    <string name="next_run">Következő: %1$s</string>
+    <string name="paused">Leállítva</string>
+    <string name="check_complete">Ellenőrzés kész</string>
+    <plurals name="finished_runs">
+        <item quantity="one">Befejezve • %d feladat</item>
+        <item quantity="other">Befejezve • %d feladat(ok)</item>
+    </plurals>
+    <string name="reset_state">Állapot visszaállítása</string>
+    <string name="rescan_from_scratch">Újraolvasás az alapoktól</string>
 </resources>
