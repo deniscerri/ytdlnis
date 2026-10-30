@@ -30,6 +30,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysConstants
@@ -46,6 +47,7 @@ import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,6 +68,7 @@ class TerminalFragment : Fragment() {
 
     private lateinit var session : TerminalSession
     private var sessionId: String? = null
+    private var sessionInitJob: Job? = null
 
     private fun terminalZoom(): Int {
         val zoom = sharedPreferences.getFloat("terminal_text_zoom", 35f)
@@ -274,9 +277,6 @@ class TerminalFragment : Fragment() {
     }
 
     private fun initSession() {
-        val sessionBinder = terminalViewModel.sessionBinder ?: return
-        val service = sessionBinder.getService()
-
         val activity = requireActivity() as TerminalActivity
         val client = TerminalBackEnd(terminalView, activity) {
             if (isAdded) {
@@ -288,6 +288,29 @@ class TerminalFragment : Fragment() {
         // as soon as it gets focus, which is before the layout callback below runs. A null client
         // at that point crashes in TerminalView.onCreateInputConnection.
         terminalView.setTerminalViewClient(client)
+
+        // creating a session blocks until the runtime is unpacked (slow on first launch), so wait off the main thread
+        sessionInitJob?.cancel()
+        sessionInitJob = viewLifecycleOwner.lifecycleScope.launch {
+            val runtimeReady = withContext(Dispatchers.IO) {
+                // assertInit times out after 30s while unpacking, but throws right away if init failed
+                repeat(10) {
+                    if (runCatching { RuntimeManager.getInstance().assertInit() }.isSuccess) return@withContext true
+                }
+                false
+            }
+            if (!isAdded) return@launch
+            if (runtimeReady) {
+                startSession(activity, client)
+            } else {
+                Toast.makeText(requireContext(), R.string.errored, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startSession(activity: TerminalActivity, client: TerminalBackEnd) {
+        val sessionBinder = terminalViewModel.sessionBinder ?: return
+        val service = sessionBinder.getService()
 
         if (!sessionId.isNullOrBlank()) {
             terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
