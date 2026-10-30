@@ -566,4 +566,39 @@
     </plurals>
     <string name="reset_state">Állapot visszaállítása</string>
     <string name="rescan_from_scratch">Újraolvasás az alapoktól</string>
+    <string name="rescan_from_scratch_desc">Feldolgozott tételeken kívül a nem mentettek újra letöltése</string>
+    <string name="skip_backlog">Jelenlegi előzménylista kihagyása</string>
+    <string name="skip_backlog_desc">Mindent teljesítettnek jelöl a forrásban - csak a jövőbeli feltöltések letöltése</string>
+    <string name="unskip_ignored">Figyelmen kívül hagyott feltöltések kihagyásának visszavonása</string>
+    <string name="unskip_ignored_desc">Letölti a meglévő feltöltéseket az első kihagyott tételtől kezdve</string>
+    <string name="observe_runs_chip">%d feladat(ok) fut(nak)</string>
+    <string name="observe_processed_chip">%d feldolgozva</string>
+    <string name="observe_skipped_chip">%d kihagyva</string>
+    <string name="observe_updating">Frissítés…</string>
+    <string name="check_available_storage">Szabad tárhely ellenőrzése</string>
+    <string name="download_delay">Letöltés késleltetése</string>
+    <string name="download_delay_summary">Az egyes letöltések között várjon a beállított számú másodpercig. Ez a funkció letiltja az egyidejű letöltéseket</string>
+    <string name="min_delay">Min. késleltetés másodpercben</string>
+    <string name="max_delay">Max. késleltetés másodpercben</string>
+    <string name="no_delay">Nincs késleltetés beállítva</string>
+    <string name="waiting_download_delay">Várakozás a letöltésre (%s másodperc)…</string>
+    <string name="bgutils_pot_generation_server">HTTP-szerver</string>
+    <string name="bgutils_pot_server_summary">Ez egy JavaScript HTTP-szerver a 4416-os porton. Ha nem fut, a rendszer automatikusan elindítja, amint megkezdődik a letöltési sor végrehajtása, vagy amikor a források figyelése esedékessé válik. A leállításhoz manuálisan kell beavatkozni az értesítési felületen!</string>
+    <string name="please_install_package">Kérjük, telepítse a(z) %s csomagot</string>
+    <string name="please_install_package_or_package">Kérjük, telepítse a(z) %1$s csomagot vagy a(z) %2$s csomagot</string>
+    <string name="installation_method">APK-telepítési mód</string>
+    <string name="system_install_failed">A rendszer telepítése sikertelen. Kérjük, válasszon másik telepítési módot a beállításokban!</string>
+    <string name="choose_installer_app">Válasszon egy telepítő alkalmazást</string>
+    <string name="notset">Nincs beállítva</string>
+    <string name="external">Külső</string>
+    <string name="exit">Kilépés</string>
+    <string name="packages_description">A csomagok olyan segédalkalmazások, amelyeket a YTDLnis a yt-dlp parancsok végrehajtásához vesz igénybe. Ezek egy része már eleve beépítve megtalálható az alkalmazásban, de lehetőség van újabb, időközben megjelent verziók telepítésére is – anélkül, hogy magát az alkalmazást frissíteni kellene. A telepített APK-fájlok felülírják az alkalmazásba beépített, eredeti verziókat.</string>
+    <plurals name="every_minutes">
+        <item quantity="one">Percenként</item>
+        <item quantity="other">Minden %d percben</item>
+    </plurals>
+    <string name="bgutils_pot_generation_script">Generáló szkript (utasítássorozat)</string>
+    <string name="burn_subs">Feliratok írása</string>
+    <string name="check_clipboard_home_summary">URL-ek automatikus észlelése a vágólapon a kezdőképernyőn</string>
+    <string name="check_clipboard_home">Ellenőrizze a vágólapot a kezdőképernyőn</string>
 </resources>
