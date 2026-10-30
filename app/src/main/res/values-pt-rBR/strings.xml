@@ -482,8 +482,8 @@
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
-    <string name="potoken_player">PO Token (Player)</string>
-    <string name="potoken_subs">PO Token (Subs)</string>
+    <string name="potoken_player">PO Token (Reprodutor)</string>
+    <string name="potoken_subs">PO Token (Legendas)</string>
     <string name="visitor_data">Dados do visitante</string>
     <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
     <string name="desktop">Computador</string>
