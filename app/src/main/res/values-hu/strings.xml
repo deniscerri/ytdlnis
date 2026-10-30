@@ -9,7 +9,7 @@
     <string name="logs">Naplók</string>
     <string name="audio_quality">Audió minőség</string>
     <string name="audio_format">Audió formátum</string>
-    <string name="adjust_audio">Audió beállítása</string>
+    <string name="adjust_audio">Audió módosítása</string>
     <string name="music_directory">Hangok</string>
     <string name="couldnt_find_apk">Nincs megfelelő APK-t</string>
     <string name="ytdl_updating_started">Új verziónak letöltése folyamatban</string>
@@ -32,7 +32,7 @@
     <string name="search_history_hint">Keresés az előzmények között</string>
     <string name="search_command_hint">Keresés a parancsokból</string>
     <string name="download_notification_channel_description">Az értesítés mutatja a hang és videófájlok letöltésének állapotát</string>
-    <string name="update_ytdl">Kérjük Telepítse a yt-dlp új verzióját</string>
+    <string name="update_ytdl">A yt-dlp frissítése az új verzióra</string>
     <string name="audio_quality_summary">0 (legjobb) 10 (rosszabb)</string>
     <string name="directories">Mappák</string>
     <string name="update">Frissítés</string>
@@ -62,7 +62,7 @@
     <string name="run_command">Parancs futtatása</string>
     <string name="about">Információ</string>
     <string name="download_all">Összes letöltése</string>
-    <string name="date_added">Dátum hozzáadva</string>
+    <string name="date_added">Hozzáadás dátuma</string>
     <string name="Remove">Eltávolítás</string>
     <string name="file_name_template">Fájlnév sablon</string>
     <string name="confirm_delete_history_desc">Előzmények törlése végleg</string>
@@ -71,7 +71,7 @@
     <string name="updating">Frissítés</string>
     <string name="concurrent_downloads">Egyidejű letöltések</string>
     <string name="concurrent_fragments">Konkurens fragmensek</string>
-    <string name="home">Otthon</string>
+    <string name="home">Kezdőlap</string>
     <string name="cancel">Mégsem</string>
     <string name="download_notification_channel_name">Fájl letöltések</string>
     <string name="remove_results">Eredmények törlése</string>
@@ -91,7 +91,7 @@
     <string name="api_key_summary">Videó ajánlatok a YouTube API-tól</string>
     <string name="remove_downloading">Letöltések megszakítása</string>
     <string name="ytdl_update_hint">Hasznos tippek a frissítés közben</string>
-    <string name="access_all_directories_summary">Engedje le az alkalmazás letöltését az alapértelmezett könyvtárakról</string>
+    <string name="access_all_directories_summary">Engedélyezze a letöltést az alapértelmezés szerint korlátozott könyvtárakba</string>
     <string name="you_are_in_latest_version">A legújabb verzió használata</string>
     <string name="exit_app">Kilépés az alkalmazásból</string>
     <string name="incognito_summary">Töltse le anélkül, hogy hozzáadná az előzményekhez</string>
@@ -139,8 +139,8 @@
     <string name="select">Kiválasztás</string>
     <string name="selected">Kiválasztva</string>
     <string name="all_items_selected">Összes elem kijelölve</string>
-    <string name="redownload">Újratöltés</string>
-    <string name="in_queue">Várólistán(lévő)</string>
+    <string name="redownload">Letöltés újra</string>
+    <string name="in_queue">Várólistán (lévő)</string>
     <string name="clear_cancelled">Megszakítottak törlése</string>
     <string name="clear_errored">Hibásak törlése</string>
     <string name="split_by_chapters">Fejezetek szerinti felosztás</string>
@@ -206,7 +206,7 @@
     <string name="finished_download_notification_channel_name">Befejezett letöltések</string>
     <string name="finished_download_notification_channel_description">Értesítés a befejezett letöltésekről</string>
     <string name="quick_download">Gyors letöltés</string>
-    <string name="quick_download_summary">Ne kérjen le adatokat a letöltőkártyáról, dolgozza fel egyből adat szerzés nélkül</string>
+    <string name="quick_download_summary">Folytassa azonnal a letöltési folyamatot, anélkül, hogy előzetesen adatokat kérne le</string>
     <string name="remove_audio">Hang eltávolítása</string>
     <string name="preferred_format_id">Előnyben részesített formátumazonosító</string>
     <string name="download_now">Letöltés most</string>
@@ -228,16 +228,16 @@
     <string name="sponsorblock_outro">Levezetés</string>
     <string name="sponsorblock_promos">Önpromóció</string>
     <string name="sponsorblock_previews">Előnézetek</string>
-    <string name="please_wait">Kérlek, várjál má\'</string>
-    <string name="cancelled">Eltörölt</string>
+    <string name="please_wait">Kérem várjon</string>
+    <string name="cancelled">Megszakítva</string>
     <string name="copy_log">Napló másolása</string>
     <string name="errored">Hibás</string>
-    <string name="create_shortcut">Shortcut(rövidút) létrehozása</string>
+    <string name="create_shortcut">Shortcut (rövidút) létrehozása</string>
     <string name="error_restarting_download">Hiba a letöltés újraindításánál</string>
     <string name="update_template">Sablon frissítése</string>
     <string name="confirm_delete_logs_desc">A teljes naplólista végleges törlése.</string>
     <string name="help_translate_summary">Fordítsd le ezt az alkalmazást a nyelvedre a Weblate segítségével</string>
-    <string name="clear_temporary_files_summary">Gyorsítótár, infojson és egyéb ideiglenes beállítások törlése</string>
+    <string name="clear_temporary_files_summary">Törölje a gyorsítótárazott fájlokat, az infojsonokat és egyéb ideiglenes konfigurációkat</string>
     <string name="restrict_filenames_summary">A fájlneveket csak ASCII karakterekre korlátozza, és kerülje az \"&amp;\" betűket és a szóközöket a fájlnevekben</string>
     <string name="confirm_terminate">Leállítja az összes letöltést és kényszeríti az alkalmazás bezárását</string>
     <string name="cut">Vágás</string>
@@ -415,8 +415,8 @@
     <string name="restore_info">Nyomja meg a \'Restore\' gombot hogy összeolvassza a lementett adatokat a jelenlegiekkel.
 \nNyomja meg a \'Reset\' gombot ha csak a lementett adatokat kívánja megtartani.</string>
     <string name="use_item_url_not_playlist_summary">Ennek bekapcsolásával a playlistek metadatája nem fog beágyazódni</string>
-    <string name="retry_missing_downloads_desc">A letöltési előzményekben nem szereplő elemek újbóli letöltés</string>
-    <string name="reset_processed_links_desc">Az összes újbóli letöltése</string>
+    <string name="retry_missing_downloads_desc">A letöltési előzményekben nem szereplő elemek újbóli letöltése</string>
+    <string name="reset_processed_links_desc">Az összes elem újbóli letöltése</string>
     <string name="sync_with_source_desc">A letöltött elemek törlése, ha azok hiányoznak a forrásból</string>
     <string name="pause_all">Összes leállítása</string>
     <string name="resume_all">Összes folytatása</string>
