@@ -159,7 +159,7 @@
     <string name="download">Ladda ner</string>
     <string name="embed_subtitles">Bädda in undertexter</string>
     <string name="show_download_card">Visa nerladdningskort</string>
-    <string name="Open_File">Öppna fil</string>
+    <string name="open_file">Öppna fil</string>
     <string name="delete_file_too">Ta bort filen från enheten</string>
     <string name="delete_files_too">Ta bort filerna från enheten</string>
     <string name="request_permission_desc">Denna app behöver filbehörigheter för att spara nerladdningar på enheten</string>

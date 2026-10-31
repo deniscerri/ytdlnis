@@ -48,7 +48,7 @@
     <string name="configure_download">ปรับเปลี่ยนการดาวน์โหลด</string>
     <string name="download">ดาวน์โหลด</string>
     <string name="video_quality">คุณภาพของวิดีโอ</string>
-    <string name="Open_File">เปิดไฟล์</string>
+    <string name="open_file">เปิดไฟล์</string>
     <string name="delete_file_too">ลบไฟล์ออกจากอุปกรณ์</string>
     <string name="delete_files_too">ลบไฟล์ออกจากอุปกรณ์</string>
     <string name="exit_app">ออกจากแอป</string>

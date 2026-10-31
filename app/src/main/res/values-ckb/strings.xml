@@ -76,7 +76,7 @@
     <string name="downloads">دابەزاندنەکان</string>
     <string name="select_format">فۆرمات هەڵبژێرە</string>
     <string name="limit_rate">سنووری خێرایی</string>
-    <string name="Open_File">پەڕگە بکەرەوە</string>
+    <string name="open_file">پەڕگە بکەرەوە</string>
     <string name="you_are_going_to_delete">دەسڕێتەوە</string>
     <string name="request_permission_desc">ئەم بەرنامەیە پێویستی بە مۆڵەتی فایل هەیە بۆ هەڵگرتنی داگرتنەکان لەسەر ئامێرەکە</string>
     <string name="version">وەشان</string>

@@ -81,7 +81,7 @@
     <string name="add_chapter">Ajouter des chapitres</string>
     <string name="show_download_card">Afficher les options de téléchargement</string>
     <string name="download_card_summary">Modification des options de l\'élément avant le téléchargement. Désactiver cette option démarrera le téléchargement immédiatement</string>
-    <string name="Open_File">Ouvrir le fichier</string>
+    <string name="open_file">Ouvrir le fichier</string>
     <string name="you_are_going_to_delete_multiple_items">Suppression de plusieurs éléments</string>
     <string name="delete_file_too">Supprimer le fichier de l\'appareil</string>
     <string name="delete_files_too">Supprimer les fichiers de l\'appareil</string>

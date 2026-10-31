@@ -64,7 +64,7 @@
     <string name="link_copied_to_clipboard">Lenke kopiert til utklippstavle</string>
     <string name="api_key">Bruk API-nøkkel</string>
     <string name="add_chapter">Legg til kapitler</string>
-    <string name="Open_File">Åpne fil</string>
+    <string name="open_file">Åpne fil</string>
     <string name="downloads">Nedlastninger</string>
     <string name="remove_deleted">Fjern slettede</string>
     <string name="author">Skaper</string>

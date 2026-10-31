@@ -85,7 +85,7 @@
     <string name="add_chapter">Ongeza sura</string>
     <string name="show_download_card">Onyesha kadi ya kupakua</string>
     <string name="download_card_summary">Rekebisha mipangilio ya kipengee hicho kabla ya kupakua. Kuzima chaguo hili huanza upakuaji mara moja</string>
-    <string name="Open_File">Fungua faili</string>
+    <string name="open_file">Fungua faili</string>
     <string name="you_are_going_to_delete_multiple_items">Kufuta vitu vingi</string>
     <string name="delete_file_too">Futa faili kwenye kifaa</string>
     <string name="delete_files_too">Futa mafaili kutoka kwenye kifaa</string>

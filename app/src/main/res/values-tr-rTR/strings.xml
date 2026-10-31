@@ -84,7 +84,7 @@
     <string name="add_chapter">Bölümleri ekle</string>
     <string name="show_download_card">İndirme kartını göster</string>
     <string name="download_card_summary">İndirmeden önce öge için ayarları değiştirir. Bu seçeneğin devre dışı bırakılması indirmeyi hemen başlatır</string>
-    <string name="Open_File">Dosya aç</string>
+    <string name="open_file">Dosya aç</string>
     <string name="you_are_going_to_delete_multiple_items">Birden fazla öge siliniyor</string>
     <string name="delete_file_too">Dosyayı cihazdan sil</string>
     <string name="delete_files_too">Dosyaları cihazdan sil</string>

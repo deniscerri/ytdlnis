@@ -132,7 +132,7 @@
     <string name="incognito_summary">Prenesi brez dodajanja v zgodovino</string>
     <string name="configure_download">Prilagodi prenos</string>
     <string name="title">Naslov</string>
-    <string name="Open_File">Odpri datoteko</string>
+    <string name="open_file">Odpri datoteko</string>
     <string name="you_are_going_to_delete_multiple_items">Brisanje več elementov</string>
     <string name="delete_file_too">Izbriši datoteko iz naprave</string>
     <string name="delete_files_too">Izbriši datoteke iz naprave</string>

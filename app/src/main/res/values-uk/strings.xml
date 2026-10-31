@@ -77,7 +77,6 @@
     <string name="api_key">Використати ключ API</string>
     <string name="download">Завантажити</string>
     <string name="video_quality">Якість відео</string>
-    <string name="Open_File">Відкрити файл</string>
     <string name="api_key_summary">Відео рекомендації від YouTube API</string>
     <string name="update_app_summary">Повідомляти про вихід нових версій програми при відкритті. Дані отримуються з офіційного репозиторію GitHub</string>
     <string name="remove_deleted">Видалити видалені</string>

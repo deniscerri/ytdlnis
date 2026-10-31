@@ -53,7 +53,7 @@
     <string name="downloads">Downloads</string>
     <string name="remove_deleted">Remover excluídos</string>
     <string name="sort_by">Ordenar por</string>
-    <string name="Open_File">Abrir arquivo</string>
+    <string name="open_file">Abrir arquivo</string>
     <string name="download_all">Baixar todos</string>
     <string name="couldnt_find_apk">Não foi possível encontrar o apk adequado</string>
     <string name="downloading_update">Fazendo o download da nova versão</string>

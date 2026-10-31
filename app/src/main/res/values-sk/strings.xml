@@ -233,7 +233,6 @@
     <string name="search_suggestions">Návrhy vyhľadávania</string>
     <string name="crop_thumb_summary">Oreže miniatúru do štvorca pre stiahnuté zvukové súbory</string>
     <string name="limit_rate">Limitovaná rýchlosť</string>
-    <string name="Open_File">Otvoriť súbor</string>
     <string name="backup_restore">Záloha a obnova</string>
     <string name="request_permission_desc">Táto aplikácia potrebuje oprávnenia na ukladanie sťahovaných súborov v zariadení</string>
     <string name="you_are_going_to_delete_multiple_items">Vymazanie viacerých položiek</string>

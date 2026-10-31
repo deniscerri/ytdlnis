@@ -242,7 +242,7 @@
                 android:id="@+id/bottomsheet_open_file_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/Open_File"
+                android:text="@string/open_file"
                 android:outlineProvider="none"
                 android:stateListAnimator="@null"
                 android:layout_marginEnd="10dp"

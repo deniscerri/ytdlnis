@@ -54,7 +54,6 @@
     <string name="add_chapter">Adicionar capítulos</string>
     <string name="show_download_card">Mostrar cartão de download</string>
     <string name="download_card_summary">Modificar as configurações desse item antes de fazer o download. Desativar esta opção inicia o download imediatamente</string>
-    <string name="Open_File">Abrir arquivo</string>
     <string name="you_are_going_to_delete_multiple_items">Excluir vários itens</string>
     <string name="delete_file_too">Excluir arquivo do dispositivo</string>
     <string name="request_permission_desc">Este aplicativo precisa de permissão de armazenamento para salvar downloads no dispositivo</string>

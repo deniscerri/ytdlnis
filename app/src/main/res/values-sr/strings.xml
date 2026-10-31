@@ -127,7 +127,7 @@
     <string name="end">Крај</string>
     <string name="create_template">Направи шаблон</string>
     <string name="freespace">Слободна меморија</string>
-    <string name="Open_File">Отвори фајл</string>
+    <string name="open_file">Отвори фајл</string>
     <string name="start">Почетак</string>
     <string name="backup_restore">Резервна копија и враћање података</string>
     <string name="you_are_going_to_delete">Брисање</string>

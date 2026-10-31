@@ -31,7 +31,6 @@
     <string name="search_hint">חיפוש או מילוי קישור</string>
     <string name="downloads">הורדות</string>
     <string name="source_code">קוד מקור</string>
-    <string name="Open_File">פתיחת קובץ</string>
     <string name="you_are_going_to_delete">מוחק</string>
     <string name="request_permission_desc">יישום זה דורש הרשאת גישה לקבצים כדי לשמור הורדות במכשיר</string>
     <string name="version">גירסה</string>

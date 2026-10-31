@@ -66,7 +66,7 @@
     <string name="embed_subtitles">Bygg inn undertekster</string>
     <string name="add_chapter">Bygg inn kapittel</string>
     <string name="show_download_card">Vis henteval</string>
-    <string name="Open_File">Opn fila</string>
+    <string name="open_file">Opn fila</string>
     <string name="request_permission_desc">Denne appen tarv filtilgjenge for å gøyma henta filer på eininga</string>
     <string name="sponsorblock_nonmusic">Ikkje-musikkar og ugjeldande delar</string>
     <string name="sponsorblock_intro">Innleiing</string>

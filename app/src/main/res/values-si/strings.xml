@@ -86,7 +86,7 @@
     <string name="add_chapter">පරිච්ඡේද එකතු කරන්න</string>
     <string name="show_download_card">බාගත කිරීමේ කාඩ්පත පෙන්වන්න</string>
     <string name="download_card_summary">බාගත කිරීමට පෙර එම අයිතමය සඳහා සැකසුම් වෙනස් කරන්න. මෙම විකල්පය අක්‍රිය කිරීමෙන් බාගත කිරීම වහාම ආරම්භ වේ</string>
-    <string name="Open_File">ගොනුව විවෘත කරන්න</string>
+    <string name="open_file">ගොනුව විවෘත කරන්න</string>
     <string name="you_are_going_to_delete_multiple_items">අයිතම කිහිපයක් මැකීම</string>
     <string name="delete_file_too">උපාංගයෙන් ගොනුව මකන්න</string>
     <string name="delete_files_too">උපාංගයෙන් ගොනු මකන්න</string>

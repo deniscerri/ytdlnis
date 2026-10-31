@@ -25,7 +25,7 @@
     <string name="embed_subtitles">उपशीर्षकाणि आवृत्तयन्तु</string>
     <string name="add_chapter">अध्यायान् प्रमाणय</string>
     <string name="show_download_card">डाउनलोड कार्डं दर्शय</string>
-    <string name="Open_File">फाइलं उद्घाटय</string>
+    <string name="open_file">फाइलं उद्घाटय</string>
     <string name="request_permission_desc">अस्याः अनुप्रयोगस्य फाइल् अनुमतयः आवश्यकाः यः डाउनलोड् यन्त्रे सहेयुः</string>
     <string name="exit_app">ऐपं निष्कासय</string>
     <string name="sponsorblock_nonmusic">गानन न च विषयमुक्तानि</string>

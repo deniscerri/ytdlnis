@@ -138,7 +138,7 @@
     <string name="add_chapter">إضافة فصول</string>
     <string name="show_download_card">إظهار بطاقة التنزيل</string>
     <string name="download_card_summary">امكانية تعديل إعدادات العنصر قبل التنزيل، يؤدي تعطيل هذا الخيار الى بدء التنزيل على الفور</string>
-    <string name="Open_File">فتح الملف</string>
+    <string name="open_file">فتح الملف</string>
     <string name="delete_files_too">الحذف من وحدة التخزين أيضًا</string>
     <string name="delete_file_too">الحذف من وحدة التخزين أيضًا</string>
     <string name="you_are_going_to_delete_multiple_items">سيتم إزالة العناصر المحددة/المدرجة</string>

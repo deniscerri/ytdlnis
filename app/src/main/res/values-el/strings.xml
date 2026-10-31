@@ -109,7 +109,6 @@
     <string name="confirm_delete_logs_desc">Διαγραφή ολόκληρης της λίστας αρχείων καταγραφής, μόνιμα.</string>
     <string name="all_items_selected">Όλα τα στοιχεία επιλέχθηκαν</string>
     <string name="add_chapter">Προσθήκη κεφαλαίων</string>
-    <string name="Open_File">Άνοιγμα αρχείου</string>
     <string name="delete_files_too">Διαγραφή των αρχείων από την συσκευή</string>
     <string name="concurrent_downloads">Ταυτόχρονες λήψεις</string>
     <string name="log_downloads">Καταγραφή λήψεων</string>

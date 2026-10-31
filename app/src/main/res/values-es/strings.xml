@@ -82,7 +82,6 @@
     <string name="configure_download">Configurar descarga</string>
     <string name="incognito_summary">Descargar sin agregar al historial</string>
     <string name="author">Autor</string>
-    <string name="Open_File">Abrir archivo</string>
     <string name="warning">Advertencia</string>
     <string name="show_download_card">Mostrar tarjeta de descarga</string>
     <string name="download_card_summary">Modificar la configuración de este elemento antes de descargarlo. Deshabilitar esta opción iniciara la descarga inmediatamente</string>

@@ -151,7 +151,7 @@
     <string name="configure_download">Pielāgot Lejupielādi</string>
     <string name="video_quality">Video Kvalitāte</string>
     <string name="add_chapter">Pievienot Sadaļas</string>
-    <string name="Open_File">Atvērt Failu</string>
+    <string name="open_file">Atvērt Failu</string>
     <string name="show_download_card">Rādīt Lejupielādes Opcijas</string>
     <string name="download_card_summary">Iestatījumi, kā lejupielādēt vienumus</string>
     <string name="edit_selected">Rediģēt atlasīto</string>

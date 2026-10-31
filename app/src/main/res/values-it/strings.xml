@@ -18,7 +18,6 @@
     <string name="embed_subtitles">Incorpora sottotitoli</string>
     <string name="show_download_card">Mostra scheda download</string>
     <string name="download_card_summary">Modifica le impostazioni per quell\'elemento prima del download. Disabilitando questa opzione il download verrà avviato immediatamente</string>
-    <string name="Open_File">Apri file</string>
     <string name="delete_files_too">Elimina i file dal dispositivo</string>
     <string name="sponsorblock_intro">Introduzione</string>
     <string name="select_sponsorblock_filtering">Seleziona filtraggio SponsorBlock</string>
