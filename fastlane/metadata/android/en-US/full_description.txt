@@ -1,49 +1,47 @@
-<b>YTDLnis</b> lets you download audio/video files from more than 1000 websites, and offers a lot of features. For example:
+<b>YTDLnis</b> is a free and open source audio/video downloader powered by yt-dlp. Download from more than 1000 websites, with a lot of features:
 
-<b>process playlists</b>
+<b>Downloading</b>
 
-- edit every playlist item separately just like in a normal download item.
-- select a common format for all items and/or select multiple audio formats in case you are downloading them as a video
-- select a download path for all items
-- select a filename template for all items
-- batch update download type to audio/video/custom command in one click
-- queue downloads and schedule them by date and time
-- you can also schedule multiple items at the same time
-- download multiple items at the same time
-- use custom commands and templates or go full yt-dlp mode with a built in terminal
-- you can backup and restore templates, so you can share with your buddies
+- download audio, video or run custom yt-dlp commands
+- share a link to the app and download straight from the bottom card, no need to open the app
+- quick download mode to start instantly without waiting for data to load
+- playlists and bulk downloads: edit every item separately or bulk edit type, format, path and filename template for all of them
+- feed a txt file of links, playlists or search queries and the app processes them all
+- queue, schedule by date and time, and run multiple downloads at the same time
+- pause / resume, re-download failed or cancelled items with swipe gestures
+- observe sources: watch playlists and channels and automatically download new uploads
+- duplicate checking, failed data fetches are saved so you can retry them later
+- upload to cloud providers (e.g. Nextcloud) when your download path is an external storage provider
+- Android 16 live notifications for every running download
 
-<b>COOKIES support</b>
+<b>Editing your files</b>
 
-- Log in with your accounts and download private/unavailable videos, unlock premium formats etc.
+- cut videos by timestamps or chapters with unlimited cuts, and optionally merge the cuts into one file
+- crop videos right from the download card
+- split items into separate files by chapters
+- remove or mark SponsorBlock segments as chapters
+- embed subtitles, metadata, chapters and thumbnails, or edit the title and author
+- burn subtitles into the video
+- search synced or plain lyrics from lrclib.net, adjust their timing, then embed them or save them as .lrc
+- compatible mode to re-encode into widely supported formats
+- filename templates with live preview, or simple subfolders by playlist, website or download type
 
-<b>Different ways of modifying the file</b>
+<b>For power users</b>
 
-- cut videos based on timestamps and video chapters (This yt-dlp feature is experimental on the original project)
-- you can make unlimited cuts
-- remove sponsorblock elements from the item
-- embed them as a chapters in your video
-- embed subtitles/metadata/chapters etc
-- modify metadata such as title and author
-- split item into separate files depending on its chapters
-- select different download formats
+- full terminal with bash, where yt-dlp, Python, pip, FFmpeg and the other bundled tools are ready to use
+- command templates that you can back up and share
+- cookies support: log in through the built-in browser and download private or premium content
+- generate YouTube PO tokens with the built-in BGUtils provider or inside the app's webview
+- choose NewPipe or yt-dlp as the data fetching extractor
+- Python with curl-cffi bundled, plus JS runtimes (QuickJS, Deno, NodeJS) for website challenges
+- upgrade or downgrade packages like Python, FFmpeg, NodeJS, Deno and Aria2c without updating the app
+- custom yt-dlp sources and automatic yt-dlp updates
+- intents for automation with apps like Tasker
 
-<b>Other features</b>
+<b>App</b>
 
-- bottom card right from the share menu, no need to open the app
-- you can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
-- search or insert a link from the app
-- you can stack searches so you can process them at the same time
-- log downloads in case of problems
-- re-download cancelled or failed downloads
-- you can use gestures to swipe left to redownload and right to delete
-- you can long click the redownload button in the details sheet to show the download card for more functionality
-- incognito mode when you don't want to save a download history or logs
-- quick download mode
-- download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
-- open / share downloaded files right from the finished notification
-- most yt-dlp features are implemented, suggestions are welcome
-- Material You interface
-- Theming options
-- Backup and restore features. (Almost everything can be backed up)
-- MVVM Architecture w/ WorkManager
+- Material You design with theming options and a customizable bottom navigation
+- incognito mode so no history or logs are saved
+- download logs, search history and a detailed download history
+- backup and restore almost everything
+- files manager to clear caches and leftovers

@@ -1,30 +1,30 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	<img src="../fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
 </h1>
 
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-tr.md">Türkçe</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-id.md">Indonesia</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-pt.md">Português</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-es.md">Español</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ja.md">Japanese</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	简体中文
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ro.md">Română</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ar.md">العربية</a>
 </div>
 
 <h3 align="center">
@@ -110,19 +110,19 @@ YTDLnis 通过插件编排各类组件，用户可以自由升级或降级以下
 ## 📲 预览截图
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
 ## 💬 联系我们
@@ -131,7 +131,7 @@ YTDLnis 通过插件编排各类组件，用户可以自由升级或降级以下
 
 ## 😇 参与贡献
 
-如果您想参与贡献，请阅读 [贡献](CONTRIBUTING.MD)。
+如果您想参与贡献，请阅读 [贡献](../CONTRIBUTING.MD)。
 
 ## 📝 在 Weblate 上帮助翻译
 <a href="https://hosted.weblate.org/engage/ytdlnis/">

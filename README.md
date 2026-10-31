@@ -6,27 +6,27 @@
 <div align="center">
 	English
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-tr.md">Türkçe</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-tr.md">Türkçe</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-id.md">Indonesia</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-pt.md">Português</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-es.md">Español</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ja.md">Japanese</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-zh_CN.md">简体中文</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-zh_CN.md">简体中文</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ro.md">Română</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ro.md">Română</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ar.md">العربية</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ar.md">العربية</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ru.md">Русский</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ru.md">Русский</a>
 </div>
 
 <h3 align="center">
@@ -57,46 +57,48 @@
 
 </div>
 
-## 💡 Features:
+## 💡 Features
 
-- Download audio/video files from more than <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 websites</a>
-- Process playlists
-	- Edit every playlist item separately just like in a normal download item
-	- Select a common format for all items and/or select multiple audio formats in case you are downloading them as a video
-	- Select a download path for all items
-	- Select a filename template for all items
-	- Batch update download type to audio/video/custom command in one click
-- Queue downloads and schedule them by date and time
-	- You can also schedule multiple items at the same time
-- Download multiple items at the same time
-- Use custom commands and templates or use yt-dlp with the built-in terminal
-	- You can backup and restore templates so you can share them with your buddies
-- Supports cookies. Log in with your accounts and download private/unavailable videos, unlock premium formats etc.
-- Cut videos based on timestamps and video chapters (experimental yt-dlp feature)
-	- You can make unlimited cuts
-- Remove SponsorBlock elements from downloaded items
-	- Embed them as a chapters in your video 
-- Embed subtitles/metadata/chapters etc
-- Modify metadata such as title and author
-- Split item into separate files depending on its chapters
-- Select different download formats
-- Bottom card right from the share menu, no need to open the app 
-	- You can create a txt file and fill it with links/playlists/search queries separate by a new line and the app will process them
-- Search or insert a link from the app
-	- You can stack searches so you can process them at the same time
-- Log downloads in case of problems
-- Re-download cancelled or failed downloads
-	- You can use gestures to swipe left to redownload and right to delete
-	- You can long click the redownload button in the details sheet to show the download card for more functionality
-- Incognito mode when you don't want to save a download history or logs
-- Quick download mode
-	- Download immediately without having to wait for data to process. Turn off the bottom card and it will instantly start
-- Open / share downloaded files right from the finished notification
-- Most yt-dlp features are implemented, suggestions are welcome
-- Material You interface
-- Theming options
-- Backup and restore features
-- MVVM architecture with WorkManager
+### ⬇️ Downloading
+- Download audio, video or run custom yt-dlp commands on [1000+ websites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
+- Share a link to the app and download straight from the bottom card, no need to open the app
+- Quick download mode to start instantly without waiting for data to load
+- Playlists and bulk downloads: edit every item separately or bulk edit type, format, path and filename template for all of them, sort by author, duration, title or date
+- Feed a `.txt` file of links, playlists or search queries and the app processes them all
+- Queue, schedule by date and time, and run multiple downloads at the same time
+- Pause / resume, re-download failed or cancelled items with swipe gestures
+- Observe sources: watch playlists and channels and automatically download new uploads, with optional sync
+- Duplicate checking, failed data fetches are saved so you can retry them later
+- Uploads to cloud providers (e.g. Nextcloud) when your download path is an external storage provider
+- Android 16 live notifications for every running download
+
+### ✂️ Editing your files
+- Cut videos by timestamps or chapters with unlimited cuts, and optionally merge the cuts into one file
+- Crop videos right from the download card
+- Split items into separate files by chapters
+- Remove or mark SponsorBlock segments as chapters
+- Embed subtitles, metadata, chapters and thumbnails, or edit the title and author
+- Burn subtitles into the video
+- Search synced or plain lyrics from [lrclib.net](https://lrclib.net), preview and adjust their timing, then embed them or save them as `.lrc`
+- Compatible mode to re-encode into widely supported formats
+- Filename templates with live preview, or simple subfolders by playlist, website or download type
+
+### 🧑‍💻 For power users
+- Full terminal with bash, where yt-dlp, Python, pip, FFmpeg and the other bundled tools are ready to use
+- Command templates with syntax highlighting that you can back up and share
+- Cookies support: log in through the built-in browser and download private or premium content
+- Generate YouTube PO tokens with the built-in BGUtils provider or inside the app's webview
+- Choose NewPipe or yt-dlp as the data fetching extractor
+- Python with curl-cffi bundled, plus JS runtimes (QuickJS, Deno, NodeJS) for website challenges
+- Custom yt-dlp sources and automatic yt-dlp updates
+- Intents for automation with apps like Tasker
+
+### 🎨 App
+- Material You design with theming options and a customizable bottom navigation
+- Incognito mode so no history or logs are saved
+- Download logs, search history and a detailed download history with different card layouts
+- Backup and restore almost everything, right from the welcome screen too
+- Files manager to clear caches and leftovers
 
 ## 🧩 Plugin Support
 
