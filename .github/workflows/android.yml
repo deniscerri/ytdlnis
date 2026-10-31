@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - "**"
+  workflow_call:
 
 jobs:
   build:
@@ -94,7 +95,7 @@ jobs:
   notify:
     needs: build
     runs-on: ubuntu-latest
-    if: always()
+    if: always() && github.event_name == 'push'
     steps:
       - name: Send Telegram Message
         continue-on-error: true

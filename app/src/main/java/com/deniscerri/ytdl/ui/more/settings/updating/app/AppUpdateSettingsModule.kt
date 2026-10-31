@@ -48,11 +48,15 @@ object AppUpdateSettingsModule : SettingModule {
                     isVisible = canUpdateApp
                     setChannels(listOf(
                         "stable" to context.getString(R.string.channel_stable),
-                        "beta" to context.getString(R.string.channel_beta)
+                        "beta" to context.getString(R.string.channel_beta),
+                        "nightly" to context.getString(R.string.channel_nightly)
                     ))
-                    selectedChannel = if (preferences.getBoolean("update_beta", false)) "beta" else "stable"
+                    selectedChannel = selectedChannel(preferences)
                     onChannelSelected = { value ->
-                        preferences.edit { putBoolean("update_beta", value == "beta") }
+                        preferences.edit {
+                            putBoolean("update_beta", value == "beta")
+                            putBoolean("update_nightly", value == "nightly")
+                        }
                         (host.findPref("app_status_card") as? UpdateStatusCardPreference)?.let { refreshDetails(context, it, preferences) }
                         checkForUpdates(context, host, preferences)
                     }
@@ -78,8 +82,11 @@ object AppUpdateSettingsModule : SettingModule {
         }
     }
 
-    private fun channelDescription(context: Context, preferences: SharedPreferences) =
-        context.getString(if (preferences.getBoolean("update_beta", false)) R.string.channel_stable else R.string.channel_beta)
+    private fun selectedChannel(preferences: SharedPreferences) = when {
+        preferences.getBoolean("update_nightly", false) -> "nightly"
+        preferences.getBoolean("update_beta", false) -> "beta"
+        else -> "stable"
+    }
 
     private fun refreshDetails(context: Context, card: UpdateStatusCardPreference, preferences: SharedPreferences) {
         val architecture = File(context.applicationInfo.nativeLibraryDir).name
@@ -89,7 +96,11 @@ object AppUpdateSettingsModule : SettingModule {
             card.detail = null
             return
         }
-        val channel = context.getString(if (preferences.getBoolean("update_beta", false)) R.string.channel_beta else R.string.channel_stable)
+        val channel = context.getString(when (selectedChannel(preferences)) {
+            "nightly" -> R.string.channel_nightly
+            "beta" -> R.string.channel_beta
+            else -> R.string.channel_stable
+        })
         card.subtitle = "$architecture · $channel"
         card.detail = UpdateStatusCardPreference.buildDetail(context, preferences.getLong(UpdateUtil.APP_LAST_CHECK_KEY, 0L))
     }

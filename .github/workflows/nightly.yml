@@ -1,0 +1,90 @@
+name: Nightly release
+
+# Rebuilds the single "nightly" pre-release from main once a day, only if main moved since the last one
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: nightly
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.check.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: check
+        run: |
+          prev=$(git tag -l 'nightly-*' --sort=-refname | head -n1)
+          if [ -n "$prev" ] && [ "$(git rev-list -n1 "$prev")" = "$(git rev-parse HEAD)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/android.yml
+    secrets: inherit
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "YTDLnis APK release * generated"
+          path: apks
+          merge-multiple: true
+
+      - name: Write notes
+        run: |
+          prev=$(git tag -l 'nightly-*' --sort=-refname | head -n1)
+          range=${prev:+$prev..HEAD}
+          {
+            echo "Automated nightly build of \`main\` at ${GITHUB_SHA::7}. May be unstable."
+            echo
+            echo "## Commits"
+            git log --no-merges --pretty='* %s (%h)' ${range:--20 HEAD}
+            if [ -n "$prev" ]; then
+              echo
+              echo "**Full Changelog**: https://github.com/${GITHUB_REPOSITORY}/compare/${prev::7}...${GITHUB_SHA::7}"
+            fi
+          } > notes.md
+          cat notes.md
+
+      - name: Replace nightly release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="nightly-$(date -u +%Y%m%d)"
+          # keep a single nightly: drop every older one (and a same-day one on manual reruns)
+          for old in $(gh release list --limit 100 --json tagName -q '.[].tagName | select(startswith("nightly-"))'); do
+            gh release delete "$old" --cleanup-tag --yes
+          done
+          gh release create "$tag" apks/*.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Nightly $(date -u +%F)" \
+            --notes-file notes.md

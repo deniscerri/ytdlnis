@@ -35,6 +35,12 @@
             app:defaultValue="false"
             android:key="update_beta" />
 
+        <SwitchPreferenceCompat
+            app:isPreferenceVisible="false"
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:key="update_nightly" />
+
         <Preference
             app:icon="@drawable/ic_chapters"
             app:key="changelog"
