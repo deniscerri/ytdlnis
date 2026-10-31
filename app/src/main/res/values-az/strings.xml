@@ -81,7 +81,6 @@
     <string name="add_chapter">Bölmələr əlavə et</string>
     <string name="show_download_card">Yükləmə kartın göstər</string>
     <string name="download_card_summary">Yükləməzdən əvvəl həmin element üçün tənzimləmələri dəyişdirin. Bu seçimi bağlayanda dərhal yükləməyə başlayır</string>
-    <string name="open_file">Faylı Açın</string>
     <string name="you_are_going_to_delete_multiple_items">Çoxlu element silinir</string>
     <string name="delete_file_too">Faylı cihazdan sil</string>
     <string name="delete_files_too">Faylları cihazdan sil</string>
