@@ -705,4 +705,10 @@
     <string name="update_not_checked_yet">Non ancora controllato</string>
     <string name="welcome_permissions_summary">YTDLnis funziona meglio con queste autorizzazioni. Puoi modificarli successivamente nelle impostazioni.</string>
     <string name="welcome_perm_folders_header">Cartelle ripristinate</string>
+    <string name="optional">Facoltativo</string>
+    <string name="welcome_perm_folders_summary">I tuoi backup utilizzano queste cartelle, ma l\'app non ne ha più accesso. Consenti nuovamente l\'accesso, o scegli una cartella diversa da utilizzare.</string>
+    <string name="welcome_updates_summary">Scegli come aggiornare YTDLnis.</string>
+    <string name="lyrics_offset">Offset</string>
+    <string name="save_lrc_file_summary">Salva i testi sincronizzati come file .lrc nella stessa cartella dei brani scaricati</string>
+    <string name="crop_unsupported">Il ritaglio non è disponibile per questo elemento</string>
 </resources>
