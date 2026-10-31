@@ -46,7 +46,7 @@
     <string name="remove_duplicates">Poista kopiot</string>
     <string name="configure_download">Muuta latausta</string>
     <string name="title">Otsikko</string>
-    <string name="Open_File">Avaa tiedosto</string>
+    <string name="open_file">Avaa tiedosto</string>
     <string name="delete_file_too">Poista tiedosto laitteelta</string>
     <string name="sponsorblock_nonmusic">Muut kuin musiikki ja off-topic-osiot</string>
     <string name="edit_selected">Muokkaa valittuja</string>

@@ -92,7 +92,7 @@
     <string name="show_download_card">ডাউনলোড কার্ড দেখান</string>
     <string name="configure_download">ডাউনলোড অ্যাডজাস্ট করুন</string>
     <string name="author">আপলোডার</string>
-    <string name="Open_File">ফাইল খুলুন</string>
+    <string name="open_file">ফাইল খুলুন</string>
     <string name="add_chapter">অধ্যায় যোগ করুন</string>
     <string name="download_card_summary">ডাউনলোড করার আগে সেই আইটেমটির জন্য সেটিংস পরিবর্তন করুন। এই বিকল্পটি নিষ্ক্রিয় করা অবিলম্বে ডাউনলোড শুরু করে</string>
     <string name="sponsorblock_fillers">ফিল্টার</string>

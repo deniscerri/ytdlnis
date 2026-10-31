@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	<img src="../fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
 </h1>
 
@@ -39,7 +39,7 @@ YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care
 
 ## 💡 Caracteristice:
 
-- Descarcă fișiere audio/video de mai mult de <a href="[https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)">1000 de site-uri</a>
+- Descarcă fișiere audio/video de mai mult de <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md">1000 de site-uri</a>
 - Descarcă Playlist-uri
   - Editează fiecare element din listă separat, ca un element normal de descărcare
   - Selectează un format comun pentru toate elementele și/sau selectează mai multe formate de audio în caz că le descarci ca un video
@@ -81,19 +81,19 @@ YTDLnis este un descarcător de audio/video gratuit și de sursă deschisă care
 ## 📲 Capturi de Ecran
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
 ## 💬 Contact
@@ -107,11 +107,11 @@ Vă rugăm să citiți secțiunea de [contribuții](https://github.com/deniscerr
 ## 📝 Ajută cu traducerile pe Weblate
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
-<img src="[https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png](https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png)" alt="Translation status" />
+<img src="https://hosted.weblate.org/widgets/ytdlnis/-/strings/open-graph.png" alt="Translation status" />
 </a>
 
 <a href="https://hosted.weblate.org/engage/ytdlnis/">
-<img src="[https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg](https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg)" alt="Translation status" />
+<img src="https://hosted.weblate.org/widgets/ytdlnis/-/multi-auto.svg" alt="Translation status" />
 </a>
 
 ## 🔑 Conectați-vă cu aplicații terțe folosind numele pachetului

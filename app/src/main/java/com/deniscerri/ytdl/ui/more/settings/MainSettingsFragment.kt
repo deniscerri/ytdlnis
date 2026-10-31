@@ -211,7 +211,7 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
                                 getString(R.string.backup_created_successfully),
                                 Snackbar.LENGTH_LONG
                             )
-                            s.setAction(R.string.Open_File) {
+                            s.setAction(R.string.open_file) {
                                 FileUtil.openFileIntent(requireActivity(), pathResult.getOrNull()!!)
                             }
                             s.show()

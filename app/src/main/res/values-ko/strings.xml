@@ -73,7 +73,6 @@
     <string name="download">다운로드</string>
     <string name="show_download_card">다운로드 설정창 표시</string>
     <string name="download_card_summary">다운로드하기 전 설정을 변경합니다. 끄면 즉시 다운로드합니다</string>
-    <string name="Open_File">파일 열기</string>
     <string name="exit_app">앱 종료</string>
     <string name="sponsorblock_nonmusic">비음악 및 주제에서 벗어난 부분</string>
     <string name="select_sponsorblock_filtering">SponsorBlock 필터링 선택</string>

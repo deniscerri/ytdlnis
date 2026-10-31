@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	<img src="../fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
 </h1>
 
@@ -78,19 +78,19 @@
 ## 📲 Tangkapan Layar
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
 ## 💬 Kontak
@@ -113,7 +113,7 @@ Nama paket Aplikasinya adalah "com.deniscerri.ytdl"
 
 ## 😇 Berkontribusi
 
-Jika kamu ingin berkontribusi. Silakan baca bagian [Berkontribusi](CONTRIBUTING.MD).
+Jika kamu ingin berkontribusi. Silakan baca bagian [Berkontribusi](../CONTRIBUTING.MD).
 
 ## 📄 Lisensi
 

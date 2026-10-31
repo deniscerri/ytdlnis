@@ -73,7 +73,7 @@
     <string name="download">Adao</string>
     <string name="video_quality">Vidiô rih</string>
     <string name="show_download_card">Adao hawpa phia palâ</string>
-    <string name="Open_File">Faih pahy</string>
+    <string name="open_file">Faih pahy</string>
     <string name="you_are_going_to_delete_multiple_items">Chhai hluhpa parao hai</string>
     <string name="delete_file_too">Chhaichhi tawh faihzy parao hai</string>
     <string name="concurrent_fragments_summary">Thlai adao awpa ta DASH/HLS vidiô kakuapa tlawpaih maluh</string>

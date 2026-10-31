@@ -82,7 +82,6 @@
     <string name="cancel_task">Batalkan tugas</string>
     <string name="api_key">Gunakan Kunci API</string>
     <string name="ytdl_version">Versi yt-dlp</string>
-    <string name="Open_File">Buka berkas</string>
     <string name="you_are_going_to_delete_multiple_items">Menghapus beberapa butir</string>
     <string name="delete_file_too">Hapus berkas dari perangkat</string>
     <string name="delete_files_too">Hapus berkas-berkas dari perangkat</string>

@@ -1,22 +1,22 @@
 <h1 align="center">
-	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	<img src="../fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
 </h1>
 
 <div align="center">
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-sq.md">Shqip</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-az.md">Azərbaycanca</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-az.md">Azərbaycanca</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-id.md">Indonesia</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-id.md">Indonesia</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-pt.md">Português</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-pt.md">Português</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-es.md">Español</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-es.md">Español</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README-ja.md">Japanese</a>
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ja.md">Japanese</a>
 </div>
 
 <h3 align="center">
@@ -91,19 +91,19 @@
 ## 📲 スクリーンショット
 
 <div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 </div>
 
 ## 💬 連絡先
@@ -144,7 +144,7 @@ TaskerやMacrodroidなどのアプリでインテントを使用して、ユー�
 
 ## 😇 貢献
 
-貢献したい場合は、[貢献](CONTRIBUTING.MD)セクションをお読みください。
+貢献したい場合は、[貢献](../CONTRIBUTING.MD)セクションをお読みください。
 
 ## 📄 ライセンス
 

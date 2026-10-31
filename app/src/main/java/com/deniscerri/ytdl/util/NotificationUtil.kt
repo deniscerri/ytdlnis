@@ -318,7 +318,7 @@ class NotificationUtil(var context: Context) {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
-                notificationBuilder.addAction(0, res.getString(R.string.Open_File), openNotificationPendingIntent)
+                notificationBuilder.addAction(0, res.getString(R.string.open_file), openNotificationPendingIntent)
                 notificationBuilder.addAction(0, res.getString(R.string.share), shareNotificationPendingIntent)
             }catch (_: Exception){}
         }

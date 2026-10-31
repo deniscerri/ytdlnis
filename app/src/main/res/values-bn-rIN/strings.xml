@@ -76,7 +76,7 @@
     <string name="end">শেষ</string>
     <string name="create_template">টেমপ্লেট তৈরি করুন</string>
     <string name="freespace">মুক্ত স্থান</string>
-    <string name="Open_File">ফাইল খুলুন</string>
+    <string name="open_file">ফাইল খুলুন</string>
     <string name="start">শুরু</string>
     <string name="you_are_going_to_delete">মুছে ফেলা হচ্ছে</string>
     <string name="request_permission_desc">ডিভাইসে ডাউনলোড সংরক্ষণ করতে এই অ্যাপটির ফাইল পারমিশন প্রয়োজন</string>

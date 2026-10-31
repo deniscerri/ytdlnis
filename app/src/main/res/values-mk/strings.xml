@@ -48,7 +48,7 @@
     <string name="video_quality">Видео квалитет</string>
     <string name="embed_subtitles">Вметнете преводи</string>
     <string name="add_chapter">Додадете поглавја</string>
-    <string name="Open_File">Отвори фајл</string>
+    <string name="open_file">Отвори фајл</string>
     <string name="you_are_going_to_delete_multiple_items">Бришење на повеќе ставки</string>
     <string name="delete_file_too">Избришете ја датотеката од уредот</string>
     <string name="delete_files_too">Избришете ги датотеките од уредот</string>

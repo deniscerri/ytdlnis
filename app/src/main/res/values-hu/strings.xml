@@ -110,7 +110,6 @@
     <string name="embed_subtitles">Feliratok beágyazása</string>
     <string name="show_download_card">Letöltési kártya megjelenítése</string>
     <string name="download_card_summary">A letöltés előtt módosítsd az adott elem beállításait. Ha kikapcsolod ezt az opciót, a letöltés azonnal elindul</string>
-    <string name="Open_File">Fájl megnyitása</string>
     <string name="you_are_going_to_delete_multiple_items">Ismétlődő elemek törlése</string>
     <string name="language">Nyelv</string>
     <string name="command_templates">Parancs sablonok</string>

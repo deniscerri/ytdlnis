@@ -81,7 +81,7 @@
     <string name="add_chapter">Lisa peatükid</string>
     <string name="show_download_card">Näita allalaadimise kaarti</string>
     <string name="download_card_summary">Muutke selle üksuse seadeid enne allalaadimist. Selle valiku keelamine alustab allalaadimist koheselt</string>
-    <string name="Open_File">Ava fail</string>
+    <string name="open_file">Ava fail</string>
     <string name="you_are_going_to_delete_multiple_items">Mitme üksuse kustutamine</string>
     <string name="delete_file_too">Kustuta fail seadmest</string>
     <string name="delete_files_too">Kustuta failid seadmest</string>

@@ -161,7 +161,7 @@
     <string name="add_chapter">Adăugați capitole</string>
     <string name="show_download_card">Afișă opțiuni pentru descărcare</string>
     <string name="download_card_summary">Modificați setările pentru acel element înainte de descărcare. Dezactivarea acestei opțiuni începe descărcarea imediat</string>
-    <string name="Open_File">Deschidere fișier</string>
+    <string name="open_file">Deschidere fișier</string>
     <string name="delete_file_too">Ștergeți fișierul de pe dispozitiv</string>
     <string name="edit_selected">Editați selectat</string>
     <string name="update_formats">Actualizare formate</string>

@@ -85,7 +85,7 @@
     <string name="add_chapter">إضافة فصول</string>
     <string name="show_download_card">عرض بطاقة التحميل</string>
     <string name="download_card_summary">عدل اعدادات تاع هذا العنصر قبل التنزيل. إذا حبست هذا الخيار التنزيل راه يبدأ ديراكت</string>
-    <string name="Open_File">فتح الملف</string>
+    <string name="open_file">فتح الملف</string>
     <string name="you_are_going_to_delete_multiple_items">حذف بزاف عناصر</string>
     <string name="delete_file_too">حذف الملف من الجهاز</string>
     <string name="delete_files_too">حذف الملفات من الجهاز</string>

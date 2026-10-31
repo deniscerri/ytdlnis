@@ -102,7 +102,7 @@
     <string name="purple">بنفش</string>
     <string name="blue">آبی</string>
     <string name="preferred_search_engine">موتور جستجوی ترجیحی</string>
-    <string name="Open_File">باز کردن فایل</string>
+    <string name="open_file">باز کردن فایل</string>
     <string name="delete_files_too">حذف کردن فایل ها از دستگاه</string>
     <string name="you_are_going_to_delete_multiple_items">حذف چندین مورد</string>
     <string name="exit_app">خروج از برنامه</string>

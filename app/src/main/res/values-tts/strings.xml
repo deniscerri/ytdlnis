@@ -90,7 +90,7 @@
     <string name="add_chapter">เพิ่มบท</string>
     <string name="show_download_card">เบิ่งการ์ดดาวน์โหลด</string>
     <string name="download_card_summary">แก้ไขการตั้งค่าก่อนดาวน์โหลด ปิดตัวเลือกนี้ทิ่มเพื่อเฮ็ดการดาวน์โหลดทันที</string>
-    <string name="Open_File">เปิดไฟล์</string>
+    <string name="open_file">เปิดไฟล์</string>
     <string name="you_are_going_to_delete_multiple_items">ลบทิ่มรายการหลายอัน</string>
     <string name="delete_file_too">ลบไฟล์จากตัวเครื่องทิ่ม</string>
     <string name="delete_files_too">ลบไฟล์จากตัวเครื่องหลายอันทิ่ม</string>

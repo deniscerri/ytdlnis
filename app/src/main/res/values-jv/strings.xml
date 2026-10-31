@@ -49,7 +49,7 @@
     <string name="end">Akhir</string>
     <string name="create_template">Nggawe Cithakan</string>
     <string name="freespace">Ruang kosong penyimpanan</string>
-    <string name="Open_File">Buka berkas</string>
+    <string name="open_file">Buka berkas</string>
     <string name="start">Wiwitan</string>
     <string name="request_permission_desc">Aplikasi iki mbutuhake Idin File kanggo nyimpen download ing piranti</string>
     <string name="version">Versi</string>

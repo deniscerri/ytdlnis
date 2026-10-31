@@ -89,7 +89,6 @@
     <string name="add_chapter">அத்தியாயங்களைச் சேர்த்திடுக</string>
     <string name="show_download_card">பதிவிறக்க அட்டையைக் காட்டுக</string>
     <string name="download_card_summary">பதிவிறக்குவதற்கு முன் அதற்கான அமைப்புகளை மாற்றி அமைத்திடுக. இதை முடக்கினால் பதிவிறக்கம் உடனே தொடங்கும்</string>
-    <string name="Open_File">கோப்பைத் திறந்திடுக</string>
     <string name="you_are_going_to_delete_multiple_items">பல பதிவுகள் நீக்கப்படுகின்றன</string>
     <string name="delete_file_too">சாதனத்தில் இருந்தும் கோப்பை நீக்குக</string>
     <string name="delete_files_too">சாதனத்தில் இருந்தும் கோப்புகளை நீக்குக</string>

@@ -84,7 +84,7 @@
     <string name="add_chapter">अध्याय जोडा</string>
     <string name="show_download_card">डाउनलोड कार्ड दाखवा</string>
     <string name="download_card_summary">डाउनलोड करण्यापूर्वी त्या आयटमसाठी सेटिंग्ज बदला. हा पर्याय अक्षम केल्याने डाउनलोड लगेच सुरू होते</string>
-    <string name="Open_File">फाइल उघडा</string>
+    <string name="open_file">फाइल उघडा</string>
     <string name="you_are_going_to_delete_multiple_items">अनेक आयटम हटवत आहे</string>
     <string name="delete_file_too">डिव्हाइसमधून फाइल हटवा</string>
     <string name="delete_files_too">डिव्हाइसमधून फायली हटवा</string>

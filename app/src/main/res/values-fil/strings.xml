@@ -85,7 +85,7 @@
     <string name="video_quality">Kalidad ng video</string>
     <string name="embed_subtitles">I-embed ang mga subtitle</string>
     <string name="add_chapter">Magdagdag ng mga kabanata</string>
-    <string name="Open_File">Buksan ang file</string>
+    <string name="open_file">Buksan ang file</string>
     <string name="delete_file_too">Tanggalin ang file mula sa device</string>
     <string name="delete_files_too">Tanggalin ang mga file mula sa device</string>
     <string name="request_permission_desc">Ang app na ito ay nangangailangan ng mga pahintulot sa file upang i-save ang mga download sa device</string>

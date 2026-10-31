@@ -84,7 +84,7 @@
     <string name="api_key_summary">おすすめの動画をYouTube APIで取得</string>
     <string name="remove_deleted">削除済みを削除</string>
     <string name="downloads">ダウンロード</string>
-    <string name="Open_File">ファイルを開く</string>
+    <string name="open_file">ファイルを開く</string>
     <string name="select_sponsorblock_filtering">SponsorBlock で省略したいシーンを選択</string>
     <string name="sponsorblock_sponsors">広告</string>
     <string name="sponsorblock_intro">導入シーン</string>
