@@ -17,76 +17,85 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:minHeight="88dp"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingVertical="16dp"
             android:paddingStart="20dp"
             android:paddingEnd="16dp">
 
-            <FrameLayout
-                android:layout_width="36dp"
-                android:layout_height="36dp">
-
-                <ImageView
-                    android:id="@+id/status_icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:importantForAccessibility="no"
-                    android:src="@drawable/ic_info" />
-
-                <com.google.android.material.progressindicator.CircularProgressIndicator
-                    android:id="@+id/status_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:indeterminate="true"
-                    android:visibility="gone"
-                    app:indicatorSize="28dp"
-                    app:trackThickness="3dp" />
-
-            </FrameLayout>
-
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:gravity="center_vertical"
+                android:minHeight="56dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/status_version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                    android:textIsSelectable="true"
-                    android:textStyle="bold" />
+                <FrameLayout
+                    android:layout_width="36dp"
+                    android:layout_height="36dp">
 
-                <TextView
-                    android:id="@+id/status_subtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textAppearance="?attr/textAppearanceBodyMedium"
-                    android:visibility="gone" />
+                    <ImageView
+                        android:id="@+id/status_icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_info" />
 
-                <TextView
-                    android:id="@+id/status_detail"
-                    android:layout_width="wrap_content"
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/status_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:indeterminate="true"
+                        android:visibility="gone"
+                        app:indicatorSize="28dp"
+                        app:trackThickness="3dp" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:alpha="0.8"
-                    android:textAppearance="?attr/textAppearanceBodySmall"
-                    android:visibility="gone" />
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/status_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                        android:textIsSelectable="true"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/status_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/status_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:alpha="0.8"
+                        android:textAppearance="?attr/textAppearanceBodySmall"
+                        android:visibility="gone" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
+            <!-- below the text, so long versions like "1.9.1.1 → nightly-20261031" keep the full width -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/status_button"
                 style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="8dp"
                 android:text="@string/check_now" />
 
         </LinearLayout>
