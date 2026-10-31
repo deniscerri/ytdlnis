@@ -624,7 +624,9 @@
     </plurals>
     <string name="history_quick_action">விரைவுச் செயல் பொத்தான்</string>
     <string name="history_quick_action_summary">வரலாற்று அட்டையில் உள்ள விரைவுச் செயல் பொத்தானைத் தட்டும்போது செய்ய வேண்டிய செயல்</string>
-    <string name="open_file">கோப்பைத் திறந்திடுக</string>
+    <plurals name="open_file">
+        <item quantity="one">கோப்பைத் திறந்திடுக</item>
+    </plurals>
     <string name="duration">கால அளவு</string>
     <string name="update_available">புதிய பதிப்பு உள்ளது</string>
     <string name="update_check_failed">புதுப்பிப்புகளைச் சரிபார்க்க முடியவில்லை</string>
