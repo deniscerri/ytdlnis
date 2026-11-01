@@ -566,7 +566,7 @@
     </plurals>
     <string name="bgutils_info">Ένας πάροχος διακριτικού απόδειξης προέλευσης (POT) για το yt-dlp.\nΜε ενεργοποιημένο το YTDLnis φιλοξενεί τον διακομιστή HTTP που δημιουργεί το POT και εγκαθιστά το σχετικό πρόσθετο που χρησιμοποιεί το yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Σενάριο δημιουργίας</string>
-    <string name="bgutils_pot_generation_server">HTTP Server</string>
+    <string name="bgutils_pot_generation_server">HTTP Σέρβερ</string>
     <string name="bgutils_pot_generation_script_summary">Κάθε κλήση yt-dlp συνεπάγεται την επιβάρυνση της δημιουργίας μιας νέας διεργασίας χρόνου εκτέλεσης js για την εκτέλεση του σεναρίου. Αυτή η μέθοδος δεν συνιστάται για χρήση υψηλής ταυτόχρονης χρήσης.</string>
     <string name="bgutils_pot_server_summary">Αυτός είναι ένας διακομιστής HTTP JavaScript, στη θύρα 4416. Εάν είναι εκτός λειτουργίας, ξεκινά αυτόματα τον διακομιστή όταν ξεκινήσει η εκτέλεση της ουράς λήψης ή όταν έχει προγραμματιστεί η παρακολούθηση πηγών. Για να τον τερματίσετε, πρέπει να το κάνετε χειροκίνητα από τις ειδοποιήσεις!</string>
     <string name="please_install_package">Παρακαλώ εγκαταστήστε το πακέτο %s</string>
