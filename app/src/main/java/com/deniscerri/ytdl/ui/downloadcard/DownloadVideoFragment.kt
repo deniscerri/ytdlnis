@@ -372,10 +372,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
                                     snack.show()
                                 }else if (downloadItem.duration == "0:00" || downloadItem.duration == "-1"){
-                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unsupported), Snackbar.LENGTH_SHORT).setTextMaxLines(10)
                                     snack.show()
                                 }else if (!nonSpecific){
-                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable_please_update_item), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.cut_unavailable_please_update_item), Snackbar.LENGTH_LONG).setTextMaxLines(10)
                                     snack.setAction(R.string.update){
                                         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                                             resultItem?.apply {
@@ -425,10 +425,10 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                                     val snack = Snackbar.make(view, context.getString(R.string.please_wait), Snackbar.LENGTH_SHORT)
                                     snack.show()
                                 }else if (downloadItem.duration == "0:00" || downloadItem.duration == "-1"){
-                                    val snack = Snackbar.make(view, context.getString(R.string.crop_unsupported), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.crop_unsupported), Snackbar.LENGTH_SHORT).setTextMaxLines(10)
                                     snack.show()
                                 }else if (!nonSpecific){
-                                    val snack = Snackbar.make(view, context.getString(R.string.crop_unavailable_please_update_item), Snackbar.LENGTH_SHORT)
+                                    val snack = Snackbar.make(view, context.getString(R.string.crop_unavailable_please_update_item), Snackbar.LENGTH_LONG).setTextMaxLines(10)
                                     snack.setAction(R.string.update){
                                         CoroutineScope(SupervisorJob()).launch(Dispatchers.IO) {
                                             resultItem?.apply {
