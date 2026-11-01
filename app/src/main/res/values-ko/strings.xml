@@ -598,9 +598,7 @@
     <string name="preferred_format_size_audio">선호하는 오디오 형식 크기</string>
     <string name="history_quick_action">빠른 동작 버튼</string>
     <string name="history_quick_action_summary">기록 카드의 빠른 동작 버튼을 눌렀을 때 실행할 동작</string>
-    <plurals name="open_file">
-        <item quantity="other">파일 열기</item>
-    </plurals>
+    <string name="open_file">파일 열기</string>
     <string name="update_available">업데이트 가능</string>
     <string name="update_check_failed">업데이트 확인 불가</string>
     <string name="checking_for_updates">업데이트 확인 중…</string>

@@ -592,9 +592,7 @@
     <string name="bgutils_pot_generation_script">Tạo script</string>
     <string name="history_quick_action">Nút thao tác nhanh</string>
     <string name="history_quick_action_summary">Thao tác cần thực hiện khi nhấp vào nút thao tác nhanh trên thẻ lịch sử</string>
-    <plurals name="open_file">
-        <item quantity="other">Mở tệp</item>
-    </plurals>
+    <string name="open_file">Mở tệp</string>
     <string name="duration">Khoảng thời gian</string>
     <string name="update_available">Đã có bản cập nhật</string>
     <string name="update_check_failed">Không thể kiểm tra cập nhật</string>

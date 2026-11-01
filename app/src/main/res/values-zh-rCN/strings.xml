@@ -598,9 +598,7 @@
     <string name="preferred_format_size_audio">首选音频格式大小</string>
     <string name="history_quick_action">快速操作按钮</string>
     <string name="history_quick_action_summary">单击历史记录卡片上的操作按钮时要执行的操作</string>
-    <plurals name="open_file">
-        <item quantity="other">打开文件</item>
-    </plurals>
+    <string name="open_file">打开文件</string>
     <string name="duration">持续时间</string>
     <string name="update_available">有更新</string>
     <string name="update_check_failed">无法检查更新</string>

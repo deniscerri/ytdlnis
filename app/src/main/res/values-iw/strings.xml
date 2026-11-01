@@ -586,9 +586,7 @@
     <string name="external">חיצוני</string>
     <string name="exit">יציאה</string>
     <string name="burn_subs">צריבת כתוביות</string>
-    <plurals name="open_file">
-        <item quantity="one">פתיחת קובץ</item>
-    </plurals>
+    <string name="open_file">פתיחת קובץ</string>
     <plurals name="finished_runs">
         <item quantity="one">הסתיים · ריצה אחת</item>
         <item quantity="two">הסתיים · שתי ריצות</item>

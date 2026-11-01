@@ -605,10 +605,7 @@
     <string name="preferred_format_size_audio">Üstünlük Verilən Səs Formatı Həcmi</string>
     <string name="history_quick_action">Sürətli Fəaliyyət Düyməsi</string>
     <string name="history_quick_action_summary">Tarixçə kartındakı sürətli fəaliyyət düyməsinə toxunduqda yerinə yetiriləcək fəaliyyət</string>
-    <plurals name="open_file">
-        <item quantity="one">Faylı Aç</item>
-        <item quantity="other">Faylı Aç</item>
-    </plurals>
+    <string name="open_file">Faylı Aç</string>
     <string name="duration">Müddət</string>
     <string name="update_available">Əlçatan Yeniləmə</string>
     <string name="update_check_failed">Yeniləmələri yoxlamaq olmadı</string>

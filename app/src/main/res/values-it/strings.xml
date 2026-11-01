@@ -605,9 +605,7 @@
     <string name="preferred_format_size_audio">Dimensione formato audio preferita</string>
     <string name="history_quick_action">Pulsante di azione rapida</string>
     <string name="history_quick_action_summary">Azione da eseguire quando clicchi il pulsante di azione rapida nella scheda cronologia</string>
-    <plurals name="open_file">
-        <item quantity="one">Apri file</item>
-    </plurals>
+    <string name="open_file">Apri file</string>
     <string name="toggle_all">Attiva/disattiva tutto</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Preset usato da FFmpeg per i plugin interni, come l\'incorporamento dei sottotitoli e simili. Modificare questa impostazione influisce sulle dimensioni del file finale!</string>
     <string name="duration">Durata</string>

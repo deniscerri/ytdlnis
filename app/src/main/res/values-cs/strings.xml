@@ -617,9 +617,7 @@
     <string name="internal_plugin_ffmpeg_preset_summary">Předvolba, kterou FFmpeg používá pro interní pluginy, jako je zápis titulků atd. Úprava tohoto nastavení ovlivňuje konečnou velikost souboru!</string>
     <string name="history_quick_action">Tlačítko rychlé akce</string>
     <string name="history_quick_action_summary">Akce, která se provede po kliknutí na tlačítko rychlé akce na kartě historie</string>
-    <plurals name="open_file">
-        <item quantity="one">Otevření souboru</item>
-    </plurals>
+    <string name="open_file">Otevření souboru</string>
     <string name="translators">Překladatelé</string>
     <string name="translators_summary">Lidé, kteří pomohli s překladem této aplikace na Weblate</string>
     <string name="translators_unavailable">Seznam překladatelů není v tomto sestavení k dispozici. Na Weblate si však můžete prohlédnout všechny, kteří se na překladu podíleli.</string>

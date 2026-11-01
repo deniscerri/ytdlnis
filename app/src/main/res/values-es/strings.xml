@@ -612,9 +612,7 @@
     <string name="preferred_format_size_audio">Tamaño de formato de audio preferido</string>
     <string name="history_quick_action">Botón de acción rápida</string>
     <string name="history_quick_action_summary">Acción a realizar al hacer clic sobre el botón de acción rápida en la carta del historial</string>
-    <plurals name="open_file">
-        <item quantity="one">Abrir Archivo</item>
-    </plurals>
+    <string name="open_file">Abrir Archivo</string>
     <string name="duration">Duración</string>
     <string name="update_available">Actualización disponible</string>
     <string name="update_check_failed">No se pudo comprobar actualizaciones</string>

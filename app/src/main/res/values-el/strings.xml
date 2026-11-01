@@ -609,9 +609,7 @@
     <string name="preferred_format_size_audio">Προτιμώμενο μέγεθος μορφής ήχου</string>
     <string name="history_quick_action">Κουμπί γρήγορης δράσης</string>
     <string name="history_quick_action_summary">Ενέργεια που θα εκτελεστεί όταν κάνετε κλικ στο κουμπί γρήγορης ενέργειας στην κάρτα ιστορικού</string>
-    <plurals name="open_file">
-        <item quantity="one">Άνοιγμα αρχείου</item>
-    </plurals>
+    <string name="open_file">Άνοιγμα αρχείου</string>
     <string name="duration">Διάρκεια</string>
     <string name="update_available">Διαθέσιμη ενημέρωση</string>
     <string name="update_check_failed">Αδυναμία ελέγχου για ενημέρωση</string>

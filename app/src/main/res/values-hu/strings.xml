@@ -621,10 +621,7 @@
     </plurals>
     <string name="history_quick_action">Gyorsművelet-gomb</string>
     <string name="history_quick_action_summary">Az előzmények-kártyán található gyorsművelet-gombra kattintáskor végrehajtandó művelet</string>
-    <plurals name="open_file">
-        <item quantity="one">Fájl megnyitása</item>
-        <item quantity="other">Fájlok megnyitása</item>
-    </plurals>
+    <string name="open_file">Fájl megnyitása</string>
     <string name="duration">Időtartam</string>
     <string name="update_available">Frissítés elérhető</string>
     <string name="update_check_failed">Nem sikerült frissítéseket keresni</string>
