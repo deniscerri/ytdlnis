@@ -928,11 +928,19 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         )
     }
 
+    private fun setMetadataArg(field: String, value: String): String {
+        val from = " " + value.replace("%", "%%").replace(":", "\\:")
+        return from.replace("\\", "\\\\") + ":" + field
+    }
+
     private fun StringJoiner.addOption(vararg elements: Any) {
         this.add(elements.first().toString())
         if (elements.size > 1) {
             for (el in elements.drop(1)) {
                 val arg = el.toString()
+                    // not escaped here: it would change the text of every command (the \s, \d in the metadata
+                    // regexes), which shows in logs and breaks the history duplicate check against older
+                    // downloads. Values that can contain backslashes escape them themselves (setMetadataArg).
                     //.replace("\\", "\\\\")
                     .replace("\"", "\\\"")
 
@@ -985,9 +993,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         }
 
         if (downloadItem.playlistTitle.isNotBlank() && useItemURL) {
-            metadataCommands.addOption("--parse-metadata", " :%(playlist_title)s")
-            metadataCommands.addOption("--parse-metadata", "%(playlist_title)s:%(playlist)s")
-            metadataCommands.addOption("--replace-in-metadata", "playlist,playlist_title", "^.*$", downloadItem.playlistTitle)
+            metadataCommands.addOption("--parse-metadata", setMetadataArg("playlist_title", downloadItem.playlistTitle))
+            metadataCommands.addOption("--parse-metadata", setMetadataArg("playlist", downloadItem.playlistTitle))
         }
 
         if (downloadItem.playlistIndex != null) {
@@ -1122,7 +1129,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             }
 
             if(downloadItem.title.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "title", """^.*$""", downloadItem.title.replace("""\""", """\\"""))
+                metadataCommands.addOption("--parse-metadata", setMetadataArg("title", downloadItem.title))
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
             }
 
@@ -1130,7 +1137,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
 
             if (downloadItem.author.isNotBlank()){
-                metadataCommands.addOption("--replace-in-metadata", "uploader", """^.*$""", downloadItem.author.replace("""\""", """\\"""))
+                metadataCommands.addOption("--parse-metadata", setMetadataArg("uploader", downloadItem.author))
                 metadataCommands.addOption("--parse-metadata", "%(uploader)s:%(artist)s")
             }
 
