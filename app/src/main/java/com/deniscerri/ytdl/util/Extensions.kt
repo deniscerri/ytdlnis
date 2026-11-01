@@ -77,7 +77,6 @@ import java.io.File
 import java.net.HttpCookie
 import java.util.Calendar
 import java.util.Locale
-import java.util.regex.Pattern
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
@@ -361,9 +360,10 @@ object Extensions {
         }
     }
 
+    private val finishingProgressLinesRegex = Regex("\\[download]\\h+(100%|[a-zA-Z])")
+
     fun String.appendLineToLog(line: String = ""): String {
         val lines = this.lines().toMutableList()
-        val finishingProgressLinesRegex = Pattern.compile("\\[download]\\h+(100%|[a-zA-Z])")
 
         if (line.isNotBlank()) {
             var newline = ""
@@ -380,13 +380,13 @@ object Extensions {
 
 
             return lines.distinct().filterNot {
-                ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
+                ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.containsMatchIn(it))
                 || it.contains("does not pass filter (id")
             }.joinToString("\n") + newline
         }
 
         return lines.filterNot {
-            ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.matcher(it).find())
+            ((it.contains("[download") || it.contains(") CN:")) && !finishingProgressLinesRegex.containsMatchIn(it))
             || it.contains("does not pass filter (id")
         }.joinToString("\n")
     }
@@ -645,35 +645,38 @@ object Extensions {
                 "<small>" + subtitle + "</small>" + "<br />", HtmlCompat.FROM_HTML_MODE_LEGACY)
     }
 
+    private val youtubeUrlRegex = Regex("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)")
+
     fun String.isYoutubeURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?)|(^(https?)://(www.)?piped.video)").matcher(this).find()
+        return youtubeUrlRegex.containsMatchIn(this)
     }
+
+    private val youtubeChannelUrlRegex = Regex("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/@[a-zA-Z]+")
 
     fun String.isYoutubeChannelURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/@[a-zA-Z]+").matcher(this).find()
+        return youtubeChannelUrlRegex.containsMatchIn(this)
     }
+
+    private val youtubeWatchVideosUrlRegex = Regex("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*")
 
     fun String.isYoutubeWatchVideosURL() : Boolean {
-        return Pattern.compile("((^(https?)://)?(www.)?(m.)?youtu(.be)?(be.com))/watch_videos\\?video_ids=.*").matcher(this).find()
+        return youtubeWatchVideosUrlRegex.containsMatchIn(this)
     }
+
+    private val soundCloudUrlRegex = Regex("""^(https?://)?(www\.|m\.)?soundcloud\.com/[\w\-.]+(/[\w\-.]+)*/?$""")
 
     fun String.isSoundCloudURL() : Boolean {
-        return Pattern.compile("""^(https?://)?(www\.|m\.)?soundcloud\.com/[\w\-.]+(/[\w\-.]+)*/?$""").matcher(this).find()
+        return soundCloudUrlRegex.containsMatchIn(this)
     }
 
+    private val urlRegex = Regex("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")
+
     fun String.extractURL() : String {
-        val res =
-            Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])")
-                .matcher(this)
-        return if (res.find()) {
-            res.group()
-        } else {
-            this
-        }
+        return urlRegex.find(this)?.value ?: this
     }
 
     fun String.isURL(): Boolean {
-        return Pattern.compile("(http|ftp|https)://([\\w_-]+(?:\\.[\\w_-]+)+)([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])").matcher(this).find()
+        return urlRegex.containsMatchIn(this)
     }
 
     fun <T1, T2, T3, T4, T5, T6, T7, R> combine(
@@ -716,11 +719,12 @@ object Extensions {
         }
     }
 
+    private val youtubeIdRegex = Regex(
+        "(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|(?:shorts)?)/|.*?[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})"
+    )
+
     fun String.getIDFromYoutubeURL() : String? {
-        val regex = Regex(
-            "(?:youtube\\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|(?:shorts)?)/|.*?[?&]v=)|youtu\\.be/)([^\"&?/\\s]{11})"
-        )
-        val match = regex.find(this)
+        val match = youtubeIdRegex.find(this)
         return if (match != null){
             match.groupValues[1]
         }else {
