@@ -35,6 +35,7 @@ import com.deniscerri.ytdl.util.Extensions.readJsonValue
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.FormatUtil
+import com.deniscerri.ytdl.util.NetworkDetector
 import com.google.gson.Gson
 import com.google.gson.Strictness
 import com.google.gson.reflect.TypeToken
@@ -1044,8 +1045,18 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         if(retries.isNotEmpty()) request.addOption("--retries", retries)
         if(fragmentRetries.isNotEmpty()) request.addOption("--fragment-retries", fragmentRetries)
 
-        val limitRate = sharedPreferences.getString("limit_rate", "")!!
-        if (limitRate.isNotBlank()) request.addOption("-r", limitRate)
+        val limitRate = sharedPreferences.getString("limit_rate", "")!!.trim()
+        val limitRateCellularOnly = sharedPreferences.getBoolean("limit_rate_cellular_only", false)
+        if (limitRate.isNotBlank()) {
+            if (limitRateCellularOnly) {
+                val category = NetworkDetector.getCurrentNetworkCategory(context)
+                if (category == NetworkDetector.NetworkCategory.CELLULAR_4G_OR_LOWER) {
+                    request.addOption("-r", limitRate)
+                }
+            } else {
+                request.addOption("-r", limitRate)
+            }
+        }
 
         val bufferSize = sharedPreferences.getString("buffer_size", "")!!
         if (bufferSize.isNotBlank()){
