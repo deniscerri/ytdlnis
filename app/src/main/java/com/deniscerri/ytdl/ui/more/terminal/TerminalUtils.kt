@@ -6,13 +6,16 @@ import android.graphics.Typeface
 import android.util.TypedValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.ColorUtils
 import com.anggrayudi.storage.file.child
 import com.deniscerri.ytdl.App
+import com.deniscerri.ytdl.R
 import com.google.android.material.color.MaterialColors
 
 object TerminalUtils {
-    var typeface: Typeface = Typeface.MONOSPACE
+    var typeface: Typeface = ResourcesCompat.getFont(App.instance, R.font.jetbrains_mono_nl_regular)
+        ?: Typeface.MONOSPACE
 
     fun init(context: Context) {
         val fontFile = context.filesDir.child("font.ttf")
