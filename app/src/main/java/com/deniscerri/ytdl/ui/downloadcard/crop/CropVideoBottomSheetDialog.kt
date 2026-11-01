@@ -28,6 +28,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.MergingMediaSource
+import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.ChapterItem
@@ -65,6 +66,7 @@ class CropVideoBottomSheetDialog(
     private lateinit var behavior: BottomSheetBehavior<View>
     private lateinit var player: ExoPlayer
     private lateinit var resultViewModel: ResultViewModel
+    private lateinit var frame: MaterialCardView
     private lateinit var cropOverlay: CropOverlayView
     private lateinit var cropValuesSection: LinearLayout
     private lateinit var durationText: TextView
@@ -140,13 +142,20 @@ class CropVideoBottomSheetDialog(
 
         player = VideoPlayerUtil.buildPlayer(requireContext())
 
-        val frame = view.findViewById<MaterialCardView>(R.id.frame_layout)
+        frame = view.findViewById(R.id.frame_layout)
         val videoView = view.findViewById<PlayerView>(R.id.video_view)
         videoView.player = player
         itemDurationTimestamp = item.duration.convertToTimestamp()
 
         cropOverlay = view.findViewById(R.id.crop_overlay)
         cropOverlay.visibility = View.INVISIBLE
+        // the box is kept in view pixels, so when the overlay gets fitted to the video it has to be
+        // put back on the same video pixels (they are in the text fields)
+        cropOverlay.addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) {
+                readTextFieldsToVideoCoords()?.let { (x, y, w, h) -> applyVideoCoordsToOverlay(x, y, w, h) }
+            }
+        }
         cropValuesSection = view.findViewById(R.id.crop_values_section)
         cropValuesSection.visibility = View.GONE
 
@@ -352,9 +361,22 @@ class CropVideoBottomSheetDialog(
     }
 
     private fun showOverlayAndLoad() {
+        fitPreviewToVideo()
         cropOverlay.visibility = View.VISIBLE
         cropValuesSection.visibility = View.VISIBLE
         loadSavedCrop()
+    }
+
+    /**
+     * Fits the overlay to the picture the player draws (not the letterbox bars around it), so both
+     * scales are the same, and gives portrait / square videos a taller preview, up to 60% of the screen.
+     */
+    @OptIn(UnstableApi::class)
+    private fun fitPreviewToVideo() {
+        if (videoWidth <= 0 || videoHeight <= 0) return
+        val videoRatio = videoWidth.toFloat() / videoHeight
+        (cropOverlay.parent as AspectRatioFrameLayout).setAspectRatio(videoRatio)
+        VideoPlayerUtil.fitPreviewFrame(frame, videoRatio)
     }
 
     private fun reshapeToRatio() {

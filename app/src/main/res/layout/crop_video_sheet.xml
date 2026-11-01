@@ -35,12 +35,23 @@
                 app:resize_mode="fit"
                 app:use_controller="false" />
 
-            <com.deniscerri.ytdl.ui.downloadcard.crop.CropOverlayView
-                android:id="@+id/crop_overlay"
+            <!-- fitted to the video's aspect ratio in code, the same way the player fits the picture,
+                 so the overlay covers exactly the drawn video and not the letterbox bars -->
+            <androidx.media3.ui.AspectRatioFrameLayout
+                android:id="@+id/crop_overlay_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
-                android:focusable="true" />
+                android:layout_gravity="center"
+                app:resize_mode="fit">
+
+                <com.deniscerri.ytdl.ui.downloadcard.crop.CropOverlayView
+                    android:id="@+id/crop_overlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+            </androidx.media3.ui.AspectRatioFrameLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem.fromUri
 import androidx.media3.common.Player
+import androidx.media3.common.VideoSize
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.source.MediaSource
@@ -251,6 +252,11 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         }
 
         player.addListener(object : Player.Listener {
+            override fun onVideoSizeChanged(videoSize: VideoSize) {
+                if (videoSize.width <= 0 || videoSize.height <= 0) return
+                VideoPlayerUtil.fitPreviewFrame(frame, videoSize.width * videoSize.pixelWidthHeightRatio / videoSize.height)
+            }
+
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 if (isPlaying){
                     pauseBtn.visibility = View.GONE
