@@ -1747,9 +1747,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
         val conf = File(cache.absolutePath + "/${System.currentTimeMillis()}${UUID.randomUUID()}.txt")
         conf.createNewFile()
         conf.writeText(request.toString())
-        val tmp = mutableListOf<String>()
-        tmp.addOption("--config-locations", conf.absolutePath)
-        ytDlRequest.addCommands(tmp)
+        ytDlRequest.addOption("--config-locations", conf.absolutePath)
 
         val ytdlpCache = File(FileUtil.getCacheYTDLPPath(context))
         ytDlRequest.addOption("--cache-dir", ytdlpCache.absolutePath)
