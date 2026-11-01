@@ -214,12 +214,6 @@
             android:key="show_terminal"
             app:title="@string/show_terminal" />
 
-        <SwitchPreferenceCompat
-            android:widgetLayout="@layout/preferece_material_switch"
-            app:defaultValue="false"
-            android:icon="@drawable/baseline_share2_24"
-            android:key="show_quick_download_share"
-            app:title="@string/show_quick_download_share_menu" />
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

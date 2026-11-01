@@ -82,6 +82,9 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
     private lateinit var subtitle : View
     private lateinit var parentActivity: BaseActivity
 
+    private lateinit var scheduleBtn: Button
+    private lateinit var downloadBtn: Button
+
 
     private lateinit var result: ResultItem
     private lateinit var type: DownloadType
@@ -154,11 +157,18 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
         shimmerLoadingSubtitle = view.findViewById(R.id.shimmer_loading_subtitle)
         subtitle = view.findViewById(R.id.bottom_sheet_subtitle)
 
-        shimmerLoading.setOnClickListener {
+        fun cancelLoadingData() {
             lifecycleScope.launch {
                 resultViewModel.cancelUpdateItemData()
                 (updateItem.parent as LinearLayout).visibility = View.VISIBLE
             }
+        }
+
+        shimmerLoading.setOnClickListener {
+            cancelLoadingData()
+        }
+        shimmerLoadingSubtitle.setOnClickListener {
+            cancelLoadingData()
         }
 
 
@@ -301,13 +311,13 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
         val shownFields = sharedPreferences.getStringSet("modify_download_card", requireContext().resources.getStringArray(R.array.modify_download_card_values).toSet())!!.toList()
 
-        val scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
+        scheduleBtn = view.findViewById<MaterialButton>(R.id.bottomsheet_schedule_button)
         scheduleBtn.visibility = if(shownFields.contains("schedule")){
             View.VISIBLE
         }else{
             View.GONE
         }
-        val download = view.findViewById<Button>(R.id.bottomsheet_download_button)
+        downloadBtn = view.findViewById<Button>(R.id.bottomsheet_download_button)
 
 
         scheduleBtn.setOnClickListener{
@@ -318,7 +328,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                 }
 
                 scheduleBtn.isEnabled = false
-                download.isEnabled = false
+                downloadBtn.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
                 item.status = DownloadRepository.Status.Scheduled.toString()
                 item.downloadStartTime = it.timeInMillis
@@ -363,12 +373,12 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
 
             }
         }
-        download!!.setOnClickListener {
+        downloadBtn.setOnClickListener {
             lifecycleScope.launch {
                 resultViewModel.cancelUpdateItemData()
                 formatViewModel.cancelUpdateFormats()
                 scheduleBtn.isEnabled = false
-                download.isEnabled = false
+                downloadBtn.isEnabled = false
                 val item: DownloadItem = getDownloadItem()
                 if (item.videoPreferences.alsoDownloadAsAudio){
                     val itemsToQueue = mutableListOf<DownloadItem>()
@@ -395,7 +405,7 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
             }
         }
 
-        download.setOnLongClickListener {
+        downloadBtn.setOnLongClickListener {
             val dd = MaterialAlertDialogBuilder(requireContext())
             dd.setTitle(getString(R.string.save_for_later))
             dd.setNegativeButton(getString(R.string.cancel)) { dialogInterface: DialogInterface, _: Int -> dialogInterface.cancel() }
@@ -505,6 +515,8 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         shimmerLoading.startShimmer()
                         shimmerLoadingSubtitle.startShimmer()
                         (updateItem.parent as LinearLayout).visibility = View.GONE
+                        downloadBtn.isEnabled = false
+                        scheduleBtn.isEnabled = false
                     }else{
                         title.visibility = View.VISIBLE
                         subtitle.visibility = View.VISIBLE
@@ -512,6 +524,8 @@ class DownloadBottomSheetDialog : BottomSheetDialogFragment() {
                         shimmerLoadingSubtitle.visibility = View.GONE
                         shimmerLoading.stopShimmer()
                         shimmerLoadingSubtitle.stopShimmer()
+                        downloadBtn.isEnabled = true
+                        scheduleBtn.isEnabled = true
                     }
                 }
             }

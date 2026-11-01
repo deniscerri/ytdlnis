@@ -391,7 +391,7 @@
         <activity-alias
             android:name=".quickDownloadShareAlias"
             android:targetActivity=".receiver.ShareActivity"
-            android:enabled="false"
+            android:enabled="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/quick_download"
             android:roundIcon="@mipmap/ic_launcher_round"

@@ -709,4 +709,6 @@
     <string name="embed_lyrics_summary">Fetch lyrics from lrclib.net and embed them in audio downloads</string>
     <string name="save_lrc_file_summary">Save synced lyrics as a .lrc file next to audio downloads</string>
     <string name="crop_unsupported">Cropping is not available for this item</string>
+    <string name="press_cancel">Press here to cancel</string>
+    <string name="fetching_data">Fetching data...</string>
 </resources>

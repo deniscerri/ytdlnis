@@ -284,26 +284,6 @@ object GeneralSettingsModule : SettingModule {
                     }
                 }
             }
-            "show_quick_download_share" -> {
-                (pref as SwitchPreferenceCompat).apply {
-                    setOnPreferenceChangeListener { pref, _ ->
-                        val packageManager = context.packageManager
-                        val aliasComponentName =
-                            ComponentName(context, "com.deniscerri.ytdl.quickDownloadShareAlias")
-                        if ((pref as SwitchPreferenceCompat).isChecked){
-                            packageManager.setComponentEnabledSetting(aliasComponentName,
-                                PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                                PackageManager.DONT_KILL_APP)
-                        }else{
-                            packageManager.setComponentEnabledSetting(aliasComponentName,
-                                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-                                PackageManager.DONT_KILL_APP)
-                        }
-                        host.refreshUI()
-                        true
-                    }
-                }
-            }
             "display_over_apps" -> {
                 (pref as SwitchPreferenceCompat).apply {
                     isChecked = Settings.canDrawOverlays(context)
