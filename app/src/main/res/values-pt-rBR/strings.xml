@@ -502,7 +502,7 @@
     <string name="app_icon">Ícone do app</string>
     <string name="show_quick_download_share_menu">Mostrar opção para fazer download imediatamente no menu de compartilhamento</string>
     <string name="quick_download_title">Não buscar dados</string>
-    <string name="sponsorblock_hook">Gancho/Saudações</string>
+    <string name="sponsorblock_hook">Gancho/saudações</string>
     <string name="packages">Pacotes</string>
     <string name="not_installed">Não instalado</string>
     <string name="bundled">Incluído no pacote</string>
