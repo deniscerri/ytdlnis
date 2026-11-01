@@ -597,7 +597,9 @@
     <string name="preferred_format_size_audio">Ukuran format audio yang diutamakan</string>
     <string name="history_quick_action">Tombol Tindakan Segera</string>
     <string name="history_quick_action_summary">Tindakan yang akan dilakukan saat mengeklik tombol tindakan segera pada kartu riwayat</string>
-    <string name="open_file">Buka Berkas</string>
+    <plurals name="open_file">
+        <item quantity="other">Buka Berkas</item>
+    </plurals>
     <string name="duration">Durasi</string>
     <string name="update_available">Pembaruan tersedia</string>
     <string name="update_check_failed">Tidak bisa memeriksa pembaruan</string>

@@ -609,7 +609,9 @@
     <string name="internal_plugin_ffmpeg_preset_summary">Preseti i FFmpeg për pluginet e brendshme si djegja e titrave etj. Modifikimi i kësaj preference afekton madhëesine finale të skedarit!</string>
     <string name="history_quick_action">Veprimi i shpejtë i shkarkimeve</string>
     <string name="history_quick_action_summary">Veprimi që performohet kur klikon butonin ne kartën e historisë së shkarkimit</string>
-    <string name="open_file">Hap skedarin</string>
+    <plurals name="open_file">
+        <item quantity="one">Hap skedarin</item>
+    </plurals>
     <string name="duration">Kohëzgjatja</string>
     <string name="update_available">Ka përditësim</string>
     <string name="update_check_failed">Nuk mund të kontrolloja për përditësime</string>

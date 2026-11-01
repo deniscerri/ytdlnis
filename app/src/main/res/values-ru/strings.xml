@@ -616,7 +616,9 @@
     <string name="preferred_format_size_audio">Предпочитаемый размер формата аудио</string>
     <string name="history_quick_action">Кнопка быстрого доступа</string>
     <string name="history_quick_action_summary">Действие, выполняемое при нажатии кнопки быстрого действия на карточке истории</string>
-    <string name="open_file">Открыть файл</string>
+    <plurals name="open_file">
+        <item quantity="one">Открыть файл</item>
+    </plurals>
     <string name="duration">Продолжительность</string>
     <string name="update_available">Доступно обновление</string>
     <string name="update_check_failed">Не удалось проверить наличие обновлений</string>
