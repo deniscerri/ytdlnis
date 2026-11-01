@@ -196,7 +196,14 @@ open class WebViewActivity : BaseActivity() {
     }
 
     private suspend fun generateCookies() = withContext(Dispatchers.IO) {
-        cookiesViewModel.getCookiesFromDB(url).getOrNull()?.let {
+        val cookies = cookiesViewModel.getCookiesFromDB(url).getOrNull()
+        if (cookies == null) {
+            // stay open, the user may not have finished signing in yet
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@WebViewActivity, R.string.no_cookies_found, Toast.LENGTH_LONG).show()
+            }
+        }
+        cookies?.let {
             runCatching {
                 cookiesViewModel.insert(
                     com.deniscerri.ytdl.database.models.CookieItem(
