@@ -1,10 +1,12 @@
 <h1 align="center">
 	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	
 	YTDLnis
 </h1>
 
 <div align="center">
 	Azərbaycanca
+	
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
@@ -62,7 +64,7 @@
 - [1000+ veb-saytdan](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) audio, video endirin və ya xüsusi yt-dlp əmrləri icra edin
 - Tətbiqə keçid paylaşın və birbaşa aşağı kartdan endirin, tətbiqi açmağa ehtiyac yoxdur
 - Məlumatların yüklənməsini gözləmədən dərhal başlamaq üçün sürətli endirmə rejimi
-- Ppleylistlər və toplu endirmələr: hər bir elementi ayrı-ayrılıqda redaktə edin və ya hamısı üçün növü, formatı, yolu və fayl adı şablonunu toplu şəkildə redaktə edin, müəllifə, müddətə, başlığa və ya tarixə görə çeşidləyin
+- Pleylistlər və toplu endirmələr: hər bir elementi ayrı-ayrılıqda redaktə edin və ya hamısı üçün növü, formatı, yolu və fayl adı şablonunu toplu şəkildə redaktə edin, müəllifə, müddətə, başlığa və ya tarixə görə çeşidləyin
 - Keçidlərin, pleylistlərin və ya axtarış sorğularının `.txt` faylını daxil edin və tətbiq onların hamısını emal etsin
 - Növbəyə qoyun, tarix və saata görə planlaşdırın və eyni vaxtda bir neçə endirmə işlədin
 - Sürüşdürmə jestləri ilə dayandırın / davam etdirin, uğursuz və ya ləğv edilmiş elementləri yenidən endirin
@@ -111,7 +113,7 @@ Siz ytdlnis paketlərini bu [ytdlnis-packages](https://github.com/deniscerri/ytd
 <br>Ətraflı məlumat üçün repozitoriyanın README faylına baxın.
 
 ## 📲 Ekran görüntüləri
-
+<div>
 <img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
 <img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
 <img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
