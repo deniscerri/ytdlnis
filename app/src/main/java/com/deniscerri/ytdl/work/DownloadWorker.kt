@@ -35,6 +35,7 @@ import com.deniscerri.ytdl.util.Extensions.fixYtdlpPath
 import com.deniscerri.ytdl.util.Extensions.getMediaDuration
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.NetworkDetector
 import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.WorkerEventBus
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
@@ -134,10 +135,41 @@ class DownloadWorker(
         val maxDelay = downloadDelay.split("-")[1].toFloat()
         val hasDownloadDelay = minDelay > 0 || maxDelay > 0
 
-        queuedItems.collectLatest { items ->
-            if (this@DownloadWorker.isStopped) return@collectLatest
+        val unregisterObserver = NetworkDetector.registerDownloadNetworkObserver(context) { _ ->
+            workerScope.launch(Dispatchers.IO) {
+                val activeIds = ArrayList(runningYTDLInstances)
+                activeIds.forEach { id ->
+                    RuntimeManager.getInstance().destroyProcessById(id.toString())
+                    runCatching {
+                        val item = dao.getDownloadById(id)
+                        item.status = DownloadRepository.Status.Paused.toString()
+                        dao.update(item)
+                        withContext(Dispatchers.Main) {
+                            notificationUtil.createResumeDownload(id.toInt(), item.title.ifEmpty { item.url })
+                        }
+                        WorkerEventBus.post(
+                            WorkerProgress(
+                                0,
+                                context.getString(R.string.download_paused_non_5g),
+                                id,
+                                item.logID
+                            )
+                        )
+                    }
+                }
+                WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+            }
+        }
 
-            runningYTDLInstances.clear()
+        try {
+            queuedItems.collectLatest { items ->
+                if (this@DownloadWorker.isStopped) return@collectLatest
+                if (!NetworkDetector.isNetworkAllowedForDownload(context)) {
+                    WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
+                    return@collectLatest
+                }
+
+                runningYTDLInstances.clear()
             val activeDownloads = dao.getActiveDownloadsList()
             activeDownloads.forEach {
                 runningYTDLInstances.add(it.id)
@@ -558,8 +590,11 @@ class DownloadWorker(
                 dao.updateMultiple(eligibleDownloads)
             }
         }
+    } finally {
+        unregisterObserver()
+    }
 
-        return Result.success()
+    return Result.success()
     }
 
 

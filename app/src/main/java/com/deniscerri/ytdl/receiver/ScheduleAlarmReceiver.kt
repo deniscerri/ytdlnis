@@ -18,7 +18,10 @@ class ScheduleAlarmReceiver : BroadcastReceiver() {
             val workConstraints = Constraints.Builder()
             val preferences = PreferenceManager.getDefaultSharedPreferences(this)
             val allowMeteredNetworks = preferences.getBoolean("metered_networks", true)
-            if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+            val allow5G = preferences.getBoolean("allow_5g_networks", true)
+            val stopOnNon5G = preferences.getBoolean("stop_download_on_non_5g", false)
+            val requireUnmetered = !allowMeteredNetworks && !allow5G && !stopOnNon5G
+            if (requireUnmetered) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
 
 
             val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()

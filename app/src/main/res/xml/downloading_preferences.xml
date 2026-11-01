@@ -60,6 +60,22 @@
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/ic_5g"
+            android:key="allow_5g_networks"
+            app:summary="@string/allow_5g_networks_summary"
+            app:title="@string/allow_5g_networks" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            android:icon="@drawable/ic_5g"
+            android:key="stop_download_on_non_5g"
+            app:summary="@string/stop_download_on_non_5g_summary"
+            app:title="@string/stop_download_on_non_5g" />
+
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="false"
             android:icon="@drawable/ic_ipv4"
             android:key="force_ipv4"
@@ -123,7 +139,7 @@
             app:summary="@string/concurrent_downloads_summary"
             app:title="@string/concurrent_downloads" />
 
-        <EditTextPreference
+        <Preference
             android:icon="@drawable/ic_limitrate"
             app:key="limit_rate"
             app:summary="@string/limit_rate_summary"

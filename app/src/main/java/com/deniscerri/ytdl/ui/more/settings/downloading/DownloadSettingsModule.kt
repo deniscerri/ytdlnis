@@ -47,6 +47,45 @@ object DownloadSettingsModule : SettingModule {
                     true
                 }
             }
+            "limit_rate" -> {
+                fun updateSummary() {
+                    val rate = preferences.getString("limit_rate", "")?.trim() ?: ""
+                    val cellularOnly = preferences.getBoolean("limit_rate_cellular_only", false)
+                    pref.summary = if (rate.isBlank()) {
+                        context.getString(R.string.no_limit_normal_speed)
+                    } else if (cellularOnly) {
+                        "$rate (${context.getString(R.string.limit_rate_4g_only)})"
+                    } else {
+                        rate
+                    }
+                }
+                updateSummary()
+
+                pref.onPreferenceClickListener =
+                    Preference.OnPreferenceClickListener {
+                        UiUtil.showSpeedLimitDialog(
+                            host.getHostContext(),
+                            preferences,
+                            speedSelected = { speed, cellularOnly ->
+                                preferences.edit(commit = true) {
+                                    putString("limit_rate", speed)
+                                    putBoolean("limit_rate_cellular_only", cellularOnly)
+                                }
+                                updateSummary()
+                                host.refreshUI()
+                            },
+                            resetSelected = {
+                                preferences.edit(commit = true) {
+                                    putString("limit_rate", "")
+                                    putBoolean("limit_rate_cellular_only", false)
+                                }
+                                updateSummary()
+                                host.refreshUI()
+                            }
+                        )
+                        true
+                    }
+            }
             "download_delay" -> {
                 fun setSummary(firstVal: Float, secondVal: Float) {
                     if (firstVal == 0f && secondVal == 0f) {
