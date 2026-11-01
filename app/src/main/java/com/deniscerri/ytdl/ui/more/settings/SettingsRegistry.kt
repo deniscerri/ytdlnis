@@ -1,11 +1,13 @@
 package com.deniscerri.ytdl.ui.more.settings
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.SearchSettingsItem
+import java.util.Locale
 import com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsModule
@@ -41,31 +43,44 @@ object SettingsRegistry {
 
     fun indexAll(context: Context): List<SearchSettingsItem> {
         val manager = PreferenceManager(context)
+        val enConfig = Configuration(context.resources.configuration).apply {
+            setLocale(Locale.ENGLISH)
+        }
+        val enContext = context.createConfigurationContext(enConfig)
+        val enManager = PreferenceManager(enContext)
         val results = mutableListOf<SearchSettingsItem>()
 
         xmlToModule.forEach { (xmlRes, module) ->
             val screen = manager.inflateFromResource(context, xmlRes, null)
-            results.addAll(crawl(screen, xmlRes, module, null))
+            val enScreen = runCatching { enManager.inflateFromResource(enContext, xmlRes, null) }.getOrNull()
+            results.addAll(crawl(screen, enScreen, xmlRes, module, null, null))
         }
         return results
     }
 
     private fun crawl(
         group: PreferenceGroup,
+        enGroup: PreferenceGroup?,
         xmlId: Int,
         module: SettingModule?,
-        parentTitle: String? = null
+        parentTitle: String? = null,
+        enParentTitle: String? = null
     ): List<SearchSettingsItem> {
         val list = mutableListOf<SearchSettingsItem>()
 
-        if (!group.title.isNullOrBlank()) {
+        val groupTitle = group.title?.toString()
+        val enGroupTitle = enGroup?.title?.toString() ?: enParentTitle
+
+        if (!groupTitle.isNullOrBlank()) {
             list.add(SearchSettingsItem(
                 preference = group,
                 xmlId = xmlId,
                 module = module,
-                groupTitle = group.title.toString(),
+                groupTitle = groupTitle,
                 isHeader = true,
-                canRebind = true
+                canRebind = true,
+                englishTitle = enGroupTitle,
+                englishGroupTitle = enGroupTitle
             ))
         }
 
@@ -73,12 +88,25 @@ object SettingsRegistry {
 
         for (i in 0 until group.preferenceCount) {
             val p = group.getPreference(i)
+            val enP = if (p.key != null && enGroup != null) {
+                enGroup.findPreference(p.key) ?: (if (i < enGroup.preferenceCount) enGroup.getPreference(i) else null)
+            } else if (enGroup != null && i < enGroup.preferenceCount) {
+                enGroup.getPreference(i)
+            } else null
+
             // custom widgets like the update status card can't be shown as a search result
             if (p is NonSearchablePreference) continue
             if (p !is PreferenceGroup && p.title.isNullOrBlank()) continue
 
             if (p is PreferenceGroup) {
-                list.addAll(crawl(p, xmlId, module, group.title?.toString()))
+                list.addAll(crawl(
+                    p,
+                    enP as? PreferenceGroup,
+                    xmlId,
+                    module,
+                    group.title?.toString(),
+                    enGroup?.title?.toString() ?: enParentTitle
+                ))
             } else if (p.key != null && p.key != "reset_preferences") {
                 list.add(SearchSettingsItem(
                     preference = p,
@@ -86,7 +114,10 @@ object SettingsRegistry {
                     module = module,
                     groupTitle = group.title?.toString() ?: parentTitle,
                     isHeader = false,
-                    canRebind = !preferencesWithoutRebindingLogic.contains(p.key)
+                    canRebind = !preferencesWithoutRebindingLogic.contains(p.key),
+                    englishTitle = enP?.title?.toString(),
+                    englishSummary = enP?.summary?.toString(),
+                    englishGroupTitle = enGroup?.title?.toString() ?: enParentTitle
                 ))
             }
         }
