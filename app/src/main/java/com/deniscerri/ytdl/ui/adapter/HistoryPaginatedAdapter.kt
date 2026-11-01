@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.HistoryItem
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.FileUtil
@@ -39,7 +40,7 @@ import java.util.Locale
 
 class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : PagingDataAdapter<HistoryItem, HistoryPaginatedAdapter.ViewHolder>(
     DIFF_CALLBACK
-) {
+), DragSelectTouchListener.Selectable {
     val checkedItems: MutableSet<Long>
     var inverted: Boolean
     private val onItemClickListener: OnItemClickListener
@@ -332,6 +333,20 @@ class HistoryPaginatedAdapter(onItemClickListener: OnItemClickListener, activity
         }
         card.isChecked = !card.isChecked
         onItemClickListener.onCardSelect(card.isChecked, position)
+    }
+
+    override fun isItemSelected(position: Int): Boolean {
+        val item = (if (position in 0 until itemCount) peek(position) else null) ?: return false
+        return checkedItems.contains(item.id) != inverted
+    }
+
+    override fun setItemSelected(position: Int, selected: Boolean) {
+        val item = (if (position in 0 until itemCount) peek(position) else null) ?: return
+        if (isItemSelected(position) == selected) return
+        if (selected != inverted) checkedItems.add(item.id) else checkedItems.remove(item.id)
+        // the payload skips the change animation so cards don't flash while dragging
+        notifyItemChanged(position, "selection")
+        onItemClickListener.onCardSelect(selected, position)
     }
 
     interface OnItemClickListener {

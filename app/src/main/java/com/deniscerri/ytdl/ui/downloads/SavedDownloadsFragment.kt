@@ -36,6 +36,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadCardViewModel
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.GenericDownloadAdapter
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.Extensions.toListString
@@ -100,6 +101,7 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
         savedRecyclerView.forceFastScrollMode()
         savedRecyclerView.enableFastScroll()
         savedRecyclerView.adapter = adapter
+        DragSelectTouchListener.attach(savedRecyclerView)
         preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().resources.getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("saved")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -381,6 +383,8 @@ class SavedDownloadsFragment : Fragment(), GenericDownloadAdapter.OnItemClickLis
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun isItemViewSwipeEnabled() = !DragSelectTouchListener.isDragging
+
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false

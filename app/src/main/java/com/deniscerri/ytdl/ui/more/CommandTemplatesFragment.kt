@@ -39,6 +39,7 @@ import com.deniscerri.ytdl.database.models.CommandTemplateExport
 import com.deniscerri.ytdl.database.repository.CommandTemplateRepository.CommandTemplateSortType
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.ui.adapter.TemplatesAdapter
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
@@ -95,6 +96,7 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
         recyclerView = view.findViewById(R.id.template_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = templatesAdapter
+        DragSelectTouchListener.attach(recyclerView)
         preferences =  PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getStringSet("swipe_gesture", requireContext().resources.getStringArray(R.array.swipe_gestures_values).toSet())!!.toList().contains("templates")){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -402,6 +404,8 @@ class CommandTemplatesFragment : Fragment(), TemplatesAdapter.OnItemClickListene
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+            override fun isItemViewSwipeEnabled() = !DragSelectTouchListener.isDragging
+
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false

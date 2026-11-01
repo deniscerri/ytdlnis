@@ -26,6 +26,7 @@ import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.LogItem
 import com.deniscerri.ytdl.database.viewmodel.LogViewModel
 import com.deniscerri.ytdl.ui.adapter.DownloadLogsAdapter
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.google.android.material.appbar.MaterialToolbar
@@ -75,6 +76,7 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
         recyclerView.enableFastScroll()
         recyclerView.forceFastScrollMode()
         recyclerView.adapter = downloadLogAdapter
+        DragSelectTouchListener.attach(recyclerView)
         val preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
         if (preferences.getBoolean("swipe_gestures", true)){
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
@@ -226,6 +228,8 @@ class DownloadLogListFragment : Fragment(), DownloadLogsAdapter.OnItemClickListe
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun isItemViewSwipeEnabled() = !DragSelectTouchListener.isDragging
+
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.enums.DownloadType
 import com.deniscerri.ytdl.database.models.LogItem
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.FileUtil
 import com.google.android.material.button.MaterialButton
@@ -23,7 +24,7 @@ import java.util.Locale
 
 class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Activity) : ListAdapter<LogItem?, DownloadLogsAdapter.ViewHolder>(AsyncDifferConfig.Builder(
     DIFF_CALLBACK
-).build()) {
+).build()), DragSelectTouchListener.Selectable {
     private val onItemClickListener: OnItemClickListener
     private val activity: Activity
     private val checkedItems: ArrayList<Long>
@@ -169,6 +170,20 @@ class DownloadLogsAdapter(onItemClickListener: OnItemClickListener, activity: Ac
         }
         card.isChecked = !card.isChecked
         onItemClickListener.onCardSelect(itemID, card.isChecked)
+    }
+
+    override fun isItemSelected(position: Int): Boolean {
+        val item = currentList.getOrNull(position) ?: return false
+        return checkedItems.contains(item.id)
+    }
+
+    override fun setItemSelected(position: Int, selected: Boolean) {
+        val item = currentList.getOrNull(position) ?: return
+        if (isItemSelected(position) == selected) return
+        if (selected) checkedItems.add(item.id) else checkedItems.remove(item.id)
+        // the payload skips the change animation so cards don't flash while dragging
+        notifyItemChanged(position, "selection")
+        onItemClickListener.onCardSelect(item.id, selected)
     }
 
     interface OnItemClickListener {

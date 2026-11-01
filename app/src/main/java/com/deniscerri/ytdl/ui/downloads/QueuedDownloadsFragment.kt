@@ -37,6 +37,7 @@ import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
 import com.deniscerri.ytdl.database.viewmodel.YTDLPViewModel
 import com.deniscerri.ytdl.ui.adapter.QueuedDownloadAdapter
 import com.deniscerri.ytdl.ui.adapter.SafeGridLayoutManager
+import com.deniscerri.ytdl.util.DragSelectTouchListener
 import com.deniscerri.ytdl.util.Extensions.enableFastScroll
 import com.deniscerri.ytdl.util.Extensions.forceFastScrollMode
 import com.deniscerri.ytdl.util.Extensions.toListString
@@ -103,6 +104,8 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(queuedRecyclerView)
         }
+        // after the item touch helpers so the reorder drag handle keeps priority
+        DragSelectTouchListener.attach(queuedRecyclerView)
         queuedRecyclerView.layoutManager = SafeGridLayoutManager(requireContext(), resources.getInteger(R.integer.grid_size))
 
         lifecycleScope.launch {
@@ -271,6 +274,8 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
 
     private var simpleCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun isItemViewSwipeEnabled() = !DragSelectTouchListener.isDragging
+
             override fun onMove(recyclerView: RecyclerView,viewHolder: RecyclerView.ViewHolder,target: RecyclerView.ViewHolder
             ): Boolean {
                 return false
