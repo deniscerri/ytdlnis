@@ -4,6 +4,7 @@
 </h1>
 
 <div align="center">
+	
 	Azərbaycanca
 	
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
