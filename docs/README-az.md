@@ -1,35 +1,10 @@
 <h1 align="center">
-	<img src="../fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
+	<img src="fastlane/metadata/android/en-US/images/icon.png" width="25%" /> <br>
 	YTDLnis
-	
 </h1>
 
 <div align="center">
-	
 	Azərbaycanca
-	
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-tr.md">Türkçe</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-id.md">Indonesia</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-pt.md">Português</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-es.md">Español</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ja.md">Japanese</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-zh_CN.md">简体中文</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ro.md">Română</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ar.md">العربية</a>
-	&nbsp;&nbsp;| &nbsp;&nbsp;
-	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-ru.md">Русский</a>
-</div>
 
 <h3 align="center">
 	YTDLnis Android 7.0 və daha yuxarı versiyalar üçün yt-dlp istifadə edən pulsuz və açıq mənbəli video/audio endirmə alətidir.
