@@ -12,6 +12,7 @@
     <string name="music_directory">Audio folder</string>
     <string name="video_directory">Video folder</string>
     <string name="updating">Updating</string>
+    <string name="open_file">Open File</string>
     <string name="ytdl_update_hint">Useful tip while downloading updates</string>
     <string name="update_ytdl">Update yt-dlp to the new version</string>
     <string name="about">About</string>
