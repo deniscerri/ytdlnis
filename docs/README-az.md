@@ -4,7 +4,7 @@
 </h1>
 
 <div align="center">
-	English
+	Azərbaycanca
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
