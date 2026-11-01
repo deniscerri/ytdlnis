@@ -30,6 +30,7 @@ import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
+import com.deniscerri.ytdl.core.RuntimeManager
 import com.deniscerri.ytdl.database.viewmodel.CommandTemplateViewModel
 import com.deniscerri.ytdl.database.viewmodel.TerminalViewModel
 import com.deniscerri.ytdl.ui.more.terminal.virtualkeys.VirtualKeysConstants
@@ -46,6 +47,7 @@ import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -66,6 +68,7 @@ class TerminalFragment : Fragment() {
 
     private lateinit var session : TerminalSession
     private var sessionId: String? = null
+    private var sessionInitJob: Job? = null
 
     private fun terminalZoom(): Int {
         val zoom = sharedPreferences.getFloat("terminal_text_zoom", 35f)
@@ -214,6 +217,8 @@ class TerminalFragment : Fragment() {
         topAppBar.menu?.findItem(R.id.delete)?.isVisible = true
 
         topAppBar.setOnMenuItemClickListener { menuItem: MenuItem ->
+            // the session is created once the runtime is ready
+            if (menuItem.itemId != R.id.add && !::session.isInitialized) return@setOnMenuItemClickListener true
             when (menuItem.itemId) {
                 R.id.add -> {
                     findNavController().navigate(R.id.terminalFragment, bundleOf(Pair("new", true)),
@@ -274,9 +279,6 @@ class TerminalFragment : Fragment() {
     }
 
     private fun initSession() {
-        val sessionBinder = terminalViewModel.sessionBinder ?: return
-        val service = sessionBinder.getService()
-
         val activity = requireActivity() as TerminalActivity
         val client = TerminalBackEnd(terminalView, activity) {
             if (isAdded) {
@@ -288,6 +290,24 @@ class TerminalFragment : Fragment() {
         // as soon as it gets focus, which is before the layout callback below runs. A null client
         // at that point crashes in TerminalView.onCreateInputConnection.
         terminalView.setTerminalViewClient(client)
+
+        sessionInitJob?.cancel()
+        sessionInitJob = viewLifecycleOwner.lifecycleScope.launch {
+            val runtimeReady = withContext(Dispatchers.IO) {
+                runCatching { RuntimeManager.getInstance().assertInit() }.isSuccess
+            }
+            if (!isAdded) return@launch
+            if (runtimeReady) {
+                startSession(activity, client)
+            } else {
+                Toast.makeText(requireContext(), R.string.errored, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun startSession(activity: TerminalActivity, client: TerminalBackEnd) {
+        val sessionBinder = terminalViewModel.sessionBinder ?: return
+        val service = sessionBinder.getService()
 
         if (!sessionId.isNullOrBlank()) {
             terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
@@ -355,6 +375,7 @@ class TerminalFragment : Fragment() {
     }
 
     private fun writeSpaced(text: String) {
+        if (!::session.isInitialized) return
         val needsSpace = runCatching {
             val emulator = session.emulator
             val col = emulator.cursorCol

@@ -297,6 +297,7 @@ object MkSession {
         lines.add("e.g. yt-dlp --version")
         lines.add("Available commands: ${tools.joinToString(", ")}")
         lines.add("\nDefault directory: $currentDir")
+        lines.add("\nTo disable yt-dlp auto write, turn off the toggle in the settings!")
         lines.add("\nTo hide this message, run: touch \$HUSHWELCOME")
         val body = lines.joinToString(separator = "\n", prefix = "", postfix = "\n") { "printf '$it\\n'" } + "printf '\\n'\n"
         return "if [ ! -e \"\$HUSHWELCOME\" ]; then\n$body" + "fi\n"
