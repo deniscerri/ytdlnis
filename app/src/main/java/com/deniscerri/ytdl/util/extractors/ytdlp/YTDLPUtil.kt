@@ -1311,27 +1311,19 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                         val emptyAuthor = downloadItem.author.isEmpty()
                         val usePlaylistMetadata = sharedPreferences.getBoolean("playlist_as_album", true)
+                        val allArtistsInAlbumArtist = sharedPreferences.getBoolean("all_artists_in_album_artist", false)
 
-                        if (emptyAuthor) {
-                            if (usePlaylistMetadata) {
-                                metadataCommands.addOption("--parse-metadata", "%(playlist_uploader,artist,uploader|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
-                            }else{
-                                metadataCommands.addOption("--parse-metadata", "%(artist,uploader|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
-                            }
-                        }else{
-                            if (usePlaylistMetadata) {
-                                metadataCommands.addOption("--parse-metadata", "%(playlist_uploader,artist|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
-                            }else{
-                                metadataCommands.addOption("--parse-metadata", "%(artist|)s:^(?P<first_artist>.*?)(?:(?=,\\s+)|$)")
-                            }
-                        }
+                        // album artist fallback: the first of the artists, or all of them (some players group albums by the full list)
+                        val artistFields = listOfNotNull("playlist_uploader".takeIf { usePlaylistMetadata }, "artist", "uploader".takeIf { emptyAuthor }).joinToString(",")
+                        val artistPattern = if (allArtistsInAlbumArtist) "(?P<default_album_artist>.*)" else "^(?P<default_album_artist>.*?)(?:(?=,\\s+)|$)"
+                        metadataCommands.addOption("--parse-metadata", "%($artistFields|)s:$artistPattern")
 
                         if (usePlaylistMetadata) {
                             metadataCommands.addOption("--parse-metadata", "%(album,playlist_title,playlist|)s:%(meta_album)s")
                         }
 
 
-                        metadataCommands.addOption("--parse-metadata", "%(album_artist,first_artist|)s:%(album_artist)s")
+                        metadataCommands.addOption("--parse-metadata", "%(album_artist,default_album_artist|)s:%(album_artist)s")
                         metadataCommands.addOption("--parse-metadata", "%(release_year,release_date>%Y,upload_date>%Y)s:(?P<meta_date>\\d+)")
 
                         if (isPlaylistItem) {

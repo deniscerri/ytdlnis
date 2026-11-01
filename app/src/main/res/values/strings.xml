@@ -309,6 +309,8 @@
     <string name="use_cookies">Use cookies</string>
     <string name="embed_metadata">Embed metadata</string>
     <string name="embed_metadata_summary">Parse and embed metadata to the file</string>
+    <string name="all_artists_in_album_artist">Save all artists in Album Artist</string>
+    <string name="all_artists_in_album_artist_summary">Use all artists for the Album Artist tag instead of only the first one</string>
     <string name="update_formats_background">Update formats in background</string>
     <string name="auto_update_ytdlp">Auto-update yt-dlp</string>
     <string name="use_sponsorblock">Use SponsorBlock</string>
