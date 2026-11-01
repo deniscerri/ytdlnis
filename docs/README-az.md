@@ -5,6 +5,7 @@
 
 <div align="center">
 	Azərbaycanca
+	<a href="https://github.com/deniscerri/ytdlnis/blob/main/README.md">English</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
 	<a href="https://github.com/deniscerri/ytdlnis/blob/main/docs/README-sq.md">Shqip</a>
 	&nbsp;&nbsp;| &nbsp;&nbsp;
@@ -59,9 +60,9 @@
 
 ### ⬇️ Endirmə
 - [1000+ veb-saytdan](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md) audio, video endirin və ya xüsusi yt-dlp əmrləri icra edin
-- Tətbiqə keçid (link) paylaşın və birbaşa aşağı kartdan endirin, tətbiqi açmağa ehtiyac yoxdur
+- Tətbiqə keçid paylaşın və birbaşa aşağı kartdan endirin, tətbiqi açmağa ehtiyac yoxdur
 - Məlumatların yüklənməsini gözləmədən dərhal başlamaq üçün sürətli endirmə rejimi
-- İstehsal siyahıları (pleylistlər) və toplu endirmələr: hər bir elementi ayrı-ayrılıqda redaktə edin və ya hamısı üçün növü, formatı, yolu və fayl adı şablonunu toplu şəkildə redaktə edin, müəllifə, müddətə, başlığa və ya tarixə görə çeşidləyin
+- Ppleylistlər və toplu endirmələr: hər bir elementi ayrı-ayrılıqda redaktə edin və ya hamısı üçün növü, formatı, yolu və fayl adı şablonunu toplu şəkildə redaktə edin, müəllifə, müddətə, başlığa və ya tarixə görə çeşidləyin
 - Keçidlərin, pleylistlərin və ya axtarış sorğularının `.txt` faylını daxil edin və tətbiq onların hamısını emal etsin
 - Növbəyə qoyun, tarix və saata görə planlaşdırın və eyni vaxtda bir neçə endirmə işlədin
 - Sürüşdürmə jestləri ilə dayandırın / davam etdirin, uğursuz və ya ləğv edilmiş elementləri yenidən endirin
@@ -84,7 +85,7 @@
 ### 🧑‍💻 Təcrübəli istifadəçilər üçün
 - yt-dlp, Python, pip, FFmpeg və digər daxil edilmiş alətlərin istifadəyə hazir olduğu bash ilə tam terminal
 - Ehtiyat nüsxəsini çıxara və paylaşa biləcəyiniz sintaksis vurğulaması olan əmr şablonları
-- Kukilərin (cookies) dəstəyi: daxili brauzer vasitəsilə daxil olun və şəxsi və ya premium məzmunu endirin
+- Kukilər dəstəyi: daxili brauzer vasitəsilə daxil olun və şəxsi və ya premium məzmunu endirin
 - Daxili BGUtils provayderi ilə və ya tətbiqin veb-görünüşündə (webview) YouTube PO tokenləri yaradın
 - Məlumat əldə etmə ekstraktoru olaraq NewPipe və ya yt-dlp seçin
 - Veb-sayt sorğuları üçün curl-cffi daxil edilmiş Python, əlavə olaraq JS işləmə mühitləri (QuickJS, Deno, NodeJS)
@@ -98,7 +99,7 @@
 - Demək olar ki, hər şeyin ehtiyat nüsxəsini çıxarın və bərpa edin, həm də birbaşa qarşılama ekranından
 - Keşləri və qalıqları təmizləmək üçün fayl meneceri
 
-## 🧩 Plugin Dəstəyi
+## 🧩 Plagin Dəstəyi
 
 YTDLnis istifadəçilərə aşağıdakı kimi komponentləri sərbəst şəkildə təkmilləşdirməyə və aşağı salmağa imkan vermək üçün plaginləri idarə edir:
 - Python
@@ -111,27 +112,25 @@ Siz ytdlnis paketlərini bu [ytdlnis-packages](https://github.com/deniscerri/ytd
 
 ## 📲 Ekran görüntüləri
 
-<div>
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
-</div>
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/01.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/02.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/03.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/04.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/05.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/06.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/07.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/08.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/09.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/10.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/11.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/12.png" width="30%" />
+<img src="../fastlane/metadata/android/en-US/images/phoneScreenshots/13.png" width="90%" />
 
 ## 💬 Əlaqə
 
 Elanlar, müzakirələr və buraxılışlar üçün [Discord](https://discord.gg/WW3KYWxAPm) və ya [Telegram kanalımıza](https://t.me/ytdlnis) qoşulun.
 
-## 😇 Töhfə vermək (Contributing)
+## 😇 Töhfə vermək
 
 Əgər töhfə vermək istəyirsinizsə, lütfən [töhfə vermə](CONTRIBUTING.MD) bölməsini oxuyun.
 
