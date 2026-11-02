@@ -25,6 +25,7 @@ import androidx.core.content.edit
 import androidx.preference.EditTextPreference
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.ui.more.settings.SettingHost
+import com.deniscerri.ytdl.util.NetworkDetector
 
 object DownloadSettingsModule : SettingModule {
     override fun bindLogic(pref: Preference, host: SettingHost) {
@@ -44,6 +45,78 @@ object DownloadSettingsModule : SettingModule {
                 pref.setOnPreferenceChangeListener { _, newValue ->
                     archivePath?.isVisible = newValue == "download_archive"
                     host.refreshUI()
+                    true
+                }
+            }
+            "allowed_network_type" -> {
+                fun updateSummary() {
+                    val value = preferences.getString("allowed_network_type", "all") ?: "all"
+                    pref.summary = when(value) {
+                        "wifi_and_5g" -> context.getString(R.string.network_type_wifi_and_5g)
+                        "5g_only" -> context.getString(R.string.network_type_5g_only)
+                        "wifi_only" -> context.getString(R.string.network_type_wifi_only)
+                        else -> context.getString(R.string.network_type_all)
+                    }
+                }
+                updateSummary()
+
+                pref.setOnPreferenceChangeListener { _, newValue ->
+                    val type = newValue as String
+                    preferences.edit(commit = true) {
+                        putString("allowed_network_type", type)
+                        when (type) {
+                            "wifi_and_5g" -> {
+                                putBoolean("stop_download_on_non_5g", true)
+                                putBoolean("allow_5g_networks", true)
+                                putBoolean("metered_networks", true)
+                            }
+                            "5g_only" -> {
+                                putBoolean("stop_download_on_non_5g", true)
+                                putBoolean("allow_5g_networks", true)
+                                putBoolean("metered_networks", true)
+                            }
+                            "wifi_only" -> {
+                                putBoolean("stop_download_on_non_5g", false)
+                                putBoolean("allow_5g_networks", false)
+                                putBoolean("metered_networks", false)
+                            }
+                            "all" -> {
+                                putBoolean("stop_download_on_non_5g", false)
+                                putBoolean("allow_5g_networks", true)
+                                putBoolean("metered_networks", true)
+                            }
+                        }
+                    }
+                    updateSummary()
+                    (host.findPref("current_network_status"))?.let { statusPref ->
+                        val info = NetworkDetector.getDiagnosticInfo(context)
+                        val statusText = if (info.isAllowedForDownload) "Allowed for downloads" else "Downloads will pause"
+                        statusPref.summary = "${info.networkTypeName} (${info.transportName}) • $statusText"
+                    }
+                    host.refreshUI()
+                    true
+                }
+            }
+            "current_network_status" -> {
+                fun updateStatus() {
+                    val info = NetworkDetector.getDiagnosticInfo(context)
+                    val statusText = if (info.isAllowedForDownload) "Allowed for downloads" else "Downloads will pause"
+                    pref.summary = "${info.networkTypeName} (${info.transportName}) • $statusText"
+                }
+                updateStatus()
+
+                val observer = object : NetworkDetector.NetworkStateObserver {
+                    override fun onNetworkStateChanged(category: NetworkDetector.NetworkCategory, isAllowed: Boolean) {
+                        host.getHostContext().runOnUiThread {
+                            updateStatus()
+                        }
+                    }
+                }
+                NetworkDetector.addObserver(observer)
+
+                pref.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                    updateStatus()
+                    UiUtil.showNetworkDiagnosticDialog(host.getHostContext())
                     true
                 }
             }

@@ -50,6 +50,21 @@
             app:key="download_archive_path"
             app:title="@string/download_archive_folder" />
 
+        <Preference
+            android:icon="@drawable/ic_5g"
+            android:key="current_network_status"
+            app:summary="@string/current_network_status_checking"
+            app:title="@string/current_network_status_title" />
+
+        <ListPreference
+            android:defaultValue="all"
+            android:entries="@array/allowed_network_type_entries"
+            android:entryValues="@array/allowed_network_type_values"
+            android:icon="@drawable/ic_5g"
+            android:key="allowed_network_type"
+            app:summary="@string/allowed_network_type_summary"
+            app:title="@string/allowed_network_type" />
+
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"
             app:defaultValue="true"
