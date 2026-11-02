@@ -198,7 +198,7 @@
     <string name="invert_selected">নির্বাচনগুলো উল্টান</string>
     <string name="save_subs_desc">সাবটাইটেল ফাইল লিখুন</string>
     <string name="subtitle_languages">সাবটাইটেল এর ভাষা</string>
-    <string name="save_subs">সাবটাইটেল সংরক্ষণ করুন</string>
+    <string name="save_subs">সাবটাইটেল সেভ করুন</string>
     <string name="format_source">ফরম্যাট উৎস</string>
     <string name="video_recommendations">সুপারিশ করা ভিডিও</string>
     <string name="video_recommendations_summary">হোম স্ক্রিনেই পেয়ে যান আপনার জন্য সাজানো ইউটিউব ভিডিওর তালিকা – একদম আপনার পছন্দ অনুযায়ী</string>
@@ -211,7 +211,7 @@
     <string name="codec">কোডেক</string>
     <string name="audio_samplerate">অডিও নমুনা হার</string>
     <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
-    <string name="quick_download">দ্রুত ডাউনলোড</string>
+    <string name="quick_download">দ্রুত ডাউনলোড করুন</string>
     <string name="quick_download_summary">ডাউনলোড কার্ডে ডেটা আনবেন না</string>
     <string name="Theme">থিম</string>
     <string name="dark">গাঢ়</string>
@@ -231,12 +231,12 @@
     <string name="downloaded">"ডাউনলোডেড: "</string>
     <string name="finished_download_notification_channel_name">ডাউনলোগুলো সমাপ্ত</string>
     <string name="finished_download_notification_channel_description">সমাপ্ত ডাউনলোডের জন্য বিজ্ঞপ্তি</string>
-    <string name="remove_audio">অডিও সরান</string>
+    <string name="remove_audio">অডিও রিমুভ করুন</string>
     <string name="preferred_format_id">পছন্দের ফরম্যাট আইডি</string>
     <string name="download_now">এখনই ডাউনলোড করুন</string>
     <string name="download_already_exists">ডাউনলোড আগে থেকেই আছে</string>
     <string name="save_for_later">পরে ডাউনলোড করার জন্য সংরক্ষণ করবেন?</string>
-    <string name="custom_audio_quality">কাস্টম অডিও মান ব্যবহার করুন</string>
+    <string name="custom_audio_quality">কাস্টম অডিও কোয়ালিটি ব্যবহার করুন</string>
     <string name="use_cookies">কুকি ব্যবহার করুন</string>
     <string name="orange">কমলা</string>
     <string name="resume">পুনরায় চালু</string>
@@ -245,13 +245,13 @@
     <string name="general">সাধারণ</string>
     <string name="updating_download_data">ডাউনলোড আইটেম ডাটা আপডেট হচ্ছে</string>
     <string name="keep_cache">টুকরোগুলো রাখুন</string>
-    <string name="search_history">অনুসন্ধান ইতিহাস</string>
-    <string name="backup_created_successfully">ব্যাকআপ ফাইল সফলভাবে ডাউনলোড ফোল্ডারে সংরক্ষিত হয়েছে!</string>
+    <string name="search_history">অনুসন্ধানের ইতিহাস</string>
+    <string name="backup_created_successfully">ব্যাকআপ ফাইল সফলভাবে সেভ করা হয়েছে</string>
     <string name="backup_restore">ব্যাকআপ এবং পুনরুদ্ধার</string>
     <string name="preferred_format_id_summary">ডাউনলোড কার্ডে এই আইডি সহ ফরম্যাট নির্বাচন করুন</string>
-    <string name="swipe_gestures">সোয়াইপ অঙ্গভঙ্গি</string>
+    <string name="swipe_gestures">সোয়াইপ জেসচার</string>
     <string name="swipe_gestures_summary">নির্দিষ্ট ক্রিয়ার জন্য সোয়াইপ আইটেম</string>
-    <string name="crop_thumb">থাম্বনাইল ক্রপ করুন</string>
+    <string name="crop_thumb">থাম্বনেইল ক্রপ করুন</string>
     <string name="crop_thumb_summary">অডিও ডাউনলোডের জন্য থাম্বনেইল বর্গাকারে ক্রপ করুন</string>
     <string name="use_extra_commands">অতিরিক্ত কমান্ড যোগ করুন</string>
     <string name="current">বর্তমান কমান্ড</string>
@@ -274,15 +274,15 @@
     <string name="write_description">বর্ণনা সংরক্ষণ করুন</string>
     <string name="write_description_summary">বিবরণ ফাইল লিখুন</string>
     <string name="extra_command">অতিরিক্ত কমান্ড</string>
-    <string name="socks5_proxy">Socks5 প্রক্সি URL</string>
+    <string name="socks5_proxy">SOCKS5 প্রক্সি URL</string>
     <string name="retries">পুনরায় চেষ্টা করে</string>
     <string name="fragment_retries">ফ্র্যাগমেন্ট পুনরায় চেষ্টা</string>
     <string name="format_order">ফরম্যাট অর্ডার</string>
-    <string name="move_temporary_files">অস্থায়ী ফাইল স্থানান্তর করুন</string>
+    <string name="move_temporary_files">টেম্পরারি ফাইল স্থানান্তর করুন</string>
     <string name="move_temporary_files_summary">ক্যাশে ফাইল ডাউনলোড ফোল্ডারে সরিয়ে নিন</string>
     <string name="embed_metadata_summary">অডিও ফাইলে মেটাডেটা পার্স এবং এম্বেড করুন</string>
     <string name="embed_metadata">মেটাডেটা স্থাপন করুন</string>
-    <string name="search_suggestions">অনুসন্ধান প্রস্তাবনা</string>
+    <string name="search_suggestions">সার্চ সাজেশন</string>
     <string name="search_suggestions_summary">Google থেকে অনুসন্ধান প্রস্তাবনা পান</string>
     <string name="force_keyframes">কাটগুলোতে জোর করে কীফ্রেম সেট করুন</string>
     <string name="force_keyframes_summary">ধীর প্রক্রিয়া, কিন্তু বেশি সঠিক কাট</string>
@@ -371,4 +371,5 @@
         <item quantity="other">%d আইটেমসমূহ</item>
     </plurals>
     <string name="reorder_queue">সিরিয়াল পুনরায় সাজান</string>
+    <string name="toggle_all">সব টগল করুন</string>
 </resources>
