@@ -213,7 +213,9 @@
     <string name="show_download_card">ਡਾਉਨਲੋਡ ਕਾਰਡ ਵਿਖਾਓ</string>
     <string name="warning">ਚੇਤਾਵਨੀ</string>
     <string name="delete_file_too">ਡਿਵਾਈਸ ਤੋਂ ਫ਼ਾਈਲ ਮਿਟਾਓ</string>
-    <string name="open_file">ਫ਼ਾਈਲ ਖੋਲ੍ਹੋ</string>
+    <plurals name="open_file">
+        <item quantity="one">ਫ਼ਾਈਲ ਖੋਲ੍ਹੋ</item>
+    </plurals>
     <string name="exit_app">ਐਪ ਤੋਂ ਬਾਹਰ ਜਾਓ</string>
     <string name="you_are_going_to_delete_multiple_items">ਕਈ ਆਈਟਮਾਂ ਨੂੰ ਮਿਟਾਇਆ ਜਾ ਰਿਹਾ ਹੈ</string>
     <string name="video_quality">ਵੀਡੀਓ ਗੁਣਵੱਤਾ</string>
@@ -475,10 +477,14 @@
     <string name="reverse">ਰਿਵਰਸ</string>
     <string name="no_keep_subs">ਏਮਬੈਡਿੰਗ ਤੋਂ ਬਾਅਦ ਸਬਟਾਈਟਲ ਫਾਈਲਾਂ ਨੂੰ ਮਿਟਾਓ</string>
     <string name="no_keep_subs_summary">ਏਮਬੈਡ ਸਬਟਾਈਟਲ ਅਤੇ ਸਬਟਾਈਟਲ ਲਿਖੋ ਦੋਵਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਸਮੇਂ, ਏਮਬੈਡ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸਬਟਾਈਟਲ ਫਾਈਲਾਂ ਨੂੰ ਨਾ ਰੱਖੋ</string>
-    <string name="video_compatible">ਅਨੁਕੂਲ ਵੀਡੀਓ</string>
+    <plurals name="video_compatible">
+        <item quantity="one">ਅਨੁਕੂਲ ਵੀਡੀਓ</item>
+    </plurals>
     <string name="video_compatible_summary">ਵੀਡੀਓ ਨੂੰ ਰੀਕੋਡ ਕਰਦਾ ਹੈ ਤਾਂ ਜੋ ਇਸਨੂੰ ਹੋਰ ਐਪਸ ਦੇ ਅਨੁਕੂਲ ਬਣਾਇਆ ਜਾ ਸਕੇ</string>
     <string name="no_free_space_warning">ਇਸ ਸੰਰਚਨਾ ਲਈ ਕੋਈ ਖਾਲੀ ਥਾਂ ਨਹੀਂ ਹੈ।</string>
-    <string name="preferred_format_size">ਪਸੰਦੀਦਾ ਫ਼ਾਰਮੈਟ ਆਕਾਰ</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">ਪਸੰਦੀਦਾ ਫ਼ਾਰਮੈਟ ਆਕਾਰ</item>
+    </plurals>
     <string name="smallest">ਸਭ ਤੋਂ ਛੋਟਾ</string>
     <string name="largest">ਸਭ ਤੋਂ ਵੱਡਾ</string>
     <string name="potoken_gvs">PO ਟੋਕਨ (GVS)</string>
@@ -487,7 +493,9 @@
     <string name="visitor_data">ਵਿਜ਼ਟਰ ਡੇਟਾ</string>
     <string name="get_data_sync_id">ਡਾਟਾ ਸਿੰਕ ਆਈਡੀ ਪ੍ਰਾਪਤ ਕਰੋ</string>
     <string name="desktop">ਡੈਸਕਟਾਪ</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">ਫਲੈਟ ਪਲੇਲਿਸਟ ਨੂੰ ਡਿਸੇਬਲ ਕਰੋ</string>
     <string name="disable_flat_playlist_summary">--flat-playlist ਦੀ ਵਰਤੋਂ ਨਾ ਕਰੋ। ਡਾਟਾ ਪ੍ਰਾਪਤ ਕਰਨਾ ਹੌਲੀ ਹੈ, ਪਰ ਇਹ ਵਧੇਰੇ ਡਾਟਾ ਭਰਪੂਰ ਹੈ</string>
     <string name="chapters">ਚੈਪਟਰ</string>
@@ -499,11 +507,17 @@
     <string name="potoken_guide">ਪ੍ਰਮਾਣੀਕਰਨ\n--------------------------\n1. ਵੈੱਬਵਿਊ ਵਿੱਚ ਸਾਈਨ ਇਨ ਪੰਨਾ ਖੋਲ੍ਹਣ ਲਈ \'ਪ੍ਰਮਾਣੀਕਰਨ\' \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\n2. ਆਪਣੇ Google ਖਾਤੇ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ।\n\n3. ਕੋਈ ਵੀ ਵੀਡੀਓ ਚਲਾਓ ਜੋ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਦਾ ਸਮਰਥਨ ਕਰਦਾ ਹੈ।\n\n4. ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਨੂੰ ਚਾਲੂ ਕਰੋ ਅਤੇ ਦੇਖੋ ਕਿ ਕੀ ਇਹ ਕੰਮ ਕਰਦਾ ਹੈ।\n\n4.1 ਜੇਕਰ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲ ਕੰਮ ਨਹੀਂ ਕਰਦੇ ਹਨ, ਤਾਂ ਕਿਸੇ ਹੋਰ ਵੀਡੀਓ \'ਤੇ ਸਵਿੱਚ ਕਰੋ ਜੋ ਸਵੈ-ਅਨੁਵਾਦਿਤ ਸਬਟਾਈਟਲਾਂ ਦਾ ਸਮਰਥਨ ਕਰਦਾ ਹੈ ਅਤੇ ਕਦਮ 4 ਨੂੰ ਦੁਬਾਰਾ ਅਜ਼ਮਾਓ।\n\nਠੀਕ ਹੈ \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\nਕੋਈ ਪ੍ਰਮਾਣੀਕਰਨ ਨਹੀਂ\n------------------\n1. \'ਕੋਈ ਪ੍ਰਮਾਣੀਕਰਨ ਨਹੀਂ\' \'ਤੇ ਕਲਿੱਕ ਕਰੋ।\n\n2. ਕੋਈ ਵੀ ਯੂਟਿਊਬ ਵੀਡੀਓ url ਲਿਖੋ\n3. ਵੀਡੀਓ ਦੇ ਲੋਡ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰੋ ਅਤੇ ਘੱਟੋ-ਘੱਟ 3 ਸਕਿੰਟਾਂ ਲਈ ਵੀਡੀਓ ਚਲਾਓ।\n\n4. ਠੀਕ ਹੈ \'ਤੇ ਕਲਿੱਕ ਕਰੋ।</string>
     <string name="no_auth">ਕੋਈ ਪ੍ਰਮਾਣਿਕਤਾ ਨਹੀਂ</string>
     <string name="auth">ਪ੍ਰਮਾਣਿਕਤਾ</string>
-    <string name="prefer_drc_audio">DRC ਆਡੀਓ ਨੂੰ ਤਰਜੀਹ ਦਿਓ</string>
-    <string name="app_icon">ਐਪ ਆਈਕਨ</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">DRC ਆਡੀਓ ਨੂੰ ਤਰਜੀਹ ਦਿਓ</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">ਐਪ ਆਈਕਨ</item>
+    </plurals>
     <string name="show_quick_download_share_menu">ਸ਼ੇਅਰ ਮੀਨੂ ਵਿੱਚ ਤੁਰੰਤ ਡਾਊਨਲੋਡ ਕਰਨ ਦਾ ਵਿਕਲਪ ਦਿਖਾਓ</string>
     <string name="quick_download_title">ਡਾਟਾ ਨਾ ਪ੍ਰਾਪਤ ਕਰੋ</string>
-    <string name="sponsorblock_hook">ਹੁੱਕ/ਸ਼ੁਭਕਾਮਨਾਵਾਂ</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">ਹੁੱਕ/ਸ਼ੁਭਕਾਮਨਾਵਾਂ</item>
+    </plurals>
     <string name="packages">ਪੈਕੇਜ</string>
     <string name="not_installed">ਸਥਾਪਤ ਨਹੀਂ ਹੈ</string>
     <string name="bundled">ਬੰਡਲ ਕੀਤਾ ਗਿਆ</string>
@@ -520,9 +534,15 @@
     <string name="install_downloaded_file">ਡਾਊਨਲੋਡ ਕੀਤੀ ਫਾਈਲ ਇੰਸਟਾਲ ਕਰੋ</string>
     <string name="website">ਵੈੱਬਸਾਈਟ</string>
     <string name="playlist">ਪਲੇਲਿਸਟ</string>
-    <string name="media_type">ਮੀਡੀਆ ਕਿਸਮ</string>
-    <string name="free_ratio">ਫਰੀ ਅਨੁਪਾਤ</string>
-    <string name="aspect_ratio">ਆਕਾਰ ਅਨੁਪਾਤ</string>
+    <plurals name="media_type">
+        <item quantity="one">ਮੀਡੀਆ ਕਿਸਮ</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="one">ਫਰੀ ਅਨੁਪਾਤ</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">ਆਕਾਰ ਅਨੁਪਾਤ</item>
+    </plurals>
     <string name="dimensions">ਮਾਪ</string>
     <string name="x_offset">X ਆਫਸੈੱਟ</string>
     <string name="y_offset">Y ਆਫਸੈੱਟ</string>
