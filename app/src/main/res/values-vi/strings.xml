@@ -475,20 +475,28 @@
     <string name="reverse">Đảo ngược</string>
     <string name="no_keep_subs">Xoá tệp phụ đề sau khi nhúng</string>
     <string name="no_keep_subs_summary">Khi dùng cả Phụ đề nhúng và Ghi phụ đề, không giữ các tệp phụ đề sau khi nhúng</string>
-    <string name="video_compatible">Video tương thích</string>
+    <plurals name="video_compatible">
+        <item quantity="other">Video tương thích</item>
+    </plurals>
     <string name="video_compatible_summary">Mã hóa lại video để tương thích với các ứng dụng khác</string>
     <string name="no_free_space_warning">Không còn dung lượng trống cho cấu hình này.</string>
-    <string name="preferred_format_size">Kích thước định dạng ưa tiên</string>
+    <plurals name="preferred_format_size">
+        <item quantity="other">Kích thước định dạng ưa tiên</item>
+    </plurals>
     <string name="smallest">Bé nhất</string>
     <string name="largest">Lớn nhất</string>
     <string name="potoken_gvs">Mã PO (GVS)</string>
     <string name="potoken_player">Mã PO (Trình phát)</string>
     <string name="potoken_subs">Mã PO (Phụ đề)</string>
-    <string name="prefer_drc_audio">Ưu tiên âm thanh DRC</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="other">Ưu tiên âm thanh DRC</item>
+    </plurals>
     <string name="visitor_data">Dữ liệu khách</string>
     <string name="get_data_sync_id">Lấy ID đồng bộ dữ liệu</string>
     <string name="desktop">Máy tính bàn</string>
-    <string name="url_regex">Biểu thức chính quy URL</string>
+    <plurals name="url_regex">
+        <item quantity="other">Biểu thức chính quy URL</item>
+    </plurals>
     <string name="disable_flat_playlist">Tắt danh sách phát phẳng</string>
     <string name="disable_flat_playlist_summary">Không dùng --flat-playlist. Tốc độ lấy dữ liệu chậm hơn, nhưng dữ liệu phong phú</string>
     <string name="chapters">Chương</string>
@@ -500,10 +508,14 @@
     <string name="potoken_guide">Xác thực\n-----------------------\n1. Bấm \"Xác thực\" để mở trang đăng nhập trong WebView.\n2. Đăng nhập tài khoản Google.\n3. Phát bất kì video nào có hỗ trợ phụ đề tự động dịch.\n4. Bật phụ đề tự động dịch và kiểm tra xem có hoạt động không.\n\t4.1 Nếu phụ đề tự động dịch không chạy, hãy thử chuyển sang một video khác cũng hỗ trợ tính năng này và làm lại bước 4.\n5. Bấm OK.\n\nKhông xác thực\n-----------------------\n1. Bấm \"Không xác thực\".\n2. Nhập URL của bất kỳ video YouTube nào.\n3. Đợi video tải xong, sau đó phát video ít nhất 3 giây.\n4. Bấm OK.</string>
     <string name="no_auth">Không xác thực</string>
     <string name="auth">Xác thực</string>
-    <string name="app_icon">Biểu tượng ứng dụng</string>
+    <plurals name="app_icon">
+        <item quantity="other">Biểu tượng ứng dụng</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Hiện tùy chọn tải xuống ngay trong menu chia sẻ</string>
     <string name="quick_download_title">Không lấy dữ liệu</string>
-    <string name="sponsorblock_hook">Lời chào/Mở đầu</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="other">Lời chào/Mở đầu</item>
+    </plurals>
     <string name="installed">Đã cài đặt</string>
     <string name="auto_update_ytdlp_summary">Khuyến nghị nên giữ tùy chọn này được bật vì yt-dlp được cập nhật khá thường xuyên! Dữ liệu được lấy từ kho GitHub của yt-dlp.</string>
     <string name="packages">Gói ứng dụng</string>
@@ -520,15 +532,23 @@
     <string name="trim_filenames">Cắt bớt tên tệp</string>
     <string name="website">Trang web</string>
     <string name="playlist">Danh sách phát</string>
-    <string name="media_type">Loại phương tiện</string>
-    <string name="free_ratio">Tỷ lệ tự do</string>
-    <string name="aspect_ratio">Tỷ lệ khung hình</string>
+    <plurals name="media_type">
+        <item quantity="other">Loại phương tiện</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="other">Tỷ lệ tự do</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="other">Tỷ lệ khung hình</item>
+    </plurals>
     <string name="dimensions">Kích thước</string>
     <string name="x_offset">Độ lệch X</string>
     <string name="y_offset">Độ lệch Y</string>
     <string name="width">Chiều rộng</string>
     <string name="height">Chiều cao</string>
-    <string name="search_results">Kết quả tìm kiếm</string>
+    <plurals name="search_results">
+        <item quantity="other">Kết quả tìm kiếm</item>
+    </plurals>
     <string name="reorder_queue">Sắp xếp lại hàng chờ</string>
     <string name="translators">Người dịch</string>
     <string name="translators_summary">Những người đã giúp dịch ứng dụng này trên Weblate</string>
@@ -536,7 +556,9 @@
     <string name="toggle_all">Bật/tắt tất cả</string>
     <string name="merge_cuts">Ghép các đoạn cắt thành một tệp duy nhất</string>
     <string name="crop_unavailable_please_update_item">Bạn cần cập nhật dữ liệu mặt hàng để có thể sử dụng tính năng cắt xén</string>
-    <string name="preferred_format_size_audio">Kích thước định dạng âm thanh ưa thích</string>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="other">Kích thước định dạng âm thanh ưa thích</item>
+    </plurals>
     <string name="player_client_not_empty">Thẻ Player Client không được để trống</string>
     <string name="player_client_already_created">Player Client đã được tạo</string>
     <string name="write_atleast_one_potoken">Bạn cần viết ít nhất một PO Token</string>
@@ -566,7 +588,9 @@
     <string name="no_delay">Không thiết lập độ trễ</string>
     <string name="waiting_download_delay">Đang chờ tải xuống (%s giây)…</string>
     <string name="bgutils_info">Một nhà cung cấp mã thông báo chứng minh nguồn gốc (POT) cho yt-dlp.\nKhi được kích hoạt, YTDLnis sẽ lưu trữ máy chủ HTTP tạo ra POT và cài đặt plugin liên quan mà yt-dlp sử dụng.</string>
-    <string name="bgutils_pot_generation_server">Máy chủ HTTP</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="other">Máy chủ HTTP</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">Mỗi lần gọi yt-dlp đều phát sinh chi phí khởi tạo một tiến trình runtime JavaScript mới để chạy script. Phương pháp này không được khuyến khích sử dụng cho các tác vụ có độ đồng thời cao.</string>
     <string name="bgutils_pot_server_summary">Đây là máy chủ HTTP JavaScript, trên cổng 4416. Nếu bị lỗi, nó sẽ tự động khởi động lại khi hàng đợi tải xuống bắt đầu thực thi hoặc khi quá trình quan sát nguồn được lên lịch. Để tắt nó, bạn phải thực hiện thao tác tắt thủ công!</string>
     <string name="please_install_package">Vui lòng cài đặt gói %s</string>
@@ -583,16 +607,22 @@
     <string name="check_clipboard_home_summary">Tự động phát hiện URL trong clipboard trên màn hình chính</string>
     <string name="check_clipboard_home">Kiểm tra bảng nhớ tạm trên màn hình chính</string>
     <string name="clear_info_json">Xóa các infojson</string>
-    <string name="internal_plugin_ffmpeg_preset">Cài đặt sẵn Plugin nội bộ FFmpeg</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="other">Cài đặt sẵn Plugin nội bộ FFmpeg</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">Cài đặt mặc định mà FFmpeg sử dụng cho các plugin nội bộ như ghi phụ đề, v.v. Việc điều chỉnh tùy chọn này sẽ ảnh hưởng đến kích thước tệp cuối cùng!</string>
     <string name="skip_backlog">Bỏ qua danh sách tồn đọng hiện tại</string>
     <plurals name="every_minutes">
         <item quantity="other">1 phút</item>
     </plurals>
     <string name="bgutils_pot_generation_script">Tạo script</string>
-    <string name="history_quick_action">Nút thao tác nhanh</string>
+    <plurals name="history_quick_action">
+        <item quantity="other">Nút thao tác nhanh</item>
+    </plurals>
     <string name="history_quick_action_summary">Thao tác cần thực hiện khi nhấp vào nút thao tác nhanh trên thẻ lịch sử</string>
-    <string name="open_file">Mở tệp</string>
+    <plurals name="open_file">
+        <item quantity="other">Mở tệp</item>
+    </plurals>
     <string name="duration">Khoảng thời gian</string>
     <string name="update_available">Đã có bản cập nhật</string>
     <string name="update_check_failed">Không thể kiểm tra cập nhật</string>
