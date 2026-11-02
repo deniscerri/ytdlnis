@@ -476,9 +476,13 @@
     <string name="no_keep_subs_summary">Pri použití funkcií Vložiť titulky a Zapísať titulky nezachováva súbory s titulkami po vložení</string>
     <string name="reverse">Vrátiť</string>
     <string name="video_compatible_summary">Prekóduje video, aby bolo kompatibilné s inými aplikáciami</string>
-    <string name="video_compatible">Kompatibilné video</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Kompatibilné video</item>
+    </plurals>
     <string name="no_free_space_warning">Pre túto konfiguráciu nie je k dispozícii žiadne voľné miesto.</string>
-    <string name="preferred_format_size">Preferovaná veľkosť formátu</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Preferovaná veľkosť formátu</item>
+    </plurals>
     <string name="smallest">Najmenšia</string>
     <string name="largest">Najväčšia</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -487,7 +491,9 @@
     <string name="visitor_data">Údaje o návštevníkoch</string>
     <string name="get_data_sync_id">Získať ID synchronizácie údajov</string>
     <string name="desktop">Desktop</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">Vypnúť jednoduchý playlist</string>
     <string name="disable_flat_playlist_summary">Nepoužívajte --jednoduchý-playlist. Pomalšie načítanie údajov, ale viac informácií</string>
     <string name="chapters">Kapitoly</string>
@@ -499,11 +505,17 @@
     <string name="potoken_guide">Overenie\n-----------------------\n1. Kliknite na „Overenie“, aby sa otvorila prihlasovacia stránka vo WebView.\n2. Prihláste sa do svojho účtu Google.\n3. Prehrajte ľubovoľné video, ktoré podporuje automaticky preložené titulky.\n4. Zapnite automaticky preložené titulky a skontrolujte, či fungujú.\n\t4.1 Ak automaticky preložené titulky nefungujú, prejdite na iné video, ktoré podporuje automaticky preložené titulky, a skúste krok 4 znova.\n5. Kliknite na OK.\n\nBez overenia\n-----------------------\n1. Kliknite na „Bez overenia“.\n2. Napíšte ľubovoľnú URL adresu videa na YouTube.\n3. Počkajte, kým sa video načíta, a prehrajte ho aspoň 3 sekundy.\n4. Kliknite na OK.</string>
     <string name="no_auth">Bez overenia</string>
     <string name="auth">Overenie</string>
-    <string name="prefer_drc_audio">Uprednostniť DRC Audio</string>
-    <string name="app_icon">Ikona aplikácie</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">Uprednostniť DRC Audio</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">Ikona aplikácie</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Zobraziť možnosť okamžitého stiahnutia v menu zdieľania</string>
     <string name="quick_download_title">Nenačítať údaje</string>
-    <string name="sponsorblock_hook">Pútka/Pozdravy</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Pútka/Pozdravy</item>
+    </plurals>
     <string name="packages">Balíčky</string>
     <string name="not_installed">Nenainštalované</string>
     <string name="bundled">Súčasti</string>
@@ -516,15 +528,21 @@
     <string name="save_subdirectory_summary">Uložte súbory do priečinkov na základe štítkov metadát</string>
     <string name="website">Webstránka</string>
     <string name="playlist">Playlist</string>
-    <string name="media_type">Typ média</string>
+    <plurals name="media_type">
+        <item quantity="one">Typ média</item>
+    </plurals>
     <string name="height">Výška</string>
     <string name="crop">Orezať</string>
     <string name="crop_validation_exceeds_w">X+W presahuje %d</string>
     <string name="crop_validation_exceeds_h">Y+H presahuje %d</string>
     <string name="width">Šírka</string>
     <string name="dimensions">Rozmery</string>
-    <string name="free_ratio">Voľný pomer</string>
-    <string name="aspect_ratio">Pomer strán</string>
+    <plurals name="free_ratio">
+        <item quantity="one">Voľný pomer</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">Pomer strán</item>
+    </plurals>
     <string name="x_offset">Posun X</string>
     <string name="y_offset">Posun Y</string>
     <string name="required">Povinné</string>
@@ -593,7 +611,9 @@
         <item quantity="other">Každých %d minút</item>
     </plurals>
     <string name="bgutils_pot_generation_script">Skript na generovanie</string>
-    <string name="bgutils_pot_generation_server">HTTP server</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="one">HTTP server</item>
+    </plurals>
     <string name="bgutils_info">Poskytovateľ tokenu overenia pôvodu (POT) pre yt-dlp.\nAk je zapnutý, YTDLnis hostí HTTP server, ktorý generuje POT a nainštaluje súvisiaci plugin, ktorý yt-dlp používa.</string>
     <string name="bgutils_pot_generation_script_summary">Každé volanie yt-dlp so sebou prináša dodatočnú záťaž v podobe spustenia nového procesu js runtime na vykonanie skriptu. Táto metóda sa neodporúča pri vysokej miere súbežnosti.</string>
     <string name="bgutils_pot_server_summary">Toto je JavaScript HTTP server na porte 4416. Ak je vypnutý, server sa automaticky spustí, keď sa začne vykonávať fronta sťahovania, alebo keď je naplánované sledovanie zdrojov. Na vypnutie ho musíte manuálne vypnúť z notifikácií!</string>
@@ -609,15 +629,25 @@
     <string name="bgutils_pot_generation_script_info">Aby bolo možné používať poskytovateľa POT BgUtils, aplikácia musí stiahnuť repozitár Brainicism/bgutil-ytdlp-pot-provider z GitHubu a spustiť inštaláciu. Dokončenie tohto procesu môže chvíľu trvať. Pokračovať teraz?</string>
     <string name="check_clipboard_home_summary">Automaticky rozpoznať URL adresy v schránke na domovskej obrazovke</string>
     <string name="check_clipboard_home">Skontrolovať schránku na domovskej obrazovke</string>
-    <string name="search_results">Výsledky vyhľadávania</string>
-    <string name="preferred_format_size_audio">Preferovaná veľkosť audio súboru</string>
+    <plurals name="search_results">
+        <item quantity="one">Výsledky vyhľadávania</item>
+    </plurals>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">Preferovaná veľkosť audio súboru</item>
+    </plurals>
     <string name="burn_subs">Zapísať titulky</string>
     <string name="clear_info_json">Vymazať infojsons</string>
-    <string name="internal_plugin_ffmpeg_preset">Predvoľby FFmpeg pre interné pluginy</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="one">Predvoľby FFmpeg pre interné pluginy</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">Predvoľby, ktoré FFmpeg používa pre interné pluginy, ako je zápis titulkov atď. Úprava tohto nastavenia ovplyvňuje konečnú veľkosť súboru!</string>
-    <string name="history_quick_action">Tlačidlo rýchlej akcie</string>
+    <plurals name="history_quick_action">
+        <item quantity="one">Tlačidlo rýchlej akcie</item>
+    </plurals>
     <string name="history_quick_action_summary">Akcia, ktorá sa má vykonať po kliknutí na tlačidlo rýchlej akcie na karte histórie</string>
-    <string name="open_file">Otvorenie súboru</string>
+    <plurals name="open_file">
+        <item quantity="one">Otvorenie súboru</item>
+    </plurals>
     <string name="translators">Prekladatelia</string>
     <string name="translators_summary">Ľudia, ktorí pomohli preložiť túto aplikáciu na Weblate</string>
     <string name="translators_unavailable">Zoznam prekladateľov nie je v tomto zostavení k dispozícii. Na Weblate si však stále môžete pozrieť všetkých, ktorí prispeli.</string>
