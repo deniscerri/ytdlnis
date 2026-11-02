@@ -475,10 +475,14 @@
     <string name="no_keep_subs">Feliratfájlok törlése beágyazás után</string>
     <string name="no_keep_subs_summary">Ha egyszerre használja a „Feliratok beágyazása” és „Feliratok mentése” opciókat, a feliratfájlokat ne tartsa meg beágyazás után</string>
     <string name="player_client_summary">YouTube-lejátszó-kliensek és PO-token</string>
-    <string name="video_compatible">Kompatibilis videó</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Kompatibilis videó</item>
+    </plurals>
     <string name="video_compatible_summary">Átkódolja a videót, hogy kompatibilis legyen más alkalmazásokkal</string>
     <string name="no_free_space_warning">Nincs szabad hely ehhez a konfigurációhoz.</string>
-    <string name="preferred_format_size">Preferált formátumméret</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Preferált formátumméret</item>
+    </plurals>
     <string name="smallest">Legkisebb</string>
     <string name="largest">Legnagyobb</string>
     <string name="potoken_gvs">PO zseton (GVS)</string>
@@ -498,9 +502,15 @@
     <string name="potoken_guide">Hitelesítés\n-------------------------\n1. Kattintson a „Hitelesítés” gombra a WebView bejelentkezési oldalának megnyitásához.\n2. Jelentkezzen be Google-fiókjába.\n3. Játsszon le egy olyan videót, amely támogatja az automatikusan lefordított feliratokat.\n4. Kapcsolja be az automatikusan lefordított feliratokat, és nézze meg, hogy működnek-e.\n4.1 Ha az automatikusan lefordított feliratok nem működnek, váltson egy másik videóra, amely támogatja az automatikusan lefordított feliratokat, és próbálja meg újra a 4. lépést.\n5. Kattintson az OK gombra.\n\nNincs hitelesítés\n-------------------------\n1. Kattintson a „Nincs hitelesítés” gombra.\n2. Írjon be egy tetszőleges YouTube-videó URL-jét.\n3. Várja meg, amíg a videó betöltődik, és játssza le legalább 3 másodpercig.\n4. Kattintson az OK gombra.</string>
     <string name="no_auth">Nincs hitelesítés</string>
     <string name="auth">Hitelesítés</string>
-    <string name="url_regex">URL Regex (Reguláris kifejezés)</string>
-    <string name="prefer_drc_audio">DRC hang előnyben részesítése</string>
-    <string name="app_icon">Alkalmazásikon</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex (Reguláris kifejezés)</item>
+    </plurals>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">DRC hang előnyben részesítése</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">Alkalmazásikon</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Letöltési lehetőség megjelenítése a megosztás menüben</string>
     <string name="packages">Csomagok</string>
     <string name="not_installed">Nincs telepítve</string>
@@ -510,7 +520,9 @@
     <string name="crop_validation_exceeds_w">x+w túllépi %d</string>
     <string name="crop_validation_exceeds_h">y+h túllépi %d</string>
     <string name="quick_download_title">Ne dolgozzon fel adatot, ne szerezzen adatot</string>
-    <string name="sponsorblock_hook">Köszönés és bemutató rész</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Köszönés és bemutató rész</item>
+    </plurals>
     <string name="use_app_language_for_metadata_summary">Ha bekapcsolja, a metaadatmezők az alkalmazás nyelvét követik, és a formátum kiválasztását is befolyásolják: az eredeti helyett a szinkronizált változatokat részesítik előnyben</string>
     <string name="auto_update_ytdlp_summary">Ajánlott ezt engedélyezve hagyni, mivel a yt-dlp-t elég gyakran frissíteni kell ahhoz, hogy továbbra is működjön! Az adatok a yt-dlp GitHub-tárhelyéről származnak.</string>
     <string name="save_subdirectory">Mentés alkönyvtárba</string>
@@ -519,8 +531,12 @@
     <string name="install_downloaded_file">A letöltött fájl telepítése</string>
     <string name="website">Weboldal</string>
     <string name="playlist">Lejátszási-lista</string>
-    <string name="media_type">Média típus</string>
-    <string name="free_ratio">Szabad arány</string>
+    <plurals name="media_type">
+        <item quantity="one">Média típus</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="one">Szabad arány</item>
+    </plurals>
     <string name="dimensions">Méretek</string>
     <string name="width">Szélesség</string>
     <string name="height">Magasság</string>
@@ -534,7 +550,9 @@
     <string name="download_anyway">Letöltés mindenképp</string>
     <string name="welcome_title">Üdvözlünk a YTDLnisben</string>
     <string name="optional">Opcionális</string>
-    <string name="search_results">Keresési eredmények</string>
+    <plurals name="search_results">
+        <item quantity="one">Keresési eredmények</item>
+    </plurals>
     <plurals name="queue_items">
         <item quantity="one">%d tétel</item>
         <item quantity="other">%d tételek</item>
@@ -546,9 +564,13 @@
     <string name="toggle_all">Mind kiválasztása</string>
     <string name="merge_cuts">Darabok egyesítése egy fájlba</string>
     <string name="crop_unavailable_please_update_item">A tételadatokat frissíteni kell ahhoz, hogy a vágás funkciót használni lehessen</string>
-    <string name="preferred_format_size_audio">Preferált audió formátumméret</string>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">Preferált audió formátumméret</item>
+    </plurals>
     <string name="bundled">Beépített</string>
-    <string name="aspect_ratio">Képarány</string>
+    <plurals name="aspect_ratio">
+        <item quantity="one">Képarány</item>
+    </plurals>
     <string name="x_offset">X eltolás</string>
     <string name="y_offset">Y eltolás</string>
     <plurals name="updates_available_summary">
@@ -581,7 +603,9 @@
     <string name="max_delay">Max. késleltetés másodpercben</string>
     <string name="no_delay">Nincs késleltetés beállítva</string>
     <string name="waiting_download_delay">Várakozás a letöltésre (%s másodperc)…</string>
-    <string name="bgutils_pot_generation_server">HTTP-szerver</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="one">HTTP-szerver</item>
+    </plurals>
     <string name="bgutils_pot_server_summary">Ez egy JavaScript HTTP-szerver a 4416-os porton. Ha nem fut, a rendszer automatikusan elindítja, amint megkezdődik a letöltési sor végrehajtása, vagy amikor a források figyelése esedékessé válik. A leállításhoz manuálisan kell beavatkozni az értesítési felületen!</string>
     <string name="please_install_package">Kérjük, telepítse a(z) %s csomagot</string>
     <string name="please_install_package_or_package">Kérjük, telepítse a(z) %1$s csomagot vagy a(z) %2$s csomagot</string>
@@ -601,7 +625,9 @@
     <string name="check_clipboard_home_summary">URL-ek automatikus észlelése a vágólapon a kezdőképernyőn</string>
     <string name="check_clipboard_home">Ellenőrizze a vágólapot a kezdőképernyőn</string>
     <string name="clear_info_json">Információs adattárolók (info_json fájlok) törlése</string>
-    <string name="internal_plugin_ffmpeg_preset">Belső bővítmény FFmpeg-előbeállítás</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="one">Belső bővítmény FFmpeg-előbeállítás</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">Az FFmpeg-beállításokat a rendszer belső bővítményekhez – például feliratok írásához – használja. Ennek a beállításnak a módosítása hatással van a végső fájlméretre!</string>
     <plurals name="every_hours">
         <item quantity="one">Óránként</item>
@@ -619,9 +645,13 @@
         <item quantity="one">Havonta</item>
         <item quantity="other">Minden %d hónapban</item>
     </plurals>
-    <string name="history_quick_action">Gyorsművelet-gomb</string>
+    <plurals name="history_quick_action">
+        <item quantity="one">Gyorsművelet-gomb</item>
+    </plurals>
     <string name="history_quick_action_summary">Az előzmények-kártyán található gyorsművelet-gombra kattintáskor végrehajtandó művelet</string>
-    <string name="open_file">Fájl megnyitása</string>
+    <plurals name="open_file">
+        <item quantity="one">Fájl megnyitása</item>
+    </plurals>
     <string name="duration">Időtartam</string>
     <string name="update_available">Frissítés elérhető</string>
     <string name="update_check_failed">Nem sikerült frissítéseket keresni</string>
