@@ -84,7 +84,9 @@
     <string name="api_key_summary">おすすめの動画をYouTube APIで取得</string>
     <string name="remove_deleted">削除済みを削除</string>
     <string name="downloads">ダウンロード</string>
-    <string name="open_file">ファイルを開く</string>
+    <plurals name="open_file">
+        <item quantity="other">ファイルを開く</item>
+    </plurals>
     <string name="select_sponsorblock_filtering">SponsorBlock で省略したいシーンを選択</string>
     <string name="sponsorblock_sponsors">広告</string>
     <string name="sponsorblock_intro">導入シーン</string>
@@ -477,9 +479,13 @@
     <string name="no_keep_subs_summary">「字幕の埋め込み」と「字幕の書き込み」を併用する時、埋め込み後に字幕ファイルを残さない</string>
     <string name="no_keep_subs">字幕ファイルを埋め込み後に削除する</string>
     <string name="video_compatible_summary">動画を再エンコードし、ほかのアプリと互換性のある形式に変換</string>
-    <string name="video_compatible">対応動画（形式）</string>
+    <plurals name="video_compatible">
+        <item quantity="other">対応動画（形式）</item>
+    </plurals>
     <string name="no_free_space_warning">この構成用の空き領域がありません。</string>
-    <string name="preferred_format_size">推奨形式サイズ</string>
+    <plurals name="preferred_format_size">
+        <item quantity="other">推奨形式サイズ</item>
+    </plurals>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
     <string name="potoken_gvs">PO トークン (GVS)</string>
@@ -488,11 +494,15 @@
     <string name="visitor_data">訪問者データ</string>
     <string name="get_data_sync_id">訪問者データの同期IDを取得</string>
     <string name="desktop">デスクトップ</string>
-    <string name="url_regex">URL 正規表現</string>
+    <plurals name="url_regex">
+        <item quantity="other">URL 正規表現</item>
+    </plurals>
     <string name="disable_flat_playlist_summary">--flat-playlist を使用しない。データ取得は遅くなりますが、より豊富なデータが得られます。</string>
     <string name="disable_flat_playlist">flat playlist を無効化</string>
     <string name="chapters">章</string>
-    <string name="prefer_drc_audio">オーディオDRCを優先</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="other">オーディオDRCを優先</item>
+    </plurals>
     <string name="use_original_url_playlist">プレイリストのURLにオリジナルのURLを使用する</string>
     <string name="use_original_url_playlist_summary">JSONダンプのplaylist_webpage_urlタグの代わりに、ユーザーが指定したプレイリストURLを使用する</string>
     <string name="update_ytdlp_while_downloading">ダウンロード中にyt-dlpを更新</string>
@@ -501,7 +511,9 @@
     <string name="potoken_guide">認証\n-----------------------\n1. 「認証」をクリックして、WebView でログインページを開きます。\n\n2. Google アカウントにログインします。\n\n3. 自動翻訳字幕に対応した動画を再生します。\n\n4. 自動翻訳字幕をオンにして、機能するかどうかを確認します。\n\n\t 4.1 自動翻訳字幕が機能しない場合は、自動翻訳字幕に対応した別の動画に切り替えて、手順 4 を再試行してください。\n\n5. [OK] をクリックします。\n\n認証なし\n\n1. 「認証なし」をクリックします。\n\n2. 任意の YouTube 動画の URL を入力します。\n\n3. 動画が読み込まれるまで待ち、3 秒以上再生します。\n\n4. [OK] をクリックします。</string>
     <string name="no_auth">認証なし</string>
     <string name="auth">認証</string>
-    <string name="app_icon">アプリアイコン</string>
+    <plurals name="app_icon">
+        <item quantity="other">アプリアイコン</item>
+    </plurals>
     <string name="show_quick_download_share_menu">共有メニューに「すぐにダウンロード」のオプションを追加する</string>
     <string name="quick_download_title">データを取得しない</string>
     <string name="use_app_language_for_metadata_summary">有効にすると、アプリの言語設定に合わせて、字幕よりも「吹き替え版」が優先的に選ばれるようになります</string>
@@ -511,7 +523,9 @@
     <string name="install_downloaded_file">ダウンロードしたファイルをインストールする</string>
     <string name="website">ウェブサイト</string>
     <string name="playlist">プレイリスト</string>
-    <string name="media_type">メディアタイプ</string>
+    <plurals name="media_type">
+        <item quantity="other">メディアタイプ</item>
+    </plurals>
     <string name="packages">パッケージ</string>
     <string name="not_installed">未インストール</string>
     <string name="bundled">バンドル済み</string>
@@ -520,11 +534,17 @@
     <string name="width">幅</string>
     <string name="required">必須</string>
     <string name="crop">トリミング</string>
-    <string name="aspect_ratio">アスペクト比</string>
+    <plurals name="aspect_ratio">
+        <item quantity="other">アスペクト比</item>
+    </plurals>
     <string name="height">高さ</string>
     <string name="dimensions">寸法</string>
-    <string name="search_results">検索結果</string>
-    <string name="preferred_format_size_audio">優先音声フォーマットサイズ</string>
+    <plurals name="search_results">
+        <item quantity="other">検索結果</item>
+    </plurals>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="other">優先音声フォーマットサイズ</item>
+    </plurals>
     <string name="x_offset">Xオフセット</string>
     <string name="y_offset">Yオフセット</string>
 </resources>
