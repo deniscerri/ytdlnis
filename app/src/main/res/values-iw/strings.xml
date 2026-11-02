@@ -638,4 +638,5 @@
     <string name="download_anyway">להוריד בכל זאת</string>
     <string name="preferred_format_size_audio">גודל תסדיר השמע המועדף</string>
     <string name="bgutils_pot_server_summary">זה שרת HTTP שמתופעל ב־JavaScript, בפתחה 4416. אם הוא לא זמין, הוא מפעיל את השרת אוטומטית כשטיפול בתור ההורדות מתחיל או שמקורות השגחה מתוזמנים. כדי לכבות אותו, צריך לעשות זאת ידנית מההתראות!</string>
+    <string name="optional">רשות</string>
 </resources>
