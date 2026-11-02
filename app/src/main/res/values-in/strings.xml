@@ -474,10 +474,14 @@
     <string name="reverse">Balik susunan</string>
     <string name="no_keep_subs">Hapus berkas takarir (subtitle) setelah penanaman</string>
     <string name="no_keep_subs_summary">Saat menggunakan fitur Tanamkan Takarir (Subtitle) dan Tulis Takarir (Subtitle) secara bersamaan, jangan simpan berkas takarir (subtitle) setelah penanaman</string>
-    <string name="video_compatible">Video kompatibel</string>
+    <plurals name="video_compatible">
+        <item quantity="other">Video kompatibel</item>
+    </plurals>
     <string name="video_compatible_summary">Mengodekan ulang video agar kompatibel dengan aplikasi lain</string>
     <string name="no_free_space_warning">Tidak ada ruang kosong bagi konfigurasi ini.</string>
-    <string name="preferred_format_size">Ukuran format yang diutamakan</string>
+    <plurals name="preferred_format_size">
+        <item quantity="other">Ukuran format yang diutamakan</item>
+    </plurals>
     <string name="smallest">Terkecil</string>
     <string name="largest">Terbesar</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -486,7 +490,9 @@
     <string name="visitor_data">Data Pengunjung</string>
     <string name="get_data_sync_id">Dapatkan Sinkronisasi Data ID</string>
     <string name="desktop">Desktop</string>
-    <string name="url_regex">Regex URL</string>
+    <plurals name="url_regex">
+        <item quantity="other">Regex URL</item>
+    </plurals>
     <string name="disable_flat_playlist">Nonaktifkan daftar putar datar</string>
     <string name="disable_flat_playlist_summary">Jangan gunakan --flat-playlist. Pengambilan data lebih lambat, tetapi lebih kaya akan data</string>
     <string name="chapters">Babak</string>
@@ -498,11 +504,17 @@
     <string name="potoken_guide">Otentikasi\n-----------------------\n1. Klik \'Otentikasi\' untuk membuka halaman masuk di WebView.\n2. Masuk ke akun Google Anda.\n3. Putar video apa pun yang mendukung subtitle terjemahan otomatis.\n4. Aktifkan subtitle terjemahan otomatis dan lihat apakah berfungsi.\n\t4.1 Jika subtitle terjemahan otomatis tidak berfungsi, beralih ke video lain yang mendukung subtitle terjemahan otomatis dan ulangi langkah 4.\n5. Klik OK.\n\nTanpa Otentikasi\n-----------------------\n1. Klik ‘Tanpa Otentikasi’.\n2. Tulis URL video YouTube apa pun.\n3. Tunggu video dimuat dan putar video setidaknya selama 3 detik.\n3. Klik OK.</string>
     <string name="no_auth">Tanpa Otentikasi</string>
     <string name="auth">Otentikasi</string>
-    <string name="prefer_drc_audio">Utamakan audio DRC</string>
-    <string name="app_icon">Ikon aplikasi</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="other">Utamakan audio DRC</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="other">Ikon aplikasi</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Tampilkan pilihan untuk mengunduh secara langsung di menu bagikan</string>
     <string name="quick_download_title">Jangan mengambil data</string>
-    <string name="sponsorblock_hook">Kata pengantar/sapa</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="other">Kata pengantar/sapa</item>
+    </plurals>
     <string name="packages">Paket</string>
     <string name="not_installed">Tidak terpasang</string>
     <string name="bundled">Dibundel</string>
@@ -515,13 +527,19 @@
     <string name="save_subdirectory_summary">Simpan berkas dalam folder berdasarkan label metadata</string>
     <string name="website">Situs web</string>
     <string name="playlist">Daftar putar</string>
-    <string name="media_type">Jenis media</string>
+    <plurals name="media_type">
+        <item quantity="other">Jenis media</item>
+    </plurals>
     <string name="crop">Pangkas</string>
     <string name="required">Diperlukan</string>
     <string name="crop_validation_exceeds_w">X+W melebihi %d</string>
     <string name="crop_validation_exceeds_h">Y+H melebihi %d</string>
-    <string name="free_ratio">Rasio bebas</string>
-    <string name="aspect_ratio">Rasio aspek</string>
+    <plurals name="free_ratio">
+        <item quantity="other">Rasio bebas</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="other">Rasio aspek</item>
+    </plurals>
     <string name="dimensions">Dimensi</string>
     <string name="x_offset">Pergeseran X</string>
     <string name="y_offset">Pergeseran Y</string>
@@ -575,7 +593,9 @@
     </plurals>
     <string name="bgutils_info">Penyedia token bukti asal (POT) untuk yt-dlp.\nSaat fitur ini diaktifkan, YTDLnis menjalankan server HTTP yang menghasilkan POT serta menginstal plugin terkait yang digunakan oleh yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Skrip pembuatan</string>
-    <string name="bgutils_pot_generation_server">Server HTTP</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="other">Server HTTP</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">Setiap panggilan yt-dlp menimbulkan overhead berupa pembuatan proses runtime js baru untuk menjalankan skrip. Metode ini tidak disarankan untuk penggunaan dengan konkurensi tinggi.</string>
     <string name="bgutils_pot_server_summary">Ini adalah server HTTP JavaScript yang berjalan pada port 4416. Jika server mati, ia akan otomatis menyala kembali saat antrean unduhan mulai diproses atau saat pemantauan sumber dijadwalkan. Untuk mematikannya, Anda harus melakukannya secara manual melalui notifikasi!</string>
     <string name="please_install_package">Mohon pasang paket %s</string>
@@ -591,13 +611,23 @@
     <string name="burn_subs">Bubuhkan takarir (subtitle)</string>
     <string name="check_clipboard_home_summary">Deteksi URL secara otomatis di papan klip pada layar beranda</string>
     <string name="check_clipboard_home">Periksa papan klip di layar beranda</string>
-    <string name="search_results">Hasil telusur</string>
+    <plurals name="search_results">
+        <item quantity="other">Hasil telusur</item>
+    </plurals>
     <string name="clear_info_json">Kosongkan infojson</string>
-    <string name="internal_plugin_ffmpeg_preset">Prasetel FFmpeg untuk pengaya internal</string>
-    <string name="preferred_format_size_audio">Ukuran format audio yang diutamakan</string>
-    <string name="history_quick_action">Tombol tindakan segera</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="other">Prasetel FFmpeg untuk pengaya internal</item>
+    </plurals>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="other">Ukuran format audio yang diutamakan</item>
+    </plurals>
+    <plurals name="history_quick_action">
+        <item quantity="other">Tombol tindakan segera</item>
+    </plurals>
     <string name="history_quick_action_summary">Tindakan yang akan dilakukan saat mengeklik tombol tindakan segera pada kartu riwayat</string>
-    <string name="open_file">Buka berkas</string>
+    <plurals name="open_file">
+        <item quantity="other">Buka berkas</item>
+    </plurals>
     <string name="duration">Durasi</string>
     <string name="update_available">Pembaruan tersedia</string>
     <string name="update_check_failed">Tidak bisa memeriksa pembaruan</string>
