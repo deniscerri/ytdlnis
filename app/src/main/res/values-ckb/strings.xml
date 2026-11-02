@@ -76,7 +76,9 @@
     <string name="downloads">دابەزاندنەکان</string>
     <string name="select_format">فۆرمات هەڵبژێرە</string>
     <string name="limit_rate">سنووری خێرایی</string>
-    <string name="open_file">پەڕگە بکەرەوە</string>
+    <plurals name="open_file">
+        <item quantity="one">پەڕگە بکەرەوە</item>
+    </plurals>
     <string name="you_are_going_to_delete">دەسڕێتەوە</string>
     <string name="request_permission_desc">ئەم بەرنامەیە پێویستی بە مۆڵەتی فایل هەیە بۆ هەڵگرتنی داگرتنەکان لەسەر ئامێرەکە</string>
     <string name="version">وەشان</string>
@@ -456,20 +458,30 @@
     <string name="automatic_backup">هەڵگرتنی خۆکارانە</string>
     <string name="backup_path">شوێنی هەڵگرتن</string>
     <string name="potoken">نیشانەی PO</string>
-    <string name="video_compatible">ڤیدیۆی گونجاو</string>
+    <plurals name="video_compatible">
+        <item quantity="one">ڤیدیۆی گونجاو</item>
+    </plurals>
     <string name="visitor_data">داتای سەردانیکەر</string>
     <string name="preview_filename">ناوی پەڕگە پێشبینین بکە</string>
-    <string name="preferred_format_size">قەبارەی فۆرماتی خوازراو</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">قەبارەی فۆرماتی خوازراو</item>
+    </plurals>
     <string name="regenerate">دووبارە دروستکردنەوە</string>
-    <string name="free_ratio">ڕێژەی سەربەست</string>
-    <string name="app_icon">وێنۆچکەی بەرنامە</string>
+    <plurals name="free_ratio">
+        <item quantity="one">ڕێژەی سەربەست</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">وێنۆچکەی بەرنامە</item>
+    </plurals>
     <string name="select_between_desc">مەودای هەڵبژاردنی بڕگەکان دیاری بکە</string>
     <string name="manual_po_token_generator">کۆدی پشتڕاستکردنەوەی کڕیاری وێب</string>
     <string name="no_keep_subs">سڕینەوەی فایلەکانی ژێرنووس دوای جێگیرکردن</string>
     <string name="no_keep_subs_summary">دوای جێگیرکردن ، فایلی ژێرنووس مەهێڵەرەوە، کاتێک هەم Embed و هەمیش Write بەکاردێنیت</string>
     <string name="video_compatible_summary">دووبارە کۆدڕێژیکردنەوەی ڤیدیۆکە بۆ گونجاندنی لەگەڵ ئەپەکانی تر</string>
     <string name="no_free_space_warning">هیچ بۆشاییەکی بەتاڵ نییە بۆ ئەم ڕێکخستنە</string>
-    <string name="prefer_drc_audio">هەڵبژاردنی دەنگی DRC وەک لەپێشینە</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">هەڵبژاردنی دەنگی DRC وەک لەپێشینە</item>
+    </plurals>
     <string name="potoken_gvs">کۆدی پشتڕاستکردنەوەی سەرچاوە (سەر بە خزمەتگوزاری ڤیدیۆی گوگل)</string>
     <string name="potoken_player">کۆدی پشتڕاستکردنەوەی سەرچاوە بۆ لێدەر</string>
     <string name="potoken_subs">کۆدی پشتڕاستکردنەوەی سەرچاوە بۆ گەیشتن بە خزمەتگوزارییەکان</string>
@@ -493,7 +505,9 @@
     <string name="generate_potokens">دروستکردنی تۆکنەکانی PO</string>
     <string name="generate_potokens_warning">بە چالاککردنی ئەمە، پێویستە کوکییەکان ناچالاک بکەیت</string>
     <string name="cut_unsupported">بڕین بۆ ئەم کاڵایە بەردەست نییە</string>
-    <string name="url_regex">ڕێجێکسی URL</string>
+    <plurals name="url_regex">
+        <item quantity="one">ڕێجێکسی URL</item>
+    </plurals>
     <string name="disable_flat_playlist">پلەیلیستی تەخت ناچالاک بکە</string>
     <string name="disable_flat_playlist_summary">پلەیلیستی تەخت-- بەکارمەهێنە. هێواشتر هێنانی داتا، بەڵام زیاتر دەوڵەمەندە بە داتا</string>
     <string name="use_original_url_playlist">URLی ڕەسەن بۆ URLی پلەیلیستەکە بەکاربهێنە</string>
