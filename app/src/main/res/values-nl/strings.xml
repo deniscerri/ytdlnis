@@ -34,7 +34,9 @@
     <string name="search_hint">Zoek of voer URL in</string>
     <string name="downloads">Downloads</string>
     <string name="source_code">Bron­code</string>
-    <string name="open_file">Bestand openen</string>
+    <plurals name="open_file">
+        <item quantity="one">Bestand openen</item>
+    </plurals>
     <string name="you_are_going_to_delete">Verwĳderen</string>
     <string name="version">Versie</string>
     <string name="ok">Oké</string>
