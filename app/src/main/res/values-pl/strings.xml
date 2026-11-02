@@ -86,7 +86,9 @@
     <string name="history_is_empty">Historia jest pusta</string>
     <string name="you_are_going_to_delete">Usuwanie</string>
     <string name="url">URL</string>
-    <string name="open_file">Otwórz plik</string>
+    <plurals name="open_file">
+        <item quantity="one">Otwórz plik</item>
+    </plurals>
     <string name="delete_files_too">Usuń pliki z urządzenia</string>
     <string name="sponsorblock_intro">Wprowadzenie</string>
     <string name="sponsorblock_reminders">Przypomnienia o subskrypcji</string>
@@ -476,7 +478,9 @@
     <string name="reverse">Odwróć</string>
     <string name="no_keep_subs">Usuń pliki napisów po osadzeniu</string>
     <string name="no_keep_subs_summary">W przypadku korzystania z opcji Osadzanie napisów i Tworzenie napisów nie należy zachowywać plików napisów po osadzeniu</string>
-    <string name="video_compatible">Kompatybilne video</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Kompatybilne video</item>
+    </plurals>
     <string name="video_compatible_summary">Przekodowuje video, czyniąc je kompatybilnym z innymi aplikacjami</string>
     <string name="no_free_space_warning">Nie ma wolnego miejsca dla tej konfiguracji.</string>
     <string name="smallest">Najmniejszy</string>
@@ -491,19 +495,29 @@
     <string name="update_ytdlp_while_downloading_summary">Dodaj -U do yt-dlp, aby zaktualizować go do najnowszej wersji przed pobraniem</string>
     <string name="preview_filename">Podgląd nazwy pliku</string>
     <string name="potoken_gvs">V</string>
-    <string name="preferred_format_size">Preferowany rozdzielczość formatu</string>
-    <string name="prefer_drc_audio">Preferowany dziwęk dynamiczny (DRC)</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Preferowany rozdzielczość formatu</item>
+    </plurals>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">Preferowany dziwęk dynamiczny (DRC)</item>
+    </plurals>
     <string name="potoken_player">Token PO (odtwarzacz)</string>
     <string name="potoken_subs">Token PO (napisy)</string>
-    <string name="url_regex">Złącze Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">Złącze Regex</item>
+    </plurals>
     <string name="use_original_url_playlist_summary">Użyj adresu url do playlisty podanego przez użytkownika zamiast tagu playlist_webpage_url z dumpa jsona</string>
     <string name="potoken_guide">Z autentykacją\n-----------------------\n1. Naciśnij \"logowanie\" aby otworzyć stronę logowania w android WebView.\n2. Zaloguj się do swojego konta google.\n3. Odtwórz dowolny filmik wspierający automatycznie tłumaczone napisy.\n4. Włącz automatycznie tłumaczone napisy aby zobaczyć czy działa.\n\t4.1 Jeśli automatycznie tłumaczone napisy się nie wyświetlają zmień filmik i wykonaj krok 4 jeszcze raz.\n5. Naciśnij OK.\n\nBez autentykacji\n-----------------------\n1. Naciśnij \"Bez autentykacji\".\n2. Wklej link do filmiku.\n3. Poczekaj aż filmik się załaduje i obejrzyj conajmniej 3 sekundy.\n4. Naciśnij OK.</string>
     <string name="no_auth">Bez autentykacji</string>
     <string name="auth">Z autentykacją</string>
-    <string name="app_icon">Ikona aplikacji</string>
+    <plurals name="app_icon">
+        <item quantity="one">Ikona aplikacji</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Pokaż opcję aby natychmiast rozpocząć pobieranie w menu udostępniania</string>
     <string name="quick_download_title">Nie pobieraj danych</string>
-    <string name="sponsorblock_hook">Hook powitalny</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Hook powitalny</item>
+    </plurals>
     <string name="packages">Pakiety</string>
     <string name="not_installed">Nie zainstalowano</string>
     <string name="bundled">W pakiecie</string>
@@ -515,7 +529,9 @@
     <string name="install_downloaded_file">Zainstaluj pobrany plik</string>
     <string name="website">Strona internetowa</string>
     <string name="playlist">Playlista</string>
-    <string name="media_type">Typ mediów</string>
+    <plurals name="media_type">
+        <item quantity="one">Typ mediów</item>
+    </plurals>
     <string name="use_app_language_for_metadata_summary">Jeśli ta opcja jest włączona, pola metadanych będą zgodne z językiem aplikacji, co wpłynie również na wybór formatu poprzez preferowanie wersji z dubbingiem zamiast oryginalnych</string>
     <string name="auto_update_ytdlp_summary">Zaleca się pozostawienie tej opcji włączonej, ponieważ yt-dlp wymaga częstych aktualizacji do poprawnego działania. Dane są pobierane bezpośrednio z repozytorium yt-dlp w serwisie GitHub.</string>
     <string name="required">Wymagane</string>
@@ -524,13 +540,21 @@
     <string name="crop">Przytnij</string>
     <string name="crop_validation_exceeds_w">X+W jest większe niż %d</string>
     <string name="crop_validation_exceeds_h">Y+H jest większe niż %d</string>
-    <string name="free_ratio">Dowolne proporcje</string>
-    <string name="aspect_ratio">Proporcje wideo</string>
+    <plurals name="free_ratio">
+        <item quantity="one">Dowolne proporcje</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">Proporcje wideo</item>
+    </plurals>
     <string name="dimensions">Wymiary</string>
     <string name="x_offset">Przesunięcie w osi X</string>
     <string name="y_offset">Przesunięcie w osi Y</string>
-    <string name="search_results">Wyniki wyszukiwania</string>
-    <string name="preferred_format_size_audio">Preferowany rozmiar formatu audio</string>
+    <plurals name="search_results">
+        <item quantity="one">Wyniki wyszukiwania</item>
+    </plurals>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">Preferowany rozmiar formatu audio</item>
+    </plurals>
     <string name="version_ready_to_download">Wersja %s jest gotowa do pobrania</string>
     <string name="package_version_ready_to_download">Pakiet %1$s (wersja: %2$s) jest gotowy do pobrania</string>
     <string name="tap_to_see_changes_and_install">Dotknij, aby sprawdzić zmiany i zainstalować</string>
