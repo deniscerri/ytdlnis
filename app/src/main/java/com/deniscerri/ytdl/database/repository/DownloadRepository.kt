@@ -23,6 +23,7 @@ import com.deniscerri.ytdl.database.models.DownloadSizeMetadata
 import com.deniscerri.ytdl.util.Extensions.toListString
 import com.deniscerri.ytdl.util.FileUtil
 import com.deniscerri.ytdl.util.AlarmScheduler
+import com.deniscerri.ytdl.util.NetworkDetector
 import com.deniscerri.ytdl.work.DownloadWorker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -262,6 +263,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     fun startDownloadWorker(queuedItems: List<DownloadItem>, context: Context, continueAfterPriorityItems: Boolean = true) : Result<String> {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val allowMeteredNetworks = sharedPreferences.getBoolean("metered_networks", true)
+        val allow5G = sharedPreferences.getBoolean("allow_5g_networks", true)
+        val stopOnNon5G = sharedPreferences.getBoolean("stop_download_on_non_5g", false)
+        val requireUnmetered = !allowMeteredNetworks && !allow5G && !stopOnNon5G
         val workManager = WorkManager.getInstance(context)
 
         val inputData = Data.Builder()
@@ -283,7 +287,7 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         }
 
         val workConstraints = Constraints.Builder()
-        if (!allowMeteredNetworks) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
+        if (requireUnmetered) workConstraints.setRequiredNetworkType(NetworkType.UNMETERED)
 
         inputData.putBoolean("continue_after_priority_ids", continueAfterPriorityItems)
 
@@ -303,7 +307,12 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
         val message = StringBuilder()
 
         val isCurrentNetworkMetered = (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).isActiveNetworkMetered
-        if (!allowMeteredNetworks && isCurrentNetworkMetered){
+        val is5G = NetworkDetector.is5GConnected(context)
+        val isWifi = NetworkDetector.isWifiOrEthernet(context)
+
+        if (stopOnNon5G && !is5G && !isWifi) {
+            message.appendLine(context.getString(R.string.stop_download_on_non_5g_start_info))
+        } else if (!allowMeteredNetworks && isCurrentNetworkMetered && !(allow5G && is5G)) {
             message.appendLine(context.getString(R.string.metered_network_download_start_info))
         }
 
