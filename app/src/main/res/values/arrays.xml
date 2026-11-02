@@ -1,4 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="allowed_network_type_entries">
+        <item>@string/network_type_all</item>
+        <item>@string/network_type_wifi_and_5g</item>
+        <item>@string/network_type_5g_only</item>
+        <item>@string/network_type_wifi_only</item>
+    </string-array>
+
+    <string-array name="allowed_network_type_values">
+        <item>all</item>
+        <item>wifi_and_5g</item>
+        <item>5g_only</item>
+        <item>wifi_only</item>
+    </string-array>
     <string-array name="audio_containers">
         <item>@string/defaultValue</item>
         <item>mp3</item>

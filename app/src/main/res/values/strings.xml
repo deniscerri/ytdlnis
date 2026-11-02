@@ -729,4 +729,14 @@
     <string name="speed_unit_mbps">MB/s</string>
     <string name="speed_range_slider_title">Speed range</string>
     <string name="quick_presets">Quick presets</string>
+    <string name="allowed_network_type">Allowed download network</string>
+    <string name="allowed_network_type_summary">Choose which network connections are permitted for downloads</string>
+    <string name="network_type_all">All networks (Wi-Fi, 5G NR, 4G LTE)</string>
+    <string name="network_type_wifi_and_5g">Wi-Fi &amp; 5G NR only (Auto-pause on 4G)</string>
+    <string name="network_type_5g_only">5G NR mobile data only</string>
+    <string name="network_type_wifi_only">Wi-Fi only (No mobile data)</string>
+    <string name="current_network_status_title">Current Network Status</string>
+    <string name="current_network_status_checking">Checking network connection…</string>
+    <string name="network_diagnostic_title">Live Network &amp; 5G NR Test</string>
+    <string name="network_diagnostic_refresh">Test Again</string>
 </resources>

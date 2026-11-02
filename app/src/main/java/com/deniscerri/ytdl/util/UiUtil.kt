@@ -3409,6 +3409,37 @@ object UiUtil {
         builder.show()
     }
 
+    fun showNetworkDiagnosticDialog(context: Activity) {
+        val info = NetworkDetector.getDiagnosticInfo(context)
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.network_diagnostic_title))
+        builder.setIcon(R.drawable.ic_5g)
+
+        val message = StringBuilder()
+        message.append("• Active Transport: ").append(info.transportName).append("\n")
+        message.append("• Network Type: ").append(info.networkTypeName).append("\n")
+        message.append("• 5G NR Status: ").append(if (info.is5GNR) "ACTIVE (NR Connected)" else "Inactive (4G or lower)").append("\n")
+        if (info.fiveGDetails.isNotBlank()) {
+            message.append("• 5G Details: ").append(info.fiveGDetails).append("\n")
+        }
+        if (info.carrierName.isNotBlank()) {
+            message.append("• Carrier: ").append(info.carrierName).append("\n")
+        }
+        message.append("• Metered: ").append(if (info.isMetered) "Yes" else "No (Unmetered)").append("\n")
+        if (info.downlinkSpeedMbps.isNotBlank()) {
+            message.append("• Link Speed: ~").append(info.downlinkSpeedMbps).append(" Mbps\n")
+        }
+        message.append("• Download Policy: ").append(info.allowedSetting).append("\n")
+        message.append("• Download State: ").append(if (info.isAllowedForDownload) "ALLOWED" else "PAUSED / RESTRICTED")
+
+        builder.setMessage(message.toString())
+        builder.setPositiveButton(context.getString(R.string.ok), null)
+        builder.setNeutralButton(context.getString(R.string.network_diagnostic_refresh)) { _, _ ->
+            showNetworkDiagnosticDialog(context)
+        }
+        builder.show()
+    }
+
     fun showChooseInstallerAppDialog(context: Activity, appIdSelected: (appId: String) -> Unit) {
         val builder = MaterialAlertDialogBuilder(context)
         builder.setTitle(context.getString(R.string.choose_installer_app))
