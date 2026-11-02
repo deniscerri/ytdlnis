@@ -477,11 +477,13 @@
     <string name="no_keep_subs_summary">Həm Yerləşdirmə Altyazılarından, həm də Titr Yazma istifadə edərkən, daxil etdikdən sonra titr fayllarını saxlama</string>
     <plurals name="video_compatible">
         <item quantity="one">Uyğun video</item>
+        <item quantity="other">Uyğun video</item>
     </plurals>
     <string name="video_compatible_summary">Videonu başqa tətbiqlərlə uyuşdurmaq üçün yenidən kodlayır</string>
     <string name="no_free_space_warning">Bu quruluş üçün boş yer yoxdur.</string>
     <plurals name="preferred_format_size">
         <item quantity="one">Üstünlük verilən format həcmi</item>
+        <item quantity="other">Üstünlük verilən format həcmi</item>
     </plurals>
     <string name="smallest">Ən kiçik</string>
     <string name="largest">Ən böyük</string>
@@ -493,6 +495,7 @@
     <string name="desktop">Masaüstü</string>
     <plurals name="url_regex">
         <item quantity="one">URL regex</item>
+        <item quantity="other">URL regex</item>
     </plurals>
     <string name="disable_flat_playlist">Sadə pleylisti qapat</string>
     <string name="disable_flat_playlist_summary">--flat-playlist istifadə etməyin. Daha yavaş məlumat əldə edilir, lakin daha çox məlumat var</string>
@@ -507,14 +510,17 @@
     <string name="auth">Təsdiqlə</string>
     <plurals name="prefer_drc_audio">
         <item quantity="one">DRC səsə üstünlük ver</item>
+        <item quantity="other">DRC səsə üstünlük ver</item>
     </plurals>
     <plurals name="app_icon">
         <item quantity="one">Tətbiq simvolu</item>
+        <item quantity="other">Tətbiq simvolu</item>
     </plurals>
     <string name="show_quick_download_share_menu">Paylaş menyusunda dərhal yükləmək üçün seçim göstər</string>
     <string name="quick_download_title">Məlumatları almayın</string>
     <plurals name="sponsorblock_hook">
         <item quantity="one">Qarşılıqlı əlaqə/salamlaşma</item>
+        <item quantity="other">Qarşılıqlı əlaqə/salamlaşma</item>
     </plurals>
     <string name="packages">Paketlər</string>
     <string name="not_installed">Quraşdırılmadı</string>
@@ -530,6 +536,7 @@
     <string name="playlist">Pleylist</string>
     <plurals name="media_type">
         <item quantity="one">Media növü</item>
+        <item quantity="other">Media növü</item>
     </plurals>
     <string name="crop">Qırp</string>
     <string name="required">Tələb olundu</string>
@@ -537,9 +544,11 @@
     <string name="crop_validation_exceeds_h">Y+H %d dəyərin aşır</string>
     <plurals name="free_ratio">
         <item quantity="one">Sərbəst nisbət</item>
+        <item quantity="other">Sərbəst nisbət</item>
     </plurals>
     <plurals name="aspect_ratio">
         <item quantity="one">Görünüş nisbəti</item>
+        <item quantity="other">Görünüş nisbəti</item>
     </plurals>
     <string name="dimensions">Ölçülər</string>
     <string name="x_offset">X Sürüşməsi</string>
@@ -602,6 +611,7 @@
     <string name="bgutils_pot_generation_script">Yaratma skripti</string>
     <plurals name="bgutils_pot_generation_server">
         <item quantity="one">HTTP serveri</item>
+        <item quantity="other">HTTP serveri</item>
     </plurals>
     <string name="bgutils_pot_generation_script_summary">Hər bir yt-dlp çağırışı skripti icra etmək üçün yeni JS runtime prosesinin yuxarı yüklənməsinə səbəb olur. Yüksək eynivaxtlılıq istifadəsi üçün bu üsul tövsiyə olunmur.</string>
     <string name="bgutils_pot_server_summary">Bu, 4416 portunda işləyən JavaScript HTTP serveridir. Qapalıdırsa, yükləmə növbəsi icra olunmağa başladıqda və ya mənbələrə nəzarət et planlaşdırıldıqda server avtomatik olaraq işə düşür. Onu qapatmaq üçün bildirişlərdən əl ilə etməlisiniz!</string>
@@ -620,21 +630,26 @@
     <string name="check_clipboard_home">Əsas ekranda buferi yoxla</string>
     <plurals name="search_results">
         <item quantity="one">Axtarış nəticələri</item>
+        <item quantity="other">Axtarış nəticələri</item>
     </plurals>
     <string name="clear_info_json">Infojsons-ları təmizlə</string>
     <plurals name="internal_plugin_ffmpeg_preset">
         <item quantity="one">Daxili plaginin FFmpeg ilkin təyinetməsi</item>
+        <item quantity="other">Daxili plaginin FFmpeg ilkin təyinetməsi</item>
     </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">Titrləri yazdırmaq və.s kimi daxili plaginlərin istifadə etdiyi FFmpeg ilkin təyinetməsi. Bu seçimi dəyişdirmək yekun fayl həcminə təsir edir!</string>
     <plurals name="preferred_format_size_audio">
         <item quantity="one">Üstünlük verilən səs formatı həcmi</item>
+        <item quantity="other">Üstünlük verilən səs formatı həcmi</item>
     </plurals>
     <plurals name="history_quick_action">
         <item quantity="one">Sürətli fəaliyyət düyməsi</item>
+        <item quantity="other">Sürətli fəaliyyət düyməsi</item>
     </plurals>
     <string name="history_quick_action_summary">Tarixçə kartındakı sürətli fəaliyyət düyməsinə toxunduqda yerinə yetiriləcək fəaliyyət</string>
     <plurals name="open_file">
         <item quantity="one">Faylı aç</item>
+        <item quantity="other">Faylı aç</item>
     </plurals>
     <string name="duration">Müddət</string>
     <string name="update_available">Əlçatan Yeniləmə</string>
@@ -736,4 +751,9 @@
     <string name="update_checked_just_now">İndicə yoxlanılıb</string>
     <string name="update_not_checked_yet">Hələ yoxlanılmayıb</string>
     <string name="optional">Könüllü</string>
+    <string name="no_cookies_found">Bu sayt üçün kuki tapılmadı. Daxil olmağı tamamlayın, sonra təkrar cəhd edin</string>
+    <string name="all_artists_in_album_artist">Bütün sənətçiləri Albom Sənətçisində saxla</string>
+    <string name="all_artists_in_album_artist_summary">Albom Sənətçisi etiketi üçün yalnız birincisi əvəzinə bütün sənətçiləri istifadə et</string>
+    <string name="press_cancel">Ləğv etmək üçün buraya bas</string>
+    <string name="fetching_data">Məlumatları əldə edir...</string>
 </resources>
