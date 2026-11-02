@@ -161,7 +161,9 @@
     <string name="add_chapter">Adăugați capitole</string>
     <string name="show_download_card">Afișă opțiuni pentru descărcare</string>
     <string name="download_card_summary">Modificați setările pentru acel element înainte de descărcare. Dezactivarea acestei opțiuni începe descărcarea imediat</string>
-    <string name="open_file">Deschidere fișier</string>
+    <plurals name="open_file">
+        <item quantity="one">Deschidere fișier</item>
+    </plurals>
     <string name="delete_file_too">Ștergeți fișierul de pe dispozitiv</string>
     <string name="edit_selected">Editați selectat</string>
     <string name="update_formats">Actualizare formate</string>
@@ -474,10 +476,14 @@
     <string name="manual_po_token_generator">Token PO pentru clientul web</string>
     <string name="reverse">Invers</string>
     <string name="no_keep_subs">Șterge fișierele de subtitrare după încorporare</string>
-    <string name="video_compatible">Video Compatibil</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Video Compatibil</item>
+    </plurals>
     <string name="video_compatible_summary">Recodează videoclipul făcându-l compatibil cu alți aplicații</string>
     <string name="no_free_space_warning">Nu există spațiu disponibil pentru această configurație</string>
-    <string name="preferred_format_size">Dimensiunea preferată a formatului</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Dimensiunea preferată a formatului</item>
+    </plurals>
     <string name="smallest">Cel mai mic</string>
     <string name="largest">Cel mai mare</string>
     <string name="chapters">Capitole</string>
@@ -489,10 +495,14 @@
     <string name="potoken_guide">Autentificare \n-----------------------\n1. Apăsați \'autentificare\' pentru a accesa pagina de conectare în WebView.\n2. Conectați-vă la contul vostru de Google.\n3. Redați orice video care permite subtitrări auto-generate.\n4. Porniți subtitrări auto-traduse și vedeți dacă funcționează.\n\t4.1 Dacă subtitrările auto-traduse nu funcționează, schimbați la un video care permite subtitrări auto-traduse și repetați pasul 4.\n5. Apăsați OK.\n\nNicio Autentificare\n-----------------------\n1. Apăsați \'Nicio Autentificare\'.\n2. Scrieți orice URL video YouTube \n3. Așteptați ca video-ul să se încarce și redați video-ul timp de cel puțin 3 secunde.\n4. Apăsați OK.</string>
     <string name="no_auth">Nicio Autentificare</string>
     <string name="auth">Autentificare</string>
-    <string name="app_icon">Iconiță Aplicație</string>
+    <plurals name="app_icon">
+        <item quantity="one">Iconiță Aplicație</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Arată opțiune pentru a descărca imediat în meniul de partajare</string>
     <string name="quick_download_title">Nu preluați date</string>
-    <string name="sponsorblock_hook">Cârlig/Salutări</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Cârlig/Salutări</item>
+    </plurals>
     <string name="packages">Pachete</string>
     <string name="not_installed">Nu este instalat</string>
     <string name="bundled">Inclus</string>
