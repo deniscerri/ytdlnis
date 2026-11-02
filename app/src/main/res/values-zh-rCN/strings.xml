@@ -474,10 +474,14 @@
     <string name="reverse">颠倒</string>
     <string name="no_keep_subs">嵌入后删除字幕文件</string>
     <string name="no_keep_subs_summary">同时使用内嵌字幕和写入字幕时，嵌入后不保留字幕文件</string>
-    <string name="video_compatible">兼容的视频</string>
+    <plurals name="video_compatible">
+        <item quantity="other">兼容的视频</item>
+    </plurals>
     <string name="video_compatible_summary">重新编解码视频让它兼容其他应用</string>
     <string name="no_free_space_warning">没有剩余空间可用于此配置。</string>
-    <string name="preferred_format_size">首选的格式大小</string>
+    <plurals name="preferred_format_size">
+        <item quantity="other">首选的格式大小</item>
+    </plurals>
     <string name="smallest">最小</string>
     <string name="largest">最大</string>
     <string name="potoken_gvs">PO 令牌 (GVS)</string>
@@ -486,7 +490,9 @@
     <string name="visitor_data">访问者数据</string>
     <string name="get_data_sync_id">获取数据同步 ID</string>
     <string name="desktop">桌面</string>
-    <string name="url_regex">URL 正则表达式</string>
+    <plurals name="url_regex">
+        <item quantity="other">URL 正则表达式</item>
+    </plurals>
     <string name="disable_flat_playlist">禁用 flat 播放列表</string>
     <string name="disable_flat_playlist_summary">不使用 --flat-playlist。这样做获取数据速度会变慢，但数据会更丰富</string>
     <string name="chapters">章节</string>
@@ -498,11 +504,17 @@
     <string name="potoken_guide">授权\n-----------------------\n1. 单击“授权”以在 WebView 中打开登录页面。\n2. 登录您的 Google 账户。\n3. 播放任何支持自动翻译字幕的视频。\n4. 打开自动翻译字幕功能，查看是否有效。\n 4.1 如果自动翻译字幕无效，请切换到另一个支持自动翻译字幕的视频，然后再次尝试步骤 4。\n5. 单击“确定”。\n\n不授权\n-----------------------\n1. 点击“不授权”。\n2. 输入任意YouTube视频网址。\n3. 等待视频加载，并播放视频至少3秒。\n4. 单击“确定”。</string>
     <string name="no_auth">不授权</string>
     <string name="auth">授权</string>
-    <string name="prefer_drc_audio">偏好 DRC 音频</string>
-    <string name="app_icon">应用标签</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="other">偏好 DRC 音频</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="other">应用标签</item>
+    </plurals>
     <string name="show_quick_download_share_menu">在分享菜单中显示立即下载选项</string>
     <string name="quick_download_title">不获取数据</string>
-    <string name="sponsorblock_hook">噱头/问候</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="other">噱头/问候</item>
+    </plurals>
     <string name="packages">包</string>
     <string name="not_installed">未安装</string>
     <string name="bundled">捆绑</string>
@@ -515,13 +527,19 @@
     <string name="save_subdirectory_summary">根据元数据标签将文件保存在文件夹中</string>
     <string name="website">网站</string>
     <string name="playlist">播放列表</string>
-    <string name="media_type">媒体类型</string>
+    <plurals name="media_type">
+        <item quantity="other">媒体类型</item>
+    </plurals>
     <string name="crop">裁剪</string>
     <string name="required">必需</string>
     <string name="crop_validation_exceeds_w">X+W 超过 %d</string>
     <string name="crop_validation_exceeds_h">Y+H 超过 %d</string>
-    <string name="free_ratio">自由比</string>
-    <string name="aspect_ratio">宽高比</string>
+    <plurals name="free_ratio">
+        <item quantity="other">自由比</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="other">宽高比</item>
+    </plurals>
     <string name="dimensions">尺寸</string>
     <string name="x_offset">X 偏移</string>
     <string name="y_offset">Y 偏移</string>
@@ -575,7 +593,9 @@
     </plurals>
     <string name="bgutils_info">yt-dlp 的来源证明令牌 (POT) 提供方。\n启用后，YTDLnis 托管生成 POT 的 HTTP 服务器并安装 yt-dlp 使用的相关插件。</string>
     <string name="bgutils_pot_generation_script">生成脚本</string>
-    <string name="bgutils_pot_generation_server">HTTP 服务器</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="other">HTTP 服务器</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">每个 yt-dlp 调用都会造成导致新的 js 运行时进程来运行该脚本的开销。高并发使用不推荐此方法。</string>
     <string name="bgutils_pot_server_summary">这是一个 JavaScript HTTP 服务器，端口为 4416。如未运行，应用会在开始执行下载队列或安排观察源时间时自动启动服务器。要关闭它，你必须手动从通知操作！</string>
     <string name="please_install_package">请安装 %s 包</string>
@@ -591,14 +611,24 @@
     <string name="burn_subs">烧录字幕</string>
     <string name="check_clipboard_home_summary">在主屏幕自动检测剪贴板中的 URL</string>
     <string name="check_clipboard_home">在主屏幕检查剪贴板</string>
-    <string name="search_results">搜索结果</string>
+    <plurals name="search_results">
+        <item quantity="other">搜索结果</item>
+    </plurals>
     <string name="clear_info_json">清除 infojsons</string>
-    <string name="internal_plugin_ffmpeg_preset">内部插件 FFmpeg 预设</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="other">内部插件 FFmpeg 预设</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">内部插件的预设 FFmpeg 用途，如烧录字幕等。调整该偏好设置影响最终文件大小！</string>
-    <string name="preferred_format_size_audio">首选音频格式大小</string>
-    <string name="history_quick_action">快速操作按钮</string>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="other">首选音频格式大小</item>
+    </plurals>
+    <plurals name="history_quick_action">
+        <item quantity="other">快速操作按钮</item>
+    </plurals>
     <string name="history_quick_action_summary">单击历史记录卡片上的操作按钮时要执行的操作</string>
-    <string name="open_file">打开文件</string>
+    <plurals name="open_file">
+        <item quantity="other">打开文件</item>
+    </plurals>
     <string name="duration">持续时间</string>
     <string name="update_available">有更新</string>
     <string name="update_check_failed">无法检查更新</string>
