@@ -46,7 +46,7 @@
     <string name="limit_rate">Letöltés sebességének korlátozása</string>
     <string name="you_are_going_to_delete">Törlés</string>
     <string name="version">Verzió</string>
-    <string name="concurrent_fragments_summary">A DASH/HLS natív videó töredékeinek száma, hogy konkurenciálisan letöltse</string>
+    <string name="concurrent_fragments_summary">Egyidejűleg letöltendő DASH/HLS natív videó-töredékek száma</string>
     <string name="ok">OK</string>
     <string name="update_app_summary">Az alkalmazás új verzióinak kijelzése az alkalmazás megnyitásakor. Az adatok a hivatalos GitHub Repo-ból származnak</string>
     <string name="url">URL</string>
@@ -70,7 +70,7 @@
     <string name="history_is_empty">Nincsenek előzmények</string>
     <string name="updating">Frissítés</string>
     <string name="concurrent_downloads">Egyidejű letöltések</string>
-    <string name="concurrent_fragments">Konkurens fragmensek</string>
+    <string name="concurrent_fragments">Egyidejű töredékek</string>
     <string name="home">Kezdőlap</string>
     <string name="cancel">Mégsem</string>
     <string name="download_notification_channel_name">Fájl letöltések</string>
@@ -736,4 +736,9 @@
     <string name="bgutils_info">Származási igazoló token (POT) szolgáltató a yt-dlp-hez.\nHa ez engedélyezve van, a YTDLnis futtatja azt a HTTP-szervert, amely előállítja a POT-ot, és telepíti a hozzá tartozó bővítményt, amit a yt-dlp használ.</string>
     <string name="bgutils_pot_generation_script_summary">Minden egyes yt-dlp-hívás többletterheléssel jár, mivel a szkript futtatásához egy új js-futtatókörnyezet-folyamatot kell elindítani. Ez a módszer nem ajánlott nagy párhuzamosságot igénylő felhasználás esetén.</string>
     <string name="bgutils_pot_generation_script_info">A BgUtils POT Provider használatához az alkalmazásnak le kell töltenie a Brainicism/bgutil-ytdlp-pot-provider tárolót a GitHubról, majd el kell indítania a telepítést. Ez eltarthat egy ideig. Folytatja?</string>
+    <string name="no_cookies_found">Nem találhatók sütik ehhez az oldalhoz. Fejezze be a bejelentkezést, majd próbálja újra</string>
+    <string name="all_artists_in_album_artist">Az összes előadó mentése az Albumelőadó címkében</string>
+    <string name="all_artists_in_album_artist_summary">Az „Albumelőadó” címkében az első előadó helyett az összes előadót használd</string>
+    <string name="press_cancel">Nyomja meg itt a megszakításhoz</string>
+    <string name="fetching_data">Adatok lekérése...</string>
 </resources>
