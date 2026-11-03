@@ -46,7 +46,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     fun getFilteredIDs (query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING, statusFilter: HistoryViewModel.HistoryStatus) : List<Long> {
         var filtered = when(sortType){
-            HistorySortType.DATE ->  historyDao.getHistoryIDsSortedByID(query, type, site, sort.toString())
+            HistorySortType.DATE ->  historyDao.getHistoryIDsSortedByTime(query, type, site, sort.toString())
             HistorySortType.TITLE ->  historyDao.getHistoryIDsSortedByTitle(query, type, site, sort.toString())
             HistorySortType.AUTHOR ->  historyDao.getHistoryIDsSortedByAuthor(query, type, site, sort.toString())
             HistorySortType.FILESIZE -> historyDao.getHistoryIDsSortedByFilesize(query, type, site, sort.toString())
@@ -66,7 +66,7 @@ class HistoryRepository(private val historyDao: HistoryDao) {
 
     fun getPaginatedSource(query : String, type : String, site : String, sortType: HistorySortType, sort: SORTING) : PagingSource<Int, HistoryItem> {
         val source = when(sortType){
-            HistorySortType.DATE ->  historyDao.getHistorySortedByIDPaginated(query, type, site, sort.toString())
+            HistorySortType.DATE ->  historyDao.getHistorySortedByTimePaginated(query, type, site, sort.toString())
             HistorySortType.TITLE ->  historyDao.getHistorySortedByTitlePaginated(query, type, site, sort.toString())
             HistorySortType.AUTHOR ->  historyDao.getHistorySortedByAuthorPaginated(query, type, site, sort.toString())
             HistorySortType.FILESIZE ->  {

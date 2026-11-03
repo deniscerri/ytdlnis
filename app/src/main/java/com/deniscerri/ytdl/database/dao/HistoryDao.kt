@@ -15,10 +15,10 @@ import kotlinx.coroutines.flow.Flow
 interface HistoryDao {
 
     @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
-            "CASE WHEN :sort = 'ASC' THEN id END ASC," +
-            "CASE WHEN :sort = 'DESC' THEN id END DESC," +
-            "CASE WHEN :sort = '' THEN id END DESC ")
-    fun getHistorySortedByIDPaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
+            "CASE WHEN :sort = 'ASC' THEN time END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN time END DESC," +
+            "CASE WHEN :sort = '' THEN time END DESC ")
+    fun getHistorySortedByTimePaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
 
     @Query("SELECT * FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN title END ASC," +
@@ -39,10 +39,10 @@ interface HistoryDao {
     fun getHistorySortedByFilesizePaginated(query : String, type : String, site : String, sort : String) : PagingSource<Int, HistoryItem>
 
     @Query("SELECT id, downloadPath FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
-            "CASE WHEN :sort = 'ASC' THEN id END ASC," +
-            "CASE WHEN :sort = 'DESC' THEN id END DESC," +
-            "CASE WHEN :sort = '' THEN id END DESC ")
-    fun getHistoryIDsSortedByID(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
+            "CASE WHEN :sort = 'ASC' THEN time END ASC," +
+            "CASE WHEN :sort = 'DESC' THEN time END DESC," +
+            "CASE WHEN :sort = '' THEN time END DESC ")
+    fun getHistoryIDsSortedByTime(query : String, type : String, site : String, sort : String) : List<HistoryRepository.HistoryIDsAndPaths>
 
     @Query("SELECT id, downloadPath FROM history WHERE (title LIKE '%'||:query||'%' OR author LIKE '%'||:query||'%') AND type LIKE '%'||:type||'%' AND website LIKE '%'||:site||'%' ORDER BY " +
             "CASE WHEN :sort = 'ASC' THEN title END ASC," +

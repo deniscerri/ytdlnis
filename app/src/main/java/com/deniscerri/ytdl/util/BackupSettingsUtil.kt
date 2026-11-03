@@ -129,7 +129,7 @@ object BackupSettingsUtil {
                 historyRepository.getAll()
             }
             val arr = JsonArray()
-            historyItems.reversed().forEach {
+            historyItems.sortedBy { it.time }.forEach {
                 arr.add(JsonParser.parseString(Gson().toJson(it)).asJsonObject)
             }
             return arr
