@@ -479,7 +479,7 @@
     <string name="no_keep_subs">Usuń pliki napisów po osadzeniu</string>
     <string name="no_keep_subs_summary">W przypadku korzystania z opcji Osadzanie napisów i Tworzenie napisów nie należy zachowywać plików napisów po osadzeniu</string>
     <plurals name="video_compatible">
-        <item quantity="one">Kompatybilne video</item>
+        <item quantity="one">Kompatybilne wideo</item>
     </plurals>
     <string name="video_compatible_summary">Przekodowuje video, czyniąc je kompatybilnym z innymi aplikacjami</string>
     <string name="no_free_space_warning">Nie ma wolnego miejsca dla tej konfiguracji.</string>
@@ -496,10 +496,10 @@
     <string name="preview_filename">Podgląd nazwy pliku</string>
     <string name="potoken_gvs">V</string>
     <plurals name="preferred_format_size">
-        <item quantity="one">Preferowany rozdzielczość formatu</item>
+        <item quantity="one">Preferowana rozdzielczość formatu</item>
     </plurals>
     <plurals name="prefer_drc_audio">
-        <item quantity="one">Preferowany dziwęk dynamiczny (DRC)</item>
+        <item quantity="one">Preferuj skompresowany dźwięk dynamiczny (DRC)</item>
     </plurals>
     <string name="potoken_player">Token PO (odtwarzacz)</string>
     <string name="potoken_subs">Token PO (napisy)</string>
@@ -561,4 +561,6 @@
     <string name="view">Wyświetl</string>
     <string name="paused">Wstrzymano</string>
     <string name="check_complete">Sprawdzanie ukończone</string>
+    <string name="optional">Opcjonalne</string>
+    <string name="translators_summary">Osoby, które pomogły przetłumaczyć tą aplikację na Weblate</string>
 </resources>
