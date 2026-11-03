@@ -475,14 +475,10 @@
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
     <string name="manual_po_token_generator">Chave de acesso PO do cliente web</string>
     <string name="no_keep_subs_summary">Ao usar \"Incluir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Vídeo compatível</item>
-    </plurals>
+    <string name="video_compatible">Vídeo compatível</string>
     <string name="video_compatible_summary">Recodifica o vídeo tornando-o compatível com outros aplicativos</string>
     <string name="no_free_space_warning">Não há espaço livre para esta configuração.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Tamanho do formato preferido</item>
-    </plurals>
+    <string name="preferred_format_size">Tamanho do formato preferido</string>
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
     <string name="potoken_gvs">Chave de acesso PO (GVS)</string>
@@ -491,9 +487,7 @@
     <string name="visitor_data">Dados do visitante</string>
     <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
     <string name="desktop">Computador</string>
-    <plurals name="url_regex">
-        <item quantity="one">Regex da URL</item>
-    </plurals>
+    <string name="url_regex">Regex da URL</string>
     <string name="disable_flat_playlist">Desativar playlist plana</string>
     <string name="disable_flat_playlist_summary">Não use --flat-playlist. A busca por dados será mais lenta, os dados serão mais precisos</string>
     <string name="chapters">Capítulos</string>
@@ -501,7 +495,5 @@
     <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag playlist_webpage_url do dump json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
     <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Preferir DRC Audio</item>
-    </plurals>
+    <string name="prefer_drc_audio">Preferir DRC Audio</string>
 </resources>

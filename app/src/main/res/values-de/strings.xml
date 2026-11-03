@@ -476,14 +476,10 @@
     <string name="reverse">Umkehren</string>
     <string name="no_keep_subs">Untertitel-Dateien nach dem Einbetten löschen</string>
     <string name="no_keep_subs_summary">Wenn \"Untertitel einbetten\" und \"Untertitel schreiben\" gleichzeitig verwendet werden, die Untertitel-Dateien nach dem Einbetten nicht speichern</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Kompatibles Video</item>
-    </plurals>
+    <string name="video_compatible">Kompatibles Video</string>
     <string name="video_compatible_summary">Codiert das Video neu, um es mit anderen Apps kompatibel zu machen</string>
     <string name="no_free_space_warning">Nicht genug freier Speicherplatz für diese Konfiguration.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Bevorzugte Formatgröße</item>
-    </plurals>
+    <string name="preferred_format_size">Bevorzugte Formatgröße</string>
     <string name="smallest">Kleinste</string>
     <string name="largest">Größte</string>
     <string name="potoken_gvs">PO-Token (GVS)</string>
@@ -492,9 +488,7 @@
     <string name="visitor_data">Besucherdaten</string>
     <string name="get_data_sync_id">Daten-Sync-ID abrufen</string>
     <string name="desktop">Desktop</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL-Regex</item>
-    </plurals>
+    <string name="url_regex">URL-Regex</string>
     <string name="disable_flat_playlist">Flache Playlist deaktivieren</string>
     <string name="disable_flat_playlist_summary">Verwende --flat-playlist nicht. Langsamerer Datenabruf, aber datenreicher/detailreicher</string>
     <string name="chapters">Kapitel</string>
@@ -502,13 +496,9 @@
     <string name="use_original_url_playlist_summary">Verwende die vom Benutzer eingegebene Playlist-URL anstelle des Tags \"playlist_webpage_url\" aus dem JSON-Dump</string>
     <string name="update_ytdlp_while_downloading">yt-dlp während des Downloads aktualisieren</string>
     <string name="update_ytdlp_while_downloading_summary">Füge -U zu yt-dlp hinzu, um es vor dem Download auf die neueste Version zu aktualisieren</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">DRC Audio bevorzugen</item>
-    </plurals>
+    <string name="prefer_drc_audio">DRC Audio bevorzugen</string>
     <string name="preview_filename">Vorschau Dateiname</string>
-    <plurals name="app_icon">
-        <item quantity="one">App Icon</item>
-    </plurals>
+    <string name="app_icon">App Icon</string>
     <string name="show_quick_download_share_menu">Download im Teilen-Menü anbieten</string>
     <string name="quick_download_title">Daten nicht abrufen</string>
     <string name="burn_subs">Untertitel einbrennen</string>
@@ -533,9 +523,7 @@
     <string name="crop_validation_exceeds_w">X+W überschreitet %d</string>
     <string name="crop_validation_exceeds_h">Y+H überschreitet %d</string>
     <string name="optional">Optional</string>
-    <plurals name="search_results">
-        <item quantity="one">Suchergebnisse</item>
-    </plurals>
+    <string name="search_results">Suchergebnisse</string>
     <plurals name="queue_items">
         <item quantity="one">%d Element</item>
         <item quantity="other">%d Elemente</item>

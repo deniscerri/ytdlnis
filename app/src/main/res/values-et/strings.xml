@@ -284,12 +284,8 @@
     <string name="reverse">Tagurpidi</string>
     <string name="no_keep_subs">Kustuta subtiitride failid pärast manustamist</string>
     <string name="no_keep_subs_summary">Kui kasutada manustatud ja kirjutatud subtiitreid, ära jäta subtiitrite faile alles pärast manustamist</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Ühilduv video</item>
-    </plurals>
-    <plurals name="search_results">
-        <item quantity="one">Otsingu tulemused</item>
-    </plurals>
+    <string name="video_compatible">Ühilduv video</string>
+    <string name="search_results">Otsingu tulemused</string>
     <string name="translators">Tõlkijad</string>
     <string name="translators_summary">Inimesed, kes aitasid tõlkida seda rakendust platvormiga Weblate</string>
     <string name="translators_unavailable">Tõlkijate nimekiri ei ole selles versioonis saadaval. Te saate endiselt vaadate, kes aitas kaasa tõlkimisega platvormil Weblate.</string>
@@ -499,26 +495,18 @@
     <string name="generate_potokens_warning">Selle lubamiseks peate küpsised keelama</string>
     <string name="video_compatible_summary">Kodeerib video ümber, tehes selle teiste rakendustega ühilduvaks</string>
     <string name="no_free_space_warning">Selle konfiguratsiooni jaoks pole vaba ruumi.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Eelistatud vormingu suurus</item>
-    </plurals>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Eelistatud helivormingu suurus</item>
-    </plurals>
+    <string name="preferred_format_size">Eelistatud vormingu suurus</string>
+    <string name="preferred_format_size_audio">Eelistatud helivormingu suurus</string>
     <string name="smallest">Väikseim</string>
     <string name="largest">Suurim</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Eelistatud DRC Audio</item>
-    </plurals>
+    <string name="prefer_drc_audio">Eelistatud DRC Audio</string>
     <string name="potoken_gvs">PO-Token (GVS)</string>
     <string name="potoken_player">PO-token (Mängija)</string>
     <string name="potoken_subs">PO-token (Subs)</string>
     <string name="visitor_data">Külastajate andmed</string>
     <string name="get_data_sync_id">Hangi andmete sünkroonimise ID</string>
     <string name="desktop">Töölaud</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
-    </plurals>
+    <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist_summary">Ära kasuta valikut --flat-playlist. Andmete hankimine on aeglasem, kuid tulemus on sisukam</string>
     <string name="disable_flat_playlist">Keela flat playlist</string>
     <string name="chapters">Peatükid</string>
@@ -530,14 +518,10 @@
     <string name="potoken_guide">Autentimisega\n-----------------------\n1. Klõpsa valikul „Auth“ (Autentimine), et avada sisselogimisleht WebView-aknas.\n2. Logi sisse oma Google\'i kontole.\n3. Käivita video, mis toetab automaatselt tõlgitud subtiitreid.\n4. Lülita sisse automaatselt tõlgitud subtiitrid ja kontrolli, kas need toimivad. \n\t4.1 Kui automaatselt tõlgitud subtiitrid ei tööta, vali mõni teine video, mis neid toetab, ja proovi uuesti 4. sammu.\n5. Klõpsa nuppu \"OK\".\n\nIlma autentimiseta\n-----------------------\n1. Klõpsa valikul „No Auth“ (Ilma autentimiseta).\n2. Sisesta YouTube\'i video URL.\n3. Oota, kuni video laeb, ja lase sellel mängida vähemalt 3 sekundit.\n4. Klõpsa nuppu „OK“.</string>
     <string name="no_auth">Ilma autentimiseta</string>
     <string name="auth">Autentimisega</string>
-    <plurals name="app_icon">
-        <item quantity="one">Rakenduse ikoon</item>
-    </plurals>
+    <string name="app_icon">Rakenduse ikoon</string>
     <string name="show_quick_download_share_menu">Kuva jagamismenüüs võimalus koheseks allalaadimiseks</string>
     <string name="quick_download_title">Ära hangi andmeid</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Sissejuhatus/Tervitus</item>
-    </plurals>
+    <string name="sponsorblock_hook">Sissejuhatus/Tervitus</string>
     <string name="packages">Paketid</string>
     <string name="not_installed">Ei ole installitud</string>
     <string name="bundled">Komplektis</string>
@@ -550,15 +534,9 @@
     <string name="install_downloaded_file">Installi allalaaditud fail</string>
     <string name="website">Veebileht</string>
     <string name="playlist">Esitlusloend</string>
-    <plurals name="media_type">
-        <item quantity="one">Meediatüüp</item>
-    </plurals>
-    <plurals name="free_ratio">
-        <item quantity="one">Vaba suhe</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Kuvasuhe</item>
-    </plurals>
+    <string name="media_type">Meediatüüp</string>
+    <string name="free_ratio">Vaba suhe</string>
+    <string name="aspect_ratio">Kuvasuhe</string>
     <string name="dimensions">Mõõtmed</string>
     <string name="width">Laius</string>
     <string name="player_client_not_empty">Mängijakliendi silt ei tohiks tühi olla</string>

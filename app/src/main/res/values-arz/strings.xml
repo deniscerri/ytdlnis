@@ -176,9 +176,7 @@
     <string name="sponsorblock_previews">معاينات</string>
     <string name="sponsorblock_reminders">تذكير الاشتراكات</string>
     <string name="save_dir">احفظ الملف</string>
-    <plurals name="search_results">
-        <item quantity="one">نتايج البحث</item>
-    </plurals>
+    <string name="search_results">نتايج البحث</string>
     <string name="sponsorblock_fillers">حشو الفوارغ</string>
     <string name="select_sponsorblock_filtering">اختيار مانع إعلانات السبونسرز</string>
     <string name="new_template">فورمة جديدة</string>
@@ -229,9 +227,7 @@
     <string name="share">أنشر</string>
     <string name="invert_selected">أعكس الإختيارات</string>
     <string name="red">أحمر</string>
-    <plurals name="app_icon">
-        <item quantity="one">أيقونه البرنامج</item>
-    </plurals>
+    <string name="app_icon">أيقونه البرنامج</string>
     <string name="month">شهر</string>
     <string name="retry_missing_downloads_desc">عيد تحميل المحتويات اللي مش موجوده في سجل التحميلات</string>
     <string name="width">عرض</string>

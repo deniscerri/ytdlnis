@@ -475,27 +475,15 @@
     <string name="manual_po_token_generator">אסימון PO ללקוח דפדפן</string>
     <string name="reverse">היפוך</string>
     <string name="no_keep_subs">למחוק את הכתוביות לאחר ההטמעה</string>
-    <plurals name="video_compatible">
-        <item quantity="one">סרטון תואם</item>
-        <item quantity="two">סרטונים תואמים</item>
-        <item quantity="other">סרטונים תואמים</item>
-    </plurals>
+    <string name="video_compatible">סרטון תואם</string>
     <string name="largest">הגדול ביותר</string>
     <string name="potoken_gvs">אסימון PO‏ (GVS)</string>
-    <plurals name="app_icon">
-        <item quantity="one">סמל היישומון</item>
-        <item quantity="two">סמלי היישומונים</item>
-        <item quantity="other">סמלי היישומונים</item>
-    </plurals>
+    <string name="app_icon">סמל היישומון</string>
     <string name="quick_download_title">לא למשוך נתונים</string>
     <string name="show_quick_download_share_menu">להציג אפשרות להורדה מיידית בתפריט השיתוף</string>
     <string name="no_auth">אין אימות</string>
     <string name="use_original_url_playlist">להשתמש בכתובת המקורית ככתובת רשימת נגינה</string>
-    <plurals name="url_regex">
-        <item quantity="one">ביטוי רגולרי לכתובת</item>
-        <item quantity="two">ביטויים רגולריים לכתובות</item>
-        <item quantity="other">ביטויים רגולריים לכתובות</item>
-    </plurals>
+    <string name="url_regex">ביטוי רגולרי לכתובת</string>
     <string name="visitor_data">נתוני מבקרים</string>
     <string name="desktop">שולחן עבודה</string>
     <string name="disable_flat_playlist">השבתת רשימת נגינה שטוחה</string>
@@ -505,15 +493,9 @@
     <string name="preview_filename">שם קובץ תצוגה מקדימה</string>
     <string name="use_original_url_playlist_summary">להשתמש בכתובת האתר של רשימת הנגינה שסופקה על ידי המשתמש במקום בתגית playlist_webpage_url מהיטל ה־json</string>
     <string name="get_data_sync_id">קבלת מזהה סנכרון נתונים</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">העדפת שמע DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">העדפת שמע DRC</string>
     <string name="smallest">הקטן ביותר</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">גודל תסדיר מועדף</item>
-        <item quantity="two">גודלי תסדיר מועדפים</item>
-        <item quantity="other">גודלי תסדיר מועדפים</item>
-    </plurals>
+    <string name="preferred_format_size">גודל תסדיר מועדף</string>
     <string name="video_compatible_summary">קידוד הסרטון מחדש מתאים אותו ליישומים אחרים</string>
     <string name="no_free_space_warning">אין נפח פנוי להגדרות האלה.</string>
     <string name="potoken_player">אסימון PO (נגן)</string>
@@ -521,9 +503,7 @@
     <string name="potoken_subs">אסימון PO (כתוביות)</string>
     <string name="update_ytdlp_while_downloading_summary">יש להוסיף ‎-U ל־yt-dlp כדי לעדכן אותו לגרסה העדכנית ביותר לפני הורדה</string>
     <string name="potoken_guide">עם אימות\n-----------------------\n1. יש ללחוץ על ‚אימות’ כדי לפתוח את עמוד הכניסה למערכת בחלון אתר.\n2. להיכנס עם חשבון ה־Google שלך.\n3. לנגן סרטון כלשהו שתומך בכתוביות שתורגמו אוטומטית.\n4. להפעיל כתוביות שתורגמו אוטומטית ולראות אם הן עובדות.\n\t4.1 אם הכתוביות שתורגמו אוטומטית לא עובדות, יש לעבור לסרטון אחר שתומך בכתוביות שתורגמו אוטומטית ולנסות את שלב 4 שוב.\n5. ללחוץ על אישור.\n\nללא אימות\n-----------------------\n1. יש ללחוץ על ‚ללא אימות’.\n2. לכתובת כתובת סרטון youtube כלשהי\n3. להמתין לטעינת הסרטון ולנגן לפחות 3 שניות מהסרטון.\n4. ללחוץ על אישור.</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">מושך עניין/ברכות ואיחולים</item>
-    </plurals>
+    <string name="sponsorblock_hook">מושך עניין/ברכות ואיחולים</string>
     <string name="packages">חבילות</string>
     <string name="not_installed">לא מותקנת</string>
     <string name="bundled">מאוגדת</string>
@@ -563,19 +543,9 @@
     <string name="install_downloaded_file">התקנת הקובץ שירד</string>
     <string name="website">אתר</string>
     <string name="playlist">רשימת נגינה</string>
-    <plurals name="media_type">
-        <item quantity="one">סוג תוכן</item>
-        <item quantity="two">סוגי תוכן</item>
-        <item quantity="other">סוגי תוכן</item>
-    </plurals>
-    <plurals name="free_ratio">
-        <item quantity="one">יחס חופשי</item>
-        <item quantity="two">יחסים חופשיים</item>
-        <item quantity="other">יחסים חופשיים</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">יחס גובה־רוחב</item>
-    </plurals>
+    <string name="media_type">סוג תוכן</string>
+    <string name="free_ratio">יחס חופשי</string>
+    <string name="aspect_ratio">יחס גובה־רוחב</string>
     <string name="dimensions">ממדים</string>
     <string name="x_offset">היסט ב־X</string>
     <string name="y_offset">היסט ב־Y</string>
@@ -602,16 +572,8 @@
     <string name="download_delay">השהיית הורדה</string>
     <string name="download_delay_summary">להמתין את כמות השניות שמוגדרת בין הורדה להורדה. היכולת הזאת משביתה את ההורדות המקביליות</string>
     <string name="min_delay">השהיה מזערית (שניות)</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">שרת HTTP</item>
-        <item quantity="two">שרתי HTTP</item>
-        <item quantity="other">שרתי HTTP</item>
-    </plurals>
-    <plurals name="search_results">
-        <item quantity="one">תוצאות חיפוש</item>
-        <item quantity="two">תוצאות חיפושים</item>
-        <item quantity="other">תוצאות חיפושים</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">שרת HTTP</string>
+    <string name="search_results">תוצאות חיפוש</string>
     <string name="unskip_ignored_desc">להוריד את ההעלאות הקיימות שהריצה הראשונה דילגה עליהן</string>
     <plurals name="every_minutes">
         <item quantity="one">כל דקה</item>
@@ -640,9 +602,7 @@
     <string name="check_clipboard_home_summary">לזהות אוטומטית כתובות בלוח הגזירים במסך הבית</string>
     <string name="check_clipboard_home">לבדוק את לוח הגזירים במסך הבית</string>
     <string name="clear_info_json">מחיקת infojsons</string>
-    <plurals name="history_quick_action">
-        <item quantity="one">כפתור פעולה מהירה</item>
-    </plurals>
+    <string name="history_quick_action">כפתור פעולה מהירה</string>
     <string name="duration">משך</string>
     <string name="update_available">יש עדכון</string>
     <string name="update_check_failed">לא ניתן לאתר עדכונים</string>
@@ -676,11 +636,7 @@
     <string name="retry">לנסות שוב</string>
     <string name="retry_all">לנסות הכול שוב</string>
     <string name="download_anyway">להוריד בכל זאת</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">גודל תסדיר השמע המועדף</item>
-        <item quantity="two">גודלי תסדיר השמע המועדפים</item>
-        <item quantity="other">גודלי תסדיר השמע המועדפים</item>
-    </plurals>
+    <string name="preferred_format_size_audio">גודל תסדיר השמע המועדף</string>
     <string name="bgutils_pot_server_summary">זה שרת HTTP שמתופעל ב־JavaScript, בפתחה 4416. אם הוא לא זמין, הוא מפעיל את השרת אוטומטית כשטיפול בתור ההורדות מתחיל או שמקורות השגחה מתוזמנים. כדי לכבות אותו, צריך לעשות זאת ידנית מההתראות!</string>
     <string name="optional">רשות</string>
     <plurals name="queue_items">

@@ -474,14 +474,10 @@
     <string name="reverse">Reverter</string>
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
     <string name="no_keep_subs_summary">Ao usar \"Embutir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Vídeo compatível</item>
-    </plurals>
+    <string name="video_compatible">Vídeo compatível</string>
     <string name="video_compatible_summary">Recodifica o vídeo tornando-o compatível com outros aplicativos</string>
     <string name="no_free_space_warning">Não há espaço livre para esta configuração.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Tamanho do formato preferido</item>
-    </plurals>
+    <string name="preferred_format_size">Tamanho do formato preferido</string>
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -490,9 +486,7 @@
     <string name="visitor_data">Dados do visitante</string>
     <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
     <string name="desktop">Computador</string>
-    <plurals name="url_regex">
-        <item quantity="one">Regex da URL</item>
-    </plurals>
+    <string name="url_regex">Regex da URL</string>
     <string name="disable_flat_playlist">Desativar playlist plana</string>
     <string name="disable_flat_playlist_summary">Não use --flat-playlist. A busca por dados será mais lenta, mas trará mais dados</string>
     <string name="chapters">Capítulos</string>
@@ -500,21 +494,15 @@
     <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag \"playlist_webpage_url\" do arquivo json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
     <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Preferir áudio DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">Preferir áudio DRC</string>
     <string name="preview_filename">Visualizar nome do arquivo</string>
     <string name="potoken_guide">Autenticação\n-----------------------\n1. Clique em “Autenticar” para abrir a página de login no WebView.\n2. Faça login na sua conta do Google.\n3. Reproduza qualquer vídeo que suporte legendas traduzidas automaticamente.\n4. Ative as legendas traduzidas automaticamente e veja se funcionam.\n\t4.1 Se as legendas traduzidas automaticamente não funcionarem, mude para outro vídeo que suporte legendas traduzidas automaticamente e tente o passo 4 novamente.\n5. Clique em OK.\n\nSem autenticação\n-----------------------\n1. Clique em “Sem autenticação”.\n2. Digite qualquer URL de vídeo do YouTube.\n3. Aguarde o carregamento do vídeo e reproduza-o por pelo menos 3 segundos.\n4. Clique em OK.</string>
     <string name="no_auth">Sem autenticação</string>
     <string name="auth">Autenticar</string>
-    <plurals name="app_icon">
-        <item quantity="one">Ícone do app</item>
-    </plurals>
+    <string name="app_icon">Ícone do app</string>
     <string name="show_quick_download_share_menu">Mostrar opção para fazer download imediatamente no menu de compartilhamento</string>
     <string name="quick_download_title">Não buscar dados</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Gancho/saudações</item>
-    </plurals>
+    <string name="sponsorblock_hook">Gancho/saudações</string>
     <string name="packages">Pacotes</string>
     <string name="not_installed">Não instalado</string>
     <string name="bundled">Incluído no pacote</string>
@@ -527,19 +515,13 @@
     <string name="save_subdirectory_summary">Salvar arquivos em pastas com base em tags de metadados</string>
     <string name="website">Site</string>
     <string name="playlist">Playlist</string>
-    <plurals name="media_type">
-        <item quantity="one">Tipo de mídia</item>
-    </plurals>
+    <string name="media_type">Tipo de mídia</string>
     <string name="crop">Recortar</string>
     <string name="required">Obrigatório</string>
     <string name="crop_validation_exceeds_w">X+W excede %d</string>
     <string name="crop_validation_exceeds_h">Y+H excede %d</string>
-    <plurals name="free_ratio">
-        <item quantity="one">Proporção livre</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Proporção de tela</item>
-    </plurals>
+    <string name="free_ratio">Proporção livre</string>
+    <string name="aspect_ratio">Proporção de tela</string>
     <string name="dimensions">Dimensões</string>
     <string name="width">Largura</string>
     <string name="height">Altura</string>
@@ -604,9 +586,7 @@
         <item quantity="other">A cada %d meses</item>
     </plurals>
     <string name="bgutils_info">Um provedor de token de prova de origem (POT) para yt-dlp.\nCom ele ativado, o YTDLnis hospeda o servidor HTTP que gera o POT e instala o plugin relacionado que o yt-dlp utiliza.</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">Servidor HTTP</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">Servidor HTTP</string>
     <string name="bgutils_pot_generation_script_summary">Cada chamada ao yt-dlp acarreta a sobrecarga de criar um novo processo de ambiente de execução JavaScript para rodar o script. Esse método não é recomendado para cenários de alta concorrência.</string>
     <string name="bgutils_pot_server_summary">Este é um servidor HTTP em JavaScript, na porta 4416. Se estiver inativo, ele inicia automaticamente quando a fila de downloads começa a ser executada ou quando a verificação de fontes é agendada. Para encerrá-lo, é preciso fazê-lo manualmente através das notificações!</string>
     <string name="please_install_package">Por favor, instale o pacote %s</string>
@@ -623,20 +603,12 @@
     <string name="burn_subs">Incrustar legendas</string>
     <string name="check_clipboard_home_summary">Detectar automaticamente URLs na área de transferência na tela inicial</string>
     <string name="check_clipboard_home">Verifique a área de transferência na tela inicial</string>
-    <plurals name="search_results">
-        <item quantity="one">Resultados da busca</item>
-    </plurals>
+    <string name="search_results">Resultados da busca</string>
     <string name="clear_info_json">Excluir arquivos infojsons</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="one">Predefinição do plugin interno do FFmpeg</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">Predefinição do plugin interno do FFmpeg</string>
     <string name="internal_plugin_ffmpeg_preset_summary">A predefinição do FFmpeg é utilizada por plugins internos, como os de incrustação de legendas, etc. Ajustar essa preferência afeta o tamanho final do arquivo!</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Tamanho do formato de áudio preferido</item>
-    </plurals>
-    <plurals name="history_quick_action">
-        <item quantity="one">Botão de ação rápida</item>
-    </plurals>
+    <string name="preferred_format_size_audio">Tamanho do formato de áudio preferido</string>
+    <string name="history_quick_action">Botão de ação rápida</string>
     <string name="history_quick_action_summary">Ação a ser executada ao clicar no botão de ação rápida no cartão de histórico</string>
     <string name="open_file">Abrir arquivo</string>
     <string name="toggle_all">Alternar tudo</string>

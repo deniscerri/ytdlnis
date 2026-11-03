@@ -467,9 +467,7 @@
     <string name="material_you">Θέμα «Material You»</string>
     <string name="sponsorblock">SponsorBlock (Αποκλειστής Χορηγιών)</string>
     <string name="sponsorblock_api_url">Sponsorblock API URL</string>
-    <plurals name="search_results">
-        <item quantity="one">Αποτελέσματα αναζήτησης</item>
-    </plurals>
+    <string name="search_results">Αποτελέσματα αναζήτησης</string>
     <string name="crop">Κοπή</string>
     <string name="required">Υποχρεωτικό</string>
     <string name="crop_validation_exceeds_w">Χ+Μ ξεπερνά %d</string>
@@ -481,28 +479,20 @@
     <string name="reverse">Αντίστροφα</string>
     <string name="no_keep_subs">Διαγραφή αρχείων υποτίτλων μετά την ενσωμάτωση</string>
     <string name="no_keep_subs_summary">Όταν χρησιμοποιείτε τόσο την Ενσωμάτωση Υπότιτλων όσο και τη Σύνταξη Υπότιτλων, μην κρατάτε τα αρχεία υποτίτλων μετά την ενσωμάτωση.</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Συμβατό βίντεο</item>
-    </plurals>
+    <string name="video_compatible">Συμβατό βίντεο</string>
     <string name="video_compatible_summary">Επανακωδικοποιεί το βίντεο καθιστώντας το συμβατό με άλλες εφαρμογές</string>
     <string name="no_free_space_warning">Δεν υπάρχει ελεύθερος χώρος για αυτήν τη διαμόρφωση.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Προτιμώμενο μέγεθος μορφής</item>
-    </plurals>
+    <string name="preferred_format_size">Προτιμώμενο μέγεθος μορφής</string>
     <string name="smallest">Μικρότερο</string>
     <string name="largest">Μεγαλύτερο</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Προτίμηση Ήχου DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">Προτίμηση Ήχου DRC</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Player)</string>
     <string name="potoken_subs">PO Token (Εγγραφές)</string>
     <string name="visitor_data">Δεδομένα επισκέπτη</string>
     <string name="get_data_sync_id">Λήψη αναγνωριστικού συγχρονισμού δεδομένων</string>
     <string name="desktop">Υπολογιστής</string>
-    <plurals name="url_regex">
-        <item quantity="one">Κανονική έκφραση URL</item>
-    </plurals>
+    <string name="url_regex">Κανονική έκφραση URL</string>
     <string name="disable_flat_playlist">Απενεργοποίηση επίπεδης λίστας αναπαραγωγής</string>
     <string name="disable_flat_playlist_summary">Μην χρησιμοποιείτε το --flat-playlist. Πιο αργή ανάκτηση δεδομένων, αλλά πιο πλούσια σε δεδομένα</string>
     <string name="chapters">Κεφάλαια</string>
@@ -514,14 +504,10 @@
     <string name="potoken_guide">Εξουσιοδότηση\n------------------------\n1. Κάντε κλικ στην επιλογή «Εξουσιοδότηση» για να ανοίξετε τη σελίδα σύνδεσης στο WebView.\n2. Συνδεθείτε στον Λογαριασμό σας Google.\n3. Αναπαραγωγή οποιουδήποτε βίντεο που υποστηρίζει αυτόματη μετάφραση υπότιτλων.\n4. Ενεργοποιήστε τους αυτόματα μεταφρασμένους υπότιτλους και δείτε αν λειτουργούν.\n\t4.1 Εάν οι αυτόματα μεταφρασμένοι υπότιτλοι δεν λειτουργούν, μεταβείτε σε ένα άλλο βίντεο που υποστηρίζει αυτόματα μεταφρασμένους υπότιτλους και δοκιμάστε ξανά το βήμα 4.\n\n5. Πατήστε OK\n\nΧωρίς Εξουσιοδότηση\n------------------------\n1. Κάντε κλικ στο \'Χωρίς Εξουσιοδότηση\'.\n2. Γράψτε οποιαδήποτε διεύθυνση URL βίντεο στο YouTube\n3. Περιμένετε να φορτώσει το βίντεο και αναπαράγετε το βίντεο για τουλάχιστον 3 δευτερόλεπτα.\n4. Πατήστε OK.</string>
     <string name="no_auth">Χωρίς Εξουσιοδότηση</string>
     <string name="auth">Με Εξουσιοδότηση</string>
-    <plurals name="app_icon">
-        <item quantity="one">Εικονίδιο εφαρμογής</item>
-    </plurals>
+    <string name="app_icon">Εικονίδιο εφαρμογής</string>
     <string name="show_quick_download_share_menu">Εμφάνιση επιλογής για άμεση λήψη στο μενού κοινής χρήσης</string>
     <string name="quick_download_title">Μην ανακτάτε δεδομένα</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Hook/Greetings</item>
-    </plurals>
+    <string name="sponsorblock_hook">Hook/Greetings</string>
     <string name="packages">Πακέτα</string>
     <string name="not_installed">Μη εγκατεστημένο</string>
     <string name="bundled">Ομαδοποιημένο</string>
@@ -534,15 +520,9 @@
     <string name="install_downloaded_file">Εγκαταστήστε το αρχείο που κατεβάσατε</string>
     <string name="website">Ιστοσελίδα</string>
     <string name="playlist">Λίστα αναπαραγωγής</string>
-    <plurals name="media_type">
-        <item quantity="one">Τύπος μέσου</item>
-    </plurals>
-    <plurals name="free_ratio">
-        <item quantity="one">Ελεύθερη αναλογία</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Αναλογία διαστάσεων</item>
-    </plurals>
+    <string name="media_type">Τύπος μέσου</string>
+    <string name="free_ratio">Ελεύθερη αναλογία</string>
+    <string name="aspect_ratio">Αναλογία διαστάσεων</string>
     <string name="dimensions">Διαστάσεις</string>
     <string name="x_offset">Μετατόπιση X</string>
     <string name="y_offset">Μετατόπιση Y</string>
@@ -586,9 +566,7 @@
     </plurals>
     <string name="bgutils_info">Ένας πάροχος διακριτικού απόδειξης προέλευσης (POT) για το yt-dlp.\nΜε ενεργοποιημένο το YTDLnis φιλοξενεί τον διακομιστή HTTP που δημιουργεί το POT και εγκαθιστά το σχετικό πρόσθετο που χρησιμοποιεί το yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Σενάριο δημιουργίας</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">HTTP Σέρβερ</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">HTTP Σέρβερ</string>
     <string name="bgutils_pot_generation_script_summary">Κάθε κλήση yt-dlp συνεπάγεται την επιβάρυνση της δημιουργίας μιας νέας διεργασίας χρόνου εκτέλεσης js για την εκτέλεση του σεναρίου. Αυτή η μέθοδος δεν συνιστάται για χρήση υψηλής ταυτόχρονης χρήσης.</string>
     <string name="bgutils_pot_server_summary">Αυτός είναι ένας διακομιστής HTTP JavaScript, στη θύρα 4416. Εάν είναι εκτός λειτουργίας, ξεκινά αυτόματα τον διακομιστή όταν ξεκινήσει η εκτέλεση της ουράς λήψης ή όταν έχει προγραμματιστεί η παρακολούθηση πηγών. Για να τον τερματίσετε, πρέπει να το κάνετε χειροκίνητα από τις ειδοποιήσεις!</string>
     <string name="please_install_package">Παρακαλώ εγκαταστήστε το πακέτο %s</string>
@@ -605,9 +583,7 @@
     <string name="check_clipboard_home_summary">Αυτόματη ανίχνευση URL στο πρόχειρο στην αρχική οθόνη</string>
     <string name="check_clipboard_home">Ελέγξτε το πρόχειρο στην αρχική οθόνη</string>
     <string name="clear_info_json">Εκκαθάριση πληροφοριών</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="one">Εσωτερικό πρόσθετο FFmpeg Preset</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">Εσωτερικό πρόσθετο FFmpeg Preset</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Προκαθορισμένες χρήσεις FFmpeg για εσωτερικά πρόσθετα όπως εγγραφή subs κ.λπ. Η προσαρμογή αυτής της προτίμησης επηρεάζει το τελικό μέγεθος αρχείου!</string>
     <plurals name="every_hours">
         <item quantity="one">Κάθε ώρα</item>
@@ -630,12 +606,8 @@
     <string name="translators_unavailable">Η λίστα μεταφραστών δεν είναι διαθέσιμη σε αυτήν την έκδοση. Μπορείτε ακόμα να δείτε όλους όσους συνέβαλαν στο Weblate.</string>
     <string name="toggle_all">Εναλλαγή όλων</string>
     <string name="merge_cuts">Συγχώνευση περικοπών σε ένα αρχείο</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Προτιμώμενο μέγεθος μορφής ήχου</item>
-    </plurals>
-    <plurals name="history_quick_action">
-        <item quantity="one">Κουμπί γρήγορης δράσης</item>
-    </plurals>
+    <string name="preferred_format_size_audio">Προτιμώμενο μέγεθος μορφής ήχου</string>
+    <string name="history_quick_action">Κουμπί γρήγορης δράσης</string>
     <string name="history_quick_action_summary">Ενέργεια που θα εκτελεστεί όταν κάνετε κλικ στο κουμπί γρήγορης ενέργειας στην κάρτα ιστορικού</string>
     <string name="open_file">Άνοιγμα αρχείου</string>
     <string name="duration">Διάρκεια</string>

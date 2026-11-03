@@ -475,14 +475,10 @@
     <string name="reverse">Revertir</string>
     <string name="no_keep_subs">Borrar archivos de subtítulos tras insertarlos</string>
     <string name="no_keep_subs_summary">Al usar tanto \"Integrar subtítulos\" como \"Escribir subtítulos\", no guardar los archivos de subtítulos tras insertarlos</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Vídeo compatible</item>
-    </plurals>
+    <string name="video_compatible">Vídeo compatible</string>
     <string name="video_compatible_summary">Recodifica el vídeo, haciéndolo compatible con otras apps</string>
     <string name="no_free_space_warning">No hay espacio disponible para esta configuración.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Tamaño de formato preferido</item>
-    </plurals>
+    <string name="preferred_format_size">Tamaño de formato preferido</string>
     <string name="smallest">Más pequeño</string>
     <string name="largest">Más grande</string>
     <string name="visitor_data">Datos de visitantes</string>
@@ -496,30 +492,22 @@
     <string name="potoken_gvs">Token PO (GVS)</string>
     <string name="potoken_player">Token PO (Reproductor)</string>
     <string name="potoken_subs">Token PO (Subtítulos)</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
-    </plurals>
+    <string name="url_regex">URL Regex</string>
     <string name="update_ytdlp_while_downloading">Actualizar yt-dlp mientras se descarga</string>
     <string name="update_ytdlp_while_downloading_summary">Añadir -U a yt-dlp para actualizar a la última versión antes de descargar</string>
     <string name="crop">Recortar</string>
     <string name="required">Requerido</string>
     <string name="crop_validation_exceeds_w">X+W supera %d</string>
     <string name="crop_validation_exceeds_h">Y+H supera %d</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Preferir Audio DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">Preferir Audio DRC</string>
     <string name="preview_filename">Previsualizar nombre de archivo</string>
     <string name="potoken_guide">Auth\n-----\n1. Haga clic en \'Auth\' para abrir el signo en la página de WebView.\n2. Inicie sesión en su cuenta de Google.\n3. Reproduce cualquier vídeo que soporte subtítulos autotranslatados.\n4. Encienda subtítulos autotranslatados y vea si funciona.\n4.1 Si los subtítulos autotranslatados no funcionan, cambia a otro vídeo que admite subtítulos autotranslatados y prueba el paso 4 de nuevo.\n5. Haga clic en Aceptar.\n\nNo Auth\n-----\n1. Haga clic en \'No Auth\'.\n2. Escribe cualquier url de vídeo de youtube\n3. Espere a que el vídeo se cargue y reproduzca el video por lo menos 3 segundos.\n4. Haga clic en Aceptar.</string>
     <string name="no_auth">No Autenticado</string>
     <string name="auth">Autenticación</string>
-    <plurals name="app_icon">
-        <item quantity="one">Icono de la aplicación</item>
-    </plurals>
+    <string name="app_icon">Icono de la aplicación</string>
     <string name="show_quick_download_share_menu">Mostrar opción para descargar inmediatamente en el menú de compartir</string>
     <string name="quick_download_title">No buscar datos</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Introducción/Saludos</item>
-    </plurals>
+    <string name="sponsorblock_hook">Introducción/Saludos</string>
     <string name="packages">Paquetes</string>
     <string name="not_installed">Sin instalar</string>
     <string name="bundled">Integrado</string>
@@ -532,15 +520,9 @@
     <string name="install_downloaded_file">Instalar el archivo descargado</string>
     <string name="website">Sito web</string>
     <string name="playlist">Playlist</string>
-    <plurals name="media_type">
-        <item quantity="one">Tipo de archivo multimedia</item>
-    </plurals>
-    <plurals name="free_ratio">
-        <item quantity="one">Proporción Libre</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Relación de Aspecto</item>
-    </plurals>
+    <string name="media_type">Tipo de archivo multimedia</string>
+    <string name="free_ratio">Proporción Libre</string>
+    <string name="aspect_ratio">Relación de Aspecto</string>
     <string name="dimensions">Dimensiones</string>
     <string name="x_offset">Desplazamiento X</string>
     <string name="y_offset">Desplazamiento Y</string>
@@ -600,9 +582,7 @@
         <item quantity="many">Cada %d minutos</item>
         <item quantity="other">Cada %d minutos</item>
     </plurals>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">Servidor HTTP</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">Servidor HTTP</string>
     <string name="bgutils_info">Un proveedor de tokens de prueba-de-origen (POT) para yt-dlp.\nMientras este activo, YTDLnis crea el servidor HTTP que genera el POT e instala el plugin relacionado que usa yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Script de generación</string>
     <string name="bgutils_pot_generation_script_summary">Cada llamada a yt-dlp implica el costo adicional de iniciar un nuevo proceso de runtime de JavaScript para ejecutar el script. Este método no se recomienda para usos con un alto nivel de concurrencia.</string>
@@ -617,28 +597,20 @@
     <string name="exit">Salir</string>
     <string name="packages_description">Los paquetes son aplicaciones de ayuda que usa YTDLnis para ayudar con los comandos de yt-dlp. Algunos de ellos vienen incluidos, pero puedes instalar nuevas versiones que se publiquen sin la necesidad de actualizar la aplicación. Los apk instalados reemplazarán las versiones incluidas que usa la aplicación.</string>
     <string name="bgutils_pot_generation_script_info">Para poder usar el proveedor POT de BgUtils, la aplicación necesita descargar e instalar el repositorio Brainicism/bgutil-ytdlp-pot-provider desde github. Esto puede tomar un tiempo en completarse. ¿Deseas continuar ahora?</string>
-    <plurals name="search_results">
-        <item quantity="one">Resultados de búsqueda</item>
-    </plurals>
+    <string name="search_results">Resultados de búsqueda</string>
     <string name="burn_subs">Incrustar subtítulos</string>
     <string name="check_clipboard_home_summary">Detectar automáticamente URLs en el portapapeles en la pantalla de inicio</string>
     <string name="check_clipboard_home">Comprobar el portapapeles en la pantalla de inicio</string>
     <string name="clear_info_json">Borrar archivos infojson</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="one">Predestablecido de FFmpeg para complemento interno</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">Predestablecido de FFmpeg para complemento interno</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Preset que usa FFmpeg para complementos internos como incrustar subtítulos, etc. ¡Ajustar esta preferencia afecta al tamaño final del archivo!</string>
     <string name="translators">Traductores</string>
     <string name="translators_summary">Personas que han ayudado a traducir esta aplicación en Weblate</string>
     <string name="translators_unavailable">La lista de traductores no está disponible en esta build. Aún así puedes ver a todo el que ha contribuido en Weblate.</string>
     <string name="toggle_all">Alternar todo</string>
     <string name="merge_cuts">Fusionar cortes en un solo archivo</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Tamaño de formato de audio preferido</item>
-    </plurals>
-    <plurals name="history_quick_action">
-        <item quantity="one">Botón de acción rápida</item>
-    </plurals>
+    <string name="preferred_format_size_audio">Tamaño de formato de audio preferido</string>
+    <string name="history_quick_action">Botón de acción rápida</string>
     <string name="history_quick_action_summary">Acción a realizar al hacer clic sobre el botón de acción rápida en la carta del historial</string>
     <string name="open_file">Abrir Archivo</string>
     <string name="duration">Duración</string>

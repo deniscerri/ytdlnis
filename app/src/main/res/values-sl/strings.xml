@@ -452,9 +452,7 @@
     <string name="reverse">Obrni</string>
     <string name="no_keep_subs">Izbriši datoteke s podnapisi po vdelavi</string>
     <string name="no_keep_subs_summary">Pri uporabi možnosti Vdelaj podnapise in Zapiši podnapise ne shrani datotek s podnapisi po vdelavi</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Združljiv video</item>
-    </plurals>
+    <string name="video_compatible">Združljiv video</string>
     <string name="video_compatible_summary">Prekodira video, zaradi česar je združljiv z drugimi aplikacijami</string>
     <string name="items_left">Preostali element(i)</string>
     <string name="update_app_summary">Obvesti o novih različicah aplikacije ob odprtju. Podatki se pridobivajo iz uradnega GitHub repozitorija</string>
@@ -480,9 +478,7 @@
     <string name="preferred_format_id_summary">Izberi format s tem ID-jem v kartici s prenosi</string>
     <string name="socket_timeout_description">Čas čakanja, preden preneha, v sekundah</string>
     <string name="no_free_space_warning">Za to konfiguracijo ni prostega prostora.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Prednostna velikost formata</item>
-    </plurals>
+    <string name="preferred_format_size">Prednostna velikost formata</string>
     <string name="smallest">Najmanjše</string>
     <string name="largest">Največje</string>
     <string name="potoken_gvs">PO Žeton (GVS)</string>
@@ -491,9 +487,7 @@
     <string name="visitor_data">Podatki obiskovalca</string>
     <string name="get_data_sync_id">Pridobi ID sinhronizacije podatkov</string>
     <string name="desktop">Namizje</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL regularni izraz</item>
-    </plurals>
+    <string name="url_regex">URL regularni izraz</string>
     <string name="disable_flat_playlist">Onemogoči ravni seznam predvajanja</string>
     <string name="disable_flat_playlist_summary">Ne uporabljaj --flat-playlist. Počasnejše pridobivanje podatkov, a z več informacijami</string>
     <string name="chapters">Poglavja</string>
@@ -505,19 +499,13 @@
     <string name="potoken_guide">Avtorizacija\n-----------------------\n1. Kliknite \'Avtorizacija\', da odprete stran za prijavo v spletnem pogledu.\n2. Prijavite se v svoj Google Račun.\n3. Predvajajte kateri koli videoposnetek, ki podpira samodejno prevedene podnapise.\n4. Vklopite samodejno prevedene podnapise in preverite, ali delujejo.\n\t4.1 Če samodejno prevedeni podnapisi ne delujejo, preklopite na drug videoposnetek, ki podpira samodejno prevedene podnapise, in poskusite znova 4. korak.\n5. Kliknite V redu.\n\nBrez avtorizacije\n-----------------------\n1. Kliknite \'Brez avtorizacije\'.\n2. Vnesite url katerega koli youtube videoposnetka.\n3. Počakajte, da se videoposnetek naloži, in ga predvajajte vsaj 3 sekunde.\n4. Kliknite V redu.</string>
     <string name="no_auth">Brez avtorizacije</string>
     <string name="auth">Avtorizacija</string>
-    <plurals name="app_icon">
-        <item quantity="one">Ikona aplikacije</item>
-    </plurals>
+    <string name="app_icon">Ikona aplikacije</string>
     <string name="show_quick_download_share_menu">V meniju za skupno rabo prikaži možnost takojšnjega prenosa</string>
     <string name="quick_download_title">Ne pridobivaj podatkov</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Kavelj/Pozdravi</item>
-    </plurals>
+    <string name="sponsorblock_hook">Kavelj/Pozdravi</string>
     <string name="packages">Paketi</string>
     <string name="not_installed">Ni nameščeno</string>
     <string name="bundled">V paketu</string>
     <string name="use_app_language_for_metadata_summary">Če je omogočeno, bodo polja z metapodatki sledila jeziku vaše aplikacije in celo vplivala na izbiro formata, tako da bodo dajala prednost sinhroniziranim različicam namesto izvirnika</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Prednostni zvok DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">Prednostni zvok DRC</string>
 </resources>

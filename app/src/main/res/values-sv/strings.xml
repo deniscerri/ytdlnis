@@ -466,9 +466,7 @@
     <string name="generate_potokens_warning">Genom att aktivera detta måste du inaktivera kakor</string>
     <string name="reverse">Bakåt</string>
     <string name="no_keep_subs">Radera undertextfiler efter inbäddning</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Kompatibel Video</item>
-    </plurals>
+    <string name="video_compatible">Kompatibel Video</string>
     <string name="video_compatible_summary">Omkodar videon för kompatibilitet med andra program</string>
     <string name="no_free_space_warning">Det finns inget ledigt utrymme för den här konfigurationen</string>
     <string name="smallest">Minsta</string>
@@ -486,18 +484,12 @@
     <string name="potoken">PO-nyckel</string>
     <string name="manual_po_token_generator">Webbklients PO-nyckel</string>
     <string name="no_keep_subs_summary">När du använder både inbäddade undertexter och skrivna undertexter, inte behålla undertextfilerna efter inbäddning</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Föredragen formatstorlek</item>
-    </plurals>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Föredra DRC ljud</item>
-    </plurals>
+    <string name="preferred_format_size">Föredragen formatstorlek</string>
+    <string name="prefer_drc_audio">Föredra DRC ljud</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (spelare)</string>
     <string name="potoken_subs">PO Token (undertexter)</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
-    </plurals>
+    <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Inaktivera platt spellista</string>
     <string name="disable_flat_playlist_summary">Använd inte --flat-playlist. Långsammare datahämtning, men mer datarik</string>
     <string name="use_original_url_playlist">Använd original-url för spellista-url</string>
@@ -507,9 +499,7 @@
     <string name="preview_filename">Förhandsgranska filnamn</string>
     <string name="no_auth">Ingen autentisering</string>
     <string name="auth">Autentisering</string>
-    <plurals name="app_icon">
-        <item quantity="one">App ikon</item>
-    </plurals>
+    <string name="app_icon">App ikon</string>
     <string name="show_quick_download_share_menu">Visa alternativ för att ladda ner direkt i delningsmenyn</string>
     <string name="quick_download_title">Hämta inte data</string>
     <string name="packages">Paket</string>
@@ -528,12 +518,8 @@
     <string name="install_downloaded_file">Installera den nedladdade filen</string>
     <string name="website">Webbsida</string>
     <string name="playlist">Spellista</string>
-    <plurals name="media_type">
-        <item quantity="one">Medietyp</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Bildförhållande</item>
-    </plurals>
+    <string name="media_type">Medietyp</string>
+    <string name="aspect_ratio">Bildförhållande</string>
     <string name="dimensions">Mått</string>
     <string name="x_offset">X offset</string>
     <string name="y_offset">Y offset</string>

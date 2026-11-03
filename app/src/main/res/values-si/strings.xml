@@ -71,9 +71,7 @@
     <string name="api_key_summary">YouTube API වෙතින් ලැබෙන වීඩියෝ නිර්දේශ</string>
     <string name="update_app_summary">යෙදුම විවෘත කළ විට එහි නව අනුවාද(Versions) පිළිබඳව දැනුම් දෙන්න. එම දත්ත නිල GitHub ගබඩාවෙන් (Repository) ලබාගනු ලැබේ</string>
     <string name="downloads">බාගත කිරීම්</string>
-    <plurals name="search_results">
-        <item quantity="one">ප්‍රතිඵල වල සොයන්න</item>
-    </plurals>
+    <string name="search_results">ප්‍රතිඵල වල සොයන්න</string>
     <string name="remove_deleted">මකා දැමූ ඒවා ඉවත් කරන්න</string>
     <string name="remove_duplicates">අනුපිටපත් ඉවත් කරන්න</string>
     <string name="sort_by">වර්ගීකරණය</string>

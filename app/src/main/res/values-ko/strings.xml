@@ -471,30 +471,22 @@
     <string name="app_icon_change">앱을 종료하고 설정을 적용합니다</string>
     <string name="potoken">PO 토큰</string>
     <string name="manual_po_token_generator">웹 클라이언트 PO 토큰</string>
-    <plurals name="preferred_format_size">
-        <item quantity="other">선호하는 형식 크기</item>
-    </plurals>
+    <string name="preferred_format_size">선호하는 형식 크기</string>
     <string name="smallest">최소</string>
     <string name="largest">최대</string>
     <string name="no_free_space_warning">설정 적용에 필요한 저장 공간이 없습니다.</string>
-    <plurals name="video_compatible">
-        <item quantity="other">동영상 호환</item>
-    </plurals>
+    <string name="video_compatible">동영상 호환</string>
     <string name="video_compatible_summary">다른 앱과 호환되도록 동영상 재인코딩</string>
     <string name="no_keep_subs">자막을 내장한 뒤 자막 파일 삭제</string>
     <string name="no_keep_subs_summary">자막 내장과 자막 파일 저장 설정을 모두 켠 경우, 자막을 내장한 뒤 파일을 남기지 않고 지우기</string>
     <string name="reverse">역순</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="other">DRC 오디오 선호</item>
-    </plurals>
+    <string name="prefer_drc_audio">DRC 오디오 선호</string>
     <string name="potoken_gvs">PO 토큰 (GVS)</string>
     <string name="potoken_player">PO 토큰 (플레이어)</string>
     <string name="visitor_data">방문자 데이터</string>
     <string name="get_data_sync_id">데이터 동기화 ID 받기</string>
     <string name="desktop">데스크탑</string>
-    <plurals name="url_regex">
-        <item quantity="other">URL 정규표현식</item>
-    </plurals>
+    <string name="url_regex">URL 정규표현식</string>
     <string name="chapters">챕터</string>
     <string name="use_original_url_playlist">재생목록 URL로 원본 URL 사용</string>
     <string name="update_ytdlp_while_downloading">다운로드 시 yt-dlp 업데이트</string>
@@ -502,13 +494,9 @@
     <string name="preview_filename">파일 이름 미리보기</string>
     <string name="no_auth">인증 없음</string>
     <string name="auth">인증</string>
-    <plurals name="app_icon">
-        <item quantity="other">앱 아이콘</item>
-    </plurals>
+    <string name="app_icon">앱 아이콘</string>
     <string name="show_quick_download_share_menu">공유 메뉴에 즉시 다운로드 옵션 표시</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="other">후킹/인사말</item>
-    </plurals>
+    <string name="sponsorblock_hook">후킹/인사말</string>
     <string name="potoken_subs">PO 토큰 (자막)</string>
     <string name="disable_flat_playlist">재생목록 평면화 끄기</string>
     <string name="disable_flat_playlist_summary">--flat-playlist를 사용하지 않습니다. 데이터 처리가 오래 걸리지만, 더 풍부한 데이터를 가져옵니다</string>
@@ -525,9 +513,7 @@
     <string name="install_downloaded_file">다운로드한 파일 설치</string>
     <string name="website">웹사이트</string>
     <string name="playlist">재생목록</string>
-    <plurals name="media_type">
-        <item quantity="other">미디어 유형</item>
-    </plurals>
+    <string name="media_type">미디어 유형</string>
     <string name="save_subdirectory">하위 폴더에 저장</string>
     <string name="save_subdirectory_summary">메타데이터 태그를 기반으로 파일을 폴더에 분류해 저장</string>
     <string name="crop">자르기</string>
@@ -537,12 +523,8 @@
     <string name="y_offset">Y 오프셋</string>
     <string name="width">너비</string>
     <string name="height">높이</string>
-    <plurals name="free_ratio">
-        <item quantity="other">자유 비율</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="other">화면 비율</item>
-    </plurals>
+    <string name="free_ratio">자유 비율</string>
+    <string name="aspect_ratio">화면 비율</string>
     <string name="dimensions">치수</string>
     <string name="required">필수</string>
     <string name="player_client_not_empty">플레이어 클라이언트 태그는 비워둘 수 없습니다</string>
@@ -592,9 +574,7 @@
         <item quantity="other">%d분마다</item>
     </plurals>
     <string name="bgutils_pot_generation_script">생성 스크립트</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="other">HTTP 서버</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">HTTP 서버</string>
     <string name="please_install_package">%s 패키지를 설치하세요</string>
     <string name="please_install_package_or_package">%1$s 패키지나 %2$s 패키지를 설치하세요</string>
     <string name="bgutils_info">yt-dlp용 Proof-of-origin 토큰 (POT) 제공자입니다.\n켜면 YTDLnis에서 POT를 생성하고 yt-dlp 관련 플러그인을 설치하는 HTTP 서버를 호스팅합니다.</string>
@@ -611,20 +591,12 @@
     <string name="check_clipboard_home_summary">홈 화면에서 클립보드 내 URL 자동 감지</string>
     <string name="check_clipboard_home">홈 화면에서 클립보드 확인</string>
     <string name="burn_subs">자막 굽기</string>
-    <plurals name="search_results">
-        <item quantity="other">검색 결과</item>
-    </plurals>
+    <string name="search_results">검색 결과</string>
     <string name="clear_info_json">Infojson 정리</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="other">내장 플러그인 FFmpeg 사전 설정</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">내장 플러그인 FFmpeg 사전 설정</string>
     <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg에서 자막 굽기같은 내부 플러그인에 쓰는 사전 설정입니다. 이 설정을 조정하면 최종 파일 크기에 영향을 미칩니다!</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="other">선호하는 오디오 형식 크기</item>
-    </plurals>
-    <plurals name="history_quick_action">
-        <item quantity="other">빠른 동작 버튼</item>
-    </plurals>
+    <string name="preferred_format_size_audio">선호하는 오디오 형식 크기</string>
+    <string name="history_quick_action">빠른 동작 버튼</string>
     <string name="history_quick_action_summary">기록 카드의 빠른 동작 버튼을 눌렀을 때 실행할 동작</string>
     <string name="open_file">파일 열기</string>
     <string name="update_available">업데이트 가능</string>

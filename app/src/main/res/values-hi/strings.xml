@@ -477,27 +477,19 @@
     <string name="no_keep_subs">एम्बेड करने के बाद सबटाइटल फ़ाइल हटा दें</string>
     <string name="no_keep_subs_summary">एम्बेड सबटाइटल और राइट सबटाइटल दोनों का उपयोग करते समय, एम्बेड करने के बाद सबटाइटल फ़ाइलों को न रखें।</string>
     <string name="video_compatible_summary">यह वीडियो को रीकोड करता है जिससे यह अन्य ऐप्स के साथ अनुकूल हो जाता है</string>
-    <plurals name="video_compatible">
-        <item quantity="one">अनुकूल वीडियो</item>
-    </plurals>
+    <string name="video_compatible">अनुकूल वीडियो</string>
     <string name="no_free_space_warning">इस कॉन्फ़िगरेशन के लिए कोई खाली जगह उपलब्ध नहीं है।</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">पसंदीदा फॉर्मेट साइज</item>
-    </plurals>
+    <string name="preferred_format_size">पसंदीदा फॉर्मेट साइज</string>
     <string name="smallest">सबसे छोटा</string>
     <string name="largest">सबसे बड़ा</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">डीआरसी ऑडियो को प्राथमिकता दें</item>
-    </plurals>
+    <string name="prefer_drc_audio">डीआरसी ऑडियो को प्राथमिकता दें</string>
     <string name="potoken_gvs">पीओ टोकन (जीवीएस)</string>
     <string name="potoken_player">पीओ टोकन (प्लेयर)</string>
     <string name="potoken_subs">पीओ टोकन (सबस)</string>
     <string name="visitor_data">आगंतुक डेटा</string>
     <string name="get_data_sync_id">डेटा सिंक आईडी प्राप्त करें</string>
     <string name="desktop">डेस्कटॉप</string>
-    <plurals name="url_regex">
-        <item quantity="one">यूआरएल रेगुलर एक्सप्रेशन</item>
-    </plurals>
+    <string name="url_regex">यूआरएल रेगुलर एक्सप्रेशन</string>
     <string name="disable_flat_playlist">फ्लैट प्लेलिस्ट को अक्षम करें</string>
     <string name="disable_flat_playlist_summary">--flat-playlist का उपयोग न करें। इससे डेटा प्राप्त करने में समय लगेगा, लेकिन डेटा अधिक समृद्ध होगा।</string>
     <string name="chapters">अध्याय</string>
@@ -509,9 +501,7 @@
     <string name="potoken_guide">"प्रमाणीकरण ----------------------- \n1. वेबव्यू में साइन इन पेज खोलने के लिए \'प्रमाणीकरण\' पर क्लिक करें। \n2. अपने गूगल अकाउंट में साइन इन करें। \n3. कोई भी ऐसा वीडियो चलाएं जो ऑटो-अनुवादित उपशीर्षकों का समर्थन करता हो। \n4. ऑटो-अनुवादित उपशीर्षकों को चालू करें और देखें कि यह काम करता है या नहीं। \n     4.1 यदि ऑटो-अनुवादित उपशीर्षक काम नहीं\nㅤकरते हैं, तो किसी अन्य ऐसे वीडियो पर जाएं जो ㅤऑटो-अनुवादित उपशीर्षकों का समर्थन करता हो ㅤऔर चरण 4 को फिर से आज़माएं। \n5. ठीक है पर क्लिक करें। \nप्रमाणीकरण नहीं ----------------------- \n1. \'प्रमाणीकरण नहीं\' पर क्लिक करें। \n2. किसी भी यूट्यूब वीडियो का यूआरएल लिखें। \n3. वीडियो लोड होने की प्रतीक्षा करें और वीडियो को कम से कम 3 सेकंड तक चलाएं। \n4. ठीक है पर क्लिक करें।"</string>
     <string name="no_auth">कोई प्राधिकरण नहीं</string>
     <string name="auth">प्रमाणन</string>
-    <plurals name="app_icon">
-        <item quantity="one">ऐप आइकन</item>
-    </plurals>
+    <string name="app_icon">ऐप आइकन</string>
     <string name="show_quick_download_share_menu">शेयर मेनू में तुरंत डाउनलोड करने का विकल्प दिखाएँ</string>
     <string name="quick_download_title">डेटा न लाएं</string>
 </resources>

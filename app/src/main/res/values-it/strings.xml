@@ -475,14 +475,10 @@
     <string name="no_keep_subs_summary">Quando si utilizzano sia Incorpora sottotitoli che Scrivi sottotitoli, non mantenere i file dei sottotitoli dopo l’incorporamento</string>
     <string name="no_keep_subs">Elimina i file dei sottotitoli dopo l’incorporamento</string>
     <string name="manual_po_token_generator">Token PO client web</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Video Compatibile</item>
-    </plurals>
+    <string name="video_compatible">Video Compatibile</string>
     <string name="video_compatible_summary">Ricodifica il video per renderlo compatibile con altre app</string>
     <string name="no_free_space_warning">Non esiste spazio libero per questa configurazione.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Formato Dimensione Preferito</item>
-    </plurals>
+    <string name="preferred_format_size">Formato Dimensione Preferito</string>
     <string name="smallest">Il più piccolo</string>
     <string name="largest">Il più grande</string>
     <string name="potoken_gvs">Token PO (GVS)</string>
@@ -491,9 +487,7 @@
     <string name="visitor_data">Dati visitatore</string>
     <string name="get_data_sync_id">Ottieni ID sincronizzazione dati</string>
     <string name="desktop">Desktop</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
-    </plurals>
+    <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Disabilita playlist piatta</string>
     <string name="chapters">Capitoli</string>
     <string name="disable_flat_playlist_summary">Non usare --flat-playlist. Recupero dei dati più lento, ma più ricco di dati</string>
@@ -502,24 +496,18 @@
     <string name="update_ytdlp_while_downloading">Aggiorna yt-dlp durante il download</string>
     <string name="update_ytdlp_while_downloading_summary">Aggiungi -U a yt-dlp per aggiornare prima di scaricare</string>
     <string name="preview_filename">Mostra il nome del file in anteprima</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Preferisci audio DRC</item>
-    </plurals>
+    <string name="prefer_drc_audio">Preferisci audio DRC</string>
     <string name="potoken_guide">Con Autenticazione (Autenticazione)\n-----------------------\n1. Clicca su \"Autenticazione\" per aprire la pagina di accesso in WebView.\n2. Accedi al tuo account Google.\n3. Riproduci un video qualsiasi che supporti i sottotitoli tradotti automaticamente.\n4. Attiva i sottotitoli tradotti automaticamente e verifica se funzionano.\n\t4.1 Se i sottotitoli non funzionano, passa a un altro video che supporti la traduzione automatica e riprova il passaggio 4.\n5. Clicca su OK.\n\nSenza Autenticazione (Senza autenticazione)\n-----------------------\n1. Clicca su \"Senza autenticaziond\".\n2. Inserisci l\'URL di un video YouTube.\n3. Attendi il caricamento del video e riproducilo per almeno 3 secondi.\n4. Clicca su OK.</string>
     <string name="no_auth">Senza autenticazione</string>
     <string name="auth">Autenticazione</string>
-    <plurals name="app_icon">
-        <item quantity="one">Icona app</item>
-    </plurals>
+    <string name="app_icon">Icona app</string>
     <string name="show_quick_download_share_menu">Mostra l\'opzione per scaricare nel menu di condivisione</string>
     <string name="quick_download_title">Non recuperare i dati</string>
     <string name="packages">Pacchetti</string>
     <string name="not_installed">Non installato</string>
     <string name="use_app_language_for_metadata_summary">Se abilitati, i campi dei metadati seguiranno la lingua dell\'app e influenzeranno persino la selezione del formato preferendo le versioni doppiate anzichè le originali</string>
     <string name="installed">Installato</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Hook/Greetings</item>
-    </plurals>
+    <string name="sponsorblock_hook">Hook/Greetings</string>
     <string name="bundled">Impacchettato</string>
     <string name="auto_update_ytdlp_summary">È consigliato mantenere abilitata la funzione, in quanto yt-dlp necessità di essere aggiornato regolarmente per poter continuare a funzionare! I dati sono estratti dalla repository GitHub di yt-dlp.</string>
     <string name="trim_filenames">Tronca i nomi dei file</string>
@@ -528,19 +516,13 @@
     <string name="save_subdirectory_summary">Salva i file in cartelle basate sui tag dei metadati</string>
     <string name="website">Sito web</string>
     <string name="playlist">Playlist</string>
-    <plurals name="media_type">
-        <item quantity="one">Tipo di contenuto</item>
-    </plurals>
+    <string name="media_type">Tipo di contenuto</string>
     <string name="crop">Ritaglia</string>
     <string name="required">Obbligatorio</string>
     <string name="crop_validation_exceeds_w">X+L supera %d</string>
     <string name="crop_validation_exceeds_h">Y+A supera %d</string>
-    <plurals name="free_ratio">
-        <item quantity="one">Proporzioni libere</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Proporzioni</item>
-    </plurals>
+    <string name="free_ratio">Proporzioni libere</string>
+    <string name="aspect_ratio">Proporzioni</string>
     <string name="dimensions">Dimensioni</string>
     <string name="x_offset">Offset X</string>
     <string name="y_offset">Offset Y</string>
@@ -582,9 +564,7 @@
         <item quantity="many">Ogni %d minuti</item>
     </plurals>
     <string name="bgutils_pot_generation_script">Generazione script</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">Server HTTP</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">Server HTTP</string>
     <string name="bgutils_pot_server_summary">Questo è un server JavaScript HTTP, sulla porta 4416, se è inattivo, inizia automaticamente il server quando la coda dei download inizia ad essere eseguita, o osserva le fonti quando pianificato. Per spegnerlo, devi farlo manualmente dalla notifica!</string>
     <string name="please_install_package">Per favore installa il pacchetto %s</string>
     <string name="please_install_package_or_package">Per favore installa in pachetto %1$s oppure pacchetto %2$s</string>
@@ -619,19 +599,11 @@
     <string name="bgutils_pot_generation_script_summary">Ogni chiamata yt-dlp comporta il sovraccarico dovuto alla creazione di un nuovo processo runtime js per eseguire la script. Questo metodo non è raccomandato per usagio ad alta concorrenza.</string>
     <string name="bgutils_pot_generation_script_info">Per usare il POT Procider BgUtils, l\'apl deve essere scaricata dal repo da github Brainicism/bgutil-ytdlp-pot-provider e iniziare l\'installazione. Questo ci potrebbe mettere un po\' per finire. Procedere ora?</string>
     <string name="burn_subs">Masterizza sottotitoli</string>
-    <plurals name="search_results">
-        <item quantity="one">Risultati di ricerca</item>
-    </plurals>
+    <string name="search_results">Risultati di ricerca</string>
     <string name="clear_info_json">Cancella infojson</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="one">Modello plugin FFmpeg interno</item>
-    </plurals>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Dimensione formato audio preferita</item>
-    </plurals>
-    <plurals name="history_quick_action">
-        <item quantity="one">Pulsante di azione rapida</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">Modello plugin FFmpeg interno</string>
+    <string name="preferred_format_size_audio">Dimensione formato audio preferita</string>
+    <string name="history_quick_action">Pulsante di azione rapida</string>
     <string name="history_quick_action_summary">Azione da eseguire quando clicchi il pulsante di azione rapida nella scheda cronologia</string>
     <string name="open_file">Apri file</string>
     <string name="toggle_all">Attiva/disattiva tutto</string>

@@ -476,14 +476,10 @@
     <string name="reverse">اعكس</string>
     <string name="no_keep_subs">احذف ملفات الترجمة بعد التضمين</string>
     <string name="no_keep_subs_summary">عند استخدام خياري \"تضمين الترجمات\" و\"اكتب الترجمات\" معًا، لا تحتفظ بملفات الترجمة بعد التضمين</string>
-    <plurals name="video_compatible">
-        <item quantity="zero">فيديو متوافق</item>
-    </plurals>
+    <string name="video_compatible">فيديو متوافق</string>
     <string name="video_compatible_summary">يعيد ترميز الفيديو لجعله متوافقًا مع التطبيقات الأخرى</string>
     <string name="no_free_space_warning">لا توجد مساحة خالية لهذا التضبيط.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="zero">حجم التنسيق المفضل</item>
-    </plurals>
+    <string name="preferred_format_size">حجم التنسيق المفضل</string>
     <string name="smallest">الأصغر</string>
     <string name="largest">الأكبر</string>
     <string name="potoken_gvs">رمز PO (GVS)</string>
@@ -492,9 +488,7 @@
     <string name="visitor_data">بيانات الزوار</string>
     <string name="get_data_sync_id">الحصول على معرف مزامنة البيانات</string>
     <string name="desktop">سطح المكتب</string>
-    <plurals name="url_regex">
-        <item quantity="zero">عنوان رابط Regex</item>
-    </plurals>
+    <string name="url_regex">عنوان رابط Regex</string>
     <string name="disable_flat_playlist">عطّل قائمة التشغيل المسطحة</string>
     <string name="disable_flat_playlist_summary">لا تستخدم --flat-playlist. جلب بيانات أبطأ، ولكنه أكثر ثراءً بالبيانات</string>
     <string name="chapters">الفصول</string>
@@ -506,17 +500,11 @@
     <string name="potoken_guide">مع المصادقة\n-----------------------\n1. انقر على \'Auth\' لفتح صفحة تسجيل الدخول في WebView.\n2. سجل الدخول إلى حساب Google الخاص بك.\n3. شغل أي فيديو يدعم الترجمة التلقائية للترجمات.\n4. شغل الترجمة التلقائية للترجمات وتحقق مما إذا كانت تعمل.\n 4.1 إذا لم تعمل الترجمة التلقائية للترجمات، انتقل إلى فيديو آخر يدعم هذه الميزة وحاول تنفيذ الخطوة 4 مرة أخرى.\n5. انقر على موافق (OK).\n\nبدون مصادقة\n-----------------------\n1. انقر على \'No Auth\'.\n2. اكتب أي رابط لفيديو على YouTube.\n3. انتظر حتى يتم تحميل الفيديو وشغله لمدة 3 ثوانٍ على الأقل.\n4. انقر على موافق (OK).</string>
     <string name="no_auth">بدون مصادقة</string>
     <string name="auth">مصادقة</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="zero">تفضيل صوت DRC</item>
-    </plurals>
-    <plurals name="app_icon">
-        <item quantity="zero">ايقونة التطبيق</item>
-    </plurals>
+    <string name="prefer_drc_audio">تفضيل صوت DRC</string>
+    <string name="app_icon">ايقونة التطبيق</string>
     <string name="show_quick_download_share_menu">أظهِر خيار التنزيل الفوري في قائمة المشاركة</string>
     <string name="quick_download_title">لا تجلب البيانات</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="zero">ترحيبات/خطاف</item>
-    </plurals>
+    <string name="sponsorblock_hook">ترحيبات/خطاف</string>
     <string name="packages">حزمات</string>
     <string name="not_installed">غير مثبتة</string>
     <string name="bundled">مضمنة</string>
@@ -529,17 +517,11 @@
     <string name="save_subdirectory_summary">احفظ الملفات في مجلدات بناءً على وسوم البيانات الوصفية</string>
     <string name="website">الموقع</string>
     <string name="playlist">قائمة التشغيل</string>
-    <plurals name="media_type">
-        <item quantity="zero">نوع الوسائط</item>
-    </plurals>
+    <string name="media_type">نوع الوسائط</string>
     <string name="crop">قصّ</string>
     <string name="required">مطلوب</string>
-    <plurals name="free_ratio">
-        <item quantity="zero">نسبة حرّة</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="zero">نسبة الارتفاع إلى العرض</item>
-    </plurals>
+    <string name="free_ratio">نسبة حرّة</string>
+    <string name="aspect_ratio">نسبة الارتفاع إلى العرض</string>
     <string name="dimensions">الأبعاد</string>
     <string name="x_offset">إزاحة س</string>
     <string name="y_offset">إزاحة ص</string>
@@ -625,9 +607,7 @@
     </plurals>
     <string name="bgutils_info">مزوّد رمز إثبات المصدر (POT) لأداة yt-dlp.\nعند تفعيله، يقوم YTDLnis باستضافة خادم HTTP الذي يولّد رمز POT، ويثبّت الإضافة المرتبطة التي تستخدمها yt-dlp.</string>
     <string name="bgutils_pot_generation_script">سكربت التوليد</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="zero">خادم HTTP</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">خادم HTTP</string>
     <string name="bgutils_pot_generation_script_summary">كل استدعاء لـ yt-dlp يتحمّل عبء إنشاء عملية جديدة لبيئة تشغيل JavaScript لتنفيذ السكربت. لا يُنصح باستخدام هذه الطريقة في حالات الاستخدام العالي التزامن.</string>
     <string name="bgutils_pot_server_summary">هذا خادم HTTP مبني بلغة JavaScript، يعمل على المنفذ 4416. إذا كان متوقفًا، يبدأ تشغيله تلقائيًا عند بدء تنفيذ قائمة التنزيل أو عند جدولة مراقبة المصادر. لإيقافه، يجب عليك فعل ذلك يدويًا من الإشعارات!</string>
     <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
@@ -643,12 +623,8 @@
     <string name="notset">غير محدد</string>
     <string name="packages_description">الحزم هي تطبيقات مساعدة يستخدمها YTDLnis لدعم أوامر yt-dlp. تأتي بعض هذه الحزم مدمجة بالفعل مع التطبيق، ولكن يمكنك تثبيت إصدارات أحدث يتم إصدارها دون الحاجة إلى تحديث التطبيق نفسه؛ حيث تحل ملفات APK المثبتة هذه محل الإصدار المدمج الذي يستخدمه التطبيق.</string>
     <string name="bgutils_pot_generation_script_info">لاستخدام مزود BgUtils POT، يحتاج التطبيق إلى تحميل المستودع Brainicism/bgutil-ytdlp-pot-provider من GitHub وبدء عملية التثبيت. قد تستغرق هذه العملية بعض الوقت؛ هل تود المتابعة الآن؟</string>
-    <plurals name="search_results">
-        <item quantity="zero">نتائج البحث</item>
-    </plurals>
+    <string name="search_results">نتائج البحث</string>
     <string name="clear_info_json">مسح ملفات infojson</string>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="zero">إعداد FFmpeg مسبق للإضافة الداخلية</item>
-    </plurals>
+    <string name="internal_plugin_ffmpeg_preset">إعداد FFmpeg مسبق للإضافة الداخلية</string>
     <string name="internal_plugin_ffmpeg_preset_summary">الإعداد المسبق الذي يستخدمه FFmpeg للإضافات الداخلية مثل دمج الترجمة داخل الفيديو وغيرها. تعديل هذا الخيار يؤثر على حجم الملف النهائي!</string>
 </resources>

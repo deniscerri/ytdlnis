@@ -474,14 +474,10 @@
     <string name="reverse">Mbrapsht</string>
     <string name="no_keep_subs">Fshi titrat pas vendosjes në video</string>
     <string name="no_keep_subs_summary">Duke përdorur --embed-subtitles dhe --write-subs, --write-auto-subs, mos i mbaj titrat pasi të vendosen në video</string>
-    <plurals name="video_compatible">
-        <item quantity="one">Video e suportuar</item>
-    </plurals>
+    <string name="video_compatible">Video e suportuar</string>
     <string name="video_compatible_summary">Rikodon videon duke e bërë të suportuar me appet e tjera</string>
     <string name="no_free_space_warning">Nuk ka hapësirë të lirë për këtë konfigurim.</string>
-    <plurals name="preferred_format_size">
-        <item quantity="one">Madhësia e preferuar e formatit</item>
-    </plurals>
+    <string name="preferred_format_size">Madhësia e preferuar e formatit</string>
     <string name="smallest">Më i vogli</string>
     <string name="largest">Më i madhi</string>
     <string name="potoken_gvs">Po Token (GVS)</string>
@@ -490,9 +486,7 @@
     <string name="visitor_data">Visitor Data</string>
     <string name="get_data_sync_id">Merr Data Sync ID</string>
     <string name="desktop">Desktop</string>
-    <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
-    </plurals>
+    <string name="url_regex">URL Regex</string>
     <string name="disable_flat_playlist">Mos përdor --flat-playlist</string>
     <string name="disable_flat_playlist_summary">Mos përdor --flat-playlist. Info merret më ngadalë, po me më shumë të dhëna</string>
     <string name="chapters">Kapitujt</string>
@@ -504,21 +498,15 @@
     <string name="potoken_guide">Auth\n-----------------------\n1. Kliko \'Auth\' për të hapur faqen e hyrjes në WebView.\n2. Hyr me llogarine e Google.\n3. Hap një video që suporton titra automatike.\n4. Aktivizo titrat automatike dhe shiko nëse funksionon.\n\t4.1 Nëse titrat automatike nuk punojnë, kalo në një video tjeter dhe provo hapin 4 sërisht.\n5. Kliko OK.\n\nPa Auth\n-----------------------\n1. Kliko \'Pa Auth\'.\n2. Shkruaj një url nga youtube.\n3. Prit që videoja të ngarkohet dhe luaje videon për të paktën 3 sekonda.\n4. Kliko OK.</string>
     <string name="no_auth">Pa Auth</string>
     <string name="auth">Auth</string>
-    <plurals name="prefer_drc_audio">
-        <item quantity="one">Prefero Audio DRC</item>
-    </plurals>
-    <plurals name="app_icon">
-        <item quantity="one">Ikona e Aplikacionit</item>
-    </plurals>
+    <string name="prefer_drc_audio">Prefero Audio DRC</string>
+    <string name="app_icon">Ikona e Aplikacionit</string>
     <string name="show_quick_download_share_menu">Shfaq Shkarkimin e Shpejtë te menuja e shpërndarjes</string>
     <string name="quick_download_title">Mos tërhiq të dhëna</string>
     <string name="crop">Prej</string>
     <string name="required">E detyrueshme</string>
     <string name="crop_validation_exceeds_w">X+W e kalon %d</string>
     <string name="crop_validation_exceeds_h">Y+H e kalon %d</string>
-    <plurals name="sponsorblock_hook">
-        <item quantity="one">Përshëndetjet</item>
-    </plurals>
+    <string name="sponsorblock_hook">Përshëndetjet</string>
     <string name="packages">Paketat</string>
     <string name="not_installed">Nuk është instaluar</string>
     <string name="bundled">E paketuar</string>
@@ -531,15 +519,9 @@
     <string name="install_downloaded_file">Instalo skedarin e shkarkuar</string>
     <string name="website">Uebsajti</string>
     <string name="playlist">Playlist</string>
-    <plurals name="media_type">
-        <item quantity="one">Lloji i medias</item>
-    </plurals>
-    <plurals name="free_ratio">
-        <item quantity="one">Ratio e lirë</item>
-    </plurals>
-    <plurals name="aspect_ratio">
-        <item quantity="one">Raporti i pamjes</item>
-    </plurals>
+    <string name="media_type">Lloji i medias</string>
+    <string name="free_ratio">Ratio e lirë</string>
+    <string name="aspect_ratio">Raporti i pamjes</string>
     <string name="dimensions">Dimensionet</string>
     <string name="x_offset">Ofseti X</string>
     <string name="y_offset">Ofseti Y</string>
@@ -582,9 +564,7 @@
     </plurals>
     <string name="bgutils_info">Një ofrues i tokenit të provës së origjinës (POT) për yt-dlp.\nMe të aktivizuar, YTDLnis hap serverin HTTP që gjeneron POT dhe instalon plugin-in përkatës që përdor yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Skript gjenerimi</string>
-    <plurals name="bgutils_pot_generation_server">
-        <item quantity="one">Server HTTP</item>
-    </plurals>
+    <string name="bgutils_pot_generation_server">Server HTTP</string>
     <string name="bgutils_pot_generation_script_summary">Çdo thirrje yt-dlp krijon një proces të ri të js runtime për të ekzekutuar skriptin. Kjo metodë nuk rekomandohet për përdorim me njëkohësi të lartë.</string>
     <string name="bgutils_pot_server_summary">Ky është një server JavaScript HTTP, në portën 4416. Nëse nuk është ndezur, niset automatikisht serverin kur radha e shkarkimit fillon të ekzekutohet ose kur është planifikuar vëzhgimi i burimeve. Për ta fikur, duhet ta bëni manualisht nga njoftimet!</string>
     <string name="please_install_package">Ju lutem instaloni paketën %s</string>
@@ -614,9 +594,7 @@
     </plurals>
     <string name="skip_backlog">Anashkaloni prapambetjen aktuale</string>
     <string name="bgutils_pot_generation_script_info">Për të përdorur BgUtils POT Provider, aplikacioni duhet të shkarkojë repozitorin Brainicism/bgutil-ytdlp-pot-provider nga github dhe të fillojë instalimin. Kjo mund të zgjasë pak. Do të vazhdoj tani?</string>
-    <plurals name="search_results">
-        <item quantity="one">Rezultatet e kërkimit</item>
-    </plurals>
+    <string name="search_results">Rezultatet e kërkimit</string>
     <string name="burn_subs">Digj titrat në video</string>
     <string name="check_clipboard_home_summary">Kontrollo URL automatikisht ku je në faqen kryesore</string>
     <string name="check_clipboard_home">Kontrollo clipboard në faqen kryesore</string>
@@ -626,16 +604,10 @@
     <string name="translators_unavailable">Lista e përkthyesve nuk është e vlefshme në aplikacion. Ti mund ti shohësh të gjithë që kontribuan në Weblate.</string>
     <string name="toggle_all">Shtyp të gjitha</string>
     <string name="merge_cuts">Ngjit prerjet në një skedar</string>
-    <plurals name="preferred_format_size_audio">
-        <item quantity="one">Madhësia e preferuar e formatit Audio</item>
-    </plurals>
-    <plurals name="internal_plugin_ffmpeg_preset">
-        <item quantity="one">Preset i FFmpeg për pluginet</item>
-    </plurals>
+    <string name="preferred_format_size_audio">Madhësia e preferuar e formatit Audio</string>
+    <string name="internal_plugin_ffmpeg_preset">Preset i FFmpeg për pluginet</string>
     <string name="internal_plugin_ffmpeg_preset_summary">Preseti i FFmpeg për pluginet e brendshme si djegja e titrave etj. Modifikimi i kësaj preference afekton madhëesine finale të skedarit!</string>
-    <plurals name="history_quick_action">
-        <item quantity="one">Veprimi i shpejtë i shkarkimeve</item>
-    </plurals>
+    <string name="history_quick_action">Veprimi i shpejtë i shkarkimeve</string>
     <string name="history_quick_action_summary">Veprimi që performohet kur klikon butonin ne kartën e historisë së shkarkimit</string>
     <string name="open_file">Hap skedarin</string>
     <string name="duration">Kohëzgjatja</string>
