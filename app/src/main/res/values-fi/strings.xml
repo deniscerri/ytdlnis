@@ -46,7 +46,9 @@
     <string name="remove_duplicates">Poista kopiot</string>
     <string name="configure_download">Muuta latausta</string>
     <string name="title">Otsikko</string>
-    <string name="open_file">Avaa tiedosto</string>
+    <plurals name="open_file">
+        <item quantity="one">Avaa tiedosto</item>
+    </plurals>
     <string name="delete_file_too">Poista tiedosto laitteelta</string>
     <string name="sponsorblock_nonmusic">Muut kuin musiikki ja off-topic-osiot</string>
     <string name="edit_selected">Muokkaa valittuja</string>
@@ -479,20 +481,28 @@
     <string name="reverse">Käänteinen</string>
     <string name="no_keep_subs">Poista tekstitystiedostot upottamisen jälkeen</string>
     <string name="no_keep_subs_summary">Kun käytetään sekä Upota tekstitykset että Tallenna tekstitykset -asetuksia, älä säilytä tekstitystiedostoja upottamisen jälkeen</string>
-    <string name="video_compatible">Yhteensopiva video</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Yhteensopiva video</item>
+    </plurals>
     <string name="video_compatible_summary">Uudelleenkoodaa videon yhteensopivaksi muiden sovellusten kanssa</string>
     <string name="no_free_space_warning">Tälle asetukselle ei ole vapaata tilaa.</string>
-    <string name="preferred_format_size">Ensisijainen formaatin koko</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Ensisijainen formaatin koko</item>
+    </plurals>
     <string name="smallest">Pienin</string>
     <string name="largest">Suurin</string>
-    <string name="prefer_drc_audio">Suosi DRC-ääntä</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">Suosi DRC-ääntä</item>
+    </plurals>
     <string name="potoken_gvs">PO-token (GVS)</string>
     <string name="potoken_player">PO-token (Player)</string>
     <string name="potoken_subs">PO-token (Subs)</string>
     <string name="visitor_data">Vierailijan tiedot</string>
     <string name="get_data_sync_id">Hae Data Sync ID</string>
     <string name="desktop">Työpöytä</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">Poista litteä soittolista käytöstä</string>
     <string name="disable_flat_playlist_summary">Älä käytä --flat-playlist-asetusta. Hitaampi tiedonhaku, mutta enemmän tietoja</string>
     <string name="chapters">Luvut</string>
@@ -504,10 +514,14 @@
     <string name="potoken_guide">Auth\n-----------------------\n1. Napsauta \'Kirjaudu\' avataksesi kirjautumissivun WebView\'ssa.\n2. Kirjaudu Google-tilillesi.\n3. Toista mitä tahansa videota, joka tukee automaattisesti käännettyjä tekstityksiä.\n4. Ota automaattisesti käännetyt tekstitykset käyttöön ja katso toimiiko se.\n\t4.1 Jos automaattisesti käännetyt tekstitykset eivät toimi, vaihda toiseen videoon, joka tukee niitä, ja yritä vaihetta 4 uudelleen.\n5. Napsauta OK.\n\nEi kirjautumista\n-----------------------\n1. Napsauta \'Ei kirjautumista\'.\n2. Kirjoita minkä tahansa YouTube-videon URL\n3. Odota videon latautumista ja toista videota vähintään 3 sekuntia.\n4. Napsauta OK.</string>
     <string name="no_auth">Ei kirjautumista</string>
     <string name="auth">Kirjaudu</string>
-    <string name="app_icon">Sovelluksen kuvake</string>
+    <plurals name="app_icon">
+        <item quantity="one">Sovelluksen kuvake</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Näytä vaihtoehto välittömään lataukseen jakovalikossa</string>
     <string name="quick_download_title">Älä hae tietoja</string>
-    <string name="sponsorblock_hook">Aloitustervehdys</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Aloitustervehdys</item>
+    </plurals>
     <string name="packages">Paketit</string>
     <string name="not_installed">Ei asennettu</string>
     <string name="bundled">Mukana</string>
@@ -520,9 +534,15 @@
     <string name="install_downloaded_file">Asenna ladattu tiedosto</string>
     <string name="website">Verkkosivusto</string>
     <string name="playlist">Soittolista</string>
-    <string name="media_type">Mediatyyppi</string>
-    <string name="free_ratio">Vapaa suhde</string>
-    <string name="aspect_ratio">Kuvasuhde</string>
+    <plurals name="media_type">
+        <item quantity="one">Mediatyyppi</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="one">Vapaa suhde</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">Kuvasuhde</item>
+    </plurals>
     <string name="dimensions">Mitat</string>
     <string name="x_offset">X-siirtymä</string>
     <string name="y_offset">Y-siirtymä</string>

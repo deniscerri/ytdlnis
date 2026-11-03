@@ -160,7 +160,9 @@
     <string name="video_quality">جودة الفيديو</string>
     <string name="show_download_card">اظهر كارت التحميل</string>
     <string name="download_card_summary">اضبط الاعدادات للبتاع دا قبل التحميل. الغاء تفعيل الخيار دا هيبدء التحميل حالا</string>
-    <string name="open_file">افتح الملف</string>
+    <plurals name="open_file">
+        <item quantity="one">افتح الملف</item>
+    </plurals>
     <string name="embed_subtitles">تضمين الترجمه</string>
     <string name="you_are_going_to_delete_multiple_items">امسح كذا عنصر</string>
     <string name="delete_file_too">امسح الملف من الفون</string>
@@ -176,7 +178,9 @@
     <string name="sponsorblock_previews">معاينات</string>
     <string name="sponsorblock_reminders">تذكير الاشتراكات</string>
     <string name="save_dir">احفظ الملف</string>
-    <string name="search_results">نتايج البحث</string>
+    <plurals name="search_results">
+        <item quantity="one">نتايج البحث</item>
+    </plurals>
     <string name="sponsorblock_fillers">حشو الفوارغ</string>
     <string name="select_sponsorblock_filtering">اختيار مانع إعلانات السبونسرز</string>
     <string name="new_template">فورمة جديدة</string>
@@ -227,7 +231,9 @@
     <string name="share">أنشر</string>
     <string name="invert_selected">أعكس الإختيارات</string>
     <string name="red">أحمر</string>
-    <string name="app_icon">أيقونه البرنامج</string>
+    <plurals name="app_icon">
+        <item quantity="one">أيقونه البرنامج</item>
+    </plurals>
     <string name="month">شهر</string>
     <string name="retry_missing_downloads_desc">عيد تحميل المحتويات اللي مش موجوده في سجل التحميلات</string>
     <string name="width">عرض</string>

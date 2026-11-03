@@ -67,7 +67,9 @@
     <string name="download">Изтегли</string>
     <string name="add_chapter">Вграждане на глави</string>
     <string name="show_download_card">Показване на опциите за изтегляне</string>
-    <string name="open_file">Отворете файла</string>
+    <plurals name="open_file">
+        <item quantity="one">Отворете файла</item>
+    </plurals>
     <string name="you_are_going_to_delete_multiple_items">Изтриване на елементи</string>
     <string name="exit_app">Изход от приложението</string>
     <string name="warning">Предупреждение</string>
@@ -474,10 +476,14 @@
     <string name="manual_po_token_generator">Уеб -Клиент PO Токен</string>
     <string name="no_keep_subs">Изтриване на файлове със субтитри след вграждане</string>
     <string name="no_keep_subs_summary">Когато използвате „Вграждане на субтитри“ и „Записване на субтитри“, не запазвайте файловете със субтитри след вграждане</string>
-    <string name="video_compatible">Съвместимо видео</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Съвместимо видео</item>
+    </plurals>
     <string name="video_compatible_summary">Прекодира видеото, което го прави съвместимо с други приложения</string>
     <string name="no_free_space_warning">Няма свободно място за тази конфигурация.</string>
-    <string name="preferred_format_size">Предпочитан размер на формата</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Предпочитан размер на формата</item>
+    </plurals>
     <string name="smallest">Най-малкият</string>
     <string name="largest">Най-големият</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -485,7 +491,9 @@
     <string name="visitor_data">Данни за посетителите</string>
     <string name="get_data_sync_id">Получава идентификатор за синхронизация на данни</string>
     <string name="desktop">Desktop</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="chapters">Глави</string>
     <string name="use_original_url_playlist">Използвайте оригиналния url адрес за url адрес на плейлиста</string>
     <string name="use_original_url_playlist_summary">Използвайте url адреса на плейлиста, предоставен от потребителя, вместо тага playlist_webpage_url от JSON дъмпа</string>
@@ -493,18 +501,24 @@
     <string name="potoken_subs">PO токен (Subs)</string>
     <string name="update_ytdlp_while_downloading">Обновяване yt-dlp по време на изтегляне</string>
     <string name="update_ytdlp_while_downloading_summary">Добавете -U към yt-dlp, за да го актуализирате до най-новата версия преди изтегляне</string>
-    <string name="prefer_drc_audio">Предпочитам DRC Audio</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">Предпочитам DRC Audio</item>
+    </plurals>
     <string name="preview_filename">Предварителен преглед на име на файл</string>
     <string name="no_auth">Без авторизация</string>
     <string name="auth">Авторизация</string>
-    <string name="app_icon">Икона на приложението</string>
+    <plurals name="app_icon">
+        <item quantity="one">Икона на приложението</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Показване на опция изтегляне в менюто за споделяне</string>
     <string name="potoken_guide">Авторизация\n-----------------------\n1. Кликнете върху „Авторизация“, за да отворите страницата за вход в WebView.\n2. Влезте в профила си в Google.\n3. Пуснете всяко видео, което поддържа автоматично преведени субтитри.\n4. Включете автоматично преведените субтитри и вижте дали работят.\n4.1 Ако автоматично преведените субтитри не работят, преминете към друго видео, което поддържа автоматично преведени субтитри, и опитайте стъпка 4 отново.\n5. Кликнете върху OK.\n\nБез авторизация\n-----------------------\n1. Кликнете върху „Без авторизация“.\n2. Въведете URL адреса на произволен видеоклип в YouTube.\n3. Изчакайте видеоклипът да се зареди и го пуснете поне 3 секунди.\n4. Кликнете върху OK.</string>
     <string name="quick_download_title">Без извличане на данни</string>
     <string name="reverse">Обратно</string>
     <string name="disable_flat_playlist">Деактивиране на Flat Playlist</string>
     <string name="disable_flat_playlist_summary">Не използвайте --flat-playlist. Извличането на данни се забавя, но ще го направи по-смислено</string>
-    <string name="sponsorblock_hook">Въведение/Поздравления</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Въведение/Поздравления</item>
+    </plurals>
     <string name="packages">Пакети</string>
     <string name="not_installed">Не е инсталирано</string>
     <string name="bundled">Вграден</string>

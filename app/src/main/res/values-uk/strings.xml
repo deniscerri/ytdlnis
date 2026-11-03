@@ -474,10 +474,14 @@
     <string name="reverse">Зворотній</string>
     <string name="no_keep_subs">Видалити файли субтитрів після вбудовування</string>
     <string name="no_keep_subs_summary">У разі використання функцій Вбудувати субтитри та Написати субтитри не зберігайте файли субтитрів після вбудовування</string>
-    <string name="video_compatible">Сумісне відео</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Сумісне відео</item>
+    </plurals>
     <string name="video_compatible_summary">Перекодовує відео, роблячи його сумісним з іншими застосунками</string>
     <string name="no_free_space_warning">Для цієї конфігурації немає вільного місця.</string>
-    <string name="preferred_format_size">Бажаний розмір формату</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Бажаний розмір формату</item>
+    </plurals>
     <string name="smallest">Найменший</string>
     <string name="largest">Найбільший</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
@@ -486,7 +490,9 @@
     <string name="visitor_data">Дані про відвідувачів</string>
     <string name="get_data_sync_id">Отримати синхронізацію даних ID</string>
     <string name="desktop">Робочий стіл</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">Вимкнути плоский список відтворення</string>
     <string name="disable_flat_playlist_summary">Не використовуйте --плоский плейлист. Повільніше отримання даних, але більш насичений даними</string>
     <string name="chapters">Розділи</string>
@@ -498,11 +504,17 @@
     <string name="potoken_guide">Авторизація\n-----------------------\n1. Натисніть \'Авторизація\' щоб відкрити сторінку входу WebView.\n2. Увійдіть у свій обліковий запис Google.\n3. Відтворюйте будь-яке відео, яке підтримує субтитри з автоматичним перекладом.\n4. Увімкніть автоматичний переклад субтитрів і перевірте, чи це працює.\n\t4.1 Якщо субтитри з автоматичним перекладом не працюють, перейдіть на інше відео, яке підтримує субтитри з автоматичним перекладом, і повторіть крок 4.\n5. Натисніть OK.\n\nБез авторизації\n-----------------------\n1. Натисніть \'Без авторизації\'.\n2. Введіть url будь-якого відео YouTube.\n3. Зачекайте, поки відео завантажиться, і відтворіть його принаймні 3 секунди.\n4. Натисніть OK.</string>
     <string name="no_auth">Без авторизації</string>
     <string name="auth">Авторизація</string>
-    <string name="prefer_drc_audio">Віддавати перевагу DRC Аудіо</string>
-    <string name="app_icon">Іконка застосунку</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">Віддавати перевагу DRC Аудіо</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">Іконка застосунку</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Показати можливість негайного завантаження в меню поділитися</string>
     <string name="quick_download_title">Не отримувати дані</string>
-    <string name="sponsorblock_hook">Вступ/Привітання</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Вступ/Привітання</item>
+    </plurals>
     <string name="packages">Пакети</string>
     <string name="not_installed">Не встановлено</string>
     <string name="bundled">У комплекті</string>
@@ -515,13 +527,19 @@
     <string name="save_subdirectory_summary">Зберігайте файли в теках на основі тегів метаданих</string>
     <string name="website">Вебсайт</string>
     <string name="playlist">Список відтворення</string>
-    <string name="media_type">Тип носія</string>
+    <plurals name="media_type">
+        <item quantity="one">Тип носія</item>
+    </plurals>
     <string name="crop">Обрізати</string>
     <string name="required">Необхідний</string>
     <string name="crop_validation_exceeds_w">X+W перевищує %d</string>
     <string name="crop_validation_exceeds_h">Y+H перевищує %d</string>
-    <string name="free_ratio">Вільне співвідношення</string>
-    <string name="aspect_ratio">Співвідношення сторін</string>
+    <plurals name="free_ratio">
+        <item quantity="one">Вільне співвідношення</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">Співвідношення сторін</item>
+    </plurals>
     <string name="dimensions">Розміри</string>
     <string name="x_offset">Зміщення X</string>
     <string name="y_offset">Зміщення Y</string>
@@ -593,7 +611,9 @@
     </plurals>
     <string name="bgutils_info">Постачальник токенів підтвердження походження (POT) для yt-dlp.\nЯкщо ця опція увімкнена, YTDLnis запускає HTTP-сервер, який генерує POT і встановлює відповідний плагін, що використовує yt-dlp.</string>
     <string name="bgutils_pot_generation_script">Скрипт генерації</string>
-    <string name="bgutils_pot_generation_server">HTTP Сервер</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="one">HTTP Сервер</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">Кожен виклик yt-dlp тягне накладні витрати, пов\'язані із запуском нового процесу середовища виконання js для виконання скрипта. Цей метод не рекомендується для використання в умовах високої паралельної обробки.</string>
     <string name="bgutils_pot_server_summary">Це HTTP-сервер JavaScript на порту 4416. Якщо він не працює, він автоматично запускається, коли починається виконання черги завантаження або заплановано моніторинг джерел. Щоб вимкнути його, потрібно зробити це вручну в розділі сповіщень!</string>
     <string name="please_install_package">Будь ласка, встановіть пакет %s</string>
@@ -609,14 +629,24 @@
     <string name="burn_subs">Записати субтитри</string>
     <string name="check_clipboard_home_summary">Автоматично виявляти URLs у буфері обміну на головному екрані</string>
     <string name="check_clipboard_home">Перевірте буфер обміну на головному екрані</string>
-    <string name="search_results">Результати пошуку</string>
+    <plurals name="search_results">
+        <item quantity="one">Результати пошуку</item>
+    </plurals>
     <string name="clear_info_json">Очистити infojsons</string>
-    <string name="internal_plugin_ffmpeg_preset">Внутрішній пресет плагіна FFmpeg</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="one">Внутрішній пресет плагіна FFmpeg</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">Попередньо встановлені налаштування, які FFmpeg використовує для внутрішніх плагінів, таких як запис субтитрів тощо. Зміна цього параметра впливає на кінцевий розмір файлу!</string>
-    <string name="preferred_format_size_audio">Бажаний розмір аудіоформату</string>
-    <string name="history_quick_action">Кнопка швидкого доступу</string>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">Бажаний розмір аудіоформату</item>
+    </plurals>
+    <plurals name="history_quick_action">
+        <item quantity="one">Кнопка швидкого доступу</item>
+    </plurals>
     <string name="history_quick_action_summary">Дія, яка виконується при натисканні кнопки швидкої дії на картці історії</string>
-    <string name="open_file">Відкрити файл</string>
+    <plurals name="open_file">
+        <item quantity="one">Відкрити файл</item>
+    </plurals>
     <string name="duration">Тривалість</string>
     <string name="update_available">Доступне оновлення</string>
     <string name="update_check_failed">Не вдалося перевірити наявність оновлень</string>

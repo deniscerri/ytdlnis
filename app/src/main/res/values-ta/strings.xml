@@ -72,7 +72,9 @@
     <string name="api_key_summary">யூடியூப் ஏபிஐ மூலமான காணொளிப் பரிந்துரைகள்</string>
     <string name="update_app_summary">செயலியைத் திறக்கும்போது புதிய பதிப்புகள் இருந்தால் அறிவிக்கும். இந்தத் தரவு அதிகாரப்பூர்வ GitHub களஞ்சியத்திலிருந்து பெறப்படுகிறது</string>
     <string name="downloads">பதிவிறக்கங்கள்</string>
-    <string name="search_results">தேடல் முடிவுகள்</string>
+    <plurals name="search_results">
+        <item quantity="one">தேடல் முடிவுகள்</item>
+    </plurals>
     <string name="remove_deleted">நீக்கப்பட்டவற்றை நீக்குக</string>
     <string name="remove_duplicates">ஒரே பதிவை மறுபதிவிறக்கம் செய்தவற்றை நீக்குக</string>
     <string name="sort_by">வரிசைப்படுத்துதல்</string>
@@ -494,21 +496,31 @@
     <string name="reverse">பின்னோக்கு</string>
     <string name="no_keep_subs">உட்பொதித்த பிறகு வசனக் கோப்புகளை நீக்குக</string>
     <string name="no_keep_subs_summary">வசனங்களை உட்பொதித்தல் மற்றும் வசனங்களை எழுதுதல் இரண்டையும் பயன்படுத்தும்போது உட்பொதித்த பிறகு வசனக் கோப்புகளை வைத்திருக்காதீர்</string>
-    <string name="video_compatible">இணக்கமான காணொளி</string>
+    <plurals name="video_compatible">
+        <item quantity="one">இணக்கமான காணொளி</item>
+    </plurals>
     <string name="video_compatible_summary">காணொளியை மறுகுறியாக்கம் செய்து பிற செயலிகளுடன் இணக்கமானதாக மாற்றும்</string>
     <string name="no_free_space_warning">இந்தக் கட்டமைப்புக்கு போதுமான வெற்றிடம் இல்லை.</string>
-    <string name="preferred_format_size">விருப்பமான வடிவ அளவு</string>
-    <string name="preferred_format_size_audio">விருப்பமான ஒலி வடிவ அளவு</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">விருப்பமான வடிவ அளவு</item>
+    </plurals>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">விருப்பமான ஒலி வடிவ அளவு</item>
+    </plurals>
     <string name="smallest">மிகச்சிறியது</string>
     <string name="largest">மிகப்பெரியது</string>
-    <string name="prefer_drc_audio">DRC ஒலிக்கு முன்னுரிமை அளித்திடுக</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">DRC ஒலிக்கு முன்னுரிமை அளித்திடுக</item>
+    </plurals>
     <string name="potoken_gvs">PO டோக்கன் (GVS)</string>
     <string name="potoken_player">PO டோக்கன் (Player)</string>
     <string name="potoken_subs">PO டோக்கன் (Subs)</string>
     <string name="visitor_data">பார்வையாளர் தரவு</string>
     <string name="get_data_sync_id">தரவு ஒத்திசைவு அடையாளத்தைப் பெறுக</string>
     <string name="desktop">டெஸ்க்டாப்</string>
-    <string name="url_regex">பிணைப்பு Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">பிணைப்பு Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">தட்டையான இயக்கும் பட்டியலை முடக்குக</string>
     <string name="disable_flat_playlist_summary">--flat-playlist ஐப் பயன்படுத்தாதீர். மெதுவான தரவு எடுத்தல், ஆனால் அதிக விவரங்கள் கிடைக்கும்</string>
     <string name="chapters">அத்தியாயங்கள்</string>
@@ -520,10 +532,14 @@
     <string name="potoken_guide">உள்நுழைவு அங்கீகாரம்\n-----------------------\n1. WebView இல் உள்நுழைவுப் பக்கத்தைத் திறக்க \'அங்கீகரி\' என்பதைத் தட்டவும்.\n2. உங்கள் Google கணக்கில் உள்நுழையவும்.\n3. அதுவே இடும் வசனங்களை ஆதரிக்கும் ஏதேனும் ஒரு காணொளியை இயக்கவும்.\n4. அதுவே இடும் வசனங்களை இயக்கி அது செயல்படுகிறதா என்று பார்க்கவும்.\n\t4.1 வசனங்கள் செயல்படவில்லை எனில், அதை ஆதரிக்கும் வேறு காணொளிக்கு மாறி படி 4 ஐ மீண்டும் முயற்சிக்கவும்.\n5. சரி என்பதைத் தட்டவும்.\n\nஅங்கீகாரம் இன்றி\n-----------------------\n1. \'அங்கீகாரம் இன்றி\' என்பதைத் தட்டவும்.\n2. ஏதேனும் ஒரு யூடியூப் காணொளிப் பிணைப்பை நிரப்பவும்.\n3. காணொளி ஏற்றப்படும் வரை காத்திருந்து குறைந்தபட்சம் 3 விநாடிகளுக்கு இயக்கவும்.\n4. சரி என்பதைத் தட்டவும்.</string>
     <string name="no_auth">அங்கீகாரம் இன்றி</string>
     <string name="auth">அங்கீகரி</string>
-    <string name="app_icon">செயலிச் சின்னம்</string>
+    <plurals name="app_icon">
+        <item quantity="one">செயலிச் சின்னம்</item>
+    </plurals>
     <string name="show_quick_download_share_menu">பகிர்வுப் பட்டியலில் உடனடியாகப் பதிவிறக்கும் தேர்வைக் காட்டுக</string>
     <string name="quick_download_title">தரவைப் பெறாதீர்</string>
-    <string name="sponsorblock_hook">தொடக்க உத்தி / வாழ்த்துகள்</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">தொடக்க உத்தி / வாழ்த்துகள்</item>
+    </plurals>
     <string name="packages">தொகுப்புகள்</string>
     <string name="not_installed">நிறுவப்படவில்லை</string>
     <string name="bundled">உள்ளடங்கியது</string>
@@ -536,9 +552,15 @@
     <string name="install_downloaded_file">பதிவிறக்கிய கோப்பை நிறுவுக</string>
     <string name="website">வலைத்தளம்</string>
     <string name="playlist">இயக்கும் பட்டியல்</string>
-    <string name="media_type">ஊடக வகை</string>
-    <string name="free_ratio">சுயாதீன விகிதம்</string>
-    <string name="aspect_ratio">தோற்ற விகிதம்</string>
+    <plurals name="media_type">
+        <item quantity="one">ஊடக வகை</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="one">சுயாதீன விகிதம்</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">தோற்ற விகிதம்</item>
+    </plurals>
     <string name="dimensions">பரிமாணங்கள்</string>
     <string name="x_offset">X ஆஃப்செட்</string>
     <string name="y_offset">Y ஆஃப்செட்</string>
@@ -587,7 +609,9 @@
     </plurals>
     <string name="bgutils_info">yt-dlp க்கான ஒரு மூல ஆதார டோக்கன் (POT) வழங்கி.\nஇது இயக்கப்பட்டதும், POT ஐ உருவாக்கும் HTTP சேவையகத்தை YTDLnis இயக்கும் மற்றும் yt-dlp பயன்படுத்தும் தொடர்புடைய செருகுநிரலை நிறுவும்.</string>
     <string name="bgutils_pot_generation_script">உருவாக்கும் ஸ்கிரிப்ட்</string>
-    <string name="bgutils_pot_generation_server">HTTP சேவையகம்</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="one">HTTP சேவையகம்</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">ஒவ்வொரு yt-dlp அழைப்பும் ஸ்கிரிப்டை இயக்க ஒரு புதிய js இயக்க நேர செயல்முறையை உருவாக்குகிறது. ஒரே நேரத்தில் அதிக பயன்பாடு உள்ள சூழலுக்கு இந்த முறை பரிந்துரைக்கப்படவில்லை.</string>
     <string name="bgutils_pot_server_summary">இது 4416 போர்ட்டில் இயங்கும் JavaScript HTTP சேவையகம். இது செயலிழந்தால், பதிவிறக்க வரிசை இயங்கத் தொடங்கும் போதோ அல்லது மூலங்களைக் கண்காணிக்கும் பணி திட்டமிடப்படும் போதோ சேவையகத்தைத் தானாகவே தொடங்கும். இதை நிறுத்த, அறிவிப்புகளிலிருந்து கைமுறையாகச் செய்ய வேண்டும்!</string>
     <string name="please_install_package">%s தொகுப்பை நிறுவவும்</string>
@@ -604,7 +628,9 @@
     <string name="check_clipboard_home_summary">முகப்புத் திரையில் எடுத்துவைத்தவற்றில் உள்ள பிணைப்புகளைத் தானாகவே கண்டறியும்</string>
     <string name="check_clipboard_home">முகப்புத் திரையில் எடுத்துவைத்தவற்றைச் சரிபார்க்கவும்</string>
     <string name="clear_info_json">infojson களைத் துடைத்திடுக</string>
-    <string name="internal_plugin_ffmpeg_preset">உள் செருகுநிரல் FFmpeg முன்னமைவு</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="one">உள் செருகுநிரல் FFmpeg முன்னமைவு</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">வசனங்களை இணைத்தல் போன்ற உள் செருகுநிரல்களுக்கு FFmpeg பயன்படுத்தும் முன்னமைவு. இந்த விருப்பத்தை மாற்றி அமைப்பது இறுதி கோப்பு அளவை பாதிக்கும்!</string>
     <plurals name="every_hours">
         <item quantity="one">ஒவ்வொரு மணிநேரமும்</item>
@@ -622,9 +648,13 @@
         <item quantity="one">ஒவ்வொரு மாதமும்</item>
         <item quantity="other">ஒவ்வொரு %d மாதங்களுக்கும்</item>
     </plurals>
-    <string name="history_quick_action">விரைவுச் செயல் பொத்தான்</string>
+    <plurals name="history_quick_action">
+        <item quantity="one">விரைவுச் செயல் பொத்தான்</item>
+    </plurals>
     <string name="history_quick_action_summary">வரலாற்று அட்டையில் உள்ள விரைவுச் செயல் பொத்தானைத் தட்டும்போது செய்ய வேண்டிய செயல்</string>
-    <string name="open_file">கோப்பைத் திறந்திடுக</string>
+    <plurals name="open_file">
+        <item quantity="one">கோப்பைத் திறந்திடுக</item>
+    </plurals>
     <string name="duration">கால அளவு</string>
     <string name="update_available">புதிய பதிப்பு உள்ளது</string>
     <string name="update_check_failed">புதுப்பிப்புகளைச் சரிபார்க்க முடியவில்லை</string>

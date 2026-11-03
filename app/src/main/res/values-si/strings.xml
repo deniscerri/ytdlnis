@@ -71,7 +71,9 @@
     <string name="api_key_summary">YouTube API වෙතින් ලැබෙන වීඩියෝ නිර්දේශ</string>
     <string name="update_app_summary">යෙදුම විවෘත කළ විට එහි නව අනුවාද(Versions) පිළිබඳව දැනුම් දෙන්න. එම දත්ත නිල GitHub ගබඩාවෙන් (Repository) ලබාගනු ලැබේ</string>
     <string name="downloads">බාගත කිරීම්</string>
-    <string name="search_results">ප්‍රතිඵල වල සොයන්න</string>
+    <plurals name="search_results">
+        <item quantity="one">ප්‍රතිඵල වල සොයන්න</item>
+    </plurals>
     <string name="remove_deleted">මකා දැමූ ඒවා ඉවත් කරන්න</string>
     <string name="remove_duplicates">අනුපිටපත් ඉවත් කරන්න</string>
     <string name="sort_by">වර්ගීකරණය</string>
@@ -86,7 +88,9 @@
     <string name="add_chapter">පරිච්ඡේද එකතු කරන්න</string>
     <string name="show_download_card">බාගත කිරීමේ කාඩ්පත පෙන්වන්න</string>
     <string name="download_card_summary">බාගත කිරීමට පෙර එම අයිතමය සඳහා සැකසුම් වෙනස් කරන්න. මෙම විකල්පය අක්‍රිය කිරීමෙන් බාගත කිරීම වහාම ආරම්භ වේ</string>
-    <string name="open_file">ගොනුව විවෘත කරන්න</string>
+    <plurals name="open_file">
+        <item quantity="one">ගොනුව විවෘත කරන්න</item>
+    </plurals>
     <string name="you_are_going_to_delete_multiple_items">අයිතම කිහිපයක් මැකීම</string>
     <string name="delete_file_too">උපාංගයෙන් ගොනුව මකන්න</string>
     <string name="delete_files_too">උපාංගයෙන් ගොනු මකන්න</string>

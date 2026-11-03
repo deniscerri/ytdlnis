@@ -48,7 +48,9 @@
     <string name="configure_download">ปรับเปลี่ยนการดาวน์โหลด</string>
     <string name="download">ดาวน์โหลด</string>
     <string name="video_quality">คุณภาพของวิดีโอ</string>
-    <string name="open_file">เปิดไฟล์</string>
+    <plurals name="open_file">
+        <item quantity="other">เปิดไฟล์</item>
+    </plurals>
     <string name="delete_file_too">ลบไฟล์ออกจากอุปกรณ์</string>
     <string name="delete_files_too">ลบไฟล์ออกจากอุปกรณ์</string>
     <string name="exit_app">ออกจากแอป</string>
@@ -477,23 +479,33 @@
     <string name="reverse">ย้อนกลับ</string>
     <string name="no_keep_subs">ลบไฟล์คำบรรยายหลังจากฝังแล้ว</string>
     <string name="no_keep_subs_summary">เมื่อใช้ทั้งฝังคำบรรยายและเขียนคำบรรยาย ไม่ต้องเก็บไฟล์คำบรรยายไว้หลังจากฝังแล้ว</string>
-    <string name="video_compatible">วิดีโอที่สามารถเข้ากันได้</string>
+    <plurals name="video_compatible">
+        <item quantity="other">วิดีโอที่สามารถเข้ากันได้</item>
+    </plurals>
     <string name="video_compatible_summary">ถอดรหัสของวิดีโอเพื่อให้เข้ากันได้กับแอปอื่นๆ</string>
     <string name="no_free_space_warning">ไม่มีพื้นที่ว่างสำหรับการกำหนดค่านี้</string>
-    <string name="preferred_format_size">ขนาดฟอร์แมตไฟล์ที่ต้องการ</string>
+    <plurals name="preferred_format_size">
+        <item quantity="other">ขนาดฟอร์แมตไฟล์ที่ต้องการ</item>
+    </plurals>
     <string name="potoken_gvs">โทเค็น PO (GVS)</string>
     <string name="potoken_player">โทเค็น PO (ตัวเล่น)</string>
     <string name="potoken_subs">โทเค็น PO (Subs)</string>
     <string name="visitor_data">ข้อมูลผู้เข้าชม</string>
     <string name="get_data_sync_id">ข้อมูลผู้เยี่ยมชม รับรหัสการซิงค์ข้อมูล</string>
     <string name="desktop">เดสก์ท็อป</string>
-    <string name="url_regex">ยูอาร์แอล Regex</string>
+    <plurals name="url_regex">
+        <item quantity="other">ยูอาร์แอล Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">ปิดใช้งานเพลย์ลิสต์แบบกว้าง</string>
     <string name="disable_flat_playlist_summary">อย่าใช้งาน --flat-playlist. การดึงข้อมูลช้าลงแต่ข้อมูลนั้นจะดีขึ้น</string>
     <string name="chapters">บทตอน</string>
     <string name="use_original_url_playlist">ใช้ยูอาร์แอลต้นฉบับสำหรับยูอาร์แอลของเพลย์ลิสต์</string>
-    <string name="prefer_drc_audio">เลือกเสียงแบบ DRC</string>
-    <string name="app_icon">ไอคอนแอป</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="other">เลือกเสียงแบบ DRC</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="other">ไอคอนแอป</item>
+    </plurals>
     <string name="install_downloaded_file">ติดตั้งไฟที่ดาวน์โหลดมา</string>
     <string name="crop">ตัดภาพ</string>
     <string name="required">ที่จำเป็น</string>
@@ -508,7 +520,9 @@
     <string name="auth">เข้าสู่ระบบ</string>
     <string name="show_quick_download_share_menu">แสดงตัวเลือกดาวน์โหลดทันทีในเมนูแชร์</string>
     <string name="quick_download_title">ไม่ต้องดึงข้อมูล</string>
-    <string name="sponsorblock_hook">คำทักทาย/คำนำ</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="other">คำทักทาย/คำนำ</item>
+    </plurals>
     <string name="packages">แพ็กเกจ</string>
     <string name="not_installed">ไม่ได้ติดตั้ง</string>
     <string name="use_app_language_for_metadata_summary">หากเปิดใช้งาน ข้อมูลอธิบาย (Metadata) จะเปลี่ยนตามภาษาของแอป และจะส่งผลต่อการเลือกรูปแบบวิดีโอ โดยระบบจะเลือกเวอร์ชันพากย์เสียงแทนเวอร์ชันต้นฉบับ</string>
@@ -519,9 +533,15 @@
     <string name="trim_filenames">ตัดความยาวชื่อไฟล์</string>
     <string name="website">เว็บไซต์</string>
     <string name="playlist">เพลย์ลิสต์</string>
-    <string name="media_type">ประเภทสื่อ</string>
-    <string name="free_ratio">ปรับอัตราส่วนได้อย่างอิสระ</string>
-    <string name="aspect_ratio">อัตราส่วนภาพ</string>
+    <plurals name="media_type">
+        <item quantity="other">ประเภทสื่อ</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="other">ปรับอัตราส่วนได้อย่างอิสระ</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="other">อัตราส่วนภาพ</item>
+    </plurals>
     <string name="dimensions">ขนาด</string>
     <string name="width">ความกว้าง</string>
     <string name="height">ความสูง</string>
@@ -591,8 +611,12 @@
     <string name="bundled">รวมอยู่ในระบบ</string>
     <string name="x_offset">ระยะขยับในแนวนอน</string>
     <string name="y_offset">ระยะขยับในแนวตั้ง</string>
-    <string name="bgutils_pot_generation_server">เซิร์ฟเวอร์ HTTP</string>
-    <string name="search_results">ผลการค้นหา</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="other">เซิร์ฟเวอร์ HTTP</item>
+    </plurals>
+    <plurals name="search_results">
+        <item quantity="other">ผลการค้นหา</item>
+    </plurals>
     <string name="clear_info_json">ล้างข้อมูลไฟล์ info.json</string>
     <string name="reorder_queue">https://hosted.weblate.org/translate/ytdlnis/strings/th/?checksum=7be331a1c11d7e67</string>
 </resources>

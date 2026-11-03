@@ -84,7 +84,9 @@
     <string name="add_chapter">Bölümleri ekle</string>
     <string name="show_download_card">İndirme kartını göster</string>
     <string name="download_card_summary">İndirmeden önce öge için ayarları değiştirir. Bu seçeneğin devre dışı bırakılması indirmeyi hemen başlatır</string>
-    <string name="open_file">Dosya aç</string>
+    <plurals name="open_file">
+        <item quantity="one">Dosya aç</item>
+    </plurals>
     <string name="you_are_going_to_delete_multiple_items">Birden fazla öge siliniyor</string>
     <string name="delete_file_too">Dosyayı cihazdan sil</string>
     <string name="delete_files_too">Dosyaları cihazdan sil</string>
@@ -478,9 +480,13 @@
     <string name="reverse">Tersine çevir</string>
     <string name="no_keep_subs">Gömme işleminden sonra altyazı dosyalarını sil</string>
     <string name="no_keep_subs_summary">Altyazı Gömme ve Altyazı Yazma özelliklerini birlikte kullanırken, altyazı dosyalarını gömdükten sonra saklama</string>
-    <string name="video_compatible">Uyumlu Video</string>
+    <plurals name="video_compatible">
+        <item quantity="one">Uyumlu Video</item>
+    </plurals>
     <string name="video_compatible_summary">Videoyu yeniden kodlayarak diğer uygulamalarla uyumlu hale getirir</string>
-    <string name="preferred_format_size">Tercih Edilen Format Boyutu</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">Tercih Edilen Format Boyutu</item>
+    </plurals>
     <string name="smallest">En küçük</string>
     <string name="largest">En büyük</string>
     <string name="no_free_space_warning">Bu configürasyon için yeterli alan yok.</string>
@@ -490,7 +496,9 @@
     <string name="visitor_data">Visitor Data</string>
     <string name="get_data_sync_id">Veri Senkronizasyon Kimliğini Al</string>
     <string name="desktop">Masaüstü</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">Düz çalma listesini devre dışı bırak</string>
     <string name="disable_flat_playlist_summary">--flat-playlist kullanma. Veri alımı daha yavaş, ancak daha zengin veri</string>
     <string name="chapters">Bölümler</string>
@@ -502,8 +510,12 @@
     <string name="no_auth">Yetki yok</string>
     <string name="auth">Yetki</string>
     <string name="potoken_guide">Doğrulama (Auth)\n-----------------------\n1. WebView\'da oturum açma sayfasını açmak için \'Doğrulamaya (Auth) tıklayın. \n2. Google Hesabınıza giriş yapın. \n3. Otomatik çevrilmiş altyazıları destekleyen herhangi bir videoyu oynatın.\n4. Otomatik çevrilmiş altyazıları açın ve çalışıp çalışmadığını kontrol edin.\n4.1 Otomatik çevrilmiş altyazılar çalışmıyorsa, otomatik çevrilmiş altyazıları destekleyen başka bir videoya geçin ve 4. adımı tekrar deneyin. \n5. Tamam\'a tıklayın. \n\nDoğrulama Yok (No_auth)\n-----------------------\n1. \'Doğrulama Yok\' (no_auth) tıklayın. \n2. Herhangi bir YouTube video URL\'si yazın.\n3. Videonun yüklenmesini bekleyin ve videoyu en az 3 saniye oynatın.\n4. Tamam\'a tıklayın.</string>
-    <string name="prefer_drc_audio">DRC Sesi Tercih Et</string>
-    <string name="app_icon">Uygulama Simgesi</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">DRC Sesi Tercih Et</item>
+    </plurals>
+    <plurals name="app_icon">
+        <item quantity="one">Uygulama Simgesi</item>
+    </plurals>
     <string name="show_quick_download_share_menu">Paylaş menüsünde hemen indirmek için seçenek göster</string>
     <string name="quick_download_title">Veri toplamayın</string>
     <string name="packages">Paketler</string>
@@ -512,20 +524,28 @@
     <string name="use_app_language_for_metadata_summary">Etkinleştirildiğinde, metadata alanları uygulama diline uyacak ve format seçimini etkileyerek orjinal şekli yerine çevirilmiş şeklini kullanacaktır</string>
     <string name="installed">Kurulmuş</string>
     <string name="auto_update_ytdlp_summary">yt-dlp\'nin çalışmaya devam etmesi için sık sık güncellenmesi gerekmektedir, bu seçeneğin etkin kalması önerilir! Bu veri yt-dlp\'nin GitHub Deposundan çıkarıldı.</string>
-    <string name="sponsorblock_hook">Tanıtım/Selamlar</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">Tanıtım/Selamlar</item>
+    </plurals>
     <string name="install_downloaded_file">İndirilen dosyayı yükle</string>
     <string name="save_subdirectory">Alt klasöre kaydet</string>
     <string name="save_subdirectory_summary">Dosyaları metaveri etiketlerine göre klasörlere kaydet</string>
     <string name="trim_filenames">Dosya adlarını kırp</string>
     <string name="website">Website</string>
     <string name="playlist">Oynatma listesi</string>
-    <string name="media_type">Medya türü</string>
+    <plurals name="media_type">
+        <item quantity="one">Medya türü</item>
+    </plurals>
     <string name="crop">Kırp</string>
     <string name="required">Gerekli</string>
     <string name="crop_validation_exceeds_w">X+W %d değerini aşıyor</string>
     <string name="crop_validation_exceeds_h">Y+H %d değerini aşıyor</string>
-    <string name="free_ratio">Serbest Oran</string>
-    <string name="aspect_ratio">En Boy Oranı</string>
+    <plurals name="free_ratio">
+        <item quantity="one">Serbest Oran</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">En Boy Oranı</item>
+    </plurals>
     <string name="dimensions">Boyutlar</string>
     <string name="x_offset">X Kayması</string>
     <string name="y_offset">Y Kayması</string>
@@ -585,7 +605,9 @@
     </plurals>
     <string name="bgutils_info">yt-dlp için bir proof-of-origin token (POT) sağlayıcısı.\nBu özellik etkinleştirildiğinde YTDLnis, POT üreten HTTP sunucusuna ev sahipliği yapar ve yt-dlp\'nin kullandığı ilgili eklentiyi kurar.</string>
     <string name="bgutils_pot_generation_script">Oluşturma betiği</string>
-    <string name="bgutils_pot_generation_server">HTTP Sunucusu</string>
+    <plurals name="bgutils_pot_generation_server">
+        <item quantity="one">HTTP Sunucusu</item>
+    </plurals>
     <string name="bgutils_pot_generation_script_summary">Her yt-dlp çağrısı, betiği çalıştırmak için yeni bir JavaScript çalışma zamanı işlemi başlatma yükü getirir. Bu yöntem, yüksek eşzamanlı kullanım için önerilmez.</string>
     <string name="bgutils_pot_server_summary">Bu, 4416 bağlantı portunda bir JavaScript HTTP sunucusudur. Sunucu kapalıysa, indirme kuyruğu çalışmaya başladığında veya kaynakları gözlemleme zamanlandığında otomatik olarak başlatılır. Sunucuyu kapatmak için bildirimler üzerinden manuel olarak yapmanız gerekir!</string>
     <string name="please_install_package">Lütfen %s paketini yükleyin</string>
@@ -598,7 +620,9 @@
     <string name="exit">Çıkış</string>
     <string name="packages_description">Paketler, YTDLnis\'in yt-dlp komutlarına yardımcı olmak için kullandığı yardımcı uygulamalardır. Bunların bazıları zaten uygulamaya dahildir, ancak uygulamayı güncellemeye gerek kalmadan yayınlanan daha yeni sürümleri yükleyebilirsiniz. Yüklenen APK\'lar, uygulamanın kullandığı dahili sürümün yerini alır.</string>
     <string name="bgutils_pot_generation_script_info">BgUtils POT Sağlayıcısını kullanmak için uygulamanın GitHub\'dan Brainicism/bgutil-ytdlp-pot-provider deposunu indirmesi ve kurulumu başlatması gerekiyor. Bu işlem biraz zaman alabilir. Şimdi devam edilsin mi?</string>
-    <string name="search_results">Arama Sonuçları</string>
+    <plurals name="search_results">
+        <item quantity="one">Arama Sonuçları</item>
+    </plurals>
     <string name="check_clipboard_home_summary">Ana ekranda panodaki URL\'leri otomatik algıla</string>
     <string name="check_clipboard_home">Ana ekranda panoyu kontrol edin</string>
     <string name="clear_info_json">Infojsons\'ları temizle</string>
@@ -615,13 +639,19 @@
         <item quantity="other">%d öge</item>
     </plurals>
     <string name="crop_unavailable_please_update_item">Kırpma özelliğini kullanabilmek için öge verisini güncellemelisin</string>
-    <string name="preferred_format_size_audio">Tercihi Ses Formatı Boyutu</string>
+    <plurals name="preferred_format_size_audio">
+        <item quantity="one">Tercihi Ses Formatı Boyutu</item>
+    </plurals>
     <plurals name="updates_available_summary">
         <item quantity="one">%d tane güncelleme mevcut</item>
         <item quantity="other">%d güncelleme mevcut</item>
     </plurals>
     <string name="update_install">Yükle</string>
-    <string name="internal_plugin_ffmpeg_preset">Dahili Eklenti FFmpeg Önayarı</string>
+    <plurals name="internal_plugin_ffmpeg_preset">
+        <item quantity="one">Dahili Eklenti FFmpeg Önayarı</item>
+    </plurals>
     <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg\'in altyazı yazma vb. gibi dahili eklentiler için kullandığı önayar. Bu tercihin değiştirilmesi, bitimdeki dosya boyutunu etkiler!</string>
-    <string name="history_quick_action">Hızlı Ayar Butonu</string>
+    <plurals name="history_quick_action">
+        <item quantity="one">Hızlı Ayar Butonu</item>
+    </plurals>
 </resources>

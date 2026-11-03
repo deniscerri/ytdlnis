@@ -76,7 +76,9 @@
     <string name="end">শেষ</string>
     <string name="create_template">টেমপ্লেট তৈরি করুন</string>
     <string name="freespace">মুক্ত স্থান</string>
-    <string name="open_file">ফাইল খুলুন</string>
+    <plurals name="open_file">
+        <item quantity="one">ফাইল খুলুন</item>
+    </plurals>
     <string name="start">শুরু</string>
     <string name="you_are_going_to_delete">মুছে ফেলা হচ্ছে</string>
     <string name="request_permission_desc">ডিভাইসে ডাউনলোড সংরক্ষণ করতে এই অ্যাপটির ফাইল পারমিশন প্রয়োজন</string>
@@ -478,20 +480,28 @@
     <string name="reverse">উল্টো করুন</string>
     <string name="no_keep_subs">এম্বেড করার পরে সাবটাইটেল ফাইল মুছুন</string>
     <string name="no_keep_subs_summary">Embed Subtitles এবং Write Subtitles দুটো ব্যবহার করলে এম্বেড করার পরে সাবটাইটেল ফাইলগুলো রাখবেন না</string>
-    <string name="video_compatible">সামঞ্জস্যপূর্ণ ভিডিও</string>
+    <plurals name="video_compatible">
+        <item quantity="one">সামঞ্জস্যপূর্ণ ভিডিও</item>
+    </plurals>
     <string name="video_compatible_summary">ভিডিওটি পুনঃকোড করে অন্যান্য অ্যাপের সঙ্গে সামঞ্জস্যপূর্ণ করে</string>
     <string name="no_free_space_warning">এই কনফিগারেশনের জন্য পর্যাপ্ত ফাঁকা স্থান নেই।</string>
-    <string name="preferred_format_size">পছন্দের ফরম্যাটের আকার</string>
+    <plurals name="preferred_format_size">
+        <item quantity="one">পছন্দের ফরম্যাটের আকার</item>
+    </plurals>
     <string name="smallest">সবচেয়ে ছোট</string>
     <string name="largest">সবচেয়ে বড়</string>
-    <string name="prefer_drc_audio">DRC অডিওকে অগ্রাধিকার দিন</string>
+    <plurals name="prefer_drc_audio">
+        <item quantity="one">DRC অডিওকে অগ্রাধিকার দিন</item>
+    </plurals>
     <string name="potoken_gvs">PO Token (GVS)</string>
     <string name="potoken_player">PO Token (Player)</string>
     <string name="potoken_subs">PO Token (Subs)</string>
     <string name="visitor_data">ভিজিটর ডেটা</string>
     <string name="get_data_sync_id">Data Sync ID নিন</string>
     <string name="desktop">ডেস্কটপ</string>
-    <string name="url_regex">URL Regex</string>
+    <plurals name="url_regex">
+        <item quantity="one">URL Regex</item>
+    </plurals>
     <string name="disable_flat_playlist">ফ্ল্যাট প্লেলিস্ট বন্ধ করুন</string>
     <string name="disable_flat_playlist_summary">--flat-playlist ব্যবহার করবেন না। ডেটা সংগ্রহ ধীর হবে, তবে আরও সমৃদ্ধ ডেটা পাওয়া যাবে</string>
     <string name="chapters">অধ্যায়</string>
@@ -503,10 +513,14 @@
     <string name="potoken_guide">Auth\n-----------------------\n1. WebView-তে সাইন-ইন পৃষ্ঠা খুলতে \'Auth\' চাপুন।\n2. আপনার Google Account-এ সাইন ইন করুন।\n3. স্বয়ংক্রিয়ভাবে অনুবাদিত সাবটাইটেল সমর্থন করে এমন যেকোনো ভিডিও চালান।\n4. স্বয়ংক্রিয়ভাবে অনুবাদিত সাবটাইটেল চালু করে দেখুন এটি কাজ করে কি না।\n\t4.1 কাজ না করলে অন্য একটি সমর্থিত ভিডিওতে গিয়ে ধাপ ৪ আবার চেষ্টা করুন।\n5. ঠিক আছে চাপুন।\n\nNo Auth\n-----------------------\n1. \'No Auth\' চাপুন।\n2. যেকোনো YouTube ভিডিও URL লিখুন।\n3. ভিডিও লোড হওয়ার জন্য অপেক্ষা করুন এবং অন্তত ৩ সেকেন্ড ভিডিও চালান।\n4. OK চাপুন।</string>
     <string name="no_auth">No Auth</string>
     <string name="auth">Auth</string>
-    <string name="app_icon">অ্যাপ আইকন</string>
+    <plurals name="app_icon">
+        <item quantity="one">অ্যাপ আইকন</item>
+    </plurals>
     <string name="show_quick_download_share_menu">শেয়ার মেনুতে অবিলম্বে ডাউনলোড করার বিকল্প দেখান</string>
     <string name="quick_download_title">ডেটা সংগ্রহ করবেন না</string>
-    <string name="sponsorblock_hook">হুক/অভিবাদন</string>
+    <plurals name="sponsorblock_hook">
+        <item quantity="one">হুক/অভিবাদন</item>
+    </plurals>
     <string name="packages">প্যাকেজ</string>
     <string name="not_installed">ইনস্টল করা নেই</string>
     <string name="bundled">বান্ডেল করা</string>
@@ -519,9 +533,15 @@
     <string name="install_downloaded_file">ডাউনলোড করা ফাইল ইনস্টল করুন</string>
     <string name="website">ওয়েবসাইট</string>
     <string name="playlist">প্লেলিস্ট</string>
-    <string name="media_type">মিডিয়ার ধরন</string>
-    <string name="free_ratio">ফ্রি অনুপাত</string>
-    <string name="aspect_ratio">অনুপাত</string>
+    <plurals name="media_type">
+        <item quantity="one">মিডিয়ার ধরন</item>
+    </plurals>
+    <plurals name="free_ratio">
+        <item quantity="one">ফ্রি অনুপাত</item>
+    </plurals>
+    <plurals name="aspect_ratio">
+        <item quantity="one">অনুপাত</item>
+    </plurals>
     <string name="dimensions">মাত্রা</string>
     <string name="x_offset">X অফসেট</string>
     <string name="y_offset">Y অফসেট</string>
