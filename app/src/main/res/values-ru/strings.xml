@@ -125,7 +125,7 @@
     <string name="create">Создать</string>
     <string name="update">Обновить</string>
     <string name="preferred_download_type">Предпочитаемый тип загрузки</string>
-    <string name="confirm_delete_logs_desc">Удалить весь список журналов навсегда.</string>
+    <string name="confirm_delete_logs_desc">Навсегда удалить список журналов</string>
     <string name="select">Выбрать</string>
     <string name="selected">Выбрано</string>
     <string name="restart">Перезапустить</string>
@@ -491,7 +491,7 @@
     <string name="get_data_sync_id">Получить ID синхронизации данных</string>
     <string name="desktop">Рабочий стол</string>
     <plurals name="url_regex">
-        <item quantity="one">URL Regex</item>
+        <item quantity="one">Регулярное выражение URL</item>
     </plurals>
     <string name="disable_flat_playlist">Отключить Flat Playlist</string>
     <string name="disable_flat_playlist_summary">Не использовать --flat-playlist. Это замедлит получение данных, но сделает их более содержательными</string>
@@ -513,7 +513,7 @@
     <string name="show_quick_download_share_menu">Опция быстрой загрузки в меню «Поделиться»</string>
     <string name="quick_download_title">Не получать данные</string>
     <plurals name="sponsorblock_hook">
-        <item quantity="one">Вступление/Приветствие</item>
+        <item quantity="one">Вступление/приветствие</item>
     </plurals>
     <string name="packages">Пакеты</string>
     <string name="not_installed">Не установлено</string>
@@ -753,4 +753,9 @@
     <string name="update_checked_just_now">Проверено только что</string>
     <string name="update_not_checked_yet">Ещё не проверено</string>
     <string name="optional">Необязательно</string>
+    <string name="no_cookies_found">Cookies не найдены для этого сайта. Завершите вход в аккаунт и попробуйте снова</string>
+    <string name="all_artists_in_album_artist">Сохранять всех исполнителей альбома</string>
+    <string name="all_artists_in_album_artist_summary">Сохранять всех исполнителей в поле «исполнитель альбома» вместо сохранения только первого из них</string>
+    <string name="press_cancel">Нажмите здесь для отмены</string>
+    <string name="fetching_data">Получение данных...</string>
 </resources>
