@@ -726,4 +726,9 @@
     <string name="update_checked_just_now">刚检查过</string>
     <string name="update_not_checked_yet">还没检查过</string>
     <string name="optional">可选</string>
+    <string name="no_cookies_found">没找到这个站点的 cookie。完成登录，然后重试</string>
+    <string name="all_artists_in_album_artist">保存专辑艺术家中的所有艺术家</string>
+    <string name="all_artists_in_album_artist_summary">“专辑艺术家”标签使用所有艺术家，而不只是第一个艺术家</string>
+    <string name="press_cancel">按此处取消</string>
+    <string name="fetching_data">正获取数据…</string>
 </resources>
