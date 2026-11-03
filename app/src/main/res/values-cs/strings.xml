@@ -645,9 +645,7 @@
         <item quantity="one">Tlačítko rychlé akce</item>
     </plurals>
     <string name="history_quick_action_summary">Akce, která se provede po kliknutí na tlačítko rychlé akce na kartě historie</string>
-    <plurals name="open_file">
-        <item quantity="one">Otevření souboru</item>
-    </plurals>
+    <string name="open_file">Otevření souboru</string>
     <string name="translators">Překladatelé</string>
     <string name="translators_summary">Lidé, kteří pomohli s překladem této aplikace na Weblate</string>
     <string name="translators_unavailable">Seznam překladatelů není v tomto sestavení k dispozici. Na Weblate si však můžete prohlédnout všechny, kteří se na překladu podíleli.</string>

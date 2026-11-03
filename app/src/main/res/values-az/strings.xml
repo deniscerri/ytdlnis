@@ -647,10 +647,7 @@
         <item quantity="other">Sürətli fəaliyyət düyməsi</item>
     </plurals>
     <string name="history_quick_action_summary">Tarixçə kartındakı sürətli fəaliyyət düyməsinə toxunduqda yerinə yetiriləcək fəaliyyət</string>
-    <plurals name="open_file">
-        <item quantity="one">Faylı aç</item>
-        <item quantity="other">Faylı aç</item>
-    </plurals>
+    <string name="open_file">Faylı aç</string>
     <string name="duration">Müddət</string>
     <string name="update_available">Əlçatan Yeniləmə</string>
     <string name="update_check_failed">Yeniləmələri yoxlamaq olmadı</string>

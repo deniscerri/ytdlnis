@@ -86,9 +86,7 @@
     <string name="history_is_empty">Historia jest pusta</string>
     <string name="you_are_going_to_delete">Usuwanie</string>
     <string name="url">URL</string>
-    <plurals name="open_file">
-        <item quantity="one">Otwórz plik</item>
-    </plurals>
+    <string name="open_file">Otwórz plik</string>
     <string name="delete_files_too">Usuń pliki z urządzenia</string>
     <string name="sponsorblock_intro">Wprowadzenie</string>
     <string name="sponsorblock_reminders">Przypomnienia o subskrypcji</string>

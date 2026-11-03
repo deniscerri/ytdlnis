@@ -637,9 +637,7 @@
         <item quantity="one">Veprimi i shpejtë i shkarkimeve</item>
     </plurals>
     <string name="history_quick_action_summary">Veprimi që performohet kur klikon butonin ne kartën e historisë së shkarkimit</string>
-    <plurals name="open_file">
-        <item quantity="one">Hap skedarin</item>
-    </plurals>
+    <string name="open_file">Hap skedarin</string>
     <string name="duration">Kohëzgjatja</string>
     <string name="update_available">Ka përditësim</string>
     <string name="update_check_failed">Nuk mund të kontrolloja për përditësime</string>

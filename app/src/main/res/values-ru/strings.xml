@@ -644,9 +644,7 @@
         <item quantity="one">Кнопка быстрого доступа</item>
     </plurals>
     <string name="history_quick_action_summary">Действие, выполняемое при нажатии кнопки быстрого действия на карточке истории</string>
-    <plurals name="open_file">
-        <item quantity="one">Открыть файл</item>
-    </plurals>
+    <string name="open_file">Открыть файл</string>
     <string name="duration">Продолжительность</string>
     <string name="update_available">Доступно обновление</string>
     <string name="update_check_failed">Не удалось проверить наличие обновлений</string>
