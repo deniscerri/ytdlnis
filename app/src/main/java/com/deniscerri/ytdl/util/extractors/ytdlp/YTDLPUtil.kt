@@ -101,6 +101,7 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             addOption("--proxy", proxy)
         }
         addOption("-P", FileUtil.getCachePath(context) + "/tmp")
+        addOption("--plugin-dirs", FileUtil.getBundledYTDLPPluginsPath(context))
 
         if (sharedPreferences.getBoolean("no_check_certificates", false)) {
             addOption("--no-check-certificates")
