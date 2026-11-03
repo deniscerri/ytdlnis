@@ -735,4 +735,5 @@
     <string name="update_checked_just_now">Sapo u kontrollua</string>
     <string name="update_not_checked_yet">Nuk u ka kontrolluar akoma</string>
     <string name="optional">Opsionale</string>
+    <string name="no_cookies_found">Nuk u gjetën biskota për këtë websajt. Hyni dhe provoni përsëri</string>
 </resources>
