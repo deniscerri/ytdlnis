@@ -102,7 +102,7 @@
     <string name="embed_subtitles">Tanamkan takarir (subtitle)</string>
     <string name="show_download_card">Perlihatkan kartu unduhan</string>
     <string name="sponsorblock_previews">Pratinjau</string>
-    <string name="sponsorblock_fillers">Kata-kata pengisi</string>
+    <string name="sponsorblock_fillers">Basa-basi</string>
     <string name="save_dir">Direktori penyimpanan</string>
     <string name="new_template">Templat baru</string>
     <string name="adjust_templates">Sesuaikan templat</string>
@@ -502,7 +502,7 @@
     <string name="app_icon">Ikon aplikasi</string>
     <string name="show_quick_download_share_menu">Tampilkan pilihan untuk mengunduh secara langsung di menu bagikan</string>
     <string name="quick_download_title">Jangan mengambil data</string>
-    <string name="sponsorblock_hook">Kata pengantar/sapa</string>
+    <string name="sponsorblock_hook">Pengantar/ucapan salam</string>
     <string name="packages">Paket</string>
     <string name="not_installed">Tidak terpasang</string>
     <string name="bundled">Dibundel</string>
@@ -696,4 +696,8 @@
     <string name="update_checked_just_now">Baru saja diperiksa</string>
     <string name="update_not_checked_yet">Masih belum diperiksa</string>
     <string name="optional">Opsional</string>
+    <string name="all_artists_in_album_artist">Simpan semua artis di Artis Album</string>
+    <string name="all_artists_in_album_artist_summary">Gunakan semua artis untuk tag Artis Album, bukan hanya artis pertama</string>
+    <string name="fetching_data">Mengambil data...</string>
+    <string name="press_cancel">Tekan di sini untuk membatalkan</string>
 </resources>
