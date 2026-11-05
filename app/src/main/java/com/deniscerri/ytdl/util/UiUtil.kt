@@ -87,7 +87,9 @@ import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.card.MaterialCardView
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.CalendarConstraints
@@ -97,7 +99,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -3276,6 +3280,164 @@ object UiUtil {
 
         fromTextInput.editText!!.setText(minDelay)
         toTextInput.editText!!.setText(maxDelay)
+    }
+
+    fun showSpeedLimitDialog(
+        context: Activity,
+        sharedPreferences: SharedPreferences,
+        speedSelected: (speed: String, cellularOnly: Boolean) -> Unit,
+        resetSelected: () -> Unit
+    ) {
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.limit_rate))
+        builder.setIcon(R.drawable.ic_limitrate)
+        val view = context.layoutInflater.inflate(R.layout.speed_limit_preference_dialog, null)
+
+        val speedEditText = view.findViewById<TextInputEditText>(R.id.speed_value_edit)
+        val unitToggleGroup = view.findViewById<MaterialButtonToggleGroup>(R.id.unit_toggle_group)
+        val speedSlider = view.findViewById<Slider>(R.id.speed_slider)
+        val checkboxCellularOnly = view.findViewById<MaterialCheckBox>(R.id.checkbox_cellular_only)
+
+        val currentLimit = sharedPreferences.getString("limit_rate", "")?.trim() ?: ""
+        val currentCellularOnly = sharedPreferences.getBoolean("limit_rate_cellular_only", false)
+        checkboxCellularOnly.isChecked = currentCellularOnly
+
+        var currentUnit = "M"
+        var currentValue = ""
+        if (currentLimit.isNotEmpty()) {
+            val lastChar = currentLimit.last().uppercaseChar()
+            if (lastChar == 'K' || lastChar == 'M' || lastChar == 'G') {
+                currentUnit = lastChar.toString()
+                currentValue = currentLimit.dropLast(1).trim()
+            } else {
+                currentValue = currentLimit
+            }
+        }
+
+        if (currentUnit == "K") {
+            unitToggleGroup.check(R.id.button_kb)
+        } else {
+            unitToggleGroup.check(R.id.button_mb)
+        }
+
+        var isUpdating = false
+
+        fun updateSliderFromInput() {
+            if (isUpdating) return
+            val text = speedEditText.text?.toString()?.trim() ?: ""
+            val value = text.toFloatOrNull() ?: 0f
+            val isMb = unitToggleGroup.checkedButtonId == R.id.button_mb
+            val speedInMb = if (isMb) value else (value / 1024f)
+            isUpdating = true
+            speedSlider.value = speedInMb.coerceIn(speedSlider.valueFrom, speedSlider.valueTo)
+            isUpdating = false
+        }
+
+        fun setSpeed(value: Float, unit: String) {
+            isUpdating = true
+            val formatted = if (value == value.toLong().toFloat()) value.toLong().toString() else "%.1f".format(value)
+            if (unit.uppercase() == "K") {
+                unitToggleGroup.check(R.id.button_kb)
+                speedEditText.setText(formatted)
+                speedSlider.value = (value / 1024f).coerceIn(speedSlider.valueFrom, speedSlider.valueTo)
+            } else {
+                unitToggleGroup.check(R.id.button_mb)
+                speedEditText.setText(formatted)
+                speedSlider.value = value.coerceIn(speedSlider.valueFrom, speedSlider.valueTo)
+            }
+            isUpdating = false
+        }
+
+        if (currentValue.isNotEmpty()) {
+            speedEditText.setText(currentValue)
+            updateSliderFromInput()
+        }
+
+        speedEditText.doOnTextChanged { _, _, _, _ ->
+            updateSliderFromInput()
+        }
+
+        unitToggleGroup.addOnButtonCheckedListener { _, _, isChecked ->
+            if (isChecked) {
+                updateSliderFromInput()
+            }
+        }
+
+        speedSlider.addOnChangeListener { _, value, fromUser ->
+            if (fromUser && !isUpdating) {
+                isUpdating = true
+                val isMb = unitToggleGroup.checkedButtonId == R.id.button_mb
+                if (isMb) {
+                    val formatted = if (value == value.toLong().toFloat()) value.toLong().toString() else "%.1f".format(value)
+                    speedEditText.setText(formatted)
+                } else {
+                    val kbValue = (value * 1024f).toLong()
+                    speedEditText.setText(kbValue.toString())
+                }
+                isUpdating = false
+            }
+        }
+
+        view.findViewById<Chip>(R.id.chip_250k)?.setOnClickListener { setSpeed(250f, "K") }
+        view.findViewById<Chip>(R.id.chip_500k)?.setOnClickListener { setSpeed(500f, "K") }
+        view.findViewById<Chip>(R.id.chip_1m)?.setOnClickListener { setSpeed(1f, "M") }
+        view.findViewById<Chip>(R.id.chip_2m)?.setOnClickListener { setSpeed(2f, "M") }
+        view.findViewById<Chip>(R.id.chip_5m)?.setOnClickListener { setSpeed(5f, "M") }
+        view.findViewById<Chip>(R.id.chip_10m)?.setOnClickListener { setSpeed(10f, "M") }
+
+        builder.setView(view)
+        builder.setPositiveButton(context.getString(R.string.ok)) { _, _ ->
+            val rawValue = speedEditText.text?.toString()?.trim() ?: ""
+            val numericVal = rawValue.toFloatOrNull()
+            if (numericVal != null && numericVal > 0f) {
+                val unit = if (unitToggleGroup.checkedButtonId == R.id.button_kb) "K" else "M"
+                val formatted = if (numericVal == numericVal.toLong().toFloat()) {
+                    "${numericVal.toLong()}$unit"
+                } else {
+                    "${numericVal}$unit"
+                }
+                speedSelected(formatted, checkboxCellularOnly.isChecked)
+            } else {
+                resetSelected()
+            }
+        }
+        builder.setNegativeButton(context.getString(R.string.cancel), null)
+        builder.setNeutralButton(context.getString(R.string.reset)) { _, _ ->
+            resetSelected()
+        }
+
+        builder.show()
+    }
+
+    fun showNetworkDiagnosticDialog(context: Activity) {
+        val info = NetworkDetector.getDiagnosticInfo(context)
+        val builder = MaterialAlertDialogBuilder(context)
+        builder.setTitle(context.getString(R.string.network_diagnostic_title))
+        builder.setIcon(R.drawable.ic_5g)
+
+        val message = StringBuilder()
+        message.append("• Active Transport: ").append(info.transportName).append("\n")
+        message.append("• Network Type: ").append(info.networkTypeName).append("\n")
+        message.append("• 5G NR Status: ").append(if (info.is5GNR) "ACTIVE (NR Connected)" else "Inactive (4G or lower)").append("\n")
+        if (info.fiveGDetails.isNotBlank()) {
+            message.append("• 5G Details: ").append(info.fiveGDetails).append("\n")
+        }
+        if (info.carrierName.isNotBlank()) {
+            message.append("• Carrier: ").append(info.carrierName).append("\n")
+        }
+        message.append("• Metered: ").append(if (info.isMetered) "Yes" else "No (Unmetered)").append("\n")
+        if (info.downlinkSpeedMbps.isNotBlank()) {
+            message.append("• Link Speed: ~").append(info.downlinkSpeedMbps).append(" Mbps\n")
+        }
+        message.append("• Download Policy: ").append(info.allowedSetting).append("\n")
+        message.append("• Download State: ").append(if (info.isAllowedForDownload) "ALLOWED" else "PAUSED / RESTRICTED")
+
+        builder.setMessage(message.toString())
+        builder.setPositiveButton(context.getString(R.string.ok), null)
+        builder.setNeutralButton(context.getString(R.string.network_diagnostic_refresh)) { _, _ ->
+            showNetworkDiagnosticDialog(context)
+        }
+        builder.show()
     }
 
     fun showChooseInstallerAppDialog(context: Activity, appIdSelected: (appId: String) -> Unit) {

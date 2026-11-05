@@ -20,8 +20,11 @@ fun WorkManager.isRunning(tag: String): Boolean {
 
 fun networkConstraints(prefs: SharedPreferences): Constraints {
     val allowMetered = prefs.getBoolean("metered_networks", true)
+    val allow5G = prefs.getBoolean("allow_5g_networks", true)
+    val stopOnNon5G = prefs.getBoolean("stop_download_on_non_5g", false)
+    val requireUnmetered = !allowMetered && !allow5G && !stopOnNon5G
     return Constraints.Builder()
-        .setRequiredNetworkType(if (allowMetered) NetworkType.CONNECTED else NetworkType.UNMETERED)
+        .setRequiredNetworkType(if (requireUnmetered) NetworkType.UNMETERED else NetworkType.CONNECTED)
         .build()
 }
 
