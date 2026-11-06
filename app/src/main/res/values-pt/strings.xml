@@ -35,7 +35,7 @@
     <string name="more">Mais</string>
     <string name="update_app">Buscar atualizações</string>
     <string name="embed_thumb_summary">Usar miniatura como capa de áudio</string>
-    <string name="ytld_update_success">Nova versão instalada</string>
+    <string name="ytld_update_success">Nova versão do yt-dlp instalada</string>
     <string name="embed_subs_summary">Adicionar legendas aos vídeos</string>
     <string name="downloading">Fazendo o download</string>
     <string name="Remove">Remover</string>
