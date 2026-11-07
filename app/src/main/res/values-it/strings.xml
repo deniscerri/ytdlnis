@@ -710,4 +710,9 @@
     <string name="lyrics_offset">Offset</string>
     <string name="save_lrc_file_summary">Salva i testi sincronizzati come file .lrc nella stessa cartella dei brani scaricati</string>
     <string name="crop_unsupported">Il ritaglio non è disponibile per questo elemento</string>
+    <string name="no_cookies_found">Nessun cookie individuato per questo sito. Completa l\'accesso, poi riprova</string>
+    <string name="all_artists_in_album_artist">Salva tutti gli artisti in Artisti dell\'album</string>
+    <string name="all_artists_in_album_artist_summary">Usa tutti gli artisti per il tag Artisti dell\'album, non solo il primo</string>
+    <string name="press_cancel">Premi qui per annullare</string>
+    <string name="fetching_data">Recupero dati…</string>
 </resources>
