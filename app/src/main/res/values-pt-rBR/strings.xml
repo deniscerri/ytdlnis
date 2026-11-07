@@ -6,7 +6,7 @@
     <string name="settings">Configurações</string>
     <string name="home">Início</string>
     <string name="directories">Pastas</string>
-    <string name="updating">Atualizando</string>
+    <string name="updating">Atualizações</string>
     <string name="ytdl_update_hint">Dica útil ao baixar atualizações</string>
     <string name="remove_results">Limpar resultados</string>
     <string name="download_all">Baixar todos</string>
@@ -36,7 +36,7 @@
     <string name="limit_rate">Limitar velocidade</string>
     <string name="limit_rate_summary">Taxa máxima de download (em bytes por segundo), ex.: 50K ou 4.2M</string>
     <string name="aria2_summary">Usar aria2c em vez do downloader padrão</string>
-    <string name="embed_subs_summary">Embutir legendas no vídeo</string>
+    <string name="embed_subs_summary">Incluir legendas no vídeo</string>
     <string name="add_chapters_summary">Marcar segmentos do YouTube/SponsorBlock como capítulos do vídeo</string>
     <string name="save_thumb">Salvar miniatura</string>
     <string name="video_format">Formato de vídeo</string>
@@ -50,7 +50,7 @@
     <string name="incognito_summary">Faça o download sem adicionar ao histórico</string>
     <string name="download">Download</string>
     <string name="video_quality">Qualidade do vídeo</string>
-    <string name="embed_subtitles">Embutir legendas</string>
+    <string name="embed_subtitles">Incluir legendas</string>
     <string name="add_chapter">Adicionar capítulos</string>
     <string name="show_download_card">Mostrar cartão de download</string>
     <string name="download_card_summary">Modificar as configurações desse item antes de fazer o download. Desativar esta opção inicia o download imediatamente</string>
@@ -72,7 +72,7 @@
     <string name="ytdl_already_updating">Instalando nova versão do yt-dlp</string>
     <string name="cancel">Cancelar</string>
     <string name="more">Mais</string>
-    <string name="processing">Processando</string>
+    <string name="processing">Processamento</string>
     <string name="embed_thumb">Miniatura como capa</string>
     <string name="you_are_going_to_delete">Excluir</string>
     <string name="link_copied_to_clipboard">Link copiado para a área de transferência</string>
@@ -119,7 +119,7 @@
     <string name="date_added">Data de adição</string>
     <string name="adjust_audio">Ajustar áudio</string>
     <string name="error_updating_formats">Erro ao atualizar formatos!</string>
-    <string name="download_queue">Fila de downloads</string>
+    <string name="download_queue">Lista de downloads</string>
     <string name="log_downloads_summary">Criar um arquivo de log para cada download</string>
     <string name="running">Executando</string>
     <string name="command">Comando</string>
@@ -142,9 +142,9 @@
     <string name="all_items_selected">Todos os itens selecionados</string>
     <string name="access_all_directories">Permitir acesso a todos os diretórios</string>
     <string name="access_all_directories_summary">Permitir que o aplicativo faça downloads em diretórios restritos por padrão</string>
-    <string name="in_queue">Na fila</string>
+    <string name="in_queue">Na lista</string>
     <string name="clear_cancelled">Limpar downloads cancelados</string>
-    <string name="clear_errored">Limpar downloads com falhas</string>
+    <string name="clear_errored">Limpar downloads com erro</string>
     <string name="split_by_chapters">Dividir por capítulos</string>
     <string name="items_imported">Itens importados</string>
     <string name="help_translate">Ajude a traduzir</string>
@@ -167,7 +167,7 @@
     <string name="suggested">Sugerido</string>
     <string name="add_template_first">Você precisa ter pelo menos um modelo de comando criado!</string>
     <string name="new_cut">Novo corte</string>
-    <string name="ignore_battery_optimization">Ignorar otimização de bateria</string>
+    <string name="ignore_battery_optimization">Desativar \'Otimização da Bateria\'</string>
     <string name="confirm_terminate">Interromper todos os downloads e forçar o fechamento do aplicativo</string>
     <string name="restrict_filenames">Restringir nomes de arquivos</string>
     <string name="cache_cleared">Arquivos temporários removidos</string>
@@ -213,7 +213,7 @@
     <string name="keep_cache">Manter fragmentos</string>
     <string name="updating_download_data">Atualizando os dados do item de download</string>
     <string name="pause">Pausar</string>
-    <string name="preferred_locale">Região/idioma preferido</string>
+    <string name="preferred_locale">País preferido</string>
     <string name="resume">Continuar</string>
     <string name="network_error">Erro de rede</string>
     <string name="restore">Restaurar</string>
@@ -243,7 +243,7 @@
     <string name="start">Início</string>
     <string name="ytdl_version">Versão do yt-dlp</string>
     <string name="end">Fim</string>
-    <string name="kill_app">Encerrar aplicativo</string>
+    <string name="kill_app">Fechar aplicativo</string>
     <string name="freespace">Espaço livre</string>
     <string name="dont_ask_again">Não perguntar novamente</string>
     <string name="restrict_filenames_summary">Restringir nomes de arquivos apenas a caracteres ASCII e evitar \"&amp;\" e espaços em nomes de arquivos</string>
@@ -279,20 +279,20 @@
     <string name="use_extra_commands_summary">Para downloads de áudio/vídeo. Adicionar comandos extras junto com a configuração da interface</string>
     <string name="current">Comando atual</string>
     <string name="orange">Laranja</string>
-    <string name="show_terminal">Mostrar terminal no menu de compartilhamento</string>
+    <string name="show_terminal">Mostrar o \'Terminal\' no menu de compartilhamento</string>
     <string name="extra_command">Comando extra</string>
     <string name="write_description">Salvar descrição</string>
     <string name="use_cookies">Usar cookies</string>
     <string name="write_description_summary">Salvar arquivo de descrição na pasta de downloads</string>
-    <string name="embed_metadata">Embutir metadados</string>
-    <string name="embed_metadata_summary">Analisar e embutir metadados no arquivo</string>
+    <string name="embed_metadata">Incluir metadados</string>
+    <string name="embed_metadata_summary">Analisar e incluir metadados no arquivo</string>
     <string name="auto_update_ytdlp">Atualizar yt-dlp automaticamente</string>
     <string name="use_sponsorblock">Habilitar SponsorBlock</string>
     <string name="update_formats_background">Atualizar formatos em segundo plano</string>
     <string name="cache_first">Downloads em cache primeiro</string>
     <string name="cache_first_summary">Os arquivos de cache são salvos para o armazenamento interno e depois movidos para o diretório escolhido. Use isto quando você não puder salvar diretamente no armazenamento</string>
     <string name="scheduling">Agendamento</string>
-    <string name="use_scheduler">Agendar o download</string>
+    <string name="use_scheduler">Agendamento de download</string>
     <string name="update_app_beta_summary">Inscreva-se no programa beta. Pode conter erros.</string>
     <string name="update_app_beta">Versões beta</string>
     <string name="auto">Automático</string>
@@ -339,7 +339,7 @@
     <string name="on_time">Em</string>
     <string name="week">Semana(s)</string>
     <string name="month">Mês(es)</string>
-    <string name="bitrate">Taxa de bits</string>
+    <string name="bitrate">Taxa de Bits</string>
     <string name="not_deleted">Não excluído</string>
     <string name="archive">Arquivar downloads [Usar o arquivamento de downloads do yt-dlp para evitar downloads duplicados em vez da função integrada]</string>
     <string name="observe_sources">Monitorar fontes</string>
@@ -363,7 +363,7 @@
     <string name="all_queries_finished">Todas as consultas foram processadas</string>
     <string name="select_between">Selecionar itens entre</string>
     <string name="swipe_gestures_download_card">Gestos de deslize no cartão de download</string>
-    <string name="show_download_count">Mostrar contagens na tela \'Fila de downloads\'</string>
+    <string name="show_download_count">Mostrar contagens na tela \'Lista de downloads\'</string>
     <string name="reset_processed_links">Redefinir links já processados</string>
     <string name="no_download_fragments">Não baixar em fragmentos</string>
     <string name="no_download_fragments_summary">Não usar arquivos \".part\" e escrever diretamente no arquivo de saída</string>
@@ -377,11 +377,11 @@
     <string name="prevent_duplicate_downloads">Evitar downloads duplicados</string>
     <string name="prevent_duplicate_url_type">URL e tipo de download</string>
     <string name="prevent_duplicate_config">Configuração completa</string>
-    <string name="move_bottom">Mover para o fim</string>
+    <string name="move_bottom">Mover para o final</string>
     <string name="scheduled">Agendado</string>
     <string name="clear_scheduled">Limpar downloads agendados</string>
     <string name="copy_url">Copiar URL</string>
-    <string name="move_top">Mover para o topo</string>
+    <string name="move_top">Mover para o início</string>
     <string name="format_importance">Ordem de importância para formatos</string>
     <string name="minute">Minuto(s)</string>
     <string name="second">Segundo(s)</string>
@@ -394,7 +394,7 @@
     <string name="process_downloads_background">"Os downloads ainda estão sendo carregados. Continuar processando-os em segundo plano e iniciar o download? "</string>
     <string name="always">Sempre</string>
     <string name="reset">Redefinir</string>
-    <string name="queue">Fila</string>
+    <string name="queue">Lista</string>
     <string name="navigation_bar">Barra de navegação</string>
     <string name="sync_with_source">Sincronizar com a fonte</string>
     <string name="restore_info">Pressione \'Restaurar\' para mesclar os dados salvos com os dados atuais.\nPressione \'Redefinir\' para apagar e usar apenas os dados salvos no arquivo.</string>
@@ -428,7 +428,7 @@
     <string name="status">Status</string>
     <string name="data_fetching_extra_command">Comando extra para busca de dados</string>
     <string name="data_fetching_extra_command_summary">Permitir que os modelos de comando sejam usados como comandos extras para busca de dados</string>
-    <string name="disable_write_info_json">Desabilitar gravação de info json</string>
+    <string name="disable_write_info_json">Desabilitar registros de informações em JSON</string>
     <string name="disable_write_info_json_summary">Sempre que você reiniciar/retomar o download, o yt-dlp baixará novamente os dados JSON dos servidores (não recomendado)</string>
     <string name="ytdlp_recommnedations">yt-dlp: Recomendações do YouTube (precisa de cookies)</string>
     <string name="ytdlp_liked">yt-dlp: Vídeos curtidos do YouTube (precisa de cookies)</string>
@@ -473,7 +473,7 @@
     <string name="manual_po_token_generator">Gerador manual de PO Token para web</string>
     <string name="reverse">Reverter</string>
     <string name="no_keep_subs">Excluir arquivos de legenda após incorporar</string>
-    <string name="no_keep_subs_summary">Ao usar \"Embutir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
+    <string name="no_keep_subs_summary">Ao usar \"Incluir legendas\" e \"Salvar legendas\", não mantenha os arquivos de legenda após a incorporação</string>
     <string name="video_compatible">Vídeo compatível</string>
     <string name="video_compatible_summary">Recodifica o vídeo tornando-o compatível com outros aplicativos</string>
     <string name="no_free_space_warning">Não há espaço livre para esta configuração.</string>
@@ -481,7 +481,7 @@
     <string name="smallest">Menor</string>
     <string name="largest">Maior</string>
     <string name="potoken_gvs">PO Token (GVS)</string>
-    <string name="potoken_player">PO Token (Reprodutor)</string>
+    <string name="potoken_player">PO Token (Player)</string>
     <string name="potoken_subs">PO Token (Legendas)</string>
     <string name="visitor_data">Dados do visitante</string>
     <string name="get_data_sync_id">Obter ID de sincronização de dados</string>
@@ -493,7 +493,7 @@
     <string name="use_original_url_playlist">Usar URL original para a URL da playlist</string>
     <string name="use_original_url_playlist_summary">Use a URL da playlist fornecida pelo usuário em vez da tag \"playlist_webpage_url\" do arquivo json</string>
     <string name="update_ytdlp_while_downloading">Atualizar yt-dlp durante o download</string>
-    <string name="update_ytdlp_while_downloading_summary">Adicionar -U ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
+    <string name="update_ytdlp_while_downloading_summary">Adicionar \'-U\' ao yt-dlp para atualizá-lo com a versão mais recente antes de fazer o download</string>
     <string name="prefer_drc_audio">Preferir áudio DRC</string>
     <string name="preview_filename">Visualizar nome do arquivo</string>
     <string name="potoken_guide">Autenticação\n-----------------------\n1. Clique em “Autenticar” para abrir a página de login no WebView.\n2. Faça login na sua conta do Google.\n3. Reproduza qualquer vídeo que suporte legendas traduzidas automaticamente.\n4. Ative as legendas traduzidas automaticamente e veja se funcionam.\n\t4.1 Se as legendas traduzidas automaticamente não funcionarem, mude para outro vídeo que suporte legendas traduzidas automaticamente e tente o passo 4 novamente.\n5. Clique em OK.\n\nSem autenticação\n-----------------------\n1. Clique em “Sem autenticação”.\n2. Digite qualquer URL de vídeo do YouTube.\n3. Aguarde o carregamento do vídeo e reproduza-o por pelo menos 3 segundos.\n4. Clique em OK.</string>
@@ -532,7 +532,7 @@
     <string name="write_atleast_one_potoken">Você deve inserir ao menos um PO Token</string>
     <string name="version_ready_to_download">A versão %s está pronta para download</string>
     <string name="package_version_ready_to_download">O pacote %1$s (versão %2$s) está pronto para download</string>
-    <string name="tap_to_see_changes_and_install">Toque para ver as mudanças e instalar</string>
+    <string name="tap_to_see_changes_and_install">Toque para ver as alterações e instalar</string>
     <string name="view">Ver</string>
     <string name="next_run">Próximo: %1$s</string>
     <string name="paused">Pausado</string>
@@ -588,7 +588,7 @@
     <string name="bgutils_info">Um provedor de token de prova de origem (POT) para yt-dlp.\nCom ele ativado, o YTDLnis hospeda o servidor HTTP que gera o POT e instala o plugin relacionado que o yt-dlp utiliza.</string>
     <string name="bgutils_pot_generation_server">Servidor HTTP</string>
     <string name="bgutils_pot_generation_script_summary">Cada chamada ao yt-dlp acarreta a sobrecarga de criar um novo processo de ambiente de execução JavaScript para rodar o script. Esse método não é recomendado para cenários de alta concorrência.</string>
-    <string name="bgutils_pot_server_summary">Este é um servidor HTTP em JavaScript, na porta 4416. Se estiver inativo, ele inicia automaticamente quando a fila de downloads começa a ser executada ou quando a verificação de fontes é agendada. Para encerrá-lo, é preciso fazê-lo manualmente através das notificações!</string>
+    <string name="bgutils_pot_server_summary">Este é um servidor HTTP em JavaScript, na porta 4416. Se estiver inativo, ele inicia automaticamente quando a lista de downloads começa a ser executada ou quando a verificação de fontes é agendada. Para encerrá-lo, é preciso fazê-lo manualmente através das notificações!</string>
     <string name="please_install_package">Por favor, instale o pacote %s</string>
     <string name="please_install_package_or_package">Por favor, instale o pacote %1$s ou o pacote %2$s</string>
     <string name="bgutils_pot_generation_script">Script de geração</string>
@@ -602,7 +602,7 @@
     <string name="bgutils_pot_generation_script_info">Para usar o BgUtils POT Provider, o aplicativo precisa baixar o repositório Brainicism/bgutil-ytdlp-pot-provider do GitHub e iniciar a instalação. Isso pode levar algum tempo para ser concluído. Deseja prosseguir agora?</string>
     <string name="burn_subs">Incrustar legendas</string>
     <string name="check_clipboard_home_summary">Detectar automaticamente URLs na área de transferência na tela inicial</string>
-    <string name="check_clipboard_home">Verifique a área de transferência na tela inicial</string>
+    <string name="check_clipboard_home">Verificar a área de transferência na tela inicial</string>
     <string name="search_results">Resultados da busca</string>
     <string name="clear_info_json">Excluir arquivos infojsons</string>
     <string name="internal_plugin_ffmpeg_preset">Predefinição do plugin interno do FFmpeg</string>
@@ -632,7 +632,7 @@
     <string name="info_jsons">Info-JSONs</string>
     <string name="info_jsons_summary">Metadados de vídeo salvos para que o yt-dlp não precise buscá-los novamente</string>
     <string name="ytdlp_cache">Cache do yt-dlp</string>
-    <string name="ytdlp_cache_summary">Dados que o yt-dlp reutiliza entre execuções, como assinaturas do reprodutor do YouTube</string>
+    <string name="ytdlp_cache_summary">Os dados do yt-dlp são reutilizados entre as execuções, assim como as assinaturas do player do YouTube</string>
     <string name="temporary_configurations">Configurações temporárias</string>
     <string name="temporary_configurations_summary">Configurações de comando, listas de URLs e outros arquivos de curta duração</string>
     <string name="downloaded_apks">APKs baixados</string>
@@ -647,7 +647,7 @@
         <item quantity="other">Falha ao buscar %d itens</item>
     </plurals>
     <string name="retry">Tentar novamente</string>
-    <string name="retry_all">Tentar novamente tudo</string>
+    <string name="retry_all">Repetir tudo</string>
     <string name="download_anyway">Baixar mesmo assim</string>
     <string name="translators">Tradutores</string>
     <string name="translators_summary">Pessoas que ajudaram a traduzir este aplicativo no Weblate</string>
@@ -682,7 +682,7 @@
     <string name="welcome_next">Avançar</string>
     <string name="welcome_finish">Concluir</string>
     <string name="lyrics">Letras</string>
-    <string name="embed_lyrics">Embutir letras</string>
+    <string name="embed_lyrics">Incluir letras</string>
     <string name="save_lrc_file">Salvar arquivo .lrc</string>
     <string name="lyrics_offset">Ajuste de atraso (offset)</string>
     <string name="lyrics_not_found">Nenhuma letra encontrada</string>
@@ -691,7 +691,7 @@
     <string name="lyrics_no_preview">Prévia indisponível, as letras ainda serão adicionadas ao download</string>
     <string name="lyrics_synced">Sincronizadas</string>
     <string name="lyrics_plain">Texto simples</string>
-    <string name="embed_lyrics_summary">Obter letras do lrclib.net e embuti-las nos downloads de áudio</string>
+    <string name="embed_lyrics_summary">Buscar letras de músicas no site \'lrclib.net\' e incorporá-las aos arquivos de áudio para download</string>
     <string name="save_lrc_file_summary">Salvar letras sincronizadas como um arquivo .lrc junto aos downloads de áudio</string>
     <plurals name="updates_available_summary">
         <item quantity="one">%d atualização disponível</item>
@@ -707,7 +707,7 @@
         <item quantity="many">%d itens</item>
         <item quantity="other">%d itens</item>
     </plurals>
-    <string name="reorder_queue">Reordenar fila</string>
+    <string name="reorder_queue">Reordenar lista</string>
     <string name="crop_unavailable_please_update_item">Você precisa atualizar os dados do item para poder usar o recurso de recorte</string>
     <string name="version_update_available">%1$s → %2$s</string>
     <string name="update_checked_ago">Verificado %1$s</string>
