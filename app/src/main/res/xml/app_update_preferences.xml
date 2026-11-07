@@ -41,10 +41,15 @@
             app:defaultValue="false"
             android:key="update_nightly" />
 
+
         <Preference
             app:icon="@drawable/ic_chapters"
             app:key="changelog"
-            app:title="@string/changelog" />
+            app:title="@string/changelog">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/deniscerri/ytdlnis/releases" />
+        </Preference>
 
     </PreferenceCategory>
 

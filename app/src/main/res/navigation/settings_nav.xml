@@ -27,9 +27,6 @@
         android:name="com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsFragment"
         android:label="UpdateSettingsFragment" >
         <action
-            android:id="@+id/action_updateSettingsFragment_to_changeLogFragment"
-            app:destination="@id/changeLogFragment" />
-        <action
             android:id="@+id/action_updateSettingsFragment_to_packagesFragment"
             app:destination="@id/packagesFragment" />
         <action
@@ -89,10 +86,6 @@
         android:id="@+id/youtubePlayerClientFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.advanced.YoutubePlayerClientFragment"
         android:label="YoutubePlayerClientFragment" />
-    <fragment
-        android:id="@+id/changeLogFragment"
-        android:name="com.deniscerri.ytdl.ui.more.settings.updating.app.ChangeLogFragment"
-        android:label="ChangeLogFragment" />
     <fragment
         android:id="@+id/generateYoutubePoTokensFragment"
         android:name="com.deniscerri.ytdl.ui.more.settings.advanced.generateyoutubepotokens.GenerateYoutubePoTokensFragment"

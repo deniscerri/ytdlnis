@@ -34,57 +34,22 @@ class UpdateUtil(var context: Context) {
         Pair<String, RuntimeManager.UpdateChannel>("master", RuntimeManager.UpdateChannel.MASTER)
     )
 
-    private fun String.tagNameToVersionNumber() : Int {
-        return this.replace("-beta", "").replace(".", "").padEnd(10,'0').toInt()
-    }
-
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun tryGetNewVersion() : Result<GithubRelease> {
         try {
             val skippedVersions = sharedPreferences.getString("skip_updates", "")?.split(",")?.distinct()?.toMutableList() ?: mutableListOf()
-            if (sharedPreferences.getBoolean("update_nightly", false)) return tryGetNewNightly(skippedVersions)
-            val res = getGithubReleases()
+            val res = fetchReleases()
 
             if (res.isEmpty()){
                 return Result.failure(Error(context.getString(R.string.network_error)))
             }
             sharedPreferences.edit().putLong(APP_LAST_CHECK_KEY, System.currentTimeMillis()).apply()
 
-            val currentVersion = BuildConfig.VERSION_NAME
-            val currentVerNumber = currentVersion.tagNameToVersionNumber()
+            val v = findUpdate(res)
 
-            val useBeta = sharedPreferences.getBoolean("update_beta", false)
-            var isInLatest = true
-
-            var v: GithubRelease
-            if (useBeta) {
-                v = res.firstOrNull { it.tag_name.contains("beta", true) } ?: res.first()
-                val stableV = res.first { !it.tag_name.contains("beta", true) }
-
-                val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
-                val incomingStableVerNumber = stableV.tag_name.removePrefix("v").tagNameToVersionNumber()
-
-                //if in beta but latest stable higher
-                if (currentVerNumber < incomingStableVerNumber) {
-                    isInLatest = false
-                    v = stableV
-                }else{
-                    isInLatest = currentVerNumber >= incomingVerNumber
-                }
-            }else {
-                v = res.first { !it.tag_name.contains("beta", true) }
-                val incomingVerNumber = v.tag_name.removePrefix("v").tagNameToVersionNumber()
-
-                //if current version is beta but wants to downgrade to stable, allow it
-                isInLatest = if (currentVersion.contains("beta", true)) {
-                    false
-                }else {
-                    currentVerNumber >= incomingVerNumber
-                }
+            if (v == null || skippedVersions.contains(v.tag_name)) {
+                return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
             }
-
-            if (skippedVersions.contains(v.tag_name)) isInLatest = true
-            if (isInLatest) return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
             return Result.success(v)
         }catch (e: Exception){
             e.printStackTrace()
@@ -92,22 +57,48 @@ class UpdateUtil(var context: Context) {
         }
     }
 
-    private fun tryGetNewNightly(skippedVersions: List<String>) : Result<GithubRelease> {
-        val res = fetchReleases()
-        if (res.isEmpty()) return Result.failure(Error(context.getString(R.string.network_error)))
-        sharedPreferences.edit().putLong(APP_LAST_CHECK_KEY, System.currentTimeMillis()).apply()
+    private fun parseVersion(tag: String): List<Int>? =
+        tag.removePrefix("v").replace("-beta", "").split(".").map { it.toIntOrNull() ?: return null }
 
-        // nightlies share the stable version name, so a nightly is new if it was published after this app was installed/updated
-        val installedAt = context.packageManager.getPackageInfo(context.packageName, 0).lastUpdateTime
-        val nightly = res.firstOrNull { it.tag_name.startsWith("nightly-") }
-        if (nightly == null || nightly.published_at.time <= installedAt || skippedVersions.contains(nightly.tag_name)) {
-            return Result.failure(Error(context.getString(R.string.you_are_in_latest_version)))
+    /** Part by part, so 1.10.0 is newer than 1.9.1.1, and 1.9.1 equals 1.9.1.0 */
+    private fun compareVersions(a: List<Int>, b: List<Int>): Int {
+        for (i in 0 until maxOf(a.size, b.size)) {
+            val diff = a.getOrElse(i) { 0 }.compareTo(b.getOrElse(i) { 0 })
+            if (diff != 0) return diff
         }
-        return Result.success(nightly)
+        return 0
     }
 
-    // the nightly pre-release isn't versioned, keep it out of the stable/beta checks and the changelog
-    fun getGithubReleases(): List<GithubRelease> = fetchReleases().filter { !it.tag_name.startsWith("nightly-") }
+    /** The release to offer from a newest first list, null if already on the latest */
+    private fun findUpdate(releases: List<GithubRelease>): GithubRelease? {
+        val useBeta = sharedPreferences.getBoolean("update_beta", false)
+        val useNightly = sharedPreferences.getBoolean("update_nightly", false)
+
+        if (useNightly) {
+            // nightlies share the stable version name, so a nightly is new if it was published after this app was installed/updated
+            val installedAt = context.packageManager.getPackageInfo(context.packageName, 0).lastUpdateTime
+            return releases.firstOrNull { it.tag_name.startsWith("nightly-") }?.takeIf { it.published_at.time > installedAt }
+        }
+
+        val currentVersion = BuildConfig.VERSION_NAME
+
+        val current = parseVersion(currentVersion) ?: return null
+        fun GithubRelease.isNewer() = compareVersions(parseVersion(tag_name)!!, current) > 0
+        // old beta tags aren't all flagged as pre-releases on GitHub, so check the name too
+        fun GithubRelease.isPreRelease() = prerelease || tag_name.contains("beta", true)
+
+        val versioned = releases.filter { parseVersion(it.tag_name) != null }
+        val stable = versioned.firstOrNull { !it.isPreRelease() } ?: return null
+
+        if (useBeta) {
+            if (stable.isNewer()) return stable
+            return (versioned.firstOrNull { it.isPreRelease() } ?: stable).takeIf { it.isNewer() }
+        }
+
+        //if current version is beta but wants to downgrade to stable, allow it
+        if (currentVersion.contains("beta", true)) return stable
+        return stable.takeIf { it.isNewer() }
+    }
 
     private fun fetchReleases(): List<GithubRelease> {
         val conn: HttpURLConnection

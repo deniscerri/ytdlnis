@@ -78,7 +78,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="nightly-$(date -u +%Y%m%d)"
+          # released app versions fail their update check on any tag without "beta" that isn't a version number
+          tag="nightly-$(date -u +%Y%m%d)-beta"
           # keep a single nightly: drop every older one (and a same-day one on manual reruns)
           for old in $(gh release list --limit 100 --json tagName -q '.[].tagName | select(startswith("nightly-"))'); do
             gh release delete "$old" --cleanup-tag --yes

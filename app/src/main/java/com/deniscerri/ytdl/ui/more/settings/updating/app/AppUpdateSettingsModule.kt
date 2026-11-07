@@ -73,12 +73,6 @@ object AppUpdateSettingsModule : SettingModule {
                     true
                 }
             }
-            "changelog" -> {
-                pref.setOnPreferenceClickListener {
-                    host.requestNavigate(R.id.changeLogFragment)
-                    false
-                }
-            }
         }
     }
 
