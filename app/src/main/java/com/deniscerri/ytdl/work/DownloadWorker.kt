@@ -436,7 +436,7 @@ class DownloadWorker(
                                             val historyItem = HistoryItem(
                                                 0,
                                                 downloadItem.url,
-                                                downloadItem.title.ifEmpty { downloadItem.playlistTitle },
+                                                downloadItem.title,
                                                 downloadItem.author,
                                                 downloadItem.duration,
                                                 downloadItem.thumb,

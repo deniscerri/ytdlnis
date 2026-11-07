@@ -5,6 +5,7 @@ import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.App
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.DBManager
+import com.deniscerri.ytdl.database.enums.MetadataTag
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.database.repository.HistoryRepository
@@ -156,7 +157,7 @@ class DownloadQueueUtil(private val context: Context) {
                             }
 
                             val existingHistoryItem = history.firstOrNull {
-                                    h -> h.command.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "") == parsedCurrentCommand.replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "")
+                                    h -> MetadataTag.normalizeForComparison(h.command).replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "") == MetadataTag.normalizeForComparison(parsedCurrentCommand).replace("(-P \"(.*?)\")|(--trim-filenames \"(.*?)\")".toRegex(), "")
                             }
 
                             if (existingHistoryItem != null){

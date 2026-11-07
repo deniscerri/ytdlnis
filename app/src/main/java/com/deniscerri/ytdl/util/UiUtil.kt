@@ -59,6 +59,7 @@ import com.afollestad.materialdialogs.utils.MDUtil.textChanged
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.core.packages.PackageBase
 import com.deniscerri.ytdl.database.enums.DownloadType
+import com.deniscerri.ytdl.database.enums.MetadataTag
 import com.deniscerri.ytdl.database.models.CommandTemplate
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.models.Format
@@ -1359,8 +1360,10 @@ object UiUtil {
         extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit,
         liveFromStart: (Boolean) -> Unit,
         waitForVideo: (Boolean, Int) -> Unit,
+        metadataClicked: ((changed: () -> Unit) -> Unit),
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        configureMetadataChip(view, context, items, metadataClicked)
 
         val adjustThumbnail = view.findViewById<Chip>(R.id.thumbnail)
         fun calculateAdjustThumbnailChangeCount() {
@@ -1909,6 +1912,15 @@ object UiUtil {
         }
     }
 
+    private fun configureMetadataChip(view: View, context: Activity, items: List<DownloadItem>, clicked: ((changed: () -> Unit) -> Unit)?) {
+        val chip = view.findViewById<Chip>(R.id.metadata_chip)
+        chip.isVisible = clicked != null
+        if (clicked == null) return
+        fun updateBadge() = chip.createBadge(context, if (items.size > 1) 0 else MetadataTag.tagsOf(items.first())?.size ?: 0)
+        updateBadge()
+        chip.setOnClickListener { clicked { updateBadge() } }
+    }
+
     fun configureAudio(
         view: View,
         context: Activity,
@@ -1925,10 +1937,12 @@ object UiUtil {
         cutValueChanged: (String) -> Unit,
         mergeCutsChanged: (Boolean) -> Unit,
         extraCommandsClicked: (changed: (newExtraCommandString: String) -> Unit) -> Unit,
+        metadataClicked: ((changed: () -> Unit) -> Unit),
         lyricsClicked: ((changed: () -> Unit) -> Unit)? = null,
         lyricsChanged: (() -> Unit)? = null
     ){
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        configureMetadataChip(view, context, items, metadataClicked)
 
         val lyrics = view.findViewById<Chip>(R.id.lyrics)
         fun updateLyricsBadge() {

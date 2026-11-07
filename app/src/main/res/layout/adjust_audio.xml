@@ -35,6 +35,15 @@
                 android:text="@string/thumbnail" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/metadata_chip"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:outlineProvider="none"
+                android:text="@string/metadata"
+                app:chipIcon="@drawable/ic_label" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/lyrics"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
@@ -46,15 +55,6 @@
                 app:chipIconVisible="true"
                 app:chipIcon="@drawable/ic_lyrics"
                 app:cornerRadius="10dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/split_by_chapters"
-                style="@style/Widget.Material3.Chip.Filter.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:outlineProvider="none"
-                android:text="@string/split_by_chapters"/>
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -89,21 +89,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/filename_template"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:id="@+id/split_by_chapters"
+                style="@style/Widget.Material3.Chip.Filter.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:checked="false"
                 android:outlineProvider="none"
-                android:minWidth="30dp"
-                android:text="@string/file_name_template"
-                app:chipIcon="@drawable/ic_edit"
-                app:chipIconVisible="true"
-                app:cornerRadius="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                android:text="@string/split_by_chapters"/>
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -118,17 +110,16 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/extra_commands"
+                android:id="@+id/filename_template"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/use_extra_commands"
                 android:outlineProvider="none"
-
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
+                android:text="@string/file_name_template"
+                app:chipIcon="@drawable/ic_edit"
+                app:chipIconVisible="true"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -160,6 +151,39 @@
                 android:outlineProvider="none"
                 app:chipIcon="@drawable/ic_cut"
                 android:text="@string/cut"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+
+    </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:singleLine="true"
+            >
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/extra_commands"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/use_extra_commands"
+                android:outlineProvider="none"
+
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_terminal"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -337,6 +337,11 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                             requireActivity(),
                             ytdlpViewModel,
                             listOf(downloadItem),
+                            metadataClicked = { changed ->
+                                if (parentFragmentManager.findFragmentByTag("metadataSheet") == null) {
+                                    MetadataBottomSheetDialog(listOf(downloadItem), nonSpecific, changed).show(parentFragmentManager, "metadataSheet")
+                                }
+                            },
                             embedSubsClicked = {
                                 downloadItem.videoPreferences.embedSubs = it
                             },

@@ -15,5 +15,7 @@ data class AudioPreferences(
     /** lrclib track id picked by the user, 0 = match automatically */
     var lyricsId: Long = 0,
     /** milliseconds added to synced lyrics timestamps */
-    var lyricsOffset: Long = 0
+    var lyricsOffset: Long = 0,
+    /** ffmpeg tag name to value, see MetadataTag */
+    var metadataTags: HashMap<String, String> = hashMapOf()
 ) : Parcelable

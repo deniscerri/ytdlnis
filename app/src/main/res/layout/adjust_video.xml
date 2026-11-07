@@ -36,6 +36,15 @@
                 android:text="@string/thumbnail" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/metadata_chip"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:outlineProvider="none"
+                android:text="@string/metadata"
+                app:chipIcon="@drawable/ic_label" />
+
+            <com.google.android.material.chip.Chip
                 android:id="@+id/chapters"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
@@ -44,22 +53,6 @@
                 app:chipIcon="@drawable/ic_chapters"
                 android:outlineProvider="none"
                 android:text="@string/chapters" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/adjust_subtitles"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/subtitles"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_subtitles"
-                android:minWidth="30dp"
-                app:cornerRadius="10dp"
-                android:outlineProvider="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
         </com.google.android.material.chip.ChipGroup>
@@ -76,6 +69,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:singleLine="true">
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/adjust_subtitles"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/subtitles"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_subtitles"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                android:outlineProvider="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <com.google.android.material.chip.Chip
@@ -120,21 +130,6 @@
                 app:chipIcon="@drawable/baseline_video_metadata"
                 android:text="@string/recode_video" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/adjust_live_stream"
-                style="@style/Widget.Material3.Chip.Assist.Elevated"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/live_stream"
-                app:chipIconVisible="true"
-                app:chipIcon="@drawable/baseline_live_tv_24"
-                android:minWidth="30dp"
-                app:cornerRadius="10dp"
-                android:outlineProvider="none"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
 
 
         </com.google.android.material.chip.ChipGroup>
@@ -197,15 +192,16 @@
             android:layout_height="wrap_content"
             app:singleLine="true">
 
+
             <com.google.android.material.chip.Chip
-                android:id="@+id/extra_commands"
+                android:id="@+id/adjust_live_stream"
                 style="@style/Widget.Material3.Chip.Assist.Elevated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/use_extra_commands"
+                android:text="@string/live_stream"
                 app:chipIconVisible="true"
-                app:chipIcon="@drawable/ic_terminal"
+                app:chipIcon="@drawable/baseline_live_tv_24"
                 android:minWidth="30dp"
                 app:cornerRadius="10dp"
                 android:outlineProvider="none"
@@ -249,6 +245,41 @@
         </com.google.android.material.chip.ChipGroup>
 
     </HorizontalScrollView>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleLine="true">
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/extra_commands"
+                style="@style/Widget.Material3.Chip.Assist.Elevated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/use_extra_commands"
+                app:chipIconVisible="true"
+                app:chipIcon="@drawable/ic_terminal"
+                android:minWidth="30dp"
+                app:cornerRadius="10dp"
+                android:outlineProvider="none"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+
+
 
 
 </LinearLayout>

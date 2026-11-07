@@ -649,6 +649,17 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
                                             val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
                                             bottomSheetDialog.show(parentFragmentManager, "extraCommands")
                                         },
+                                        metadataClicked = { changed ->
+                                            if (parentFragmentManager.findFragmentByTag("metadataSheet") == null) {
+                                                MetadataBottomSheetDialog(
+                                                    items,
+                                                    onChanged = {
+                                                        CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                                        changed()
+                                                    }
+                                                ).show(parentFragmentManager, "metadataSheet")
+                                            }
+                                        },
                                         lyricsChanged = {
                                             CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
                                         }
@@ -774,6 +785,17 @@ class DownloadMultipleBottomSheetDialog : BottomSheetDialogFragment(), Configure
 
                                             val bottomSheetDialog = AddExtraCommandsDialog(null, callback)
                                             bottomSheetDialog.show(parentFragmentManager, "extraCommands")
+                                        },
+                                        metadataClicked = { changed ->
+                                            if (parentFragmentManager.findFragmentByTag("metadataSheet") == null) {
+                                                MetadataBottomSheetDialog(
+                                                    items,
+                                                    onChanged = {
+                                                        CoroutineScope(Dispatchers.IO).launch { items.forEach { downloadViewModel.updateDownload(it) } }
+                                                        changed()
+                                                    }
+                                                ).show(parentFragmentManager, "metadataSheet")
+                                            }
                                         },
                                         waitForVideo = {b, i -> },
                                         liveFromStart = {}

@@ -24,6 +24,10 @@ class YTDLPViewModel(private val application: Application) : AndroidViewModel(ap
         return ytdlpUtil.parseYTDLRequestString(req)
     }
 
+    suspend fun getMetadata(item: DownloadItem) : Map<String, String> {
+        return ytdlpUtil.getMetadata(item)
+    }
+
     fun getVersion(channel: String) : String {
         return ytdlpUtil.getVersion(application, channel)
     }
