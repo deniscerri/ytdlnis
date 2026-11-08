@@ -2,10 +2,10 @@ import json
 import os
 import re
 import time
-import urllib.error
 import urllib.parse
-import urllib.request
 
+from yt_dlp.networking import Request
+from yt_dlp.networking.exceptions import HTTPError, TransportError
 from yt_dlp.postprocessor.common import PostProcessor
 from yt_dlp.utils import PostProcessingError
 
@@ -23,23 +23,23 @@ _JUNK_BRACKETS = re.compile(
     re.IGNORECASE)
 
 
-def _get_json(path, params=None):
+def _get_json(urlopen, path, params=None):
     url = f'{API}/{path}'
     if params:
         url += '?' + urllib.parse.urlencode({k: v for k, v in params.items() if v not in (None, '')})
-    req = urllib.request.Request(url, headers={'User-Agent': USER_AGENT, 'Lrclib-App-Id': APPLICATION_ID})
+    req = Request(url, headers={'User-Agent': USER_AGENT, 'Lrclib-App-Id': APPLICATION_ID})
     for attempt in range(MAX_ATTEMPTS):
         last = attempt == MAX_ATTEMPTS - 1
         try:
-            with urllib.request.urlopen(req, timeout=10) as res:
+            with urlopen(req) as res:
                 return json.loads(res.read().decode('utf-8'))
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
+        except HTTPError as e:
+            if e.status == 404:
                 return None
-            if e.code not in RETRY_CODES or last:
+            if e.status not in RETRY_CODES or last:
                 raise
-            delay = _retry_delay(e.headers.get('Retry-After'), attempt)
-        except (urllib.error.URLError, TimeoutError):
+            delay = _retry_delay(e.response.headers.get('Retry-After'), attempt)
+        except TransportError:
             if last:
                 raise
             delay = _retry_delay(None, attempt)
@@ -94,16 +94,16 @@ def _pick(results, duration):
     return best[1] if best else None
 
 
-def find_lyrics(track, artist, album, duration, lrclib_id=None):
+def find_lyrics(urlopen, track, artist, album, duration, lrclib_id=None):
     if lrclib_id:
-        return _get_json(f'get/{lrclib_id}')
+        return _get_json(urlopen, f'get/{lrclib_id}')
 
     track_clean = _JUNK_BRACKETS.sub('', track).strip()
     if track_clean.lower().startswith(artist.lower() + ' - '):
         track_clean = track_clean[len(artist) + 3:]
 
     if artist:
-        res = _get_json('get', {
+        res = _get_json(urlopen, 'get', {
             'track_name': track_clean, 'artist_name': artist,
             'album_name': album, 'duration': duration or None})
         if res and (res.get('syncedLyrics') or res.get('plainLyrics')):
@@ -113,7 +113,7 @@ def find_lyrics(track, artist, album, duration, lrclib_id=None):
         {'track_name': track_clean, 'artist_name': artist},
         {'q': f'{artist} {track_clean}'.strip()},
     ):
-        res = _pick(_get_json('search', params), duration)
+        res = _pick(_get_json(urlopen, 'search', params), duration)
         if res:
             return res
     return None
@@ -192,7 +192,8 @@ class LyricsPP(PostProcessor):
 
         track = info.get('track') or info.get('title') or ''
         try:
-            result = find_lyrics(track, self._artist(info), info.get('album') or '',
+            # yt-dlp's urlopen: uses its certifi bundle, proxy and --no-check-certificates; bare urllib fails SSL on Android
+            result = find_lyrics(self._downloader.urlopen, track, self._artist(info), info.get('album') or '',
                                  int(info.get('duration') or 0), self._id)
         except Exception as e:
             raise PostProcessingError(f'Could not fetch lyrics: {e}')
