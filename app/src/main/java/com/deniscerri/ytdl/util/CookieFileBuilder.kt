@@ -35,9 +35,11 @@ object CookieFileBuilder {
 
         cookieContents.forEach { content ->
             content.lines().forEach { line ->
-                val cookieLine = line.trim()
-                if (cookieLine.isNotEmpty() &&
-                    (!cookieLine.startsWith("#") || cookieLine.startsWith(HTTP_ONLY_PREFIX))
+                // only strip \r: an empty cookie value leaves a trailing tab that yt-dlp needs to count 7 fields
+                val cookieLine = line.trimEnd('\r')
+                val check = cookieLine.trimStart()
+                if (check.isNotBlank() &&
+                    (!check.startsWith("#") || check.startsWith(HTTP_ONLY_PREFIX))
                 ) {
                     cookieLines.add(cookieLine)
                 }
