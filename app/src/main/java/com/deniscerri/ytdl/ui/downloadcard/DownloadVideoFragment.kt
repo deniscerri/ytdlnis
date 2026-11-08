@@ -202,6 +202,7 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     pathResultLauncher.launch(intent)
                 }
+                UiUtil.setupRecentDownloadPaths(saveDir) { setDownloadPath(it) }
 
                 freeSpace = view.findViewById(R.id.freespace)
                 val free = FileUtil.convertFileSize(
@@ -655,15 +656,18 @@ class DownloadVideoFragment(private var resultItem: ResultItem? = null, private 
                 )
             }
 
-            downloadItem.downloadPath = result.data?.data.toString()
-            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
-
-            val free = FileUtil.convertFileSize(
-                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
-            freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
-            if (free == "?") freeSpace.visibility = View.GONE
-
+            setDownloadPath(result.data?.data.toString())
         }
+    }
+
+    private fun setDownloadPath(path: String) {
+        downloadItem.downloadPath = path
+        saveDir.editText?.setText(FileUtil.formatPath(path), TextView.BufferType.EDITABLE)
+
+        val free = FileUtil.convertFileSize(
+            File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace)
+        freeSpace.text = String.format( getString(R.string.freespace) + ": " + free)
+        if (free == "?") freeSpace.visibility = View.GONE
     }
 
 }

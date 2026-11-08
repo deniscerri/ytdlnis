@@ -184,6 +184,8 @@ class DownloadQueueUtil(private val context: Context) {
 
         }
 
+        FileUtil.addRecentDownloadPaths(context, queuedItems.map { it.downloadPath }.distinct())
+
         var queued : List<DownloadItem> = listOf()
         var resultMessage = ""
 

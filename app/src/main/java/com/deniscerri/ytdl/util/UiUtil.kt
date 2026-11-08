@@ -3366,4 +3366,29 @@ object UiUtil {
         alertDialog = builder.create()
         alertDialog.show()
     }
+
+    fun setupRecentDownloadPaths(saveDir: TextInputLayout, onPathSelected: (String) -> Unit) {
+        val context = saveDir.context
+
+        val currentPath = saveDir.editText?.text?.toString()
+        val paths = FileUtil.getRecentDownloadPaths(context).filter { FileUtil.formatPath(it) != currentPath }
+        if (paths.isEmpty()) return
+
+        saveDir.endIconMode = TextInputLayout.END_ICON_CUSTOM
+        saveDir.endIconDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_history)
+        saveDir.endIconContentDescription = context.getString(R.string.recent_folders)
+        saveDir.setEndIconOnClickListener {
+            val paths = FileUtil.getRecentDownloadPaths(context)
+            val current = saveDir.editText?.text?.toString()
+            val checked = paths.indexOfFirst { FileUtil.formatPath(it) == current }
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.recent_folders)
+                .setSingleChoiceItems(paths.map { FileUtil.formatPath(it) }.toTypedArray(), checked) { dialog, i ->
+                    if (i != checked) onPathSelected(paths[i])
+                    dialog.dismiss()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        }
+    }
 }

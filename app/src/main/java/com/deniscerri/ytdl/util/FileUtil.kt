@@ -92,6 +92,26 @@ object FileUtil {
         return File(path).exists()
     }
 
+    private const val RECENT_DOWNLOAD_PATHS = "recent_download_paths"
+    private const val RECENT_DOWNLOAD_PATHS_MAX = 5
+
+    fun addRecentDownloadPaths(context: Context, paths: List<String>) {
+        if (paths.isEmpty()) return
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val current = prefs.getString(RECENT_DOWNLOAD_PATHS, "")!!.split("\n")
+        val updated = (paths + current).filter { it.isNotBlank() }.distinct().take(RECENT_DOWNLOAD_PATHS_MAX)
+        prefs.edit().putString(RECENT_DOWNLOAD_PATHS, updated.joinToString("\n")).apply()
+    }
+
+    // only paths the app can still write to, a folder's uri permission can be revoked at any time
+    fun getRecentDownloadPaths(context: Context): List<String> {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val granted = context.contentResolver.persistedUriPermissions.filter { it.isWritePermission }.map { it.uri }
+        return prefs.getString(RECENT_DOWNLOAD_PATHS, "")!!.split("\n").filter { it.isNotBlank() }.filter {
+            if (it.startsWith("content://")) it.toUri() in granted else File(formatPath(it)).canWrite()
+        }
+    }
+
     fun formatPath(path: String) : String {
         var dataValue = path
         if (dataValue.startsWith("/storage/")) return dataValue

@@ -193,6 +193,7 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                     intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
                     commandPathResultLauncher.launch(intent)
                 }
+                UiUtil.setupRecentDownloadPaths(saveDir) { setDownloadPath(it) }
 
                 freeSpace = view.findViewById(R.id.freespace)
                 val free = FileUtil.convertFileSize(
@@ -306,13 +307,17 @@ class DownloadCommandFragment(private val resultItem: ResultItem? = null, privat
                             Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                 )
             }
-            downloadItem.downloadPath = result.data?.data.toString()
-            saveDir.editText?.setText(FileUtil.formatPath(result.data?.data.toString()), TextView.BufferType.EDITABLE)
-
-            freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
-                File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
-            ))
+            setDownloadPath(result.data?.data.toString())
         }
+    }
+
+    private fun setDownloadPath(path: String) {
+        downloadItem.downloadPath = path
+        saveDir.editText?.setText(FileUtil.formatPath(path), TextView.BufferType.EDITABLE)
+
+        freeSpace.text = String.format(getString(R.string.freespace) + ": " + FileUtil.convertFileSize(
+            File(FileUtil.formatPath(downloadItem.downloadPath)).freeSpace
+        ))
     }
 
     override fun updateTitleAuthor(t: String, a: String) {
