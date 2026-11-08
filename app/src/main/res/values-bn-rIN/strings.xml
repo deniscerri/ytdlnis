@@ -157,7 +157,7 @@
     <string name="clear_errored">ত্রুটিপূর্ণগুলো সাফ করুন</string>
     <string name="settings">সেটিংস</string>
     <string name="command_directory">কাস্টম কমান্ডের জন্য ফোল্ডার</string>
-    <string name="worst_quality">সবচেয়ে খারাপ মানের</string>
+    <string name="worst_quality">সবচেয়ে নিম্ন মানের</string>
     <string name="api_key_summary">YouTube API থেকে ভিডিও সুপারিশ</string>
     <string name="update_formats_summary">ডাউনলোড কার্ড প্রদর্শিত হওয়ার সঙ্গে সঙ্গে ফরম্যাটগুলো আনুন</string>
     <string name="cache_cleared">অস্থায়ী ফাইল সাফ করা হয়েছে</string>
@@ -219,7 +219,7 @@
     <string name="video_recommendations_summary">হোম স্ক্রিনে সুপারিশ করা ভিডিও পান</string>
     <string name="copied_to_clipboard">ক্লিপবোর্ডে কপি করা হয়েছে</string>
     <string name="high_contrast">উচ্চ বৈসাদৃশ্য</string>
-    <string name="material_you">Material You</string>
+    <string name="material_you">ম্যাটেরিয়াল ইউ</string>
     <string name="downloaded">"ডাউনলোড করা হয়েছে: "</string>
     <string name="purple">বেগুনি</string>
     <string name="yellow">হলুদ</string>
@@ -579,4 +579,11 @@
         <item quantity="one">প্রতি মাসে</item>
         <item quantity="other">প্রতি %d মাসে</item>
     </plurals>
+    <string name="optional">অতিরিক্ত</string>
+    <plurals name="queue_items">
+        <item quantity="one">%d আইটেম</item>
+        <item quantity="other">%d আইটেমসমূহ</item>
+    </plurals>
+    <string name="reorder_queue">সিরিয়াল পুনরায় সাজান</string>
+    <string name="toggle_all">সব টগল করুন</string>
 </resources>

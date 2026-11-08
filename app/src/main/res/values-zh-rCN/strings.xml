@@ -499,7 +499,7 @@
     <string name="no_auth">不授权</string>
     <string name="auth">授权</string>
     <string name="prefer_drc_audio">偏好 DRC 音频</string>
-    <string name="app_icon">应用标签</string>
+    <string name="app_icon">应用图标</string>
     <string name="show_quick_download_share_menu">在分享菜单中显示立即下载选项</string>
     <string name="quick_download_title">不获取数据</string>
     <string name="sponsorblock_hook">噱头/问候</string>

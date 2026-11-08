@@ -704,4 +704,20 @@
     <string name="lyrics_offset">היסט</string>
     <string name="lyrics_not_found">לא נמצאו מילות שירים</string>
     <string name="lyrics_unsynced">מילות שירים לא מסונכרות, אין תזמון לכוונון</string>
+    <string name="lyrics_source">מילות שירים מ־lrclib.net</string>
+    <string name="lyrics_no_preview">אין תצוגה מקדימה זמינה, מילות השירים עדיין תתווספנה עם ההורדה</string>
+    <string name="lyrics_synced">מסונכרנות</string>
+    <string name="lyrics_plain">טקסט פשוט</string>
+    <string name="embed_lyrics_summary">משיכת מילות שירים מ־lrclib.net והטמעתן בהורדות שמע</string>
+    <string name="save_lrc_file_summary">שמירת מילות שירים מסונכרנות כקובץ ‎.lrc ליד הורדות השמע</string>
+    <string name="crop_unsupported">חיתוך אינו זמין לפריט הזה</string>
+    <string name="press_cancel">לחיצה כאן לביטול</string>
+    <string name="internal_plugin_ffmpeg_preset">ערכה של FFmpeg לתוספים פנימיים</string>
+    <string name="internal_plugin_ffmpeg_preset_summary">ערכת FFmpeg לתוספים פנימיים כמו צריבת כתוביות וכו׳. כיוון ההעדפה הזאת משפיע על גודל הקובץ הסופי!</string>
+    <string name="toggle_all">החלפת המצב של כולם</string>
+    <string name="bgutils_info">ספק POT (אסימון הוכחת מקור) ל־yt-dlp.\nכשהוא פעיל, YTDLnis מארח את שרת ה־HTTP שמייצר את ה־POT ומתקין את התוסף התואם שבו yt-dlp משתמש.</string>
+    <string name="bgutils_pot_generation_script_summary">כל קריאה של yt-dlp גוררת תוספת של הזנקת תהליך זמן ריצה חדש של js כדי להריץ את הסקריפט. השיטה הזאת לא מומלצת לשימוש עם מקביליות גבוהה.</string>
+    <string name="bgutils_pot_generation_script_info">כדי להשתמש בספק POT (אסימון הוכחת מקור) של BgUtils (עזרי רקע), היישומון צריך להוריד את המאגר Brainicism/bgutil-ytdlp-pot-provider מ־GitHub כדי להתחיל בהתקנה. היא עלולה לארוך זמן מה. להמשיך כרגע?</string>
+    <string name="info_jsons">Info-JSONs</string>
+    <string name="packages_description">חבילות הן יישומי סיוע שבהן YTDLnis משתמש כדי לסייע בפקודות yt-dlp. חלק מהן כבר מוטמאות אבל אפשר להתקין גרסאות חדשות יותר שמופצות מבלי שצריך לעדכן את היישומון. ה־apk המותקן מחליף את הגרסה המאוגדת שבה משתמש היישומון.</string>
 </resources>
