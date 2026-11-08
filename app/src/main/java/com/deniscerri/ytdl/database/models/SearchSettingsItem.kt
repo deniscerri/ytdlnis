@@ -9,5 +9,8 @@ data class SearchSettingsItem(
     val module: SettingModule?,
     val groupTitle: String? = null,
     val isHeader: Boolean = false,
-    var canRebind: Boolean = true
+    var canRebind: Boolean = true,
+    val englishTitle: String? = null,
+    val englishSummary: String? = null,
+    val englishGroupTitle: String? = null
 )

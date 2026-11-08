@@ -159,13 +159,16 @@ class SettingsActivity : BaseActivity(), SettingHost {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingViewModel.settingsFlow.collectLatest { res ->
                     val items = res.first
-                    val query = res.second
+                    val query = res.second.trim()
 
                     val filtered = items.filter { item ->
                         val titleMatch = item.preference.title?.toString()?.contains(query, ignoreCase = true) == true
                         val summaryMatch = item.preference.summary?.toString()?.contains(query, ignoreCase = true) == true
                         val groupMatch = item.groupTitle?.contains(query, ignoreCase = true) == true
-                        (titleMatch || summaryMatch || groupMatch) && item.preference.isVisible
+                        val enTitleMatch = item.englishTitle?.contains(query, ignoreCase = true) == true
+                        val enSummaryMatch = item.englishSummary?.contains(query, ignoreCase = true) == true
+                        val enGroupMatch = item.englishGroupTitle?.contains(query, ignoreCase = true) == true
+                        (titleMatch || summaryMatch || groupMatch || enTitleMatch || enSummaryMatch || enGroupMatch) && item.preference.isVisible
                     }
 
                     filtered.forEach { item ->

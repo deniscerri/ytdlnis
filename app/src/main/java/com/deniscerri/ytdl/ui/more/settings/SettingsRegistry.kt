@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.ui.more.settings
 
 import android.content.Context
+import android.content.res.Configuration
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
@@ -15,6 +16,7 @@ import com.deniscerri.ytdl.ui.more.settings.processing.ProcessingSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.app.AppUpdateSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.ytdlp.YtdlpUpdateSettingsModule
+import java.util.Locale
 
 object SettingsRegistry {
     private val xmlToModule = mapOf(
@@ -41,31 +43,40 @@ object SettingsRegistry {
 
     fun indexAll(context: Context): List<SearchSettingsItem> {
         val manager = PreferenceManager(context)
+        val enContext = if (context.resources.configuration.locales[0].language == Locale.ENGLISH.language) null
+            else context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocale(Locale.ENGLISH) })
         val results = mutableListOf<SearchSettingsItem>()
 
         xmlToModule.forEach { (xmlRes, module) ->
             val screen = manager.inflateFromResource(context, xmlRes, null)
-            results.addAll(crawl(screen, xmlRes, module, null))
+            val enScreen = enContext?.let { runCatching { PreferenceManager(it).inflateFromResource(it, xmlRes, null) }.getOrNull() }
+            results.addAll(crawl(screen, enScreen, xmlRes, module))
         }
         return results
     }
 
     private fun crawl(
         group: PreferenceGroup,
+        enGroup: PreferenceGroup?,
         xmlId: Int,
         module: SettingModule?,
-        parentTitle: String? = null
+        parentTitle: String? = null,
+        enParentTitle: String? = null
     ): List<SearchSettingsItem> {
         val list = mutableListOf<SearchSettingsItem>()
 
-        if (!group.title.isNullOrBlank()) {
+        val groupTitle = group.title?.toString()
+        val enGroupTitle = enGroup?.title?.toString() ?: enParentTitle
+
+        if (!groupTitle.isNullOrBlank()) {
             list.add(SearchSettingsItem(
                 preference = group,
                 xmlId = xmlId,
                 module = module,
-                groupTitle = group.title.toString(),
+                groupTitle = groupTitle,
                 isHeader = true,
-                canRebind = true
+                canRebind = true,
+                englishGroupTitle = enGroupTitle
             ))
         }
 
@@ -73,12 +84,21 @@ object SettingsRegistry {
 
         for (i in 0 until group.preferenceCount) {
             val p = group.getPreference(i)
+            val enP = enGroup?.takeIf { i < it.preferenceCount }?.getPreference(i)
+
             // custom widgets like the update status card can't be shown as a search result
             if (p is NonSearchablePreference) continue
             if (p !is PreferenceGroup && p.title.isNullOrBlank()) continue
 
             if (p is PreferenceGroup) {
-                list.addAll(crawl(p, xmlId, module, group.title?.toString()))
+                list.addAll(crawl(
+                    p,
+                    enP as? PreferenceGroup,
+                    xmlId,
+                    module,
+                    group.title?.toString(),
+                    enGroupTitle
+                ))
             } else if (p.key != null && p.key != "reset_preferences") {
                 list.add(SearchSettingsItem(
                     preference = p,
@@ -86,7 +106,10 @@ object SettingsRegistry {
                     module = module,
                     groupTitle = group.title?.toString() ?: parentTitle,
                     isHeader = false,
-                    canRebind = !preferencesWithoutRebindingLogic.contains(p.key)
+                    canRebind = !preferencesWithoutRebindingLogic.contains(p.key),
+                    englishTitle = enP?.title?.toString(),
+                    englishSummary = enP?.summary?.toString(),
+                    englishGroupTitle = enGroupTitle
                 ))
             }
         }

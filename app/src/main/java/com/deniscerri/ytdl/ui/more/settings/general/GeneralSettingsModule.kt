@@ -76,7 +76,7 @@ object GeneralSettingsModule : SettingModule {
                         val checked = if (!LocaleUtil.isOverridden()) 0
                             else locales.indexOfFirst { it.first.toLanguageTag() == current } + 1
 
-                        MaterialAlertDialogBuilder(context)
+                        MaterialAlertDialogBuilder(host.getHostContext())
                             .setTitle(context.getString(R.string.language))
                             .setSingleChoiceItems(names, checked) { dialog, which ->
                                 LocaleUtil.setAppLocale(if (which == 0) null else locales[which - 1].first)
