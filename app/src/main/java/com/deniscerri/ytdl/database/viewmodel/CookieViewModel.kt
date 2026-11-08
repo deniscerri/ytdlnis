@@ -7,6 +7,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.OPEN_READONLY
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.webkit.CookieManager
 import androidx.lifecycle.AndroidViewModel
@@ -101,7 +102,11 @@ class CookieViewModel(private val application: Application) : AndroidViewModel(a
         val targetHost = Uri.parse(if (url.contains("://")) url else "https://$url").host
             ?: throw Exception("Invalid URL or domain!")
         // not /data/data/<package>: secondary users, work profiles and app clones live in /data/user/<id>/<package>
-        val dbPath = File(application.applicationInfo.dataDir).walkTopDown().find { it.name == "Cookies" }
+        // the incognito webview runs in its own process with its own data dir (App.kt setDataDirectorySuffix), read that store and not the normal one
+        val incognito = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+            Application.getProcessName().endsWith(":incognito_process")
+        val dbPath = File(application.applicationInfo.dataDir).walkTopDown()
+            .find { it.name == "Cookies" && it.path.contains("incognito_store") == incognito }
             ?: throw Exception("Cookies File not found!")
 
         val db = SQLiteDatabase.openDatabase(
