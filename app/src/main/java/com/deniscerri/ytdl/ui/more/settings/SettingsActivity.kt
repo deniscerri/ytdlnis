@@ -168,8 +168,7 @@ class SettingsActivity : BaseActivity(), SettingHost {
                         val enTitleMatch = item.englishTitle?.contains(query, ignoreCase = true) == true
                         val enSummaryMatch = item.englishSummary?.contains(query, ignoreCase = true) == true
                         val enGroupMatch = item.englishGroupTitle?.contains(query, ignoreCase = true) == true
-                        val keyMatch = item.preference.key?.contains(query, ignoreCase = true) == true
-                        (titleMatch || summaryMatch || groupMatch || enTitleMatch || enSummaryMatch || enGroupMatch || keyMatch) && item.preference.isVisible
+                        (titleMatch || summaryMatch || groupMatch || enTitleMatch || enSummaryMatch || enGroupMatch) && item.preference.isVisible
                     }
 
                     filtered.forEach { item ->

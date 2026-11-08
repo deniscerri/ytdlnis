@@ -116,28 +116,15 @@ class SettingsSearchAdapter(
             true
         }
 
-        val displayTitle = if (!item.englishTitle.isNullOrBlank() &&
-            !item.englishTitle.equals(pref.title?.toString(), ignoreCase = true)) {
-            "${pref.title} (${item.englishTitle})"
-        } else {
-            pref.title
-        }
-
         // Bind the UI
         when (holder) {
             is HeaderViewHolder -> {
-                val displayGroup = if (!item.englishGroupTitle.isNullOrBlank() &&
-                    !item.englishGroupTitle.equals(item.groupTitle, ignoreCase = true)) {
-                    "${item.groupTitle} (${item.englishGroupTitle})"
-                } else {
-                    item.groupTitle
-                }
-                holder.title.text = displayGroup
+                holder.title.text = item.groupTitle
             }
             is SwitchViewHolder -> {
                 holder.switchWidget.setOnCheckedChangeListener(null)
 
-                holder.title.text = displayTitle
+                holder.title.text = pref.title
                 holder.summary.text = pref.summary
                 holder.summary.isVisible = !pref.summary.isNullOrBlank()
                 holder.switchWidget.isChecked = (pref as SwitchPreferenceCompat).isChecked
@@ -157,7 +144,7 @@ class SettingsSearchAdapter(
                 }
             }
             is SeekbarViewHolder -> {
-                holder.title.text = displayTitle
+                holder.title.text = pref.title
                 holder.summary.text = pref.summary
                 holder.summary.isVisible = !pref.summary.isNullOrBlank()
                 holder.icon.isVisible = pref.icon != null
@@ -184,7 +171,7 @@ class SettingsSearchAdapter(
                 })
             }
             is DefaultViewHolder -> {
-                holder.title.text = displayTitle
+                holder.title.text = pref.title
                 holder.summary.text = pref.summary
                 holder.summary.isVisible = !pref.summary.isNullOrBlank()
                 holder.icon.isVisible = pref.icon != null

@@ -7,7 +7,6 @@ import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceManager
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.models.SearchSettingsItem
-import java.util.Locale
 import com.deniscerri.ytdl.ui.more.settings.advanced.AdvancedSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.downloading.DownloadSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.folder.FolderSettingsModule
@@ -17,6 +16,7 @@ import com.deniscerri.ytdl.ui.more.settings.processing.ProcessingSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.app.AppUpdateSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.UpdateSettingsModule
 import com.deniscerri.ytdl.ui.more.settings.updating.ytdlp.YtdlpUpdateSettingsModule
+import java.util.Locale
 
 object SettingsRegistry {
     private val xmlToModule = mapOf(
@@ -43,17 +43,14 @@ object SettingsRegistry {
 
     fun indexAll(context: Context): List<SearchSettingsItem> {
         val manager = PreferenceManager(context)
-        val enConfig = Configuration(context.resources.configuration).apply {
-            setLocale(Locale.ENGLISH)
-        }
-        val enContext = context.createConfigurationContext(enConfig)
-        val enManager = PreferenceManager(enContext)
+        val enContext = if (context.resources.configuration.locales[0].language == Locale.ENGLISH.language) null
+            else context.createConfigurationContext(Configuration(context.resources.configuration).apply { setLocale(Locale.ENGLISH) })
         val results = mutableListOf<SearchSettingsItem>()
 
         xmlToModule.forEach { (xmlRes, module) ->
             val screen = manager.inflateFromResource(context, xmlRes, null)
-            val enScreen = runCatching { enManager.inflateFromResource(enContext, xmlRes, null) }.getOrNull()
-            results.addAll(crawl(screen, enScreen, xmlRes, module, null, null))
+            val enScreen = enContext?.let { runCatching { PreferenceManager(it).inflateFromResource(it, xmlRes, null) }.getOrNull() }
+            results.addAll(crawl(screen, enScreen, xmlRes, module))
         }
         return results
     }
@@ -79,7 +76,6 @@ object SettingsRegistry {
                 groupTitle = groupTitle,
                 isHeader = true,
                 canRebind = true,
-                englishTitle = enGroupTitle,
                 englishGroupTitle = enGroupTitle
             ))
         }
@@ -88,11 +84,7 @@ object SettingsRegistry {
 
         for (i in 0 until group.preferenceCount) {
             val p = group.getPreference(i)
-            val enP = if (p.key != null && enGroup != null) {
-                enGroup.findPreference(p.key) ?: (if (i < enGroup.preferenceCount) enGroup.getPreference(i) else null)
-            } else if (enGroup != null && i < enGroup.preferenceCount) {
-                enGroup.getPreference(i)
-            } else null
+            val enP = enGroup?.takeIf { i < it.preferenceCount }?.getPreference(i)
 
             // custom widgets like the update status card can't be shown as a search result
             if (p is NonSearchablePreference) continue
@@ -105,7 +97,7 @@ object SettingsRegistry {
                     xmlId,
                     module,
                     group.title?.toString(),
-                    enGroup?.title?.toString() ?: enParentTitle
+                    enGroupTitle
                 ))
             } else if (p.key != null && p.key != "reset_preferences") {
                 list.add(SearchSettingsItem(
@@ -117,7 +109,7 @@ object SettingsRegistry {
                     canRebind = !preferencesWithoutRebindingLogic.contains(p.key),
                     englishTitle = enP?.title?.toString(),
                     englishSummary = enP?.summary?.toString(),
-                    englishGroupTitle = enGroup?.title?.toString() ?: enParentTitle
+                    englishGroupTitle = enGroupTitle
                 ))
             }
         }
