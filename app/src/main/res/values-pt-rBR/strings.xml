@@ -745,4 +745,5 @@
     <string name="metadata_synopsis">Sinopse</string>
     <string name="metadata_network">Emissora</string>
     <string name="metadata_show">Programa de TV</string>
+    <string name="recent_folders">Pastas recentes</string>
 </resources>
