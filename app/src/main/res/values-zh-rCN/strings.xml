@@ -727,4 +727,5 @@
     <string name="metadata_language">语言</string>
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">梗概</string>
+    <string name="recent_folders">最近文件夹</string>
 </resources>
