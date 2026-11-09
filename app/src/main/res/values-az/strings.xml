@@ -737,4 +737,5 @@
     <string name="metadata_language">Dil</string>
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">İcmal</string>
+    <string name="recent_folders">Son qovluqlar</string>
 </resources>
