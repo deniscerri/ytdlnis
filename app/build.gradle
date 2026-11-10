@@ -155,6 +155,9 @@ android {
     packagingOptions {
         jniLibs {
             useLegacyPackaging true
+            // Already stripped by the termux build scripts. Stripping again after patchelf misaligns
+            // the PT_LOAD segment patchelf added, and the binary segfaults on load.
+            keepDebugSymbols += ['**/*.so']
         }
     }
     lint {
