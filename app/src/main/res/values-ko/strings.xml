@@ -727,4 +727,5 @@
     <string name="metadata_not_embedded">현재 설정에서는, 제목과 제작자만 사용합니다. 다른 태그는 내장되지 않습니다.</string>
     <string name="metadata_publisher">출판사</string>
     <string name="metadata_comment">댓글</string>
+    <string name="recent_folders">최근 폴더</string>
 </resources>
