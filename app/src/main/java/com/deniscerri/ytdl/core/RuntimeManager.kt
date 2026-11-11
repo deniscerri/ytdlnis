@@ -161,11 +161,11 @@ object RuntimeManager {
                     binPaths.add(System.getenv("PATH") ?: "/system/bin")
                     PATH = binPaths.distinct().joinToString(":")
 
-                    ENV_SSL_CERT_FILE = if (pythonLocation.isDownloaded) {
-                        File(pythonLocation.ldDir.parentFile, "usr/etc/tls/cert.pem").absolutePath
-                    } else {
-                        pythonLocation.ldDir.absolutePath + "/usr/etc/tls/cert.pem"
-                    }
+                    ENV_SSL_CERT_FILE = listOf(pythonLocation, ffmpegLocation)
+                        .map { File(it.ldDir, "usr/etc/tls/cert.pem") }
+                        .firstOrNull { it.exists() }
+                        ?.absolutePath
+                        ?: File(pythonLocation.ldDir, "usr/etc/tls/cert.pem").absolutePath
 
                     OPEN_SSL_CONF = ""
                     if (nodeLocation.ldDir.exists()) {
