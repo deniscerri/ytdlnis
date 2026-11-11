@@ -20,9 +20,9 @@
     <string name="failed_download">Lama soo dejin karo faylka</string>
     <string name="download_notification_channel_name">Faylka soo dejinta</string>
     <string name="you_are_in_latest_version">la adeegsanayo noocii ugu dambeeyay</string>
-    <string name="ytld_update_success">Nooc cusub ayaa la rakibay</string>
-    <string name="ytdl_already_updating">Rakibaya nooc cusub</string>
-    <string name="ytdl_updating_started">Soo dejinaya nooc cusub</string>
+    <string name="ytld_update_success">Nooc yt-dlp cusub ayaa la rakibay</string>
+    <string name="ytdl_already_updating">Rakibaya nooc yt-dlp cusub</string>
+    <string name="ytdl_updating_started">Soo dejinaya nooc yt-dlp cusub</string>
     <string name="Remove">Ka saar</string>
     <string name="ok">Hagaag</string>
     <string name="cancel">Jooji</string>
@@ -52,4 +52,6 @@
     <string name="url">URL</string>
     <string name="api_key">Isticmaal furaha API</string>
     <string name="exit">Kabax</string>
+    <string name="open_file">Fur file</string>
+    <string name="optional">Ikhtiyaar</string>
 </resources>
