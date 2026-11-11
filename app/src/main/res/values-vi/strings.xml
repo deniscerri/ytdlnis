@@ -17,7 +17,7 @@
     <string name="failed_download">Không thể tải xuống tệp</string>
     <string name="download_notification_channel_name">Tải xuống tệp</string>
     <string name="you_are_in_latest_version">Đang dùng phiên bản mới nhất</string>
-    <string name="ytld_update_success">Phiên bản mới của yt-dlp được cài đặt</string>
+    <string name="ytld_update_success">Phiên bản mới của yt-dlp đã được cài đặt</string>
     <string name="ytdl_already_updating">Đang cài đặt phiên bản yt-dlp mới</string>
     <string name="ytdl_updating_started">Đang tải phiên bản yt-dlp mới</string>
     <string name="Remove">Loại bỏ</string>
@@ -478,7 +478,7 @@
     <string name="video_compatible">Video tương thích</string>
     <string name="video_compatible_summary">Mã hóa lại video để tương thích với các ứng dụng khác</string>
     <string name="no_free_space_warning">Không còn dung lượng trống cho cấu hình này.</string>
-    <string name="preferred_format_size">Kích thước định dạng ưa tiên</string>
+    <string name="preferred_format_size">Kích thước định dạng ưu tiên</string>
     <string name="smallest">Bé nhất</string>
     <string name="largest">Lớn nhất</string>
     <string name="potoken_gvs">Mã PO (GVS)</string>
@@ -671,4 +671,61 @@
     <string name="embed_lyrics_summary">Lấy lời bài hát từ lrclib.net và nhúng chúng vào các bản tải xuống âm thanh</string>
     <string name="save_lrc_file_summary">Lưu lời bài hát đã đồng bộ dưới dạng tệp .lrc bên cạnh các tệp âm thanh đã tải xuống</string>
     <string name="crop_unsupported">Không thể cắt xén cho mục này</string>
+    <string name="optional">Tùy chọn</string>
+    <string name="recent_folders">Thư mục gần đây</string>
+    <plurals name="queue_items">
+        <item quantity="other">%d vật phẩm</item>
+    </plurals>
+    <string name="no_cookies_found">Không tìm thấy cookies cho trang này. Hoàn tất việc đăng nhập, sau đó thử lại</string>
+    <string name="all_artists_in_album_artist">Lưu tất cả nghệ sĩ trong Album Nghệ sĩ</string>
+    <string name="all_artists_in_album_artist_summary">Dùng tất cả nghệ sĩ cho thẻ Album Nghệ sĩ thay vì chỉ người đầu tiên</string>
+    <plurals name="updates_available_summary">
+        <item quantity="other">%d bản cập nhật khả dụng</item>
+    </plurals>
+    <plurals name="finished_runs">
+        <item quantity="other">Đã hoàn tất · %d lượt chạy</item>
+    </plurals>
+    <plurals name="every_hours">
+        <item quantity="other">Mỗi %d giờ</item>
+    </plurals>
+    <plurals name="every_days">
+        <item quantity="other">Mỗi %d ngày</item>
+    </plurals>
+    <plurals name="every_weeks">
+        <item quantity="other">Mỗi %d tuần</item>
+    </plurals>
+    <plurals name="every_months">
+        <item quantity="other">Mỗi %d tháng</item>
+    </plurals>
+    <string name="custom_channels">Bản phân nhánh tùy chỉnh</string>
+    <plurals name="items_failed_to_fetch">
+        <item quantity="other">%d đã thất bại khi tìm vật phẩm</item>
+    </plurals>
+    <string name="press_cancel">Giữ ở đây để hủy bỏ</string>
+    <string name="fetching_data">Đang tìm dữ liệu…</string>
+    <string name="metadata">Siêu dữ liệu</string>
+    <string name="metadata_subtitle">Chỉnh sửa thẻ đã lưu trong tệp</string>
+    <string name="metadata_autofill">Tự động điền</string>
+    <string name="metadata_not_found">Không tìm thấy siêu dữ liệu</string>
+    <string name="metadata_not_embedded">Với cài đặt hiện tại của bạn, chỉ có tiêu đề và tác giả được dùng. Các thẻ khác sẽ không được nhúng vào.</string>
+    <string name="metadata_album">Album</string>
+    <string name="metadata_album_artist">Album nghệ sĩ</string>
+    <string name="metadata_year">Năm</string>
+    <string name="metadata_date">Ngày tháng năm</string>
+    <string name="metadata_genre">Thể loại</string>
+    <string name="metadata_composer">Nhà sáng tác</string>
+    <string name="metadata_publisher">Nhà phát hành</string>
+    <string name="metadata_copyright">Bản quyền</string>
+    <string name="metadata_comment">Bình luận</string>
+    <string name="metadata_description">Mô tả</string>
+    <string name="metadata_show">Hiển thị</string>
+    <string name="metadata_season">Mùa</string>
+    <string name="metadata_episode_number">Số tập</string>
+    <string name="metadata_episode">Tập</string>
+    <string name="metadata_network">Mạng</string>
+    <string name="metadata_keywords">Từ khóa</string>
+    <string name="metadata_language">Ngôn ngữ</string>
+    <string name="metadata_purl">URL (purl)</string>
+    <string name="metadata_track">Bài hát (3 hoặc 3/12)</string>
+    <string name="metadata_disc">Đĩa (1 hoặc 1/2)</string>
 </resources>
