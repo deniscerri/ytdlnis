@@ -30,15 +30,17 @@ class UpdateCheckWorker(
         val notificationUtil = NotificationUtil(App.instance)
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val checkUpdatesApp = sharedPreferences.getBoolean("update_app", true)
-        val checkUpdatesYTDL = sharedPreferences.getBoolean("auto_update_ytdlp", true)
+        if (!sharedPreferences.getBoolean(PREF_ENABLED, true)) return Result.success()
+        val types = sharedPreferences.getStringSet(PREF_TYPES, DEFAULT_TYPES)!!
 
-        if (checkUpdatesApp) {
+        if (types.contains("app") && BuildConfig.FLAVOR == "github") {
             val newRelease = updateUtil.tryGetNewVersion()
-            if (newRelease.isSuccess && BuildConfig.FLAVOR == "github") {
+            if (newRelease.isSuccess) {
                 notificationUtil.showNewAppUpdate(newRelease.getOrNull()!!.tag_name)
             }
+        }
 
+        if (types.contains("packages")) {
             val skipRemindingPackageUpdate = sharedPreferences.getStringSet("skip_reminding_package_update", setOf())!!.toMutableSet()
             RuntimeManager.packages.forEach { pkg ->
                 val instance = pkg.plugin.getInstance()
@@ -65,7 +67,7 @@ class UpdateCheckWorker(
             }
         }
 
-        if (checkUpdatesYTDL) {
+        if (types.contains("ytdlp")) {
             val res = updateUtil.updateYTDL()
             when (res.status) {
                 UpdateUtil.YTDLPUpdateStatus.DONE -> {
@@ -84,6 +86,15 @@ class UpdateCheckWorker(
     companion object {
 
         const val WORK_NAME = "ytdlnis_update_check"
+        const val PREF_ENABLED = "background_update_check"
+        const val PREF_TYPES = "background_update_check_types"
+        val DEFAULT_TYPES = setOf("app", "packages", "ytdlp")
+
+        /** Schedules the worker when the user has it enabled, cancels it otherwise. */
+        fun sync(context: Context) {
+            if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_ENABLED, true)) schedule(context)
+            else WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        }
 
         fun schedule(context: Context, intervalMinutes: Long = 24 * 60L) {
             val constraints = Constraints.Builder()
@@ -99,7 +110,7 @@ class UpdateCheckWorker(
 
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_NAME,
-                ExistingPeriodicWorkPolicy.UPDATE,
+                ExistingPeriodicWorkPolicy.KEEP,
                 request
             )
         }

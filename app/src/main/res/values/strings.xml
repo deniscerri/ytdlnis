@@ -700,6 +700,13 @@
     <string name="welcome_updates_summary">Choose how YTDLnis stays up to date.</string>
     <string name="welcome_next">Next</string>
     <string name="welcome_finish">Finish</string>
+    <string name="background">Background</string>
+    <string name="background_update_check">Check for updates in the background</string>
+    <string name="background_update_check_summary">Runs about once a day while online, even when the app is closed</string>
+    <string name="background_update_check_types">Adjust background check types</string>
+    <string name="background_update_app">App update notification</string>
+    <string name="background_update_packages">Package update notifications</string>
+    <string name="background_update_ytdlp">Auto-update yt-dlp</string>
     <string name="lyrics">Lyrics</string>
     <string name="embed_lyrics">Embed lyrics</string>
     <string name="save_lrc_file">Save .lrc file</string>

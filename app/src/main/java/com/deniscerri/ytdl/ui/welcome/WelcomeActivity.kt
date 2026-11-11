@@ -110,13 +110,15 @@ class WelcomeActivity : AppCompatActivity() {
         preferences.edit(commit = true) {
             putBoolean("update_app", viewModel.updateApp)
             putBoolean("auto_update_ytdlp", viewModel.autoUpdateYtdlp)
+            putBoolean(UpdateCheckWorker.PREF_ENABLED, viewModel.backgroundUpdateCheck)
+            putStringSet(UpdateCheckWorker.PREF_TYPES, viewModel.backgroundUpdateTypes.toSet())
             putString("ytdlp_source", viewModel.ytdlpSource)
             putString("ytdlp_source_label", label)
             putBoolean("asked_auto_update_preferences", true)
             putBoolean(PREF_COMPLETED, true)
         }
 
-        scheduleUpdateCheckWorker()
+        UpdateCheckWorker.sync(applicationContext)
         launchMain()
     }
 
@@ -126,19 +128,12 @@ class WelcomeActivity : AppCompatActivity() {
         if (settingsRestored) {
             viewModel.updateApp = preferences.getBoolean("update_app", viewModel.updateApp)
             viewModel.autoUpdateYtdlp = preferences.getBoolean("auto_update_ytdlp", viewModel.autoUpdateYtdlp)
+            viewModel.backgroundUpdateCheck = preferences.getBoolean(UpdateCheckWorker.PREF_ENABLED, viewModel.backgroundUpdateCheck)
+            viewModel.backgroundUpdateTypes = preferences.getStringSet(UpdateCheckWorker.PREF_TYPES, viewModel.backgroundUpdateTypes)!!.toMutableSet()
             viewModel.ytdlpSource = preferences.getString("ytdlp_source", viewModel.ytdlpSource) ?: viewModel.ytdlpSource
             viewModel.ytdlpSourceLabel = preferences.getString("ytdlp_source_label", viewModel.ytdlpSourceLabel) ?: viewModel.ytdlpSourceLabel
         }
         goTo(1)
-    }
-
-    fun scheduleUpdateCheckWorker() {
-        val checkUpdatesApp = preferences.getBoolean("update_app", true)
-        val checkUpdatesYTDL = preferences.getBoolean("auto_update_ytdlp", true)
-
-        if (checkUpdatesApp || checkUpdatesYTDL) {
-            UpdateCheckWorker.schedule(applicationContext)
-        }
     }
 
     private fun launchMain() {

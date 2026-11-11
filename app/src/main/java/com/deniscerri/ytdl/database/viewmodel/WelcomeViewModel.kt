@@ -1,6 +1,7 @@
 package com.deniscerri.ytdl.database.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.deniscerri.ytdl.work.background.UpdateCheckWorker
 
 /** State shared by the welcome pages. Nothing is written to preferences until the user finishes. */
 class WelcomeViewModel : ViewModel() {
@@ -10,6 +11,8 @@ class WelcomeViewModel : ViewModel() {
     var restoredSettings = false
     var updateApp = true
     var autoUpdateYtdlp = true
+    var backgroundUpdateCheck = true
+    var backgroundUpdateTypes = UpdateCheckWorker.DEFAULT_TYPES.toMutableSet()
 
     // matches what the yt-dlp update settings store: the value is a channel name or a repo, the label its title
     var ytdlpSource = "nightly"

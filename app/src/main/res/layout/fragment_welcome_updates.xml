@@ -23,9 +23,30 @@
             android:text="@string/welcome_updates_summary"
             android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+        <TextView
+            android:id="@+id/update_app_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/app"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            android:textColor="?android:attr/colorAccent"
+            android:textStyle="bold" />
+
         <include
             android:id="@+id/update_app"
             layout="@layout/preference_search_result_switch" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/ytdlp"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            android:textColor="?android:attr/colorAccent"
+            android:textStyle="bold" />
 
         <include
             android:id="@+id/update_ytdl"
@@ -36,11 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/update_channel"
-            android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:textColor="?android:attr/colorAccent"
-            android:textStyle="bold" />
+            android:textAppearance="?attr/textAppearanceTitleSmall" />
 
         <include
             android:id="@+id/channel_picker"
@@ -48,6 +67,24 @@
 
         <include
             android:id="@+id/custom_source"
+            layout="@layout/preference_search_result_regular" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/background"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            android:textColor="?android:attr/colorAccent"
+            android:textStyle="bold" />
+
+        <include
+            android:id="@+id/background_update_check"
+            layout="@layout/preference_search_result_switch" />
+
+        <include
+            android:id="@+id/background_update_types"
             layout="@layout/preference_search_result_regular" />
     </LinearLayout>
 </ScrollView>

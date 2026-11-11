@@ -36,6 +36,24 @@
             app:isPreferenceVisible="false"
             app:title="@string/choose_installer_app" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="true"
+            android:icon="@drawable/ic_update"
+            android:key="background_update_check"
+            app:summary="@string/background_update_check_summary"
+            app:title="@string/background_update_check" />
+
+        <MultiSelectListPreference
+            android:icon="@drawable/ic_notifications"
+            android:dependency="background_update_check"
+            android:dialogTitle="@string/background_update_check_types"
+            android:entries="@array/background_update_check_types"
+            android:entryValues="@array/background_update_check_types_values"
+            android:defaultValue="@array/background_update_check_types_values"
+            app:key="background_update_check_types"
+            app:title="@string/background_update_check_types" />
+
     </PreferenceCategory>
 
 

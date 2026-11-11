@@ -17,6 +17,7 @@ import com.deniscerri.ytdl.ui.more.settings.updating.setUpChannels
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class WelcomeUpdatesFragment : Fragment(R.layout.fragment_welcome_updates) {
@@ -35,10 +36,18 @@ class WelcomeUpdatesFragment : Fragment(R.layout.fragment_welcome_updates) {
         }
         // app updates are only offered by the GitHub build
         appRow.isVisible = BuildConfig.FLAVOR == "github"
+        view.findViewById<View>(R.id.update_app_header).isVisible = appRow.isVisible
 
         bindSwitch(view.findViewById(R.id.update_ytdl), R.drawable.ic_update, R.string.auto_update_ytdlp, R.string.auto_update_ytdlp_summary, viewModel.autoUpdateYtdlp) {
             viewModel.autoUpdateYtdlp = it
         }
+
+        val typesRow = view.findViewById<View>(R.id.background_update_types)
+        bindSwitch(view.findViewById(R.id.background_update_check), R.drawable.ic_notifications, R.string.background_update_check, R.string.background_update_check_summary, viewModel.backgroundUpdateCheck) {
+            viewModel.backgroundUpdateCheck = it
+            setRowEnabled(typesRow, it)
+        }
+        setupBackgroundTypes(typesRow)
 
         channelGroup = view.findViewById<View>(R.id.channel_picker).findViewById(R.id.channel_group)
         customSourceRow = view.findViewById(R.id.custom_source)
@@ -66,6 +75,49 @@ class WelcomeUpdatesFragment : Fragment(R.layout.fragment_welcome_updates) {
         toggle.isChecked = checked
         toggle.setOnCheckedChangeListener { _, isChecked -> onChange(isChecked) }
         row.setOnClickListener { toggle.isChecked = !toggle.isChecked }
+    }
+
+    private fun setRowEnabled(row: View, enabled: Boolean) {
+        row.isEnabled = enabled
+        row.alpha = if (enabled) 1f else 0.5f
+    }
+
+    /** Same choices as the multi-select in the update settings, shown as a dialog. */
+    private fun setupBackgroundTypes(row: View) {
+        var titles = resources.getStringArray(R.array.background_update_check_types)
+        var values = resources.getStringArray(R.array.background_update_check_types_values)
+        // app updates are only offered by the GitHub build
+        if (BuildConfig.FLAVOR != "github") {
+            titles = titles.drop(1).toTypedArray()
+            values = values.drop(1).toTypedArray()
+        }
+        val summary = row.findViewById<TextView>(R.id.preference_summary)
+        fun updateSummary() {
+            summary.text = values.indices.filter { viewModel.backgroundUpdateTypes.contains(values[it]) }
+                .joinToString(", ") { titles[it] }
+                .ifEmpty { getString(R.string.notset) }
+        }
+
+        row.findViewById<MaterialButton>(R.id.preference_icon).apply {
+            icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_update)
+            isVisible = true
+        }
+        row.findViewById<TextView>(R.id.preference_title).setText(R.string.background_update_check_types)
+        summary.isVisible = true
+        updateSummary()
+        setRowEnabled(row, viewModel.backgroundUpdateCheck)
+        row.setOnClickListener {
+            val checked = values.map { viewModel.backgroundUpdateTypes.contains(it) }.toBooleanArray()
+            MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.background_update_check_types)
+                .setMultiChoiceItems(titles, checked) { _, which, isChecked -> checked[which] = isChecked }
+                .setNegativeButton(R.string.cancel, null)
+                .setPositiveButton(R.string.ok) { _, _ ->
+                    viewModel.backgroundUpdateTypes = values.filterIndexed { i, _ -> checked[i] }.toMutableSet()
+                    updateSummary()
+                }
+                .show()
+        }
     }
 
     private fun setupChannels() {

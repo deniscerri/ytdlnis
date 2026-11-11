@@ -771,6 +771,18 @@
         <item>vtt</item>
     </string-array>
 
+    <string-array name="background_update_check_types">
+        <item>@string/background_update_app</item>
+        <item>@string/background_update_packages</item>
+        <item>@string/background_update_ytdlp</item>
+    </string-array>
+
+    <string-array name="background_update_check_types_values">
+        <item>app</item>
+        <item>packages</item>
+        <item>ytdlp</item>
+    </string-array>
+
     <string-array name="hide_thumbnail">
         <item>@string/home</item>
         <item>@string/downloads</item>
