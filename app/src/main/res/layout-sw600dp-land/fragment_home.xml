@@ -102,7 +102,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:title="@string/app_name" />
+                app:title="@string/app" />
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/progress"

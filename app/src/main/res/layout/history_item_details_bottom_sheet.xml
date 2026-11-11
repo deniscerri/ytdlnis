@@ -213,7 +213,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:text="@string/app_name"
+            android:text="@string/url"
             android:textAlignment="textStart"
             android:textSize="15sp"
             app:icon="@drawable/ic_link" />

@@ -176,7 +176,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:singleLine="true"
-                android:text="@string/app_name"
+                android:text="@string/url"
                 android:textAlignment="textStart"
                 android:textSize="15sp"
                 app:icon="@drawable/ic_link"
