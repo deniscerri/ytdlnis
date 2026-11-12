@@ -746,4 +746,11 @@
     <string name="metadata_network">Emissora</string>
     <string name="metadata_show">Programa de TV</string>
     <string name="recent_folders">Pastas recentes</string>
+    <string name="background_update_check">Buscar por atualizações em segundo plano</string>
+    <string name="background">Segundo plano</string>
+    <string name="background_update_check_summary">Será executado cerca de uma vez por dia enquanto há conexão, mesmo com o aplicativo fechado</string>
+    <string name="background_update_check_types">Ajustar os tipos de verificação em segundo plano</string>
+    <string name="background_update_app">Notificação de atualização do aplicativo</string>
+    <string name="background_update_packages">Notificações de atualização de pacotes</string>
+    <string name="background_update_ytdlp">Atualização automática do \'yt-dlp\'</string>
 </resources>
