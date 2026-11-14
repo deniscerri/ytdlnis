@@ -738,4 +738,11 @@
     <string name="metadata_language">Nyelv</string>
     <string name="metadata_purl">URL webcím (purl - állandó webcím)</string>
     <string name="metadata_synopsis">Szinopszis, összefoglalás</string>
+    <string name="background">Háttér</string>
+    <string name="background_update_check">Frissítések keresése a háttérben</string>
+    <string name="background_update_check_summary">Online állapotban naponta körülbelül egyszer fut le, még akkor is, ha az alkalmazás be van zárva</string>
+    <string name="background_update_check_types">Háttérellenőrzési típusok módosítása</string>
+    <string name="background_update_app">Alkalmazásfrissítési értesítés</string>
+    <string name="background_update_packages">Csomagfrissítési értesítések</string>
+    <string name="background_update_ytdlp">Automatikus frissítés yt-dlp</string>
 </resources>
