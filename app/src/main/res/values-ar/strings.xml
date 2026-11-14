@@ -612,7 +612,7 @@
     <string name="bgutils_pot_server_summary">هذا خادم HTTP مبني بلغة JavaScript، يعمل على المنفذ 4416. إذا كان متوقفًا، يبدأ تشغيله تلقائيًا عند بدء تنفيذ قائمة التنزيل أو عند جدولة مراقبة المصادر. لإيقافه، يجب عليك فعل ذلك يدويًا من الإشعارات!</string>
     <string name="please_install_package">يُرجى تثبيت الحزمة %s</string>
     <string name="please_install_package_or_package">رجاءا ثبت حزمة %1$s أو حزمة %2$s</string>
-    <string name="installation_method">طريقة التثبيت</string>
+    <string name="installation_method">طريقة تثبيت APK‏‪‏‎‎</string>
     <string name="system_install_failed">فشل تثبيت النظام. الرجاء اختيار طريقة تثبيت أخرى في الإعدادات!</string>
     <string name="choose_installer_app">إختيار مثبت التطبيقات</string>
     <string name="external">خارجي</string>
@@ -627,4 +627,35 @@
     <string name="clear_info_json">مسح ملفات infojson</string>
     <string name="internal_plugin_ffmpeg_preset">إعداد FFmpeg مسبق للإضافة الداخلية</string>
     <string name="internal_plugin_ffmpeg_preset_summary">الإعداد المسبق الذي يستخدمه FFmpeg للإضافات الداخلية مثل دمج الترجمة داخل الفيديو وغيرها. تعديل هذا الخيار يؤثر على حجم الملف النهائي!</string>
+    <string name="optional">اختياري</string>
+    <string name="recent_folders">المجلدات الأخيرة</string>
+    <plurals name="queue_items">
+        <item quantity="zero">لا توجد عناصر</item>
+        <item quantity="one">عنصر</item>
+        <item quantity="two">عنصران</item>
+        <item quantity="few">عناصر</item>
+        <item quantity="many">عنصراً</item>
+        <item quantity="other">عنصر</item>
+    </plurals>
+    <string name="reorder_queue">قائمة إعادة الطلب</string>
+    <string name="translators">المترجمون</string>
+    <string name="translators_summary">الأشخاص الذين ساعدوا في ترجمة هذا التطبيق على Weblate</string>
+    <string name="translators_unavailable">قائمة المترجمين غير متوفرة في هذه النسخة. لا يزال بإمكانك رؤية جميع المساهمين على Weblate.</string>
+    <string name="no_cookies_found">لم يتم العثور على أي ملفات تعريف ارتباط لهذا الموقع. أكمل تسجيل الدخول، ثم حاول مرة أخرى</string>
+    <string name="toggle_all">تبديل الكل</string>
+    <string name="merge_cuts">دمج المقاطع في ملف واحد</string>
+    <string name="all_artists_in_album_artist">حفظ جميع الفنانين في فنان الألبوم</string>
+    <string name="all_artists_in_album_artist_summary">استخدم جميع الفنانين لفنان الألبوم بدلاً من الأول فقط</string>
+    <string name="crop_unavailable_please_update_item">تحتاج إلى تحديث بيانات العنصر لتتمكن من استخدام ميزة القص</string>
+    <string name="preferred_format_size_audio">حجم تنسيق الصوت المفضل</string>
+    <plurals name="updates_available_summary">
+        <item quantity="zero">لا يوجد تحديث متاح</item>
+        <item quantity="one">تحديث</item>
+        <item quantity="two">تحديثان</item>
+        <item quantity="few">تحديثات</item>
+        <item quantity="many">تحديث</item>
+        <item quantity="other">تحديث</item>
+    </plurals>
+    <string name="update_install">تثبيت</string>
+    <string name="history_quick_action">زر الإجراء السريع</string>
 </resources>

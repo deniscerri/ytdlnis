@@ -728,4 +728,5 @@
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_track">Bài hát (3 hoặc 3/12)</string>
     <string name="metadata_disc">Đĩa (1 hoặc 1/2)</string>
+    <string name="metadata_synopsis">Tóm tắt</string>
 </resources>

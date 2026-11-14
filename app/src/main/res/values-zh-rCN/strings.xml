@@ -728,4 +728,11 @@
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">梗概</string>
     <string name="recent_folders">最近文件夹</string>
+    <string name="background">后台</string>
+    <string name="background_update_check">在后台检查更新</string>
+    <string name="background_update_check_summary">联网时大约一天运行一次，即便应用被关闭</string>
+    <string name="background_update_check_types">调整后台检查类型</string>
+    <string name="background_update_app">应用更新通知</string>
+    <string name="background_update_packages">包更新通知</string>
+    <string name="background_update_ytdlp">自动更新 yt-dlp</string>
 </resources>

@@ -504,4 +504,25 @@
     <string name="app_icon">ऐप आइकन</string>
     <string name="show_quick_download_share_menu">शेयर मेनू में तुरंत डाउनलोड करने का विकल्प दिखाएँ</string>
     <string name="quick_download_title">डेटा न लाएं</string>
+    <string name="optional">वैकल्पिक</string>
+    <string name="search_results">खोज के परिणाम</string>
+    <string name="recent_folders">हाल के फ़ोल्डर</string>
+    <string name="reorder_queue">पुनः व्यवस्थित क्यू</string>
+    <string name="translators">अनुवादक</string>
+    <string name="translators_summary">वे लोग जिन्होंने वेबलेट पर इस ऐप का अनुवाद करने में मदद की</string>
+    <string name="translators_unavailable">इस बिल्ड में अनुवादकों की सूची उपलब्ध नहीं है। आप अभी भी उन सभी लोगों को देख सकते हैं जिन्होंने Weblate पर योगदान दिया है।</string>
+    <string name="crop">काटना</string>
+    <string name="required">जरूरी</string>
+    <string name="no_cookies_found">इस साइट के लिए कोई कुकी नहीं मिली। कृपया साइन इन पूरा करें और फिर से प्रयास करें</string>
+    <string name="toggle_all">सारे टॉगल</string>
+    <string name="merge_cuts">कटों को एक फ़ाइल में मर्ज करें</string>
+    <string name="all_artists_in_album_artist">एल्बम आर्टिस्ट में सभी कलाकारों को सहेजें</string>
+    <string name="all_artists_in_album_artist_summary">एल्बम आर्टिस्ट टैग के लिए केवल पहले कलाकार के बजाय सभी कलाकारों का उपयोग करें</string>
+    <string name="crop_unavailable_please_update_item">क्रॉप फ़ीचर का उपयोग करने के लिए आपको आइटम डेटा को अपडेट करना होगा</string>
+    <string name="preferred_format_size_audio">पसंदीदा ऑडियो प्रारूप</string>
+    <string name="sponsorblock_hook">Hook</string>
+    <string name="packages">संकुल</string>
+    <string name="not_installed">इंस्टॉल नही है</string>
+    <string name="bundled">बंडल</string>
+    <string name="use_app_language_for_metadata_summary">यदि यह सुविधा चालू है, तो मेटाडेटा फ़ील्ड आपके ऐप की भाषा का अनुसरण करेंगे और मूल संस्करणों के बजाय डब किए गए संस्करणों को प्राथमिकता देकर प्रारूप चयन को भी प्रभावित करेंगे</string>
 </resources>
