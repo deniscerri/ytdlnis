@@ -1,0 +1,6 @@
+{
+  "name": "Kinetic Media Engine",
+  "description": "A high-performance media browser, downloader, and manager built with Kotlin and Jetpack Compose",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
