@@ -748,4 +748,15 @@
     <string name="metadata_language">Language</string>
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">Synopsis</string>
+    <string name="add_multiple_urls">Add multiple URLs</string>
+    <string name="paste_multiple_urls">Paste multiple URLs</string>
+    <string name="paste_multiple_urls_description">Paste URLs separated by line breaks, commas, or spaces. Each valid URL will be queued as a separate download.</string>
+    <string name="paste_urls_hint">Paste URLs here (one per line, comma or space separated)…</string>
+    <string name="paste_from_clipboard">Paste from clipboard</string>
+    <string name="valid_urls_detected">%1$d valid URLs detected</string>
+    <string name="no_valid_urls_detected">No valid URLs detected</string>
+    <string name="download_type_selection">Download type</string>
+    <string name="add_to_queue">Add to queue</string>
+    <string name="items_added_to_queue">Added %1$d items to download queue</string>
+    <string name="command_shortcut">Command</string>
 </resources>

@@ -25,33 +25,25 @@ if (isBeta) {
 }
 
 android {
-    namespace 'com.deniscerri.ytdl'
+    namespace = 'com.deniscerri.ytdl'
     compileSdk = 36
 
-    try {
-        def propertiesFile = rootProject.file("keystore.properties")
-        if(propertiesFile.text != ""){
-            properties.load(new FileInputStream(propertiesFile))
-
-            properties.load(new FileInputStream(propertiesFile))
-            signingConfigs {
-                debug {
-                    storeFile file(properties["signingConfig.storeFile"])
-                    storePassword properties["signingConfig.storePassword"]
-                    keyAlias properties["signingConfig.keyAlias"]
-                    keyPassword properties["signingConfig.keyPassword"]
-                }
-            }
+    signingConfigs {
+        debugConfig {
+            storeFile file("${rootDir}/debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
         }
-    }catch(IOException ignored){}
+    }
     defaultConfig {
         applicationId "com.deniscerri.ytdl"
         minSdk 24
         targetSdk 36
         versionCode versionMajor * 1000000 + versionMinor * 10000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}${versionExt}"
+        buildConfigField "String", "FLAVOR", "\"github\""
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        archivesBaseName = "YTDLnis-$versionName"
         vectorDrawables {
             useSupportLibrary true
         }
@@ -74,76 +66,34 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             debuggable false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.debugConfig
         }
 
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
-            signingConfig signingConfigs.debug
-        }
-    }
-
-    flavorDimensions "version"
-    productFlavors {
-        github {
-            dimension "version"
-            isDefault true
-        }
-        foss {
-            dimension "version"
-        }
-        izzy {
-            dimension "version"
-        }
-    }
-
-
-    android.applicationVariants.configureEach { variant ->
-        variant.outputs.each { output ->
-            def baseAbiVersionCode = project.abiCodes.get(output.getFilter(com.android.build.OutputFile.ABI))
-            if (baseAbiVersionCode != null) {
-                output.versionCodeOverride = (100 * project.android.defaultConfig.versionCode) + baseAbiVersionCode
-            } else {
-                output.versionCodeOverride = 100 * project.android.defaultConfig.versionCode
-            }
-
-            def abi = output.getFilter(com.android.build.OutputFile.ABI) ?: "universal"
-            if (variant.flavorName == "github") {
-                output.outputFileName = "YTDLnis-${versionName}-${abi}-${variant.buildType.name}-${variant.flavorName}.apk"
-            } else {
-                output.outputFileName = "YTDLnis-${versionName}-${variant.flavorName}-${abi}-${variant.buildType.name}.apk"
-            }
+            signingConfig signingConfigs.debugConfig
         }
     }
 
     buildFeatures {
-        viewBinding true
-        buildConfig true
-        compose true
+        viewBinding = true
+        buildConfig = true
+        compose = true
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled = true
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
         jvmTarget = '17'
     }
-
-    splits {
-        abi {
-            enable true
-            reset()
-            include 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
-            universalApk true
-        }
-    }
     composeOptions {
-        kotlinCompilerExtensionVersion "1.10.1"
+        kotlinCompilerExtensionVersion = "1.10.1"
     }
 
     dependenciesInfo {
@@ -154,7 +104,7 @@ android {
     }
     packagingOptions {
         jniLibs {
-            useLegacyPackaging true
+            useLegacyPackaging = true
             // Already stripped by the termux build scripts. Stripping again after patchelf misaligns
             // the PT_LOAD segment patchelf added, and the binary segfaults on load.
             keepDebugSymbols += ['**/*.so']
@@ -175,21 +125,11 @@ dependencies {
     implementation 'androidx.webkit:webkit:1.17.0'
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs_nio:2.1.5"
 
-    githubImplementation "io.github.deniscerri:ytdlnis_packages.bash:1.0.0"
-    githubImplementation "io.github.deniscerri:ytdlnis_packages.python:3.14.8"
-    githubImplementation "io.github.deniscerri:ytdlnis_packages.ffmpeg:9.0.2"
-    githubImplementation "io.github.deniscerri:ytdlnis_packages.aria2c:3.1.0"
-    //githubImplementation "io.github.deniscerri:ytdlnis_packages.deno:2.7.7"
-
-    fossImplementation "io.github.deniscerri:ytdlnis_packages.bash:1.0.0"
-    fossImplementation "io.github.deniscerri:ytdlnis_packages.python:3.14.8"
-    fossImplementation "io.github.deniscerri:ytdlnis_packages.ffmpeg:9.0.2"
-    fossImplementation "io.github.deniscerri:ytdlnis_packages.aria2c:3.1.0"
-    //fossImplementation "io.github.deniscerri:ytdlnis_packages.deno:2.7.7"
-
-    izzyImplementation "io.github.junkfood02.youtubedl-android:library:0.18.1"
-    izzyImplementation "io.github.junkfood02.youtubedl-android:ffmpeg:0.17.2"
-    izzyImplementation "io.github.junkfood02.youtubedl-android:aria2c:0.18.1"
+    implementation "io.github.deniscerri:ytdlnis_packages.bash:1.0.0"
+    implementation "io.github.deniscerri:ytdlnis_packages.python:3.14.8"
+    implementation "io.github.deniscerri:ytdlnis_packages.ffmpeg:9.0.2"
+    implementation "io.github.deniscerri:ytdlnis_packages.aria2c:3.1.0"
+    //implementation "io.github.deniscerri:ytdlnis_packages.deno:2.7.7"
 
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"
@@ -274,4 +214,9 @@ dependencies {
 
     implementation 'dev.rikka.shizuku:api:13.1.5'
     implementation 'dev.rikka.shizuku:provider:13.1.5'
+}
+
+secrets {
+    propertiesFileName = ".env"
+    defaultPropertiesFileName = ".env.example"
 }
