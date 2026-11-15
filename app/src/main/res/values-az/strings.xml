@@ -738,4 +738,11 @@
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">İcmal</string>
     <string name="recent_folders">Son qovluqlar</string>
+    <string name="background">Fon</string>
+    <string name="background_update_check">Arxa planda yeniləmələri yoxla</string>
+    <string name="background_update_check_summary">Tətbiq bağlı olduqda belə, onlayn olarkən gündə təxminən bir dəfə işləyir</string>
+    <string name="background_update_check_types">Fon yoxlama növlərini tənzimlə</string>
+    <string name="background_update_app">Tətbiq yeniləmə bildirişi</string>
+    <string name="background_update_packages">Paket yeniləmə bildirişləri</string>
+    <string name="background_update_ytdlp">Yt-dlp-i avtomatik yenilə</string>
 </resources>
