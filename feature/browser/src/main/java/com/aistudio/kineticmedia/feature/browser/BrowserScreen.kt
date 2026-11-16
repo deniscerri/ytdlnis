@@ -1,5 +1,6 @@
 package com.aistudio.kineticmedia.feature.browser
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,9 +11,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -25,16 +25,19 @@ fun BrowserScreen(
     onOpenBookmarks: () -> Unit,
     onOpenSettings: () -> Unit
 ) {
+    val context = LocalContext.current
     val currentUrl by viewModel.currentUrl.collectAsState()
     val currentTitle by viewModel.currentTitle.collectAsState()
     val progress by viewModel.progress.collectAsState()
     val isIncognito by viewModel.isIncognito.collectAsState()
     val tabs by viewModel.tabs.collectAsState()
     val incognitoTabs by viewModel.incognitoTabs.collectAsState()
+    val candidates by viewModel.candidates.collectAsState()
 
     var urlInput by remember(currentUrl) { mutableStateOf(currentUrl) }
     var showTabSwitcher by remember { mutableStateOf(false) }
     var showMenu by remember { mutableStateOf(false) }
+    var showBottomSheet by remember { mutableStateOf(false) }
 
     val webEngine = remember { WebViewEngine() }
 
@@ -58,6 +61,18 @@ fun BrowserScreen(
             onDismiss = { showTabSwitcher = false }
         )
         return
+    }
+
+    if (showBottomSheet) {
+        AllVideosBottomSheet(
+            candidates = candidates,
+            onDismiss = { showBottomSheet = false },
+            onDownloadSelected = { selected ->
+                showBottomSheet = false
+                viewModel.queueDownloads(context, selected)
+                onOpenDownloads()
+            }
+        )
     }
 
     Scaffold(
@@ -200,7 +215,21 @@ fun BrowserScreen(
                 onUrlChange = { urlInput = it },
                 onTitleChange = { viewModel.updateTitle(it) },
                 onProgressChange = { viewModel.updateProgress(it) },
-                onLoadFinished = {}
+                onLoadFinished = {
+                    val candidate = VideoCandidate(
+                        id = currentUrl.hashCode().toString(),
+                        url = currentUrl,
+                        title = currentTitle,
+                        hostname = android.net.Uri.parse(currentUrl).host ?: "web"
+                    )
+                    viewModel.updateCandidates(listOf(candidate))
+                }
+            )
+
+            DraggableDownloadButton(
+                candidateCount = candidates.size,
+                onClick = { showBottomSheet = true },
+                modifier = Modifier.fillMaxSize()
             )
         }
     }

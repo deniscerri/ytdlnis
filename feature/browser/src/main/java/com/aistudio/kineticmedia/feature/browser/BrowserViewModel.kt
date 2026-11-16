@@ -1,12 +1,18 @@
 package com.aistudio.kineticmedia.feature.browser
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.aistudio.kineticmedia.core.database.KineticDatabase
 import com.aistudio.kineticmedia.core.database.model.Bookmark
+import com.aistudio.kineticmedia.core.database.model.DownloadItem
 import com.aistudio.kineticmedia.core.database.model.HistoryItem
 import com.aistudio.kineticmedia.core.database.model.TabEntity
+import com.aistudio.kineticmedia.feature.downloads.DownloadWorker
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -15,6 +21,7 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
     private val tabDao = database.tabDao()
     private val historyDao = database.historyDao()
     private val bookmarkDao = database.bookmarkDao()
+    private val downloadDao = database.downloadDao()
 
     val tabs: StateFlow<List<TabEntity>> = tabDao.getAllTabs()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
@@ -45,6 +52,10 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
     )
     val incognitoTabs: StateFlow<List<TabEntity>> = _incognitoTabs.asStateFlow()
 
+    // Video candidates discovered on current page
+    private val _candidates = MutableStateFlow<List<VideoCandidate>>(emptyList())
+    val candidates: StateFlow<List<VideoCandidate>> = _candidates.asStateFlow()
+
     init {
         viewModelScope.launch {
             val existing = tabDao.getAllTabs().first()
@@ -69,6 +80,8 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
         }
 
         _currentUrl.value = formattedUrl
+        // Clear previous page candidates on new url load
+        _candidates.value = emptyList()
 
         // Record history if not incognito
         if (!_isIncognito.value) {
@@ -86,6 +99,41 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
         _progress.value = progress
     }
 
+    fun updateCandidates(newCandidates: List<VideoCandidate>) {
+        _candidates.value = newCandidates
+    }
+
+    fun queueDownloads(context: Context, selectedCandidates: List<VideoCandidate>) {
+        viewModelScope.launch {
+            for (candidate in selectedCandidates) {
+                // Insert into Room DB
+                val downloadId = downloadDao.insertDownload(
+                    DownloadItem(
+                        url = candidate.url,
+                        title = candidate.title,
+                        filePath = "",
+                        progress = 0f,
+                        status = "QUEUED",
+                        timestamp = System.currentTimeMillis()
+                    )
+                )
+
+                // Enqueue WorkManager job
+                val workRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+                    .setInputData(
+                        workDataOf(
+                            "download_id" to downloadId,
+                            "url" to candidate.url,
+                            "title" to candidate.title
+                        )
+                    )
+                    .build()
+
+                WorkManager.getInstance(context).enqueue(workRequest)
+            }
+        }
+    }
+
     fun addTab(url: String = "https://example.com", isIncognito: Boolean = false) {
         viewModelScope.launch {
             if (isIncognito) {
@@ -100,6 +148,7 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
                 _currentUrl.value = url
                 _currentTitle.value = "New Tab"
             }
+            _candidates.value = emptyList()
         }
     }
 
@@ -122,6 +171,7 @@ class BrowserViewModel(application: Application) : AndroidViewModel(application)
                 }
             }
         }
+        _candidates.value = emptyList()
     }
 
     fun closeTab(tabId: Long, isIncognito: Boolean) {

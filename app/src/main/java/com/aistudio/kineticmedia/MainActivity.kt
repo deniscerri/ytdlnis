@@ -15,6 +15,7 @@ import com.aistudio.kineticmedia.feature.downloads.DownloadsScreen
 import com.aistudio.kineticmedia.feature.library.BookmarksScreen
 import com.aistudio.kineticmedia.feature.library.HistoryScreen
 import com.aistudio.kineticmedia.feature.settings.SettingsScreen
+import org.koin.compose.KoinContext
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -22,8 +23,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            KineticTheme {
-                KineticNavHost()
+            KoinContext {
+                KineticTheme {
+                    KineticNavHost()
+                }
             }
         }
     }
