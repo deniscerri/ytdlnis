@@ -1,4 +1,0 @@
-<resources>
-    <integer name="grid_size">2</integer>
-    <bool name="isTablet">false</bool>
-</resources>
