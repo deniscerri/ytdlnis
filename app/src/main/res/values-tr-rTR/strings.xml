@@ -213,7 +213,7 @@
     <string name="purple">Mor</string>
     <string name="yellow">Sarı</string>
     <string name="quick_download">Hızlı indir</string>
-    <string name="quick_download_summary">Verini önceden almadan, hemen indirme işlemine devam edin</string>
+    <string name="quick_download_summary">Önceden veri getirme işlemi yapmaksızın, indirme sürecini derhal başlatın</string>
     <string name="codec">Kodek</string>
     <string name="audio_samplerate">Ses örnek hızı</string>
     <string name="Theme">Tema</string>
@@ -443,7 +443,7 @@
     <string name="layout">Düzen</string>
     <string name="list">Liste</string>
     <string name="grid">Izgara</string>
-    <string name="player_client_summary">YouTube Player Clients &amp; PO Token</string>
+    <string name="player_client_summary">YouTube Oynatıcı İstemcileri ve PO Jetonu (PO Token)</string>
     <string name="no_check_certificates">HTTPS sertifika doğrulamasını bastır</string>
     <string name="live_stream">Canlı yayın</string>
     <string name="live_from_start">Baştan canlı yayın</string>
@@ -511,7 +511,7 @@
     <string name="bundled">İçinde Gelen</string>
     <string name="use_app_language_for_metadata_summary">Etkinleştirildiğinde, metadata alanları uygulama diline uyacak ve format seçimini etkileyerek orjinal şekli yerine çevirilmiş şeklini kullanacaktır</string>
     <string name="installed">Kurulmuş</string>
-    <string name="auto_update_ytdlp_summary">yt-dlp\'nin çalışmaya devam etmesi için sık sık güncellenmesi gerekmektedir, bu seçeneğin etkin kalması önerilir! Bu veri yt-dlp\'nin GitHub Deposundan çıkarıldı.</string>
+    <string name="auto_update_ytdlp_summary">yt-dlp\'nin sorunsuz çalışmaya devam edebilmesi için sık sık güncellenmesi gerekir; bu nedenle bu seçeneği açık tutmanız önerilir! Veriler doğrudan yt-dlp\'nin GitHub deposundan alınmaktadır.</string>
     <string name="sponsorblock_hook">Tanıtım/Selamlar</string>
     <string name="install_downloaded_file">İndirilen dosyayı yükle</string>
     <string name="save_subdirectory">Alt klasöre kaydet</string>
@@ -547,7 +547,7 @@
     </plurals>
     <string name="reset_state">Durumu sıfırla</string>
     <string name="rescan_from_scratch">Sıfırdan yeniden tara</string>
-    <string name="rescan_from_scratch_desc">İşlenen öğeleri unut ve kaydedilmemiş her şeyi yeniden indir</string>
+    <string name="rescan_from_scratch_desc">İşlenmiş öğeleri unutun ve önceden kaydedilmemiş her şeyi yeniden indirin</string>
     <string name="skip_backlog">Bekleyen işleri atla</string>
     <string name="skip_backlog_desc">Kaynaktaki her şeyi tamamlandı olarak işaretle — yalnızca gelecekteki yüklemeleri indir</string>
     <string name="unskip_ignored">Yok sayılan yüklemeleri geri getir</string>
@@ -556,7 +556,7 @@
     <string name="observe_processed_chip">%d işlendi</string>
     <string name="observe_skipped_chip">%d atlandı</string>
     <string name="observe_updating">Güncelleniyor…</string>
-    <string name="check_available_storage">Mevcut depolama alanını kontrol et</string>
+    <string name="check_available_storage">Kullanılabilir depolama alanını kontrol edin</string>
     <plurals name="every_hours">
         <item quantity="one">Her saat</item>
         <item quantity="other">Her %d saatta bir</item>
@@ -574,7 +574,7 @@
         <item quantity="other">Her %d ayda bir</item>
     </plurals>
     <string name="download_delay">İndirme gecikmesi</string>
-    <string name="download_delay_summary">Her indirme arasında belirlenen süre kadar bekler. Bu özellik, aynı anda birden fazla indirme yapılmasını engeller</string>
+    <string name="download_delay_summary">Her indirme arasında yapılandırılan saniye kadar bekleyin. Bu özellik, eş zamanlı indirmeleri devre dışı bırakır</string>
     <string name="min_delay">Minimum gecikme (saniye)</string>
     <string name="max_delay">Maksimum gecikme (saniye)</string>
     <string name="no_delay">Gecikme ayarlanmadı</string>
@@ -583,7 +583,7 @@
         <item quantity="one">Her dakika</item>
         <item quantity="other">Her %d dakikada bir</item>
     </plurals>
-    <string name="bgutils_info">yt-dlp için bir proof-of-origin token (POT) sağlayıcısı.\nBu özellik etkinleştirildiğinde YTDLnis, POT üreten HTTP sunucusuna ev sahipliği yapar ve yt-dlp\'nin kullandığı ilgili eklentiyi kurar.</string>
+    <string name="bgutils_info">yt-dlp için kaynak doğrulama belirteci (POT) sağlayıcısı.\nBu seçenek etkinleştirildiğinde YTDLnis, POT üreten HTTP sunucusunu kendi bünyesinde çalıştırır ve yt-dlp\'nin kullanacağı ilgili eklentiyi kurar.</string>
     <string name="bgutils_pot_generation_script">Oluşturma betiği</string>
     <string name="bgutils_pot_generation_server">HTTP Sunucusu</string>
     <string name="bgutils_pot_generation_script_summary">Her yt-dlp çağrısı, betiği çalıştırmak için yeni bir JavaScript çalışma zamanı işlemi başlatma yükü getirir. Bu yöntem, yüksek eşzamanlı kullanım için önerilmez.</string>
@@ -602,7 +602,7 @@
     <string name="check_clipboard_home_summary">Ana ekranda panodaki URL\'leri otomatik algıla</string>
     <string name="check_clipboard_home">Ana ekranda panoyu kontrol edin</string>
     <string name="clear_info_json">Infojsons\'ları temizle</string>
-    <string name="burn_subs">Altyazıları kaydet</string>
+    <string name="burn_subs">Altyazıları görüntüye göm</string>
     <string name="reorder_queue">Sırayı yeniden düzenle</string>
     <string name="translators">Çevirmenler</string>
     <string name="translators_summary">Weblate üzerinden bu uygulamayı çevirmeye yardım eden insanlar</string>
@@ -611,8 +611,8 @@
     <string name="merge_cuts">Kesilmeleri bir dosyada birleştir</string>
     <string name="optional">Opsiyonel</string>
     <plurals name="queue_items">
-        <item quantity="one">%d öge</item>
-        <item quantity="other">%d öge</item>
+        <item quantity="one">%d öğe</item>
+        <item quantity="other">%d öğe</item>
     </plurals>
     <string name="crop_unavailable_please_update_item">Kırpma özelliğini kullanabilmek için öge verisini güncellemelisin</string>
     <string name="preferred_format_size_audio">Tercihi Ses Formatı Boyutu</string>
@@ -625,8 +625,8 @@
     <string name="internal_plugin_ffmpeg_preset_summary">FFmpeg\'in altyazı yazma vb. gibi dahili eklentiler için kullandığı önayar. Bu tercihin değiştirilmesi, bitimdeki dosya boyutunu etkiler!</string>
     <string name="history_quick_action">Hızlı Ayar Butonu</string>
     <string name="recent_folders">Son klasörler</string>
-    <string name="no_cookies_found">Bu site için hiçbir çerez bulunamadı. Girişinizi tamamlayın, sonra tekrar deneyin.</string>
-    <string name="custom_channels_summary">Kendi yt-dlp sürüm depolarınızdan güncelleme yapın.</string>
+    <string name="no_cookies_found">Bu site için hiçbir çerez bulunamadı. Giriş işleminizi tamamlayın, daha sonra tekrar deneyin</string>
+    <string name="custom_channels_summary">Kendi yt-dlp sürüm depolarınızdan güncelleme yapın</string>
     <string name="channel_stable">Kararlı</string>
     <string name="channel_nightly">Gecelik</string>
     <string name="channel_master">Ana-kanal</string>
@@ -642,7 +642,7 @@
     <string name="temporary_configurations">Geçici konfigürasyonlar</string>
     <string name="temporary_configurations_summary">Komut yapılandırmaları, URL listeleri ve kısa ömürlü diğer dosyalar</string>
     <string name="downloaded_apks">İndirilen APK\'lar</string>
-    <string name="downloaded_apks_summary">Uygulama ve paket güncellemeleri için indirilen APK dosyaları.</string>
+    <string name="downloaded_apks_summary">Uygulama ve paket güncellemeleri için indirilen APK dosyaları</string>
     <string name="clear_everything">Her şeyi temizle</string>
     <string name="clear_temporary_files_confirm">%1$s dosya silinsin mi? Bu işlem geri alınamaz.</string>
     <string name="failed_to_fetch">Alınamadı</string>
