@@ -758,4 +758,8 @@
     <string name="metadata_language">Язык</string>
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">Синопсис</string>
+    <string name="background">Фоновый режим</string>
+    <string name="background_update_check_types">Настроить типы фоновой проверки</string>
+    <string name="background_update_app">Уведомление об обновлении приложения</string>
+    <string name="background_update_packages">Уведомления об обновлениях пакетов</string>
 </resources>
