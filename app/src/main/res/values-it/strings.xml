@@ -742,4 +742,11 @@
     <string name="metadata_language">Lingua</string>
     <string name="metadata_purl">URL (percorso)</string>
     <string name="metadata_synopsis">Sinossi</string>
+    <string name="background">In background</string>
+    <string name="background_update_check">Verifica la disponibilità di aggiornamenti in background</string>
+    <string name="background_update_check_summary">Viene eseguito circa una volta al giorno quando sei online, anche ad app chiusa</string>
+    <string name="background_update_check_types">Regola i tipi di verifica in background</string>
+    <string name="background_update_app">Notifica di aggiornamento dell\'app</string>
+    <string name="background_update_packages">Notifiche di aggiornamento di pacchetto</string>
+    <string name="background_update_ytdlp">Aggiorna automaticamente yt-dlp</string>
 </resources>
