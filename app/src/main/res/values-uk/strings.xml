@@ -723,4 +723,5 @@
         <item quantity="other">%d елементи</item>
     </plurals>
     <string name="optional">Не обов\'язково</string>
+    <string name="recent_folders">Останні папки</string>
 </resources>
