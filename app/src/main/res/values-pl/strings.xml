@@ -539,4 +539,23 @@
     <string name="check_complete">Sprawdzanie ukończone</string>
     <string name="optional">Opcjonalne</string>
     <string name="translators_summary">Osoby, które pomogły przetłumaczyć tą aplikację na Weblate</string>
+    <string name="update_install">Zainstaluj</string>
+    <string name="skip_backlog">Pomiń aktualny backlog</string>
+    <string name="unskip_ignored_desc">Pobierz istniejące przesłane pliki, które zostały pominięte przy pierwszym uruchomieniu</string>
+    <string name="observe_skipped_chip">Pominięto: %d</string>
+    <string name="observe_updating">Aktualizowanie…</string>
+    <string name="check_available_storage">Sprawdź wolne miejsce</string>
+    <string name="download_delay">Odstęp między pobraniami</string>
+    <string name="min_delay">Minimalny odstęp (sekundy)</string>
+    <string name="max_delay">Maksymalny odstęp (sekundy)</string>
+    <string name="no_delay">Nie ustawiono odstępu</string>
+    <string name="bgutils_pot_generation_server">HTTP serwer</string>
+    <string name="please_install_package">Proszę zainstalować pakiet %s</string>
+    <string name="please_install_package_or_package">Proszę zainstalować pakiet %1$s lub pakiet %2$s</string>
+    <string name="installation_method">Metoda instalacji APK</string>
+    <string name="system_install_failed">Instalacja systemowa nie powiodła się. Wybierz inną metodę instalacji w ustawieniach!</string>
+    <string name="choose_installer_app">Wybierz instalator</string>
+    <string name="notset">Nie ustawiono</string>
+    <string name="external">Zewnętrzny</string>
+    <string name="exit">Wyjdź</string>
 </resources>
