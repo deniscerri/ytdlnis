@@ -20,6 +20,7 @@ import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.util.Extensions.loadBlurryThumbnail
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.Chip
@@ -106,7 +107,9 @@ class ActiveDownloadAdapter(onItemClickListener: OnItemClickListener, activity: 
         //OUTPUT
         val output = card.findViewById<TextView>(R.id.output)
         output.tag = "${item.id}##output"
-        output.text = ""
+        val latest = WorkerEventBus.latest.value[item.id]
+        progressBar.progress = latest?.progress ?: 0
+        output.text = latest?.output ?: ""
 
         output.setOnClickListener {
             onItemClickListener.onOutputClick(item)

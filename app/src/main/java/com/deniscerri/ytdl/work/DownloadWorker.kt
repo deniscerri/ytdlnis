@@ -539,12 +539,17 @@ class DownloadWorker(
                         }
                     }
 
-                    if (hasDownloadDelay) {
-                        downloadLock.withLock {
+                    try {
+                        if (hasDownloadDelay) {
+                            downloadLock.withLock {
+                                processDownloadBlock()
+                            }
+                        } else {
                             processDownloadBlock()
                         }
-                    } else {
-                        processDownloadBlock()
+                    } finally {
+                        // finished, failed, cancelled or paused: drop the cached progress
+                        WorkerEventBus.clear(downloadItem.id)
                     }
                 }
 

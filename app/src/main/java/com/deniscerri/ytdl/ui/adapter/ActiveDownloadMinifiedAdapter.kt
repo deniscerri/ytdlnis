@@ -24,6 +24,7 @@ import com.deniscerri.ytdl.database.repository.DownloadRepository
 import com.deniscerri.ytdl.util.Extensions.loadThumbnail
 import com.deniscerri.ytdl.util.Extensions.popup
 import com.deniscerri.ytdl.util.FileUtil
+import com.deniscerri.ytdl.util.WorkerEventBus
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.LinearProgressIndicator
 
@@ -69,12 +70,14 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
         // PROGRESS BAR ----------------------------------------------------
         val progressBar = card.findViewById<LinearProgressIndicator>(R.id.progress)
         progressBar.tag = "${item!!.id}##progress"
-        progressBar.progress = 0
+        val latest = WorkerEventBus.latest.value[item.id]
+        progressBar.progress = latest?.progress ?: 0
         progressBar.isIndeterminate = true
 
         //OUTPUT ------------------------------------------------------------
         val output = card.findViewById<TextView>(R.id.output)
         output.tag = "${item.id}##output"
+        latest?.let { output.text = it.output }
 
         // TITLE  ----------------------------------
         val itemTitle = card.findViewById<TextView>(R.id.title)
@@ -166,7 +169,7 @@ class ActiveDownloadMinifiedAdapter(onItemClickListener: OnItemClickListener, ac
 
         }
 
-        progressBar.isIndeterminate = !paused
+        progressBar.isIndeterminate = !paused && progressBar.progress <= 0
 
         card.setOnClickListener {
             onItemClickListener.onCardClick()
