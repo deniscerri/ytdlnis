@@ -1466,6 +1466,7 @@
         <item>android</item>
         <item>android_vr</item>
         <item>ios</item>
+        <item>ios_producer</item>
         <item>mweb</item>
         <item>tv</item>
         <item>tv_downgraded</item>
