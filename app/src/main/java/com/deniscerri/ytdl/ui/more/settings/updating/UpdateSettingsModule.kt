@@ -87,56 +87,13 @@ object UpdateSettingsModule : SettingModule {
             }
             "apk_install_method" -> {
                 pref.apply {
-                    setOnPreferenceChangeListener { _, newValue ->
-                        var resp = true
-                        if ((newValue as String) == "shizuku") {
-                            ApkInstallUtil.requestShizukuPermission { granted, error ->
-                                if (!granted) {
-                                    Snackbar.make(host.hostView!!, error ?: "Shizuku permission not granted", Snackbar.LENGTH_LONG).show()
-                                    resp = false
-                                }
-                            }
+                    summary = ApkInstallUtil.getSelectedInstallerLabel(context)
+                    setOnPreferenceClickListener {
+                        ApkInstallUtil.showInstallerPickerDialog(host.getHostContext()) { picked ->
+                            if (picked) summary = ApkInstallUtil.getSelectedInstallerLabel(context)
                         }
-
-                        if (resp) {
-                            host.findPref("apk_install_external_apk_id")?.isVisible = (newValue as String) == "external"
-                            host.refreshUI()
-                        }
-
-                        resp
+                        true
                     }
-                }
-            }
-            "apk_install_external_apk_id" -> {
-                pref.apply {
-                    isVisible = preferences.getString("apk_install_method", "system")!! == "external"
-                    val packageName = preferences.getString("apk_install_external_apk_id", "")!!
-
-                    fun setDetails(packageName: String) {
-                        if (packageName == "") {
-                            summary = context.getString(R.string.notset)
-                        } else {
-                            try {
-                                val appIcon = host.getHostContext().packageManager.getApplicationIcon(packageName)
-                                val appInfo = host.getHostContext().packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA)
-                                icon = appIcon
-                                summary = host.getHostContext().packageManager.getApplicationLabel(appInfo).toString()
-                            } catch (e: Exception) {
-                                summary = context.getString(R.string.notset)
-                            }
-                        }
-                    }
-                    setDetails(packageName)
-
-                    onPreferenceClickListener =
-                        Preference.OnPreferenceClickListener {
-                            UiUtil.showChooseInstallerAppDialog(host.getHostContext()) {
-                                preferences.edit().putString("apk_install_external_apk_id", it).apply()
-                                setDetails(it)
-                                host.refreshUI()
-                            }
-                            true
-                        }
                 }
             }
         }

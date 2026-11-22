@@ -33,6 +33,7 @@
         <package android:name="com.deniscerri.ytdl.nodejs" />
         <package android:name="com.deniscerri.ytdl.deno" />
         <package android:name="com.deniscerri.ytdl.aria2c" />
+        <package android:name="moe.shizuku.privileged.api" />
 
         <intent>
             <action android:name="android.intent.action.VIEW" />

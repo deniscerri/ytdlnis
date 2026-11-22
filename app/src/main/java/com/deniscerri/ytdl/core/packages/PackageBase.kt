@@ -204,10 +204,15 @@ abstract class PackageBase {
             try {
                 File(FileUtil.getDefaultApksPath()).mkdirs()
                 val tempApk = File(FileUtil.getDefaultApksPath(), "${packageFolderName}_${release.version.replace(".", "")}.apk")
+                val asset = release.assets.first()
+                if (tempApk.exists() && tempApk.length() == asset.size) {
+                    onProgress(100)
+                    return@withContext Result.success(tempApk)
+                }
                 tempApk.delete()
 
                 val request = Request.Builder()
-                    .url(release.assets.first().browser_download_url)
+                    .url(asset.browser_download_url)
                     .build()
 
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).mkdirs()

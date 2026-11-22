@@ -2927,6 +2927,7 @@ object UiUtil {
             }
             .setNegativeButton(R.string.cancel) { _: DialogInterface?, _: Int ->
                 tmpDownloadJob?.cancel()
+                ApkInstallUtil.cancelPendingInstall(context)
             }
             .setPositiveButton(R.string.update, null)
         val view = updateDialog.show()
@@ -2979,10 +2980,9 @@ object UiUtil {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             positiveButton.text = context.getString(R.string.please_wait)
-                            negativeButton.isEnabled = false
                             neutralButton.isEnabled = false
 
-                            ApkInstallUtil.installApk(context, file, installLauncher) { result ->
+                            ApkInstallUtil.installApk(context, file, installLauncher, lifecycleOwner) { result ->
                                 result.onSuccess {
                                 }.onFailure { f ->
                                     Snackbar.make(context.findViewById(R.id.frame_layout), f.message ?: "", Snackbar.LENGTH_LONG).show()
@@ -3018,6 +3018,7 @@ object UiUtil {
             .setCancelable(false)
             .setNegativeButton(context.getString(R.string.cancel)) { _: DialogInterface?, _: Int ->
                 tmpDownloadJob?.cancel()
+                ApkInstallUtil.cancelPendingInstall(context)
             }
             .setPositiveButton(context.getString(R.string.download), null)
         val view = updateDialog.show()
@@ -3068,9 +3069,7 @@ object UiUtil {
                     lifecycleScope.launch {
                         withContext(Dispatchers.Main) {
                             positiveButton.text = context.getString(R.string.please_wait)
-                            negativeButton.isEnabled = false
-
-                            ApkInstallUtil.installApk(context, file, installLauncher) { result ->
+                            ApkInstallUtil.installApk(context, file, installLauncher, lifecycleOwner) { result ->
                                 onResult(result)
                                 view.dismiss()
                             }
@@ -3290,81 +3289,6 @@ object UiUtil {
 
         fromTextInput.editText!!.setText(minDelay)
         toTextInput.editText!!.setText(maxDelay)
-    }
-
-    fun showChooseInstallerAppDialog(context: Activity, appIdSelected: (appId: String) -> Unit) {
-        val builder = MaterialAlertDialogBuilder(context)
-        builder.setTitle(context.getString(R.string.choose_installer_app))
-        builder.setIcon(R.drawable.baseline_install_mobile_24)
-        val view = context.layoutInflater.inflate(R.layout.choose_installer_app_dialog, null)
-
-        data class ExternalInstallerApp(
-            val appName: String,
-            val packageName: String,
-            val icon: Drawable
-        )
-
-        lateinit var alertDialog: AlertDialog
-
-        val installersList = mutableListOf<ExternalInstallerApp>()
-        val packageManager = context.packageManager
-        val intent = Intent(Intent.ACTION_VIEW).apply {
-            setDataAndType(Uri.parse("content://dummy"), "application/vnd.android.package-archive")
-        }
-
-        val flags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_ALL.toLong())
-        } else {
-            0
-        }
-
-        val resolveInfoList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            packageManager.queryIntentActivities(intent, flags as PackageManager.ResolveInfoFlags)
-        } else {
-            @Suppress("DEPRECATION")
-            packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-        }
-
-        for (resolveInfo in resolveInfoList) {
-            val activityInfo = resolveInfo.activityInfo ?: continue
-            val appPackageName = activityInfo.packageName
-
-            // Exclude your own app from the list of external options
-            if (appPackageName == context.packageName) continue
-
-            val appName = resolveInfo.loadLabel(packageManager).toString()
-            val appIcon = resolveInfo.loadIcon(packageManager)
-
-            installersList.add(
-                ExternalInstallerApp(
-                    appName = appName,
-                    packageName = appPackageName,
-                    icon = appIcon
-                )
-            )
-        }
-
-        val finalList = installersList.distinctBy { it.packageName }.sortedBy { it.appName }
-        if (finalList.isEmpty()) {
-            return
-        }
-
-        finalList.forEach { app ->
-            val card = context.layoutInflater.inflate(R.layout.installer_app_card, null)
-            card.findViewById<TextView>(R.id.app_name).text = app.appName
-            card.findViewById<ShapeableImageView>(R.id.app_icon).setImageDrawable(app.icon)
-
-            card.setOnClickListener {
-                appIdSelected(app.packageName)
-                alertDialog.dismiss()
-            }
-
-            (view as LinearLayout).addView(card)
-        }
-
-        builder.setView(view)
-        alertDialog = builder.create()
-        alertDialog.show()
     }
 
     fun setupRecentDownloadPaths(saveDir: TextInputLayout, onPathSelected: (String) -> Unit) {
