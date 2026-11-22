@@ -733,6 +733,5 @@
     <string name="background_update_check_summary">앱이 닫힌 경우에도, 온라인이면 하루에 한 번 꼴로 실행</string>
     <string name="background_update_app">앱 업데이트 알림</string>
     <string name="background_update_packages">패키지 업데이트 알림</string>
-    <string name="background_update_ytdlp">yt-dlp 자동 업데이트</string>
     <string name="background_update_check_types">백그라운드 확인 유형 조정</string>
 </resources>

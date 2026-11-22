@@ -191,14 +191,16 @@
                     android:singleLine="true"
                     android:text="@string/url"
                     android:textAlignment="textStart"
-                    android:textSize="15sp"
+                    android:outlineProvider="none"
+                    android:stateListAnimator="@null"
+                    android:textSize="13sp"
                     app:icon="@drawable/ic_link" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bottomsheet_incognito"
                     style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:alpha="0.3"
                     android:contentDescription="@string/incognito"
                     android:outlineProvider="none"

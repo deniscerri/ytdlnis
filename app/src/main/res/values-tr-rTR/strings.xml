@@ -705,7 +705,6 @@
     <string name="background_update_check_types">Arka plan kontrol türlerini ayarlayın</string>
     <string name="background_update_app">Uygulama güncelleme bildirimi</string>
     <string name="background_update_packages">Paket güncelleme bildirimleri</string>
-    <string name="background_update_ytdlp">yt-dlp\'yi otomatik olarak güncelle</string>
     <string name="lyrics">Şarkı sözleri</string>
     <string name="embed_lyrics">Şarkı sözlerini yerleştir</string>
     <string name="save_lrc_file">.lrc dosyasını kaydedin</string>

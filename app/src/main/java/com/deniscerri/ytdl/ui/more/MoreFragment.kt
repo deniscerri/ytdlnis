@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.deniscerri.ytdl.util.GroupedListUtil
 import com.deniscerri.ytdl.MainActivity
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.DownloadViewModel
@@ -87,6 +88,8 @@ class MoreFragment : Fragment() {
         terminal.isVisible = !showingTerminal
         downloads.isVisible = !showingDownloads
         downloadQueue.isVisible = !showingDownloadQueue
+        GroupedListUtil.applyToViews(listOf(terminal, logs, commandTemplates, downloads, downloadQueue, cookies, observeSources, terminateApp))
+        GroupedListUtil.applyToViews(listOf(settings))
 
         terminal.setOnClickListener {
             val intent = Intent(context, TerminalActivity::class.java)

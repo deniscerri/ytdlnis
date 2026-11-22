@@ -19,6 +19,7 @@ import androidx.preference.PreferenceGroupAdapter
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceScreen
 import com.deniscerri.ytdl.util.ApkInstallUtil
+import com.deniscerri.ytdl.util.GroupedListUtil
 
 
 abstract class BaseSettingsFragment : PreferenceFragmentCompat(), SettingHost {
@@ -87,6 +88,8 @@ abstract class BaseSettingsFragment : PreferenceFragmentCompat(), SettingHost {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listView.addItemDecoration(GroupedListUtil.PreferenceDecoration(requireContext()))
+        setDivider(null) // groups replace the category dividers
 
         ViewCompat.setOnApplyWindowInsetsListener(listView) { v, insets ->
             val systemBars = insets.getInsets(

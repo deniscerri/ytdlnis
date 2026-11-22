@@ -748,5 +748,4 @@
     <string name="background_update_check_types">Regola i tipi di verifica in background</string>
     <string name="background_update_app">Notifica di aggiornamento dell\'app</string>
     <string name="background_update_packages">Notifiche di aggiornamento di pacchetto</string>
-    <string name="background_update_ytdlp">Aggiorna automaticamente yt-dlp</string>
 </resources>

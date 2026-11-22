@@ -731,7 +731,6 @@
     <string name="recent_folders">Недавние папки</string>
     <string name="background_update_check">Проверять обновления в фоне</string>
     <string name="background_update_check_summary">Запускается примерно раз в день при наличии сети, даже если приложение закрыто</string>
-    <string name="background_update_ytdlp">Автообновление yt-dlp</string>
     <string name="metadata">Метаданные</string>
     <string name="metadata_subtitle">Редактировать теги, сохранённые в файле</string>
     <string name="metadata_autofill">Автозаполнение</string>

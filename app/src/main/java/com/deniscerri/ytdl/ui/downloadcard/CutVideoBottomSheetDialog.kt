@@ -38,7 +38,6 @@ import com.deniscerri.ytdl.database.models.ChapterItem
 import com.deniscerri.ytdl.database.models.DownloadItem
 import com.deniscerri.ytdl.database.viewmodel.ResultViewModel
 import com.deniscerri.ytdl.util.Extensions.convertToTimestamp
-import com.deniscerri.ytdl.util.Extensions.setTextAndRecalculateWidth
 import com.deniscerri.ytdl.util.Extensions.toStringDuration
 import com.deniscerri.ytdl.util.Extensions.toStringTimeStamp
 import com.deniscerri.ytdl.util.Extensions.tryConvertToTimestamp
@@ -72,7 +71,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private lateinit var cutSection : ConstraintLayout
     private lateinit var durationText: TextView
     private lateinit var progress : ProgressBar
-    private lateinit var pauseBtn : MaterialButton
+    private lateinit var playPauseBtn : MaterialButton
     private lateinit var rewindBtn : MaterialButton
     private lateinit var forwardBtn : MaterialButton
     private lateinit var muteBtn : MaterialButton
@@ -88,6 +87,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private lateinit var suggestedChapters : LinearLayout
     
     private lateinit var cutListSection : LinearLayout
+    private lateinit var cutListHeader : View
     private lateinit var newCutBtn : Button
     private lateinit var resetBtn : Button
     private lateinit var chipGroup : ChipGroup
@@ -144,7 +144,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         durationText = view.findViewById(R.id.durationText)
         durationText.text = ""
         progress = view.findViewById(R.id.progress)
-        pauseBtn = view.findViewById(R.id.pause)
+        playPauseBtn = view.findViewById(R.id.playpause)
         rewindBtn = view.findViewById(R.id.rewind)
         forwardBtn = view.findViewById(R.id.forward)
         muteBtn = view.findViewById(R.id.mute)
@@ -166,6 +166,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
         //cut list section
         cutListSection = view.findViewById(R.id.list_section)
+        cutListHeader = view.findViewById(R.id.list_header)
         newCutBtn = view.findViewById(R.id.new_cut)
         resetBtn = view.findViewById(R.id.reset_all)
         chipGroup = view.findViewById(R.id.cut_list_chip_group)
@@ -193,7 +194,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         updateMergeCutsSwitch()
 
         if (item.downloadSections.isBlank()) cutSection.visibility = View.VISIBLE
-        else cutListSection.visibility = View.VISIBLE
+        else showCutList(true)
 
         lifecycleScope.launch {
             try {
@@ -259,15 +260,15 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
 
             override fun onIsPlayingChanged(isPlaying: Boolean) {
                 if (isPlaying){
-                    pauseBtn.visibility = View.GONE
+                    playPauseBtn.setIconResource(R.drawable.exomedia_ic_pause_white)
                 }else{
-                    pauseBtn.visibility = View.VISIBLE
+                    playPauseBtn.setIconResource(R.drawable.exomedia_ic_play_arrow_white)
                 }
                 super.onIsPlayingChanged(isPlaying)
             }
         })
 
-        videoView.setOnClickListener {
+        val togglePlayback = View.OnClickListener {
             if (player.isPlaying){
                 player.pause()
             }
@@ -275,6 +276,8 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 player.play()
             }
         }
+        videoView.setOnClickListener(togglePlayback)
+        playPauseBtn.setOnClickListener(togglePlayback)
 
         muteBtn.setOnClickListener {
             if (player.volume > 0F) {
@@ -420,7 +423,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                 dismiss()
             }else{
                 cutSection.visibility = View.GONE
-                cutListSection.visibility = View.VISIBLE
+                showCutList(true)
             }
         }
 
@@ -434,7 +437,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                     "-${endTimestamp.toStringTimeStamp(showMillisIfNonZero = true)}")
             chip.performClick()
             cutSection.visibility = View.GONE
-            cutListSection.visibility = View.VISIBLE
+            showCutList(true)
         }
 
         populateSuggestedChapters()
@@ -448,7 +451,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         startTimestamp = millis
         if (updateSlider) rangeSlider.setValues(millis.toFloat(), endTimestamp.toFloat())
         if (updateTextInput) {
-            startTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
+            startTextInput.setText(millis.toStringTimeStamp(forceMillis = true))
         }
         okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
     }
@@ -461,7 +464,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
         endTimestamp = millis
         if (updateSlider) rangeSlider.setValues(startTimestamp.toFloat(), millis.toFloat())
         if (updateTextInput) {
-            endTextInput.setTextAndRecalculateWidth(millis.toStringTimeStamp(forceMillis = true))
+            endTextInput.setText(millis.toStringTimeStamp(forceMillis = true))
         }
         okBtn.isEnabled = startTimestamp != 0L || endTimestamp != itemDurationTimestamp
     }
@@ -486,7 +489,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private fun updateFromStartTextInput(text: String) {
         val timestamp = text.tryConvertToTimestamp()
         if (timestamp == null || timestamp == startTimestamp || !isValidStartTimeStamp(timestamp)) {
-            startTextInput.setTextAndRecalculateWidth(startTimestamp.toStringTimeStamp(forceMillis = true))
+            startTextInput.setText(startTimestamp.toStringTimeStamp(forceMillis = true))
             return
         }
 
@@ -498,7 +501,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private fun updateFromEndTextInput(text: String) {
         val timestamp = text.tryConvertToTimestamp()
         if (timestamp == null || timestamp == endTimestamp || !isValidEndTimeStamp(timestamp)) {
-            endTextInput.setTextAndRecalculateWidth(endTimestamp.toStringTimeStamp(forceMillis = true))
+            endTextInput.setText(endTimestamp.toStringTimeStamp(forceMillis = true))
             return
         }
 
@@ -543,7 +546,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
                     val createdChip = createChapterChip(it, null)
                     createdChip.performClick()
                     cutSection.visibility = View.GONE
-                    cutListSection.visibility = View.VISIBLE
+                    showCutList(true)
                 }
 
                 //replace existing chip to enable click events
@@ -563,7 +566,7 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
     private fun initCutListSection() {
         newCutBtn.setOnClickListener {
             cutSection.visibility = View.VISIBLE
-            cutListSection.visibility = View.GONE
+            showCutList(false)
             resetCutTimestamps()
             player.seekTo(0)
             suggestedChips.children.apply {
@@ -824,6 +827,11 @@ class CutVideoBottomSheetDialog(private val _item: DownloadItem? = null, private
             player.stop()
             parentFragmentManager.beginTransaction().remove(parentFragmentManager.findFragmentByTag("cutVideoSheet")!!).commit()
         }
+    }
+
+    private fun showCutList(show: Boolean) {
+        cutListSection.isVisible = show
+        cutListHeader.isVisible = show
     }
 }
 

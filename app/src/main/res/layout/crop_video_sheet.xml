@@ -57,10 +57,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    android:layout_width="wrap_content"
                     android:indeterminate="true"
+                    android:layout_width="wrap_content"
                     android:translationZ="10dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"

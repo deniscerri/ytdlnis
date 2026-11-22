@@ -148,9 +148,9 @@
                 app:drawableStartCompat="@drawable/ic_power" />
 
 
-            <View
-                android:layout_margin="0dp"
-                style="@style/Divider.Horizontal" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="16dp" />
 
             <TextView
                 android:id="@+id/settings"

@@ -744,5 +744,4 @@
     <string name="background_update_check_types">Háttérellenőrzési típusok módosítása</string>
     <string name="background_update_app">Alkalmazásfrissítési értesítés</string>
     <string name="background_update_packages">Csomagfrissítési értesítések</string>
-    <string name="background_update_ytdlp">Automatikus frissítés yt-dlp</string>
 </resources>

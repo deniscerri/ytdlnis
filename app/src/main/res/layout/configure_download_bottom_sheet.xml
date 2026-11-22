@@ -121,8 +121,10 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="@string/url"
+                    android:outlineProvider="none"
+                    android:stateListAnimator="@null"
                     android:textAlignment="textStart"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     app:icon="@drawable/ic_link" />
 
                 <com.google.android.material.button.MaterialButton

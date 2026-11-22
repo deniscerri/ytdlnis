@@ -734,5 +734,4 @@
     <string name="background_update_check_types">调整后台检查类型</string>
     <string name="background_update_app">应用更新通知</string>
     <string name="background_update_packages">包更新通知</string>
-    <string name="background_update_ytdlp">自动更新 yt-dlp</string>
 </resources>

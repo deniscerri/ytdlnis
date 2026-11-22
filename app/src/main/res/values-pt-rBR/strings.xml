@@ -752,5 +752,4 @@
     <string name="background_update_check_types">Ajustar os tipos de verificação em segundo plano</string>
     <string name="background_update_app">Notificação de atualização do aplicativo</string>
     <string name="background_update_packages">Notificações de atualização de pacotes</string>
-    <string name="background_update_ytdlp">Atualização automática do \'yt-dlp\'</string>
 </resources>
