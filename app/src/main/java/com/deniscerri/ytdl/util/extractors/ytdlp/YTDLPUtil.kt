@@ -715,6 +715,30 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
     }
 
 
+    suspend fun getMuxedStreamUrl(url: String) : Result<String> {
+        try {
+            val request = YTDLRequest(url)
+            request.addOption("--print", "urls")
+            // plain https before HLS: more external players can open it
+            request.addOption("-f", "b")
+            request.addOption("-S", "res:720,proto:https")
+            request.applyDefaultOptionsForFetchingData(url)
+            if (url.isYoutubeURL()) {
+                request.setYoutubeExtractorArgs(url)
+            }
+
+            val ytdlResponse = RuntimeManager.getInstance().runKillable { processId ->
+                RuntimeManager.getInstance().execute(request, processId)
+            }
+            val streamUrl = ytdlResponse.out.lines().firstOrNull { it.isNotBlank() }?.trim()
+                ?: return Result.failure(Throwable("No combined audio and video stream found"))
+            return Result.success(streamUrl)
+        } catch (e: Exception) {
+            if (e is CancellationException) throw e
+            return Result.failure(e)
+        }
+    }
+
     suspend fun getStreamingUrlAndChapters(url: String) : Result<Pair<List<String>, List<ChapterItem>?>> {
         try {
             val request = YTDLRequest(url)

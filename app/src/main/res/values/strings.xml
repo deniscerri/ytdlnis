@@ -157,6 +157,8 @@
     <string name="select">Select</string>
     <string name="selected">Selected</string>
     <string name="selected_cuts">Selected cuts</string>
+    <string name="open_in_external_player">Open in external player</string>
+    <string name="no_external_player">No app found that can play this video</string>
     <string name="all_items_selected">All items selected</string>
     <string name="access_all_directories">Allow access to all directories</string>
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>

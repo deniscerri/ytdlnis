@@ -160,6 +160,15 @@ class NewPipeUtil(context: Context) {
         }
     }
 
+    fun getMuxedStreamUrl(url: String) : String? {
+        return runCatching {
+            val info = StreamInfo.getInfo(url)
+            // progressive mp4 plays in more apps than HLS, which is left for live streams that have nothing else
+            info.videoStreams.filter { !it.isVideoOnly && it.content.isNotBlank() }.maxByOrNull { it.height }?.content
+                ?: info.hlsUrl?.takeIf { it.isNotBlank() }
+        }.getOrNull()
+    }
+
     suspend fun getChannelData(url: String, progress: suspend (pagedResults: MutableList<ResultItem>) -> Unit) : Result<List<ResultItem>> {
         try {
             //return Result.failure(Throwable())

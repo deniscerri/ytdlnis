@@ -103,6 +103,13 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             .getOrDefault(Pair(listOf(""), null))
     }
 
+    suspend fun getMuxedStreamUrl(url: String) : Result<String> {
+        if (url.isYoutubeURL()) {
+            runCatching { newPipeUtil.getMuxedStreamUrl(url) }.getOrNull()?.let { return Result.success(it) }
+        }
+        return ytdlpUtil.getMuxedStreamUrl(url)
+    }
+
     suspend fun search(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
         if (resetResults) deleteAll()
         val res = when(sharedPreferences.getString("search_engine", "ytsearch")) {

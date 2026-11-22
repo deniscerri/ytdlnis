@@ -1,5 +1,11 @@
 package com.deniscerri.ytdl.ui.downloadcard
 
+import com.deniscerri.ytdl.receiver.ShareActivity
+import android.content.ComponentName
+import androidx.appcompat.widget.TooltipCompat
+import android.widget.Toast
+import android.content.Intent
+import android.content.ActivityNotFoundException
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
@@ -275,6 +281,37 @@ class ResultCardDetailsDialog : BottomSheetDialogFragment(), GenericDownloadAdap
         videoView.player = player
 
         val loading = view.findViewById<ProgressBar>(R.id.loading)
+        // looked up on first tap (progressive first, the preview stream is often HLS which fewer players open), then reused
+        var muxedUrl: String? = null
+        val openExternal = view.findViewById<MaterialButton>(R.id.open_external_player)
+        TooltipCompat.setTooltipText(openExternal, getString(R.string.open_in_external_player))
+        openExternal.setOnClickListener {
+            openExternal.isEnabled = false
+            lifecycleScope.launch {
+                val streamUrl = muxedUrl ?: withContext(Dispatchers.IO) {
+                    resultViewModel.getMuxedStreamUrl(item.url).getOrNull()
+                }
+                openExternal.isEnabled = true
+                if (streamUrl.isNullOrBlank()) {
+                    Toast.makeText(requireContext(), getString(R.string.errored), Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+                muxedUrl = streamUrl
+                val intent = Intent(Intent.ACTION_VIEW)
+                    .setDataAndType(Uri.parse(streamUrl), "video/*")
+                    .putExtra(Intent.EXTRA_TITLE, item.title)
+                    .putExtra("title", item.title) // VLC, mpv and MX Player read this one
+                try {
+                    videoView.player?.pause()
+                    val chooser = Intent.createChooser(intent, getString(R.string.open_in_external_player))
+                        // ShareActivity accepts video links to download them, it shouldn't show up as a player
+                        .putExtra(Intent.EXTRA_EXCLUDE_COMPONENTS, arrayOf(ComponentName(requireContext(), ShareActivity::class.java)))
+                    startActivity(chooser)
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(requireContext(), getString(R.string.no_external_player), Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
         lifecycleScope.launch {
             try {

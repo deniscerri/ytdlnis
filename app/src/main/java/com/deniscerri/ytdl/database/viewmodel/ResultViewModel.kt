@@ -515,6 +515,10 @@ class ResultViewModel(private val application: Application) : AndroidViewModel(a
         return repository.getStreamingUrlAndChapters(url)
     }
 
+    suspend fun getMuxedStreamUrl(url: String) : Result<String> {
+        return repository.getMuxedStreamUrl(url)
+    }
+
     fun getItemIDsNotPresentIn(not: List<Long>) : List<Long> {
         val ids = repository.getFilteredIDs(playlistFilter.value)
         return ids.filter { !not.contains(it) }
