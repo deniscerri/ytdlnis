@@ -113,7 +113,18 @@ object ThemeUtil {
 
         //high contrast theme
         if (sharedPreferences.getBoolean("high_contrast",false)) {
-            activity.theme.applyStyle(R.style.Pure, true)
+            // Pure.<Accent> also re-tints the surface containers on pure black/white; generic Pure is for dynamic colors
+            val pureStyle = when (sharedPreferences.getString("theme_accent","blue")) {
+                "blue" -> R.style.Pure_Blue
+                "red" -> R.style.Pure_Red
+                "green" -> R.style.Pure_Green
+                "purple" -> R.style.Pure_Purple
+                "yellow" -> R.style.Pure_Yellow
+                "orange" -> R.style.Pure_Orange
+                "monochrome" -> R.style.Pure_Monochrome
+                else -> R.style.Pure
+            }
+            activity.theme.applyStyle(pureStyle, true)
         }
 
         val theme = sharedPreferences.getString("ytdlnis_theme", "System")!!

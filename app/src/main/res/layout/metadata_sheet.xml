@@ -48,7 +48,7 @@
 
             <Button
                 android:id="@+id/metadata_done"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
@@ -97,7 +97,7 @@
 
             <Button
                 android:id="@+id/metadata_autofill"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:outlineProvider="none"

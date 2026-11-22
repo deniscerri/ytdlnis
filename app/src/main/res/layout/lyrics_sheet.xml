@@ -26,12 +26,12 @@
                 android:overScrollMode="never"
                 android:scrollbars="none" />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.CircularProgressIndicator
                 android:id="@+id/lyrics_progress"
+                android:indeterminate="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminate="true" />
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/lyrics_message"
@@ -116,7 +116,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lyrics_rewind"
-                style="@style/Widget.Material3.Button.IconButton"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/restart"
@@ -131,14 +131,14 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/lyrics_play"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/ic_lyrics_play"
                     app:iconSize="56dp"
                     app:iconTint="?android:colorAccent" />
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/lyrics_audio_loading"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -149,7 +149,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lyrics_forward"
-                style="@style/Widget.Material3.Button.IconButton"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/ic_lyrics_forward"
@@ -180,7 +180,7 @@
 
                 <Button
                     android:id="@+id/offset_minus_big"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.Material3Expressive.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:insetLeft="0dp"
@@ -191,7 +191,7 @@
 
                 <Button
                     android:id="@+id/offset_minus"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.Material3Expressive.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -211,7 +211,7 @@
 
                 <Button
                     android:id="@+id/offset_plus"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.Material3Expressive.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:minWidth="0dp"
@@ -220,7 +220,7 @@
 
                 <Button
                     android:id="@+id/offset_plus_big"
-                    style="@style/Widget.Material3.Button.TonalButton"
+                    style="@style/Widget.Material3Expressive.Button.TonalButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
@@ -249,7 +249,7 @@
 
         <Button
             android:id="@+id/lyrics_done"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/Widget.Material3Expressive.Button.ElevatedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

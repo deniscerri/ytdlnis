@@ -112,7 +112,7 @@
 
             <Button
                 android:id="@+id/bottomsheet_schedule_button"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -124,7 +124,7 @@
 
             <Button
                 android:id="@+id/bottomsheet_download_button"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
@@ -173,7 +173,7 @@
 
             <Button
                 android:id="@+id/bottomsheet_ok_button"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
@@ -242,7 +242,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/selectRangeBtn"
                     android:visibility="gone"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/select_between"
@@ -254,7 +254,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/selectItemsOpenBtn"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/select"
@@ -265,7 +265,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sortBtn"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/sort_by"
@@ -277,7 +277,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/selectItemsMenu"
                     android:visibility="gone"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/settings"

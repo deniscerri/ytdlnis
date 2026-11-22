@@ -717,7 +717,6 @@
     <string name="clear_temporary_files_confirm">حذف %1$s ملف؟ لا يمكن التراجع.</string>
     <string name="failed_to_fetch">فشل الجلب</string>
     <string name="failed_to_fetch_summary">تعذر جلب هذه العناصر. أعد المحاولة أو نزلها بدون البيانات التي جُلِبت.</string>
-    <string name="background_update_ytdlp">حدث yt-dlp تلقائيًا</string>
     <string name="lyrics">الكلمات</string>
     <string name="embed_lyrics">كلمات مدمجة</string>
     <string name="lyrics_offset">الإزاحة</string>

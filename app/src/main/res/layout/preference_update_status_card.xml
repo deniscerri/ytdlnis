@@ -86,17 +86,17 @@
 
                 </LinearLayout>
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/status_button"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/check_now"
+                    app:icon="@drawable/ic_refresh" />
+
             </LinearLayout>
 
-            <!-- below the text, so long versions like "1.9.1.1 → nightly-20261031" keep the full width -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/status_button"
-                style="@style/Widget.Material3.Button.TonalButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
-                android:text="@string/check_now" />
 
         </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.Paint
 import android.graphics.PorterDuff
@@ -55,6 +56,7 @@ import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.chip.Chip
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.tabs.TabLayout
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonToken
@@ -315,8 +317,8 @@ object Extensions {
         if (nr > 0) {
             val badge = BadgeDrawable.create(context).apply {
                 number = nr
-                badgeTextColor = context.getColor(R.color.black)
-                backgroundColor = context.getColor(R.color.white)
+                badgeTextColor = MaterialColors.getColor(this@createBadge, com.google.android.material.R.attr.colorOnPrimary)
+                backgroundColor = MaterialColors.getColor(this@createBadge, androidx.appcompat.R.attr.colorPrimary)
                 verticalOffset = dpToPx(context.resources, 20f)
                 horizontalOffset =
                     if (nr < 10) dpToPx(context.resources, 16f)
@@ -333,8 +335,8 @@ object Extensions {
 
         val badge = BadgeDrawable.create(context).apply {
             number = nr
-            backgroundColor = ContextCompat.getColor(context, R.color.white)
-            badgeTextColor = ContextCompat.getColor(context, R.color.black)
+            backgroundColor = MaterialColors.getColor(this@updateMenuItemBadge, androidx.appcompat.R.attr.colorPrimary)
+            badgeTextColor = MaterialColors.getColor(this@updateMenuItemBadge, com.google.android.material.R.attr.colorOnPrimary)
             verticalOffset = dpToPx(resources, 4f)
             horizontalOffset = dpToPx(resources, 4f)
         }

@@ -42,10 +42,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    android:layout_width="wrap_content"
                     android:indeterminate="true"
+                    android:layout_width="wrap_content"
                     android:translationZ="10dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -53,68 +53,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/pause"
-                    android:visibility="gone"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_play_arrow_white"
-                    android:layout_width="wrap_content"
-                    android:indeterminate="true"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/rewind"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_rewind_white"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/restart"
-                    android:indeterminate="true"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mute"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/remove_audio"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_music"
-                    app:iconSize="30dp"
-                    app:iconTint="?android:colorAccent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/forward"
-                    android:clickable="false"
-                    app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
-                    app:iconTint="?android:colorAccent"
-                    app:icon="@drawable/exomedia_ic_fast_forward_white"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_width="wrap_content"
-                    android:contentDescription="@string/end"
-                    android:indeterminate="true"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <TextView
@@ -137,9 +78,127 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mute"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:contentDescription="@string/remove_audio"
+                    app:backgroundTint="#80000000"
+                    app:icon="@drawable/ic_music"
+                    app:iconTint="@color/white"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <!-- shown together with list_section -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/list_header"
+            android:visibility="gone"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/player_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/bottom_sheet_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:text="@string/cut"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@+id/new_cut"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/reset_all"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                app:icon="@drawable/ic_baseline_delete_outline_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/new_cut"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <Button
+                android:id="@+id/new_cut"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:text="@string/new_cut"
+                app:icon="@drawable/ic_cut"
+                android:elevation="0dp"
+                android:stateListAnimator="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- same controls as the crop sheet; play/pause stays centered -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/player_controls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/frame_layout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/rewind"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:contentDescription="@string/restart"
+                app:icon="@drawable/exomedia_ic_rewind_white"
+                app:iconSize="40dp"
+                app:iconTint="?android:colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/playpause"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/playpause"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/exomedia_ic_pause_white"
+                app:iconSize="40dp"
+                app:iconTint="?android:colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/forward"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@string/end"
+                app:icon="@drawable/exomedia_ic_fast_forward_white"
+                app:iconSize="40dp"
+                app:iconTint="?android:colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/playpause"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,7 +206,7 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/frame_layout">
+            app:layout_constraintTop_toBottomOf="@+id/player_controls">
 
 
             <com.google.android.material.slider.RangeSlider
@@ -172,6 +231,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
                 android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 app:layout_constraintBottom_toTopOf="@id/suggested_cuts"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -180,10 +240,10 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/from_textinput"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:minWidth="70dp"
                     android:hint="@string/start">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -200,8 +260,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:paddingHorizontal="10dp"
-                    android:text="-"
+                    android:paddingHorizontal="12dp"
+                    android:text="–"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     tools:ignore="HardcodedText" />
@@ -209,19 +269,17 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/to_textinput"
-                    style="@style/Widget.Material3.TextInputLayout.FilledBox"
-                    android:layout_width="wrap_content"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:hint="@string/end"
-                    android:minWidth="70dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/colon">
+                    android:hint="@string/end">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/to_textinput_edittext"
                         android:digits="0123456789:."
                         android:inputType="datetime"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -232,8 +290,8 @@
                 android:id="@+id/suggested_cuts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:paddingTop="10dp"
+                android:paddingHorizontal="15dp"
+                android:paddingTop="16dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.533"
@@ -246,7 +304,8 @@
                     android:id="@+id/suggestedLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/suggested" />
+                    android:text="@string/suggested"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -280,7 +339,7 @@
 
                 <Button
                     android:id="@+id/cancelButton"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_height="wrap_content"
@@ -290,7 +349,7 @@
 
                 <Button
                     android:id="@+id/okButton"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cut"
@@ -308,54 +367,14 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="20dp"
             android:paddingVertical="10dp"
-            app:layout_constraintTop_toBottomOf="@+id/frame_layout"
+            app:layout_constraintTop_toBottomOf="@+id/list_header"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/bottom_sheet_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:maxLines="2"
-                    android:singleLine="false"
-                    android:text="@string/cut"
-                    android:textSize="25sp"
-                    app:layout_constraintEnd_toStartOf="@+id/new_cut"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <Button
-                    android:id="@+id/reset_all"
-                    style="?attr/materialIconButtonFilledTonalStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    app:icon="@drawable/ic_baseline_delete_outline_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/new_cut"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <Button
-                    android:id="@+id/new_cut"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="all"
-                    android:text="@string/new_cut"
-                    app:icon="@drawable/ic_cut"
-                    android:elevation="0dp"
-                    android:stateListAnimator="@null"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selected_cuts"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
             <ScrollView
                 android:layout_width="match_parent"

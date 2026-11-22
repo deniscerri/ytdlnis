@@ -39,7 +39,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/open_guide"
-            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"

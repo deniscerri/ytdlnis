@@ -47,7 +47,7 @@
 
             <Button
                 android:id="@+id/bottom_sheet_ok"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
@@ -99,34 +99,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/bottom_sheet_link"
-                style="@style/Widget.Material3.Button.TextButton.Icon"
+            <!-- split-button look; each button keeps its own colors -->
+            <com.google.android.material.button.MaterialButtonGroup
+                android:id="@+id/bottomsheet_link_group"
+                style="@style/Widget.App.SplitButtonGroup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:singleLine="true"
-                android:text="@string/url"
-                android:textAlignment="textStart"
-                android:textSize="15sp"
-                app:icon="@drawable/ic_link"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/bottomsheet_incognito"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/bottomsheet_incognito"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:contentDescription="@string/incognito"
-                app:icon="@drawable/ic_incognito_backgroundless"
-                android:alpha="0.3"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bottom_sheet_link"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:singleLine="true"
+                    android:text="@string/url"
+                    android:outlineProvider="none"
+                    android:stateListAnimator="@null"
+                    android:textAlignment="textStart"
+                    android:textSize="13sp"
+                    app:icon="@drawable/ic_link" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bottomsheet_incognito"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.3"
+                    android:contentDescription="@string/incognito"
+                    app:icon="@drawable/ic_incognito_backgroundless" />
+
+            </com.google.android.material.button.MaterialButtonGroup>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

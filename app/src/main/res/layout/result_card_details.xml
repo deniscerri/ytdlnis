@@ -34,7 +34,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/download_thumb"
-            style="@style/Widget.Material3.Button.IconButton"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_image"
@@ -209,14 +209,14 @@
 
                         <Button
                             android:id="@+id/bottom_sheet_link"
-                            style="@style/Widget.Material3.Button.TextButton.Icon"
+                            style="@style/Widget.App.Button.ElevatedButton.Flat"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:singleLine="true"
                             android:text="@string/url"
                             android:textAlignment="textStart"
-                            android:textSize="15sp"
+                            android:textSize="13sp"
                             app:icon="@drawable/ic_link"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

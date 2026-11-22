@@ -87,7 +87,7 @@
 
             <Button
                 android:id="@+id/shortcuts"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                 android:layout_width="wrap_content"
                 app:layout_constraintHorizontal_bias="0.0"
                 android:contentDescription="@string/shortcuts"
@@ -100,7 +100,7 @@
 
             <Button
                 android:id="@+id/commands"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                 android:layout_width="wrap_content"
                 android:layout_marginStart="20dp"
                 android:contentDescription="@string/command_templates"
@@ -112,7 +112,7 @@
 
             <Button
                 android:id="@+id/okButton"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="all"

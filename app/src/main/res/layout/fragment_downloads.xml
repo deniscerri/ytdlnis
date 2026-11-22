@@ -74,7 +74,7 @@
 
                 <Button
                     android:id="@+id/sheet_pause_resume"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:elevation="0dp"
@@ -90,7 +90,7 @@
 
         <Button
             android:id="@+id/sheet_reorder"
-            style="@style/Widget.Material3.Button.TextButton.Icon"
+            style="@style/Widget.Material3Expressive.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"

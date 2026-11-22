@@ -6,6 +6,7 @@ import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.view.isVisible
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
@@ -147,9 +148,12 @@ class UpdateStatusCardPreference @JvmOverloads constructor(
         button.isVisible = showButton
         button.isEnabled = !isChecking
         button.alpha = if (isChecking) 0.5f else 1f
-        button.text = buttonText ?: context.getString(R.string.check_now)
+        val label = buttonText ?: context.getString(R.string.check_now)
+        button.contentDescription = label
+        TooltipCompat.setTooltipText(button, label)
+        button.setIconResource(if (status == Status.UPDATE_AVAILABLE) R.drawable.baseline_download_24 else R.drawable.ic_refresh)
         button.backgroundTintList = ColorStateList.valueOf(onContainerColor)
-        button.setTextColor(containerColor)
+        button.iconTint = ColorStateList.valueOf(containerColor)
         button.setOnClickListener { onButtonClick?.invoke() }
     }
 }

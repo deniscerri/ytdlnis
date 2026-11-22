@@ -156,6 +156,7 @@
     <string name="confirm_delete_logs_desc">Delete the entire log list, permanently.</string>
     <string name="select">Select</string>
     <string name="selected">Selected</string>
+    <string name="selected_cuts">Selected cuts</string>
     <string name="all_items_selected">All items selected</string>
     <string name="access_all_directories">Allow access to all directories</string>
     <string name="access_all_directories_summary">Let the app download on directories that are restricted by default</string>
@@ -718,7 +719,6 @@
     <string name="background_update_check_types">Adjust background check types</string>
     <string name="background_update_app">App update notification</string>
     <string name="background_update_packages">Package update notifications</string>
-    <string name="background_update_ytdlp">Auto-update yt-dlp</string>
     <string name="lyrics">Lyrics</string>
     <string name="embed_lyrics">Embed lyrics</string>
     <string name="save_lrc_file">Save .lrc file</string>

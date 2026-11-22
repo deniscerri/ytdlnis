@@ -33,18 +33,14 @@
             android:textStyle="bold"
             app:drawableStartCompat="@drawable/ic_search" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/set_search_query_button"
-            style="?attr/materialIconButtonStyle"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.01"
+            style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:contentDescription="@android:string/selectTextMode"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:scrollbars="none"
-            android:src="@drawable/ic_arrow_outward" />
+            app:icon="@drawable/ic_arrow_outward" />
 
     </LinearLayout>
 

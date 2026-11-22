@@ -22,6 +22,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.deniscerri.ytdl.util.GroupedListUtil
 import androidx.preference.PreferenceManager
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -70,6 +71,8 @@ class MainSettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        listView.addItemDecoration(GroupedListUtil.PreferenceDecoration(requireContext()))
+        setDivider(null) // groups replace the category dividers
 
         ViewCompat.setOnApplyWindowInsetsListener(listView) { v, insets ->
             val systemBars = insets.getInsets(

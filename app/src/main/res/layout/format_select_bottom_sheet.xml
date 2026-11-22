@@ -62,7 +62,7 @@
 
                 <Button
                     android:id="@+id/format_filter"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:stateListAnimator="@null"
                     android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
 
                 <Button
                     android:id="@+id/format_refresh"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
@@ -90,7 +90,7 @@
                 <Button
                     android:id="@+id/format_ok"
                     android:visibility="gone"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

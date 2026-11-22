@@ -61,14 +61,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/download_anyway"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Material3Expressive.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/download_anyway" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/retry"
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Material3Expressive.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/retry" />

@@ -744,5 +744,4 @@
     <string name="background_update_check_types">Fon yoxlama növlərini tənzimlə</string>
     <string name="background_update_app">Tətbiq yeniləmə bildirişi</string>
     <string name="background_update_packages">Paket yeniləmə bildirişləri</string>
-    <string name="background_update_ytdlp">Yt-dlp-i avtomatik yenilə</string>
 </resources>

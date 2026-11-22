@@ -47,11 +47,11 @@
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
-            style="?attr/collapsingToolbarLayoutLargeStyle"
+            style="@style/Widget.Material3.CollapsingToolbar.Large"
             android:layout_width="match_parent"
             app:title="@string/settings"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-            android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
+            android:layout_height="155dp">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/settings_toolbar"

@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
+import com.google.android.material.button.MaterialButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.preference.PreferenceManager
@@ -61,8 +61,8 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                     onItemClickListener.onSearchSuggestionClick(item.text)
                 }
                 textView.setOnLongClickListener { true }
-                val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
-                mb.setImageResource(R.drawable.ic_arrow_outward)
+                val mb = linear.findViewById<MaterialButton>(R.id.set_search_query_button)
+                mb.setIconResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }
@@ -80,8 +80,8 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                     true
                 }
 
-                val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
-                mb.setImageResource(R.drawable.ic_arrow_outward)
+                val mb = linear.findViewById<MaterialButton>(R.id.set_search_query_button)
+                mb.setIconResource(R.drawable.ic_arrow_outward)
                 mb.setOnClickListener {
                     onItemClickListener.onSearchSuggestionAddToSearchBar(item.text)
                 }
@@ -91,8 +91,8 @@ class SearchSuggestionsAdapter(onItemClickListener: OnItemClickListener, activit
                 val textView = linear.findViewById<TextView>(R.id.suggestion_text)
                 textView.text = activity.getString(R.string.link_you_copied)
                 textView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_language, 0, 0, 0)
-                val mb = linear.findViewById<ImageButton>(R.id.set_search_query_button)
-                mb.setImageResource(R.drawable.ic_plus)
+                val mb = linear.findViewById<MaterialButton>(R.id.set_search_query_button)
+                mb.setIconResource(R.drawable.ic_plus)
 
                 mb.setOnClickListener {
                     onItemClickListener.onSearchSuggestionAdd(item.text)

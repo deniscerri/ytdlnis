@@ -57,10 +57,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ProgressBar
+                <com.google.android.material.progressindicator.CircularProgressIndicator
                     android:id="@+id/progress"
-                    android:layout_width="wrap_content"
                     android:indeterminate="true"
+                    android:layout_width="wrap_content"
                     android:translationZ="10dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -109,7 +109,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/clearZoom"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:contentDescription="@string/reset"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/rewind"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/exomedia_ic_rewind_white"
@@ -139,7 +139,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/playpause"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -154,7 +154,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/forward"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:icon="@drawable/exomedia_ic_fast_forward_white"
@@ -168,7 +168,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mute"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:contentDescription="@string/remove_audio"
                     android:layout_height="wrap_content"
@@ -333,7 +333,7 @@
 
             <Button
                 android:id="@+id/resetButton"
-                style="@style/Widget.Material3.Button.ElevatedButton"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
@@ -343,7 +343,7 @@
 
             <Button
                 android:id="@+id/okButton"
-                style="@style/Widget.Material3.Button.ElevatedButton"
+                style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/crop"

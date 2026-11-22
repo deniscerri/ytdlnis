@@ -77,6 +77,39 @@
         <item name="singleLineTitle">false</item>
     </style>
 
+    <!-- Elevated buttons with elevation 0: Material 1.10 drew them as plain colorSurface, which set them apart
+         from bottom sheets (surface + tint). Since 1.11 both use colorSurfaceContainerLow and blend together. -->
+    <style name="Widget.App.Button.ElevatedButton.Flat" parent="Widget.Material3Expressive.Button.ElevatedButton">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.ElevatedButton.Flat</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Button.ElevatedButton.Flat" parent="ThemeOverlay.Material3Expressive.Button.Elevated">
+        <item name="colorContainer">?attr/colorSurface</item>
+        <item name="colorContainerUnchecked">?attr/colorSurface</item>
+    </style>
+
+    <!-- Expressive FABs call the filled colors Secondary/Tertiary; the app's FABs use the container colors,
+         so these keep the Material 3 Large.Secondary / Large.Tertiary / ExtendedFAB.Secondary look. -->
+    <style name="Widget.App.FloatingActionButton.Large.Secondary" parent="Widget.Material3Expressive.FloatingActionButton.Large">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer</item>
+    </style>
+
+    <style name="Widget.App.FloatingActionButton.Large.Tertiary" parent="Widget.Material3Expressive.FloatingActionButton.Large">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.FloatingActionButton.TertiaryContainer</item>
+    </style>
+
+    <style name="Widget.App.ExtendedFloatingActionButton.Secondary" parent="Widget.Material3Expressive.ExtendedFloatingActionButton.Small">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer</item>
+    </style>
+
+    <!-- Split-button look (same spacing/corners as Widget.Material3.MaterialSplitButton) for two independent actions.
+         MaterialSplitButton itself turns its 2nd button into a checkable dropdown toggle, which these aren't. -->
+    <style name="Widget.App.SplitButtonGroup" parent="Widget.Material3Expressive.MaterialButtonGroup.Connected">
+        <item name="android:spacing">2dp</item>
+        <item name="innerCornerSize">@xml/m3_split_button_inner_corner_size_state_list</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.M3.Sys.Shape.Corner.Full</item>
+    </style>
+
     <style name="MyZeroSizeTextAppearance">
         <item name="android:textSize">0sp</item>
     </style>

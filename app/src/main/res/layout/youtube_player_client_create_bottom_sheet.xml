@@ -52,7 +52,7 @@
 
                 <Button
                     android:id="@+id/client_delete"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
@@ -65,7 +65,7 @@
 
                 <Button
                     android:id="@+id/client_create"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"

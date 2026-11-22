@@ -9,7 +9,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/danger_button"
-        style="@style/Widget.Material3.Button.Icon"
+        style="@style/Widget.Material3Expressive.Button"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:backgroundTint="?attr/colorError"
