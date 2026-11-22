@@ -67,25 +67,10 @@ object GeneralSettingsModule : SettingModule {
                     summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
 
                     setOnPreferenceClickListener {
-
-                        val locales = supported
-                            .map { it to LocaleUtil.displayName(it, supported) }
-                            .sortedBy { it.second.lowercase() }
-                        val names = (listOf(context.getString(R.string.system)) + locales.map { it.second }).toTypedArray()
-                        val current = LocaleUtil.currentLocale().toLanguageTag()
-                        val checked = if (!LocaleUtil.isOverridden()) 0
-                            else locales.indexOfFirst { it.first.toLanguageTag() == current } + 1
-
-                        MaterialAlertDialogBuilder(host.getHostContext())
-                            .setTitle(context.getString(R.string.language))
-                            .setSingleChoiceItems(names, checked) { dialog, which ->
-                                LocaleUtil.setAppLocale(if (which == 0) null else locales[which - 1].first)
-                                summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
-                                dialog.dismiss()
-                                host.refreshUI()
-                            }
-                            .setNegativeButton(context.getString(R.string.cancel), null)
-                            .show()
+                        LocaleUtil.showPicker(host.getHostContext()) {
+                            summary = LocaleUtil.displayName(LocaleUtil.currentLocale(), supported)
+                            host.refreshUI()
+                        }
                         true
                     }
                 }

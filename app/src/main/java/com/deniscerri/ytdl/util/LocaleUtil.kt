@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import com.deniscerri.ytdl.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.xmlpull.v1.XmlPullParser
 import java.util.Locale
 
@@ -35,7 +36,8 @@ object LocaleUtil {
     fun supportedLocales(context: Context): List<Locale> {
         val locales = mutableListOf<Locale>()
         runCatching {
-            context.resources.getXml(R.xml._generated_res_locale_config).use { parser ->
+            val id = context.resources.getIdentifier("_generated_res_locale_config", "xml", context.packageName)
+            context.resources.getXml(id).use { parser ->
                 while (parser.next() != XmlPullParser.END_DOCUMENT) {
                     if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
                         parser.getAttributeValue(ANDROID_NS, "name")?.let {
@@ -53,6 +55,28 @@ object LocaleUtil {
         val hasVariants = supported.count { it.language == locale.language } > 1
         val name = if (hasVariants) locale.getDisplayName(locale) else locale.getDisplayLanguage(locale)
         return name.replaceFirstChar { it.titlecase(locale) }
+    }
+
+    /** Language picker dialog ("System" + every shipped translation). [onPicked] runs after the locale is applied */
+    fun showPicker(context: Context, onPicked: () -> Unit = {}) {
+        val supported = supportedLocales(context)
+        val locales = supported
+            .map { it to displayName(it, supported) }
+            .sortedBy { it.second.lowercase() }
+        val names = (listOf(context.getString(R.string.system)) + locales.map { it.second }).toTypedArray()
+        val current = currentLocale().toLanguageTag()
+        val checked = if (!isOverridden()) 0
+            else locales.indexOfFirst { it.first.toLanguageTag() == current } + 1
+
+        MaterialAlertDialogBuilder(context)
+            .setTitle(context.getString(R.string.language))
+            .setSingleChoiceItems(names, checked) { dialog, which ->
+                setAppLocale(if (which == 0) null else locales[which - 1].first)
+                dialog.dismiss()
+                onPicked()
+            }
+            .setNegativeButton(context.getString(R.string.cancel), null)
+            .show()
     }
 
     /** Android 13+ has a system screen for per-app languages */

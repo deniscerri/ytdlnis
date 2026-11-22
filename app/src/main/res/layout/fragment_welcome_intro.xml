@@ -37,6 +37,15 @@
             android:text="@string/welcome_subtitle"
             android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/welcome_language"
+            style="@style/Widget.Material3Expressive.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/language"
+            app:icon="@drawable/ic_language" />
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:id="@+id/restore_progress"
             android:layout_width="match_parent"

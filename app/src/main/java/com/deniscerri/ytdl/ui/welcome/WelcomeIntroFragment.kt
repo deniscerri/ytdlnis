@@ -11,6 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import com.deniscerri.ytdl.R
 import com.deniscerri.ytdl.database.viewmodel.SettingsViewModel
 import com.deniscerri.ytdl.util.BackupSettingsUtil
+import com.deniscerri.ytdl.util.LocaleUtil
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,6 +36,12 @@ class WelcomeIntroFragment : Fragment(R.layout.fragment_welcome_intro) {
 
         getStarted.setOnClickListener { (requireActivity() as WelcomeActivity).goTo(1) }
         restoreButton.setOnClickListener { restoreLauncher.launch(BackupSettingsUtil.RESTORE_MIME_TYPES) }
+
+        // picking a language recreates the activity, which re-runs this with the new name
+        view.findViewById<MaterialButton>(R.id.welcome_language).apply {
+            text = LocaleUtil.displayName(LocaleUtil.currentLocale(), LocaleUtil.supportedLocales(requireContext()))
+            setOnClickListener { LocaleUtil.showPicker(requireContext()) }
+        }
     }
 
     private fun setBusy(busy: Boolean) {
