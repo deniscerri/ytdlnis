@@ -168,7 +168,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
     }
 
     private suspend fun getYoutubeVideo(inputQuery: String, resetResults: Boolean, addToResults: Boolean) : List<ResultItem>{
-        val theURL = inputQuery.replace("\\?list.*".toRegex(), "")
+        val theURL = inputQuery.replace("([?&])list=[^&#]*&?".toRegex(), "$1").trimEnd('?', '&')
         val newpipeExtractorResult = if (isUsingNewPipeExtractorDataFetching()) {
             newPipeUtil.getVideoData(theURL)
         }else {
@@ -178,7 +178,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         val res = if (newpipeExtractorResult.isSuccess) {
             newpipeExtractorResult.getOrNull()!!
         }else{
-            ytdlpUtil.getFromYTDL( inputQuery, resultsGenerated = {})
+            ytdlpUtil.getFromYTDL( theURL, resultsGenerated = {})
         }
         currentCoroutineContext().ensureActive()
 
