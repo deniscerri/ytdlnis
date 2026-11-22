@@ -736,4 +736,24 @@
     <string name="metadata_language">Gjuha</string>
     <string name="metadata_purl">URL (purl)</string>
     <string name="metadata_synopsis">Përmbledhje</string>
+    <string name="recent_folders">Direktoritë përdorur së fundmi</string>
+    <string name="selected_cuts">Prerjet e zgjedhura</string>
+    <string name="installer_system_description">Instaluesi i paketave i integruar në Android</string>
+    <string name="installer_system_unavailable">Nuk është i disponueshëm në këtë version. Zgjidhni Shizuku-n ose një aplikacion instalues më poshtë</string>
+    <string name="installer_shizuku_description">Instalohet në sfond përmes Shizuku-t</string>
+    <string name="installer_shizuku_not_running">Shizuku nuk është duke funksionuar. Filloje fillimisht</string>
+    <string name="allow_install_unknown_apps">Lejoni YTDLnis të instalojë aplikacione, më pas provoni sërish</string>
+    <string name="install_cancelled">Instalimi u anulua</string>
+    <string name="install_failed_code">Instalimi dështoi (kodi %1$s)</string>
+    <string name="install_failed_incompatible">Instalimi dështoi: versioni i instaluar është nënshkruar me një çelës tjetër. Hiqeni atë fillimisht</string>
+    <string name="install_failed_downgrade">Instalimi dështoi: një version më i ri është instaluar tashmë</string>
+    <string name="install_failed_abi">Instalimi dështoi: ky APK nuk e mbështet procesorin e pajisjes suaj</string>
+    <string name="install_failed_storage">Instalimi dështoi: hapësirë e pamjaftueshme</string>
+    <string name="installer_no_confirmation">Aplikacioni i instalimit nuk e konfirmoi instalimin</string>
+    <string name="background">Në Sfond</string>
+    <string name="background_update_check">Kontrollo për përditësime në sfond</string>
+    <string name="background_update_check_summary">Ekzekutohet rreth një herë në ditë kur jeni online, edhe kur aplikacioni është i mbyllur</string>
+    <string name="background_update_check_types">Konfiguro kontrollet në sfond</string>
+    <string name="background_update_app">Njoftim për përditësimin e aplikacionit</string>
+    <string name="background_update_packages">Njoftime për përditësimin e paketave</string>
 </resources>
