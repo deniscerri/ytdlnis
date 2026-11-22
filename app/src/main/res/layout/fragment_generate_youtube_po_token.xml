@@ -95,7 +95,7 @@
 
                         <Button
                             android:id="@+id/redownload_bgutils"
-                            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                            style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
@@ -380,7 +380,7 @@
 
                         <Button
                             android:id="@+id/regenerate_webview_potokens"
-                            style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                            style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"

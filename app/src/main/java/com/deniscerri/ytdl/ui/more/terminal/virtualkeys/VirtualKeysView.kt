@@ -162,7 +162,7 @@ class VirtualKeysView @JvmOverloads constructor(
                 val button: Button = if (isSpecialButton(buttonInfo)) {
                     createSpecialButton(buttonInfo.key, true) ?: return
                 } else {
-                    Button(context, null, R.attr.buttonBarButtonStyle)
+                    newKeyButton()
                 }
 
                 button.text = buttonInfo.display
@@ -328,7 +328,7 @@ class VirtualKeysView @JvmOverloads constructor(
         val button: Button = if (isSpecialButton(extraButton)) {
             createSpecialButton(extraButton.key, false) ?: return
         } else {
-            Button(context, null, R.attr.buttonBarButtonStyle).apply {
+            newKeyButton().apply {
                 setTextColor(buttonTextColor)
             }
         }
@@ -368,12 +368,14 @@ class VirtualKeysView @JvmOverloads constructor(
         return specialButtonsKeys?.contains(button.key) == true
     }
 
+    private fun newKeyButton() = Button(context, null, 0, com.google.android.material.R.style.Widget_Material3_Button_TextButton_Dialog)
+
     private fun createSpecialButton(buttonKey: String, needUpdate: Boolean): Button? {
         val specialButton = runCatching { SpecialButton.valueOf(buttonKey) }.getOrNull() ?: return null
         val state = _specialButtons?.get(specialButton) ?: return null
 
         state.setIsCreated(true)
-        val button = Button(context, null, R.attr.buttonBarButtonStyle)
+        val button = newKeyButton()
         button.setTextColor(if (state.isActive) buttonActiveTextColor else buttonTextColor)
 
         if (needUpdate) {

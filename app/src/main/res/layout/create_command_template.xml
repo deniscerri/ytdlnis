@@ -50,7 +50,7 @@
 
                 <Button
                     android:id="@+id/template_create"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
@@ -218,7 +218,7 @@
 
                     <Button
                         android:id="@+id/edit_shortcuts"
-                        style="@style/Widget.Material3.Button.TextButton.Icon"
+                        style="@style/Widget.Material3Expressive.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:autoLink="all"

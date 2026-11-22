@@ -14,7 +14,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/preference_icon"
-        style="@style/Widget.Material3.Button.IconButton"
+        style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:autoLink="all"

@@ -60,7 +60,7 @@
                 android:layout_height="20dp" />
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.Material3.Button.TextButton"
+                style="@style/Widget.Material3Expressive.Button.TextButton"
                 android:id="@+id/filename_template_preview_btn"
                 android:visibility="gone"
                 tools:visibility="visible"

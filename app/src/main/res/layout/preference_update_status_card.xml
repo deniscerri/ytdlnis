@@ -91,7 +91,7 @@
             <!-- below the text, so long versions like "1.9.1.1 → nightly-20261031" keep the full width -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/status_button"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.Material3Expressive.Button.TonalButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

@@ -1,10 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BaseTheme" parent="Theme.Material3.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.Material3Expressive.Light.NoActionBar">
         <item name="viewInflaterClass">com.deniscerri.ytdl.util.IncognitoViewInflater</item>
         <item name="android:windowLightStatusBar">?attr/isLightTheme</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
+        <!-- keep the wallpaper ("Default") palette identical to plain Material 3 -->
+        <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
         <item name="dialogCornerRadius">28dp</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarTheme">@style/ThemeOverlay.Material3.Light</item>
@@ -42,6 +44,13 @@
         <item name="colorOnSurfaceInverse">@color/red_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/red_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/red_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/red_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/red_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/red_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/red_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/red_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/red_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/red_md_theme_light_surfaceDim</item>
 
     </style>
 
@@ -74,6 +83,13 @@
         <item name="colorOnSurfaceInverse">@color/blue_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/blue_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/blue_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/blue_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/blue_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/blue_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/blue_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/blue_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/blue_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/blue_md_theme_light_surfaceDim</item>
 
     </style>
 
@@ -107,6 +123,13 @@
         <item name="colorOnSurfaceInverse">@color/yellow_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/yellow_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/yellow_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/yellow_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/yellow_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/yellow_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/yellow_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/yellow_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/yellow_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/yellow_md_theme_light_surfaceDim</item>
 
     </style>
 
@@ -139,6 +162,13 @@
         <item name="colorOnSurfaceInverse">@color/green_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/green_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/green_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/green_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/green_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/green_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/green_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/green_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/green_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/green_md_theme_light_surfaceDim</item>
 
     </style>
 
@@ -172,6 +202,13 @@
         <item name="colorOnSurfaceInverse">@color/purple_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/purple_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/purple_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/purple_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/purple_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/purple_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/purple_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/purple_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/purple_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/purple_md_theme_light_surfaceDim</item>
 
     </style>
 
@@ -205,6 +242,13 @@
         <item name="colorOnSurfaceInverse">@color/monochrome_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/monochrome_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/monochrome_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/monochrome_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/monochrome_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/monochrome_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/monochrome_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/monochrome_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/monochrome_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/monochrome_theme_light_surfaceDim</item>
 
     </style>
 
@@ -235,13 +279,88 @@
         <item name="colorOnSurfaceInverse">@color/orange_md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/orange_md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/orange_md_theme_light_inversePrimary</item>
+        <item name="colorSurfaceContainerLow">@color/orange_md_theme_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/orange_md_theme_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/orange_md_theme_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/orange_md_theme_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceContainerHighest">@color/orange_md_theme_light_surfaceContainerHighest</item>
+        <item name="colorSurfaceBright">@color/orange_md_theme_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/orange_md_theme_light_surfaceDim</item>
     </style>
 
     <style name="Pure">
 
         <item name="android:colorBackground">@android:color/white</item>
         <item name="colorSurface">@android:color/white</item>
+        <item name="colorSurfaceContainerLowest">#FFFFFF</item>
+        <item name="colorSurfaceContainerLow">#F2F2F2</item>
+        <item name="colorSurfaceContainer">#EAEAEA</item>
+        <item name="colorSurfaceContainerHigh">#E4E4E4</item>
 
+
+    </style>
+
+    <style name="Pure.Red">
+        <item name="colorSurfaceContainerLow">@color/pure_red_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_red_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_red_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_red_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_red_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_red_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Blue">
+        <item name="colorSurfaceContainerLow">@color/pure_blue_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_blue_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_blue_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_blue_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_blue_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_blue_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Yellow">
+        <item name="colorSurfaceContainerLow">@color/pure_yellow_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_yellow_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_yellow_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_yellow_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_yellow_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_yellow_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Green">
+        <item name="colorSurfaceContainerLow">@color/pure_green_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_green_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_green_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_green_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_green_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_green_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Purple">
+        <item name="colorSurfaceContainerLow">@color/pure_purple_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_purple_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_purple_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_purple_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_purple_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_purple_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Monochrome">
+        <item name="colorSurfaceContainerLow">@color/pure_monochrome_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_monochrome_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_monochrome_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_monochrome_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_monochrome_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_monochrome_light_surfaceDim</item>
+    </style>
+
+    <style name="Pure.Orange">
+        <item name="colorSurfaceContainerLow">@color/pure_orange_light_surfaceContainerLow</item>
+        <item name="colorSurfaceContainer">@color/pure_orange_light_surfaceContainer</item>
+        <item name="colorSurfaceContainerHigh">@color/pure_orange_light_surfaceContainerHigh</item>
+        <item name="colorSurfaceContainerLowest">@color/pure_orange_light_surfaceContainerLowest</item>
+        <item name="colorSurfaceBright">@color/pure_orange_light_surfaceBright</item>
+        <item name="colorSurfaceDim">@color/pure_orange_light_surfaceDim</item>
     </style>
 
 </resources>

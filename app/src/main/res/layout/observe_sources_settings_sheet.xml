@@ -19,7 +19,7 @@
 
     <Button
         android:id="@+id/rescan_button"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
+        style="@style/Widget.Material3Expressive.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -30,7 +30,7 @@
 
     <Button
         android:id="@+id/skip_backlog_button"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
+        style="@style/Widget.Material3Expressive.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
@@ -41,7 +41,7 @@
 
     <Button
         android:id="@+id/unskip_button"
-        style="@style/Widget.Material3.Button.TextButton.Icon"
+        style="@style/Widget.Material3Expressive.Button.TextButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"

@@ -129,7 +129,7 @@
 
         <Button
             android:id="@+id/bottom_sheet_link"
-            style="@style/Widget.Material3.Button.TextButton.Icon"
+            style="@style/Widget.Material3Expressive.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -148,7 +148,7 @@
 
             <Button
                 android:id="@+id/settings_button"
-                style="@style/Widget.Material3.Button.IconButton.Outlined"
+                style="@style/Widget.Material3Expressive.Button.IconButton.Outlined"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -163,7 +163,7 @@
 
             <Button
                 android:id="@+id/delete_button"
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
@@ -174,7 +174,7 @@
 
             <Button
                 android:id="@+id/edit_button"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit"

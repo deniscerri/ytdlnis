@@ -48,7 +48,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/permission_action"
-        style="@style/Widget.Material3.Button.TonalButton"
+        style="@style/Widget.Material3Expressive.Button.TonalButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcome_allow" />

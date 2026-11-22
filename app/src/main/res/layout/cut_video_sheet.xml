@@ -58,7 +58,7 @@
                     android:visibility="gone"
                     android:clickable="false"
                     app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_play_arrow_white"
                     android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                     android:id="@+id/rewind"
                     android:clickable="false"
                     app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_rewind_white"
                     android:layout_marginHorizontal="20dp"
@@ -89,7 +89,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mute"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     android:layout_width="wrap_content"
                     android:contentDescription="@string/remove_audio"
                     android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                     android:id="@+id/forward"
                     android:clickable="false"
                     app:iconSize="50dp"
-                    style="@style/Widget.Material3.Button.IconButton"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Standard"
                     app:iconTint="?android:colorAccent"
                     app:icon="@drawable/exomedia_ic_fast_forward_white"
                     android:layout_marginHorizontal="20dp"
@@ -280,7 +280,7 @@
 
                 <Button
                     android:id="@+id/cancelButton"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_height="wrap_content"
@@ -290,7 +290,7 @@
 
                 <Button
                     android:id="@+id/okButton"
-                    style="@style/Widget.Material3.Button.ElevatedButton"
+                    style="@style/Widget.Material3Expressive.Button.ElevatedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/cut"
@@ -343,7 +343,7 @@
 
                 <Button
                     android:id="@+id/new_cut"
-                    style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                    style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:autoLink="all"

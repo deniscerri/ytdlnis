@@ -209,7 +209,7 @@
 
         <Button
             android:id="@+id/bottom_sheet_link"
-            style="@style/Widget.Material3.Button.TextButton.Icon"
+            style="@style/Widget.Material3Expressive.Button.TextButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -227,7 +227,7 @@
             android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                style="@style/Widget.Material3Expressive.Button.OutlinedButton"
                 android:id="@+id/bottomsheet_remove_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -238,7 +238,7 @@
                 android:text="@string/Remove" />
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:id="@+id/bottomsheet_open_file_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
 
             <Button
                 android:id="@+id/bottomsheet_redownload_button"
-                style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+                style="@style/Widget.App.Button.ElevatedButton.Flat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
