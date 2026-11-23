@@ -747,4 +747,6 @@
     <string name="install_failed_abi">安装失败：此 APK 不支持你设备的 CPU</string>
     <string name="install_failed_storage">安装失败：存储空间不够</string>
     <string name="installer_no_confirmation">安装程序未确认安装</string>
+    <string name="open_in_external_player">在外部播放器中打开</string>
+    <string name="no_external_player">没有找到可播放此视频的应用</string>
 </resources>
