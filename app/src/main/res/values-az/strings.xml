@@ -757,4 +757,6 @@
     <string name="install_failed_abi">Quraşdırma uğursuz oldu: bu APK cihazınızın CPU-sunu dəstəkləmir</string>
     <string name="install_failed_storage">Quraşdırma uğursuz oldu: yaddaş kifayət deyil</string>
     <string name="installer_no_confirmation">Quraşdırıcı tətbiq quraşdırmanı təsdiqləmədi</string>
+    <string name="open_in_external_player">Xarici oynadıcıda aç</string>
+    <string name="no_external_player">Bu videonu oynadan tətbiq tapılmadı</string>
 </resources>
