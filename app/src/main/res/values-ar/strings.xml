@@ -780,4 +780,5 @@
     </plurals>
     <string name="write_ytdlp_terminal">كتابة yt-dlp تلقائيًا في الطرفية</string>
     <string name="welcome_subtitle">تنزيل الفيديو والصوت باستخدام yt-dlp. لنعدّ بعض الأشياء أولاً.</string>
+    <string name="no_external_player">لا يوجد تطبيق يمكنه تشغيل هذا الفيديو</string>
 </resources>
