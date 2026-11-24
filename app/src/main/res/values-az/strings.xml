@@ -744,4 +744,19 @@
     <string name="background_update_check_types">Fon yoxlama növlərini tənzimlə</string>
     <string name="background_update_app">Tətbiq yeniləmə bildirişi</string>
     <string name="background_update_packages">Paket yeniləmə bildirişləri</string>
+    <string name="selected_cuts">Seçilmiş kəsiklər</string>
+    <string name="installer_system_description">Android-in daxili paket quraşdırıcısı</string>
+    <string name="installer_system_unavailable">Bu quruluşda mövcud deyil. Aşağıda Shizuku və ya quraşdırıcı tətbiqi seç</string>
+    <string name="installer_shizuku_description">Shizuku vasitəsilə arxa planda quraşdırır</string>
+    <string name="installer_shizuku_not_running">Shizuku işləmir. Əvvəlcə bunu başlat</string>
+    <string name="allow_install_unknown_apps">YTDLnis-ə tətbiqləri quraşdırmağa icazə ver, sonra təkrar cəhd et</string>
+    <string name="install_cancelled">Quraşdırma ləğv edildi</string>
+    <string name="install_failed_code">Quraşdırma uğursuzdu (kod %1$s)</string>
+    <string name="install_failed_incompatible">Quraşdırma uğursuz oldu: quraşdırılmış versiya fərqli açarla imzalanıb. Əvvəlcə onu sil</string>
+    <string name="install_failed_downgrade">Quraşdırma uğursuz oldu: daha yeni versiya artıq quraşdırılıb</string>
+    <string name="install_failed_abi">Quraşdırma uğursuz oldu: bu APK cihazınızın CPU-sunu dəstəkləmir</string>
+    <string name="install_failed_storage">Quraşdırma uğursuz oldu: yaddaş kifayət deyil</string>
+    <string name="installer_no_confirmation">Quraşdırıcı tətbiq quraşdırmanı təsdiqləmədi</string>
+    <string name="open_in_external_player">Xarici oynadıcıda aç</string>
+    <string name="no_external_player">Bu videonu oynadan tətbiq tapılmadı</string>
 </resources>
