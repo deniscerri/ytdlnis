@@ -761,4 +761,19 @@
     <string name="background_update_check_types">Настроить типы фоновой проверки</string>
     <string name="background_update_app">Уведомление об обновлении приложения</string>
     <string name="background_update_packages">Уведомления об обновлениях пакетов</string>
+    <string name="selected_cuts">Выбранные отрезки</string>
+    <string name="open_in_external_player">Открыть во внешнем плеере</string>
+    <string name="no_external_player">Не найдено приложения, способного воспроизвести это видео</string>
+    <string name="installer_system_description">Программа установки пакетов Android</string>
+    <string name="installer_system_unavailable">Отсутствует в данной сборке. Выберите Shizuku или одно из приложений-установщиков ниже</string>
+    <string name="installer_shizuku_description">Устанавливается в фоновом режиме через Shizuku</string>
+    <string name="installer_shizuku_not_running">Shizuku не запущен. Сначала запустите его</string>
+    <string name="allow_install_unknown_apps">Разрешите YTDLnis устанавливать приложения, а затем попробуйте ещё раз</string>
+    <string name="install_cancelled">Установка отменена</string>
+    <string name="install_failed_code">Не удалось установить (код %1$s)</string>
+    <string name="install_failed_incompatible">Не удалось установить: установленная версия подписана другим ключом. Сначала удалите её</string>
+    <string name="install_failed_downgrade">Не удалось установить: уже установлена более новая версия</string>
+    <string name="install_failed_abi">Не удалось установить: этот APK-файл не поддерживает процессор вашего устройства</string>
+    <string name="install_failed_storage">Не удалось установить: недостаточно свободного места</string>
+    <string name="installer_no_confirmation">Приложение-установщик не подтвердило установку</string>
 </resources>

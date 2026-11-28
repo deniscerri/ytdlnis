@@ -509,7 +509,7 @@
     <string name="use_app_language_for_metadata_summary">Se ativado, os campos de metadados seguirão o idioma do seu aplicativo e afetarão até mesmo a seleção do formato, dando preferência às versões dubladas em vez das originais</string>
     <string name="installed">Instalado</string>
     <string name="auto_update_ytdlp_summary">É recomendável manter esta opção ativada, pois o yt-dlp precisa ser atualizado com bastante frequência para continuar funcionando! Os dados foram extraídos do repositório GitHub do yt-dlp.</string>
-    <string name="trim_filenames">Aparar nomes de arquivos</string>
+    <string name="trim_filenames">Encurtar nomes de arquivos</string>
     <string name="install_downloaded_file">Instalar o arquivo baixado</string>
     <string name="save_subdirectory">Salvar no subdiretório</string>
     <string name="save_subdirectory_summary">Salvar arquivos em pastas com base em tags de metadados</string>
@@ -752,4 +752,19 @@
     <string name="background_update_check_types">Ajustar os tipos de verificação em segundo plano</string>
     <string name="background_update_app">Notificação de atualização do aplicativo</string>
     <string name="background_update_packages">Notificações de atualização de pacotes</string>
+    <string name="selected_cuts">Cortes selecionados</string>
+    <string name="open_in_external_player">Abrir no player externo</string>
+    <string name="no_external_player">Não foi encontrado nenhum aplicativo capaz de reproduzir este vídeo</string>
+    <string name="installer_system_description">Instalador de pacotes integrado do Android</string>
+    <string name="installer_system_unavailable">Não está disponível nesta versão. Escolha o Shizuku ou um aplicativo de instalação abaixo</string>
+    <string name="installer_shizuku_description">É instalado em segundo plano por meio do Shizuku</string>
+    <string name="installer_shizuku_not_running">O Shizuku não está em execução. Inicie-o primeiro</string>
+    <string name="allow_install_unknown_apps">Permita que o YTDLnis instale aplicativos e, em seguida, tente novamente</string>
+    <string name="install_cancelled">Instalação cancelada</string>
+    <string name="install_failed_code">Falha na instalação (código %1$s)</string>
+    <string name="install_failed_incompatible">Falha na instalação: a versão instalada está assinada com uma chave diferente. Desinstale-a primeiro</string>
+    <string name="install_failed_downgrade">Falha na instalação: já há uma versão mais recente instalada</string>
+    <string name="install_failed_abi">Falha na instalação: este APK não é compatível com a CPU do seu dispositivo</string>
+    <string name="install_failed_storage">Falha na instalação: espaço de armazenamento insuficiente</string>
+    <string name="installer_no_confirmation">O aplicativo de instalação não confirmou a instalação</string>
 </resources>
