@@ -42,6 +42,7 @@ import com.deniscerri.ytdl.util.NotificationUtil
 import com.deniscerri.ytdl.util.UiUtil
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
@@ -139,8 +140,11 @@ class TerminalFragment : Fragment() {
         val slider = requireActivity().findViewById<Slider>(R.id.textsize_seekbar)
         slider?.apply {
             valueFrom = 10f
-            valueTo = 37f
+            valueTo = 50f
+            stepSize = 1f
             value = terminalZoom().toFloat()
+            labelBehavior = LabelFormatter.LABEL_VISIBLE
+            setLabelFormatter { it.toInt().toString() }
 
             addOnChangeListener { _, value, _ ->
                 terminalView.setTextSize(value.toInt())
