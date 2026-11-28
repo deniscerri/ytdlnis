@@ -744,4 +744,19 @@
     <string name="background_update_check_types">Háttérellenőrzési típusok módosítása</string>
     <string name="background_update_app">Alkalmazásfrissítési értesítés</string>
     <string name="background_update_packages">Csomagfrissítési értesítések</string>
+    <string name="selected_cuts">Kiválasztott darabok</string>
+    <string name="open_in_external_player">Megnyitás külső lejátszóban</string>
+    <string name="no_external_player">Nem található olyan alkalmazás, amely le tudná játszani ezt a videót</string>
+    <string name="installer_system_description">Az Android beépített csomagtelepítője</string>
+    <string name="installer_system_unavailable">Ebben a verzióban nem érhető el. Válassza a Shizuku-t vagy egy telepítőalkalmazást az alábbiak közül</string>
+    <string name="installer_shizuku_description">A háttérben települ a Shizuku segítségével</string>
+    <string name="installer_shizuku_not_running">A Shizuku nem fut. Előbb indítsa el</string>
+    <string name="allow_install_unknown_apps">Engedélyezze a YTDLnis számára alkalmazások telepítését, majd próbálja újra</string>
+    <string name="install_cancelled">A telepítés megszakítva</string>
+    <string name="install_failed_code">A telepítés sikertelen (%1$s kód)</string>
+    <string name="install_failed_incompatible">A telepítés sikertelen: a telepített verzió más kulccsal van aláírva. Először távolítsa el</string>
+    <string name="install_failed_downgrade">A telepítés sikertelen: egy újabb verzió már telepítve van</string>
+    <string name="install_failed_abi">A telepítés sikertelen: ez az APK nem támogatja az eszközöd processzorát</string>
+    <string name="install_failed_storage">A telepítés sikertelen: nincs elég tárhely</string>
+    <string name="installer_no_confirmation">A telepítőalkalmazás nem erősítette meg a telepítést</string>
 </resources>
