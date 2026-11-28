@@ -73,20 +73,54 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <Button
+                    android:id="@+id/sheet_search"
+                    style="@style/Widget.Material3Expressive.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:outlineProvider="none"
+                    app:icon="@drawable/ic_search"
+                    android:contentDescription="@string/search" />
+
+                <Button
                     android:id="@+id/sheet_pause_resume"
                     style="@style/Widget.App.Button.ElevatedButton.Flat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:autoLink="all"
                     android:elevation="0dp"
                     android:outlineProvider="none"
                     android:stateListAnimator="@null"
                     android:text="@string/pause_all"
-                    android:visibility="gone"
-                    app:icon="@drawable/exomedia_ic_pause_white" />
+                    app:icon="@drawable/ic_lyrics_pause" />
 
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sheet_search_layout"
+            style="@style/Widget.Material3.TextInputLayout.FilledBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="5dp"
+            android:hint="@string/search"
+            android:visibility="gone"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/ic_search">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sheet_search_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionSearch"
+                android:saveEnabled="false"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="14sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/sheet_reorder"

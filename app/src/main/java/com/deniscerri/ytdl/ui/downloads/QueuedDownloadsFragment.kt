@@ -80,6 +80,8 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
         activity = getActivity()
         notificationUtil = NotificationUtil(requireContext())
         downloadViewModel = ViewModelProvider(this)[DownloadViewModel::class.java]
+        // the search field starts empty with a new view, don't keep filtering by a query that isn't shown
+        downloadViewModel.queuedSearchQuery.value = ""
         ytdlpViewModel = ViewModelProvider(this)[YTDLPViewModel::class.java]
         downloadCardViewModel = ViewModelProvider(requireActivity())[DownloadCardViewModel::class.java]
         return fragmentView
@@ -123,6 +125,13 @@ class QueuedDownloadsFragment : Fragment(), QueuedDownloadAdapter.OnItemClickLis
     /** Shows or hides the reorder handles on the cards. The toggle button lives in the queue sheet header */
     fun toggleDragHandles() {
         if (::adapter.isInitialized) adapter.toggleShowDragHandle()
+    }
+
+    /** Filters the queue by title, author or url. Reordering a filtered list would be ambiguous, so the handles go away */
+    fun setSearchQuery(query: String) {
+        if (!::downloadViewModel.isInitialized) return
+        if (query.isNotBlank() && ::adapter.isInitialized && adapter.showDragHandle) adapter.toggleShowDragHandle()
+        downloadViewModel.queuedSearchQuery.value = query.trim()
     }
 
     private fun removeItem(id: Long){

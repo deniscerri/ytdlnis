@@ -40,9 +40,9 @@ class DownloadRepository(private val downloadDao: DownloadDao) {
     val activeDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveDownloads().distinctUntilChanged()
     val activePausedDownloads : Flow<List<DownloadItem>> = downloadDao.getActiveAndPausedDownloads().distinctUntilChanged()
     val pausedDownloads : Flow<List<DownloadItem>> = downloadDao.getPausedDownloads().distinctUntilChanged()
-    val queuedDownloads : Pager<Int, DownloadItemSimple> = Pager(
+    fun queuedDownloads(query: String = "") : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),
-        pagingSourceFactory = {downloadDao.getQueuedDownloads()}
+        pagingSourceFactory = {downloadDao.getQueuedDownloads(query)}
     )
     val cancelledDownloads : Pager<Int, DownloadItemSimple> = Pager(
         config = PagingConfig(pageSize = 20, initialLoadSize = 20, prefetchDistance = 1),

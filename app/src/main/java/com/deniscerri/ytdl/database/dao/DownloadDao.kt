@@ -126,8 +126,12 @@ interface DownloadDao {
     fun getActiveAndQueuedDownloads() : Flow<List<DownloadItem>>
 
     @RewriteQueriesToDropUnusedColumns
-    @Query("SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused') ORDER BY queueOrder, id")
-    fun getQueuedDownloads() : PagingSource<Int, DownloadItemSimple>
+    @Query("""
+        SELECT * FROM downloads WHERE status in ('Queued', 'QueuedPaused')
+        AND (:query = '' OR title LIKE '%' || :query || '%' OR author LIKE '%' || :query || '%' OR url LIKE '%' || :query || '%')
+        ORDER BY queueOrder, id
+    """)
+    fun getQueuedDownloads(query: String = "") : PagingSource<Int, DownloadItemSimple>
 
     @Query("SELECT id, format FROM downloads WHERE status in ('Queued', 'QueuedPaused') AND id > :afterId ORDER BY id LIMIT :limit")
     fun getSelectedFormatFromQueuedPaged(afterId: Long, limit: Int) : List<DownloadIdFormat>

@@ -57,6 +57,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -65,6 +67,7 @@ import kotlinx.parcelize.Parcelize
 import java.io.File
 
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class DownloadViewModel(private val application: Application) : AndroidViewModel(application) {
     private val dbManager: DBManager
     val repository : DownloadRepository
@@ -76,6 +79,8 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
     private val resources : Resources
 
     val allDownloads : Flow<PagingData<DownloadItem>>
+    // filters the queue list, set from the search field in the queue sheet
+    val queuedSearchQuery = MutableStateFlow("")
     val queuedDownloads : Flow<PagingData<DownloadItemSimple>>
     val activeDownloads : Flow<List<DownloadItem>>
     val activePausedDownloads : Flow<List<DownloadItem>>
@@ -148,7 +153,7 @@ class DownloadViewModel(private val application: Application) : AndroidViewModel
         scheduledDownloadsCount = repository.scheduledDownloadsCount
 
         allDownloads = repository.allDownloads.flow
-        queuedDownloads = repository.queuedDownloads.flow
+        queuedDownloads = queuedSearchQuery.flatMapLatest { repository.queuedDownloads(it).flow }
         activeDownloads = repository.activeDownloads
         activePausedDownloads = repository.activePausedDownloads
         savedDownloads = repository.savedDownloads.flow

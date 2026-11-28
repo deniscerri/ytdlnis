@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.doAfterTextChanged
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -36,6 +39,8 @@ class ActiveQueuedDownloadsFragment : Fragment() {
     private lateinit var sheetSubtitle: TextView
     private lateinit var queuedContainer: View
     private lateinit var reorderButton: MaterialButton
+    private lateinit var searchLayout: View
+    private lateinit var searchText: EditText
     private lateinit var pauseResumeButton: MaterialButton
     private lateinit var emptyQueueFab: ExtendedFloatingActionButton
     private lateinit var behavior: BottomSheetBehavior<ViewGroup>
@@ -128,6 +133,28 @@ class ActiveQueuedDownloadsFragment : Fragment() {
             (childFragmentManager.findFragmentById(R.id.queued_container) as? QueuedDownloadsFragment)?.toggleDragHandles()
         }
 
+        // search: the icon opens a field above the queue, closing it clears the filter
+        searchLayout = view.findViewById(R.id.sheet_search_layout)
+        searchText = view.findViewById(R.id.sheet_search_edittext)
+        view.findViewById<View>(R.id.sheet_search).setOnClickListener {
+            val imm = requireContext().getSystemService(InputMethodManager::class.java)
+            val show = !searchLayout.isVisible
+            searchLayout.isVisible = show
+            if (show) {
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                searchText.requestFocus()
+                imm?.showSoftInput(searchText, InputMethodManager.SHOW_IMPLICIT)
+            } else {
+                searchText.setText("")
+                imm?.hideSoftInputFromWindow(searchText.windowToken, 0)
+            }
+        }
+        searchText.doAfterTextChanged { text ->
+            val query = text?.toString().orEmpty()
+            reorderButton.isVisible = query.isBlank() && queueCount > 1
+            (childFragmentManager.findFragmentById(R.id.queued_container) as? QueuedDownloadsFragment)?.setSearchQuery(query)
+        }
+
         val pauseResumeClick = View.OnClickListener {
             lifecycleScope.launch {
                 if (pausedAllState == DownloadViewModel.PausedAllDownloadsState.RESUME) {
@@ -156,7 +183,7 @@ class ActiveQueuedDownloadsFragment : Fragment() {
         lifecycleScope.launch {
             downloadViewModel.queuedDownloadsCount.collectLatest {
                 queueCount = it
-                reorderButton.isVisible = it > 1
+                reorderButton.isVisible = it > 1 && searchText.text.isNullOrBlank()
                 queuedContainer.isVisible = it > 0
                 updateSubtitle()
                 applyPauseResumeState()
@@ -250,12 +277,13 @@ class ActiveQueuedDownloadsFragment : Fragment() {
         val card = if (cardHeight > 0) cardHeight else (96 * density).toInt()
         // everything above the queue cards: header, reorder button
         val headerBlock = queuedContainer.top.takeIf { it > 0 } ?: (96 * density).toInt()
-        val minimumPeek = (headerBlock + card * 1.5f).toInt()
 
-        // the sheet starts under the last running card, ACTIVE_SHEET_GAP_DP below it. It only goes down to
-        // one and a half queue cards once the running cards fill the screen
+        // the sheet starts under the last running card, ACTIVE_SHEET_GAP_DP below it, filling the blank space.
+        // Once that space can't fit a whole queue card it shrinks to just the header so it doesn't cover the
+        // running cards, a cut off card in the middle looks broken anyway
         val gap = (ACTIVE_SHEET_GAP_DP * density).toInt()
-        val desired = (parentHeight - (activeBottom + gap)).coerceAtLeast(minimumPeek)
+        val space = parentHeight - (activeBottom + gap)
+        val desired = if (space < headerBlock + card) headerBlock else space
         // never taller than what the queue actually fills, otherwise there is empty space inside the sheet
         val peek = desired.coerceAtMost(sheetHeight)
 
