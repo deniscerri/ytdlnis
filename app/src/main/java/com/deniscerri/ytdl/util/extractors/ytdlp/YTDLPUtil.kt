@@ -1200,6 +1200,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
             val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist,creators," else ""
             metadataCommands.addOption("--parse-metadata", """%(${useArtistTags}uploader,channel,creator|)l:^(?P<uploader>.*?)(?:(?= - Topic)|$)""")
+            // youtube can list the same artist more than once, drop repeats from the joined list (quick downloads have no fetched author to fix it)
+            metadataCommands.addOption("--replace-in-metadata", "artist,uploader", """(?:^|(?<=, ))([^,]+), (?=(?:.*, )?\1(?:,|$))""", "")
 
             if (downloadItem.author.isNotBlank()){
                 metadataCommands.addOption("--parse-metadata", MetadataTag.setFieldArg("uploader", downloadItem.author))
@@ -1355,6 +1357,11 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
 
                 if (abrSort.isNotBlank()){
                     formatSorting.add(0, "abr:${abrSort}")
+                }
+
+                // our sort fields outrank yt-dlp's default lang field, so a smaller or matching auto-dub would beat the original track
+                if (preferredLanguage.isBlank()) {
+                    formatSorting.add(0, "lang")
                 }
 
                 if (downloadItem.downloadSections.isNotBlank()) {
@@ -1711,9 +1718,10 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
                     formatSorting.add("+abr")
                 }
 
-//                if (preferredLanguage.isNotBlank()) {
-//                    formatSorting.add("lang:${preferredLanguage}")
-//                }
+                // our sort fields outrank yt-dlp's default lang field, so a smaller or matching auto-dub would beat the original track
+                if (preferredAudioLanguage.isBlank()) {
+                    formatSorting.add(0, "lang")
+                }
 
                 if (downloadItem.downloadSections.isNotBlank()) {
                     formatSorting.add(0, "proto:https")
