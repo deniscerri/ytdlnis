@@ -69,6 +69,8 @@ class TerminalFragment : Fragment() {
     private lateinit var session : TerminalSession
     private var sessionId: String? = null
     private var sessionInitJob: Job? = null
+    private var newSession = false
+    private var sessionShareURL: String? = null
 
     private fun terminalZoom(): Int {
         val zoom = sharedPreferences.getFloat("terminal_text_zoom", 35f)
@@ -103,6 +105,8 @@ class TerminalFragment : Fragment() {
         if (arguments?.containsKey("id") == true) {
             sessionId = arguments?.getString("id")
         }
+        newSession = arguments?.getBoolean("new") ?: false
+        sessionShareURL = arguments?.getString("share")?.ifEmpty { null }
 
         terminalViewModel.setTerminalView(terminalView)
         terminalViewModel.setVirtualKeysView(virtualKeysView)
@@ -313,16 +317,13 @@ class TerminalFragment : Fragment() {
             terminalViewModel.changeSession(requireContext(), sessionBinder, sessionId!!)
         }
 
-        val newSession = arguments?.getBoolean("new") ?: false
-        val sessionShareURL = arguments?.getString("share")?.ifEmpty { null }
-
         val currentSession = sessionBinder.getSession(service.currentSession.value)
         session = if (newSession || currentSession == null) {
             sessionId = KeyShortcutHandler.generateUniqueSessionId(activity)
             sessionBinder.createSession(
                 sessionId!!,
                 client
-            )
+            ).also { service.currentSession.value = sessionId!! }
         } else {
             if (sessionId.isNullOrBlank()) sessionId = service.currentSession.value
             currentSession
