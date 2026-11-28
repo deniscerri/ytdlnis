@@ -72,7 +72,7 @@ class TerminalFragment : Fragment() {
 
     private fun terminalZoom(): Int {
         val zoom = sharedPreferences.getFloat("terminal_text_zoom", 35f)
-        return if (zoom.isFinite()) zoom.coerceIn(10f, 37f).toInt() else 35
+        return if (zoom.isFinite()) zoom.coerceIn(10f, 50f).toInt() else 35
     }
 
     override fun onCreateView(

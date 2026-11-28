@@ -60,7 +60,7 @@ class TerminalViewModel(private val application: Application) : AndroidViewModel
 
         val storedZoom = PreferenceManager.getDefaultSharedPreferences(context)
             .getFloat("terminal_text_zoom", 35f)
-        val zoom = if (storedZoom.isFinite()) storedZoom.coerceIn(10f, 37f) else 35f
+        val zoom = if (storedZoom.isFinite()) storedZoom.coerceIn(10f, 50f) else 35f
         terminal.setTextSize(zoom.toInt())
         terminal.setTypeface(TerminalUtils.typeface)
 
