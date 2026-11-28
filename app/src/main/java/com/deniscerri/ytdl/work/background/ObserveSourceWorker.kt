@@ -124,6 +124,8 @@ class ObserveSourceWorker(
                 toProcess.add(result)
             }
 
+            toProcess.forEach { resultRepository.applyDeArrowTitleIfEnabled(it) }
+
             val downloadItems = mutableListOf<DownloadItem>()
             toProcess.forEach {
                 val string = Gson().toJson(item.downloadItemTemplate, DownloadItem::class.java)

@@ -1196,6 +1196,8 @@ class YTDLPUtil(private val context: Context, private val commandTemplateDao: Co
             if(downloadItem.title.isNotBlank()){
                 metadataCommands.addOption("--parse-metadata", MetadataTag.setFieldArg("title", downloadItem.title))
                 metadataCommands.addOption("--parse-metadata", "%(title)s:%(meta_title)s")
+            }else if (sharedPreferences.getBoolean("use_dearrow", false) && downloadItem.url.isYoutubeURL()) {
+                request.addOption("--use-postprocessor", "DeArrow:when=pre_process")
             }
 
             val useArtistTags = if (downloadItem.url.isYoutubeURL()) "artists,artist,creators," else ""

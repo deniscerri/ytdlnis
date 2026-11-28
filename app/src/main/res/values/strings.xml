@@ -330,6 +330,8 @@
     <string name="preferred_audio_codec">Preferred audio codec</string>
     <string name="loading">Loading</string>
     <string name="sponsorblock_api_url">SponsorBlock API URL</string>
+    <string name="use_dearrow">DeArrow titles</string>
+    <string name="use_dearrow_summary">Replace clickbait YouTube titles with community-confirmed titles from DeArrow</string>
     <string name="remember_download_type">Remember download type</string>
     <string name="remember_download_type_summary">Select the last opened download type for the current item</string>
     <string name="user_agent_header">User-Agent header</string>

@@ -24,6 +24,14 @@ import com.deniscerri.ytdl.util.extractors.GoogleApiUtil
 import com.deniscerri.ytdl.util.extractors.YoutubeApiUtil
 import com.deniscerri.ytdl.util.extractors.newpipe.NewPipeUtil
 import com.deniscerri.ytdl.util.extractors.ytdlp.YTDLPUtil
+import com.deniscerri.ytdl.util.extractors.DeArrowUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.Flow
@@ -31,6 +39,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.runBlocking
 
 class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: CommandTemplateDao, private val context: Context) {
+    companion object {
+        private const val DEARROW_PARALLEL = 4
+        // shared by every repository instance, so clearing results stops lookups started from any screen
+        private val deArrowScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+        private val deArrowJobs = mutableListOf<Job>()
+    }
+
     val YTDLNIS_SEARCH = "YTDLNIS_SEARCH"
     var itemCount = MutableStateFlow(-1)
 
@@ -86,7 +101,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
 
         itemCount.value = items.size
         currentCoroutineContext().ensureActive()
-        resultDao.insertMultiple(items)
+        insertResults(items)
     }
 
     fun getSearchSuggestions(searchQuery: String) : ArrayList<String> {
@@ -128,7 +143,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         currentCoroutineContext().ensureActive()
         itemCount.value = items.size
         if (addToResults){
-            val ids = resultDao.insertMultiple(items)
+            val ids = insertResults(items)
             ids.forEachIndexed { index, id ->
                 items[index].id = id
             }
@@ -145,7 +160,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             newPipeUtil.getPlaylistData(inputQuery) { chunk ->
                 currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    val ids = resultDao.insertMultiple(chunk)
+                    val ids = insertResults(chunk)
                     ids.forEachIndexed { index, id ->
                         chunk[index].id = id
                     }
@@ -162,7 +177,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             val res = ytdlpUtil.getFromYTDL(inputQuery, resultsGenerated = {})
             currentCoroutineContext().ensureActive()
             if (addToResults) {
-                val ids = resultDao.insertMultiple(res)
+                val ids = insertResults(res)
                 ids.forEachIndexed { index, id ->
                     res[index].id = id
                 }
@@ -196,7 +211,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             res.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
         }
         if (addToResults){
-            val ids = resultDao.insertMultiple(res)
+            val ids = insertResults(res)
             ids.forEachIndexed { index, id ->
                 res[index].id = id
             }
@@ -213,7 +228,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             newPipeUtil.getPlaylistData(playlistURL) { chunk ->
                 currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    val ids = resultDao.insertMultiple(chunk)
+                    val ids = insertResults(chunk)
                     ids.forEachIndexed { index, id ->
                         chunk[index].id = id
                     }
@@ -235,7 +250,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             ytdlpUtil.getFromYTDL(inputQuery) {
                 currentCoroutineContext().ensureActive()
                 if (addToResults) {
-                    val ids = resultDao.insertMultiple(it)
+                    val ids = insertResults(it)
                     ids.forEachIndexed { index, id ->
                         it[index].id = id
                     }
@@ -256,7 +271,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             newPipeUtil.getChannelData(url) {
                 currentCoroutineContext().ensureActive()
                 if (addToResults){
-                    val ids = resultDao.insertMultiple(it)
+                    val ids = insertResults(it)
                     ids.forEachIndexed { index, id ->
                         it[index].id = id
                     }
@@ -278,7 +293,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             ytdlpUtil.getFromYTDL(url) {
                 currentCoroutineContext().ensureActive()
                 if (addToResults) {
-                    val ids = resultDao.insertMultiple(it)
+                    val ids = insertResults(it)
                     ids.forEachIndexed { index, id ->
                         it[index].id = id
                     }
@@ -308,7 +323,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
             }
             results.filter { it.playlistTitle.isBlank() }.forEach { it.playlistTitle = YTDLNIS_SEARCH }
             if (addToResults) {
-                val ids = resultDao.insertMultiple(results)
+                val ids = insertResults(results)
                 ids.forEachIndexed { index, id ->
                     results[index].id = id
                 }
@@ -387,7 +402,46 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
 
     suspend fun deleteAll(){
         itemCount.value = 0
+        cancelDeArrowLookups()
         resultDao.deleteAll()
+    }
+
+    private fun deArrowEnabled() = sharedPreferences.getBoolean("use_dearrow", false)
+
+    private suspend fun insertResults(items: List<ResultItem>) : List<Long> {
+        if (items.size == 1) {
+            applyDeArrowTitleIfEnabled(items[0])
+            return resultDao.insertMultiple(items)
+        }
+        val ids = resultDao.insertMultiple(items)
+        if (deArrowEnabled()) {
+            val targets = items.zip(ids).filter { (item, id) -> id > 0 && item.url.isYoutubeURL() }
+            if (targets.isNotEmpty()) {
+                val job = deArrowScope.launch {
+                    // a few at a time, like the DeArrow extension does for the videos on screen
+                    targets.chunked(DEARROW_PARALLEL).forEach { chunk ->
+                        chunk.map { (item, id) ->
+                            async {
+                                val title = item.url.getIDFromYoutubeURL()?.let { DeArrowUtil.getTitle(it) }
+                                if (title != null && title != item.title) resultDao.updateTitle(id, item.url, title)
+                            }
+                        }.awaitAll()
+                    }
+                }
+                synchronized(deArrowJobs) { deArrowJobs.add(job) }
+                job.invokeOnCompletion { synchronized(deArrowJobs) { deArrowJobs.remove(job) } }
+            }
+        }
+        return ids
+    }
+
+    fun applyDeArrowTitleIfEnabled(item: ResultItem) {
+        if (!deArrowEnabled() || !item.url.isYoutubeURL()) return
+        item.url.getIDFromYoutubeURL()?.let { DeArrowUtil.getTitle(it) }?.let { item.title = it }
+    }
+
+    private fun cancelDeArrowLookups() {
+        synchronized(deArrowJobs) { deArrowJobs.toList() }.forEach { it.cancel() }
     }
 
     suspend fun update(item: ResultItem){
@@ -471,6 +525,7 @@ class ResultRepository(private val resultDao: ResultDao, commandTemplateDao: Com
         if (downloadItem.needsDataUpdating()){
             runCatching {
                 val info = getResultsFromSource(downloadItem.url, resetResults = false, addToResults = false, singleItem = true).first()
+                if (downloadItem.title.isEmpty()) applyDeArrowTitleIfEnabled(info)
                 if (downloadItem.title.isEmpty()) downloadItem.title = info.title
                 if (downloadItem.author.isEmpty()) downloadItem.author = info.author
                 if (downloadItem.playlistTitle.isEmpty() || (downloadItem.playlistTitle.isNotBlank() && downloadItem.playlistTitle != YTDLNIS_SEARCH)   ) downloadItem.playlistTitle = info.playlistTitle

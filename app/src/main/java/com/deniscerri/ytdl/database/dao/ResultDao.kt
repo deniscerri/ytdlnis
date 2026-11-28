@@ -63,6 +63,9 @@ interface ResultDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(item: ResultItem)
 
+    @Query("UPDATE results SET title = :title WHERE id = :id AND url = :url")
+    suspend fun updateTitle(id: Long, url: String, title: String)
+
     @Query("DELETE FROM results")
     suspend fun deleteAll()
 

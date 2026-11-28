@@ -26,6 +26,14 @@
             app:defaultValue=""
             app:title="@string/sponsorblock_api_url" />
 
+        <SwitchPreferenceCompat
+            android:widgetLayout="@layout/preferece_material_switch"
+            app:defaultValue="false"
+            app:icon="@drawable/ic_label"
+            app:key="use_dearrow"
+            app:summary="@string/use_dearrow_summary"
+            app:title="@string/use_dearrow" />
+
 
         <SwitchPreferenceCompat
             android:widgetLayout="@layout/preferece_material_switch"

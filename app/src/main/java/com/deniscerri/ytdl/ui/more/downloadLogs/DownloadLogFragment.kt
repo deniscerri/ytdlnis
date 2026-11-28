@@ -36,7 +36,9 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomappbar.BottomAppBar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.slider.LabelFormatter
 import com.google.android.material.slider.Slider
+import kotlin.math.roundToInt
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -191,7 +193,11 @@ class DownloadLogFragment : Fragment() {
         slider?.apply {
             valueFrom = 0f
             valueTo = 10f
-            value = zoomValue
+            // whole steps with the real font size always shown; older saves can be fractional, which a stepped slider rejects
+            stepSize = 1f
+            value = zoomValue.roundToInt().coerceIn(0, 10).toFloat()
+            labelBehavior = LabelFormatter.LABEL_VISIBLE
+            setLabelFormatter { (it + 13f).roundToInt().toString() }
             addOnChangeListener { _, valChoice, _ ->
                 val fontSizePx = valChoice + 13f
                 webView.evaluateJavascript("setFontSize(${fontSizePx});", null)
