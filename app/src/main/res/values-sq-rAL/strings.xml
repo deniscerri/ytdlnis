@@ -756,4 +756,6 @@
     <string name="background_update_check_types">Konfiguro kontrollet në sfond</string>
     <string name="background_update_app">Njoftim për përditësimin e aplikacionit</string>
     <string name="background_update_packages">Njoftime për përditësimin e paketave</string>
+    <string name="open_in_external_player">Hap në aplikacion tjetër</string>
+    <string name="no_external_player">Nuk u gjet asnjë aplikacion që luan këtë video</string>
 </resources>
