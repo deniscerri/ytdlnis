@@ -734,4 +734,19 @@
     <string name="background_update_app">앱 업데이트 알림</string>
     <string name="background_update_packages">패키지 업데이트 알림</string>
     <string name="background_update_check_types">백그라운드 확인 유형 조정</string>
+    <string name="selected_cuts">선택한 컷</string>
+    <string name="open_in_external_player">외부 플레이어에서 열기</string>
+    <string name="no_external_player">이 동영상을 재생할 수 있는 앱을 찾지 못했습니다</string>
+    <string name="installer_system_description">Android 내장 패키지 설치 프로그램</string>
+    <string name="installer_system_unavailable">이 빌드에서는 이용할 수 없습니다. 아래에서 Shizuku나 설치 프로그램을 고르세요</string>
+    <string name="installer_shizuku_description">Shizuku로 백그라운드에서 설치</string>
+    <string name="installer_shizuku_not_running">Shizuku가 실행 중이 아닙니다. 먼저 시작하세요</string>
+    <string name="allow_install_unknown_apps">YTDLnis에 앱 설치 권한을 허용하고, 다시 시도하세요</string>
+    <string name="install_cancelled">설치 취소됨</string>
+    <string name="install_failed_code">설치 실패 (코드 %1$s)</string>
+    <string name="install_failed_incompatible">설치 실패: 설치한 버전이 다른 키로 서명되었습니다. 먼저 이를 제거하세요</string>
+    <string name="install_failed_downgrade">설치 실패: 이미 더 최신 버전이 설치되었습니다</string>
+    <string name="install_failed_abi">설치 실패: 이 APK가 기기의 CPU를 지원하지 않습니다</string>
+    <string name="install_failed_storage">설치 실패: 저장공간이 부족합니다</string>
+    <string name="installer_no_confirmation">설치 프로그램이 설치를 확인하지 않았습니다</string>
 </resources>

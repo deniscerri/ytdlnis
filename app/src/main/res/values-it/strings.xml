@@ -748,4 +748,19 @@
     <string name="background_update_check_types">Regola i tipi di verifica in background</string>
     <string name="background_update_app">Notifica di aggiornamento dell\'app</string>
     <string name="background_update_packages">Notifiche di aggiornamento di pacchetto</string>
+    <string name="selected_cuts">Ritagli selezionati</string>
+    <string name="open_in_external_player">Apri nel lettore esterno</string>
+    <string name="no_external_player">Nessuna app trovata in grado di riprodurre questo video</string>
+    <string name="installer_system_description">Il programma di installazione dei pacchetti integrato in Android</string>
+    <string name="installer_system_unavailable">Non disponibile in questa versione. Scegli Shizuku o un\'app di installazione qui sotto</string>
+    <string name="installer_shizuku_description">Installa in background tramite Shizuku</string>
+    <string name="installer_shizuku_not_running">Shizuku non è in esecuzione. Prima avvialo</string>
+    <string name="allow_install_unknown_apps">Consenti a YTDLnis di installare app, poi riprova</string>
+    <string name="install_cancelled">Installazione annullata</string>
+    <string name="install_failed_code">Installazione non riuscita (codice %1$s)</string>
+    <string name="install_failed_incompatible">Installaazione non riuscita: la versione installata è firmata con una chiave diversa. Prima disinstallala</string>
+    <string name="install_failed_downgrade">Installazione non riuscita: una versione più recente è già installata</string>
+    <string name="install_failed_abi">Installazione non riuscita: questo APK non supporta la CPU del tuo dispositivo</string>
+    <string name="install_failed_storage">Installazione non riuscita: spazio di archiviazione insufficiente</string>
+    <string name="installer_no_confirmation">L\'app di installazione non ha confermato l\'installazione</string>
 </resources>
