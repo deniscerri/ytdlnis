@@ -209,7 +209,8 @@ object FileUtil {
             results.add(target.uri.toString())
         }
 
-        if (!keepCache) originDir.deleteRecursively()
+        // nothing moved means the destination failed, keep the download in the cache instead of losing it
+        if (!keepCache && results.isNotEmpty()) originDir.deleteRecursively()
         results
     }
 
@@ -360,7 +361,8 @@ object FileUtil {
                 }
 
             }
-            if (!keepCache){
+            // nothing moved means the destination failed, keep the download in the cache instead of losing it
+            if (!keepCache && fileList.isNotEmpty()){
                 originDir.deleteRecursively()
             }
             return@withContext scanMedia(fileList, context)

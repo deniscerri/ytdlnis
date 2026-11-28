@@ -157,6 +157,12 @@ class DownloadWorker(
                 }
             }
 
+            // a priority item cancelled/removed before it started would stay first forever and block every other download.
+            // Priority items sort first in the LIMIT 10 query, so one missing from a short or mixed result is no longer queued
+            if (items.size < 10 || items.any { it.id !in priorityItemIDs }) {
+                priorityItemIDs.retainAll { id -> items.any { it.id == id } }
+            }
+
             if (priorityItemIDs.isEmpty() && !continueAfterPriorityIds) {
                 WorkManager.Companion.getInstance(context).cancelWorkById(this@DownloadWorker.id)
                 return@collectLatest
@@ -336,6 +342,7 @@ class DownloadWorker(
                                 }
 
                                 //move files manually if external provider
+                                var moveError: Exception? = null
                                 try {
                                     val otherPaths = withContext(Dispatchers.IO) {
                                         FileUtil.moveFile(
@@ -377,6 +384,7 @@ class DownloadWorker(
 
                                 } catch (e: Exception) {
                                     e.printStackTrace()
+                                    moveError = e
                                     if (e.message?.isNotBlank() == true) {
                                         handler.postDelayed({
                                             Toast.makeText(
@@ -404,6 +412,40 @@ class DownloadWorker(
                                     }
                                 }.distinct().toMutableList()
                                 finalPaths.sortBy { p -> File(p).lastModified() }
+
+                                // media still sitting in the cache with nothing at the destination means the move failed
+                                // (missing folder, lost permission). Keep it as errored instead of reporting a finished download with no file
+                                val moveFailed = finalPaths.isEmpty() && tempFileDir.walk().any { f ->
+                                    f.isFile && f.length() > 0 &&
+                                        !f.name.matches("(^config.*.\\.txt\$)|(rList)|(.*.part-Frag.*)|(.*.live_chat)|(.*.ytdl)".toRegex()) &&
+                                        nonMediaExtensions.none { ext -> f.name.endsWith(ext) }
+                                }
+                                if (moveFailed) {
+                                    val message = "Could not move the downloaded file to ${FileUtil.formatPath(downloadLocation)}. It was kept in the app cache.\n${moveError?.message ?: ""}".trim()
+                                    Log.e(TAG, message, moveError)
+                                    if (logDownloads) {
+                                        logRepo.update(message, logItem.id)
+                                    } else {
+                                        logString.append("$message\n")
+                                        logItem.content = logString.toString()
+                                        downloadItem.logID = logRepo.insert(logItem)
+                                    }
+                                    FileUtil.deleteConfigFiles(request)
+                                    downloadItem.status = DownloadRepository.Status.Error.toString()
+                                    dao.update(downloadItem)
+                                    withContext(Dispatchers.Main) {
+                                        notificationUtil.cancelDownloadNotification(downloadItem.id.toInt())
+                                    }
+                                    notificationUtil.createDownloadErrored(
+                                        downloadItem.id,
+                                        downloadItem.title.ifEmpty { downloadItem.url },
+                                        message,
+                                        downloadItem.logID,
+                                        resources
+                                    )
+                                    WorkerEventBus.post(WorkerProgress(100, message, downloadItem.id, downloadItem.logID))
+                                    return@runBlocking
+                                }
 
                                 FileUtil.scanMedia(finalPaths, context)
 
